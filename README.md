@@ -43,6 +43,9 @@ See [Linear project](https://linear.app/growthwebdev/project/darius-star-cyber-c
 1. **Baseline** — Working game with canvas-drawn graphics ✅
 2. **Asset Generation** — Google Flow Beta / Leonardo.ai sprite generation
 3. **Asset Processing** — Pillow-based sprite sheet slicing → `/assets/sprites/`
+    - **Sprite Manifest Tooling** — Run `python3 generate_sprites_manifest.py` to scan `/assets/sprites/` and build the dynamic asset manifest `assets/sprites.json`.
+    - **Validation & Sanity Checks** — Checks for power-of-two image dimensions (GPU-optimized) and reports missing or invalid assets in `validation.errors`.
+    - **Mock Testing** — Run `python3 generate_mock_sprites.py` to create a suite of simulated 16-bit retro sprites for pipeline validation.
 4. **Dynamic Integration** — Replace canvas shapes with real sprite assets
 5. **Performance** — Offscreen canvas pre-rendering, lazy-loading
 6. **Deployment** — Cloudflare Pages (free global CDN)
