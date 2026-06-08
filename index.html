@@ -871,7 +871,29 @@
             }
         }
 
-        // Star field (3 depth layers rendered procedurally)
+        // --- Offscreen Canvas Pre-Rendering ---
+        // Static/procedural assets are rendered to offscreen canvases
+        // and blitted in a single drawImage call instead of 100+ individual draws.
+
+        class OffscreenBuffer {
+            constructor(width, height) {
+                this.canvas = document.createElement('canvas');
+                this.canvas.width = width;
+                this.canvas.height = height;
+                this.ctx = this.canvas.getContext('2d');
+                this.dirty = true;          // force first render
+                this.renderInterval = 0;     // ms between rebuilds
+                this.renderTimer = 0;        // countdown accumulator
+            }
+            markDirty() { this.dirty = true; }
+            rebuild(renderFn) {
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                renderFn(this.ctx);
+                this.dirty = false;
+            }
+        }
+
+        // --- Star field (3 depth layers rendered procedurally) ---
         class Star {
             constructor(depth) {
                 this.depth = depth; // 1=far, 2=mid, 3=near
@@ -893,17 +915,28 @@
                 }
             }
 
-            draw() {
-                const alpha = 0.4 + Math.sin(this.twinkle) * 0.35;
-                ctx.save();
-                ctx.globalAlpha = alpha;
-                ctx.fillStyle = this.color;
-                ctx.fillRect(this.x, this.y, this.size, this.size);
-                ctx.restore();
-            }
+            getAlpha() { return 0.4 + Math.sin(this.twinkle) * 0.35; }
         }
 
-        // Deep-sea particle layer (ambient drift)
+        // Offscreen buffer for star field (rendered lazily every 250ms)
+        const starBuffer = new OffscreenBuffer(canvas.width, canvas.height);
+        starBuffer.renderInterval = 0.25; // seconds
+        const stars = [];
+        for (let i = 0; i < 35; i++) stars.push(new Star(1));   // far
+        for (let i = 0; i < 22; i++) stars.push(new Star(2));   // mid
+        for (let i = 0; i < 10; i++) stars.push(new Star(3));   // near
+
+        function rebuildStarBuffer(offCtx) {
+            stars.forEach(star => {
+                offCtx.save();
+                offCtx.globalAlpha = star.getAlpha();
+                offCtx.fillStyle = star.color;
+                offCtx.fillRect(star.x, star.y, star.size, star.size);
+                offCtx.restore();
+            });
+        }
+
+        // --- Deep-sea particle layer (ambient drift) ---
         class SeaParticle {
             constructor() {
                 this.reset(true);
@@ -924,13 +957,21 @@
                 if (this.y > canvas.height) this.y = 0;
                 if (this.x < -10) this.reset();
             }
-            draw() {
-                ctx.save();
-                ctx.globalAlpha = this.alpha;
-                ctx.fillStyle = this.color;
-                ctx.fillRect(this.x, this.y, this.size, this.size);
-                ctx.restore();
-            }
+            draw() {} // No-op — rendered via offscreen buffer
+        }
+
+        // Offscreen buffer for sea particles (redrawn every 200ms)
+        const seaBuffer = new OffscreenBuffer(canvas.width, canvas.height);
+        seaBuffer.renderInterval = 0.20; // seconds
+
+        function rebuildSeaBuffer(offCtx) {
+            seaParticles.forEach(p => {
+                offCtx.save();
+                offCtx.globalAlpha = p.alpha;
+                offCtx.fillStyle = p.color;
+                offCtx.fillRect(p.x, p.y, p.size, p.size);
+                offCtx.restore();
+            });
         }
 
         // --- Game Entity Pools ---
@@ -946,12 +987,6 @@
             new ParallaxLayer(bgImages['nebula'], 12, 0, 0.35, canvas.height / 768),      // Far: nebula cloud
             new ParallaxLayer(bgImages['city'],   55, 0, 0.25, canvas.height / 450)         // Mid: city silhouette
         ];
-
-        // Star field (3 depth layers)
-        const stars = [];
-        for (let i = 0; i < 35; i++) stars.push(new Star(1));   // far — slow, dim
-        for (let i = 0; i < 22; i++) stars.push(new Star(2));   // mid
-        for (let i = 0; i < 10; i++) stars.push(new Star(3));   // near — fast, bright
 
         // Deep-sea ambient particles
         const seaParticles = [];
@@ -1010,6 +1045,19 @@
             bgLayers.forEach(layer => layer.update(dt));
             stars.forEach(star => star.update(dt));
             seaParticles.forEach(p => p.update(dt));
+
+            // Offscreen buffer lazy-render: rebuild star/sea buffers on interval
+            starBuffer.renderTimer += dt;
+            if (starBuffer.renderTimer >= starBuffer.renderInterval) {
+                starBuffer.rebuild(rebuildStarBuffer);
+                starBuffer.renderTimer = 0;
+            }
+            seaBuffer.renderTimer += dt;
+            if (seaBuffer.renderTimer >= seaBuffer.renderInterval) {
+                seaBuffer.rebuild(rebuildSeaBuffer);
+                seaBuffer.renderTimer = 0;
+            }
+
             player.update(dt);
 
             if (!bossSpawned) {
@@ -1174,10 +1222,15 @@
             ctx.fillStyle = '#010108';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            // Render parallax layers back-to-front
+            // Render parallax layers back-to-front (image-based, drawn directly)
             bgLayers.forEach(layer => layer.draw());
-            seaParticles.forEach(p => p.draw());
-            stars.forEach(star => star.draw());
+
+            // Blit offscreen buffers (lazy-rendered every 200-250ms)
+            // First frame: force-build buffers if not yet rendered
+            if (starBuffer.dirty) starBuffer.rebuild(rebuildStarBuffer);
+            if (seaBuffer.dirty) seaBuffer.rebuild(rebuildSeaBuffer);
+            ctx.drawImage(starBuffer.canvas, 0, 0);
+            ctx.drawImage(seaBuffer.canvas, 0, 0);
 
             bullets.forEach(b => b.draw());
             enemyBullets.forEach(eb => eb.draw());
