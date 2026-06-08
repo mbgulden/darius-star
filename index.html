@@ -975,8 +975,8 @@
         }
 
         class ParallaxLayer {
-            constructor(img, speed, yOffset = 0, alpha = 1.0, scale = 1.0) {
-                this.img = img;
+            constructor(key, speed, yOffset = 0, alpha = 1.0, scale = 1.0) {
+                this.key = key;          // Image key in bgImages — lazy-resolved at draw time
                 this.speed = speed;
                 this.yOffset = yOffset;
                 this.alpha = alpha;
@@ -984,21 +984,28 @@
                 this.offset = 0;
             }
 
+            getImg() {
+                // Lazy-resolve: bgImages is populated asynchronously by ensureBackgroundImages()
+                return bgImages[this.key] || null;
+            }
+
             update(dt) {
-                this.offset = (this.offset + this.speed * dt) % (this.img.width || canvas.width);
+                const img = this.getImg();
+                this.offset = (this.offset + this.speed * dt) % (img ? img.width : canvas.width);
             }
 
             draw() {
-                if (!this.img || !this.img.complete || this.img.naturalWidth === 0) return;
+                const img = this.getImg();
+                if (!img || !img.complete || img.naturalWidth === 0) return;
                 ctx.save();
                 ctx.globalAlpha = this.alpha;
-                const w = this.img.width * this.scale;
-                const h = this.img.height * this.scale;
+                const w = img.width * this.scale;
+                const h = img.height * this.scale;
                 // Tile horizontally for seamless scroll
                 const drawX = -this.offset;
                 const count = Math.ceil(canvas.width / w) + 1;
                 for (let i = 0; i < count; i++) {
-                    ctx.drawImage(this.img, drawX + i * w, this.yOffset, w, h);
+                    ctx.drawImage(img, drawX + i * w, this.yOffset, w, h);
                 }
                 ctx.restore();
             }
@@ -1188,8 +1195,8 @@
 
         // Parallax background layers (image-based)
         const bgLayers = [
-            new ParallaxLayer(bgImages['nebula'], 12, 0, 0.35, canvas.height / 768),      // Far: nebula cloud
-            new ParallaxLayer(bgImages['city'],   55, 0, 0.25, canvas.height / 450)         // Mid: city silhouette
+            new ParallaxLayer('nebula', 12, 0, 0.35, canvas.height / 768),      // Far: nebula cloud
+            new ParallaxLayer('city',   55, 0, 0.25, canvas.height / 450)        // Mid: city silhouette
         ];
 
         // Deep-sea ambient particles
