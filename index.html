@@ -330,6 +330,7 @@
             ensureBackgroundImages();
             initAudio();
             loadPlayerSprites();
+            loadEnemySprites();
             if (e.key === 'p' || e.key === 'P') {
                 paused = !paused;
             }
@@ -350,6 +351,7 @@
                 initAudio();
                 ensureBackgroundImages();
                 loadPlayerSprites();
+            loadEnemySprites();
                 keys[key] = true;
                 el.classList.add('pressed');
             });
@@ -654,61 +656,34 @@
                 ctx.save();
                 ctx.translate(this.x, this.y);
 
-                ctx.fillStyle = this.color;
-                
-                if (this.type === 'scout') {
-                    ctx.beginPath();
-                    ctx.moveTo(30, 15);
-                    ctx.lineTo(10, 0);
-                    ctx.lineTo(0, 15);
-                    ctx.lineTo(10, 30);
-                    ctx.closePath();
-                    ctx.fill();
-                    ctx.fillStyle = '#00ffff';
-                    ctx.fillRect(8, 10, 4, 4);
-                } else if (this.type === 'interceptor') {
-                    ctx.beginPath();
-                    ctx.moveTo(30, 15);
-                    ctx.lineTo(0, 5);
-                    ctx.lineTo(10, 15);
-                    ctx.lineTo(0, 25);
-                    ctx.closePath();
-                    ctx.fill();
-                    ctx.fillStyle = '#ff7700';
-                    ctx.fillRect(32, 12, 6, 6);
-                } else if (this.type === 'heavy') {
-                    ctx.beginPath();
-                    ctx.moveTo(30, 5);
-                    ctx.lineTo(10, 0);
-                    ctx.lineTo(0, 15);
-                    ctx.lineTo(10, 30);
-                    ctx.lineTo(30, 25);
-                    ctx.lineTo(20, 15);
-                    ctx.closePath();
-                    ctx.fill();
+                const sprite = enemySprites[this.type];
+                const hasSprite = sprite && sprite.complete && sprite.naturalWidth > 0;
 
-                    ctx.strokeStyle = '#ffffff';
-                    ctx.lineWidth = 1;
-                    ctx.beginPath();
-                    ctx.moveTo(15, 0);
-                    ctx.lineTo(15, 30);
-                    ctx.stroke();
-
-                    ctx.fillStyle = '#ff0000';
-                    ctx.beginPath();
-                    ctx.arc(5, 15, 4, 0, Math.PI*2);
-                    ctx.fill();
-                } else if (this.type === 'boss_minion') {
-                    ctx.beginPath();
-                    ctx.arc(15, 15, 12, 0, Math.PI*2);
-                    ctx.fill();
-                    ctx.fillStyle = '#118833';
-                    ctx.beginPath();
-                    ctx.moveTo(15, 3);
-                    ctx.lineTo(30, -5);
-                    ctx.lineTo(22, 15);
-                    ctx.closePath();
-                    ctx.fill();
+                if (hasSprite) {
+                    // Map each type to appropriate render size (sprites are 1024x1024)
+                    const sizes = { scout: 36, interceptor: 36, heavy: 44, boss_minion: 32 };
+                    const size = sizes[this.type] || 36;
+                    ctx.drawImage(sprite, 0, 0, size, size);
+                } else {
+                    // Fallback: colored shapes if sprite not loaded
+                    ctx.fillStyle = this.color;
+                    if (this.type === 'scout') {
+                        ctx.beginPath();
+                        ctx.moveTo(30, 15); ctx.lineTo(10, 0); ctx.lineTo(0, 15); ctx.lineTo(10, 30);
+                        ctx.closePath(); ctx.fill();
+                    } else if (this.type === 'interceptor') {
+                        ctx.beginPath();
+                        ctx.moveTo(30, 15); ctx.lineTo(0, 5); ctx.lineTo(10, 15); ctx.lineTo(0, 25);
+                        ctx.closePath(); ctx.fill();
+                    } else if (this.type === 'heavy') {
+                        ctx.beginPath();
+                        ctx.moveTo(30, 5); ctx.lineTo(10, 0); ctx.lineTo(0, 15); ctx.lineTo(10, 30);
+                        ctx.lineTo(30, 25); ctx.lineTo(20, 15);
+                        ctx.closePath(); ctx.fill();
+                    } else if (this.type === 'boss_minion') {
+                        ctx.beginPath();
+                        ctx.arc(15, 15, 14, 0, Math.PI * 2); ctx.fill();
+                    }
                 }
 
                 ctx.restore();
@@ -1040,6 +1015,20 @@
             frames.forEach(key => {
                 playerSprites[key] = new Image();
                 playerSprites[key].src = `assets/sprites/${key}.png`;
+            });
+        }
+
+        // --- Enemy Sprite Preloading ---
+        const enemySprites = {};
+        let enemySpritesLoaded = false;
+
+        function loadEnemySprites() {
+            if (enemySpritesLoaded) return;
+            enemySpritesLoaded = true;
+            const types = ['scout', 'interceptor', 'heavy', 'boss_minion'];
+            types.forEach(key => {
+                enemySprites[key] = new Image();
+                enemySprites[key].src = `assets/sprites/${key}_0.png`;
             });
         }
 
