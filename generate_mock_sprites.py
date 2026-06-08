@@ -33,8 +33,8 @@ def main():
         # Interceptor (1 frame, 32x32 - power of two)
         ("interceptor_0.png", 32, 32, (255, 0, 85, 255)), # Pinkish Red
         
-        # Heavy (1 frame, 48x48 - NOT a power of two!)
-        ("heavy_0.png", 48, 48, (154, 51, 204, 255)), # Purple
+        # Heavy (1 frame, 64x64 - power of two)
+        ("heavy_0.png", 64, 64, (154, 51, 204, 255)), # Purple
         
         # Boss Minion (1 frame, 16x16 - power of two)
         ("boss_minion_0.png", 16, 16, (51, 204, 85, 255)), # Green
@@ -50,8 +50,8 @@ def main():
         ("explosion_0.png", 32, 32, (255, 255, 255, 255)), # White
         ("explosion_1.png", 32, 32, (255, 170, 0, 255)), # Orange
         
-        # Boss (Colossal boss, we'll intentionally miss generating it to test missing asset detection)
-        # We will not generate boss_0.png to ensure it gets reported as missing.
+        # Boss (Colossal boss, 1 frame, 128x128 - power of two)
+        ("boss_0.png", 128, 128, (255, 0, 0, 255)), # Red
     ]
     
     print("Generating mock sprite assets...")

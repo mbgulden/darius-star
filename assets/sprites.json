@@ -1,7 +1,23 @@
 {
   "manifest_version": "1.0",
-  "generated_at": "2026-06-08T17:58:50.589335Z",
+  "generated_at": "2026-06-08T18:14:08.996978Z",
   "sprites": {
+    "boss": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "boss_0.png",
+          "path": "assets/sprites/boss_0.png",
+          "width": 128,
+          "height": 128,
+          "is_power_of_two": true
+        }
+      ],
+      "frame_count": 1,
+      "width": 128,
+      "height": 128,
+      "is_valid_power_of_two": true
+    },
     "boss_minion": {
       "frames": [
         {
@@ -48,15 +64,15 @@
           "index": 0,
           "filename": "heavy_0.png",
           "path": "assets/sprites/heavy_0.png",
-          "width": 48,
-          "height": 48,
-          "is_power_of_two": false
+          "width": 64,
+          "height": 64,
+          "is_power_of_two": true
         }
       ],
       "frame_count": 1,
-      "width": 48,
-      "height": 48,
-      "is_valid_power_of_two": false
+      "width": 64,
+      "height": 64,
+      "is_valid_power_of_two": true
     },
     "interceptor": {
       "frames": [
@@ -96,22 +112,22 @@
           "index": 0,
           "filename": "player_0.png",
           "path": "assets/sprites/player_0.png",
-          "width": 64,
-          "height": 64,
+          "width": 256,
+          "height": 128,
           "is_power_of_two": true
         },
         {
           "index": 1,
           "filename": "player_1.png",
           "path": "assets/sprites/player_1.png",
-          "width": 64,
-          "height": 64,
+          "width": 256,
+          "height": 128,
           "is_power_of_two": true
         }
       ],
       "frame_count": 2,
-      "width": 64,
-      "height": 64,
+      "width": 256,
+      "height": 128,
       "is_valid_power_of_two": true
     },
     "powerup_s": {
@@ -152,27 +168,23 @@
           "index": 0,
           "filename": "scout_0.png",
           "path": "assets/sprites/scout_0.png",
-          "width": 32,
-          "height": 32,
+          "width": 64,
+          "height": 64,
           "is_power_of_two": true
         }
       ],
       "frame_count": 1,
-      "width": 32,
-      "height": 32,
+      "width": 64,
+      "height": 64,
       "is_valid_power_of_two": true
     }
   },
   "validation": {
-    "total_files_scanned": 11,
-    "valid_power_of_two_count": 10,
-    "invalid_power_of_two_count": 1,
-    "errors": [
-      "Asset 'heavy_0.png' has non-power-of-two dimensions: 48x48"
-    ],
+    "total_files_scanned": 12,
+    "valid_power_of_two_count": 12,
+    "invalid_power_of_two_count": 0,
+    "errors": [],
     "warnings": [],
-    "missing_assets": [
-      "boss"
-    ]
+    "missing_assets": []
   }
 }
