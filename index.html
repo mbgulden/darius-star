@@ -331,6 +331,7 @@
             initAudio();
             loadPlayerSprites();
             loadEnemySprites();
+            loadVFXSprites();
             if (e.key === 'p' || e.key === 'P') {
                 paused = !paused;
             }
@@ -352,6 +353,7 @@
                 ensureBackgroundImages();
                 loadPlayerSprites();
             loadEnemySprites();
+                loadVFXSprites();
                 keys[key] = true;
                 el.classList.add('pressed');
             });
@@ -511,13 +513,28 @@
                     ctx.fill();
                 }
 
-                // Weapon level 4+ shield aura
+                // Weapon level 4+ shield aura (sprite-based)
                 if (this.weaponLevel >= 4) {
-                    ctx.strokeStyle = 'rgba(0, 255, 255, 0.4)';
-                    ctx.lineWidth = 2;
-                    ctx.beginPath();
-                    ctx.arc(24, this.height / 2, 28, 0, Math.PI * 2);
-                    ctx.stroke();
+                    const shieldSprite = vfxSprites['shield'];
+                    if (shieldSprite && shieldSprite.complete && shieldSprite.naturalWidth > 0) {
+                        // Pulsing alpha based on game time
+                        const pulse = 0.25 + Math.sin(gameTime * 3) * 0.15;
+                        ctx.globalAlpha = pulse;
+                        // Render translucent blue forcefield ring (1024x1024 → 72x72)
+                        const shieldSize = 72;
+                        ctx.drawImage(shieldSprite,
+                            -shieldSize / 2 + 24,  // center x offset
+                            -shieldSize / 2 + this.height / 2,  // center y offset
+                            shieldSize, shieldSize);
+                        ctx.globalAlpha = 1;
+                    } else {
+                        // Fallback: procedural circle
+                        ctx.strokeStyle = 'rgba(0, 255, 255, 0.4)';
+                        ctx.lineWidth = 2;
+                        ctx.beginPath();
+                        ctx.arc(24, this.height / 2, 28, 0, Math.PI * 2);
+                        ctx.stroke();
+                    }
                 }
 
                 ctx.restore();
@@ -548,17 +565,40 @@
             }
 
             draw() {
-                ctx.fillStyle = this.color;
-                if (this.isWave) {
-                    ctx.shadowColor = this.color;
-                    ctx.shadowBlur = 10;
-                    ctx.beginPath();
-                    ctx.arc(this.x, this.y, this.size, 0, Math.PI*2);
-                    ctx.fill();
+                ctx.save();
+                ctx.translate(this.x, this.y);
+
+                // Rotate to face bullet direction
+                const angle = Math.atan2(this.vy, this.vx);
+                ctx.rotate(angle);
+
+                const sprite = vfxSprites['laser'];
+                if (sprite && sprite.complete && sprite.naturalWidth > 0) {
+                    // Render laser sprite scaled to bullet size (sprite is 1024x1024)
+                    const renderSize = this.size * 3.5;
+                    ctx.globalAlpha = 0.9;
+                    if (this.isWave) {
+                        ctx.shadowColor = this.color;
+                        ctx.shadowBlur = 12;
+                    }
+                    ctx.drawImage(sprite, -renderSize / 2, -renderSize / 2, renderSize, renderSize);
                     ctx.shadowBlur = 0;
                 } else {
-                    ctx.fillRect(this.x - this.size, this.y - 2, this.size * 2, 4);
+                    // Fallback: colored rectangle
+                    ctx.fillStyle = this.color;
+                    if (this.isWave) {
+                        ctx.shadowColor = this.color;
+                        ctx.shadowBlur = 10;
+                        ctx.beginPath();
+                        ctx.arc(0, 0, this.size, 0, Math.PI * 2);
+                        ctx.fill();
+                        ctx.shadowBlur = 0;
+                    } else {
+                        ctx.fillRect(-this.size, -2, this.size * 2, 4);
+                    }
                 }
+
+                ctx.restore();
             }
         }
 
@@ -579,10 +619,34 @@
             }
 
             draw() {
-                ctx.fillStyle = this.color;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
+                ctx.save();
+                ctx.translate(this.x, this.y);
+
+                // Rotate: enemy bullets move left-to-right (vx is negative)
+                const angle = Math.atan2(this.vy, this.vx);
+                ctx.rotate(angle);
+
+                const sprite = vfxSprites['laser'];
+                if (sprite && sprite.complete && sprite.naturalWidth > 0) {
+                    const renderSize = this.size * 3;
+                    // Red tint: draw sprite then overlay red semi-transparent
+                    ctx.globalAlpha = 0.85;
+                    ctx.drawImage(sprite, -renderSize / 2, -renderSize / 2, renderSize, renderSize);
+                    // Red overlay for enemy tint
+                    ctx.globalCompositeOperation = 'source-atop';
+                    ctx.fillStyle = 'rgba(255, 30, 0, 0.6)';
+                    ctx.fillRect(-renderSize / 2, -renderSize / 2, renderSize, renderSize);
+                    ctx.globalCompositeOperation = 'source-over';
+                    ctx.globalAlpha = 1;
+                } else {
+                    // Fallback: red circle
+                    ctx.fillStyle = this.color;
+                    ctx.beginPath();
+                    ctx.arc(0, 0, this.size, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+
+                ctx.restore();
             }
         }
 
@@ -949,6 +1013,55 @@
             }
         }
 
+        // --- Sprite-Based Explosion Class ---
+        class SpriteExplosion {
+            constructor(x, y, size = 48) {
+                this.x = x;
+                this.y = y;
+                this.size = size;
+                this.frame = 0;
+                this.frameTimer = 0;
+                this.frameDuration = 0.08; // 80ms per frame = ~12.5fps for 4 frames = ~320ms total
+                this.alive = true;
+            }
+
+            update(dt) {
+                this.frameTimer += dt;
+                if (this.frameTimer >= this.frameDuration) {
+                    this.frameTimer -= this.frameDuration;
+                    this.frame++;
+                    if (this.frame >= 4) {
+                        this.alive = false;
+                    }
+                }
+            }
+
+            draw() {
+                if (!this.alive) return;
+                const key = 'explosion_' + this.frame;
+                const sprite = vfxSprites[key];
+                if (sprite && sprite.complete && sprite.naturalWidth > 0) {
+                    ctx.save();
+                    ctx.globalAlpha = 0.9;
+                    ctx.drawImage(sprite,
+                        this.x - this.size / 2,
+                        this.y - this.size / 2,
+                        this.size, this.size);
+                    ctx.restore();
+                } else {
+                    // Fallback: orange flash circle
+                    const progress = this.frame / 4;
+                    ctx.save();
+                    ctx.globalAlpha = 1 - progress;
+                    ctx.fillStyle = '#ff6600';
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size * (0.5 + progress * 0.5), 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.restore();
+                }
+            }
+        }
+
         // --- Parallax Background System ---
         // Image-based parallax layers (bg_nebula, bg_city) + procedural starfield
 
@@ -1037,6 +1150,26 @@
                 enemySprites[key] = new Image();
                 enemySprites[key].src = `assets/sprites/${key}_0.png`;
             });
+        }
+
+        // --- VFX Sprite Preloading ---
+        const vfxSprites = {};
+        let vfxSpritesLoaded = false;
+
+        function loadVFXSprites() {
+            if (vfxSpritesLoaded) return;
+            vfxSpritesLoaded = true;
+            // Laser (player + enemy bullets)
+            vfxSprites['laser'] = new Image();
+            vfxSprites['laser'].src = 'assets/sprites/laser_0.png';
+            // Multi-frame explosion (4 frames)
+            for (let f = 0; f < 4; f++) {
+                vfxSprites['explosion_' + f] = new Image();
+                vfxSprites['explosion_' + f].src = 'assets/sprites/explosion_' + f + '.png';
+            }
+            // Shield forcefield ring
+            vfxSprites['shield'] = new Image();
+            vfxSprites['shield'].src = 'assets/sprites/shield_0.png';
         }
 
         // --- Boss Asset Lazy-Loading ---
@@ -1206,8 +1339,15 @@
         let boss = null;
         let enemySpawnTimer = 1.2;
 
+        const vfxExplosions = [];
+
         function createExplosion(x, y, color, count = 12) {
-            for (let i = 0; i < count; i++) {
+            // Sprite-based explosion for the main visual
+            const explosionSize = Math.max(40, count * 3.5);
+            vfxExplosions.push(new SpriteExplosion(x, y, explosionSize));
+            // Keep particles for debris/sparks (reduced count)
+            const particleCount = Math.min(count, 6);
+            for (let i = 0; i < particleCount; i++) {
                 particles.push(new Particle(x, y, color));
             }
         }
@@ -1236,6 +1376,7 @@
             enemies.length = 0;
             powerups.length = 0;
             particles.length = 0;
+            vfxExplosions.length = 0;
         }
 
         function loop(timestamp) {
@@ -1427,6 +1568,13 @@
                 }
             }
 
+            for (let i = vfxExplosions.length - 1; i >= 0; i--) {
+                vfxExplosions[i].update(dt);
+                if (!vfxExplosions[i].alive) {
+                    vfxExplosions.splice(i, 1);
+                }
+            }
+
             uiShield.innerText = Math.round(player.shield) + '%';
             uiShield.style.color = player.shield > 40 ? '#00ff00' : '#ff0033';
             uiWeapon.innerText = 'LVL ' + player.weaponLevel + (player.weaponLevel === 5 ? ' (MAX)' : '');
@@ -1453,6 +1601,7 @@
             enemies.forEach(e => e.draw());
             if (boss) boss.draw();
             player.draw();
+            vfxExplosions.forEach(ex => ex.draw());
             particles.forEach(p => p.draw());
 
             // Boss asset loading indicator
