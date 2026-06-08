@@ -1,0 +1,39 @@
+{
+  "name": "Darius Star: Cyber Coelacanth",
+  "version": "1.0.0",
+  "description": "Automation tasks for asset linting, build verification, and deployment",
+  "tasks": {
+    "lint": {
+      "description": "Check for missing asset references in index.html and validate sprites.json entries",
+      "command": "python3 tasks/lint.py",
+      "output": {
+        "success": "All asset references valid. 0 missing.",
+        "failure": "Missing asset references found. See output above."
+      }
+    },
+    "build": {
+      "description": "Verify power-of-two constraints and generate production-ready minified HTML",
+      "command": "python3 tasks/build.py",
+      "output": {
+        "success": "Build complete. Production files in dist/.",
+        "failure": "Build failed. Check validation errors above."
+      }
+    },
+    "deploy": {
+      "description": "Commit and push to GitHub, triggering Cloudflare Pages deploy",
+      "command": "bash tasks/deploy.sh",
+      "output": {
+        "success": "Deployed to Cloudflare Pages.",
+        "failure": "Deploy failed. Check git status and remote."
+      }
+    },
+    "lint:fix": {
+      "description": "Auto-fix missing sprites.json entries for files found on disk",
+      "command": "python3 tasks/lint.py --fix"
+    }
+  },
+  "ci": {
+    "pipeline": ["lint", "build", "deploy"],
+    "on_push": ["lint", "build"]
+  }
+}
