@@ -31,76 +31,86 @@ ASSET_CATALOG = {
     "player": {
         "category": "Player Ship",
         "prompt": "Retro-cyberpunk fighter jet, 2D side-view sprite, 16-bit pixel art style, sleek aerodynamic frame with neon blue and purple glow accents, visible exhaust ports, high contrast, transparent background.",
-        "width": 256,
-        "height": 128,
-        "frames": 2,
-        "prefix": "player",
-        "aspect_ratio": "2:1",
+        "width": 256, "height": 128, "frames": 2,
+        "prefix": "player", "output_prefix": "player", "aspect_ratio": "1:1",
     },
     "enemy_scout": {
         "category": "Enemy Fleet",
         "prompt": "Cybernetic robotic fish with metallic scales, 2D side-view sprite, 16-bit pixel art, glowing cyan eye, orange metallic body, transparent background.",
-        "width": 64, "height": 64, "frames": 1, "prefix": "scout", "aspect_ratio": "1:1",
+        "width": 64, "height": 64, "frames": 1,
+        "prefix": "scout", "output_prefix": "scout", "aspect_ratio": "1:1",
     },
     "enemy_interceptor": {
         "category": "Enemy Fleet",
         "prompt": "Cybernetic arrowhead ship, 2D side-view sprite, 16-bit pixel art, pink-red metallic body, red thruster flame, transparent background.",
-        "width": 64, "height": 64, "frames": 1, "prefix": "interceptor", "aspect_ratio": "1:1",
+        "width": 64, "height": 64, "frames": 1,
+        "prefix": "interceptor", "output_prefix": "interceptor", "aspect_ratio": "1:1",
     },
     "enemy_heavy": {
         "category": "Enemy Fleet",
         "prompt": "Cybernetic trilobite/crab heavy armor ship, 2D side-view sprite, 16-bit pixel art, purple metallic shell, white plating, red cannon, transparent background.",
-        "width": 64, "height": 64, "frames": 1, "prefix": "heavy", "aspect_ratio": "1:1",
+        "width": 64, "height": 64, "frames": 1,
+        "prefix": "heavy", "output_prefix": "heavy", "aspect_ratio": "1:1",
     },
     "enemy_boss_minion": {
         "category": "Enemy Fleet",
         "prompt": "Cybernetic round green metallic scale minion, 2D side-view sprite, 16-bit pixel art, sharp dorsal fin, transparent background.",
-        "width": 32, "height": 32, "frames": 1, "prefix": "boss_minion", "aspect_ratio": "1:1",
+        "width": 32, "height": 32, "frames": 1,
+        "prefix": "boss_minion", "output_prefix": "boss_minion", "aspect_ratio": "1:1",
     },
     "boss": {
         "category": "Colossal Boss",
         "prompt": "'Cyber Coelacanth' dreadnought ship, massive armored prehistoric fish, biomechanical plating, glowing red optic sensors, side-view boss sprite, intricate engine details, neon pink fins, transparent background.",
-        "width": 360, "height": 280, "frames": 1, "prefix": "boss", "aspect_ratio": "9:7",
+        "width": 360, "height": 280, "frames": 1,
+        "prefix": "boss", "output_prefix": "boss", "aspect_ratio": "4:3",
     },
     "vfx_laser": {
         "category": "VFX",
         "prompt": "2D retro plasma laser beam, 16-bit pixel art, bright cyan/blue energy beam, horizontal, pixel-perfect, transparent background.",
-        "width": 64, "height": 16, "frames": 1, "prefix": "laser", "aspect_ratio": "4:1",
+        "width": 64, "height": 16, "frames": 1,
+        "prefix": "laser", "output_prefix": "laser", "aspect_ratio": "1:1",
     },
     "vfx_explosion": {
         "category": "VFX",
-        "prompt": "2D retro explosion sprite sheet, multi-frame circular shockwave, orange/yellow/white fire, 16-bit pixel art, transparent background.",
-        "width": 128, "height": 32, "frames": 4, "prefix": "explosion", "aspect_ratio": "4:1",
+        "prompt": "2D retro explosion sprite sheet, multi-frame circular shockwave, orange/yellow/white fire, 16-bit pixel art, transparent background, 4 frames in a strip.",
+        "width": 128, "height": 32, "frames": 4,
+        "prefix": "explosion", "output_prefix": "explosion", "aspect_ratio": "1:1",
     },
     "vfx_shield": {
         "category": "VFX",
         "prompt": "Translucent blue energy shield forcefield ring, 16-bit pixel art, circular glowing barrier, semi-transparent cyan, transparent background.",
-        "width": 64, "height": 64, "frames": 1, "prefix": "shield", "aspect_ratio": "1:1",
+        "width": 64, "height": 64, "frames": 1,
+        "prefix": "shield", "output_prefix": "shield", "aspect_ratio": "1:1",
     },
     "powerup_weapon": {
         "category": "VFX",
         "prompt": "Red metallic orb power-up with 'W' letter, 16-bit pixel art, bright red neon glow, transparent background.",
-        "width": 32, "height": 32, "frames": 1, "prefix": "powerup_w", "aspect_ratio": "1:1",
+        "width": 32, "height": 32, "frames": 1,
+        "prefix": "powerup_w", "output_prefix": "powerup_w", "aspect_ratio": "1:1",
     },
     "powerup_shield": {
         "category": "VFX",
         "prompt": "Green metallic orb power-up with 'S' letter, 16-bit pixel art, bright green neon glow, transparent background.",
-        "width": 32, "height": 32, "frames": 1, "prefix": "powerup_s", "aspect_ratio": "1:1",
+        "width": 32, "height": 32, "frames": 1,
+        "prefix": "powerup_s", "output_prefix": "powerup_s", "aspect_ratio": "1:1",
     },
     "bg_nebula": {
         "category": "Parallax",
         "prompt": "Deep-space nebula background, layered seamless scrolling, neon gas clouds in purple/blue/cyan, distant stars, 16-bit pixel art, tileable horizontally.",
-        "width": 800, "height": 450, "frames": 1, "prefix": "bg_nebula", "aspect_ratio": "16:9",
+        "width": 800, "height": 450, "frames": 1,
+        "prefix": "bg_nebula", "output_prefix": "bg_nebula", "aspect_ratio": "16:9",
     },
     "bg_city": {
         "category": "Parallax",
         "prompt": "Cyberpunk biomechanical city background, towering silhouettes, flickering neon lights, dark atmosphere, 16-bit pixel art, tileable horizontally.",
-        "width": 800, "height": 450, "frames": 1, "prefix": "bg_city", "aspect_ratio": "16:9",
+        "width": 800, "height": 450, "frames": 1,
+        "prefix": "bg_city", "output_prefix": "bg_city", "aspect_ratio": "16:9",
     },
     "title": {
         "category": "Title",
         "prompt": "16-bit arcade title card, 'Darius Star: Cyber Coelacanth' in stylized glowing futuristic font, dark space background, vibrant neon colors, retro-gaming aesthetic.",
-        "width": 800, "height": 450, "frames": 1, "prefix": "title", "aspect_ratio": "16:9",
+        "width": 800, "height": 450, "frames": 1,
+        "prefix": "title", "output_prefix": "title", "aspect_ratio": "16:9",
     },
 }
 
@@ -239,9 +249,11 @@ def main():
         else:
             failed.append(asset_id)
             print(f"  → Falling back to mock for {asset_id}")
-            # Fall back to mock for failed generations
             from generate_assets import generate_mock
             generate_mock(asset_id, config)
+        # Rate limit: pause between requests to avoid quota errors
+        import time
+        time.sleep(10)
 
     # Run manifest
     import subprocess
