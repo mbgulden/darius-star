@@ -193,6 +193,7 @@
         // Keys pressed
         const keys = {};
         window.addEventListener('keydown', e => {
+            ensureBackgroundImages();
             initAudio();
             if (e.key === 'p' || e.key === 'P') {
                 paused = !paused;
@@ -839,7 +840,14 @@
                 bgImages[key].src = src;
             });
         }
-        loadBackgroundImages();
+        // Background images lazy-loaded on first user interaction
+        let bgImagesLoaded = false;
+        function ensureBackgroundImages() {
+            if (!bgImagesLoaded) {
+                bgImagesLoaded = true;
+                loadBackgroundImages();
+            }
+        }
 
         class ParallaxLayer {
             constructor(img, speed, yOffset = 0, alpha = 1.0, scale = 1.0) {
@@ -869,6 +877,49 @@
                 }
                 ctx.restore();
             }
+        }
+
+        // --- Boss Asset Lazy-Loading ---
+        // Boss sprites are preloaded when score nears 2,000-point trigger
+        const bossSprites = {};
+        let bossAssetsLoading = false;
+        let bossAssetsLoaded = false;
+        let bossLoadProgress = 0;  // 0-100
+
+        function preloadBossAssets() {
+            if (bossAssetsLoading || bossAssetsLoaded) return;
+            bossAssetsLoading = true;
+            bossLoadProgress = 0;
+
+            const toLoad = [
+                { key: 'boss',       src: 'assets/sprites/boss_0.png' },
+                { key: 'bossMinion', src: 'assets/sprites/boss_minion_0.png' }
+            ];
+            let loadedCount = 0;
+            const total = toLoad.length;
+
+            toLoad.forEach(({key, src}) => {
+                const img = new Image();
+                img.onload = () => {
+                    loadedCount++;
+                    bossLoadProgress = Math.round((loadedCount / total) * 100);
+                    if (loadedCount >= total) {
+                        bossAssetsLoaded = true;
+                        bossAssetsLoading = false;
+                    }
+                };
+                img.onerror = () => {
+                    // Graceful fallback: mark done even on error
+                    loadedCount++;
+                    bossLoadProgress = Math.round((loadedCount / total) * 100);
+                    if (loadedCount >= total) {
+                        bossAssetsLoaded = true;
+                        bossAssetsLoading = false;
+                    }
+                };
+                img.src = src;
+                bossSprites[key] = img;
+            });
         }
 
         // --- Offscreen Canvas Pre-Rendering ---
@@ -1074,6 +1125,10 @@
                     enemySpawnTimer = Math.max(0.6, 1.5 - (score / 15000));
                 }
 
+                if (score >= 1500 && !bossAssetsLoaded) {
+                    preloadBossAssets();
+                }
+
                 if (score >= 2000) {
                     bossSpawned = true;
                     sirenTimer = 3.0;
@@ -1239,6 +1294,27 @@
             if (boss) boss.draw();
             player.draw();
             particles.forEach(p => p.draw());
+
+            // Boss asset loading indicator
+            if (bossAssetsLoading && !bossAssetsLoaded) {
+                const loadY = canvas.height - 30;
+                ctx.fillStyle = 'rgba(5, 5, 15, 0.8)';
+                ctx.fillRect(canvas.width / 2 - 100, loadY - 12, 200, 28);
+
+                // Progress bar background
+                ctx.fillStyle = '#1a1a2e';
+                ctx.fillRect(canvas.width / 2 - 80, loadY + 2, 160, 6);
+
+                // Progress bar fill
+                ctx.fillStyle = '#00ffff';
+                ctx.fillRect(canvas.width / 2 - 80, loadY + 2, 160 * (bossLoadProgress / 100), 6);
+
+                // Text
+                ctx.fillStyle = '#00ffff';
+                ctx.font = '10px monospace';
+                ctx.textAlign = 'center';
+                ctx.fillText('PRELOADING BOSS ASSETS... ' + bossLoadProgress + '%', canvas.width / 2, loadY - 2);
+            }
 
             if (sirenTimer > 0) {
                 ctx.fillStyle = 'rgba(255, 0, 0, ' + (Math.sin(gameTime * 20) * 0.2 + 0.25) + ')';
