@@ -329,6 +329,7 @@
         window.addEventListener('keydown', e => {
             ensureBackgroundImages();
             initAudio();
+            loadPlayerSprites();
             if (e.key === 'p' || e.key === 'P') {
                 paused = !paused;
             }
@@ -348,6 +349,7 @@
                 e.preventDefault();
                 initAudio();
                 ensureBackgroundImages();
+                loadPlayerSprites();
                 keys[key] = true;
                 el.classList.add('pressed');
             });
@@ -478,62 +480,41 @@
                 ctx.save();
                 ctx.translate(this.x, this.y);
 
-                const flameLength = 10 + Math.random() * 15;
-                const gradient = ctx.createLinearGradient(-flameLength, this.height/2, 0, this.height/2);
-                gradient.addColorStop(0, 'rgba(255, 0, 0, 0)');
-                gradient.addColorStop(0.5, '#ff7700');
-                gradient.addColorStop(1, '#ffdd00');
-                ctx.fillStyle = gradient;
-                ctx.beginPath();
-                ctx.moveTo(0, 5);
-                ctx.lineTo(-flameLength, this.height/2);
-                ctx.lineTo(0, this.height - 5);
-                ctx.closePath();
-                ctx.fill();
+                // Sprite frame: toggle between player_0 and player_1 for thruster animation
+                const frameKey = (Math.floor(gameTime * 6) % 2 === 0) ? 'player_0' : 'player_1';
+                const sprite = playerSprites[frameKey];
 
-                ctx.fillStyle = '#8a9fbc';
-                ctx.beginPath();
-                ctx.moveTo(0, 4);
-                ctx.lineTo(25, 4);
-                ctx.lineTo(40, this.height / 2);
-                ctx.lineTo(25, this.height - 4);
-                ctx.lineTo(0, this.height - 4);
-                ctx.closePath();
-                ctx.fill();
+                if (sprite && sprite.complete && sprite.naturalWidth > 0) {
+                    // Render sprite scaled to 48x48 (ship area ~40x20, sprite is 1024x1024)
+                    const spriteSize = 48;
+                    ctx.drawImage(sprite, 0, 0, spriteSize, spriteSize);
+                } else {
+                    // Fallback: simple triangle ship if sprite not loaded yet
+                    ctx.fillStyle = '#8a9fbc';
+                    ctx.beginPath();
+                    ctx.moveTo(0, 4);
+                    ctx.lineTo(25, 4);
+                    ctx.lineTo(40, this.height / 2);
+                    ctx.lineTo(25, this.height - 4);
+                    ctx.lineTo(0, this.height - 4);
+                    ctx.closePath();
+                    ctx.fill();
 
-                ctx.fillStyle = '#3a5a8a';
-                ctx.beginPath();
-                ctx.moveTo(5, 4);
-                ctx.lineTo(12, -6);
-                ctx.lineTo(22, 4);
-                ctx.closePath();
-                ctx.fill();
+                    ctx.fillStyle = '#ff7700';
+                    ctx.beginPath();
+                    ctx.moveTo(0, 5);
+                    ctx.lineTo(-8, this.height / 2);
+                    ctx.lineTo(0, this.height - 5);
+                    ctx.closePath();
+                    ctx.fill();
+                }
 
-                ctx.beginPath();
-                ctx.moveTo(5, this.height - 4);
-                ctx.lineTo(12, this.height + 6);
-                ctx.lineTo(22, this.height - 4);
-                ctx.closePath();
-                ctx.fill();
-
-                ctx.fillStyle = '#00ffff';
-                ctx.beginPath();
-                ctx.moveTo(20, 6);
-                ctx.lineTo(28, 6);
-                ctx.lineTo(34, this.height/2);
-                ctx.lineTo(28, this.height - 6);
-                ctx.lineTo(20, this.height - 6);
-                ctx.closePath();
-                ctx.fill();
-
-                ctx.fillStyle = '#ff0055';
-                ctx.fillRect(10, this.height/2 - 3, 12, 6);
-
+                // Weapon level 4+ shield aura
                 if (this.weaponLevel >= 4) {
                     ctx.strokeStyle = 'rgba(0, 255, 255, 0.4)';
                     ctx.lineWidth = 2;
                     ctx.beginPath();
-                    ctx.arc(this.width/2, this.height/2, 28, 0, Math.PI * 2);
+                    ctx.arc(24, this.height / 2, 28, 0, Math.PI * 2);
                     ctx.stroke();
                 }
 
@@ -1046,6 +1027,20 @@
                 }
                 ctx.restore();
             }
+        }
+
+        // --- Player Sprite Preloading ---
+        const playerSprites = {};
+        let playerSpritesLoaded = false;
+
+        function loadPlayerSprites() {
+            if (playerSpritesLoaded) return;
+            playerSpritesLoaded = true;
+            const frames = ['player_0', 'player_1'];
+            frames.forEach(key => {
+                playerSprites[key] = new Image();
+                playerSprites[key].src = `assets/sprites/${key}.png`;
+            });
         }
 
         // --- Boss Asset Lazy-Loading ---
