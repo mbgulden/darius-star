@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Darius Star: Cyber Coelacanth</title>
+    <meta name="description" content="Darius Star: Cyber Coelacanth — a retro arcade shoot-em-up from What An Adventure Games. Battle through waves of enemies and face the cyber coelacanth boss.">
+    <meta property="og:title" content="Darius Star: Cyber Coelacanth">
+    <meta property="og:description" content="A retro arcade shoot-em-up from What An Adventure Games.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://whatanadventure.games/darius-star/">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>">
     <style>
         body {
             margin: 0;
@@ -25,6 +31,25 @@
             color: #00ffff;
             text-shadow: 0 0 10px #00ffff, 0 0 20px #0000ff;
             letter-spacing: 2px;
+        }
+
+        .studio-credit {
+            font-size: 12px;
+            color: #ff0055;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 8px;
+            text-shadow: 0 0 8px rgba(255, 0, 85, 0.4);
+        }
+
+        .studio-credit a {
+            color: #ff0055;
+            text-decoration: none;
+            transition: text-shadow 0.3s;
+        }
+
+        .studio-credit a:hover {
+            text-shadow: 0 0 12px #ff0055;
         }
 
         #game-container {
@@ -175,6 +200,7 @@
 <body>
 
     <h1>DARIUS STAR: CYBER COELACANTH</h1>
+    <div class="studio-credit">A <a href="https://whatanadventure.games" target="_blank">What An Adventure</a> Game</div>
     <div id="game-container">
         <canvas id="gameCanvas" width="800" height="450"></canvas>
         <div id="controls-overlay">
@@ -1757,6 +1783,9 @@
                 ctx.font = '14px monospace';
                 ctx.fillStyle = '#8a8a9f';
                 ctx.fillText('Click screen or press SPACE to retry', canvas.width / 2, canvas.height / 2 + 45);
+                ctx.fillStyle = '#ff0055';
+                ctx.font = '11px monospace';
+                ctx.fillText('whatanadventure.games/darius-star', canvas.width / 2, canvas.height / 2 + 68);
             }
 
             if (gameWon) {
@@ -1774,6 +1803,9 @@
                 ctx.fillStyle = '#8a8a9f';
                 ctx.font = '14px monospace';
                 ctx.fillText('Click screen or press SPACE to replay', canvas.width / 2, canvas.height / 2 + 60);
+                ctx.fillStyle = '#ff0055';
+                ctx.font = '11px monospace';
+                ctx.fillText('whatanadventure.games/darius-star', canvas.width / 2, canvas.height / 2 + 83);
             }
         }
 
