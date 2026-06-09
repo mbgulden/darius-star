@@ -1,0 +1,538 @@
+#!/usr/bin/env python3
+"""
+Veo 3.1 Client — Vertex AI Model Garden
+=========================================
+Video generation client for Darius Star: Cyber Coelacanth.
+Generates animated sprite cycles, parallax backgrounds, VFX with audio.
+
+STATUS: Veo is NOT currently available in the darius-star-game project.
+        Imagen 3 works (HTTP 200). Veo API returns 404 — either:
+        - Veo needs Trusted Tester / allowlist access
+        - Veo is in a different region
+        - Veo 3.1 requires a separate GCP project or billing setup
+
+NEXT STEP FOR MICHAEL: Check Vertex AI Model Garden in GCP Console at:
+  https://console.cloud.google.com/vertex-ai/model-garden
+  Search for "Veo" → click "Enable" if available.
+
+PREREQUISITES (once enabled):
+  1. GCP project with Vertex AI API enabled ✅ (darius-star-game)
+  2. gcloud auth ✅ (mbgulden@gmail.com)
+  3. Veo model enabled in Model Garden ❌ (needs Michael)
+  4. IAM: Vertex AI User role ✅
+
+Usage (once Veo is enabled):
+  python3 veo_client.py --asset enemy_scout_cycle
+  python3 veo_client.py --category backgrounds
+"""
+
+import os
+import sys
+import json
+import argparse
+import base64
+import subprocess
+import tempfile
+from pathlib import Path
+from datetime import datetime, timezone
+
+# ──────────────────────────────────────────────
+# Veo Asset Catalog — prompts for video generation
+# ──────────────────────────────────────────────
+
+VEO_ASSET_CATALOG = {
+    # ── Animated Enemy Cycles ──
+    "enemy_scout_cycle": {
+        "category": "Animated Sprites",
+        "prompt": (
+            "4-frame walk cycle of a robotic anglerfish enemy, 16-bit pixel art, "
+            "side-scrolling shoot-em-up style, cyberpunk biomechanical aesthetic, "
+            "neon orange metallic scales, glowing cyan lure, consistent character, "
+            "transparent background, 256x256, frame-by-frame animation, "
+            "no camera movement, static side view."
+        ),
+        "duration_sec": 2,
+        "fps": 8,
+        "output_prefix": "scout_cycle",
+        "extract_frames": True,
+    },
+    "enemy_interceptor_cycle": {
+        "category": "Animated Sprites",
+        "prompt": (
+            "4-frame charge/pulse cycle of a mechanical jellyfish enemy, 16-bit pixel art, "
+            "side-scrolling shoot-em-up style, neon pink fiber-optic tentacles, "
+            "translucent dome with circuitry patterns, pulsing motion, "
+            "consistent character, transparent background, 256x256, "
+            "no camera movement, static side view."
+        ),
+        "duration_sec": 2,
+        "fps": 8,
+        "output_prefix": "interceptor_cycle",
+        "extract_frames": True,
+    },
+    "enemy_heavy_cycle": {
+        "category": "Animated Sprites",
+        "prompt": (
+            "4-frame slither cycle of a robotic electric eel enemy, 16-bit pixel art, "
+            "side-scrolling shoot-em-up style, translucent circuitry patterns, "
+            "electric blue arcs along body, metallic segments, "
+            "consistent character, transparent background, 256x256, "
+            "no camera movement, static side view."
+        ),
+        "duration_sec": 2,
+        "fps": 8,
+        "output_prefix": "heavy_cycle",
+        "extract_frames": True,
+    },
+    "boss_idle": {
+        "category": "Animated Sprites",
+        "prompt": (
+            "4-frame idle bobbing animation of a massive Cyber Coelacanth dreadnought boss, "
+            "16-bit pixel art, biomechanical plating, armored prehistoric fish silhouette, "
+            "red optic sensors slowly pulsing, neon pink dorsal fins gently waving, "
+            "exhaust vents venting faint cyan plasma, "
+            "consistent design, dark transparent background, 512x512, "
+            "no camera movement, static side view, subtle idle motion only."
+        ),
+        "duration_sec": 3,
+        "fps": 8,
+        "output_prefix": "boss_idle",
+        "extract_frames": True,
+    },
+    "boss_rage": {
+        "category": "Animated Sprites",
+        "prompt": (
+            "4-frame rage pulse animation of Cyber Coelacanth boss entering combat mode, "
+            "16-bit pixel art, biomechanical armor plates shifting, red sensors blazing bright, "
+            "neon pink fins fully extended, cyan plasma venting intensively, "
+            "glowing rage aura pulsing around the ship, screen shake effect, "
+            "consistent character, dark background, 512x512, "
+            "no camera movement, static side view."
+        ),
+        "duration_sec": 2,
+        "fps": 8,
+        "output_prefix": "boss_rage",
+        "extract_frames": True,
+    },
+    "boss_laser_charge": {
+        "category": "Animated Sprites",
+        "prompt": (
+            "4-frame laser charging animation of Cyber Coelacanth boss, "
+            "16-bit pixel art, massive front cannon gathering cyan energy, "
+            "charging particles swirling around the barrel, ship vibrating slightly, "
+            "increasing glow intensity, biomechanical details illuminated by charge, "
+            "consistent character, dark background, 512x512, "
+            "no camera movement, static side view."
+        ),
+        "duration_sec": 2,
+        "fps": 8,
+        "output_prefix": "boss_laser_charge",
+        "extract_frames": True,
+    },
+    "boss_death": {
+        "category": "Animated Sprites",
+        "prompt": (
+            "8-frame death/explosion sequence of Cyber Coelacanth boss, "
+            "16-bit pixel art, stage 1: armor cracking, stage 2: internal fires erupting, "
+            "stage 3: chain explosions across body, stage 4: final core meltdown, "
+            "consistent character wreckage, dark background with expanding shockwave, "
+            "512x512, frame-by-frame destruction sequence."
+        ),
+        "duration_sec": 4,
+        "fps": 8,
+        "output_prefix": "boss_death",
+        "extract_frames": True,
+    },
+
+    # ── Background Loops ──
+    "bg_abyssal_trench": {
+        "category": "Background Loops",
+        "prompt": (
+            "Seamless looping parallax background, 16-bit pixel art, "
+            "deep ocean trench with neon hydrothermal vents, "
+            "bioluminescent particles drifting upward, "
+            "dark cyberpunk industrial pipes embedded in rock walls, "
+            "subtle water current distortion, horizontal scroll-ready, "
+            "800x450, seamless loop, retro arcade shmup."
+        ),
+        "duration_sec": 8,
+        "fps": 15,
+        "output_prefix": "bg_abyssal_trench",
+        "extract_frames": True,
+        "loop": True,
+    },
+    "bg_coral_graveyard": {
+        "category": "Background Loops",
+        "prompt": (
+            "Seamless looping parallax background, 16-bit pixel art, "
+            "shattered neon coral formations, floating debris with cyan glow, "
+            "electric arcs jumping between broken structures, "
+            "dark water with particulate matter, bioluminescent flora on wreckage, "
+            "horizontal scroll-ready, 800x450, seamless loop, retro arcade shmup."
+        ),
+        "duration_sec": 8,
+        "fps": 15,
+        "output_prefix": "bg_coral_graveyard",
+        "extract_frames": True,
+        "loop": True,
+    },
+    "bg_coelacanth_lair": {
+        "category": "Background Loops",
+        "prompt": (
+            "Seamless looping parallax background, 16-bit pixel art, "
+            "biomechanical cavern with pulsing organic-metal walls, "
+            "glowing red optic sensors embedded in flesh-metal surfaces, "
+            "cyan plasma dripping from ceiling vents, "
+            "distant mechanical heartbeat rhythm, "
+            "horizontal scroll-ready, 800x450, seamless loop, retro arcade shmup."
+        ),
+        "duration_sec": 8,
+        "fps": 15,
+        "output_prefix": "bg_coelacanth_lair",
+        "extract_frames": True,
+        "loop": True,
+    },
+
+    # ── VFX with Audio ──
+    "vfx_player_laser": {
+        "category": "VFX with Audio",
+        "prompt": (
+            "Player laser fire effect, 16-bit pixel art, cyan energy beam burst, "
+            "muzzle flash with expanding ring, bright core with softer edges, "
+            "with synchronized pew sound effect, transparent background, "
+            "1 second, 256x64, static position, retro arcade shmup."
+        ),
+        "duration_sec": 1,
+        "fps": 15,
+        "output_prefix": "vfx_player_laser",
+        "extract_frames": True,
+    },
+    "vfx_explosion_large": {
+        "category": "VFX with Audio",
+        "prompt": (
+            "Large multi-stage explosion, 16-bit pixel art, "
+            "initial bright flash → expanding fireball with orange/yellow/white layers → "
+            "smoke ring expanding → debris particles scattering, "
+            "with synchronized boom-then-crackle sound effect, "
+            "transparent background, 256x256, 2 seconds, retro arcade shmup."
+        ),
+        "duration_sec": 2,
+        "fps": 15,
+        "output_prefix": "vfx_explosion_large",
+        "extract_frames": True,
+    },
+
+    # ── Cinematics ──
+    "cinematic_boss_intro": {
+        "category": "Cinematics",
+        "prompt": (
+            "Cinematic boss entrance, 16-bit pixel art, "
+            "Cyber Coelacanth dreadnought emerging from dark biomechanical abyss, "
+            "armored plating shifting into place, red optic sensors igniting one by one "
+            "in sequence, camera shake on each ignition, neon exhaust ports venting cyan plasma, "
+            "final shot pauses on full ship reveal with ominous red glow, "
+            "with synchronized dramatic orchestral sting sound, "
+            "15 seconds, 800x450, cinematic camera moves, retro arcade shmup."
+        ),
+        "duration_sec": 15,
+        "fps": 24,
+        "output_prefix": "cinematic_boss_intro",
+        "extract_frames": False,
+    },
+    "cinematic_victory": {
+        "category": "Cinematics",
+        "prompt": (
+            "Victory cinematic, 16-bit pixel art, "
+            "Cyber Coelacanth exploding in slow motion, "
+            "armored plates peeling away layer by layer, internal circuitry sparking, "
+            "final core meltdown with expanding blue-white shockwave, "
+            "debris field settling into stillness, "
+            "player ship silhouette flying through wreckage toward distant stars, "
+            "with synchronized triumphant chiptune fanfare, "
+            "12 seconds, 800x450, cinematic camera moves, retro arcade shmup."
+        ),
+        "duration_sec": 12,
+        "fps": 24,
+        "output_prefix": "cinematic_victory",
+        "extract_frames": False,
+    },
+}
+
+REPO_ROOT = Path(__file__).parent
+SPRITES_DIR = REPO_ROOT / "assets" / "sprites"
+AUDIO_DIR = REPO_ROOT / "assets" / "audio"
+CINEMATICS_DIR = REPO_ROOT / "assets" / "cinematics"
+
+
+def get_access_token():
+    """Get Google Cloud access token using gcloud CLI."""
+    result = subprocess.run(
+        ["gcloud", "auth", "print-access-token"],
+        capture_output=True, text=True, timeout=15
+    )
+    if result.returncode != 0:
+        raise RuntimeError(
+            f"gcloud auth failed: {result.stderr.strip()}\n"
+            f"Run: gcloud auth login"
+        )
+    return result.stdout.strip()
+
+
+def check_veo_availability(project_id: str, region: str = "us-central1") -> str | None:
+    """Check if Veo is available in the project."""
+    import urllib.request
+    import urllib.error
+
+    token = get_access_token()
+    veo_models = [
+        "veo-3.1-generate-preview",
+        "veo-2.0-generate-001",
+        "veo-3.0-generate-001",
+    ]
+
+    for model_name in veo_models:
+        url = (
+            f"https://{region}-aiplatform.googleapis.com"
+            f"/v1/projects/{project_id}/locations/{region}"
+            f"/publishers/google/models/{model_name}"
+        )
+        req = urllib.request.Request(url, headers={
+            "Authorization": f"Bearer {token}",
+        })
+        try:
+            with urllib.request.urlopen(req, timeout=15) as resp:
+                if resp.status == 200:
+                    print(f"✅ Veo available: {model_name}")
+                    return model_name
+        except urllib.error.HTTPError as e:
+            continue
+
+    return None
+
+
+def generate_veo(asset_id: str, config: dict, project_id: str,
+                 region: str = "us-central1", model_name: str = None):
+    """Generate video via Vertex AI Veo.
+
+    Returns: True if generated successfully, False otherwise.
+    """
+    import urllib.request
+    import urllib.error
+
+    if model_name is None:
+        model_name = check_veo_availability(project_id, region)
+        if model_name is None:
+            print("  ✗ Veo not available in this project.")
+            print("  → Visit: https://console.cloud.google.com/vertex-ai/model-garden")
+            print("  → Search 'Veo' → Click 'Enable'")
+            return False
+
+    token = get_access_token()
+
+    url = (
+        f"https://{region}-aiplatform.googleapis.com"
+        f"/v1/projects/{project_id}/locations/{region}"
+        f"/publishers/google/models/{model_name}:predict"
+    )
+
+    payload = json.dumps({
+        "instances": [{
+            "prompt": config["prompt"],
+        }],
+        "parameters": {
+            "durationSeconds": config.get("duration_sec", 4),
+            "aspectRatio": config.get("aspect_ratio", "16:9"),
+            "personGeneration": "dont_allow",
+        }
+    }).encode()
+
+    req = urllib.request.Request(url, data=payload, headers={
+        "Authorization": f"Bearer {token}",
+        "Content-Type": "application/json",
+    })
+
+    print(f"  → Calling Veo ({model_name})...")
+    try:
+        with urllib.request.urlopen(req, timeout=300) as resp:
+            result = json.loads(resp.read())
+    except urllib.error.HTTPError as e:
+        error_body = e.read().decode()
+        print(f"  ✗ API error ({e.code}): {error_body[:500]}")
+        return False
+
+    # Extract video from response
+    predictions = result.get("predictions", [])
+    if not predictions:
+        print(f"  ✗ No predictions returned.")
+        return False
+
+    prediction = predictions[0]
+    video_b64 = prediction.get("bytesBase64Encoded", "")
+    if not video_b64:
+        print(f"  ✗ No video data in response.")
+        return False
+
+    # Save video
+    prefix = config["output_prefix"]
+    video_path = CINEMATICS_DIR / f"{prefix}.mp4"
+    CINEMATICS_DIR.mkdir(parents=True, exist_ok=True)
+    with open(video_path, "wb") as f:
+        f.write(base64.b64decode(video_b64))
+    print(f"  ✓ Saved: {video_path}")
+
+    # Extract frames if requested
+    if config.get("extract_frames"):
+        extract_frames_from_video(video_path, prefix, config.get("fps", 15))
+
+    return True
+
+
+def extract_frames_from_video(video_path: Path, prefix: str, fps: int = 15):
+    """Use ffmpeg + Pillow to extract frames from generated video."""
+    try:
+        from PIL import Image
+    except ImportError:
+        print("  ⚠ Pillow not installed. Install: pip install Pillow")
+        return
+
+    # Use ffmpeg to extract frames
+    output_pattern = str(SPRITES_DIR / f"{prefix}_%04d.png")
+    SPRITES_DIR.mkdir(parents=True, exist_ok=True)
+
+    result = subprocess.run([
+        "ffmpeg", "-i", str(video_path),
+        "-vf", f"fps={fps}",
+        "-pix_fmt", "rgba",
+        output_pattern,
+        "-y"
+    ], capture_output=True, text=True, timeout=120)
+
+    if result.returncode != 0:
+        print(f"  ⚠ ffmpeg frame extraction failed: {result.stderr[:200]}")
+        return
+
+    # Count extracted frames
+    frames = sorted(SPRITES_DIR.glob(f"{prefix}_*.png"))
+    print(f"  ✓ Extracted {len(frames)} frames to {SPRITES_DIR}/")
+
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="Darius Star — Veo 3.1 Asset Generator"
+    )
+    parser.add_argument(
+        "--project", default="darius-star-game",
+        help="GCP project ID"
+    )
+    parser.add_argument(
+        "--region", default="us-central1",
+        help="GCP region"
+    )
+    parser.add_argument(
+        "--asset", default=None,
+        help="Specific asset ID to generate"
+    )
+    parser.add_argument(
+        "--category", default=None,
+        help="Only generate assets from this category"
+    )
+    parser.add_argument(
+        "--check", action="store_true",
+        help="Only check Veo availability, don't generate"
+    )
+    parser.add_argument(
+        "--list", action="store_true",
+        help="List all Veo asset prompts"
+    )
+    args = parser.parse_args()
+
+    # Verify auth
+    try:
+        token_preview = get_access_token()[:20]
+        print(f"✓ GCP authenticated (token: {token_preview}...)")
+    except Exception as e:
+        print(f"✗ Auth failed: {e}")
+        sys.exit(1)
+
+    # Check availability
+    model_name = check_veo_availability(args.project, args.region)
+    if model_name:
+        print(f"✅ Veo is AVAILABLE: {model_name}")
+    else:
+        print("❌ Veo is NOT available in this project.")
+        print("   Imagen 3 IS available and working (used for static sprites).")
+        print()
+        print("   To enable Veo:")
+        print("   1. Open: https://console.cloud.google.com/vertex-ai/model-garden")
+        print("   2. Search for 'Veo'")
+        print("   3. Click 'Enable' on Veo 3.1")
+        print("   4. Accept any terms/TOS")
+        print("   5. Re-run: python3 veo_client.py --check")
+
+    if args.check:
+        return 0 if model_name else 1
+
+    if args.list:
+        print(f"\nVeo Asset Catalog ({len(VEO_ASSET_CATALOG)} entries):")
+        for asset_id, config in VEO_ASSET_CATALOG.items():
+            print(f"  [{config['category']}] {asset_id}")
+            print(f"    Duration: {config['duration_sec']}s at {config['fps']}fps")
+            print(f"    Prompt: {config['prompt'][:100]}...")
+        return 0
+
+    if not model_name:
+        print("\n⚠ Cannot generate — Veo not available.")
+        print("  The prompt catalog is ready. Enable Veo then re-run.")
+        return 1
+
+    # Filter assets
+    if args.asset:
+        if args.asset not in VEO_ASSET_CATALOG:
+            print(f"Unknown asset: {args.asset}")
+            print(f"Available: {', '.join(VEO_ASSET_CATALOG.keys())}")
+            return 1
+        assets_to_gen = {args.asset: VEO_ASSET_CATALOG[args.asset]}
+    elif args.category:
+        assets_to_gen = {
+            k: v for k, v in VEO_ASSET_CATALOG.items()
+            if v["category"] == args.category
+        }
+    else:
+        assets_to_gen = VEO_ASSET_CATALOG
+
+    if not assets_to_gen:
+        print(f"No assets match category '{args.category}'")
+        return 1
+
+    print(f"\n{'='*60}")
+    print(f"  Darius Star — Veo Asset Generator")
+    print(f"  Project: {args.project} | Region: {args.region}")
+    print(f"  Model: {model_name}")
+    print(f"  Assets: {len(assets_to_gen)}")
+    print(f"{'='*60}\n")
+
+    generated = []
+    failed = []
+
+    for asset_id, config in assets_to_gen.items():
+        print(f"\n[{config['category']}] {asset_id}")
+        print(f"  Prompt: {config['prompt'][:100]}...")
+        if generate_veo(asset_id, config, args.project, args.region, model_name):
+            generated.append(asset_id)
+        else:
+            failed.append(asset_id)
+
+    # Summary
+    print(f"\n{'='*60}")
+    print(f"  Results: {len(generated)} generated, {len(failed)} failed")
+    if generated:
+        print(f"  ✅ {', '.join(generated)}")
+    if failed:
+        print(f"  ❌ {', '.join(failed)}")
+    print(f"{'='*60}\n")
+
+    return 0 if not failed else 1
+
+
+if __name__ == "__main__":
+    sys.exit(main())
