@@ -1,0 +1,975 @@
+{
+  "version": 2,
+  "updated": "2026-06-10T04:15:00Z",
+  "tracks": {
+    "title": {
+      "scene": "Title Screen Music",
+      "file": "title.mp3",
+      "path": "assets/audio/title.mp3",
+      "duration_sec": 30,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "phase1": {
+      "scene": "Gameplay Phase 1 (Score 0-1000)",
+      "file": "phase1.mp3",
+      "path": "assets/audio/phase1.mp3",
+      "duration_sec": 30,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "phase2": {
+      "scene": "Gameplay Phase 2 (Score 1000-2000)",
+      "file": "phase2.mp3",
+      "path": "assets/audio/phase2.mp3",
+      "duration_sec": 30,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "boss_intro": {
+      "scene": "Boss Battle Intro Sting",
+      "file": "boss_intro.mp3",
+      "path": "assets/audio/boss_intro.mp3",
+      "duration_sec": 15,
+      "loop": false,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "boss_loop": {
+      "scene": "Boss Battle Loop",
+      "file": "boss_loop.mp3",
+      "path": "assets/audio/boss_loop.mp3",
+      "duration_sec": 30,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "victory": {
+      "scene": "Victory Fanfare",
+      "file": "victory.mp3",
+      "path": "assets/audio/victory.mp3",
+      "duration_sec": 10,
+      "loop": false,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "game_over": {
+      "scene": "Game Over Theme",
+      "file": "game_over.mp3",
+      "path": "assets/audio/game_over.mp3",
+      "duration_sec": 15,
+      "loop": false,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "ambient": {
+      "scene": "Title Screen Ambient (Idle)",
+      "file": "ambient.mp3",
+      "path": "assets/audio/ambient.mp3",
+      "duration_sec": 30,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "level_clear": {
+      "scene": "Level Clear Jingle",
+      "file": "level_clear.mp3",
+      "path": "assets/audio/level_clear.mp3",
+      "duration_sec": 5,
+      "loop": false,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "ambient_deep_space": {
+      "scene": "Deep Space Ambient (under title screen)",
+      "file": "ambient_deep_space.mp3",
+      "path": "assets/audio/ambient_deep_space.mp3",
+      "duration_sec": 30,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "ambient_abyssal_trench": {
+      "scene": "Abyssal Trench Ambient (L1)",
+      "file": "ambient_abyssal_trench.mp3",
+      "path": "assets/audio/ambient_abyssal_trench.mp3",
+      "duration_sec": 30,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "ambient_coral_graveyard": {
+      "scene": "Coral Graveyard Ambient (L2)",
+      "file": "ambient_coral_graveyard.mp3",
+      "path": "assets/audio/ambient_coral_graveyard.mp3",
+      "duration_sec": 30,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "ambient_coelacanth_lair": {
+      "scene": "Coelacanth Lair Ambient (L3/Boss)",
+      "file": "ambient_coelacanth_lair.mp3",
+      "path": "assets/audio/ambient_coelacanth_lair.mp3",
+      "duration_sec": 30,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "ambient_victory_space": {
+      "scene": "Victory Space Ambient",
+      "file": "ambient_victory_space.mp3",
+      "path": "assets/audio/ambient_victory_space.mp3",
+      "duration_sec": 30,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "ambient_ice_rings": {
+      "scene": "Ice Ring Ambient (Biome 5)",
+      "file": "ambient_ice_rings.mp3",
+      "path": "assets/audio/ambient_ice_rings.mp3",
+      "duration_sec": 30,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "ambient_fire_nebula": {
+      "scene": "Fire Nebula Ambient (Biome 6)",
+      "file": "ambient_fire_nebula.mp3",
+      "path": "assets/audio/ambient_fire_nebula.mp3",
+      "duration_sec": 30,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "ambient_storm_belt": {
+      "scene": "Storm Belt Ambient (Biome 7)",
+      "file": "ambient_storm_belt.mp3",
+      "path": "assets/audio/ambient_storm_belt.mp3",
+      "duration_sec": 30,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "ambient_derelict_fleet": {
+      "scene": "Derelict Fleet Ambient (Biome 8)",
+      "file": "ambient_derelict_fleet.mp3",
+      "path": "assets/audio/ambient_derelict_fleet.mp3",
+      "duration_sec": 30,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "ambient_xenomorph_hive": {
+      "scene": "Xenomorph Hive Ambient (Biome 9)",
+      "file": "ambient_xenomorph_hive.mp3",
+      "path": "assets/audio/ambient_xenomorph_hive.mp3",
+      "duration_sec": 30,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "ambient_core_rift": {
+      "scene": "Core Rift Ambient (Biome 10)",
+      "file": "ambient_core_rift.mp3",
+      "path": "assets/audio/ambient_core_rift.mp3",
+      "duration_sec": 30,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "boss_b1_abyssal": {
+      "scene": "Boss B1: Abyssal Trench \u2014 Trench Guardian",
+      "file": "boss_b1_abyssal.mp3",
+      "path": "assets/audio/boss_b1_abyssal.mp3",
+      "duration_sec": 30,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "boss_b2_coral": {
+      "scene": "Boss B2: Coral Graveyard \u2014 Rust Colossus",
+      "file": "boss_b2_coral.mp3",
+      "path": "assets/audio/boss_b2_coral.mp3",
+      "duration_sec": 30,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "boss_b3_coelacanth": {
+      "scene": "Boss B3: Coelacanth Lair \u2014 Cyber Coelacanth",
+      "file": "boss_b3_coelacanth.mp3",
+      "path": "assets/audio/boss_b3_coelacanth.mp3",
+      "duration_sec": 30,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "boss_b4_nebula": {
+      "scene": "Boss B4: Nebula Drift \u2014 Void Specter",
+      "file": "boss_b4_nebula.mp3",
+      "path": "assets/audio/boss_b4_nebula.mp3",
+      "duration_sec": 30,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "boss_b5_ice": {
+      "scene": "Boss B5: Ice Ring \u2014 Frost Titan",
+      "file": "boss_b5_ice.mp3",
+      "path": "assets/audio/boss_b5_ice.mp3",
+      "duration_sec": 30,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "boss_b6_fire": {
+      "scene": "Boss B6: Fire Nebula \u2014 Inferno Lord",
+      "file": "boss_b6_fire.mp3",
+      "path": "assets/audio/boss_b6_fire.mp3",
+      "duration_sec": 30,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "boss_b7_storm": {
+      "scene": "Boss B7: Storm Belt \u2014 Tempest Sovereign",
+      "file": "boss_b7_storm.mp3",
+      "path": "assets/audio/boss_b7_storm.mp3",
+      "duration_sec": 30,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "boss_b8_derelict": {
+      "scene": "Boss B8: Derelict Fleet \u2014 Admiral's Wrath",
+      "file": "boss_b8_derelict.mp3",
+      "path": "assets/audio/boss_b8_derelict.mp3",
+      "duration_sec": 30,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "boss_b9_hive": {
+      "scene": "Boss B9: Xenomorph Hive \u2014 Hive Mind",
+      "file": "boss_b9_hive.mp3",
+      "path": "assets/audio/boss_b9_hive.mp3",
+      "duration_sec": 30,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "boss_b10_core": {
+      "scene": "Boss B10: Core Rift \u2014 The Architect",
+      "file": "boss_b10_core.mp3",
+      "path": "assets/audio/boss_b10_core.mp3",
+      "duration_sec": 30,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "midboss_b1": {
+      "scene": "Mid-Boss B1: Abyssal Guardian",
+      "file": "midboss_b1.mp3",
+      "path": "assets/audio/midboss_b1.mp3",
+      "duration_sec": 15,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "midboss_b2": {
+      "scene": "Mid-Boss B2: Coral Warden",
+      "file": "midboss_b2.mp3",
+      "path": "assets/audio/midboss_b2.mp3",
+      "duration_sec": 15,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "midboss_b3": {
+      "scene": "Mid-Boss B3: Lair Sentinel",
+      "file": "midboss_b3.mp3",
+      "path": "assets/audio/midboss_b3.mp3",
+      "duration_sec": 15,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "midboss_b4": {
+      "scene": "Mid-Boss B4: Nebula Wraith",
+      "file": "midboss_b4.mp3",
+      "path": "assets/audio/midboss_b4.mp3",
+      "duration_sec": 15,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "midboss_b5": {
+      "scene": "Mid-Boss B5: Ice Warden",
+      "file": "midboss_b5.mp3",
+      "path": "assets/audio/midboss_b5.mp3",
+      "duration_sec": 15,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "midboss_b6": {
+      "scene": "Mid-Boss B6: Flame Keeper",
+      "file": "midboss_b6.mp3",
+      "path": "assets/audio/midboss_b6.mp3",
+      "duration_sec": 15,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "midboss_b7": {
+      "scene": "Mid-Boss B7: Storm Herald",
+      "file": "midboss_b7.mp3",
+      "path": "assets/audio/midboss_b7.mp3",
+      "duration_sec": 15,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "midboss_b8": {
+      "scene": "Mid-Boss B8: Ghost Commander",
+      "file": "midboss_b8.mp3",
+      "path": "assets/audio/midboss_b8.mp3",
+      "duration_sec": 15,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "midboss_b9": {
+      "scene": "Mid-Boss B9: Brood Guardian",
+      "file": "midboss_b9.mp3",
+      "path": "assets/audio/midboss_b9.mp3",
+      "duration_sec": 15,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "midboss_b10": {
+      "scene": "Mid-Boss B10: Rift Keeper",
+      "file": "midboss_b10.mp3",
+      "path": "assets/audio/midboss_b10.mp3",
+      "duration_sec": 15,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "engine_b1_abyssal": {
+      "scene": "Engine Hum B1: Deep Pressure",
+      "file": "engine_b1_abyssal.mp3",
+      "path": "assets/audio/engine_b1_abyssal.mp3",
+      "duration_sec": 2,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "engine_b2_coral": {
+      "scene": "Engine Hum B2: Rust-Rattle",
+      "file": "engine_b2_coral.mp3",
+      "path": "assets/audio/engine_b2_coral.mp3",
+      "duration_sec": 2,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "engine_b3_lair": {
+      "scene": "Engine Hum B3: Industrial Thrum",
+      "file": "engine_b3_lair.mp3",
+      "path": "assets/audio/engine_b3_lair.mp3",
+      "duration_sec": 2,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "engine_b4_nebula": {
+      "scene": "Engine Hum B4: Ion Drift",
+      "file": "engine_b4_nebula.mp3",
+      "path": "assets/audio/engine_b4_nebula.mp3",
+      "duration_sec": 2,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "engine_b5_ice": {
+      "scene": "Engine Hum B5: Cryo Hum",
+      "file": "engine_b5_ice.mp3",
+      "path": "assets/audio/engine_b5_ice.mp3",
+      "duration_sec": 2,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "engine_b6_fire": {
+      "scene": "Engine Hum B6: Thermal Strain",
+      "file": "engine_b6_fire.mp3",
+      "path": "assets/audio/engine_b6_fire.mp3",
+      "duration_sec": 2,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "engine_b7_storm": {
+      "scene": "Engine Hum B7: Static Hum",
+      "file": "engine_b7_storm.mp3",
+      "path": "assets/audio/engine_b7_storm.mp3",
+      "duration_sec": 2,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "engine_b8_derelict": {
+      "scene": "Engine Hum B8: Reactor Decay",
+      "file": "engine_b8_derelict.mp3",
+      "path": "assets/audio/engine_b8_derelict.mp3",
+      "duration_sec": 2,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "engine_b9_hive": {
+      "scene": "Engine Hum B9: Organic Resonance",
+      "file": "engine_b9_hive.mp3",
+      "path": "assets/audio/engine_b9_hive.mp3",
+      "duration_sec": 2,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "engine_b10_core": {
+      "scene": "Engine Hum B10: Phase-Drift",
+      "file": "engine_b10_core.mp3",
+      "path": "assets/audio/engine_b10_core.mp3",
+      "duration_sec": 2,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "env_b1_vent": {
+      "scene": "B1: Hydrothermal Vent Eruption",
+      "file": "env_b1_vent.mp3",
+      "path": "assets/audio/env_b1_vent.mp3",
+      "duration_sec": 2,
+      "loop": false,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "env_b1_biolum": {
+      "scene": "B1: Bioluminescent Pulse",
+      "file": "env_b1_biolum.mp3",
+      "path": "assets/audio/env_b1_biolum.mp3",
+      "duration_sec": 2,
+      "loop": false,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "env_b2_coral_collapse": {
+      "scene": "B2: Coral Structure Collapse",
+      "file": "env_b2_coral_collapse.mp3",
+      "path": "assets/audio/env_b2_coral_collapse.mp3",
+      "duration_sec": 2,
+      "loop": false,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "env_b2_neon_flicker": {
+      "scene": "B2: Broken Neon Sign Flicker",
+      "file": "env_b2_neon_flicker.mp3",
+      "path": "assets/audio/env_b2_neon_flicker.mp3",
+      "duration_sec": 2,
+      "loop": false,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "env_b3_tesla": {
+      "scene": "B3: Tesla Coil Discharge",
+      "file": "env_b3_tesla.mp3",
+      "path": "assets/audio/env_b3_tesla.mp3",
+      "duration_sec": 2,
+      "loop": false,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "env_b3_heartbeat": {
+      "scene": "B3: Background Core Pulse",
+      "file": "env_b3_heartbeat.mp3",
+      "path": "assets/audio/env_b3_heartbeat.mp3",
+      "duration_sec": 2,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "env_b4_plasma": {
+      "scene": "B4: Plasma Stream Pass",
+      "file": "env_b4_plasma.mp3",
+      "path": "assets/audio/env_b4_plasma.mp3",
+      "duration_sec": 2,
+      "loop": false,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "env_b4_storm_flash": {
+      "scene": "B4: Nebula Lightning Flash",
+      "file": "env_b4_storm_flash.mp3",
+      "path": "assets/audio/env_b4_storm_flash.mp3",
+      "duration_sec": 2,
+      "loop": false,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "env_b5_ice_crack": {
+      "scene": "B5: Ice Formation Fracture",
+      "file": "env_b5_ice_crack.mp3",
+      "path": "assets/audio/env_b5_ice_crack.mp3",
+      "duration_sec": 2,
+      "loop": false,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "env_b5_prism": {
+      "scene": "B5: Prismatic Light Beam",
+      "file": "env_b5_prism.mp3",
+      "path": "assets/audio/env_b5_prism.mp3",
+      "duration_sec": 2,
+      "loop": false,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "env_b6_lava_bubble": {
+      "scene": "B6: Lava Pool Burst",
+      "file": "env_b6_lava_bubble.mp3",
+      "path": "assets/audio/env_b6_lava_bubble.mp3",
+      "duration_sec": 2,
+      "loop": false,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "env_b6_ember_swarm": {
+      "scene": "B6: Ember Particle Burst",
+      "file": "env_b6_ember_swarm.mp3",
+      "path": "assets/audio/env_b6_ember_swarm.mp3",
+      "duration_sec": 2,
+      "loop": false,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "env_b7_thunder": {
+      "scene": "B7: Close Lightning Strike",
+      "file": "env_b7_thunder.mp3",
+      "path": "assets/audio/env_b7_thunder.mp3",
+      "duration_sec": 2,
+      "loop": false,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "env_b7_static_burst": {
+      "scene": "B7: EM Interference Burst",
+      "file": "env_b7_static_burst.mp3",
+      "path": "assets/audio/env_b7_static_burst.mp3",
+      "duration_sec": 2,
+      "loop": false,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "env_b8_hull_groan": {
+      "scene": "B8: Derelict Hull Stress",
+      "file": "env_b8_hull_groan.mp3",
+      "path": "assets/audio/env_b8_hull_groan.mp3",
+      "duration_sec": 2,
+      "loop": false,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "env_b8_beacon": {
+      "scene": "B8: Distress Beacon Ping",
+      "file": "env_b8_beacon.mp3",
+      "path": "assets/audio/env_b8_beacon.mp3",
+      "duration_sec": 2,
+      "loop": false,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "env_b9_acid_drip": {
+      "scene": "B9: Acid Droplet Impact",
+      "file": "env_b9_acid_drip.mp3",
+      "path": "assets/audio/env_b9_acid_drip.mp3",
+      "duration_sec": 2,
+      "loop": false,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "env_b9_vein_pulse": {
+      "scene": "B9: Organic Vein Network Throb",
+      "file": "env_b9_vein_pulse.mp3",
+      "path": "assets/audio/env_b9_vein_pulse.mp3",
+      "duration_sec": 2,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "env_b10_rift_tear": {
+      "scene": "B10: Dimensional Rift Open",
+      "file": "env_b10_rift_tear.mp3",
+      "path": "assets/audio/env_b10_rift_tear.mp3",
+      "duration_sec": 2,
+      "loop": false,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "env_b10_code_stream": {
+      "scene": "B10: Code Cascade Pass",
+      "file": "env_b10_code_stream.mp3",
+      "path": "assets/audio/env_b10_code_stream.mp3",
+      "duration_sec": 2,
+      "loop": false,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "ui_hover": {
+      "scene": "UI: Button Hover",
+      "file": "ui_hover.mp3",
+      "path": "assets/audio/ui_hover.mp3",
+      "duration_sec": 2,
+      "loop": false,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "ui_select": {
+      "scene": "UI: Button Confirm",
+      "file": "ui_select.mp3",
+      "path": "assets/audio/ui_select.mp3",
+      "duration_sec": 2,
+      "loop": false,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "ui_back": {
+      "scene": "UI: Back/Cancel",
+      "file": "ui_back.mp3",
+      "path": "assets/audio/ui_back.mp3",
+      "duration_sec": 2,
+      "loop": false,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "ui_upgrade_purchase": {
+      "scene": "UI: Upgrade Purchased",
+      "file": "ui_upgrade_purchase.mp3",
+      "path": "assets/audio/ui_upgrade_purchase.mp3",
+      "duration_sec": 2,
+      "loop": false,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "ui_insufficient": {
+      "scene": "UI: Insufficient Scrap",
+      "file": "ui_insufficient.mp3",
+      "path": "assets/audio/ui_insufficient.mp3",
+      "duration_sec": 2,
+      "loop": false,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "ui_transition_in": {
+      "scene": "UI: Menu Screen Slide In",
+      "file": "ui_transition_in.mp3",
+      "path": "assets/audio/ui_transition_in.mp3",
+      "duration_sec": 2,
+      "loop": false,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "ui_transition_out": {
+      "scene": "UI: Menu Screen Slide Out",
+      "file": "ui_transition_out.mp3",
+      "path": "assets/audio/ui_transition_out.mp3",
+      "duration_sec": 2,
+      "loop": false,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "ui_level_start": {
+      "scene": "UI: Sub-Level Start Sting",
+      "file": "ui_level_start.mp3",
+      "path": "assets/audio/ui_level_start.mp3",
+      "duration_sec": 2,
+      "loop": false,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "ui_biome_transition": {
+      "scene": "UI: Biome Change Sweep",
+      "file": "ui_biome_transition.mp3",
+      "path": "assets/audio/ui_biome_transition.mp3",
+      "duration_sec": 2,
+      "loop": false,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "ui_pause_in": {
+      "scene": "UI: Game Paused",
+      "file": "ui_pause_in.mp3",
+      "path": "assets/audio/ui_pause_in.mp3",
+      "duration_sec": 2,
+      "loop": false,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "ui_pause_out": {
+      "scene": "UI: Game Unpaused",
+      "file": "ui_pause_out.mp3",
+      "path": "assets/audio/ui_pause_out.mp3",
+      "duration_sec": 2,
+      "loop": false,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "ambient_b1_atmosphere": {
+      "scene": "Biome 1: Abyssal Trench \u2014 Atmosphere",
+      "file": "ambient/ambient_b1_atmosphere.wav",
+      "path": "assets/audio/ambient/ambient_b1_atmosphere.wav",
+      "duration_sec": 60,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 2646044,
+      "layer": "atmosphere",
+      "biome": 1,
+      "volume": 0.15
+    },
+    "ambient_b1_narrative": {
+      "scene": "Biome 1: Abyssal Trench \u2014 Narrative Noise",
+      "file": "ambient/ambient_b1_narrative.wav",
+      "path": "assets/audio/ambient/ambient_b1_narrative.wav",
+      "duration_sec": 60,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 2646044,
+      "layer": "narrative",
+      "biome": 1,
+      "volume": 0.15
+    },
+    "ambient_b2_atmosphere": {
+      "scene": "Biome 2: Coral Graveyard \u2014 Atmosphere",
+      "file": "ambient/ambient_b2_atmosphere.wav",
+      "path": "assets/audio/ambient/ambient_b2_atmosphere.wav",
+      "duration_sec": 60,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 2646044,
+      "layer": "atmosphere",
+      "biome": 2,
+      "volume": 0.15
+    },
+    "ambient_b2_narrative": {
+      "scene": "Biome 2: Coral Graveyard \u2014 Narrative Noise",
+      "file": "ambient/ambient_b2_narrative.wav",
+      "path": "assets/audio/ambient/ambient_b2_narrative.wav",
+      "duration_sec": 60,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 2646044,
+      "layer": "narrative",
+      "biome": 2,
+      "volume": 0.15
+    },
+    "ambient_b3_atmosphere": {
+      "scene": "Biome 3: Coelacanth Lair \u2014 Atmosphere",
+      "file": "ambient/ambient_b3_atmosphere.wav",
+      "path": "assets/audio/ambient/ambient_b3_atmosphere.wav",
+      "duration_sec": 60,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 2646044,
+      "layer": "atmosphere",
+      "biome": 3,
+      "volume": 0.15
+    },
+    "ambient_b3_narrative": {
+      "scene": "Biome 3: Coelacanth Lair \u2014 Narrative Noise",
+      "file": "ambient/ambient_b3_narrative.wav",
+      "path": "assets/audio/ambient/ambient_b3_narrative.wav",
+      "duration_sec": 60,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 2646044,
+      "layer": "narrative",
+      "biome": 3,
+      "volume": 0.15
+    },
+    "ambient_b4_atmosphere": {
+      "scene": "Biome 4: Nebula Drift \u2014 Atmosphere",
+      "file": "ambient/ambient_b4_atmosphere.wav",
+      "path": "assets/audio/ambient/ambient_b4_atmosphere.wav",
+      "duration_sec": 60,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 2646044,
+      "layer": "atmosphere",
+      "biome": 4,
+      "volume": 0.15
+    },
+    "ambient_b4_narrative": {
+      "scene": "Biome 4: Nebula Drift \u2014 Narrative Noise",
+      "file": "ambient/ambient_b4_narrative.wav",
+      "path": "assets/audio/ambient/ambient_b4_narrative.wav",
+      "duration_sec": 60,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 2646044,
+      "layer": "narrative",
+      "biome": 4,
+      "volume": 0.15
+    },
+    "ambient_b5_atmosphere": {
+      "scene": "Biome 5: Ice Ring \u2014 Atmosphere",
+      "file": "ambient/ambient_b5_atmosphere.wav",
+      "path": "assets/audio/ambient/ambient_b5_atmosphere.wav",
+      "duration_sec": 60,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 2646044,
+      "layer": "atmosphere",
+      "biome": 5,
+      "volume": 0.15
+    },
+    "ambient_b5_narrative": {
+      "scene": "Biome 5: Ice Ring \u2014 Narrative Noise",
+      "file": "ambient/ambient_b5_narrative.wav",
+      "path": "assets/audio/ambient/ambient_b5_narrative.wav",
+      "duration_sec": 60,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 2646044,
+      "layer": "narrative",
+      "biome": 5,
+      "volume": 0.15
+    },
+    "ambient_b6_atmosphere": {
+      "scene": "Biome 6: Fire Nebula \u2014 Atmosphere",
+      "file": "ambient/ambient_b6_atmosphere.wav",
+      "path": "assets/audio/ambient/ambient_b6_atmosphere.wav",
+      "duration_sec": 60,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 2646044,
+      "layer": "atmosphere",
+      "biome": 6,
+      "volume": 0.15
+    },
+    "ambient_b6_narrative": {
+      "scene": "Biome 6: Fire Nebula \u2014 Narrative Noise",
+      "file": "ambient/ambient_b6_narrative.wav",
+      "path": "assets/audio/ambient/ambient_b6_narrative.wav",
+      "duration_sec": 60,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 2646044,
+      "layer": "narrative",
+      "biome": 6,
+      "volume": 0.15
+    },
+    "ambient_b7_atmosphere": {
+      "scene": "Biome 7: Storm Belt \u2014 Atmosphere",
+      "file": "ambient/ambient_b7_atmosphere.wav",
+      "path": "assets/audio/ambient/ambient_b7_atmosphere.wav",
+      "duration_sec": 60,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 2646044,
+      "layer": "atmosphere",
+      "biome": 7,
+      "volume": 0.15
+    },
+    "ambient_b7_narrative": {
+      "scene": "Biome 7: Storm Belt \u2014 Narrative Noise",
+      "file": "ambient/ambient_b7_narrative.wav",
+      "path": "assets/audio/ambient/ambient_b7_narrative.wav",
+      "duration_sec": 60,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 2646044,
+      "layer": "narrative",
+      "biome": 7,
+      "volume": 0.15
+    },
+    "ambient_b8_atmosphere": {
+      "scene": "Biome 8: Derelict Fleet \u2014 Atmosphere",
+      "file": "ambient/ambient_b8_atmosphere.wav",
+      "path": "assets/audio/ambient/ambient_b8_atmosphere.wav",
+      "duration_sec": 60,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 2646044,
+      "layer": "atmosphere",
+      "biome": 8,
+      "volume": 0.15
+    },
+    "ambient_b8_narrative": {
+      "scene": "Biome 8: Derelict Fleet \u2014 Narrative Noise",
+      "file": "ambient/ambient_b8_narrative.wav",
+      "path": "assets/audio/ambient/ambient_b8_narrative.wav",
+      "duration_sec": 60,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 2646044,
+      "layer": "narrative",
+      "biome": 8,
+      "volume": 0.15
+    },
+    "ambient_b9_atmosphere": {
+      "scene": "Biome 9: Xenomorph Hive \u2014 Atmosphere",
+      "file": "ambient/ambient_b9_atmosphere.wav",
+      "path": "assets/audio/ambient/ambient_b9_atmosphere.wav",
+      "duration_sec": 60,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 2646044,
+      "layer": "atmosphere",
+      "biome": 9,
+      "volume": 0.15
+    },
+    "ambient_b9_narrative": {
+      "scene": "Biome 9: Xenomorph Hive \u2014 Narrative Noise",
+      "file": "ambient/ambient_b9_narrative.wav",
+      "path": "assets/audio/ambient/ambient_b9_narrative.wav",
+      "duration_sec": 60,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 2646044,
+      "layer": "narrative",
+      "biome": 9,
+      "volume": 0.15
+    },
+    "ambient_b10_atmosphere": {
+      "scene": "Biome 10: Core Rift \u2014 Atmosphere",
+      "file": "ambient/ambient_b10_atmosphere.wav",
+      "path": "assets/audio/ambient/ambient_b10_atmosphere.wav",
+      "duration_sec": 60,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 2646044,
+      "layer": "atmosphere",
+      "biome": 10,
+      "volume": 0.15
+    },
+    "ambient_b10_narrative": {
+      "scene": "Biome 10: Core Rift \u2014 Narrative Noise",
+      "file": "ambient/ambient_b10_narrative.wav",
+      "path": "assets/audio/ambient/ambient_b10_narrative.wav",
+      "duration_sec": 60,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 2646044,
+      "layer": "narrative",
+      "biome": 10,
+      "volume": 0.15
+    }
+  }
+}
