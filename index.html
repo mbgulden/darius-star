@@ -444,6 +444,22 @@
                     currentScreen = SCREENS.PLAYING;
                     stopMenuMusic();
                     stopCreditsMusic();
+
+                    let activeSaveSlot = parseInt(localStorage.getItem('dariusStar_activeSlot') || '0');
+                    let isNewGame = localStorage.getItem('dariusStar_isNewGame') === 'true';
+                    if (isNewGame && window.CampaignSave) {
+                        const newSave = CampaignSave.createBlank();
+                        const shipSel = localStorage.getItem('dariusStar_shipSelection');
+                        if (shipSel) {
+                            const parsed = JSON.parse(shipSel);
+                            if (parsed && parsed.p1 && parsed.p1.shipId) {
+                                newSave.ship = parsed.p1.shipId;
+                            }
+                        }
+                        CampaignSave.save(activeSaveSlot, newSave);
+                        localStorage.setItem('dariusStar_isNewGame', 'false');
+                    }
+
                     resetGame();
                     // Initialize campaign systems
                     if (window.Multiplayer) Multiplayer.init();
@@ -478,6 +494,9 @@
         let bossSpawned = false;
         let sirenTimer = 0;
         let biomeLevel = 1;  // Economy segment tracking
+        let currentNGLevel = 0; // NG+ level (0 = normal run)
+        let ngPlusRun = false;  // Whether current run is NG+
+        let _winTransition = false; // Flag for win screen transition
 
         // --- Menu & Settings State Variables ---
         const SCREENS = {
@@ -506,74 +525,12 @@
         const SHIP_OPTIONS = ['scout', 'interceptor', 'heavy'];
         let selectedShip = 'interceptor';
 
-        // High Score & Leaderboard state
-        const LS_KEY = 'darius_star_scores';
-        let leaderboardFilter = 'all'; // 'all' | ship name | 'easy' | 'normal' | 'hard'
+        // Unified Leaderboard state
+        let leaderboardFilter = 'speedrun'; // 'speedrun' | 'scrapLord' | 'survivor'
         let leaderboardScrollOffset = 0;
         let newHighScoreCelebrated = false;
         let highScoreBannerTimer = 0;
         let highScoreParticles = [];
-
-        function loadScores() {
-            try {
-                const raw = localStorage.getItem(LS_KEY);
-                return raw ? JSON.parse(raw) : { highScores: [] };
-            } catch(e) {
-                return { highScores: [] };
-            }
-        }
-
-        function saveScores(data) {
-            try {
-                localStorage.setItem(LS_KEY, JSON.stringify(data));
-            } catch(e) {
-                // localStorage full or unavailable
-            }
-        }
-
-        function saveRunScore(score, ship, biome, difficulty) {
-            const data = loadScores();
-            const entry = {
-                score: score,
-                ship: ship,
-                biome: biome,
-                difficulty: difficulty,
-                date: new Date().toISOString().split('T')[0]
-            };
-            data.highScores.push(entry);
-            // Sort descending by score
-            data.highScores.sort((a, b) => b.score - a.score);
-            // Keep top 50
-            if (data.highScores.length > 50) {
-                data.highScores = data.highScores.slice(0, 50);
-            }
-            saveScores(data);
-            return entry;
-        }
-
-        function getTopScore() {
-            const data = loadScores();
-            return data.highScores.length > 0 ? data.highScores[0] : null;
-        }
-
-        function isNewHighScore(score) {
-            const top = getTopScore();
-            if (!top) return score > 0;
-            return score > top.score;
-        }
-
-        function getFilteredScores() {
-            const data = loadScores();
-            if (leaderboardFilter === 'all') return data.highScores;
-            if (['easy', 'normal', 'hard'].includes(leaderboardFilter)) {
-                return data.highScores.filter(s => s.difficulty === leaderboardFilter);
-            }
-            return data.highScores.filter(s => s.ship === leaderboardFilter);
-        }
-
-        function clearAllScores() {
-            saveScores({ highScores: [] });
-        }
 
         // Cinematic & Credits Scroll variables
         let cinematicTime = 0;
@@ -923,6 +880,27 @@
             const save = (window._loadSaves || [])[slot];
             if (!save) return;
 
+            // Resurrect from last checkpoint if one exists (lose up to 2 waves of progress)
+            // Read checkpoint directly — no life penalty (that's only for death-respawn)
+            if (save.lastCheckpoint && window.CampaignSave) {
+                const cp = save.lastCheckpoint;
+                CampaignSave.save(slot, {
+                    ...save,
+                    biome: cp.biome,
+                    wave: cp.wave,
+                    score: cp.score,
+                    scrap: cp.scrap,
+                    weaponLevel: cp.weaponLevel,
+                    shield: cp.shield,
+                    lives: cp.lives,
+                });
+                // Re-read the saved state we just updated
+                const reloaded = CampaignSave.load(slot);
+                if (reloaded) {
+                    window._loadSaves[slot] = reloaded;
+                }
+            }
+
             // Restore settings
             difficulty = save.difficulty || 'normal';
             masterVolume = save.masterVolume || 0.8;
@@ -942,6 +920,11 @@
         function deleteSaveSlot(slot) {
             CampaignSave.delete(slot);
             window._loadSaves = CampaignSave.loadAll();
+            // If all slots now empty, bounce back to main menu
+            const hasAny = window._loadSaves.some(s => s !== null);
+            if (!hasAny) {
+                transitionToScreen(SCREENS.MENU);
+            }
         }
 
         function handlePauseMenuSelect() {
@@ -968,6 +951,17 @@
         function handleMenuConfirm() {
             if (currentScreen === SCREENS.MENU) {
                 if (selectedMenuIndex === 0) { // CONTINUE
+                    const hasSaves = (() => {
+                        try {
+                            const saves = JSON.parse(localStorage.getItem('darius_star_saves') || 'null');
+                            if (!Array.isArray(saves)) return false;
+                            return saves.some(s => s !== null);
+                        } catch(e) { return false; }
+                    })();
+                    if (!hasSaves) {
+                        playSound('menu_click');
+                        return; // Grayed out — no saves to continue
+                    }
                     loadGameScreen();
                 } else if (selectedMenuIndex === 1) { // START GAME
                     window.location.href = 'ship_select.html';
@@ -1026,27 +1020,55 @@
                 ctx.fillText(`⚙️ SCRAP CORE: ${lifetimeScrap.toLocaleString()}`, canvas.width / 2, startY - 45);
                 
                 // Show high score on menu
-                const topScore = getTopScore();
-                if (topScore) {
+                const topScrap = window.Leaderboard ? Leaderboard.getTop('scrapLord', 1)[0] : null;
+                const topTime = window.Leaderboard ? Leaderboard.getTop('speedrun', 1)[0] : null;
+                if (topScrap) {
                     ctx.fillStyle = '#ffaa00';
                     ctx.font = 'bold 12px monospace';
-                    ctx.fillText(`★ HIGH SCORE: ${topScore.score.toLocaleString()} — ${topScore.ship.toUpperCase()} — ${topScore.difficulty.toUpperCase()}`, canvas.width / 2, startY - 25);
+                    let text = `★ RECORD: ${topScrap.scrapCollected.toLocaleString()} SCRAP (${topScrap.ship.toUpperCase()})`;
+                    if (topTime) {
+                        const val = topTime.timeSeconds;
+                        const m = Math.floor(val / 60);
+                        const sec = Math.floor(val % 60);
+                        text += ` | ⏱ TIME: ${m}:${sec.toString().padStart(2, '0')} (${topTime.ship.toUpperCase()})`;
+                    }
+                    ctx.fillText(text, canvas.width / 2, startY - 25);
                 }
                 
                 ctx.font = 'bold 15px monospace';
+                const hasSaves = (() => {
+                    try {
+                        const saves = JSON.parse(localStorage.getItem('darius_star_saves') || 'null');
+                        if (!Array.isArray(saves)) return false;
+                        return saves.some(s => s !== null);
+                    } catch(e) { return false; }
+                })();
                 for (let i = 0; i < menuOptions.length; i++) {
                     const itemY = startY + i * spacing;
                     const isSelected = selectedMenuIndex === i;
+                    const isContinue = (menuOptions[i] === 'CONTINUE');
+                    const grayedOut = isContinue && !hasSaves;
                     
                     if (isSelected) {
-                        ctx.fillStyle = '#00ffff';
+                        ctx.fillStyle = grayedOut ? '#445555' : '#00ffff';
                         ctx.shadowColor = '#00ffff';
-                        ctx.shadowBlur = 10;
+                        ctx.shadowBlur = grayedOut ? 2 : 10;
                         ctx.fillText(`>  ${menuOptions[i]}  <`, canvas.width / 2, itemY);
                         ctx.shadowBlur = 0;
                     } else {
-                        ctx.fillStyle = '#8a8a9f';
+                        ctx.fillStyle = grayedOut ? '#334' : '#8a8a9f';
                         ctx.fillText(menuOptions[i], canvas.width / 2, itemY);
+                    }
+                    if (isContinue && hasSaves) {
+                        ctx.fillStyle = '#0f0';
+                        ctx.font = '9px monospace';
+                        ctx.fillText('● SAVES AVAILABLE', canvas.width / 2, itemY + 15);
+                        ctx.font = 'bold 15px monospace';
+                    } else if (isContinue && !hasSaves) {
+                        ctx.fillStyle = '#333';
+                        ctx.font = '9px monospace';
+                        ctx.fillText('NO SAVES FOUND', canvas.width / 2, itemY + 15);
+                        ctx.font = 'bold 15px monospace';
                     }
                 }
                 
@@ -1182,44 +1204,57 @@
                 ctx.font = 'bold 24px monospace';
                 ctx.shadowColor = '#ffaa00';
                 ctx.shadowBlur = 12;
-                ctx.fillText('🏆 HIGH SCORE LEADERBOARD', canvas.width / 2, 55);
+                ctx.fillText('🏆 CYBER LEADERBOARDS', canvas.width / 2, 55);
                 ctx.shadowBlur = 0;
                 
-                const scores = getFilteredScores();
-                const topScore = getTopScore();
+                // Load scores using Leaderboard module
+                const scores = window.Leaderboard ? Leaderboard.getTop(leaderboardFilter, 50) : [];
                 
-                // Show top score summary
-                if (topScore) {
+                // Show top record summary for category
+                const categoryTop = scores.length > 0 ? scores[0] : null;
+                if (categoryTop && window.Leaderboard) {
+                    let topValStr = "";
+                    const val = Leaderboard.categories[leaderboardFilter].getValue(categoryTop);
+                    if (leaderboardFilter === 'speedrun') {
+                        const m = Math.floor(val / 60);
+                        const sec = Math.floor(val % 60);
+                        topValStr = `${m}:${sec.toString().padStart(2, '0')}`;
+                    } else if (leaderboardFilter === 'scrapLord') {
+                        topValStr = `${val.toLocaleString()} SCRAP`;
+                    } else {
+                        topValStr = `${val} DEATHS`;
+                    }
                     ctx.fillStyle = '#00ffff';
                     ctx.font = 'bold 14px monospace';
-                    ctx.fillText(`TOP SCORE: ${topScore.score.toLocaleString()} — ${topScore.ship.toUpperCase()} — ${topScore.difficulty.toUpperCase()}`, canvas.width / 2, 90);
+                    ctx.fillText(`CATEGORY RECORD: ${topValStr} — ${(categoryTop.ship || 'unknown').toUpperCase()} — ${(categoryTop.difficulty || 'normal').toUpperCase()}`, canvas.width / 2, 90);
                 } else {
                     ctx.fillStyle = '#8a8a9f';
                     ctx.font = '14px monospace';
-                    ctx.fillText('No scores yet. Go fight!', canvas.width / 2, 90);
+                    ctx.fillText('No entries yet in this category. Go fight!', canvas.width / 2, 90);
                 }
                 
-                // Filter bar
+                // Category bar
                 ctx.font = 'bold 11px monospace';
-                const filters = ['all', 'scout', 'interceptor', 'heavy', 'easy', 'normal', 'hard'];
-                const filterLabels = ['ALL', 'SCOUT', 'INT.', 'HEAVY', 'EASY', 'NORM', 'HARD'];
-                const filterStartX = 130;
+                const categories = ['speedrun', 'scrapLord', 'survivor'];
+                const categoryLabels = ['⏱ SPEEDRUN', '⚙ SCRAP LORD', '🛡 SURVIVOR'];
+                const filterStartX = 200;
                 const filterY = 115;
+                const gap = 160;
                 
-                for (let fi = 0; fi < filters.length; fi++) {
-                    const fx = filterStartX + fi * 78;
-                    const isActive = leaderboardFilter === filters[fi];
+                for (let fi = 0; fi < categories.length; fi++) {
+                    const fx = filterStartX + fi * gap;
+                    const isActive = leaderboardFilter === categories[fi];
                     ctx.fillStyle = isActive ? '#ffaa00' : '#4a4a5f';
-                    ctx.fillText(filterLabels[fi], fx, filterY);
+                    ctx.fillText(categoryLabels[fi], fx, filterY);
                     if (isActive) {
-                        ctx.fillRect(fx - 10, filterY + 4, 38, 2);
+                        ctx.fillRect(fx - 40, filterY + 4, 80, 2);
                     }
                 }
                 
                 ctx.fillStyle = '#3a3a5f';
                 ctx.fillRect(80, 135, 640, 2);
                 
-                // Score entries
+                // Entries
                 const listStartY = 155;
                 const rowH = 28;
                 const maxVisible = 10;
@@ -1228,18 +1263,18 @@
                 if (display.length === 0) {
                     ctx.fillStyle = '#8a8a9f';
                     ctx.font = '14px monospace';
-                    ctx.fillText('No scores match this filter.', canvas.width / 2, 250);
+                    ctx.fillText('No submissions match this category.', canvas.width / 2, 250);
                 } else {
                     // Column headers
                     ctx.font = 'bold 10px monospace';
                     ctx.fillStyle = '#5a5a7f';
                     ctx.textAlign = 'left';
                     ctx.fillText('#', 100, listStartY - 8);
-                    ctx.fillText('SCORE', 140, listStartY - 8);
-                    ctx.fillText('SHIP', 280, listStartY - 8);
-                    ctx.fillText('BIOME', 380, listStartY - 8);
-                    ctx.fillText('DIFF', 460, listStartY - 8);
-                    ctx.fillText('DATE', 540, listStartY - 8);
+                    ctx.fillText(leaderboardFilter === 'speedrun' ? 'TIME' : (leaderboardFilter === 'scrapLord' ? 'SCRAP' : 'DEATHS'), 140, listStartY - 8);
+                    ctx.fillText('SHIP', 260, listStartY - 8);
+                    ctx.fillText('TIER', 360, listStartY - 8);
+                    ctx.fillText('DIFF', 480, listStartY - 8);
+                    ctx.fillText('DATE', 580, listStartY - 8);
                     
                     ctx.font = '13px monospace';
                     for (let si = 0; si < display.length; si++) {
@@ -1261,17 +1296,39 @@
                         ctx.textAlign = 'left';
                         ctx.fillText(rank, 100, ry + 4);
                         
+                        // Formatted Value
                         ctx.fillStyle = '#ffffff';
-                        ctx.fillText(s.score.toLocaleString(), 140, ry + 4);
-                        ctx.fillText(s.ship.toUpperCase(), 280, ry + 4);
-                        ctx.fillText('BIOME ' + s.biome, 380, ry + 4);
+                        let displayValue = "";
+                        if (window.Leaderboard) {
+                            const val = Leaderboard.categories[leaderboardFilter].getValue(s);
+                            if (leaderboardFilter === 'speedrun') {
+                                const m = Math.floor(val / 60);
+                                const sec = Math.floor(val % 60);
+                                displayValue = `${m}:${sec.toString().padStart(2, '0')}`;
+                            } else if (leaderboardFilter === 'scrapLord') {
+                                displayValue = val.toLocaleString();
+                            } else {
+                                displayValue = val + (val === 1 ? ' death' : ' deaths');
+                            }
+                        }
+                        ctx.fillText(displayValue, 140, ry + 4);
+                        ctx.fillText((s.ship || 'unknown').toUpperCase(), 260, ry + 4);
+                        
+                        // Tier name + color
+                        if (s.tier) {
+                            ctx.fillStyle = s.tier.color || '#ffffff';
+                            ctx.fillText(s.tier.name.toUpperCase(), 360, ry + 4);
+                        } else {
+                            ctx.fillStyle = '#666666';
+                            ctx.fillText('UNRANKED', 360, ry + 4);
+                        }
                         
                         const diffColors = { easy: '#00ff55', normal: '#ffaa00', hard: '#ff0033' };
                         ctx.fillStyle = diffColors[s.difficulty] || '#ffffff';
-                        ctx.fillText(s.difficulty.toUpperCase(), 460, ry + 4);
+                        ctx.fillText((s.difficulty || 'normal').toUpperCase(), 480, ry + 4);
                         
                         ctx.fillStyle = '#8a8a9f';
-                        ctx.fillText(s.date, 540, ry + 4);
+                        ctx.fillText(s.date ? s.date.split('T')[0] : '', 580, ry + 4);
                     }
                 }
                 
@@ -1286,11 +1343,11 @@
                 // Clear & Back
                 ctx.font = 'bold 13px monospace';
                 ctx.fillStyle = '#ff0033';
-                ctx.fillText('[C] CLEAR ALL SCORES', canvas.width / 2, canvas.height - 28);
+                ctx.fillText('[C] CLEAR LEADERBOARD', canvas.width / 2, canvas.height - 28);
                 
                 ctx.fillStyle = '#8a8a9f';
                 ctx.font = '10px monospace';
-                ctx.fillText('ESC / BACKSPACE to RETURN  |  ARROWS to FILTER', canvas.width / 2, canvas.height - 8);
+                ctx.fillText('ESC / BACKSPACE to RETURN  |  ARROWS to SWITCH CATEGORIES', canvas.width / 2, canvas.height - 8);
                 
                 ctx.restore();
             } else if (currentScreen === SCREENS.LOAD_GAME) {
@@ -1328,10 +1385,20 @@
                         const s = CampaignSave.summarize(i);
                         ctx.fillStyle = isSelected ? '#00ffff' : '#ffffff';
                         ctx.font = 'bold 14px monospace';
-                        ctx.fillText(`SLOT ${i+1}: Biome ${s.biome} — Wave ${s.wave} — ${s.ship.toUpperCase()}`, 120, y + 10);
+                        const ngText = (save.ngLevel && save.ngLevel > 0) ? ` [NG+${save.ngLevel}]` : '';
+                        ctx.fillText(`SLOT ${i+1}: Biome ${s.biome} — Wave ${s.wave} — ${s.ship.toUpperCase()}${ngText}`, 120, y + 10);
+                        
+                        let ngMeta = '';
+                        if (save.ngLevel && save.ngLevel > 0 && window.NGPlus) {
+                            const ngSummary = NGPlus.summarize(save);
+                            if (ngSummary) {
+                                ngMeta = `  |  NG+${ngSummary.level} (Scrap x${ngSummary.scrapMult})`;
+                            }
+                        }
+                        
                         ctx.fillStyle = '#aaa';
                         ctx.font = '11px monospace';
-                        ctx.fillText(`Scrap: ${s.scrap}  |  Score: ${s.score.toLocaleString()}  |  ${s.date} ${s.time}  |  ${s.playTime}  |  ${s.deaths} deaths`, 120, y + 30);
+                        ctx.fillText(`Scrap: ${s.scrap}  |  Score: ${s.score.toLocaleString()}  |  ${s.date} ${s.time}  |  ${s.playTime}  |  ${s.deaths} deaths${ngMeta}`, 120, y + 30);
                         ctx.fillStyle = '#888';
                         ctx.fillText(`${s.shipsUnlocked} ships unlocked  |  Difficulty: ${s.difficulty}`, 120, y + 46);
                     } else {
@@ -1680,7 +1747,18 @@
                     e.preventDefault();
                 }
                 if (e.key === ' ' && (gameOver || gameWon)) {
-                    resetGame();
+                    handleDeathOrVictoryRestart();
+                }
+                if ((e.key === 'n' || e.key === 'N') && gameWon) {
+                    const ngData = localStorage.getItem('darius_star_ngplus_eligible');
+                    if (ngData) {
+                        try {
+                            const parsed = JSON.parse(ngData);
+                            if (parsed.ngLevel) {
+                                startNGPlus(parsed);
+                            }
+                        } catch(ex) {}
+                    }
                 }
                 if (e.key === 'Escape' && (gameOver || gameWon)) {
                     playSound('menu_click');
@@ -1712,7 +1790,7 @@
                     } else if (currentScreen === SCREENS.SHIP_SELECT) {
                         selectedShipIndex = (selectedShipIndex + 1) % 3;
                     } else if (currentScreen === SCREENS.LEADERBOARD) {
-                        const scores = getFilteredScores();
+                        const scores = window.Leaderboard ? Leaderboard.getTop(leaderboardFilter, 50) : [];
                         if (leaderboardScrollOffset + 10 < scores.length) leaderboardScrollOffset++;
                     } else if (currentScreen === SCREENS.LOAD_GAME) {
                         const saves = window._loadSaves || [];
@@ -1725,9 +1803,9 @@
                         adjustSetting(selectedSettingsIndex, -1);
                     } else if (currentScreen === SCREENS.LEADERBOARD) {
                         playSound('menu_select');
-                        const filters = ['all', 'scout', 'interceptor', 'heavy', 'easy', 'normal', 'hard'];
-                        const idx = filters.indexOf(leaderboardFilter);
-                        leaderboardFilter = filters[(idx - 1 + filters.length) % filters.length];
+                        const categories = ['speedrun', 'scrapLord', 'survivor'];
+                        const idx = categories.indexOf(leaderboardFilter);
+                        leaderboardFilter = categories[(idx - 1 + categories.length) % categories.length];
                         leaderboardScrollOffset = 0;
                     }
                     e.preventDefault();
@@ -1737,9 +1815,9 @@
                         adjustSetting(selectedSettingsIndex, 1);
                     } else if (currentScreen === SCREENS.LEADERBOARD) {
                         playSound('menu_select');
-                        const filters = ['all', 'scout', 'interceptor', 'heavy', 'easy', 'normal', 'hard'];
-                        const idx = filters.indexOf(leaderboardFilter);
-                        leaderboardFilter = filters[(idx + 1) % filters.length];
+                        const categories = ['speedrun', 'scrapLord', 'survivor'];
+                        const idx = categories.indexOf(leaderboardFilter);
+                        leaderboardFilter = categories[(idx + 1) % categories.length];
                         leaderboardScrollOffset = 0;
                     }
                     e.preventDefault();
@@ -1761,7 +1839,7 @@
                         transitionToScreen(SCREENS.MENU);
                     } else if (currentScreen === SCREENS.SHIP_SELECT || currentScreen === SCREENS.SETTINGS || currentScreen === SCREENS.CREDITS || currentScreen === SCREENS.LEADERBOARD) {
                         if (currentScreen === SCREENS.LEADERBOARD) {
-                            leaderboardFilter = 'all';
+                            leaderboardFilter = 'speedrun';
                             leaderboardScrollOffset = 0;
                         }
                         transitionToScreen(SCREENS.MENU);
@@ -1776,8 +1854,8 @@
                 } else if ((e.key === 'u' || e.key === 'U') && (gameOver || gameWon || currentScreen === SCREENS.MENU)) {
                     window.location.href = 'upgrade_shop.html';
                 } else if ((e.key === 'c' || e.key === 'C') && currentScreen === SCREENS.LEADERBOARD) {
-                    if (confirm('Clear ALL high scores? This cannot be undone.')) {
-                        clearAllScores();
+                    if (confirm('Clear all leaderboard entries? This cannot be undone.')) {
+                        if (window.Leaderboard) localStorage.removeItem(Leaderboard.KEY);
                         leaderboardScrollOffset = 0;
                     }
                 }
@@ -2598,6 +2676,14 @@
                     this.scoreValue = 50;
                     this.color = '#33cc55';
                 }
+
+                // NG+ Paradox roll: chance to upgrade spawned enemy
+                if (typeof currentNGLevel !== 'undefined' && currentNGLevel > 0 && window.NGPlus) {
+                    const paradox = NGPlus.rollParadox(currentNGLevel, biomeLevel);
+                    if (paradox) {
+                        NGPlus.applyParadox(this, paradox);
+                    }
+                }
             }
 
             update(dt) {
@@ -2641,10 +2727,15 @@
                     // Map each type to appropriate render size (sprites are 1024x1024)
                     const sizes = { scout: 36, interceptor: 36, heavy: 44, boss_minion: 32 };
                     const size = sizes[this.type] || 36;
+                    
+                    if (this.isParadox) {
+                        ctx.shadowBlur = 12;
+                        ctx.shadowColor = this.paradoxColor;
+                    }
                     ctx.drawImage(sprite, 0, 0, size, size);
                 } else {
                     // Fallback: colored shapes if sprite not loaded
-                    ctx.fillStyle = this.color;
+                    ctx.fillStyle = this.isParadox ? this.paradoxColor : this.color;
                     if (this.type === 'scout') {
                         ctx.beginPath();
                         ctx.moveTo(30, 15); ctx.lineTo(10, 0); ctx.lineTo(0, 15); ctx.lineTo(10, 30);
@@ -2662,6 +2753,14 @@
                         ctx.beginPath();
                         ctx.arc(15, 15, 14, 0, Math.PI * 2); ctx.fill();
                     }
+                }
+
+                // If Paradox, draw name text above
+                if (this.isParadox) {
+                    ctx.fillStyle = this.paradoxColor;
+                    ctx.font = 'bold 9px "Share Tech Mono", monospace';
+                    ctx.textAlign = 'center';
+                    ctx.fillText(this.paradoxName, 15, -6);
                 }
 
                 ctx.restore();
@@ -2776,6 +2875,14 @@
                 if (this.hp <= 0) {
                     this.hp = 0;
                     bossDefeated = true;
+                    _winTransition = true; // Flag for transition handler
+                    // Save NG+ eligibility for this completed run
+                    try {
+                        const ngKey = 'darius_star_ngplus_eligible';
+                        const eligible = JSON.parse(localStorage.getItem(ngKey) || '{}');
+                        eligible[selectedShip] = { biome: biomeLevel, score: score, scrap: runScrap, date: new Date().toISOString() };
+                        localStorage.setItem(ngKey, JSON.stringify(eligible));
+                    } catch(e) {}
                     playSound('explosion');
                     
                     // Spawn Economy-based Data Fragments on Boss defeat!
@@ -4196,6 +4303,26 @@
                 if (window.Economy && oldBiomeLevel !== biomeLevel) {
                     Economy.newSegment();
                 }
+
+                // Campaign Save System: save checkpoint on entering a new biome
+                if (window.CampaignSave && typeof player !== 'undefined') {
+                    let activeSaveSlot = parseInt(localStorage.getItem('dariusStar_activeSlot') || '0');
+                    const save = CampaignSave.load(activeSaveSlot);
+                    const currentLives = save ? save.lives : 3;
+                    CampaignSave.checkpoint(activeSaveSlot, {
+                        biome: biomeLevel,
+                        wave: 1,
+                        score: score,
+                        runScrap: runScrap,
+                        ship: player.shipType,
+                        weaponLevel: player.weaponLevel,
+                        shieldMax: player.shieldMax,
+                        shield: player.shield,
+                        difficulty: difficulty,
+                        lives: currentLives
+                    });
+                    console.log(`Saved Campaign Checkpoint in slot ${activeSaveSlot}: Biome ${biomeLevel}, Lives ${currentLives}`);
+                }
             }
         }
 
@@ -4255,6 +4382,32 @@
                    rect1.y + rect1.height > rect2.y;
         }
 
+        function startNGPlus(prevRunData) {
+            // Start a New Game+ run using previous run's completion data
+            if (!window.NGPlus || !window.CampaignSave) return;
+            
+            const ngSave = NGPlus.start(prevRunData);
+            if (!ngSave) return;
+            
+            // Find an empty save slot or use slot 0
+            let slot = 0;
+            for (let s = 0; s < 3; s++) {
+                const existing = CampaignSave.load(s);
+                if (!existing) { slot = s; break; }
+            }
+            
+            CampaignSave.save(slot, ngSave);
+            localStorage.setItem('dariusStar_activeSlot', String(slot));
+            ngPlusRun = true;
+            currentNGLevel = ngSave.ngLevel || 1;
+            
+            // Clear NG+ eligibility for next run
+            localStorage.removeItem('darius_star_ngplus_eligible');
+            
+            playSound('menu_select');
+            resetGame();
+        }
+
         function resetGame() {
             score = 0;
             gameOver = false;
@@ -4289,22 +4442,48 @@
             highScoreBannerTimer = 0;
             highScoreParticles = [];
             
-            // Re-instantiate player ship with the currently selected model
+            // Load campaign save state
+            let activeSaveSlot = parseInt(localStorage.getItem('dariusStar_activeSlot') || '0');
+            let campaignSave = null;
+            if (window.CampaignSave) {
+                campaignSave = CampaignSave.load(activeSaveSlot);
+            }
+
+            // Re-instantiate player ship with the currently selected model or saved model
             let activeShip = 'striker';
-            try {
-                const shipSel = localStorage.getItem('dariusStar_shipSelection');
-                if (shipSel) {
-                    const parsed = JSON.parse(shipSel);
-                    if (parsed && parsed.shipId) {
-                        activeShip = parsed.shipId;
+            if (campaignSave && campaignSave.ship) {
+                activeShip = campaignSave.ship;
+            } else {
+                try {
+                    const shipSel = localStorage.getItem('dariusStar_shipSelection');
+                    if (shipSel) {
+                        const parsed = JSON.parse(shipSel);
+                        if (parsed && parsed.shipId) {
+                            activeShip = parsed.shipId;
+                        }
+                    } else {
+                        activeShip = SHIP_OPTIONS[selectedShipIndex];
                     }
-                } else {
+                } catch (e) {
                     activeShip = SHIP_OPTIONS[selectedShipIndex];
                 }
-            } catch (e) {
-                activeShip = SHIP_OPTIONS[selectedShipIndex];
             }
             player = new Player(activeShip);
+
+            // Restore other campaign progress
+            if (campaignSave) {
+                difficulty = campaignSave.difficulty || 'normal';
+                currentNGLevel = campaignSave.ngLevel || 0;
+                score = campaignSave.score || 0;
+                runScrap = campaignSave.scrap || 0;
+                if (campaignSave.weaponLevel) player.weaponLevel = campaignSave.weaponLevel;
+                if (campaignSave.shield) player.shield = campaignSave.shield;
+            } else {
+                currentNGLevel = 0;
+            }
+
+            // Re-apply score to get correct biome level
+            updateActiveBiome(score);
             
             bullets.length = 0;
             enemyBullets.length = 0;
@@ -4320,13 +4499,49 @@
             // Re-initialize campaign modules if loaded to avoid stale state on retry/restart
             if (window.Multiplayer) Multiplayer.init();
             // Preserve looted segments across restarts (prevents checkpoint farming)
-            const savedLooted = (window.Economy) ? new Set(Economy._lootedSegments || []) : null;
+            const savedLooted = {};
+            if (window.Economy && Economy._lootedSegments) {
+                for (const segId in Economy._lootedSegments) {
+                    savedLooted[segId] = new Set(Economy._lootedSegments[segId]);
+                }
+            }
             if (window.Economy) Economy.init();
-            if (savedLooted && window.Economy) Economy._lootedSegments = savedLooted;
+            if (window.Economy) Economy._lootedSegments = savedLooted;
             if (window.BanterEngine) {
                 BanterEngine.init(window.Multiplayer ? Multiplayer.count : 1);
                 BanterEngine.trigger('level_start', 1);
             }
+        }
+
+        function handleDeathOrVictoryRestart() {
+            let activeSaveSlot = parseInt(localStorage.getItem('dariusStar_activeSlot') || '0');
+            if (gameOver && window.CampaignSave) {
+                const restored = CampaignSave.restoreCheckpoint(activeSaveSlot);
+                if (restored) {
+                    // Update save slot with restored checkpoint progress and decremented lives
+                    const existing = CampaignSave.load(activeSaveSlot);
+                    CampaignSave.save(activeSaveSlot, {
+                        ...existing,
+                        ...restored,
+                        lives: restored.lives
+                    });
+                    console.log(`Restored Campaign Checkpoint in slot ${activeSaveSlot}: Biome ${restored.biome}, Lives remaining ${restored.lives}`);
+                } else {
+                    // Lives exhausted or no checkpoint: reset slot progress to Biome 1
+                    const existing = CampaignSave.load(activeSaveSlot);
+                    if (existing) {
+                        CampaignSave.save(activeSaveSlot, {
+                            ...existing,
+                            biome: 1,
+                            score: 0,
+                            scrap: 0,
+                            lives: 3
+                        });
+                    }
+                    console.log(`No lives remaining. Campaign reset in slot ${activeSaveSlot}.`);
+                }
+            }
+            resetGame();
         }
 
         function loop(timestamp) {
@@ -4357,7 +4572,38 @@
                         if (currentScreen === SCREENS.PLAYING) {
                             stopMenuMusic();
                             stopCreditsMusic();
-                            resetGame();
+                            if (!_winTransition) {
+                                resetGame();
+                            } else {
+                                _winTransition = false;
+                                gameWon = true;
+                                
+                                // Game completion: save state and trigger NGPlus.start()!
+                                if (window.CampaignSave) {
+                                    let activeSaveSlot = parseInt(localStorage.getItem('dariusStar_activeSlot') || '0');
+                                    // Save the final completed campaign state
+                                    CampaignSave.autosave(activeSaveSlot, {
+                                        biome: 10,
+                                        score: score,
+                                        runScrap: runScrap,
+                                        ship: player.shipType,
+                                        weaponLevel: player.weaponLevel,
+                                        shieldMax: player.shieldMax,
+                                        shield: player.shield,
+                                        difficulty: difficulty,
+                                        ngLevel: currentNGLevel
+                                    });
+                                    
+                                    // Upgrade the slot to New Game+
+                                    if (window.NGPlus) {
+                                        const ngState = NGPlus.start(activeSaveSlot);
+                                        if (ngState) {
+                                            CampaignSave.save(activeSaveSlot, ngState);
+                                            console.log(`Successfully completed game! Upgraded slot ${activeSaveSlot} to NG+${ngState.ngLevel}`);
+                                        }
+                                    }
+                                }
+                            }
                         } else if (currentScreen === SCREENS.CREDITS) {
                             stopMenuMusic();
                             startCreditsMusic();
@@ -4387,7 +4633,13 @@
                 } else if (currentScreen === SCREENS.CINEMATIC) {
                     cinematicTime += dt;
                     if (cinematicTime >= 20 && !targetScreen) {
-                        transitionToScreen(SCREENS.CREDITS);
+                        // If boss was defeated, show victory screen instead of credits
+                        if (bossDefeated) {
+                            _winTransition = true;
+                            transitionToScreen(SCREENS.PLAYING);
+                        } else {
+                            transitionToScreen(SCREENS.CREDITS);
+                        }
                     }
                 }
                 updateTitleBackground(dt);
@@ -4646,6 +4898,12 @@
                         collectedVal = Math.round(collectedVal * 1.20);
                     }
                     runScrap += collectedVal;
+                    // NG+ scrap multiplier: double+ scrap in NG+ runs
+                    if (ngPlusRun && currentNGLevel > 0 && window.NGPlus) {
+                        const bonus = collectedVal * (NGPlus.getScrapMult({ ngLevel: currentNGLevel }) - 1);
+                        runScrap += Math.round(bonus);
+                        collectedVal += Math.round(bonus);
+                    }
                     floatingTexts.push(new FloatingText(sd.x, sd.y, `+⚙️${collectedVal}`, '#00ff55'));
                     scrapDrops.splice(i, 1);
                     continue;
@@ -4709,12 +4967,37 @@
                 runScrapSaved = true;
                 
                 // Save score to leaderboard
-                if (score > 0) {
-                    const biome = Math.floor(score / 1500) + 1;
-                    saveRunScore(score, selectedShip, Math.min(biome, 10), difficulty);
+                if (window.Leaderboard) {
+                    let isNewBest = false;
                     
-                    // Check for new high score
-                    if (isNewHighScore(score) && !newHighScoreCelebrated) {
+                    if (runScrap > 0) {
+                        // Submit to Scrap Lord
+                        Leaderboard.submit('scrapLord', {
+                            scrapCollected: runScrap,
+                            ship: selectedShip,
+                            difficulty: difficulty
+                        });
+                        isNewBest = Leaderboard.isPersonalBest('scrapLord', runScrap, selectedShip);
+                    }
+                    
+                    if (gameWon) {
+                        // Submit to Speedrun and Survivor
+                        Leaderboard.submit('speedrun', {
+                            timeSeconds: gameTime,
+                            ship: selectedShip,
+                            difficulty: difficulty
+                        });
+                        Leaderboard.submit('survivor', {
+                            deaths: 0,
+                            ship: selectedShip,
+                            difficulty: difficulty
+                        });
+                        const isNewSpeedBest = Leaderboard.isPersonalBest('speedrun', gameTime, selectedShip);
+                        if (isNewSpeedBest) isNewBest = true;
+                    }
+                    
+                    // Check for new high score / record
+                    if (isNewBest && !newHighScoreCelebrated) {
                         newHighScoreCelebrated = true;
                         highScoreBannerTimer = 4.0; // 4 seconds of celebration
                         // Spawn celebration particles
@@ -5042,14 +5325,19 @@
                 ctx.fillStyle = '#ffffff';
                 ctx.font = '16px monospace';
                 ctx.fillText('SCORE: ' + score, canvas.width / 2, canvas.height / 2 + 10);
-                const top = getTopScore();
-                if (top) {
+                
+                let yOffset = 28;
+                const topScrap = window.Leaderboard ? Leaderboard.getTop('scrapLord', 1)[0] : null;
+                if (topScrap) {
                     ctx.fillStyle = '#ffaa00';
                     ctx.font = '12px monospace';
-                    ctx.fillText('★ HIGH SCORE: ' + top.score.toLocaleString() + ' — ' + top.ship.toUpperCase(), canvas.width / 2, canvas.height / 2 + 28);
+                    ctx.fillText('★ RECORD SCRAP: ' + topScrap.scrapCollected.toLocaleString() + ' — ' + topScrap.ship.toUpperCase(), canvas.width / 2, canvas.height / 2 + yOffset);
+                    yOffset += 16;
                 }
                 ctx.fillStyle = '#00ff55';
-                ctx.fillText('SCRAP EARNED: +' + runScrap, canvas.width / 2, canvas.height / 2 + 30);
+                ctx.font = '12px monospace';
+                ctx.fillText('SCRAP EARNED: +' + runScrap, canvas.width / 2, canvas.height / 2 + yOffset);
+                
                 ctx.font = '14px monospace';
                 ctx.fillStyle = '#8a8a9f';
                 ctx.fillText('Click screen or press SPACE to retry', canvas.width / 2, canvas.height / 2 + 55);
@@ -5070,20 +5358,52 @@
                 ctx.fillStyle = '#ffffff';
                 ctx.font = '18px monospace';
                 ctx.fillText('SCORE: ' + score, canvas.width / 2, canvas.height / 2);
-                const topV = getTopScore();
-                if (topV) {
+                
+                let yOffsetVal = 18;
+                const topScrapLord = window.Leaderboard ? Leaderboard.getTop('scrapLord', 1)[0] : null;
+                const topTime = window.Leaderboard ? Leaderboard.getTop('speedrun', 1)[0] : null;
+                if (topScrapLord) {
                     ctx.fillStyle = '#ffaa00';
                     ctx.font = '12px monospace';
-                    ctx.fillText('★ HIGH SCORE: ' + topV.score.toLocaleString() + ' — ' + topV.ship.toUpperCase(), canvas.width / 2, canvas.height / 2 + 18);
+                    ctx.fillText('★ RECORD SCRAP: ' + topScrapLord.scrapCollected.toLocaleString() + ' — ' + topScrapLord.ship.toUpperCase(), canvas.width / 2, canvas.height / 2 + yOffsetVal);
+                    yOffsetVal += 16;
+                }
+                if (topTime) {
+                    const val = topTime.timeSeconds;
+                    const m = Math.floor(val / 60);
+                    const sec = Math.floor(val % 60);
+                    const timeStr = `${m}:${sec.toString().padStart(2, '0')}`;
+                    ctx.fillStyle = '#00ffff';
+                    ctx.font = '12px monospace';
+                    ctx.fillText('⏱ RECORD TIME: ' + timeStr + ' — ' + topTime.ship.toUpperCase(), canvas.width / 2, canvas.height / 2 + yOffsetVal);
+                    yOffsetVal += 16;
                 }
                 ctx.fillStyle = '#00ff55';
-                ctx.fillText('SCRAP EARNED: +' + runScrap, canvas.width / 2, canvas.height / 2 + 36);
+                ctx.font = '12px monospace';
+                ctx.fillText('SCRAP EARNED: +' + runScrap, canvas.width / 2, canvas.height / 2 + yOffsetVal);
+                yOffsetVal += 16;
                 ctx.fillStyle = '#00ffff';
-                ctx.fillText('Cyber Coelacanth eradicated.', canvas.width / 2, canvas.height / 2 + 45);
+                ctx.font = '12px monospace';
+                ctx.fillText('Cyber Coelacanth eradicated.', canvas.width / 2, canvas.height / 2 + yOffsetVal);
+                yOffsetVal += 24;
+                // NG+ prompt if eligible
+                const ngEligible = localStorage.getItem('darius_star_ngplus_eligible');
+                if (ngEligible) {
+                    try {
+                        const ngData = JSON.parse(ngEligible);
+                        const nextLevel = (ngData.ngLevel || 0) + 1;
+                        const mult = window.NGPlus ? NGPlus.getScrapMult({ ngLevel: nextLevel }) : 1;
+                        ctx.fillStyle = '#cc44ff';
+                        ctx.font = 'bold 16px monospace';
+                        ctx.fillText('⚡ PRESS N: NEW GAME+ Lv' + nextLevel + ' (' + mult.toFixed(1) + 'x SCRAP)', canvas.width / 2, canvas.height / 2 + yOffsetVal);
+                        yOffsetVal += 20;
+                    } catch(e) {}
+                }
                 ctx.fillStyle = '#8a8a9f';
                 ctx.font = '14px monospace';
-                ctx.fillText('Click screen or press SPACE to replay', canvas.width / 2, canvas.height / 2 + 75);
-                ctx.fillText('Press U to open Upgrades Shop', canvas.width / 2, canvas.height / 2 + 95);
+                ctx.fillText('Click screen or press SPACE to replay', canvas.width / 2, canvas.height / 2 + yOffsetVal);
+                yOffsetVal += 20;
+                ctx.fillText('Press U to open Upgrades Shop', canvas.width / 2, canvas.height / 2 + yOffsetVal);
                 ctx.fillText('Press ESC to return to main menu', canvas.width / 2, canvas.height / 2 + 115);
                 ctx.fillStyle = '#ff0055';
                 ctx.font = '11px monospace';
@@ -5159,7 +5479,7 @@
                     return;
                 }
                 if (gameOver || gameWon) {
-                    resetGame();
+                    handleDeathOrVictoryRestart();
                 }
                 return;
             }
