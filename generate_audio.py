@@ -957,6 +957,128 @@ MUSIC_CATALOG = {
         "duration": 30, "output": "assets/audio/relief_aftermath.mp3", "loop": True,
     },
 
+    # ═══════════════════════════════════════════════
+    # Suspense Tracks — Tension-Building (GRO-1014)
+    # ═══════════════════════════════════════════════
+
+    # ── Pre-Boss Approach (one per biome) ──
+    "suspense_b1_preboss": {
+        "scene": "Suspense B1: Abyssal Trench — Pre-Boss Approach",
+        "prompt": "Tension-building suspense music, approaching an ancient deep-ocean guardian, dark pulsing synth bass with sonar-like pings, hydrostatic pressure drone, slow menacing build, 30-second seamless loop, 16-bit Sega Genesis style, instrumental, no vocals, something terrible stirs in the abyss.",
+        "duration": 30, "output": "assets/audio/suspense_b1_preboss.mp3", "loop": True,
+    },
+    "suspense_b2_preboss": {
+        "scene": "Suspense B2: Coral Graveyard — Pre-Boss Approach",
+        "prompt": "Tension-building suspense music, navigating a rusted reef of collapsed structures, metallic groans and creaking tension, industrial decay atmosphere, slow ominous build toward confrontation, 30-second seamless loop, 16-bit Sega Genesis style, instrumental, no vocals, the wreckage hides something massive.",
+        "duration": 30, "output": "assets/audio/suspense_b2_preboss.mp3", "loop": True,
+    },
+    "suspense_b3_preboss": {
+        "scene": "Suspense B3: Coelacanth Lair — Pre-Boss Approach",
+        "prompt": "Tension-building suspense music, descending into a biomechanical cavern, mechanical heartbeat bass with organic wet synth textures, increasing dread, a living machine awaits below, 30-second seamless loop, 16-bit Sega Genesis style, instrumental, no vocals, the lair is alive and watching.",
+        "duration": 30, "output": "assets/audio/suspense_b3_preboss.mp3", "loop": True,
+    },
+    "suspense_b4_preboss": {
+        "scene": "Suspense B4: Nebula Drift — Pre-Boss Approach",
+        "prompt": "Tension-building suspense music, floating through an ethereal plasma nebula, phase-shifted synth whispers and ghostly spectral pads, something incorporeal approaches, 30-second seamless loop, 16-bit Sega Genesis style, instrumental, no vocals, the void has a presence.",
+        "duration": 30, "output": "assets/audio/suspense_b4_preboss.mp3", "loop": True,
+    },
+    "suspense_b5_preboss": {
+        "scene": "Suspense B5: Ice Ring — Pre-Boss Approach",
+        "prompt": "Tension-building suspense music, traversing frozen crystalline rings, cold shimmering tones with ice-crack percussion, chilling isolation atmosphere, an ancient frost titan stirs, 30-second seamless loop, 16-bit Sega Genesis style, instrumental, no vocals, the cold is not empty.",
+        "duration": 30, "output": "assets/audio/suspense_b5_preboss.mp3", "loop": True,
+    },
+    "suspense_b6_preboss": {
+        "scene": "Suspense B6: Fire Nebula — Pre-Boss Approach",
+        "prompt": "Tension-building suspense music, approaching the inferno nebula's heart, low rumbling magma bass with crackling fire textures, oppressive heat drone, the fire lord awakens, 30-second seamless loop, 16-bit Sega Genesis style, instrumental, no vocals, flames whisper of doom.",
+        "duration": 30, "output": "assets/audio/suspense_b6_preboss.mp3", "loop": True,
+    },
+    "suspense_b7_preboss": {
+        "scene": "Suspense B7: Storm Belt — Pre-Boss Approach",
+        "prompt": "Tension-building suspense music, entering the electromagnetic storm belt, howling wind layers with electrical crackle, building static pressure, the tempest sovereign gathers power, 30-second seamless loop, 16-bit Sega Genesis style, instrumental, no vocals, the storm has eyes.",
+        "duration": 30, "output": "assets/audio/suspense_b7_preboss.mp3", "loop": True,
+    },
+    "suspense_b8_preboss": {
+        "scene": "Suspense B8: Derelict Fleet — Pre-Boss Approach",
+        "prompt": "Tension-building suspense music, drifting through an abandoned starship graveyard, groaning metal stress and hollow vacuum echoes, distress beacon pings, the admiral's ghost fleet haunts these wrecks, 30-second seamless loop, 16-bit Sega Genesis style, instrumental, no vocals, the dead fleet still commands.",
+        "duration": 30, "output": "assets/audio/suspense_b8_preboss.mp3", "loop": True,
+    },
+    "suspense_b9_preboss": {
+        "scene": "Suspense B9: Xenomorph Hive — Pre-Boss Approach",
+        "prompt": "Tension-building suspense music, infiltrating a living organic hive, wet chittering textures and pulsing biological rhythms, the hive mind stirs, 30-second seamless loop, 16-bit Sega Genesis style, instrumental, no vocals, the hive is one mind and it knows you are here.",
+        "duration": 30, "output": "assets/audio/suspense_b9_preboss.mp3", "loop": True,
+    },
+    "suspense_b10_preboss": {
+        "scene": "Suspense B10: Core Rift — Pre-Boss Approach",
+        "prompt": "Tension-building suspense music, approaching a reality-tearing dimensional rift, warped space-time drones and unnatural pitch-bending, cosmic horror dread, the architect of reality awaits, 30-second seamless loop, 16-bit Sega Genesis style, instrumental, no vocals, reality itself unravels.",
+        "duration": 30, "output": "assets/audio/suspense_b10_preboss.mp3", "loop": True,
+    },
+
+    # ── Story Revelations (Biomes 5-6) ──
+    "suspense_b5_reveal1": {
+        "scene": "Suspense B5: Ice Ring — Story Revelation A",
+        "prompt": "Story revelation suspense music, crystalline ice ring setting, a shocking truth emerges from frozen silence, slowly building chiptune arpeggios with bell-like chimes, chilling realization, 30-second seamless loop, 16-bit Sega Genesis style, instrumental, no vocals, the ice preserves dark secrets.",
+        "duration": 30, "output": "assets/audio/suspense_b5_reveal1.mp3", "loop": True,
+    },
+    "suspense_b5_reveal2": {
+        "scene": "Suspense B5: Ice Ring — Story Revelation B",
+        "prompt": "Story revelation suspense music, frost-encrusted corridors reveal hidden lore, cold synth pads with ascending tension, a terrible truth crystallizes, 30-second seamless loop, 16-bit Sega Genesis style, instrumental, no vocals, what was frozen thaws into horror.",
+        "duration": 30, "output": "assets/audio/suspense_b5_reveal2.mp3", "loop": True,
+    },
+    "suspense_b6_reveal1": {
+        "scene": "Suspense B6: Fire Nebula — Story Revelation A",
+        "prompt": "Story revelation suspense music, fire nebula inferno setting, a burning truth emerges through the flames, distorted synth pads with ember-spark percussion, shocking discovery, 30-second seamless loop, 16-bit Sega Genesis style, instrumental, no vocals, the fire illuminates betrayal.",
+        "duration": 30, "output": "assets/audio/suspense_b6_reveal1.mp3", "loop": True,
+    },
+    "suspense_b6_reveal2": {
+        "scene": "Suspense B6: Fire Nebula — Story Revelation B",
+        "prompt": "Story revelation suspense music, the inferno's heart reveals hidden knowledge, smoldering tension with volcanic rumble bass, truth forged in flame, 30-second seamless loop, 16-bit Sega Genesis style, instrumental, no vocals, what burns cannot be unlearned.",
+        "duration": 30, "output": "assets/audio/suspense_b6_reveal2.mp3", "loop": True,
+    },
+
+    # ── Betrayal Moments (Biomes 5-6) ──
+    "suspense_b5_betrayal1": {
+        "scene": "Suspense B5: Ice Ring — Betrayal A",
+        "prompt": "Betrayal suspense music in frozen wasteland, trusted ally revealed as enemy, cold sharp synth stabs with dissonant chime drops, the knife in the back is made of ice, 30-second seamless loop, 16-bit Sega Genesis style, instrumental, no vocals, trust shatters like frozen glass.",
+        "duration": 30, "output": "assets/audio/suspense_b5_betrayal1.mp3", "loop": True,
+    },
+    "suspense_b5_betrayal2": {
+        "scene": "Suspense B5: Ice Ring — Betrayal B",
+        "prompt": "Betrayal suspense music, the coldness of treachery, minor key descending melody with crystalline percussion, emotional devastation in sub-zero isolation, 30-second seamless loop, 16-bit Sega Genesis style, instrumental, no vocals, the coldest heart hides the deepest deception.",
+        "duration": 30, "output": "assets/audio/suspense_b5_betrayal2.mp3", "loop": True,
+    },
+    "suspense_b6_betrayal1": {
+        "scene": "Suspense B6: Fire Nebula — Betrayal A",
+        "prompt": "Betrayal suspense music in inferno nebula, ally turns enemy in flames, aggressive distorted bass drops with heat-shimmer tension building, fiery deception, 30-second seamless loop, 16-bit Sega Genesis style, instrumental, no vocals, the hottest flames hide the blackest hearts.",
+        "duration": 30, "output": "assets/audio/suspense_b6_betrayal1.mp3", "loop": True,
+    },
+    "suspense_b6_betrayal2": {
+        "scene": "Suspense B6: Fire Nebula — Betrayal B",
+        "prompt": "Betrayal suspense music, burning rage and wounded trust, intense percussion with searing synth leads, the fire of righteous anger ignites, 30-second seamless loop, 16-bit Sega Genesis style, instrumental, no vocals, betrayed and burning with purpose.",
+        "duration": 30, "output": "assets/audio/suspense_b6_betrayal2.mp3", "loop": True,
+    },
+
+    # ── Catastrophe Build-Up (Biomes 8-9) ──
+    "suspense_b8_catastrophe1": {
+        "scene": "Suspense B8: Derelict Fleet — Catastrophe A",
+        "prompt": "Catastrophe build-up suspense music, derelict fleet collapsing, groaning metal crescendo with military drum tension, the admiral's wrath destroys everything, 30-second seamless loop, 16-bit Sega Genesis style, instrumental, no vocals, the ghost fleet goes critical.",
+        "duration": 30, "output": "assets/audio/suspense_b8_catastrophe1.mp3", "loop": True,
+    },
+    "suspense_b8_catastrophe2": {
+        "scene": "Suspense B8: Derelict Fleet — Catastrophe B",
+        "prompt": "Catastrophe build-up suspense music, all ships self-destruct in chain reaction, distress beacons screaming into void, industrial doom march tempo rising, 30-second seamless loop, 16-bit Sega Genesis style, instrumental, no vocals, the fleet's final broadcast.",
+        "duration": 30, "output": "assets/audio/suspense_b8_catastrophe2.mp3", "loop": True,
+    },
+    "suspense_b9_catastrophe1": {
+        "scene": "Suspense B9: Xenomorph Hive — Catastrophe A",
+        "prompt": "Catastrophe build-up suspense music, xenomorph hive erupting in biological chaos, organic squelch percussion building to overwhelming swarm, the hive mind screams in unison, 30-second seamless loop, 16-bit Sega Genesis style, instrumental, no vocals, every creature awakens at once.",
+        "duration": 30, "output": "assets/audio/suspense_b9_catastrophe1.mp3", "loop": True,
+    },
+    "suspense_b9_catastrophe2": {
+        "scene": "Suspense B9: Xenomorph Hive — Catastrophe B",
+        "prompt": "Catastrophe build-up suspense music, the living ship convulses, heartbeat sub-bass accelerating into panic rhythm, chittering horde crescendo, biological apocalypse, 30-second seamless loop, 16-bit Sega Genesis style, instrumental, no vocals, the hive collapses into itself.",
+        "duration": 30, "output": "assets/audio/suspense_b9_catastrophe2.mp3", "loop": True,
+    },
+
 }
 
 REPO_ROOT = Path(__file__).parent

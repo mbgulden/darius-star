@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-06-09T23:05:54Z",
+  "updated": "2026-06-09T23:32:55Z",
   "tracks": {
     "title": {
       "scene": "Title Screen Music",
@@ -996,6 +996,204 @@
       "scene": "Relief: Battle Aftermath \u2014 Somber Hope",
       "file": "relief_aftermath.mp3",
       "path": "assets/audio/relief_aftermath.mp3",
+      "duration_sec": 30,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "suspense_b1_preboss": {
+      "scene": "Suspense B1: Abyssal Trench \u2014 Pre-Boss Approach",
+      "file": "suspense_b1_preboss.mp3",
+      "path": "assets/audio/suspense_b1_preboss.mp3",
+      "duration_sec": 30,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "suspense_b2_preboss": {
+      "scene": "Suspense B2: Coral Graveyard \u2014 Pre-Boss Approach",
+      "file": "suspense_b2_preboss.mp3",
+      "path": "assets/audio/suspense_b2_preboss.mp3",
+      "duration_sec": 30,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "suspense_b3_preboss": {
+      "scene": "Suspense B3: Coelacanth Lair \u2014 Pre-Boss Approach",
+      "file": "suspense_b3_preboss.mp3",
+      "path": "assets/audio/suspense_b3_preboss.mp3",
+      "duration_sec": 30,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "suspense_b4_preboss": {
+      "scene": "Suspense B4: Nebula Drift \u2014 Pre-Boss Approach",
+      "file": "suspense_b4_preboss.mp3",
+      "path": "assets/audio/suspense_b4_preboss.mp3",
+      "duration_sec": 30,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "suspense_b5_preboss": {
+      "scene": "Suspense B5: Ice Ring \u2014 Pre-Boss Approach",
+      "file": "suspense_b5_preboss.mp3",
+      "path": "assets/audio/suspense_b5_preboss.mp3",
+      "duration_sec": 30,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "suspense_b6_preboss": {
+      "scene": "Suspense B6: Fire Nebula \u2014 Pre-Boss Approach",
+      "file": "suspense_b6_preboss.mp3",
+      "path": "assets/audio/suspense_b6_preboss.mp3",
+      "duration_sec": 30,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "suspense_b7_preboss": {
+      "scene": "Suspense B7: Storm Belt \u2014 Pre-Boss Approach",
+      "file": "suspense_b7_preboss.mp3",
+      "path": "assets/audio/suspense_b7_preboss.mp3",
+      "duration_sec": 30,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "suspense_b8_preboss": {
+      "scene": "Suspense B8: Derelict Fleet \u2014 Pre-Boss Approach",
+      "file": "suspense_b8_preboss.mp3",
+      "path": "assets/audio/suspense_b8_preboss.mp3",
+      "duration_sec": 30,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "suspense_b9_preboss": {
+      "scene": "Suspense B9: Xenomorph Hive \u2014 Pre-Boss Approach",
+      "file": "suspense_b9_preboss.mp3",
+      "path": "assets/audio/suspense_b9_preboss.mp3",
+      "duration_sec": 30,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "suspense_b10_preboss": {
+      "scene": "Suspense B10: Core Rift \u2014 Pre-Boss Approach",
+      "file": "suspense_b10_preboss.mp3",
+      "path": "assets/audio/suspense_b10_preboss.mp3",
+      "duration_sec": 30,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "suspense_b5_reveal1": {
+      "scene": "Suspense B5: Ice Ring \u2014 Story Revelation A",
+      "file": "suspense_b5_reveal1.mp3",
+      "path": "assets/audio/suspense_b5_reveal1.mp3",
+      "duration_sec": 30,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "suspense_b5_reveal2": {
+      "scene": "Suspense B5: Ice Ring \u2014 Story Revelation B",
+      "file": "suspense_b5_reveal2.mp3",
+      "path": "assets/audio/suspense_b5_reveal2.mp3",
+      "duration_sec": 30,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "suspense_b6_reveal1": {
+      "scene": "Suspense B6: Fire Nebula \u2014 Story Revelation A",
+      "file": "suspense_b6_reveal1.mp3",
+      "path": "assets/audio/suspense_b6_reveal1.mp3",
+      "duration_sec": 30,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "suspense_b6_reveal2": {
+      "scene": "Suspense B6: Fire Nebula \u2014 Story Revelation B",
+      "file": "suspense_b6_reveal2.mp3",
+      "path": "assets/audio/suspense_b6_reveal2.mp3",
+      "duration_sec": 30,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "suspense_b5_betrayal1": {
+      "scene": "Suspense B5: Ice Ring \u2014 Betrayal A",
+      "file": "suspense_b5_betrayal1.mp3",
+      "path": "assets/audio/suspense_b5_betrayal1.mp3",
+      "duration_sec": 30,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "suspense_b5_betrayal2": {
+      "scene": "Suspense B5: Ice Ring \u2014 Betrayal B",
+      "file": "suspense_b5_betrayal2.mp3",
+      "path": "assets/audio/suspense_b5_betrayal2.mp3",
+      "duration_sec": 30,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "suspense_b6_betrayal1": {
+      "scene": "Suspense B6: Fire Nebula \u2014 Betrayal A",
+      "file": "suspense_b6_betrayal1.mp3",
+      "path": "assets/audio/suspense_b6_betrayal1.mp3",
+      "duration_sec": 30,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "suspense_b6_betrayal2": {
+      "scene": "Suspense B6: Fire Nebula \u2014 Betrayal B",
+      "file": "suspense_b6_betrayal2.mp3",
+      "path": "assets/audio/suspense_b6_betrayal2.mp3",
+      "duration_sec": 30,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "suspense_b8_catastrophe1": {
+      "scene": "Suspense B8: Derelict Fleet \u2014 Catastrophe A",
+      "file": "suspense_b8_catastrophe1.mp3",
+      "path": "assets/audio/suspense_b8_catastrophe1.mp3",
+      "duration_sec": 30,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "suspense_b8_catastrophe2": {
+      "scene": "Suspense B8: Derelict Fleet \u2014 Catastrophe B",
+      "file": "suspense_b8_catastrophe2.mp3",
+      "path": "assets/audio/suspense_b8_catastrophe2.mp3",
+      "duration_sec": 30,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "suspense_b9_catastrophe1": {
+      "scene": "Suspense B9: Xenomorph Hive \u2014 Catastrophe A",
+      "file": "suspense_b9_catastrophe1.mp3",
+      "path": "assets/audio/suspense_b9_catastrophe1.mp3",
+      "duration_sec": 30,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "suspense_b9_catastrophe2": {
+      "scene": "Suspense B9: Xenomorph Hive \u2014 Catastrophe B",
+      "file": "suspense_b9_catastrophe2.mp3",
+      "path": "assets/audio/suspense_b9_catastrophe2.mp3",
       "duration_sec": 30,
       "loop": true,
       "generated": true,
