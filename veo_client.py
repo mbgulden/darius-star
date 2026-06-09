@@ -1822,6 +1822,139 @@ VEO_ASSET_CATALOG = {
         "output_prefix": "sfx_pause_out",
         "extract_frames": True,
     },
+    # ═══════════════════════════════════════════════════════
+    # Biome-Specific Engine Hums (GRO-985, 10 biomes)
+    # ═══════════════════════════════════════════════════════
+    "sfx_engine_hum_b1_abyssal": {
+        "category": "GRO-985 Engine Hums",
+        "prompt": (
+            "Spaceship engine thruster burning steadily underwater, 16-bit pixel art, "
+            "blue-white flame with bubbling edges, exhaust particles dispersing in water, "
+            "with synchronized deep muffled engine hum — "
+            "low-frequency drone with bubbling undertones and aquatic pressure feel, "
+            "water-muffled bass, 3 seconds, transparent background, static position."
+        ),
+        "duration_sec": 3, "fps": 15,
+        "output_prefix": "sfx_engine_hum_b1_abyssal",
+        "extract_frames": True,
+    },
+    "sfx_engine_hum_b2_coral": {
+        "category": "GRO-985 Engine Hums",
+        "prompt": (
+            "Spaceship engine thruster burning in coral graveyard, 16-bit pixel art, "
+            "pale blue-green flame with particulate crackle, bone-white exhaust, "
+            "with synchronized eerie engine hum — "
+            "mid-low drone with coral crackle artifacts and hollow reverb, "
+            "dry brittle texture, 3 seconds, transparent background, static position."
+        ),
+        "duration_sec": 3, "fps": 15,
+        "output_prefix": "sfx_engine_hum_b2_coral",
+        "extract_frames": True,
+    },
+    "sfx_engine_hum_b3_coelacanth": {
+        "category": "GRO-985 Engine Hums",
+        "prompt": (
+            "Spaceship engine thruster burning in ancient coelacanth lair, 16-bit pixel art, "
+            "deep teal flame with organic bioluminescent particles, primordial exhaust, "
+            "with synchronized ancient deep engine hum — "
+            "low rumbling drone with organic resonance and heartbeat-like pulse, "
+            "primordial bass reverberation, 3 seconds, transparent background, static position."
+        ),
+        "duration_sec": 3, "fps": 15,
+        "output_prefix": "sfx_engine_hum_b3_coelacanth",
+        "extract_frames": True,
+    },
+    "sfx_engine_hum_b4_nebula": {
+        "category": "GRO-985 Engine Hums",
+        "prompt": (
+            "Spaceship engine thruster burning through nebula drift, 16-bit pixel art, "
+            "cyan-magenta flame with plasma particles, cosmic exhaust trail, "
+            "with synchronized cosmic engine hum — "
+            "mid-frequency drone with plasma hiss and cosmic wind overtones, "
+            "ethereal space resonance, 3 seconds, transparent background, static position."
+        ),
+        "duration_sec": 3, "fps": 15,
+        "output_prefix": "sfx_engine_hum_b4_nebula",
+        "extract_frames": True,
+    },
+    "sfx_engine_hum_b5_ice": {
+        "category": "GRO-985 Engine Hums",
+        "prompt": (
+            "Spaceship engine thruster burning through ice rings, 16-bit pixel art, "
+            "frost-blue flame with ice crystal sparkles, frozen exhaust particles, "
+            "with synchronized crystalline engine hum — "
+            "mid-low drone with ice crackle artifacts and crystalline ringing overtones, "
+            "cold brittle texture with glass-like harmonics, 3 seconds, transparent background, static position."
+        ),
+        "duration_sec": 3, "fps": 15,
+        "output_prefix": "sfx_engine_hum_b5_ice",
+        "extract_frames": True,
+    },
+    "sfx_engine_hum_b6_fire": {
+        "category": "GRO-985 Engine Hums",
+        "prompt": (
+            "Spaceship engine thruster burning through fire nebula, 16-bit pixel art, "
+            "orange-red flame with ember particles and heat shimmer, fiery exhaust, "
+            "with synchronized fiery engine hum — "
+            "low rumbling drone with fire crackle and heat distortion warble, "
+            "warm overdriven bass with subtle combustion pops, 3 seconds, transparent background, static position."
+        ),
+        "duration_sec": 3, "fps": 15,
+        "output_prefix": "sfx_engine_hum_b6_fire",
+        "extract_frames": True,
+    },
+    "sfx_engine_hum_b7_storm": {
+        "category": "GRO-985 Engine Hums",
+        "prompt": (
+            "Spaceship engine thruster burning through storm belt, 16-bit pixel art, "
+            "white-blue flame with static discharge sparks, electrified exhaust, "
+            "with synchronized storm engine hum — "
+            "mid-frequency drone with static interference crackle and distant thunder rumble, "
+            "electrical buzzing texture with low thunder booms, 3 seconds, transparent background, static position."
+        ),
+        "duration_sec": 3, "fps": 15,
+        "output_prefix": "sfx_engine_hum_b7_storm",
+        "extract_frames": True,
+    },
+    "sfx_engine_hum_b8_derelict": {
+        "category": "GRO-985 Engine Hums",
+        "prompt": (
+            "Spaceship engine thruster burning through derelict fleet, 16-bit pixel art, "
+            "gray-red flame with rust particles, industrial exhaust with metal flecks, "
+            "with synchronized mechanical engine hum — "
+            "low drone with metallic grinding artifacts and hull-groan overtones, "
+            "industrial texture with mechanical strain harmonics, 3 seconds, transparent background, static position."
+        ),
+        "duration_sec": 3, "fps": 15,
+        "output_prefix": "sfx_engine_hum_b8_derelict",
+        "extract_frames": True,
+    },
+    "sfx_engine_hum_b9_xenomorph": {
+        "category": "GRO-985 Engine Hums",
+        "prompt": (
+            "Spaceship engine thruster burning through xenomorph hive, 16-bit pixel art, "
+            "pink-green flame with organic spore particles, bio-luminescent exhaust, "
+            "with synchronized organic engine hum — "
+            "low pulsing drone with wet organic resonance and acid-drip artifacts, "
+            "fleshy texture with heartbeat-like throb, 3 seconds, transparent background, static position."
+        ),
+        "duration_sec": 3, "fps": 15,
+        "output_prefix": "sfx_engine_hum_b9_xenomorph",
+        "extract_frames": True,
+    },
+    "sfx_engine_hum_b10_core": {
+        "category": "GRO-985 Engine Hums",
+        "prompt": (
+            "Spaceship engine thruster burning through core rift, 16-bit pixel art, "
+            "black-white flame with reality-bleed magenta particles, glitched exhaust trail, "
+            "with synchronized dimensional engine hum — "
+            "unstable frequency drone with digital glitch artifacts and reality-distortion warble, "
+            "phase-shifting harmonics with bit-crush degradation, 3 seconds, transparent background, static position."
+        ),
+        "duration_sec": 3, "fps": 15,
+        "output_prefix": "sfx_engine_hum_b10_core",
+        "extract_frames": True,
+    },
 }
 
 REPO_ROOT = Path(__file__).parent
