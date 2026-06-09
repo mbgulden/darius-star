@@ -34,6 +34,30 @@ ASSET_CATALOG = {
         "width": 256, "height": 128, "frames": 2,
         "prefix": "player", "output_prefix": "player", "aspect_ratio": "1:1",
     },
+    "player_phantom": {
+        "category": "Player Ship",
+        "prompt": "Sleek black stealth fighter, 2D side-view ship sprite facing right, 16-bit pixel art, needle-like minimal profile, purple thruster flame, dark hull with subtle purple glow accents, transparent background.",
+        "width": 256, "height": 128, "frames": 2,
+        "prefix": "player_phantom", "output_prefix": "player_phantom", "aspect_ratio": "1:1",
+    },
+    "player_bastion": {
+        "category": "Player Ship",
+        "prompt": "Heavy armored gunship, 2D side-view ship sprite facing right, 16-bit pixel art, dark grey hull with red accent stripes, wide broad hull, visible shield plate layers, dual cannon mounts, transparent background.",
+        "width": 256, "height": 128, "frames": 2,
+        "prefix": "player_bastion", "output_prefix": "player_bastion", "aspect_ratio": "1:1",
+    },
+    "player_tempest": {
+        "category": "Player Ship",
+        "prompt": "Aggressive red and orange fighter, 2D side-view ship sprite facing right, 16-bit pixel art, multiple visible weapon barrels, glowing orange heat vents along wings, hot-rod racing stripe, transparent background.",
+        "width": 256, "height": 128, "frames": 2,
+        "prefix": "player_tempest", "output_prefix": "player_tempest", "aspect_ratio": "1:1",
+    },
+    "player_specter": {
+        "category": "Player Ship",
+        "prompt": "Translucent ghost-like starfighter, 2D side-view ship sprite facing right, 16-bit pixel art, cyan and white phase-shift glow, semi-transparent hull with angular geometry, phased-matter shimmer effect, transparent background.",
+        "width": 256, "height": 128, "frames": 2,
+        "prefix": "player_specter", "output_prefix": "player_specter", "aspect_ratio": "1:1",
+    },
     "enemy_scout": {
         "category": "Enemy Fleet",
         "prompt": "Cybernetic robotic fish with metallic scales, 2D side-view sprite, 16-bit pixel art, glowing cyan eye, orange metallic body, transparent background.",

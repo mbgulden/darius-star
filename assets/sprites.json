@@ -1,6 +1,6 @@
 {
-  "manifest_version": "2.0",
-  "generated_at": "2026-06-09T12:02:11.529935+00:00",
+  "manifest_version": "1.0",
+  "generated_at": "2026-06-09T12:22:49.450571Z",
   "sprites": {
     "bg_abyssal_trench": {
       "frames": [
@@ -2922,6 +2922,358 @@
       "height": 720,
       "is_valid_power_of_two": false
     },
+    "bg_core_rift": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "bg_core_rift_0000.png",
+          "path": "assets/sprites/bg_core_rift_0000.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 1,
+          "filename": "bg_core_rift_0001.png",
+          "path": "assets/sprites/bg_core_rift_0001.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 2,
+          "filename": "bg_core_rift_0002.png",
+          "path": "assets/sprites/bg_core_rift_0002.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 3,
+          "filename": "bg_core_rift_0003.png",
+          "path": "assets/sprites/bg_core_rift_0003.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 4,
+          "filename": "bg_core_rift_0004.png",
+          "path": "assets/sprites/bg_core_rift_0004.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 5,
+          "filename": "bg_core_rift_0005.png",
+          "path": "assets/sprites/bg_core_rift_0005.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 6,
+          "filename": "bg_core_rift_0006.png",
+          "path": "assets/sprites/bg_core_rift_0006.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 7,
+          "filename": "bg_core_rift_0007.png",
+          "path": "assets/sprites/bg_core_rift_0007.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 8,
+          "filename": "bg_core_rift_0008.png",
+          "path": "assets/sprites/bg_core_rift_0008.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 9,
+          "filename": "bg_core_rift_0009.png",
+          "path": "assets/sprites/bg_core_rift_0009.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        }
+      ],
+      "frame_count": 10,
+      "width": 1280,
+      "height": 720,
+      "is_valid_power_of_two": false
+    },
+    "bg_derelict_fleet": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "bg_derelict_fleet_0000.png",
+          "path": "assets/sprites/bg_derelict_fleet_0000.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 1,
+          "filename": "bg_derelict_fleet_0001.png",
+          "path": "assets/sprites/bg_derelict_fleet_0001.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 2,
+          "filename": "bg_derelict_fleet_0002.png",
+          "path": "assets/sprites/bg_derelict_fleet_0002.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 3,
+          "filename": "bg_derelict_fleet_0003.png",
+          "path": "assets/sprites/bg_derelict_fleet_0003.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 4,
+          "filename": "bg_derelict_fleet_0004.png",
+          "path": "assets/sprites/bg_derelict_fleet_0004.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 5,
+          "filename": "bg_derelict_fleet_0005.png",
+          "path": "assets/sprites/bg_derelict_fleet_0005.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 6,
+          "filename": "bg_derelict_fleet_0006.png",
+          "path": "assets/sprites/bg_derelict_fleet_0006.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 7,
+          "filename": "bg_derelict_fleet_0007.png",
+          "path": "assets/sprites/bg_derelict_fleet_0007.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 8,
+          "filename": "bg_derelict_fleet_0008.png",
+          "path": "assets/sprites/bg_derelict_fleet_0008.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 9,
+          "filename": "bg_derelict_fleet_0009.png",
+          "path": "assets/sprites/bg_derelict_fleet_0009.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        }
+      ],
+      "frame_count": 10,
+      "width": 1280,
+      "height": 720,
+      "is_valid_power_of_two": false
+    },
+    "bg_ice_rings": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "bg_ice_rings_0000.png",
+          "path": "assets/sprites/bg_ice_rings_0000.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 1,
+          "filename": "bg_ice_rings_0001.png",
+          "path": "assets/sprites/bg_ice_rings_0001.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 2,
+          "filename": "bg_ice_rings_0002.png",
+          "path": "assets/sprites/bg_ice_rings_0002.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 3,
+          "filename": "bg_ice_rings_0003.png",
+          "path": "assets/sprites/bg_ice_rings_0003.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 4,
+          "filename": "bg_ice_rings_0004.png",
+          "path": "assets/sprites/bg_ice_rings_0004.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 5,
+          "filename": "bg_ice_rings_0005.png",
+          "path": "assets/sprites/bg_ice_rings_0005.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 6,
+          "filename": "bg_ice_rings_0006.png",
+          "path": "assets/sprites/bg_ice_rings_0006.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 7,
+          "filename": "bg_ice_rings_0007.png",
+          "path": "assets/sprites/bg_ice_rings_0007.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 8,
+          "filename": "bg_ice_rings_0008.png",
+          "path": "assets/sprites/bg_ice_rings_0008.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 9,
+          "filename": "bg_ice_rings_0009.png",
+          "path": "assets/sprites/bg_ice_rings_0009.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        }
+      ],
+      "frame_count": 10,
+      "width": 1280,
+      "height": 720,
+      "is_valid_power_of_two": false
+    },
+    "bg_inferno_core": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "bg_inferno_core_0000.png",
+          "path": "assets/sprites/bg_inferno_core_0000.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 1,
+          "filename": "bg_inferno_core_0001.png",
+          "path": "assets/sprites/bg_inferno_core_0001.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 2,
+          "filename": "bg_inferno_core_0002.png",
+          "path": "assets/sprites/bg_inferno_core_0002.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 3,
+          "filename": "bg_inferno_core_0003.png",
+          "path": "assets/sprites/bg_inferno_core_0003.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 4,
+          "filename": "bg_inferno_core_0004.png",
+          "path": "assets/sprites/bg_inferno_core_0004.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 5,
+          "filename": "bg_inferno_core_0005.png",
+          "path": "assets/sprites/bg_inferno_core_0005.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 6,
+          "filename": "bg_inferno_core_0006.png",
+          "path": "assets/sprites/bg_inferno_core_0006.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 7,
+          "filename": "bg_inferno_core_0007.png",
+          "path": "assets/sprites/bg_inferno_core_0007.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 8,
+          "filename": "bg_inferno_core_0008.png",
+          "path": "assets/sprites/bg_inferno_core_0008.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 9,
+          "filename": "bg_inferno_core_0009.png",
+          "path": "assets/sprites/bg_inferno_core_0009.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        }
+      ],
+      "frame_count": 10,
+      "width": 1280,
+      "height": 720,
+      "is_valid_power_of_two": false
+    },
     "bg_nebula": {
       "frames": [
         {
@@ -2936,6 +3288,182 @@
       "frame_count": 1,
       "width": 1408,
       "height": 768,
+      "is_valid_power_of_two": false
+    },
+    "bg_nebula_drift": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "bg_nebula_drift_0000.png",
+          "path": "assets/sprites/bg_nebula_drift_0000.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 1,
+          "filename": "bg_nebula_drift_0001.png",
+          "path": "assets/sprites/bg_nebula_drift_0001.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 2,
+          "filename": "bg_nebula_drift_0002.png",
+          "path": "assets/sprites/bg_nebula_drift_0002.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 3,
+          "filename": "bg_nebula_drift_0003.png",
+          "path": "assets/sprites/bg_nebula_drift_0003.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 4,
+          "filename": "bg_nebula_drift_0004.png",
+          "path": "assets/sprites/bg_nebula_drift_0004.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 5,
+          "filename": "bg_nebula_drift_0005.png",
+          "path": "assets/sprites/bg_nebula_drift_0005.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 6,
+          "filename": "bg_nebula_drift_0006.png",
+          "path": "assets/sprites/bg_nebula_drift_0006.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 7,
+          "filename": "bg_nebula_drift_0007.png",
+          "path": "assets/sprites/bg_nebula_drift_0007.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 8,
+          "filename": "bg_nebula_drift_0008.png",
+          "path": "assets/sprites/bg_nebula_drift_0008.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 9,
+          "filename": "bg_nebula_drift_0009.png",
+          "path": "assets/sprites/bg_nebula_drift_0009.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        }
+      ],
+      "frame_count": 10,
+      "width": 1280,
+      "height": 720,
+      "is_valid_power_of_two": false
+    },
+    "bg_storm_belt": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "bg_storm_belt_0000.png",
+          "path": "assets/sprites/bg_storm_belt_0000.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 1,
+          "filename": "bg_storm_belt_0001.png",
+          "path": "assets/sprites/bg_storm_belt_0001.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 2,
+          "filename": "bg_storm_belt_0002.png",
+          "path": "assets/sprites/bg_storm_belt_0002.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 3,
+          "filename": "bg_storm_belt_0003.png",
+          "path": "assets/sprites/bg_storm_belt_0003.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 4,
+          "filename": "bg_storm_belt_0004.png",
+          "path": "assets/sprites/bg_storm_belt_0004.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 5,
+          "filename": "bg_storm_belt_0005.png",
+          "path": "assets/sprites/bg_storm_belt_0005.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 6,
+          "filename": "bg_storm_belt_0006.png",
+          "path": "assets/sprites/bg_storm_belt_0006.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 7,
+          "filename": "bg_storm_belt_0007.png",
+          "path": "assets/sprites/bg_storm_belt_0007.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 8,
+          "filename": "bg_storm_belt_0008.png",
+          "path": "assets/sprites/bg_storm_belt_0008.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 9,
+          "filename": "bg_storm_belt_0009.png",
+          "path": "assets/sprites/bg_storm_belt_0009.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        }
+      ],
+      "frame_count": 10,
+      "width": 1280,
+      "height": 720,
       "is_valid_power_of_two": false
     },
     "bg_title": {
@@ -3906,6 +4434,94 @@
       "height": 720,
       "is_valid_power_of_two": false
     },
+    "bg_xenomorph_hive": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "bg_xenomorph_hive_0000.png",
+          "path": "assets/sprites/bg_xenomorph_hive_0000.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 1,
+          "filename": "bg_xenomorph_hive_0001.png",
+          "path": "assets/sprites/bg_xenomorph_hive_0001.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 2,
+          "filename": "bg_xenomorph_hive_0002.png",
+          "path": "assets/sprites/bg_xenomorph_hive_0002.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 3,
+          "filename": "bg_xenomorph_hive_0003.png",
+          "path": "assets/sprites/bg_xenomorph_hive_0003.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 4,
+          "filename": "bg_xenomorph_hive_0004.png",
+          "path": "assets/sprites/bg_xenomorph_hive_0004.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 5,
+          "filename": "bg_xenomorph_hive_0005.png",
+          "path": "assets/sprites/bg_xenomorph_hive_0005.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 6,
+          "filename": "bg_xenomorph_hive_0006.png",
+          "path": "assets/sprites/bg_xenomorph_hive_0006.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 7,
+          "filename": "bg_xenomorph_hive_0007.png",
+          "path": "assets/sprites/bg_xenomorph_hive_0007.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 8,
+          "filename": "bg_xenomorph_hive_0008.png",
+          "path": "assets/sprites/bg_xenomorph_hive_0008.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 9,
+          "filename": "bg_xenomorph_hive_0009.png",
+          "path": "assets/sprites/bg_xenomorph_hive_0009.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        }
+      ],
+      "frame_count": 10,
+      "width": 1280,
+      "height": 720,
+      "is_valid_power_of_two": false
+    },
     "boss": {
       "frames": [
         {
@@ -3921,6 +4537,118 @@
       "width": 1280,
       "height": 896,
       "is_valid_power_of_two": false
+    },
+    "boss_biome_10_game": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "boss_biome_10_game.png",
+          "path": "assets/sprites/boss_biome_10_game.png",
+          "width": 256,
+          "height": 256,
+          "is_power_of_two": true
+        }
+      ],
+      "frame_count": 1,
+      "width": 256,
+      "height": 256,
+      "is_valid_power_of_two": true
+    },
+    "boss_biome_4_game": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "boss_biome_4_game.png",
+          "path": "assets/sprites/boss_biome_4_game.png",
+          "width": 256,
+          "height": 256,
+          "is_power_of_two": true
+        }
+      ],
+      "frame_count": 1,
+      "width": 256,
+      "height": 256,
+      "is_valid_power_of_two": true
+    },
+    "boss_biome_5_game": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "boss_biome_5_game.png",
+          "path": "assets/sprites/boss_biome_5_game.png",
+          "width": 256,
+          "height": 256,
+          "is_power_of_two": true
+        }
+      ],
+      "frame_count": 1,
+      "width": 256,
+      "height": 256,
+      "is_valid_power_of_two": true
+    },
+    "boss_biome_6_game": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "boss_biome_6_game.png",
+          "path": "assets/sprites/boss_biome_6_game.png",
+          "width": 256,
+          "height": 256,
+          "is_power_of_two": true
+        }
+      ],
+      "frame_count": 1,
+      "width": 256,
+      "height": 256,
+      "is_valid_power_of_two": true
+    },
+    "boss_biome_7_game": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "boss_biome_7_game.png",
+          "path": "assets/sprites/boss_biome_7_game.png",
+          "width": 256,
+          "height": 256,
+          "is_power_of_two": true
+        }
+      ],
+      "frame_count": 1,
+      "width": 256,
+      "height": 256,
+      "is_valid_power_of_two": true
+    },
+    "boss_biome_8_game": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "boss_biome_8_game.png",
+          "path": "assets/sprites/boss_biome_8_game.png",
+          "width": 256,
+          "height": 256,
+          "is_power_of_two": true
+        }
+      ],
+      "frame_count": 1,
+      "width": 256,
+      "height": 256,
+      "is_valid_power_of_two": true
+    },
+    "boss_biome_9_game": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "boss_biome_9_game.png",
+          "path": "assets/sprites/boss_biome_9_game.png",
+          "width": 256,
+          "height": 256,
+          "is_power_of_two": true
+        }
+      ],
+      "frame_count": 1,
+      "width": 256,
+      "height": 256,
+      "is_valid_power_of_two": true
     },
     "boss_death": {
       "frames": [
@@ -4994,6 +5722,454 @@
       "height": 720,
       "is_valid_power_of_two": false
     },
+    "enemy_brute": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "enemy_brute_0.png",
+          "path": "assets/sprites/enemy_brute_0.png",
+          "width": 64,
+          "height": 64,
+          "is_power_of_two": true
+        }
+      ],
+      "frame_count": 1,
+      "width": 64,
+      "height": 64,
+      "is_valid_power_of_two": true
+    },
+    "enemy_crawler": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "enemy_crawler_0.png",
+          "path": "assets/sprites/enemy_crawler_0.png",
+          "width": 32,
+          "height": 32,
+          "is_power_of_two": true
+        }
+      ],
+      "frame_count": 1,
+      "width": 32,
+      "height": 32,
+      "is_valid_power_of_two": true
+    },
+    "enemy_ember_sprite": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "enemy_ember_sprite_0.png",
+          "path": "assets/sprites/enemy_ember_sprite_0.png",
+          "width": 32,
+          "height": 32,
+          "is_power_of_two": true
+        }
+      ],
+      "frame_count": 1,
+      "width": 32,
+      "height": 32,
+      "is_valid_power_of_two": true
+    },
+    "enemy_fleet_turret": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "enemy_fleet_turret_0.png",
+          "path": "assets/sprites/enemy_fleet_turret_0.png",
+          "width": 48,
+          "height": 48,
+          "is_power_of_two": false
+        }
+      ],
+      "frame_count": 1,
+      "width": 48,
+      "height": 48,
+      "is_valid_power_of_two": false
+    },
+    "enemy_frost_drone": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "enemy_frost_drone_0.png",
+          "path": "assets/sprites/enemy_frost_drone_0.png",
+          "width": 32,
+          "height": 32,
+          "is_power_of_two": true
+        }
+      ],
+      "frame_count": 1,
+      "width": 32,
+      "height": 32,
+      "is_valid_power_of_two": true
+    },
+    "enemy_gas_giant": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "enemy_gas_giant_0.png",
+          "path": "assets/sprites/enemy_gas_giant_0.png",
+          "width": 64,
+          "height": 64,
+          "is_power_of_two": true
+        }
+      ],
+      "frame_count": 1,
+      "width": 64,
+      "height": 64,
+      "is_valid_power_of_two": true
+    },
+    "enemy_ghost_fighter": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "enemy_ghost_fighter_0.png",
+          "path": "assets/sprites/enemy_ghost_fighter_0.png",
+          "width": 32,
+          "height": 32,
+          "is_power_of_two": true
+        }
+      ],
+      "frame_count": 1,
+      "width": 32,
+      "height": 32,
+      "is_valid_power_of_two": true
+    },
+    "enemy_glacier": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "enemy_glacier_0.png",
+          "path": "assets/sprites/enemy_glacier_0.png",
+          "width": 64,
+          "height": 64,
+          "is_power_of_two": true
+        }
+      ],
+      "frame_count": 1,
+      "width": 64,
+      "height": 64,
+      "is_valid_power_of_two": true
+    },
+    "enemy_glitch_fragment": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "enemy_glitch_fragment_0.png",
+          "path": "assets/sprites/enemy_glitch_fragment_0.png",
+          "width": 32,
+          "height": 32,
+          "is_power_of_two": true
+        }
+      ],
+      "frame_count": 1,
+      "width": 32,
+      "height": 32,
+      "is_valid_power_of_two": true
+    },
+    "enemy_hive_node": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "enemy_hive_node_0.png",
+          "path": "assets/sprites/enemy_hive_node_0.png",
+          "width": 48,
+          "height": 48,
+          "is_power_of_two": false
+        }
+      ],
+      "frame_count": 1,
+      "width": 48,
+      "height": 48,
+      "is_valid_power_of_two": false
+    },
+    "enemy_ice_shard": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "enemy_ice_shard_0.png",
+          "path": "assets/sprites/enemy_ice_shard_0.png",
+          "width": 24,
+          "height": 24,
+          "is_power_of_two": false
+        }
+      ],
+      "frame_count": 1,
+      "width": 24,
+      "height": 24,
+      "is_valid_power_of_two": false
+    },
+    "enemy_ice_swarm": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "enemy_ice_swarm_0.png",
+          "path": "assets/sprites/enemy_ice_swarm_0.png",
+          "width": 16,
+          "height": 16,
+          "is_power_of_two": true
+        }
+      ],
+      "frame_count": 1,
+      "width": 16,
+      "height": 16,
+      "is_valid_power_of_two": true
+    },
+    "enemy_inferno_node": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "enemy_inferno_node_0.png",
+          "path": "assets/sprites/enemy_inferno_node_0.png",
+          "width": 48,
+          "height": 48,
+          "is_power_of_two": false
+        }
+      ],
+      "frame_count": 1,
+      "width": 48,
+      "height": 48,
+      "is_valid_power_of_two": false
+    },
+    "enemy_lava_golem": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "enemy_lava_golem_0.png",
+          "path": "assets/sprites/enemy_lava_golem_0.png",
+          "width": 64,
+          "height": 64,
+          "is_power_of_two": true
+        }
+      ],
+      "frame_count": 1,
+      "width": 64,
+      "height": 64,
+      "is_valid_power_of_two": true
+    },
+    "enemy_magma_wasp": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "enemy_magma_wasp_0.png",
+          "path": "assets/sprites/enemy_magma_wasp_0.png",
+          "width": 32,
+          "height": 32,
+          "is_power_of_two": true
+        }
+      ],
+      "frame_count": 1,
+      "width": 32,
+      "height": 32,
+      "is_valid_power_of_two": true
+    },
+    "enemy_nebula_wraith": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "enemy_nebula_wraith_0.png",
+          "path": "assets/sprites/enemy_nebula_wraith_0.png",
+          "width": 48,
+          "height": 48,
+          "is_power_of_two": false
+        }
+      ],
+      "frame_count": 1,
+      "width": 48,
+      "height": 48,
+      "is_valid_power_of_two": false
+    },
+    "enemy_null_entity": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "enemy_null_entity_0.png",
+          "path": "assets/sprites/enemy_null_entity_0.png",
+          "width": 64,
+          "height": 64,
+          "is_power_of_two": true
+        }
+      ],
+      "frame_count": 1,
+      "width": 64,
+      "height": 64,
+      "is_valid_power_of_two": true
+    },
+    "enemy_paradox_wisp": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "enemy_paradox_wisp_0.png",
+          "path": "assets/sprites/enemy_paradox_wisp_0.png",
+          "width": 32,
+          "height": 32,
+          "is_power_of_two": true
+        }
+      ],
+      "frame_count": 1,
+      "width": 32,
+      "height": 32,
+      "is_valid_power_of_two": true
+    },
+    "enemy_plasma_wisp": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "enemy_plasma_wisp_0.png",
+          "path": "assets/sprites/enemy_plasma_wisp_0.png",
+          "width": 32,
+          "height": 32,
+          "is_power_of_two": true
+        }
+      ],
+      "frame_count": 1,
+      "width": 32,
+      "height": 32,
+      "is_valid_power_of_two": true
+    },
+    "enemy_rift_aberration": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "enemy_rift_aberration_0.png",
+          "path": "assets/sprites/enemy_rift_aberration_0.png",
+          "width": 48,
+          "height": 48,
+          "is_power_of_two": false
+        }
+      ],
+      "frame_count": 1,
+      "width": 48,
+      "height": 48,
+      "is_valid_power_of_two": false
+    },
+    "enemy_salvage_drone": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "enemy_salvage_drone_0.png",
+          "path": "assets/sprites/enemy_salvage_drone_0.png",
+          "width": 32,
+          "height": 32,
+          "is_power_of_two": true
+        }
+      ],
+      "frame_count": 1,
+      "width": 32,
+      "height": 32,
+      "is_valid_power_of_two": true
+    },
+    "enemy_spitter": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "enemy_spitter_0.png",
+          "path": "assets/sprites/enemy_spitter_0.png",
+          "width": 32,
+          "height": 32,
+          "is_power_of_two": true
+        }
+      ],
+      "frame_count": 1,
+      "width": 32,
+      "height": 32,
+      "is_valid_power_of_two": true
+    },
+    "enemy_static_spark": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "enemy_static_spark_0.png",
+          "path": "assets/sprites/enemy_static_spark_0.png",
+          "width": 32,
+          "height": 32,
+          "is_power_of_two": true
+        }
+      ],
+      "frame_count": 1,
+      "width": 32,
+      "height": 32,
+      "is_valid_power_of_two": true
+    },
+    "enemy_storm_hawk": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "enemy_storm_hawk_0.png",
+          "path": "assets/sprites/enemy_storm_hawk_0.png",
+          "width": 32,
+          "height": 32,
+          "is_power_of_two": true
+        }
+      ],
+      "frame_count": 1,
+      "width": 32,
+      "height": 32,
+      "is_valid_power_of_two": true
+    },
+    "enemy_storm_sentinel": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "enemy_storm_sentinel_0.png",
+          "path": "assets/sprites/enemy_storm_sentinel_0.png",
+          "width": 48,
+          "height": 48,
+          "is_power_of_two": false
+        }
+      ],
+      "frame_count": 1,
+      "width": 48,
+      "height": 48,
+      "is_valid_power_of_two": false
+    },
+    "enemy_storm_sprite": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "enemy_storm_sprite_0.png",
+          "path": "assets/sprites/enemy_storm_sprite_0.png",
+          "width": 32,
+          "height": 32,
+          "is_power_of_two": true
+        }
+      ],
+      "frame_count": 1,
+      "width": 32,
+      "height": 32,
+      "is_valid_power_of_two": true
+    },
+    "enemy_thunderhead": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "enemy_thunderhead_0.png",
+          "path": "assets/sprites/enemy_thunderhead_0.png",
+          "width": 64,
+          "height": 64,
+          "is_power_of_two": true
+        }
+      ],
+      "frame_count": 1,
+      "width": 64,
+      "height": 64,
+      "is_valid_power_of_two": true
+    },
+    "enemy_turret_battery": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "enemy_turret_battery_0.png",
+          "path": "assets/sprites/enemy_turret_battery_0.png",
+          "width": 64,
+          "height": 64,
+          "is_power_of_two": true
+        }
+      ],
+      "frame_count": 1,
+      "width": 64,
+      "height": 64,
+      "is_valid_power_of_two": true
+    },
     "explosion": {
       "frames": [
         {
@@ -5642,6 +6818,118 @@
       "height": 1024,
       "is_valid_power_of_two": true
     },
+    "midboss_b10_0": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "midboss_b10_0.png",
+          "path": "assets/sprites/midboss_b10_0.png",
+          "width": 128,
+          "height": 128,
+          "is_power_of_two": true
+        }
+      ],
+      "frame_count": 1,
+      "width": 128,
+      "height": 128,
+      "is_valid_power_of_two": true
+    },
+    "midboss_b4_0": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "midboss_b4_0.png",
+          "path": "assets/sprites/midboss_b4_0.png",
+          "width": 128,
+          "height": 128,
+          "is_power_of_two": true
+        }
+      ],
+      "frame_count": 1,
+      "width": 128,
+      "height": 128,
+      "is_valid_power_of_two": true
+    },
+    "midboss_b5_0": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "midboss_b5_0.png",
+          "path": "assets/sprites/midboss_b5_0.png",
+          "width": 128,
+          "height": 128,
+          "is_power_of_two": true
+        }
+      ],
+      "frame_count": 1,
+      "width": 128,
+      "height": 128,
+      "is_valid_power_of_two": true
+    },
+    "midboss_b6_0": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "midboss_b6_0.png",
+          "path": "assets/sprites/midboss_b6_0.png",
+          "width": 128,
+          "height": 128,
+          "is_power_of_two": true
+        }
+      ],
+      "frame_count": 1,
+      "width": 128,
+      "height": 128,
+      "is_valid_power_of_two": true
+    },
+    "midboss_b7_0": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "midboss_b7_0.png",
+          "path": "assets/sprites/midboss_b7_0.png",
+          "width": 128,
+          "height": 128,
+          "is_power_of_two": true
+        }
+      ],
+      "frame_count": 1,
+      "width": 128,
+      "height": 128,
+      "is_valid_power_of_two": true
+    },
+    "midboss_b8_0": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "midboss_b8_0.png",
+          "path": "assets/sprites/midboss_b8_0.png",
+          "width": 128,
+          "height": 128,
+          "is_power_of_two": true
+        }
+      ],
+      "frame_count": 1,
+      "width": 128,
+      "height": 128,
+      "is_valid_power_of_two": true
+    },
+    "midboss_b9_0": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "midboss_b9_0.png",
+          "path": "assets/sprites/midboss_b9_0.png",
+          "width": 128,
+          "height": 128,
+          "is_power_of_two": true
+        }
+      ],
+      "frame_count": 1,
+      "width": 128,
+      "height": 128,
+      "is_valid_power_of_two": true
+    },
     "player": {
       "frames": [
         {
@@ -5694,6 +6982,102 @@
         }
       ],
       "frame_count": 1,
+      "width": 1024,
+      "height": 1024,
+      "is_valid_power_of_two": true
+    },
+    "player_bastion": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "player_bastion_0.png",
+          "path": "assets/sprites/player_bastion_0.png",
+          "width": 1024,
+          "height": 1024,
+          "is_power_of_two": true
+        },
+        {
+          "index": 1,
+          "filename": "player_bastion_1.png",
+          "path": "assets/sprites/player_bastion_1.png",
+          "width": 1024,
+          "height": 1024,
+          "is_power_of_two": true
+        }
+      ],
+      "frame_count": 2,
+      "width": 1024,
+      "height": 1024,
+      "is_valid_power_of_two": true
+    },
+    "player_phantom": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "player_phantom_0.png",
+          "path": "assets/sprites/player_phantom_0.png",
+          "width": 1024,
+          "height": 1024,
+          "is_power_of_two": true
+        },
+        {
+          "index": 1,
+          "filename": "player_phantom_1.png",
+          "path": "assets/sprites/player_phantom_1.png",
+          "width": 1024,
+          "height": 1024,
+          "is_power_of_two": true
+        }
+      ],
+      "frame_count": 2,
+      "width": 1024,
+      "height": 1024,
+      "is_valid_power_of_two": true
+    },
+    "player_specter": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "player_specter_0.png",
+          "path": "assets/sprites/player_specter_0.png",
+          "width": 1024,
+          "height": 1024,
+          "is_power_of_two": true
+        },
+        {
+          "index": 1,
+          "filename": "player_specter_1.png",
+          "path": "assets/sprites/player_specter_1.png",
+          "width": 1024,
+          "height": 1024,
+          "is_power_of_two": true
+        }
+      ],
+      "frame_count": 2,
+      "width": 1024,
+      "height": 1024,
+      "is_valid_power_of_two": true
+    },
+    "player_tempest": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "player_tempest_0.png",
+          "path": "assets/sprites/player_tempest_0.png",
+          "width": 1024,
+          "height": 1024,
+          "is_power_of_two": true
+        },
+        {
+          "index": 1,
+          "filename": "player_tempest_1.png",
+          "path": "assets/sprites/player_tempest_1.png",
+          "width": 1024,
+          "height": 1024,
+          "is_power_of_two": true
+        }
+      ],
+      "frame_count": 2,
       "width": 1024,
       "height": 1024,
       "is_valid_power_of_two": true
@@ -19705,1678 +21089,12 @@
       "width": 1408,
       "height": 768,
       "is_valid_power_of_two": false
-    },
-    "bg_nebula_drift": {
-      "biome": 4,
-      "display": "Nebula Drift",
-      "frames": [
-        {
-          "index": 0,
-          "filename": "bg_nebula_drift_0000.png",
-          "path": "assets/sprites/bg_nebula_drift_0000.png",
-          "width": 1280,
-          "height": 720,
-          "is_power_of_two": false
-        },
-        {
-          "index": 1,
-          "filename": "bg_nebula_drift_0001.png",
-          "path": "assets/sprites/bg_nebula_drift_0001.png",
-          "width": 1280,
-          "height": 720,
-          "is_power_of_two": false
-        },
-        {
-          "index": 2,
-          "filename": "bg_nebula_drift_0002.png",
-          "path": "assets/sprites/bg_nebula_drift_0002.png",
-          "width": 1280,
-          "height": 720,
-          "is_power_of_two": false
-        },
-        {
-          "index": 3,
-          "filename": "bg_nebula_drift_0003.png",
-          "path": "assets/sprites/bg_nebula_drift_0003.png",
-          "width": 1280,
-          "height": 720,
-          "is_power_of_two": false
-        },
-        {
-          "index": 4,
-          "filename": "bg_nebula_drift_0004.png",
-          "path": "assets/sprites/bg_nebula_drift_0004.png",
-          "width": 1280,
-          "height": 720,
-          "is_power_of_two": false
-        },
-        {
-          "index": 5,
-          "filename": "bg_nebula_drift_0005.png",
-          "path": "assets/sprites/bg_nebula_drift_0005.png",
-          "width": 1280,
-          "height": 720,
-          "is_power_of_two": false
-        },
-        {
-          "index": 6,
-          "filename": "bg_nebula_drift_0006.png",
-          "path": "assets/sprites/bg_nebula_drift_0006.png",
-          "width": 1280,
-          "height": 720,
-          "is_power_of_two": false
-        },
-        {
-          "index": 7,
-          "filename": "bg_nebula_drift_0007.png",
-          "path": "assets/sprites/bg_nebula_drift_0007.png",
-          "width": 1280,
-          "height": 720,
-          "is_power_of_two": false
-        },
-        {
-          "index": 8,
-          "filename": "bg_nebula_drift_0008.png",
-          "path": "assets/sprites/bg_nebula_drift_0008.png",
-          "width": 1280,
-          "height": 720,
-          "is_power_of_two": false
-        },
-        {
-          "index": 9,
-          "filename": "bg_nebula_drift_0009.png",
-          "path": "assets/sprites/bg_nebula_drift_0009.png",
-          "width": 1280,
-          "height": 720,
-          "is_power_of_two": false
-        }
-      ],
-      "strip": "assets/sprites/backgrounds/bg_nebula_drift_strip.png",
-      "frame_count": 10,
-      "width": 1280,
-      "height": 720
-    },
-    "enemy_plasma_wisp": {
-      "biome": 4,
-      "display": "plasma_wisp",
-      "type": "scout",
-      "hp": 1,
-      "points": 125,
-      "filename": "enemy_plasma_wisp_0.png",
-      "path": "assets/sprites/enemy_plasma_wisp_0.png",
-      "width": 32,
-      "height": 32,
-      "color": [
-        0,
-        220,
-        255
-      ],
-      "frames": [
-        {
-          "index": 0,
-          "filename": "enemy_plasma_wisp_0.png",
-          "path": "assets/sprites/enemy_plasma_wisp_0.png"
-        }
-      ]
-    },
-    "enemy_storm_sprite": {
-      "biome": 4,
-      "display": "storm_sprite",
-      "type": "interceptor",
-      "hp": 2,
-      "points": 200,
-      "filename": "enemy_storm_sprite_0.png",
-      "path": "assets/sprites/enemy_storm_sprite_0.png",
-      "width": 32,
-      "height": 32,
-      "color": [
-        255,
-        0,
-        255
-      ],
-      "frames": [
-        {
-          "index": 0,
-          "filename": "enemy_storm_sprite_0.png",
-          "path": "assets/sprites/enemy_storm_sprite_0.png"
-        }
-      ]
-    },
-    "enemy_gas_giant": {
-      "biome": 4,
-      "display": "gas_giant",
-      "type": "heavy",
-      "hp": 6,
-      "points": 400,
-      "filename": "enemy_gas_giant_0.png",
-      "path": "assets/sprites/enemy_gas_giant_0.png",
-      "width": 64,
-      "height": 64,
-      "color": [
-        0,
-        150,
-        255
-      ],
-      "frames": [
-        {
-          "index": 0,
-          "filename": "enemy_gas_giant_0.png",
-          "path": "assets/sprites/enemy_gas_giant_0.png"
-        }
-      ]
-    },
-    "enemy_nebula_wraith": {
-      "biome": 4,
-      "display": "nebula_wraith",
-      "type": "special",
-      "hp": 3,
-      "points": 250,
-      "filename": "enemy_nebula_wraith_0.png",
-      "path": "assets/sprites/enemy_nebula_wraith_0.png",
-      "width": 48,
-      "height": 48,
-      "color": [
-        180,
-        100,
-        255
-      ],
-      "frames": [
-        {
-          "index": 0,
-          "filename": "enemy_nebula_wraith_0.png",
-          "path": "assets/sprites/enemy_nebula_wraith_0.png"
-        }
-      ]
-    },
-    "midboss_b4": {
-      "biome": 4,
-      "display": "storm_cell_core",
-      "type": "mid_boss",
-      "hp": 120,
-      "points": 3500,
-      "filename": "midboss_b4_0.png",
-      "path": "assets/sprites/midboss_b4_0.png",
-      "width": 128,
-      "height": 128,
-      "color": [
-        0,
-        200,
-        255
-      ],
-      "frames": [
-        {
-          "index": 0,
-          "filename": "midboss_b4_0.png",
-          "path": "assets/sprites/midboss_b4_0.png"
-        }
-      ]
-    },
-    "boss_biome_4_game": {
-      "biome": 4,
-      "display": "nebula_serpent",
-      "type": "biome_boss",
-      "hp": 180,
-      "points": 7000,
-      "filename": "boss_biome_4_game.png",
-      "path": "assets/sprites/boss_biome_4_game.png",
-      "width": 256,
-      "height": 256,
-      "color": [
-        0,
-        180,
-        255
-      ],
-      "concept_art": "assets/sprites/bosses/boss_biome_4.png",
-      "frames": [
-        {
-          "index": 0,
-          "filename": "boss_biome_4_game.png",
-          "path": "assets/sprites/boss_biome_4_game.png"
-        }
-      ]
-    },
-    "audio_nebula_drift_ambient": {
-      "biome": 4,
-      "type": "ambient_audio",
-      "filename": "nebula_drift_ambient.wav",
-      "path": "assets/audio/ambient/nebula_drift_ambient.wav",
-      "format": "wav",
-      "duration_sec": 60,
-      "status": "placeholder"
-    },
-    "bg_ice_rings": {
-      "biome": 5,
-      "display": "Ice Rings",
-      "frames": [
-        {
-          "index": 0,
-          "filename": "bg_ice_rings_0000.png",
-          "path": "assets/sprites/bg_ice_rings_0000.png",
-          "width": 1280,
-          "height": 720,
-          "is_power_of_two": false
-        },
-        {
-          "index": 1,
-          "filename": "bg_ice_rings_0001.png",
-          "path": "assets/sprites/bg_ice_rings_0001.png",
-          "width": 1280,
-          "height": 720,
-          "is_power_of_two": false
-        },
-        {
-          "index": 2,
-          "filename": "bg_ice_rings_0002.png",
-          "path": "assets/sprites/bg_ice_rings_0002.png",
-          "width": 1280,
-          "height": 720,
-          "is_power_of_two": false
-        },
-        {
-          "index": 3,
-          "filename": "bg_ice_rings_0003.png",
-          "path": "assets/sprites/bg_ice_rings_0003.png",
-          "width": 1280,
-          "height": 720,
-          "is_power_of_two": false
-        },
-        {
-          "index": 4,
-          "filename": "bg_ice_rings_0004.png",
-          "path": "assets/sprites/bg_ice_rings_0004.png",
-          "width": 1280,
-          "height": 720,
-          "is_power_of_two": false
-        },
-        {
-          "index": 5,
-          "filename": "bg_ice_rings_0005.png",
-          "path": "assets/sprites/bg_ice_rings_0005.png",
-          "width": 1280,
-          "height": 720,
-          "is_power_of_two": false
-        },
-        {
-          "index": 6,
-          "filename": "bg_ice_rings_0006.png",
-          "path": "assets/sprites/bg_ice_rings_0006.png",
-          "width": 1280,
-          "height": 720,
-          "is_power_of_two": false
-        },
-        {
-          "index": 7,
-          "filename": "bg_ice_rings_0007.png",
-          "path": "assets/sprites/bg_ice_rings_0007.png",
-          "width": 1280,
-          "height": 720,
-          "is_power_of_two": false
-        },
-        {
-          "index": 8,
-          "filename": "bg_ice_rings_0008.png",
-          "path": "assets/sprites/bg_ice_rings_0008.png",
-          "width": 1280,
-          "height": 720,
-          "is_power_of_two": false
-        },
-        {
-          "index": 9,
-          "filename": "bg_ice_rings_0009.png",
-          "path": "assets/sprites/bg_ice_rings_0009.png",
-          "width": 1280,
-          "height": 720,
-          "is_power_of_two": false
-        }
-      ],
-      "strip": "assets/sprites/backgrounds/bg_ice_rings_strip.png",
-      "frame_count": 10,
-      "width": 1280,
-      "height": 720
-    },
-    "enemy_ice_shard": {
-      "biome": 5,
-      "display": "ice_shard",
-      "type": "scout",
-      "hp": 1,
-      "points": 125,
-      "filename": "enemy_ice_shard_0.png",
-      "path": "assets/sprites/enemy_ice_shard_0.png",
-      "width": 24,
-      "height": 24,
-      "color": [
-        150,
-        220,
-        255
-      ],
-      "frames": [
-        {
-          "index": 0,
-          "filename": "enemy_ice_shard_0.png",
-          "path": "assets/sprites/enemy_ice_shard_0.png"
-        }
-      ]
-    },
-    "enemy_frost_drone": {
-      "biome": 5,
-      "display": "frost_drone",
-      "type": "interceptor",
-      "hp": 2,
-      "points": 200,
-      "filename": "enemy_frost_drone_0.png",
-      "path": "assets/sprites/enemy_frost_drone_0.png",
-      "width": 32,
-      "height": 32,
-      "color": [
-        100,
-        180,
-        255
-      ],
-      "frames": [
-        {
-          "index": 0,
-          "filename": "enemy_frost_drone_0.png",
-          "path": "assets/sprites/enemy_frost_drone_0.png"
-        }
-      ]
-    },
-    "enemy_glacier": {
-      "biome": 5,
-      "display": "glacier",
-      "type": "heavy",
-      "hp": 7,
-      "points": 450,
-      "filename": "enemy_glacier_0.png",
-      "path": "assets/sprites/enemy_glacier_0.png",
-      "width": 64,
-      "height": 64,
-      "color": [
-        80,
-        160,
-        240
-      ],
-      "frames": [
-        {
-          "index": 0,
-          "filename": "enemy_glacier_0.png",
-          "path": "assets/sprites/enemy_glacier_0.png"
-        }
-      ]
-    },
-    "enemy_ice_swarm": {
-      "biome": 5,
-      "display": "ice_drone_swarm",
-      "type": "special",
-      "hp": 1,
-      "points": 75,
-      "filename": "enemy_ice_swarm_0.png",
-      "path": "assets/sprites/enemy_ice_swarm_0.png",
-      "width": 16,
-      "height": 16,
-      "color": [
-        180,
-        220,
-        255
-      ],
-      "frames": [
-        {
-          "index": 0,
-          "filename": "enemy_ice_swarm_0.png",
-          "path": "assets/sprites/enemy_ice_swarm_0.png"
-        }
-      ]
-    },
-    "midboss_b5": {
-      "biome": 5,
-      "display": "crystal_golem",
-      "type": "mid_boss",
-      "hp": 140,
-      "points": 4000,
-      "filename": "midboss_b5_0.png",
-      "path": "assets/sprites/midboss_b5_0.png",
-      "width": 128,
-      "height": 128,
-      "color": [
-        100,
-        200,
-        255
-      ],
-      "frames": [
-        {
-          "index": 0,
-          "filename": "midboss_b5_0.png",
-          "path": "assets/sprites/midboss_b5_0.png"
-        }
-      ]
-    },
-    "boss_biome_5_game": {
-      "biome": 5,
-      "display": "frost_wyrm",
-      "type": "biome_boss",
-      "hp": 200,
-      "points": 8000,
-      "filename": "boss_biome_5_game.png",
-      "path": "assets/sprites/boss_biome_5_game.png",
-      "width": 256,
-      "height": 256,
-      "color": [
-        80,
-        180,
-        255
-      ],
-      "concept_art": "assets/sprites/bosses/boss_biome_5.png",
-      "frames": [
-        {
-          "index": 0,
-          "filename": "boss_biome_5_game.png",
-          "path": "assets/sprites/boss_biome_5_game.png"
-        }
-      ]
-    },
-    "audio_ice_rings_ambient": {
-      "biome": 5,
-      "type": "ambient_audio",
-      "filename": "ice_rings_ambient.wav",
-      "path": "assets/audio/ambient/ice_rings_ambient.wav",
-      "format": "wav",
-      "duration_sec": 60,
-      "status": "placeholder"
-    },
-    "bg_inferno_core": {
-      "biome": 6,
-      "display": "Inferno Core",
-      "frames": [
-        {
-          "index": 0,
-          "filename": "bg_inferno_core_0000.png",
-          "path": "assets/sprites/bg_inferno_core_0000.png",
-          "width": 1280,
-          "height": 720,
-          "is_power_of_two": false
-        },
-        {
-          "index": 1,
-          "filename": "bg_inferno_core_0001.png",
-          "path": "assets/sprites/bg_inferno_core_0001.png",
-          "width": 1280,
-          "height": 720,
-          "is_power_of_two": false
-        },
-        {
-          "index": 2,
-          "filename": "bg_inferno_core_0002.png",
-          "path": "assets/sprites/bg_inferno_core_0002.png",
-          "width": 1280,
-          "height": 720,
-          "is_power_of_two": false
-        },
-        {
-          "index": 3,
-          "filename": "bg_inferno_core_0003.png",
-          "path": "assets/sprites/bg_inferno_core_0003.png",
-          "width": 1280,
-          "height": 720,
-          "is_power_of_two": false
-        },
-        {
-          "index": 4,
-          "filename": "bg_inferno_core_0004.png",
-          "path": "assets/sprites/bg_inferno_core_0004.png",
-          "width": 1280,
-          "height": 720,
-          "is_power_of_two": false
-        },
-        {
-          "index": 5,
-          "filename": "bg_inferno_core_0005.png",
-          "path": "assets/sprites/bg_inferno_core_0005.png",
-          "width": 1280,
-          "height": 720,
-          "is_power_of_two": false
-        },
-        {
-          "index": 6,
-          "filename": "bg_inferno_core_0006.png",
-          "path": "assets/sprites/bg_inferno_core_0006.png",
-          "width": 1280,
-          "height": 720,
-          "is_power_of_two": false
-        },
-        {
-          "index": 7,
-          "filename": "bg_inferno_core_0007.png",
-          "path": "assets/sprites/bg_inferno_core_0007.png",
-          "width": 1280,
-          "height": 720,
-          "is_power_of_two": false
-        },
-        {
-          "index": 8,
-          "filename": "bg_inferno_core_0008.png",
-          "path": "assets/sprites/bg_inferno_core_0008.png",
-          "width": 1280,
-          "height": 720,
-          "is_power_of_two": false
-        },
-        {
-          "index": 9,
-          "filename": "bg_inferno_core_0009.png",
-          "path": "assets/sprites/bg_inferno_core_0009.png",
-          "width": 1280,
-          "height": 720,
-          "is_power_of_two": false
-        }
-      ],
-      "strip": "assets/sprites/backgrounds/bg_inferno_core_strip.png",
-      "frame_count": 10,
-      "width": 1280,
-      "height": 720
-    },
-    "enemy_ember_sprite": {
-      "biome": 6,
-      "display": "ember_sprite",
-      "type": "scout",
-      "hp": 1,
-      "points": 150,
-      "filename": "enemy_ember_sprite_0.png",
-      "path": "assets/sprites/enemy_ember_sprite_0.png",
-      "width": 32,
-      "height": 32,
-      "color": [
-        255,
-        150,
-        0
-      ],
-      "frames": [
-        {
-          "index": 0,
-          "filename": "enemy_ember_sprite_0.png",
-          "path": "assets/sprites/enemy_ember_sprite_0.png"
-        }
-      ]
-    },
-    "enemy_magma_wasp": {
-      "biome": 6,
-      "display": "magma_wasp",
-      "type": "interceptor",
-      "hp": 2,
-      "points": 225,
-      "filename": "enemy_magma_wasp_0.png",
-      "path": "assets/sprites/enemy_magma_wasp_0.png",
-      "width": 32,
-      "height": 32,
-      "color": [
-        255,
-        100,
-        0
-      ],
-      "frames": [
-        {
-          "index": 0,
-          "filename": "enemy_magma_wasp_0.png",
-          "path": "assets/sprites/enemy_magma_wasp_0.png"
-        }
-      ]
-    },
-    "enemy_lava_golem": {
-      "biome": 6,
-      "display": "lava_golem",
-      "type": "heavy",
-      "hp": 8,
-      "points": 500,
-      "filename": "enemy_lava_golem_0.png",
-      "path": "assets/sprites/enemy_lava_golem_0.png",
-      "width": 64,
-      "height": 64,
-      "color": [
-        255,
-        50,
-        0
-      ],
-      "frames": [
-        {
-          "index": 0,
-          "filename": "enemy_lava_golem_0.png",
-          "path": "assets/sprites/enemy_lava_golem_0.png"
-        }
-      ]
-    },
-    "enemy_inferno_node": {
-      "biome": 6,
-      "display": "inferno_node",
-      "type": "special",
-      "hp": 5,
-      "points": 350,
-      "filename": "enemy_inferno_node_0.png",
-      "path": "assets/sprites/enemy_inferno_node_0.png",
-      "width": 48,
-      "height": 48,
-      "color": [
-        255,
-        80,
-        0
-      ],
-      "frames": [
-        {
-          "index": 0,
-          "filename": "enemy_inferno_node_0.png",
-          "path": "assets/sprites/enemy_inferno_node_0.png"
-        }
-      ]
-    },
-    "midboss_b6": {
-      "biome": 6,
-      "display": "caldera_wyrm",
-      "type": "mid_boss",
-      "hp": 160,
-      "points": 4500,
-      "filename": "midboss_b6_0.png",
-      "path": "assets/sprites/midboss_b6_0.png",
-      "width": 128,
-      "height": 128,
-      "color": [
-        255,
-        100,
-        0
-      ],
-      "frames": [
-        {
-          "index": 0,
-          "filename": "midboss_b6_0.png",
-          "path": "assets/sprites/midboss_b6_0.png"
-        }
-      ]
-    },
-    "boss_biome_6_game": {
-      "biome": 6,
-      "display": "inferno_titan",
-      "type": "biome_boss",
-      "hp": 220,
-      "points": 9000,
-      "filename": "boss_biome_6_game.png",
-      "path": "assets/sprites/boss_biome_6_game.png",
-      "width": 256,
-      "height": 256,
-      "color": [
-        255,
-        40,
-        0
-      ],
-      "concept_art": "assets/sprites/bosses/boss_biome_6.png",
-      "frames": [
-        {
-          "index": 0,
-          "filename": "boss_biome_6_game.png",
-          "path": "assets/sprites/boss_biome_6_game.png"
-        }
-      ]
-    },
-    "audio_inferno_core_ambient": {
-      "biome": 6,
-      "type": "ambient_audio",
-      "filename": "inferno_core_ambient.wav",
-      "path": "assets/audio/ambient/inferno_core_ambient.wav",
-      "format": "wav",
-      "duration_sec": 60,
-      "status": "placeholder"
-    },
-    "bg_storm_belt": {
-      "biome": 7,
-      "display": "Storm Belt",
-      "frames": [
-        {
-          "index": 0,
-          "filename": "bg_storm_belt_0000.png",
-          "path": "assets/sprites/bg_storm_belt_0000.png",
-          "width": 1280,
-          "height": 720,
-          "is_power_of_two": false
-        },
-        {
-          "index": 1,
-          "filename": "bg_storm_belt_0001.png",
-          "path": "assets/sprites/bg_storm_belt_0001.png",
-          "width": 1280,
-          "height": 720,
-          "is_power_of_two": false
-        },
-        {
-          "index": 2,
-          "filename": "bg_storm_belt_0002.png",
-          "path": "assets/sprites/bg_storm_belt_0002.png",
-          "width": 1280,
-          "height": 720,
-          "is_power_of_two": false
-        },
-        {
-          "index": 3,
-          "filename": "bg_storm_belt_0003.png",
-          "path": "assets/sprites/bg_storm_belt_0003.png",
-          "width": 1280,
-          "height": 720,
-          "is_power_of_two": false
-        },
-        {
-          "index": 4,
-          "filename": "bg_storm_belt_0004.png",
-          "path": "assets/sprites/bg_storm_belt_0004.png",
-          "width": 1280,
-          "height": 720,
-          "is_power_of_two": false
-        },
-        {
-          "index": 5,
-          "filename": "bg_storm_belt_0005.png",
-          "path": "assets/sprites/bg_storm_belt_0005.png",
-          "width": 1280,
-          "height": 720,
-          "is_power_of_two": false
-        },
-        {
-          "index": 6,
-          "filename": "bg_storm_belt_0006.png",
-          "path": "assets/sprites/bg_storm_belt_0006.png",
-          "width": 1280,
-          "height": 720,
-          "is_power_of_two": false
-        },
-        {
-          "index": 7,
-          "filename": "bg_storm_belt_0007.png",
-          "path": "assets/sprites/bg_storm_belt_0007.png",
-          "width": 1280,
-          "height": 720,
-          "is_power_of_two": false
-        },
-        {
-          "index": 8,
-          "filename": "bg_storm_belt_0008.png",
-          "path": "assets/sprites/bg_storm_belt_0008.png",
-          "width": 1280,
-          "height": 720,
-          "is_power_of_two": false
-        },
-        {
-          "index": 9,
-          "filename": "bg_storm_belt_0009.png",
-          "path": "assets/sprites/bg_storm_belt_0009.png",
-          "width": 1280,
-          "height": 720,
-          "is_power_of_two": false
-        }
-      ],
-      "strip": "assets/sprites/backgrounds/bg_storm_belt_strip.png",
-      "frame_count": 10,
-      "width": 1280,
-      "height": 720
-    },
-    "enemy_static_spark": {
-      "biome": 7,
-      "display": "static_spark",
-      "type": "scout",
-      "hp": 1,
-      "points": 150,
-      "filename": "enemy_static_spark_0.png",
-      "path": "assets/sprites/enemy_static_spark_0.png",
-      "width": 32,
-      "height": 32,
-      "color": [
-        150,
-        180,
-        255
-      ],
-      "frames": [
-        {
-          "index": 0,
-          "filename": "enemy_static_spark_0.png",
-          "path": "assets/sprites/enemy_static_spark_0.png"
-        }
-      ]
-    },
-    "enemy_storm_hawk": {
-      "biome": 7,
-      "display": "storm_hawk",
-      "type": "interceptor",
-      "hp": 3,
-      "points": 250,
-      "filename": "enemy_storm_hawk_0.png",
-      "path": "assets/sprites/enemy_storm_hawk_0.png",
-      "width": 32,
-      "height": 32,
-      "color": [
-        100,
-        130,
-        255
-      ],
-      "frames": [
-        {
-          "index": 0,
-          "filename": "enemy_storm_hawk_0.png",
-          "path": "assets/sprites/enemy_storm_hawk_0.png"
-        }
-      ]
-    },
-    "enemy_thunderhead": {
-      "biome": 7,
-      "display": "thunderhead",
-      "type": "heavy",
-      "hp": 8,
-      "points": 500,
-      "filename": "enemy_thunderhead_0.png",
-      "path": "assets/sprites/enemy_thunderhead_0.png",
-      "width": 64,
-      "height": 64,
-      "color": [
-        80,
-        100,
-        255
-      ],
-      "frames": [
-        {
-          "index": 0,
-          "filename": "enemy_thunderhead_0.png",
-          "path": "assets/sprites/enemy_thunderhead_0.png"
-        }
-      ]
-    },
-    "enemy_storm_sentinel": {
-      "biome": 7,
-      "display": "storm_sentinel",
-      "type": "special",
-      "hp": 5,
-      "points": 350,
-      "filename": "enemy_storm_sentinel_0.png",
-      "path": "assets/sprites/enemy_storm_sentinel_0.png",
-      "width": 48,
-      "height": 48,
-      "color": [
-        70,
-        70,
-        255
-      ],
-      "frames": [
-        {
-          "index": 0,
-          "filename": "enemy_storm_sentinel_0.png",
-          "path": "assets/sprites/enemy_storm_sentinel_0.png"
-        }
-      ]
-    },
-    "midboss_b7": {
-      "biome": 7,
-      "display": "eye_of_the_storm",
-      "type": "mid_boss",
-      "hp": 180,
-      "points": 5000,
-      "filename": "midboss_b7_0.png",
-      "path": "assets/sprites/midboss_b7_0.png",
-      "width": 128,
-      "height": 128,
-      "color": [
-        150,
-        150,
-        255
-      ],
-      "frames": [
-        {
-          "index": 0,
-          "filename": "midboss_b7_0.png",
-          "path": "assets/sprites/midboss_b7_0.png"
-        }
-      ]
-    },
-    "boss_biome_7_game": {
-      "biome": 7,
-      "display": "tempest_overlord",
-      "type": "biome_boss",
-      "hp": 360,
-      "points": 11000,
-      "filename": "boss_biome_7_game.png",
-      "path": "assets/sprites/boss_biome_7_game.png",
-      "width": 256,
-      "height": 256,
-      "color": [
-        100,
-        100,
-        255
-      ],
-      "concept_art": "assets/sprites/bosses/boss_biome_7.png",
-      "frames": [
-        {
-          "index": 0,
-          "filename": "boss_biome_7_game.png",
-          "path": "assets/sprites/boss_biome_7_game.png"
-        }
-      ]
-    },
-    "audio_storm_belt_ambient": {
-      "biome": 7,
-      "type": "ambient_audio",
-      "filename": "storm_belt_ambient.wav",
-      "path": "assets/audio/ambient/storm_belt_ambient.wav",
-      "format": "wav",
-      "duration_sec": 60,
-      "status": "placeholder"
-    },
-    "bg_derelict_fleet": {
-      "biome": 8,
-      "display": "Derelict Fleet",
-      "frames": [
-        {
-          "index": 0,
-          "filename": "bg_derelict_fleet_0000.png",
-          "path": "assets/sprites/bg_derelict_fleet_0000.png",
-          "width": 1280,
-          "height": 720,
-          "is_power_of_two": false
-        },
-        {
-          "index": 1,
-          "filename": "bg_derelict_fleet_0001.png",
-          "path": "assets/sprites/bg_derelict_fleet_0001.png",
-          "width": 1280,
-          "height": 720,
-          "is_power_of_two": false
-        },
-        {
-          "index": 2,
-          "filename": "bg_derelict_fleet_0002.png",
-          "path": "assets/sprites/bg_derelict_fleet_0002.png",
-          "width": 1280,
-          "height": 720,
-          "is_power_of_two": false
-        },
-        {
-          "index": 3,
-          "filename": "bg_derelict_fleet_0003.png",
-          "path": "assets/sprites/bg_derelict_fleet_0003.png",
-          "width": 1280,
-          "height": 720,
-          "is_power_of_two": false
-        },
-        {
-          "index": 4,
-          "filename": "bg_derelict_fleet_0004.png",
-          "path": "assets/sprites/bg_derelict_fleet_0004.png",
-          "width": 1280,
-          "height": 720,
-          "is_power_of_two": false
-        },
-        {
-          "index": 5,
-          "filename": "bg_derelict_fleet_0005.png",
-          "path": "assets/sprites/bg_derelict_fleet_0005.png",
-          "width": 1280,
-          "height": 720,
-          "is_power_of_two": false
-        },
-        {
-          "index": 6,
-          "filename": "bg_derelict_fleet_0006.png",
-          "path": "assets/sprites/bg_derelict_fleet_0006.png",
-          "width": 1280,
-          "height": 720,
-          "is_power_of_two": false
-        },
-        {
-          "index": 7,
-          "filename": "bg_derelict_fleet_0007.png",
-          "path": "assets/sprites/bg_derelict_fleet_0007.png",
-          "width": 1280,
-          "height": 720,
-          "is_power_of_two": false
-        },
-        {
-          "index": 8,
-          "filename": "bg_derelict_fleet_0008.png",
-          "path": "assets/sprites/bg_derelict_fleet_0008.png",
-          "width": 1280,
-          "height": 720,
-          "is_power_of_two": false
-        },
-        {
-          "index": 9,
-          "filename": "bg_derelict_fleet_0009.png",
-          "path": "assets/sprites/bg_derelict_fleet_0009.png",
-          "width": 1280,
-          "height": 720,
-          "is_power_of_two": false
-        }
-      ],
-      "strip": "assets/sprites/backgrounds/bg_derelict_fleet_strip.png",
-      "frame_count": 10,
-      "width": 1280,
-      "height": 720
-    },
-    "enemy_salvage_drone": {
-      "biome": 8,
-      "display": "salvage_drone",
-      "type": "scout",
-      "hp": 1,
-      "points": 150,
-      "filename": "enemy_salvage_drone_0.png",
-      "path": "assets/sprites/enemy_salvage_drone_0.png",
-      "width": 32,
-      "height": 32,
-      "color": [
-        150,
-        150,
-        150
-      ],
-      "frames": [
-        {
-          "index": 0,
-          "filename": "enemy_salvage_drone_0.png",
-          "path": "assets/sprites/enemy_salvage_drone_0.png"
-        }
-      ]
-    },
-    "enemy_ghost_fighter": {
-      "biome": 8,
-      "display": "ghost_fighter",
-      "type": "interceptor",
-      "hp": 3,
-      "points": 250,
-      "filename": "enemy_ghost_fighter_0.png",
-      "path": "assets/sprites/enemy_ghost_fighter_0.png",
-      "width": 32,
-      "height": 32,
-      "color": [
-        100,
-        100,
-        120
-      ],
-      "frames": [
-        {
-          "index": 0,
-          "filename": "enemy_ghost_fighter_0.png",
-          "path": "assets/sprites/enemy_ghost_fighter_0.png"
-        }
-      ]
-    },
-    "enemy_turret_battery": {
-      "biome": 8,
-      "display": "turret_battery",
-      "type": "heavy",
-      "hp": 10,
-      "points": 600,
-      "filename": "enemy_turret_battery_0.png",
-      "path": "assets/sprites/enemy_turret_battery_0.png",
-      "width": 64,
-      "height": 64,
-      "color": [
-        80,
-        80,
-        90
-      ],
-      "frames": [
-        {
-          "index": 0,
-          "filename": "enemy_turret_battery_0.png",
-          "path": "assets/sprites/enemy_turret_battery_0.png"
-        }
-      ]
-    },
-    "enemy_fleet_turret": {
-      "biome": 8,
-      "display": "fleet_turret",
-      "type": "special",
-      "hp": 4,
-      "points": 300,
-      "filename": "enemy_fleet_turret_0.png",
-      "path": "assets/sprites/enemy_fleet_turret_0.png",
-      "width": 48,
-      "height": 48,
-      "color": [
-        120,
-        40,
-        40
-      ],
-      "frames": [
-        {
-          "index": 0,
-          "filename": "enemy_fleet_turret_0.png",
-          "path": "assets/sprites/enemy_fleet_turret_0.png"
-        }
-      ]
-    },
-    "midboss_b8": {
-      "biome": 8,
-      "display": "reactor_core_guardian",
-      "type": "mid_boss",
-      "hp": 200,
-      "points": 5500,
-      "filename": "midboss_b8_0.png",
-      "path": "assets/sprites/midboss_b8_0.png",
-      "width": 128,
-      "height": 128,
-      "color": [
-        255,
-        50,
-        50
-      ],
-      "frames": [
-        {
-          "index": 0,
-          "filename": "midboss_b8_0.png",
-          "path": "assets/sprites/midboss_b8_0.png"
-        }
-      ]
-    },
-    "boss_biome_8_game": {
-      "biome": 8,
-      "display": "warship_hulk",
-      "type": "biome_boss",
-      "hp": 400,
-      "points": 12000,
-      "filename": "boss_biome_8_game.png",
-      "path": "assets/sprites/boss_biome_8_game.png",
-      "width": 256,
-      "height": 256,
-      "color": [
-        200,
-        30,
-        30
-      ],
-      "concept_art": "assets/sprites/bosses/boss_biome_8.png",
-      "frames": [
-        {
-          "index": 0,
-          "filename": "boss_biome_8_game.png",
-          "path": "assets/sprites/boss_biome_8_game.png"
-        }
-      ]
-    },
-    "audio_derelict_fleet_ambient": {
-      "biome": 8,
-      "type": "ambient_audio",
-      "filename": "derelict_fleet_ambient.wav",
-      "path": "assets/audio/ambient/derelict_fleet_ambient.wav",
-      "format": "wav",
-      "duration_sec": 60,
-      "status": "placeholder"
-    },
-    "bg_xenomorph_hive": {
-      "biome": 9,
-      "display": "Xenomorph Hive",
-      "frames": [
-        {
-          "index": 0,
-          "filename": "bg_xenomorph_hive_0000.png",
-          "path": "assets/sprites/bg_xenomorph_hive_0000.png",
-          "width": 1280,
-          "height": 720,
-          "is_power_of_two": false
-        },
-        {
-          "index": 1,
-          "filename": "bg_xenomorph_hive_0001.png",
-          "path": "assets/sprites/bg_xenomorph_hive_0001.png",
-          "width": 1280,
-          "height": 720,
-          "is_power_of_two": false
-        },
-        {
-          "index": 2,
-          "filename": "bg_xenomorph_hive_0002.png",
-          "path": "assets/sprites/bg_xenomorph_hive_0002.png",
-          "width": 1280,
-          "height": 720,
-          "is_power_of_two": false
-        },
-        {
-          "index": 3,
-          "filename": "bg_xenomorph_hive_0003.png",
-          "path": "assets/sprites/bg_xenomorph_hive_0003.png",
-          "width": 1280,
-          "height": 720,
-          "is_power_of_two": false
-        },
-        {
-          "index": 4,
-          "filename": "bg_xenomorph_hive_0004.png",
-          "path": "assets/sprites/bg_xenomorph_hive_0004.png",
-          "width": 1280,
-          "height": 720,
-          "is_power_of_two": false
-        },
-        {
-          "index": 5,
-          "filename": "bg_xenomorph_hive_0005.png",
-          "path": "assets/sprites/bg_xenomorph_hive_0005.png",
-          "width": 1280,
-          "height": 720,
-          "is_power_of_two": false
-        },
-        {
-          "index": 6,
-          "filename": "bg_xenomorph_hive_0006.png",
-          "path": "assets/sprites/bg_xenomorph_hive_0006.png",
-          "width": 1280,
-          "height": 720,
-          "is_power_of_two": false
-        },
-        {
-          "index": 7,
-          "filename": "bg_xenomorph_hive_0007.png",
-          "path": "assets/sprites/bg_xenomorph_hive_0007.png",
-          "width": 1280,
-          "height": 720,
-          "is_power_of_two": false
-        },
-        {
-          "index": 8,
-          "filename": "bg_xenomorph_hive_0008.png",
-          "path": "assets/sprites/bg_xenomorph_hive_0008.png",
-          "width": 1280,
-          "height": 720,
-          "is_power_of_two": false
-        },
-        {
-          "index": 9,
-          "filename": "bg_xenomorph_hive_0009.png",
-          "path": "assets/sprites/bg_xenomorph_hive_0009.png",
-          "width": 1280,
-          "height": 720,
-          "is_power_of_two": false
-        }
-      ],
-      "strip": "assets/sprites/backgrounds/bg_xenomorph_hive_strip.png",
-      "frame_count": 10,
-      "width": 1280,
-      "height": 720
-    },
-    "enemy_crawler": {
-      "biome": 9,
-      "display": "crawler",
-      "type": "scout",
-      "hp": 2,
-      "points": 175,
-      "filename": "enemy_crawler_0.png",
-      "path": "assets/sprites/enemy_crawler_0.png",
-      "width": 32,
-      "height": 32,
-      "color": [
-        200,
-        100,
-        150
-      ],
-      "frames": [
-        {
-          "index": 0,
-          "filename": "enemy_crawler_0.png",
-          "path": "assets/sprites/enemy_crawler_0.png"
-        }
-      ]
-    },
-    "enemy_spitter": {
-      "biome": 9,
-      "display": "spitter",
-      "type": "interceptor",
-      "hp": 3,
-      "points": 275,
-      "filename": "enemy_spitter_0.png",
-      "path": "assets/sprites/enemy_spitter_0.png",
-      "width": 32,
-      "height": 32,
-      "color": [
-        80,
-        200,
-        80
-      ],
-      "frames": [
-        {
-          "index": 0,
-          "filename": "enemy_spitter_0.png",
-          "path": "assets/sprites/enemy_spitter_0.png"
-        }
-      ]
-    },
-    "enemy_brute": {
-      "biome": 9,
-      "display": "brute",
-      "type": "heavy",
-      "hp": 10,
-      "points": 600,
-      "filename": "enemy_brute_0.png",
-      "path": "assets/sprites/enemy_brute_0.png",
-      "width": 64,
-      "height": 64,
-      "color": [
-        150,
-        50,
-        180
-      ],
-      "frames": [
-        {
-          "index": 0,
-          "filename": "enemy_brute_0.png",
-          "path": "assets/sprites/enemy_brute_0.png"
-        }
-      ]
-    },
-    "enemy_hive_node": {
-      "biome": 9,
-      "display": "hive_node",
-      "type": "special",
-      "hp": 8,
-      "points": 400,
-      "filename": "enemy_hive_node_0.png",
-      "path": "assets/sprites/enemy_hive_node_0.png",
-      "width": 48,
-      "height": 48,
-      "color": [
-        100,
-        255,
-        100
-      ],
-      "frames": [
-        {
-          "index": 0,
-          "filename": "enemy_hive_node_0.png",
-          "path": "assets/sprites/enemy_hive_node_0.png"
-        }
-      ]
-    },
-    "midboss_b9": {
-      "biome": 9,
-      "display": "brood_mother",
-      "type": "mid_boss",
-      "hp": 220,
-      "points": 6000,
-      "filename": "midboss_b9_0.png",
-      "path": "assets/sprites/midboss_b9_0.png",
-      "width": 128,
-      "height": 128,
-      "color": [
-        200,
-        50,
-        150
-      ],
-      "frames": [
-        {
-          "index": 0,
-          "filename": "midboss_b9_0.png",
-          "path": "assets/sprites/midboss_b9_0.png"
-        }
-      ]
-    },
-    "boss_biome_9_game": {
-      "biome": 9,
-      "display": "hive_queen",
-      "type": "biome_boss",
-      "hp": 440,
-      "points": 14000,
-      "filename": "boss_biome_9_game.png",
-      "path": "assets/sprites/boss_biome_9_game.png",
-      "width": 256,
-      "height": 256,
-      "color": [
-        180,
-        50,
-        200
-      ],
-      "concept_art": "assets/sprites/bosses/boss_biome_9.png",
-      "frames": [
-        {
-          "index": 0,
-          "filename": "boss_biome_9_game.png",
-          "path": "assets/sprites/boss_biome_9_game.png"
-        }
-      ]
-    },
-    "audio_xenomorph_hive_ambient": {
-      "biome": 9,
-      "type": "ambient_audio",
-      "filename": "xenomorph_hive_ambient.wav",
-      "path": "assets/audio/ambient/xenomorph_hive_ambient.wav",
-      "format": "wav",
-      "duration_sec": 60,
-      "status": "placeholder"
-    },
-    "bg_core_rift": {
-      "biome": 10,
-      "display": "Core Rift",
-      "frames": [
-        {
-          "index": 0,
-          "filename": "bg_core_rift_0000.png",
-          "path": "assets/sprites/bg_core_rift_0000.png",
-          "width": 1280,
-          "height": 720,
-          "is_power_of_two": false
-        },
-        {
-          "index": 1,
-          "filename": "bg_core_rift_0001.png",
-          "path": "assets/sprites/bg_core_rift_0001.png",
-          "width": 1280,
-          "height": 720,
-          "is_power_of_two": false
-        },
-        {
-          "index": 2,
-          "filename": "bg_core_rift_0002.png",
-          "path": "assets/sprites/bg_core_rift_0002.png",
-          "width": 1280,
-          "height": 720,
-          "is_power_of_two": false
-        },
-        {
-          "index": 3,
-          "filename": "bg_core_rift_0003.png",
-          "path": "assets/sprites/bg_core_rift_0003.png",
-          "width": 1280,
-          "height": 720,
-          "is_power_of_two": false
-        },
-        {
-          "index": 4,
-          "filename": "bg_core_rift_0004.png",
-          "path": "assets/sprites/bg_core_rift_0004.png",
-          "width": 1280,
-          "height": 720,
-          "is_power_of_two": false
-        },
-        {
-          "index": 5,
-          "filename": "bg_core_rift_0005.png",
-          "path": "assets/sprites/bg_core_rift_0005.png",
-          "width": 1280,
-          "height": 720,
-          "is_power_of_two": false
-        },
-        {
-          "index": 6,
-          "filename": "bg_core_rift_0006.png",
-          "path": "assets/sprites/bg_core_rift_0006.png",
-          "width": 1280,
-          "height": 720,
-          "is_power_of_two": false
-        },
-        {
-          "index": 7,
-          "filename": "bg_core_rift_0007.png",
-          "path": "assets/sprites/bg_core_rift_0007.png",
-          "width": 1280,
-          "height": 720,
-          "is_power_of_two": false
-        },
-        {
-          "index": 8,
-          "filename": "bg_core_rift_0008.png",
-          "path": "assets/sprites/bg_core_rift_0008.png",
-          "width": 1280,
-          "height": 720,
-          "is_power_of_two": false
-        },
-        {
-          "index": 9,
-          "filename": "bg_core_rift_0009.png",
-          "path": "assets/sprites/bg_core_rift_0009.png",
-          "width": 1280,
-          "height": 720,
-          "is_power_of_two": false
-        }
-      ],
-      "strip": "assets/sprites/backgrounds/bg_core_rift_strip.png",
-      "frame_count": 10,
-      "width": 1280,
-      "height": 720
-    },
-    "enemy_glitch_fragment": {
-      "biome": 10,
-      "display": "glitch_fragment",
-      "type": "scout",
-      "hp": 2,
-      "points": 200,
-      "filename": "enemy_glitch_fragment_0.png",
-      "path": "assets/sprites/enemy_glitch_fragment_0.png",
-      "width": 32,
-      "height": 32,
-      "color": [
-        0,
-        255,
-        100
-      ],
-      "frames": [
-        {
-          "index": 0,
-          "filename": "enemy_glitch_fragment_0.png",
-          "path": "assets/sprites/enemy_glitch_fragment_0.png"
-        }
-      ]
-    },
-    "enemy_paradox_wisp": {
-      "biome": 10,
-      "display": "paradox_wisp",
-      "type": "interceptor",
-      "hp": 3,
-      "points": 300,
-      "filename": "enemy_paradox_wisp_0.png",
-      "path": "assets/sprites/enemy_paradox_wisp_0.png",
-      "width": 32,
-      "height": 32,
-      "color": [
-        255,
-        0,
-        150
-      ],
-      "frames": [
-        {
-          "index": 0,
-          "filename": "enemy_paradox_wisp_0.png",
-          "path": "assets/sprites/enemy_paradox_wisp_0.png"
-        }
-      ]
-    },
-    "enemy_null_entity": {
-      "biome": 10,
-      "display": "null_entity",
-      "type": "heavy",
-      "hp": 12,
-      "points": 700,
-      "filename": "enemy_null_entity_0.png",
-      "path": "assets/sprites/enemy_null_entity_0.png",
-      "width": 64,
-      "height": 64,
-      "color": [
-        100,
-        0,
-        100
-      ],
-      "frames": [
-        {
-          "index": 0,
-          "filename": "enemy_null_entity_0.png",
-          "path": "assets/sprites/enemy_null_entity_0.png"
-        }
-      ]
-    },
-    "enemy_rift_aberration": {
-      "biome": 10,
-      "display": "rift_aberration",
-      "type": "special",
-      "hp": 6,
-      "points": 450,
-      "filename": "enemy_rift_aberration_0.png",
-      "path": "assets/sprites/enemy_rift_aberration_0.png",
-      "width": 48,
-      "height": 48,
-      "color": [
-        200,
-        0,
-        200
-      ],
-      "frames": [
-        {
-          "index": 0,
-          "filename": "enemy_rift_aberration_0.png",
-          "path": "assets/sprites/enemy_rift_aberration_0.png"
-        }
-      ]
-    },
-    "midboss_b10": {
-      "biome": 10,
-      "display": "reality_anchor",
-      "type": "mid_boss",
-      "hp": 240,
-      "points": 7000,
-      "filename": "midboss_b10_0.png",
-      "path": "assets/sprites/midboss_b10_0.png",
-      "width": 128,
-      "height": 128,
-      "color": [
-        255,
-        0,
-        200
-      ],
-      "frames": [
-        {
-          "index": 0,
-          "filename": "midboss_b10_0.png",
-          "path": "assets/sprites/midboss_b10_0.png"
-        }
-      ]
-    },
-    "boss_biome_10_game": {
-      "biome": 10,
-      "display": "reality_warp",
-      "type": "biome_boss",
-      "hp": 480,
-      "points": 25000,
-      "filename": "boss_biome_10_game.png",
-      "path": "assets/sprites/boss_biome_10_game.png",
-      "width": 256,
-      "height": 256,
-      "color": [
-        255,
-        0,
-        255
-      ],
-      "concept_art": "assets/sprites/bosses/boss_biome_10.png",
-      "frames": [
-        {
-          "index": 0,
-          "filename": "boss_biome_10_game.png",
-          "path": "assets/sprites/boss_biome_10_game.png"
-        }
-      ]
-    },
-    "audio_core_rift_ambient": {
-      "biome": 10,
-      "type": "ambient_audio",
-      "filename": "core_rift_ambient.wav",
-      "path": "assets/audio/ambient/core_rift_ambient.wav",
-      "format": "wav",
-      "duration_sec": 60,
-      "status": "placeholder"
     }
   },
   "validation": {
-    "total_files_scanned": 2288,
-    "valid_power_of_two_count": 20,
-    "invalid_power_of_two_count": 2268,
+    "total_files_scanned": 2408,
+    "valid_power_of_two_count": 63,
+    "invalid_power_of_two_count": 2345,
     "errors": [
       "Asset 'bg_abyssal_trench_0001.png' has non-power-of-two dimensions: 1280x720",
       "Asset 'bg_abyssal_trench_0002.png' has non-power-of-two dimensions: 1280x720",
@@ -21739,7 +21457,67 @@
       "Asset 'bg_coral_graveyard_0118.png' has non-power-of-two dimensions: 1280x720",
       "Asset 'bg_coral_graveyard_0119.png' has non-power-of-two dimensions: 1280x720",
       "Asset 'bg_coral_graveyard_0120.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'bg_core_rift_0000.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'bg_core_rift_0001.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'bg_core_rift_0002.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'bg_core_rift_0003.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'bg_core_rift_0004.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'bg_core_rift_0005.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'bg_core_rift_0006.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'bg_core_rift_0007.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'bg_core_rift_0008.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'bg_core_rift_0009.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'bg_derelict_fleet_0000.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'bg_derelict_fleet_0001.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'bg_derelict_fleet_0002.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'bg_derelict_fleet_0003.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'bg_derelict_fleet_0004.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'bg_derelict_fleet_0005.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'bg_derelict_fleet_0006.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'bg_derelict_fleet_0007.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'bg_derelict_fleet_0008.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'bg_derelict_fleet_0009.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'bg_ice_rings_0000.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'bg_ice_rings_0001.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'bg_ice_rings_0002.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'bg_ice_rings_0003.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'bg_ice_rings_0004.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'bg_ice_rings_0005.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'bg_ice_rings_0006.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'bg_ice_rings_0007.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'bg_ice_rings_0008.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'bg_ice_rings_0009.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'bg_inferno_core_0000.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'bg_inferno_core_0001.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'bg_inferno_core_0002.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'bg_inferno_core_0003.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'bg_inferno_core_0004.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'bg_inferno_core_0005.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'bg_inferno_core_0006.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'bg_inferno_core_0007.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'bg_inferno_core_0008.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'bg_inferno_core_0009.png' has non-power-of-two dimensions: 1280x720",
       "Asset 'bg_nebula_0.png' has non-power-of-two dimensions: 1408x768",
+      "Asset 'bg_nebula_drift_0000.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'bg_nebula_drift_0001.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'bg_nebula_drift_0002.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'bg_nebula_drift_0003.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'bg_nebula_drift_0004.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'bg_nebula_drift_0005.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'bg_nebula_drift_0006.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'bg_nebula_drift_0007.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'bg_nebula_drift_0008.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'bg_nebula_drift_0009.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'bg_storm_belt_0000.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'bg_storm_belt_0001.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'bg_storm_belt_0002.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'bg_storm_belt_0003.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'bg_storm_belt_0004.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'bg_storm_belt_0005.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'bg_storm_belt_0006.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'bg_storm_belt_0007.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'bg_storm_belt_0008.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'bg_storm_belt_0009.png' has non-power-of-two dimensions: 1280x720",
       "Asset 'bg_title_0001.png' has non-power-of-two dimensions: 1280x720",
       "Asset 'bg_title_0002.png' has non-power-of-two dimensions: 1280x720",
       "Asset 'bg_title_0003.png' has non-power-of-two dimensions: 1280x720",
@@ -21860,6 +21638,16 @@
       "Asset 'bg_title_0118.png' has non-power-of-two dimensions: 1280x720",
       "Asset 'bg_title_0119.png' has non-power-of-two dimensions: 1280x720",
       "Asset 'bg_title_0120.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'bg_xenomorph_hive_0000.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'bg_xenomorph_hive_0001.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'bg_xenomorph_hive_0002.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'bg_xenomorph_hive_0003.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'bg_xenomorph_hive_0004.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'bg_xenomorph_hive_0005.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'bg_xenomorph_hive_0006.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'bg_xenomorph_hive_0007.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'bg_xenomorph_hive_0008.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'bg_xenomorph_hive_0009.png' has non-power-of-two dimensions: 1280x720",
       "Asset 'boss_0.png' has non-power-of-two dimensions: 1280x896",
       "Asset 'boss_death_0001.png' has non-power-of-two dimensions: 1280x720",
       "Asset 'boss_death_0002.png' has non-power-of-two dimensions: 1280x720",
@@ -21989,6 +21777,13 @@
       "Asset 'boss_rage_0030.png' has non-power-of-two dimensions: 1280x720",
       "Asset 'boss_rage_0031.png' has non-power-of-two dimensions: 1280x720",
       "Asset 'boss_rage_0032.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'enemy_fleet_turret_0.png' has non-power-of-two dimensions: 48x48",
+      "Asset 'enemy_hive_node_0.png' has non-power-of-two dimensions: 48x48",
+      "Asset 'enemy_ice_shard_0.png' has non-power-of-two dimensions: 24x24",
+      "Asset 'enemy_inferno_node_0.png' has non-power-of-two dimensions: 48x48",
+      "Asset 'enemy_nebula_wraith_0.png' has non-power-of-two dimensions: 48x48",
+      "Asset 'enemy_rift_aberration_0.png' has non-power-of-two dimensions: 48x48",
+      "Asset 'enemy_storm_sentinel_0.png' has non-power-of-two dimensions: 48x48",
       "Asset 'heavy_cycle_0001.png' has non-power-of-two dimensions: 1280x720",
       "Asset 'heavy_cycle_0002.png' has non-power-of-two dimensions: 1280x720",
       "Asset 'heavy_cycle_0003.png' has non-power-of-two dimensions: 1280x720",
@@ -23648,8 +23443,22 @@
       "Asset 'title_0.png' has non-power-of-two dimensions: 1408x768"
     ],
     "warnings": [
+      "Filename 'boss_biome_10_game.png' does not follow standard 'prefix_index.ext' naming convention. Defaulted to prefix 'boss_biome_10_game', index 0",
+      "Filename 'boss_biome_4_game.png' does not follow standard 'prefix_index.ext' naming convention. Defaulted to prefix 'boss_biome_4_game', index 0",
+      "Filename 'boss_biome_5_game.png' does not follow standard 'prefix_index.ext' naming convention. Defaulted to prefix 'boss_biome_5_game', index 0",
+      "Filename 'boss_biome_6_game.png' does not follow standard 'prefix_index.ext' naming convention. Defaulted to prefix 'boss_biome_6_game', index 0",
+      "Filename 'boss_biome_7_game.png' does not follow standard 'prefix_index.ext' naming convention. Defaulted to prefix 'boss_biome_7_game', index 0",
+      "Filename 'boss_biome_8_game.png' does not follow standard 'prefix_index.ext' naming convention. Defaulted to prefix 'boss_biome_8_game', index 0",
+      "Filename 'boss_biome_9_game.png' does not follow standard 'prefix_index.ext' naming convention. Defaulted to prefix 'boss_biome_9_game', index 0",
       "Filename 'laser_0_glow.png' does not follow standard 'prefix_index.ext' naming convention. Defaulted to prefix 'laser_0_glow', index 0",
       "Filename 'laser_enemy.png' does not follow standard 'prefix_index.ext' naming convention. Defaulted to prefix 'laser_enemy', index 0",
+      "Filename 'midboss_b10_0.png' does not follow standard 'prefix_index.ext' naming convention. Defaulted to prefix 'midboss_b10_0', index 0",
+      "Filename 'midboss_b4_0.png' does not follow standard 'prefix_index.ext' naming convention. Defaulted to prefix 'midboss_b4_0', index 0",
+      "Filename 'midboss_b5_0.png' does not follow standard 'prefix_index.ext' naming convention. Defaulted to prefix 'midboss_b5_0', index 0",
+      "Filename 'midboss_b6_0.png' does not follow standard 'prefix_index.ext' naming convention. Defaulted to prefix 'midboss_b6_0', index 0",
+      "Filename 'midboss_b7_0.png' does not follow standard 'prefix_index.ext' naming convention. Defaulted to prefix 'midboss_b7_0', index 0",
+      "Filename 'midboss_b8_0.png' does not follow standard 'prefix_index.ext' naming convention. Defaulted to prefix 'midboss_b8_0', index 0",
+      "Filename 'midboss_b9_0.png' does not follow standard 'prefix_index.ext' naming convention. Defaulted to prefix 'midboss_b9_0', index 0",
       "Filename 'player_0_glow.png' does not follow standard 'prefix_index.ext' naming convention. Defaulted to prefix 'player_0_glow', index 0",
       "Filename 'player_1_glow.png' does not follow standard 'prefix_index.ext' naming convention. Defaulted to prefix 'player_1_glow', index 0",
       "Filename 'sfx_player_laser_l1_0001.png' does not follow standard 'prefix_index.ext' naming convention. Defaulted to prefix 'sfx_player_laser_l1_0001', index 0",
@@ -23776,6 +23585,5 @@
       "Filename 'studio_logo.png' does not follow standard 'prefix_index.ext' naming convention. Defaulted to prefix 'studio_logo', index 0"
     ],
     "missing_assets": []
-  },
-  "total_sprites": 231
+  }
 }
