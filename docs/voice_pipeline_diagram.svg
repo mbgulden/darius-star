@@ -1,0 +1,247 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 650" width="100%" height="100%">
+  <defs>
+    <!-- Background Gradient -->
+    <radialGradient id="bg" cx="50%" cy="50%" r="75%">
+      <stop offset="0%" stop-color="#0d1b2a"/>
+      <stop offset="100%" stop-color="#010811"/>
+    </radialGradient>
+    
+    <!-- Neon Gradients -->
+    <linearGradient id="neon-blue" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00f2fe"/>
+      <stop offset="100%" stop-color="#4facfe"/>
+    </linearGradient>
+    <linearGradient id="neon-cyan" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0575e6"/>
+      <stop offset="100%" stop-color="#00f2fe"/>
+    </linearGradient>
+    <linearGradient id="neon-green" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00ff87"/>
+      <stop offset="100%" stop-color="#60efff"/>
+    </linearGradient>
+    <linearGradient id="neon-orange" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f093fb"/>
+      <stop offset="100%" stop-color="#f5576c"/>
+    </linearGradient>
+    
+    <!-- Glow Filter -->
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1000" height="650" fill="url(#bg)"/>
+
+  <!-- Title -->
+  <text x="500" y="45" font-family="Outfit, Inter, sans-serif" font-size="24" font-weight="800" fill="#60efff" text-anchor="middle" letter-spacing="2" filter="url(#glow)">
+    VOICE POST-PROCESSING PIPELINE
+  </text>
+  <text x="500" y="70" font-family="Inter, sans-serif" font-size="12" font-weight="400" fill="#8892b0" text-anchor="middle">
+    Darius Star: Cyber Coelacanth — Fighter-Pilot Radio FX Chain (GRO-952)
+  </text>
+
+  <!-- Pipeline Flow Border Container -->
+  <rect x="30" y="100" width="940" height="180" rx="15" fill="rgba(10, 25, 47, 0.6)" stroke="#00f2fe" stroke-opacity="0.3" stroke-width="2"/>
+  <text x="50" y="125" font-family="Inter, sans-serif" font-weight="700" font-size="12" fill="#00ff87" letter-spacing="1">
+    6-STAGE STANDARDIZED POST-PROCESSING PIPELINE
+  </text>
+
+  <!-- Flow Nodes -->
+  <!-- Raw TTS -->
+  <g transform="translate(60, 150)">
+    <rect width="100" height="80" rx="8" fill="rgba(255,255,255,0.05)" stroke="#8892b0" stroke-width="1.5"/>
+    <text x="50" y="35" font-family="Inter, sans-serif" font-size="12" font-weight="700" fill="#e2e8f0" text-anchor="middle">Raw TTS</text>
+    <text x="50" y="55" font-family="Inter, sans-serif" font-size="10" fill="#8892b0" text-anchor="middle">WAV Input</text>
+  </g>
+
+  <!-- Arrow 1 -->
+  <path d="M 170 190 L 195 190" fill="none" stroke="#00f2fe" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Stage 1: Bandpass -->
+  <g transform="translate(205, 150)">
+    <rect width="105" height="80" rx="8" fill="rgba(0, 242, 254, 0.08)" stroke="url(#neon-blue)" stroke-width="1.5" filter="url(#glow)"/>
+    <text x="52" y="30" font-family="Inter, sans-serif" font-size="11" font-weight="700" fill="#00f2fe" text-anchor="middle">Stage 1: Bandpass</text>
+    <text x="52" y="48" font-family="Inter, sans-serif" font-size="9" font-weight="600" fill="#e2e8f0" text-anchor="middle">300 - 3400 Hz</text>
+    <text x="52" y="62" font-family="Inter, sans-serif" font-size="8" fill="#8892b0" text-anchor="middle">bandpass filter</text>
+  </g>
+
+  <!-- Arrow 2 -->
+  <path d="M 320 190 L 335 190" fill="none" stroke="#00f2fe" stroke-width="2"/>
+
+  <!-- Stage 2: Compression -->
+  <g transform="translate(345, 150)">
+    <rect width="105" height="80" rx="8" fill="rgba(0, 242, 254, 0.08)" stroke="url(#neon-blue)" stroke-width="1.5"/>
+    <text x="52" y="30" font-family="Inter, sans-serif" font-size="11" font-weight="700" fill="#00f2fe" text-anchor="middle">Stage 2: Compand</text>
+    <text x="52" y="48" font-family="Inter, sans-serif" font-size="9" font-weight="600" fill="#e2e8f0" text-anchor="middle">4:1 Compression</text>
+    <text x="52" y="62" font-family="Inter, sans-serif" font-size="8" fill="#8892b0" text-anchor="middle">Gain normalization</text>
+  </g>
+
+  <!-- Arrow 3 -->
+  <path d="M 460 190 L 475 190" fill="none" stroke="#00f2fe" stroke-width="2"/>
+
+  <!-- Stage 3: Noise Layer -->
+  <g transform="translate(485, 150)">
+    <rect width="105" height="80" rx="8" fill="rgba(0, 242, 254, 0.08)" stroke="url(#neon-blue)" stroke-width="1.5"/>
+    <text x="52" y="30" font-family="Inter, sans-serif" font-size="11" font-weight="700" fill="#00f2fe" text-anchor="middle">Stage 3: Noise</text>
+    <text x="52" y="48" font-family="Inter, sans-serif" font-size="9" font-weight="600" fill="#e2e8f0" text-anchor="middle">Brown Noise</text>
+    <text x="52" y="62" font-family="Inter, sans-serif" font-size="8" fill="#8892b0" text-anchor="middle">Bed at -42 dB</text>
+  </g>
+
+  <!-- Arrow 4 -->
+  <path d="M 600 190 L 615 190" fill="none" stroke="#00f2fe" stroke-width="2"/>
+
+  <!-- Stage 4: Mic Click -->
+  <g transform="translate(625, 150)">
+    <rect width="105" height="80" rx="8" fill="rgba(0, 242, 254, 0.08)" stroke="url(#neon-blue)" stroke-width="1.5"/>
+    <text x="52" y="30" font-family="Inter, sans-serif" font-size="11" font-weight="700" fill="#00f2fe" text-anchor="middle">Stage 4: Click</text>
+    <text x="52" y="48" font-family="Inter, sans-serif" font-size="9" font-weight="600" fill="#e2e8f0" text-anchor="middle">8ms Sine Click</text>
+    <text x="52" y="62" font-family="Inter, sans-serif" font-size="8" fill="#8892b0" text-anchor="middle">Prepend at start</text>
+  </g>
+
+  <!-- Arrow 5 -->
+  <path d="M 740 190 L 755 190" fill="none" stroke="#00f2fe" stroke-width="2"/>
+
+  <!-- Stage 5: Squelch Tail -->
+  <g transform="translate(765, 150)">
+    <rect width="105" height="80" rx="8" fill="rgba(0, 242, 254, 0.08)" stroke="url(#neon-blue)" stroke-width="1.5"/>
+    <text x="52" y="30" font-family="Inter, sans-serif" font-size="11" font-weight="700" fill="#00f2fe" text-anchor="middle">Stage 5: Squelch</text>
+    <text x="52" y="48" font-family="Inter, sans-serif" font-size="9" font-weight="600" fill="#e2e8f0" text-anchor="middle">120ms White Fade</text>
+    <text x="52" y="62" font-family="Inter, sans-serif" font-size="8" fill="#8892b0" text-anchor="middle">Append at end</text>
+  </g>
+
+  <!-- Arrow 6 -->
+  <path d="M 880 190 L 895 190" fill="none" stroke="#00f2fe" stroke-width="2"/>
+
+  <!-- Stage 6: Normalization -->
+  <g transform="translate(880, 150)">
+    <rect width="90" height="80" rx="8" fill="rgba(0, 242, 254, 0.08)" stroke="url(#neon-blue)" stroke-width="1.5"/>
+    <text x="45" y="30" font-family="Inter, sans-serif" font-size="11" font-weight="700" fill="#00f2fe" text-anchor="middle">Stage 6: Norm</text>
+    <text x="45" y="48" font-family="Inter, sans-serif" font-size="9" font-weight="600" fill="#e2e8f0" text-anchor="middle">-16 LUFS</text>
+    <text x="45" y="62" font-family="Inter, sans-serif" font-size="8" fill="#8892b0" text-anchor="middle">EBU R128 TP-1.5</text>
+  </g>
+
+  <!-- Arrow markers -->
+  <svg>
+    <defs>
+      <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M 0 0 L 10 5 L 0 10 z" fill="#00f2fe"/>
+      </marker>
+    </defs>
+  </svg>
+
+  <!-- Character EQ Profiles Container -->
+  <rect x="30" y="300" width="455" height="320" rx="15" fill="rgba(10, 25, 47, 0.6)" stroke="#00ff87" stroke-opacity="0.3" stroke-width="2"/>
+  <text x="50" y="325" font-family="Inter, sans-serif" font-weight="700" font-size="12" fill="#00ff87" letter-spacing="1">
+    CHARACTER EQ PRESETS (APPLIED FIRST)
+  </text>
+
+  <!-- EQ Profiles list -->
+  <g transform="translate(50, 345)" font-family="Inter, sans-serif" font-size="10" fill="#e2e8f0">
+    <!-- Darius -->
+    <text x="0" y="15" font-weight="700" fill="#60efff">1. Darius Star (Deep Diver)</text>
+    <text x="180" y="15" fill="#8892b0">+2 dB @ 120Hz | -1 dB @ 8kHz (Low/High Shelf)</text>
+    
+    <!-- Naya -->
+    <text x="0" y="40" font-weight="700" fill="#60efff">2. Naya Star (Warm Core)</text>
+    <text x="180" y="40" fill="#8892b0">+1 dB @ 150Hz | +2 dB @ 2.5kHz (Mid Bump)</text>
+
+    <!-- Cross -->
+    <text x="0" y="65" font-weight="700" fill="#60efff">3. Valera Cross (Command Edge)</text>
+    <text x="180" y="65" fill="#8892b0">-1 dB @ 100Hz | +3 dB @ 3kHz | +1 dB @ 10kHz</text>
+
+    <!-- Ophion -->
+    <text x="0" y="90" font-weight="700" fill="#60efff">4. Ophion Reborn (Curious Resonance)</text>
+    <text x="180" y="90" fill="#8892b0">-2 dB @ 80Hz | +4 dB @ 1.5kHz | +2 dB @ 12kHz</text>
+
+    <!-- Thorne -->
+    <text x="0" y="115" font-weight="700" fill="#60efff">5. Jack Thorne (Old Salt)</text>
+    <text x="180" y="115" fill="#8892b0">+3 dB @ 100Hz | -1 dB @ 3kHz | -2 dB @ 8kHz</text>
+
+    <!-- Lyra -->
+    <text x="0" y="140" font-weight="700" fill="#60efff">6. Lyra Star (Starlight)</text>
+    <text x="180" y="140" fill="#8892b0">-3 dB @ 80Hz | +2 dB @ 4kHz | +1 dB @ 14kHz</text>
+
+    <!-- Dreamer -->
+    <text x="0" y="165" font-weight="700" fill="#60efff">7. The Dreamer (Abyss Voice)</text>
+    <text x="180" y="165" fill="#8892b0">+6 dB @ 60Hz | -4 dB @ 2kHz | -6 dB @ 10kHz + Reverb</text>
+    
+    <!-- Separator -->
+    <line x1="0" y1="185" x2="415" y2="185" stroke="rgba(255,255,255,0.1)"/>
+
+    <!-- Variants -->
+    <text x="0" y="205" font-weight="700" fill="#00ff87">Special Variants:</text>
+    <text x="0" y="225" font-weight="600" fill="#e2e8f0">Aldric Star:</text>
+    <text x="100" y="225" fill="#8892b0">Deep Diver profile + vibrato tape warble</text>
+    
+    <text x="0" y="245" font-weight="600" fill="#e2e8f0">Crane Echo:</text>
+    <text x="100" y="245" fill="#8892b0">Command Edge profile + bitcrush (acrusher) + room echo</text>
+    
+    <text x="0" y="265" font-weight="600" fill="#e2e8f0">Bosses:</text>
+    <text x="100" y="265" fill="#8892b0">Abyss profile + flange (Guardian) / chorus (Hive) / reverse reverb (Architect)</text>
+  </g>
+
+  <!-- Speaker Transitions Container -->
+  <rect x="515" y="300" width="455" height="320" rx="15" fill="rgba(10, 25, 47, 0.6)" stroke="#f5576c" stroke-opacity="0.3" stroke-width="2"/>
+  <text x="535" y="325" font-family="Inter, sans-serif" font-weight="700" font-size="12" fill="#f5576c" letter-spacing="1">
+    SPEAKER TRANSITIONS &amp; SEQUENCING
+  </text>
+
+  <!-- Transition visualization diagram -->
+  <g transform="translate(535, 345)" font-family="Inter, sans-serif" font-size="10" fill="#e2e8f0">
+    <!-- Diagram text -->
+    <text x="0" y="15" font-weight="700" fill="#f093fb">Different Speakers:</text>
+    
+    <!-- Visual blocks -->
+    <!-- Speaker 1 Box -->
+    <g transform="translate(0, 30)">
+      <rect width="110" height="40" rx="5" fill="rgba(0, 242, 254, 0.15)" stroke="#00f2fe" stroke-width="1"/>
+      <text x="55" y="20" font-size="9" fill="#00f2fe" text-anchor="middle">Speaker A Voice</text>
+      <text x="55" y="32" font-size="7" fill="#8892b0" text-anchor="middle">Fade Out (30ms)</text>
+    </g>
+
+    <!-- Transition Box -->
+    <g transform="translate(120, 30)">
+      <rect width="170" height="40" rx="5" fill="rgba(245, 87, 108, 0.15)" stroke="#f5576c" stroke-width="1"/>
+      <text x="85" y="18" font-size="8" font-weight="700" fill="#f5576c" text-anchor="middle">150ms Silence Gap</text>
+      <!-- Click click -->
+      <rect x="60" y="24" width="50" height="12" rx="3" fill="#f093fb" stroke="#f5576c" stroke-width="0.5"/>
+      <text x="85" y="32" font-size="7" font-weight="bold" fill="#000" text-anchor="middle">50ms static burst</text>
+    </g>
+
+    <!-- Speaker 2 Box -->
+    <g transform="translate(300, 30)">
+      <rect width="110" height="40" rx="5" fill="rgba(0, 255, 135, 0.15)" stroke="#00ff87" stroke-width="1"/>
+      <text x="55" y="20" font-size="9" fill="#00ff87" text-anchor="middle">Speaker B Voice</text>
+      <text x="55" y="32" font-size="7" fill="#8892b0" text-anchor="middle">Fade In (30ms)</text>
+    </g>
+
+    <!-- Same Speaker block -->
+    <text x="0" y="105" font-weight="700" fill="#f093fb">Same Speaker (Consecutive Lines):</text>
+    
+    <g transform="translate(0, 120)">
+      <!-- Speaker A Line 1 -->
+      <rect width="160" height="40" rx="5" fill="rgba(0, 242, 254, 0.15)" stroke="#00f2fe" stroke-width="1"/>
+      <text x="80" y="24" font-size="9" fill="#00f2fe" text-anchor="middle">Speaker A Line 1</text>
+      
+      <!-- Silence gap -->
+      <rect x="170" y="12" width="70" height="15" rx="3" fill="rgba(255,255,255,0.05)" stroke="#8892b0" stroke-width="0.5"/>
+      <text x="205" y="22" font-size="7" fill="#8892b0" text-anchor="middle">80ms Silence Gap</text>
+      
+      <!-- Speaker A Line 2 -->
+      <rect x="250" y="0" width="160" height="40" rx="5" fill="rgba(0, 242, 254, 0.15)" stroke="#00f2fe" stroke-width="1"/>
+      <text x="330" y="24" font-size="9" fill="#00f2fe" text-anchor="middle">Speaker A Line 2</text>
+    </g>
+    
+    <!-- Stitching details -->
+    <text x="0" y="195" font-weight="700" fill="#e2e8f0">Stitching Logic Details:</text>
+    <text x="0" y="215" fill="#8892b0">• Click: pre-rendered 50ms wave (white noise + 2kHz sine tone burst)</text>
+    <text x="0" y="230" fill="#8892b0">• Center 50ms click inside 150ms total gap (50ms sil | click | 50ms sil)</text>
+    <text x="0" y="245" fill="#8892b0">• Crossfades: 30ms exponential fade out / in applied to dialogue</text>
+    <text x="0" y="260" fill="#8892b0">• Seamless concat: Done in a single ffmpeg graph via filter_complex</text>
+  </g>
+</svg>
