@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Darius Star: Metaprogression Upgrade Terminal</title>
+    <!-- Google Fonts for retro sci-fi look -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #03030c;
+            --panel-bg: #070719;
+            --border-color: #1a1a40;
+            --accent-cyan: #00ffff;
+            --accent-pink: #ff0055;
+            --accent-green: #00ff55;
+            --accent-gold: #ffcc00;
+            --text-color: #e2e2ec;
+            --text-muted: #6f6f96;
+            --font-display: 'Orbitron', sans-serif;
+            --font-mono: 'Share Tech Mono', monospace;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(circle at 50% 20%, rgba(26, 26, 80, 0.4) 0%, transparent 60%),
+                linear-gradient(rgba(18, 18, 30, 0.3) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(18, 18, 30, 0.3) 1px, transparent 1px);
+            background-size: 100% 100%, 30px 30px, 30px 30px;
+            color: var(--text-color);
+            font-family: var(--font-mono);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        header {
+            width: 100%;
+            max-width: 1000px;
+            margin-bottom: 25px;
+            text-align: center;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 15px;
+            position: relative;
+        }
+
+        h1 {
+            font-family: var(--font-display);
+            font-size: 28px;
+            font-weight: 900;
+            letter-spacing: 3px;
+            color: var(--accent-cyan);
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.5), 0 0 20px rgba(0, 0, 255, 0.3);
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            font-size: 13px;
+            color: var(--accent-pink);
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            text-shadow: 0 0 8px rgba(255, 0, 85, 0.3);
+        }
+
+        .terminal-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 1000px;
+            margin-bottom: 20px;
+            background: var(--panel-bg);
+            border: 1px dashed var(--border-color);
+            padding: 15px 25px;
+            border-radius: 4px;
+            box-shadow: inset 0 0 10px rgba(0, 255, 255, 0.05);
+        }
+
+        .scrap-counter {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .scrap-label {
+            font-family: var(--font-display);
+            font-size: 14px;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+        }
+
+        .scrap-value {
+            font-family: var(--font-display);
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--accent-green);
+            text-shadow: 0 0 10px rgba(0, 255, 85, 0.6);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .scrap-icon {
+            font-size: 20px;
+            animation: spin 6s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            font-family: var(--font-display);
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            padding: 10px 20px;
+            border: 2px solid transparent;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            outline: none;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            background-color: var(--accent-pink);
+            color: #fff;
+            box-shadow: 0 0 12px rgba(255, 0, 85, 0.3);
+        }
+
+        .btn-primary:hover {
+            background-color: #ff3377;
+            box-shadow: 0 0 20px rgba(255, 0, 85, 0.6);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            border-color: var(--border-color);
+            color: var(--text-color);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+            box-shadow: 0 0 12px rgba(0, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background-color: transparent;
+            border-color: rgba(255, 0, 85, 0.4);
+            color: var(--accent-pink);
+        }
+
+        .btn-danger:hover {
+            background-color: rgba(255, 0, 85, 0.1);
+            border-color: var(--accent-pink);
+            box-shadow: 0 0 12px rgba(255, 0, 85, 0.2);
+        }
+
+        .upgrade-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 20px;
+            width: 100%;
+            max-width: 1000px;
+            margin-bottom: 25px;
+        }
+
+        @media (max-width: 600px) {
+            .upgrade-grid {
+                grid-template-columns: 1fr;
+            }
+            .terminal-info {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+
+        .card {
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            transition: border-color 0.3s;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 3px;
+            height: 100%;
+            background: var(--accent-cyan);
+        }
+
+        .card.weapons::before { background: var(--accent-pink); }
+        .card.shields::before { background: var(--accent-green); }
+        .card.engines::before { background: var(--accent-cyan); }
+        .card.specials::before { background: var(--accent-gold); }
+        .card.cosmetics::before { background: #9900ff; }
+
+        .card:hover {
+            border-color: rgba(0, 255, 255, 0.25);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .category-name {
+            font-family: var(--font-display);
+            font-size: 18px;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: 1px;
+        }
+
+        .category-rank {
+            font-family: var(--font-display);
+            font-size: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 3px 8px;
+            border-radius: 3px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .category-desc {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.5;
+            margin-bottom: 15px;
+            min-height: 54px;
+        }
+
+        .category-desc ul {
+            list-style-type: none;
+        }
+
+        .category-desc li {
+            position: relative;
+            padding-left: 12px;
+            margin-bottom: 2px;
+        }
+
+        .category-desc li::before {
+            content: '▶';
+            position: absolute;
+            left: 0;
+            top: 1px;
+            font-size: 8px;
+            color: var(--accent-cyan);
+        }
+
+        .card.weapons .category-desc li::before { color: var(--accent-pink); }
+        .card.shields .category-desc li::before { color: var(--accent-green); }
+        .card.specials .category-desc li::before { color: var(--accent-gold); }
+        .card.cosmetics .category-desc li::before { color: #9900ff; }
+
+        .progress-bar-container {
+            margin-bottom: 20px;
+        }
+
+        .progress-bar-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .progress-bar-steps {
+            display: flex;
+            gap: 4px;
+            height: 10px;
+        }
+
+        .progress-step {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 2px;
+        }
+
+        .progress-step.active {
+            box-shadow: 0 0 8px currentColor;
+        }
+
+        .card.weapons .progress-step.active { background: var(--accent-pink); color: var(--accent-pink); }
+        .card.shields .progress-step.active { background: var(--accent-green); color: var(--accent-green); }
+        .card.engines .progress-step.active { background: var(--accent-cyan); color: var(--accent-cyan); }
+        .card.specials .progress-step.active { background: var(--accent-gold); color: var(--accent-gold); }
+        .card.cosmetics .progress-step.active { background: #9900ff; color: #9900ff; }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding-top: 15px;
+        }
+
+        .cost-display {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .cost-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+        }
+
+        .cost-value {
+            font-family: var(--font-display);
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--accent-green);
+        }
+
+        .cost-value.maxed {
+            color: var(--accent-gold);
+            text-shadow: 0 0 5px rgba(255, 204, 0, 0.3);
+        }
+
+        .cost-value.insufficient {
+            color: var(--accent-pink);
+        }
+
+        .btn-upgrade {
+            font-family: var(--font-display);
+            font-size: 11px;
+            font-weight: 700;
+            padding: 8px 16px;
+            border: 1px solid var(--border-color);
+            background: rgba(255, 255, 255, 0.02);
+            color: #fff;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-upgrade:hover:not(:disabled) {
+            background: var(--accent-cyan);
+            border-color: var(--accent-cyan);
+            color: #000;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.4);
+            font-weight: bold;
+        }
+
+        .card.weapons .btn-upgrade:hover:not(:disabled) { background: var(--accent-pink); border-color: var(--accent-pink); box-shadow: 0 0 10px rgba(255, 0, 85, 0.4); }
+        .card.shields .btn-upgrade:hover:not(:disabled) { background: var(--accent-green); border-color: var(--accent-green); box-shadow: 0 0 10px rgba(0, 255, 85, 0.4); color: #000; }
+        .card.specials .btn-upgrade:hover:not(:disabled) { background: var(--accent-gold); border-color: var(--accent-gold); box-shadow: 0 0 10px rgba(255, 204, 0, 0.4); color: #000; }
+        .card.cosmetics .btn-upgrade:hover:not(:disabled) { background: #9900ff; border-color: #9900ff; box-shadow: 0 0 10px rgba(153, 0, 255, 0.4); }
+
+        .btn-upgrade:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        /* Cosmetics panel */
+        .cosmetics-panel {
+            width: 100%;
+            max-width: 1000px;
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 20px;
+            margin-bottom: 25px;
+            display: none; /* Only shown if cosmetics rank > 0 */
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+
+        .cosmetics-panel::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, #9900ff, var(--accent-pink), var(--accent-cyan));
+        }
+
+        .cosmetics-panel h2 {
+            font-family: var(--font-display);
+            font-size: 16px;
+            color: #fff;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .cosmetics-panel h2::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .cosmetic-selectors {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .cosmetic-select-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .cosmetic-select-group label {
+            font-size: 11px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+        }
+
+        .cosmetic-select {
+            background: #04040e;
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            font-family: var(--font-mono);
+            padding: 10px;
+            border-radius: 4px;
+            outline: none;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .cosmetic-select:focus {
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 8px rgba(0, 255, 255, 0.15);
+        }
+
+        .cosmetic-select option:disabled {
+            color: #444455;
+            background: #020206;
+        }
+
+        /* Audio confirmation notifications */
+        #notification-zone {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .toast {
+            background: #07071c;
+            border: 1px solid var(--accent-cyan);
+            color: #fff;
+            padding: 12px 20px;
+            border-radius: 4px;
+            font-size: 13px;
+            box-shadow: 0 4px 15px rgba(0, 255, 255, 0.2);
+            animation: slideIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .toast.success {
+            border-color: var(--accent-green);
+            box-shadow: 0 4px 15px rgba(0, 255, 85, 0.2);
+        }
+
+        .toast.error {
+            border-color: var(--accent-pink);
+            box-shadow: 0 4px 15px rgba(255, 0, 85, 0.2);
+        }
+
+        @keyframes slideIn {
+            0% { transform: translateX(100%); opacity: 0; }
+            100% { transform: translateX(0); opacity: 1; }
+        }
+
+        /* Footer Credits */
+        footer {
+            margin-top: auto;
+            font-size: 11px;
+            color: var(--text-muted);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            padding: 20px 0;
+            text-align: center;
+            width: 100%;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        footer a {
+            color: var(--accent-pink);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        footer a:hover {
+            color: #ff3377;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>System Modification Terminal</h1>
+        <div class="subtitle">Darius Star Metaprogression</div>
+    </header>
+
+    <div class="terminal-info">
+        <div class="scrap-counter">
+            <span class="scrap-label">Scrap Core Balance:</span>
+            <span class="scrap-value">
+                <span class="scrap-icon">⚙️</span>
+                <span id="scrap-amount">0</span>
+            </span>
+        </div>
+        <div class="actions">
+            <a href="index.html" class="btn btn-primary" onclick="playAudioFeedback('select')">◀ Launch Mission</a>
+            <button class="btn btn-secondary" onclick="resetProgress()" title="Refunds all upgrades">Reset Upgrades</button>
+        </div>
+    </div>
+
+    <!-- Cosmetics Modification Panel (unlocked via Cosmetics rank) -->
+    <div class="cosmetics-panel" id="cosmetics-panel">
+        <h2>🛠️ Fleet Ship Customization</h2>
+        <div class="cosmetic-selectors">
+            <div class="cosmetic-select-group">
+                <label for="select-color">Ship Hull Plating (Color)</label>
+                <select id="select-color" class="cosmetic-select" onchange="changeCosmetic('shipColor', this.value)">
+                    <option value="default">Default Blue-Grey</option>
+                    <option value="cyan" id="color-cyan" disabled>Neon Cyan (Rank 1 Unlocks)</option>
+                    <option value="magenta" id="color-magenta" disabled>Cyber Magenta (Rank 2 Unlocks)</option>
+                    <option value="emerald" id="color-emerald" disabled>Matrix Emerald (Rank 3 Unlocks)</option>
+                    <option value="gold" id="color-gold" disabled>Aurum Gold (Rank 4 Unlocks)</option>
+                    <option value="purple" id="color-purple" disabled>Void Purple (Rank 5 Unlocks)</option>
+                </select>
+            </div>
+            <div class="cosmetic-select-group">
+                <label for="select-trail">Engine Thruster Emission (Trail)</label>
+                <select id="select-trail" class="cosmetic-select" onchange="changeCosmetic('thrusterTrail', this.value)">
+                    <option value="default">Default Plasma Orange</option>
+                    <option value="cyan" id="trail-cyan" disabled>Electric Blue (Rank 1 Unlocks)</option>
+                    <option value="magenta" id="trail-magenta" disabled>Flame Red (Rank 2 Unlocks)</option>
+                    <option value="emerald" id="trail-emerald" disabled>Toxic Green (Rank 3 Unlocks)</option>
+                    <option value="gold" id="trail-gold" disabled>Aurum Gold (Rank 4 Unlocks)</option>
+                    <option value="purple" id="trail-purple" disabled>Rainbow Trail (Rank 5 Unlocks)</option>
+                </select>
+            </div>
+            <div class="cosmetic-select-group">
+                <label for="select-explosion">Weapon Impact / Fission Styles</label>
+                <select id="select-explosion" class="cosmetic-select" onchange="changeCosmetic('explosionStyle', this.value)">
+                    <option value="default">Thermal Orange Blast</option>
+                    <option value="emp" id="expl-emp" disabled>EMP Shockwave (Rank 4 Unlocks)</option>
+                    <option value="scrap" id="expl-scrap" disabled>Debris Scrap Burst (Rank 5 Unlocks)</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- Upgrade Cards Grid -->
+    <div class="upgrade-grid" id="upgrade-grid">
+        <!-- Rendered via JS -->
+    </div>
+
+    <div id="notification-zone"></div>
+
+    <footer>
+        A Project by <a href="https://whatanadventure.games" target="_blank">What An Adventure Games</a>
+    </footer>
+
+    <!-- Web Audio & Upgrade integration scripts -->
+    <script src="upgrade_system.js"></script>
+    <script>
+        // --- Web Audio Synthesizer (Retro UI Beeps) ---
+        let audioCtx = null;
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        }
+
+        function playAudioFeedback(type) {
+            initAudio();
+            if (!audioCtx) return;
+            try {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                if (type === 'select') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+                    osc.frequency.linearRampToValueAtTime(800, audioCtx.currentTime + 0.08);
+                    gain.gain.setValueAtTime(0.04, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.08);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.08);
+                } else if (type === 'purchase') {
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(250, audioCtx.currentTime);
+                    osc.frequency.setValueAtTime(375, audioCtx.currentTime + 0.05);
+                    osc.frequency.setValueAtTime(500, audioCtx.currentTime + 0.1);
+                    osc.frequency.setValueAtTime(750, audioCtx.currentTime + 0.15);
+                    gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.28);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.28);
+                } else if (type === 'reset') {
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(400, audioCtx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(150, audioCtx.currentTime + 0.25);
+                    gain.gain.setValueAtTime(0.06, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.25);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.25);
+                } else if (type === 'error') {
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(180, audioCtx.currentTime);
+                    gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.18);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.18);
+                }
+            } catch (e) {
+                console.log("Audio blocked:", e);
+            }
+        }
+
+        // --- Toast Notifications ---
+        function showToast(message, type = 'info') {
+            const zone = document.getElementById('notification-zone');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerText = message;
+            zone.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateY(-10px)';
+                toast.style.transition = 'all 0.3s';
+                setTimeout(() => toast.remove(), 300);
+            }, 2500);
+        }
+
+        // --- Render UI ---
+        function renderTerminal() {
+            const system = window.DS_UpgradeSystem;
+            const state = system.state;
+            const config = system.getConfig();
+
+            // Update scrap display
+            document.getElementById('scrap-amount').innerText = state.scrap.toLocaleString();
+
+            // Render categories
+            const grid = document.getElementById('upgrade-grid');
+            grid.innerHTML = '';
+
+            for (const category in config) {
+                const info = config[category];
+                const rank = state.upgrades[category] || 0;
+                const maxRank = info.maxRank;
+                const cost = system.getUpgradeCost(category);
+
+                const card = document.createElement('div');
+                card.className = `card ${category}`;
+
+                // Description items
+                let descHTML = '<ul>';
+                info.descriptions.forEach(desc => {
+                    descHTML += `<li>${desc}</li>`;
+                });
+                descHTML += '</ul>';
+
+                // Cost formatting
+                let costHTML = '';
+                let canBuy = false;
+                if (rank >= maxRank) {
+                    costHTML = `<span class="cost-value maxed">MAX LEVEL</span>`;
+                } else {
+                    const isAffordable = state.scrap >= cost;
+                    costHTML = `<span class="cost-value ${isAffordable ? '' : 'insufficient'}">⚙️ ${cost}</span>`;
+                    canBuy = isAffordable;
+                }
+
+                // Progress steps
+                let progressStepsHTML = '';
+                for (let i = 1; i <= maxRank; i++) {
+                    progressStepsHTML += `<div class="progress-step ${i <= rank ? 'active' : ''}"></div>`;
+                }
+
+                card.innerHTML = `
+                    <div>
+                        <div class="card-header">
+                            <span class="category-name">${info.name}</span>
+                            <span class="category-rank">RANK ${rank}/${maxRank}</span>
+                        </div>
+                        <div class="category-desc">${descHTML}</div>
+                    </div>
+                    <div>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar-label">
+                                <span>Modification Rank</span>
+                                <span>${Math.round((rank / maxRank) * 100)}%</span>
+                            </div>
+                            <div class="progress-bar-steps">
+                                ${progressStepsHTML}
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <div class="cost-display">
+                                <span class="cost-label">Required Scrap</span>
+                                ${costHTML}
+                            </div>
+                            <button class="btn-upgrade" ${canBuy ? '' : 'disabled'} onclick="purchaseUpgrade('${category}')">
+                                ${rank >= maxRank ? 'Fully Modified' : 'Apply Upgrade'}
+                            </button>
+                        </div>
+                    </div>
+                `;
+
+                grid.appendChild(card);
+            }
+
+            // Update Cosmetics selectors
+            const cosmeticRank = state.upgrades.cosmetics || 0;
+            const cosmeticsPanel = document.getElementById('cosmetics-panel');
+            
+            if (cosmeticRank > 0) {
+                cosmeticsPanel.style.display = 'block';
+                
+                // Set unlock statuses on dropdown lists
+                document.getElementById('color-cyan').disabled = cosmeticRank < 1;
+                document.getElementById('color-cyan').text = cosmeticRank < 1 ? 'Neon Cyan (Rank 1 Required)' : 'Neon Cyan';
+                
+                document.getElementById('color-magenta').disabled = cosmeticRank < 2;
+                document.getElementById('color-magenta').text = cosmeticRank < 2 ? 'Cyber Magenta (Rank 2 Required)' : 'Cyber Magenta';
+                
+                document.getElementById('color-emerald').disabled = cosmeticRank < 3;
+                document.getElementById('color-emerald').text = cosmeticRank < 3 ? 'Matrix Emerald (Rank 3 Required)' : 'Matrix Emerald';
+                
+                document.getElementById('color-gold').disabled = cosmeticRank < 4;
+                document.getElementById('color-gold').text = cosmeticRank < 4 ? 'Aurum Gold (Rank 4 Required)' : 'Aurum Gold';
+                
+                document.getElementById('color-purple').disabled = cosmeticRank < 5;
+                document.getElementById('color-purple').text = cosmeticRank < 5 ? 'Void Purple (Rank 5 Required)' : 'Void Purple';
+
+                // Trails
+                document.getElementById('trail-cyan').disabled = cosmeticRank < 1;
+                document.getElementById('trail-cyan').text = cosmeticRank < 1 ? 'Electric Blue (Rank 1 Required)' : 'Electric Blue';
+                
+                document.getElementById('trail-magenta').disabled = cosmeticRank < 2;
+                document.getElementById('trail-magenta').text = cosmeticRank < 2 ? 'Flame Red (Rank 2 Required)' : 'Flame Red';
+                
+                document.getElementById('trail-emerald').disabled = cosmeticRank < 3;
+                document.getElementById('trail-emerald').text = cosmeticRank < 3 ? 'Toxic Green (Rank 3 Required)' : 'Toxic Green';
+                
+                document.getElementById('trail-gold').disabled = cosmeticRank < 4;
+                document.getElementById('trail-gold').text = cosmeticRank < 4 ? 'Aurum Gold (Rank 4 Required)' : 'Aurum Gold';
+                
+                document.getElementById('trail-purple').disabled = cosmeticRank < 5;
+                document.getElementById('trail-purple').text = cosmeticRank < 5 ? 'Rainbow Trail (Rank 5 Required)' : 'Rainbow Trail';
+
+                // Explosions
+                document.getElementById('expl-emp').disabled = cosmeticRank < 4;
+                document.getElementById('expl-emp').text = cosmeticRank < 4 ? 'EMP Shockwave (Rank 4 Required)' : 'EMP Shockwave';
+                
+                document.getElementById('expl-scrap').disabled = cosmeticRank < 5;
+                document.getElementById('expl-scrap').text = cosmeticRank < 5 ? 'Debris Scrap Burst (Rank 5 Required)' : 'Debris Scrap Burst';
+
+                // Select current selections
+                document.getElementById('select-color').value = state.selections.shipColor || 'default';
+                document.getElementById('select-trail').value = state.selections.thrusterTrail || 'default';
+                document.getElementById('select-explosion').value = state.selections.explosionStyle || 'default';
+            } else {
+                cosmeticsPanel.style.display = 'none';
+            }
+        }
+
+        // Action handles
+        function purchaseUpgrade(category) {
+            const system = window.DS_UpgradeSystem;
+            const success = system.buyUpgrade(category);
+            
+            if (success) {
+                playAudioFeedback('purchase');
+                showToast(`Upgrade applied to ${system.getConfig()[category].name}!`, 'success');
+                renderTerminal();
+            } else {
+                playAudioFeedback('error');
+                showToast('Insufficient Scrap balance.', 'error');
+            }
+        }
+
+        function resetProgress() {
+            if (confirm("Are you sure you want to dismantle your upgrades? This will refund 100% of your spent scrap.")) {
+                window.DS_UpgradeSystem.resetState(true);
+                playAudioFeedback('reset');
+                showToast("All systems downgraded. Scrap refunded.", 'success');
+                renderTerminal();
+            }
+        }
+
+        function changeCosmetic(type, value) {
+            const success = window.DS_UpgradeSystem.selectCosmetic(type, value);
+            if (success) {
+                playAudioFeedback('select');
+                showToast("Cosmetic config updated.", "success");
+            } else {
+                playAudioFeedback('error');
+                showToast("This item is still locked.", "error");
+                renderTerminal(); // revert selector state
+            }
+        }
+
+        // --- Process incoming scrap from post-mission URL params ---
+        function processIncomingScrap() {
+            const url = new URL(window.location.href);
+            const scrapMetal = parseInt(url.searchParams.get('scrapMetal')) || 0;
+            const energyCells = parseInt(url.searchParams.get('energyCells')) || 0;
+            const dataFragments = parseInt(url.searchParams.get('dataFragments')) || 0;
+
+            const totalScrap = scrapMetal + (energyCells * 5) + (dataFragments * 25);
+            if (totalScrap > 0) {
+                window.DS_UpgradeSystem.addScrap(totalScrap);
+                showToast(`Salvage processed: +${totalScrap} scrap`, 'success');
+                // Clear params to prevent double-adding on refresh
+                url.searchParams.delete('scrapMetal');
+                url.searchParams.delete('energyCells');
+                url.searchParams.delete('dataFragments');
+                url.searchParams.delete('fromMission');
+                window.history.replaceState({}, '', url.toString());
+            }
+        }
+
+        // Initial paint
+        document.body.addEventListener('click', initAudio, { once: true });
+        processIncomingScrap();
+        renderTerminal();
+    </script>
+</body>
+</html>
