@@ -715,6 +715,122 @@ MUSIC_CATALOG = {
         "duration": 30, "output": "assets/audio/mystery_transcendence.mp3", "loop": True,
     },
 
+    # ═══════════════════════════════════════════════
+    # Biome Victory & Confidence Themes (GRO-1016)
+    # "Show-don't-tell" — music that makes you feel powerful.
+    # Rising energy, percussive drive, 16-bit Sega Genesis style.
+    # ═══════════════════════════════════════════════
+    "victory_b1_abyssal": {
+        "scene": "Victory B1: Abyssal Trench — Biome Clear Triumph",
+        "prompt": (
+            "Triumphant biome-clear fanfare, deep ocean victory, "
+            "ascending synth brass with percussive drive, 160 BPM, "
+            "crashing wave-like cymbal hits, swelling major-key resolution, "
+            "15-second sting, 16-bit Sega Genesis style, instrumental, no vocals, "
+            "feeling of conquering the abyss, rising energy, powerful."
+        ),
+        "duration": 15, "output": "assets/audio/victory_b1_abyssal.mp3", "loop": False,
+    },
+    "victory_b2_coral": {
+        "scene": "Victory B2: Coral Graveyard — Rust-Conqueror Triumph",
+        "prompt": (
+            "Industrial victory fanfare, rusted machine conquered, "
+            "metallic percussion hits with triumphant synth brass stabs, 155 BPM, "
+            "clanging victory bells, mechanic's celebration, "
+            "15-second sting, 16-bit Sega Genesis style, instrumental, no vocals, "
+            "overcoming decay with power, rising energy, percussive drive."
+        ),
+        "duration": 15, "output": "assets/audio/victory_b2_coral.mp3", "loop": False,
+    },
+    "victory_b3_lair": {
+        "scene": "Victory B3: Coelacanth Lair — Dreadnought Conquered",
+        "prompt": (
+            "Victory over biomechanical terror, heavy triumphant drums, "
+            "dark orchestral brass hits resolving to bright major, 165 BPM, "
+            "industrial celebration, mechanical beast defeated, "
+            "15-second sting, 16-bit Sega Genesis style, instrumental, no vocals, "
+            "powerful, rising energy, percussive drive, mid-game morale peak."
+        ),
+        "duration": 15, "output": "assets/audio/victory_b3_lair.mp3", "loop": False,
+    },
+    "victory_b4_nebula": {
+        "scene": "Victory B4: Nebula Drift — Plasma Conqueror",
+        "prompt": (
+            "Ethereal victory in plasma nebula, shimmering ascending synth arpeggios, "
+            "bright major-key resolution with space-wind textures, 145 BPM, "
+            "ghostly choir pads transforming to triumphant brass, "
+            "15-second sting, 16-bit Sega Genesis style, instrumental, no vocals, "
+            "cosmic triumph, rising energy, percussive drive."
+        ),
+        "duration": 15, "output": "assets/audio/victory_b4_nebula.mp3", "loop": False,
+    },
+    "victory_b5_ice": {
+        "scene": "Victory B5: Ice Rings — Frost Shattered",
+        "prompt": (
+            "Crystalline victory fanfare, ice shattering into triumph, "
+            "bell-like chime arpeggios ascending, cold shimmer resolving to warm major, "
+            "150 BPM, frost-breaking percussion hits, "
+            "15-second sting, 16-bit Sega Genesis style, instrumental, no vocals, "
+            "breaking through frozen opposition, rising energy, powerful."
+        ),
+        "duration": 15, "output": "assets/audio/victory_b5_ice.mp3", "loop": False,
+    },
+    "victory_b6_fire": {
+        "scene": "Victory B6: Inferno Core — Fire Quenched",
+        "prompt": (
+            "Volcanic victory, intense fire drums resolving to triumph, "
+            "roaring synth brass ascending, aggressive timpani hits, 170 BPM, "
+            "heat-haze transforming to bright celebration, "
+            "15-second sting, 16-bit Sega Genesis style, instrumental, no vocals, "
+            "conquering the inferno, rising energy, percussive drive, powerful."
+        ),
+        "duration": 15, "output": "assets/audio/victory_b6_fire.mp3", "loop": False,
+    },
+    "victory_b7_storm": {
+        "scene": "Victory B7: Storm Belt — Tempest Broken",
+        "prompt": (
+            "Storm-conquering victory, thunderous drum hits resolving to calm triumph, "
+            "glitchy breakbeat transforming into driving celebration, 175 BPM, "
+            "lightning-crack stabs becoming victory fanfare, "
+            "15-second sting, 16-bit Sega Genesis style, instrumental, no vocals, "
+            "mastering the storm, rising energy, percussive power."
+        ),
+        "duration": 15, "output": "assets/audio/victory_b7_storm.mp3", "loop": False,
+    },
+    "victory_b8_derelict": {
+        "scene": "Victory B8: Derelict Fleet — Ghost Fleet Vanquished",
+        "prompt": (
+            "Ghost fleet victory, military snare march transforming to celebration, "
+            "ominous brass resolving to bright triumphant major, 155 BPM, "
+            "distress-beacon pings becoming victory chimes, "
+            "15-second sting, 16-bit Sega Genesis style, instrumental, no vocals, "
+            "conquering the haunted fleet, rising energy, percussive drive."
+        ),
+        "duration": 15, "output": "assets/audio/victory_b8_derelict.mp3", "loop": False,
+    },
+    "victory_b9_hive": {
+        "scene": "Victory B9: Xenomorph Hive — Hive Purged",
+        "prompt": (
+            "Organic-alien-vanquishing victory, heartbeat bass transforming to triumphant drums, "
+            "screeching synths resolving to bright major chords, 165 BPM, "
+            "biological horror overcome, pure power celebration, "
+            "15-second sting, 16-bit Sega Genesis style, instrumental, no vocals, "
+            "purifying the hive, rising energy, percussive drive, mid-game morale peak."
+        ),
+        "duration": 15, "output": "assets/audio/victory_b9_hive.mp3", "loop": False,
+    },
+    "victory_b10_core": {
+        "scene": "Victory B10: Core Rift — Reality Mastered",
+        "prompt": (
+            "Reality-breaking final victory, grand orchestral brass fanfare, "
+            "reversed fragments resolving to forward triumphant melody, 185 BPM, "
+            "glitch textures transforming into pure ascending major-key celebration, "
+            "15-second sting, 16-bit Sega Genesis style, instrumental, no vocals, "
+            "mastering the rift, ultimate rising energy, percussive power, epic triumph."
+        ),
+        "duration": 15, "output": "assets/audio/victory_b10_core.mp3", "loop": False,
+    },
+
 }
 
 REPO_ROOT = Path(__file__).parent

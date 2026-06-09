@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-06-09T22:35:34Z",
+  "updated": "2026-06-09T22:51:46Z",
   "tracks": {
     "title": {
       "scene": "Title Screen Music",
@@ -818,6 +818,96 @@
       "path": "assets/audio/mystery_transcendence.mp3",
       "duration_sec": 30,
       "loop": true,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "victory_b1_abyssal": {
+      "scene": "Victory B1: Abyssal Trench \u2014 Biome Clear Triumph",
+      "file": "victory_b1_abyssal.mp3",
+      "path": "assets/audio/victory_b1_abyssal.mp3",
+      "duration_sec": 15,
+      "loop": false,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "victory_b2_coral": {
+      "scene": "Victory B2: Coral Graveyard \u2014 Rust-Conqueror Triumph",
+      "file": "victory_b2_coral.mp3",
+      "path": "assets/audio/victory_b2_coral.mp3",
+      "duration_sec": 15,
+      "loop": false,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "victory_b3_lair": {
+      "scene": "Victory B3: Coelacanth Lair \u2014 Dreadnought Conquered",
+      "file": "victory_b3_lair.mp3",
+      "path": "assets/audio/victory_b3_lair.mp3",
+      "duration_sec": 15,
+      "loop": false,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "victory_b4_nebula": {
+      "scene": "Victory B4: Nebula Drift \u2014 Plasma Conqueror",
+      "file": "victory_b4_nebula.mp3",
+      "path": "assets/audio/victory_b4_nebula.mp3",
+      "duration_sec": 15,
+      "loop": false,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "victory_b5_ice": {
+      "scene": "Victory B5: Ice Rings \u2014 Frost Shattered",
+      "file": "victory_b5_ice.mp3",
+      "path": "assets/audio/victory_b5_ice.mp3",
+      "duration_sec": 15,
+      "loop": false,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "victory_b6_fire": {
+      "scene": "Victory B6: Inferno Core \u2014 Fire Quenched",
+      "file": "victory_b6_fire.mp3",
+      "path": "assets/audio/victory_b6_fire.mp3",
+      "duration_sec": 15,
+      "loop": false,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "victory_b7_storm": {
+      "scene": "Victory B7: Storm Belt \u2014 Tempest Broken",
+      "file": "victory_b7_storm.mp3",
+      "path": "assets/audio/victory_b7_storm.mp3",
+      "duration_sec": 15,
+      "loop": false,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "victory_b8_derelict": {
+      "scene": "Victory B8: Derelict Fleet \u2014 Ghost Fleet Vanquished",
+      "file": "victory_b8_derelict.mp3",
+      "path": "assets/audio/victory_b8_derelict.mp3",
+      "duration_sec": 15,
+      "loop": false,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "victory_b9_hive": {
+      "scene": "Victory B9: Xenomorph Hive \u2014 Hive Purged",
+      "file": "victory_b9_hive.mp3",
+      "path": "assets/audio/victory_b9_hive.mp3",
+      "duration_sec": 15,
+      "loop": false,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "victory_b10_core": {
+      "scene": "Victory B10: Core Rift \u2014 Reality Mastered",
+      "file": "victory_b10_core.mp3",
+      "path": "assets/audio/victory_b10_core.mp3",
+      "duration_sec": 15,
+      "loop": false,
       "generated": true,
       "size_bytes": 525357
     }
