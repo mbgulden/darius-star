@@ -1663,6 +1663,165 @@ VEO_ASSET_CATALOG = {
         "output_prefix": "sfx_code_stream",
         "extract_frames": True,
     },
+    # ═══════════════════════════════════════════════
+    # GRO-986 Menu Transition & UI SFX
+    # ═══════════════════════════════════════════════
+    "sfx_ui_hover": {
+        "category": "GRO-986 Menu SFX",
+        "prompt": (
+            "Menu button hover effect, 16-bit pixel art, "
+            "subtle cyan outline pulse around a UI button, single-frame flash, "
+            "with synchronized light high-pitched sine beep — C6 note, 80ms, "
+            "crisp FM synthesis, Yamaha YM2612 chip character, Sega Genesis style, "
+            "very short and clean, no reverb, transparent background, "
+            "static position, no camera movement."
+        ),
+        "duration_sec": 4, "fps": 15,
+        "output_prefix": "sfx_ui_hover",
+        "extract_frames": True,
+    },
+    "sfx_ui_select": {
+        "category": "GRO-986 Menu SFX",
+        "prompt": (
+            "Menu button select confirmation effect, 16-bit pixel art, "
+            "brief gold flash on a UI button, expanding ring pulse, "
+            "with synchronized satisfying double chirp — C6 to E6 rising, 50ms each, "
+            "two rapid bright notes, Yamaha YM2612 FM synthesis, Sega Genesis arcade style, "
+            "clean and punchy, no reverb, transparent background, "
+            "static position, no camera movement."
+        ),
+        "duration_sec": 4, "fps": 15,
+        "output_prefix": "sfx_ui_select",
+        "extract_frames": True,
+    },
+    "sfx_ui_back": {
+        "category": "GRO-986 Menu SFX",
+        "prompt": (
+            "Menu back or cancel action effect, 16-bit pixel art, "
+            "brief dimming flash on a UI button, subtle red tint, "
+            "with synchronized descending two-note — E5 to C5, 60ms each, "
+            "gentle downward tone, Yamaha YM2612 FM synthesis, Sega Genesis retro arcade style, "
+            "soft but clear, no reverb, transparent background, "
+            "static position, no camera movement."
+        ),
+        "duration_sec": 4, "fps": 15,
+        "output_prefix": "sfx_ui_back",
+        "extract_frames": True,
+    },
+    "sfx_upgrade_purchase": {
+        "category": "GRO-986 Menu SFX",
+        "prompt": (
+            "Successful upgrade purchase effect, 16-bit pixel art, "
+            "gold sparkle burst around a weapon upgrade icon, glowing particles rising, "
+            "with synchronized ascending chime arpeggio — C5 to E5 to G5 to C6, 100ms each, "
+            "four bright rising notes, triumphant and satisfying, "
+            "Yamaha YM2612 FM synthesis, Sega Genesis arcade shop, "
+            "clean and crisp with short decay, no reverb, transparent background."
+        ),
+        "duration_sec": 4, "fps": 15,
+        "output_prefix": "sfx_upgrade_purchase",
+        "extract_frames": True,
+    },
+    "sfx_insufficient_scrap": {
+        "category": "GRO-986 Menu SFX",
+        "prompt": (
+            "Insufficient resources for purchase effect, 16-bit pixel art, "
+            "red X flash over a shop icon, brief error shake, "
+            "with synchronized dull buzzy thud — low square wave at 150Hz, "
+            "short 300ms buzz, slightly distorted, Sega Genesis PSG noise channel, "
+            "retro arcade error sound, flat and unmusical, no reverb, "
+            "transparent background, static position."
+        ),
+        "duration_sec": 4, "fps": 15,
+        "output_prefix": "sfx_insufficient_scrap",
+        "extract_frames": True,
+    },
+    "sfx_menu_transition_in": {
+        "category": "GRO-986 Menu SFX",
+        "prompt": (
+            "Menu screen sliding in from right, 16-bit pixel art, "
+            "dark panel with neon cyan border sliding across screen, "
+            "with synchronized rising FM sweep and soft whoosh — "
+            "pitch ramp from 200Hz to 1200Hz over 400ms, "
+            "bright metallic FM synthesis, Yamaha YM2612, "
+            "clean swoosh with no harshness, retro arcade menu feel, "
+            "transparent background, horizontal movement."
+        ),
+        "duration_sec": 4, "fps": 15,
+        "output_prefix": "sfx_menu_transition_in",
+        "extract_frames": True,
+    },
+    "sfx_menu_transition_out": {
+        "category": "GRO-986 Menu SFX",
+        "prompt": (
+            "Menu screen sliding out to left, 16-bit pixel art, "
+            "dark panel with neon cyan border sliding off-screen, "
+            "with synchronized descending FM sweep — "
+            "pitch ramp from 1200Hz to 200Hz over 300ms, "
+            "metallic FM synthesis, Yamaha YM2612, "
+            "smooth swoosh-down, retro arcade menu feel, "
+            "transparent background, horizontal movement."
+        ),
+        "duration_sec": 4, "fps": 15,
+        "output_prefix": "sfx_menu_transition_out",
+        "extract_frames": True,
+    },
+    "sfx_level_start": {
+        "category": "GRO-986 Menu SFX",
+        "prompt": (
+            "Sub-level start dramatic announcement, 16-bit pixel art, "
+            "large LEVEL text appearing with expanding glow and screen flash, "
+            "with synchronized dramatic ascending sting — FM brass-like fanfare, "
+            "rising from C4 to C6 over 800ms, bold and heroic tone, "
+            "Yamaha YM2612 FM synthesis brass patch, Sega Genesis arcade style, "
+            "powerful and clean attack, reverb tail, transparent background."
+        ),
+        "duration_sec": 4, "fps": 15,
+        "output_prefix": "sfx_level_start",
+        "extract_frames": True,
+    },
+    "sfx_biome_transition": {
+        "category": "GRO-986 Menu SFX",
+        "prompt": (
+            "Biome change screen transition, 16-bit pixel art, "
+            "screen-sweeping wave with biome color flash and biome name text appearing, "
+            "with synchronized grand transition sweep — 1200ms, "
+            "rising and resolving FM synthesis sweep with a unique bright identifier note at the end, "
+            "Yamaha YM2612, epic but short, like entering a new zone, "
+            "Sega Genesis stage transition feel, transparent background."
+        ),
+        "duration_sec": 4, "fps": 15,
+        "output_prefix": "sfx_biome_transition",
+        "extract_frames": True,
+    },
+    "sfx_pause_in": {
+        "category": "GRO-986 Menu SFX",
+        "prompt": (
+            "Game pause time-stop effect, 16-bit pixel art, "
+            "screen dimming with dark overlay descending, freeze-frame flash, "
+            "with synchronized time-stop thwip sound — descending sine blip, "
+            "200ms, pitch dropping from 800Hz to 200Hz, "
+            "Yamaha YM2612, clean sine tone, retro arcade pause, "
+            "short and distinctive, transparent background, static position."
+        ),
+        "duration_sec": 4, "fps": 15,
+        "output_prefix": "sfx_pause_in",
+        "extract_frames": True,
+    },
+    "sfx_pause_out": {
+        "category": "GRO-986 Menu SFX",
+        "prompt": (
+            "Game unpause time-resume effect, 16-bit pixel art, "
+            "screen brightening from dark overlay, unfreeze-frame flash, "
+            "with synchronized time-resume thwip sound — ascending sine blip, "
+            "200ms, pitch rising from 200Hz to 800Hz, "
+            "Yamaha YM2612, clean sine tone, retro arcade unpause, "
+            "short and distinctive, transparent background, static position."
+        ),
+        "duration_sec": 4, "fps": 15,
+        "output_prefix": "sfx_pause_out",
+        "extract_frames": True,
+    },
 }
 
 REPO_ROOT = Path(__file__).parent
