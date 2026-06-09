@@ -1,6 +1,6 @@
 {
   "manifest_version": "1.0",
-  "generated_at": "2026-06-08T19:58:51.113816Z",
+  "generated_at": "2026-06-09T00:03:55.752136Z",
   "sprites": {
     "bg_city": {
       "frames": [
@@ -154,6 +154,22 @@
       "height": 1024,
       "is_valid_power_of_two": true
     },
+    "laser_0_glow": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "laser_0_glow.png",
+          "path": "assets/sprites/laser_0_glow.png",
+          "width": 1024,
+          "height": 1024,
+          "is_power_of_two": true
+        }
+      ],
+      "frame_count": 1,
+      "width": 1024,
+      "height": 1024,
+      "is_valid_power_of_two": true
+    },
     "player": {
       "frames": [
         {
@@ -174,6 +190,38 @@
         }
       ],
       "frame_count": 2,
+      "width": 1024,
+      "height": 1024,
+      "is_valid_power_of_two": true
+    },
+    "player_0_glow": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "player_0_glow.png",
+          "path": "assets/sprites/player_0_glow.png",
+          "width": 1024,
+          "height": 1024,
+          "is_power_of_two": true
+        }
+      ],
+      "frame_count": 1,
+      "width": 1024,
+      "height": 1024,
+      "is_valid_power_of_two": true
+    },
+    "player_1_glow": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "player_1_glow.png",
+          "path": "assets/sprites/player_1_glow.png",
+          "width": 1024,
+          "height": 1024,
+          "is_power_of_two": true
+        }
+      ],
+      "frame_count": 1,
       "width": 1024,
       "height": 1024,
       "is_valid_power_of_two": true
@@ -242,6 +290,22 @@
       "height": 1024,
       "is_valid_power_of_two": true
     },
+    "shield_0_glow": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "shield_0_glow.png",
+          "path": "assets/sprites/shield_0_glow.png",
+          "width": 1024,
+          "height": 1024,
+          "is_power_of_two": true
+        }
+      ],
+      "frame_count": 1,
+      "width": 1024,
+      "height": 1024,
+      "is_valid_power_of_two": true
+    },
     "title": {
       "frames": [
         {
@@ -260,8 +324,8 @@
     }
   },
   "validation": {
-    "total_files_scanned": 18,
-    "valid_power_of_two_count": 14,
+    "total_files_scanned": 22,
+    "valid_power_of_two_count": 18,
     "invalid_power_of_two_count": 4,
     "errors": [
       "Asset 'bg_city_0.png' has non-power-of-two dimensions: 800x450",
@@ -269,7 +333,12 @@
       "Asset 'boss_0.png' has non-power-of-two dimensions: 1280x896",
       "Asset 'title_0.png' has non-power-of-two dimensions: 1408x768"
     ],
-    "warnings": [],
+    "warnings": [
+      "Filename 'laser_0_glow.png' does not follow standard 'prefix_index.ext' naming convention. Defaulted to prefix 'laser_0_glow', index 0",
+      "Filename 'player_0_glow.png' does not follow standard 'prefix_index.ext' naming convention. Defaulted to prefix 'player_0_glow', index 0",
+      "Filename 'player_1_glow.png' does not follow standard 'prefix_index.ext' naming convention. Defaulted to prefix 'player_1_glow', index 0",
+      "Filename 'shield_0_glow.png' does not follow standard 'prefix_index.ext' naming convention. Defaulted to prefix 'shield_0_glow', index 0"
+    ],
     "missing_assets": []
   }
 }

@@ -1215,7 +1215,7 @@
             // Multi-frame explosion (4 frames)
             for (let f = 0; f < 4; f++) {
                 vfxSprites['explosion_' + f] = new Image();
-                vfxSprites['explosion_' + f].src = 'assets/sprites/explosion_' + f + '.png';
+                vfxSprites['explosion_' + f].src = `assets/sprites/explosion_${f}.png`;
             }
             // Shield forcefield ring
             vfxSprites['shield'] = new Image();
@@ -1378,8 +1378,8 @@
 
         // Parallax background layers (image-based)
         const bgLayers = [
-            new ParallaxLayer('nebula', 12, 0, 0.35, canvas.height / 768),      // Far: nebula cloud
-            new ParallaxLayer('city',   55, 0, 0.25, canvas.height / 450)        // Mid: city silhouette
+            new ParallaxLayer('nebula', 12, 0, 0.55, canvas.height / 768),      // Far: nebula cloud
+            new ParallaxLayer('city',   55, 0, 0.45, canvas.height / 450)        // Mid: city silhouette
         ];
 
         // Deep-sea ambient particles
