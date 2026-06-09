@@ -1,0 +1,167 @@
+{
+  "version": "1.0",
+  "description": "Darius Star ship roster — stats for the 5 playable fighter classes",
+  "ships": {
+    "striker": {
+      "id": "striker",
+      "name": "STRIKER",
+      "fullName": "X-01 STRIKER",
+      "class": "Balanced",
+      "tagline": "No weaknesses. Pure skill.",
+      "color": "#00ffff",
+      "colorHex": "0x00ffff",
+      "stats": {
+        "speed": { "value": 220, "max": 300, "label": "SPD" },
+        "shield": { "value": 110, "max": 200, "label": "SHIELD" },
+        "weapon": { "value": 140, "max": 200, "label": "WPN" },
+        "special": { "value": 110, "max": 200, "label": "SPC" }
+      },
+      "weapon": {
+        "type": "Standard Laser",
+        "description": "Steady-rate forward laser. No gimmicks.",
+        "fireRate": 0.18,
+        "damage": 15,
+        "pattern": "single"
+      },
+      "specialAbility": {
+        "name": "Adaptive Surge",
+        "cooldown": 35,
+        "duration": 5,
+        "description": "All stats +15% for 5s. Available every 35s."
+      },
+      "spawnPrompts": {
+        "veo": "16-bit retro sci-fi starfighter, sleek balanced design, cyan energy glow along wing edges, forward-swept wings, central cockpit, pixel art texture, dark space background, 256x256 sprite sheet frame",
+        "imagen": "A 16-bit pixel art starfighter spaceship, balanced all-rounder design with cyan (#00ffff) energy highlights, forward-swept wings, centered cockpit canopy, metallic silver hull, retro arcade game sprite style on dark background"
+      }
+    },
+    "phantom": {
+      "id": "phantom",
+      "name": "PHANTOM",
+      "fullName": "S-02 PHANTOM",
+      "class": "Speed",
+      "tagline": "Too fast to hit.",
+      "color": "#00ffaa",
+      "colorHex": "0x00ffaa",
+      "stats": {
+        "speed": { "value": 290, "max": 300, "label": "SPD" },
+        "shield": { "value": 60, "max": 200, "label": "SHIELD" },
+        "weapon": { "value": 70, "max": 200, "label": "WPN" },
+        "special": { "value": 160, "max": 200, "label": "SPC" }
+      },
+      "weapon": {
+        "type": "Rapid-Fire Weak Laser",
+        "description": "High rate of fire, low damage per shot. Quantity over quality.",
+        "fireRate": 0.06,
+        "damage": 7,
+        "pattern": "single"
+      },
+      "specialAbility": {
+        "name": "Afterburner",
+        "cooldown": 30,
+        "duration": 5,
+        "description": "2x speed for 5s. Invulnerable to collision during boost."
+      },
+      "spawnPrompts": {
+        "veo": "16-bit retro sci-fi starfighter, ultra-streamlined needle design, green-teal energy trail, minimal wings, stretched fuselage for speed, pixel art texture, dark space background, 256x256 sprite sheet frame",
+        "imagen": "A 16-bit pixel art speedster spaceship, needle-thin elongated design with teal (#00ffaa) afterburner glow, minimal wing profile, stretched fuselage built for velocity, retro arcade game sprite style on dark background"
+      }
+    },
+    "bastion": {
+      "id": "bastion",
+      "name": "BASTION",
+      "fullName": "D-03 BASTION",
+      "class": "Tank",
+      "tagline": "Nothing gets through.",
+      "color": "#ffcc00",
+      "colorHex": "0xffcc00",
+      "stats": {
+        "speed": { "value": 140, "max": 300, "label": "SPD" },
+        "shield": { "value": 200, "max": 200, "label": "SHIELD" },
+        "weapon": { "value": 150, "max": 200, "label": "WPN" },
+        "special": { "value": 190, "max": 200, "label": "SPC" }
+      },
+      "weapon": {
+        "type": "Slow Heavy Cannon",
+        "description": "Devastating single shots. Long reload between blasts.",
+        "fireRate": 0.55,
+        "damage": 45,
+        "pattern": "single"
+      },
+      "specialAbility": {
+        "name": "Aegis Protocol",
+        "cooldown": 40,
+        "duration": 0,
+        "description": "Shield regenerates 8/s passively. Absorbs next 3 hits without damage."
+      },
+      "spawnPrompts": {
+        "veo": "16-bit retro sci-fi starfighter, massive armored bulk design, gold-yellow heavy plating, thick hull, dual cannon mounts, angular fortress-like silhouette, pixel art texture, dark space background, 256x256 sprite sheet frame",
+        "imagen": "A 16-bit pixel art heavy tank spaceship, broad armored design with gold (#ffcc00) reinforced plating, thick angular hull, dual forward cannons, fortress-like silhouette, retro arcade game sprite style on dark background"
+      }
+    },
+    "tempest": {
+      "id": "tempest",
+      "name": "TEMPEST",
+      "fullName": "F-04 TEMPEST",
+      "class": "DPS",
+      "tagline": "Unleash the storm.",
+      "color": "#ff0055",
+      "colorHex": "0xff0055",
+      "stats": {
+        "speed": { "value": 200, "max": 300, "label": "SPD" },
+        "shield": { "value": 80, "max": 200, "label": "SHIELD" },
+        "weapon": { "value": 200, "max": 200, "label": "WPN" },
+        "special": { "value": 140, "max": 200, "label": "SPC" }
+      },
+      "weapon": {
+        "type": "Wide Spread Pattern",
+        "description": "5-shot fan spread. Devastating at close range.",
+        "fireRate": 0.22,
+        "damage": 12,
+        "pattern": "spread_5"
+      },
+      "specialAbility": {
+        "name": "Overheat Barrage",
+        "cooldown": 25,
+        "duration": 3,
+        "description": "Unlimited fire rate for 3s, then weapon disabled for 2s. Burst fire rewards skill."
+      },
+      "spawnPrompts": {
+        "veo": "16-bit retro sci-fi starfighter, aggressive wide-body design, red-pink hot-rod stripes, multiple weapon barrels, heat-vent wings, intimidating front profile, pixel art texture, dark space background, 256x256 sprite sheet frame",
+        "imagen": "A 16-bit pixel art heavy firepower spaceship, wide aggressive design with red (#ff0055) hot-rod stripe accents, multiple visible weapon barrels, heat-vent panels along wings, intimidating combat stance, retro arcade game sprite style on dark background"
+      }
+    },
+    "specter": {
+      "id": "specter",
+      "name": "SPECTER",
+      "fullName": "A-05 SPECTER",
+      "class": "Stealth",
+      "tagline": "They never see it coming.",
+      "color": "#b026ff",
+      "colorHex": "0xb026ff",
+      "stats": {
+        "speed": { "value": 230, "max": 300, "label": "SPD" },
+        "shield": { "value": 70, "max": 200, "label": "SHIELD" },
+        "weapon": { "value": 120, "max": 200, "label": "WPN" },
+        "special": { "value": 180, "max": 200, "label": "SPC" }
+      },
+      "weapon": {
+        "type": "Piercing Single Shot",
+        "description": "Shots pass through enemies. One bullet, infinite penetration.",
+        "fireRate": 0.25,
+        "damage": 18,
+        "pattern": "piercing_single"
+      },
+      "specialAbility": {
+        "name": "Phase Cloak",
+        "cooldown": 45,
+        "duration": 3,
+        "description": "Invisible for 3s. Enemies can't target you. First shot out of cloak deals 3x damage."
+      },
+      "spawnPrompts": {
+        "veo": "16-bit retro sci-fi starfighter, low-profile stealth design, purple-violet phase-shift shimmer, angular radar-absorbing geometry, minimal engine signature, predatory stance, pixel art texture, dark space background, 256x256 sprite sheet frame",
+        "imagen": "A 16-bit pixel art stealth spaceship, low-profile angular design with purple (#b026ff) phase-shift glow along edges, radar-absorbing geometric hull panels, minimal visible engine output, predatory crouched stance, retro arcade game sprite style on dark background"
+      }
+    }
+  },
+  "defaultShip": "striker"
+}

@@ -208,6 +208,9 @@
             <div>SHIELD: <span id="ui-shield" style="color: #00ff00;">100%</span></div>
             <div>WEAPON: <span id="ui-weapon" style="color: #ffff00;">LVL 1</span></div>
             <div>SCORE: <span id="ui-score" style="color: #00ffff;">0</span></div>
+            <div>SCRAP: <span id="ui-scrap" style="color: #00ff55;">⚙️0</span></div>
+            <div>BOOST: <span id="ui-boost" style="color: #ffaa00;">READY</span></div>
+            <div>SPECIAL: <span id="ui-special" style="color: #b026ff;">READY</span></div>
         </div>
     </div>
 
@@ -231,6 +234,7 @@
         <span style="color: #ff0055;">Red Orbs</span> upgrade primary weapons. <span style="color: #00ff55;">Green Orbs</span> restore Shields. Reaching 2,000 points triggers the Boss Battle!
     </div>
 
+    <script src="upgrade_system.js"></script>
     <script>
         // --- Web Audio Synthesizer ---
         let audioCtx = null;
@@ -327,6 +331,25 @@
                     gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.08);
                     osc.start();
                     osc.stop(audioCtx.currentTime + 0.08);
+                } else if (type === 'victory_fanfare') {
+                    // Triumphant 16-bit melody: C4, E4, G4, C5, G4, C5, E5
+                    const notes = [261.63, 329.63, 392.00, 523.25, 392.00, 523.25, 659.25];
+                    const durations = [0.12, 0.12, 0.12, 0.24, 0.12, 0.12, 0.48];
+                    let accumTime = 0;
+                    notes.forEach((freq, idx) => {
+                        const noteTime = audioCtx.currentTime + accumTime;
+                        const oscNode = audioCtx.createOscillator();
+                        const gainNode = audioCtx.createGain();
+                        oscNode.type = 'square'; // chiptune brass/lead feel
+                        oscNode.frequency.setValueAtTime(freq, noteTime);
+                        gainNode.gain.setValueAtTime(0.05 * volMultiplier, noteTime);
+                        gainNode.gain.exponentialRampToValueAtTime(0.001, noteTime + durations[idx]);
+                        oscNode.connect(gainNode);
+                        gainNode.connect(audioCtx.destination);
+                        oscNode.start(noteTime);
+                        oscNode.stop(noteTime + durations[idx]);
+                        accumTime += durations[idx] * 0.8;
+                    });
                 }
             } catch (e) {
                 console.log("Audio play blocked/failed:", e);
@@ -357,6 +380,9 @@
         const uiShield = document.getElementById('ui-shield');
         const uiWeapon = document.getElementById('ui-weapon');
         const uiScore = document.getElementById('ui-score');
+        const uiScrap = document.getElementById('ui-scrap');
+        const uiBoost = document.getElementById('ui-boost');
+        const uiSpecial = document.getElementById('ui-special');
 
         // Game state variables
         let score = 0;
@@ -374,11 +400,12 @@
             SHIP_SELECT: 'ship_select',
             SETTINGS: 'settings',
             CREDITS: 'credits',
-            PLAYING: 'playing'
+            PLAYING: 'playing',
+            CINEMATIC: 'cinematic'
         };
         let currentScreen = SCREENS.MENU;
         let selectedMenuIndex = 0;
-        const menuOptions = ['START GAME', 'SHIP SELECT', 'SETTINGS', 'CREDITS'];
+        const menuOptions = ['START GAME', 'UPGRADE SHOP', 'SHIP SELECT', 'SETTINGS', 'CREDITS'];
         let shipSelectSource = 'menu'; // 'menu' or 'start'
         
         let selectedSettingsIndex = 0;
@@ -387,6 +414,24 @@
         let selectedShipIndex = 1; // 0=scout, 1=interceptor, 2=heavy
         const SHIP_OPTIONS = ['scout', 'interceptor', 'heavy'];
         let selectedShip = 'interceptor';
+
+        // Cinematic & Credits Scroll variables
+        let cinematicTime = 0;
+        let creditsScrollY = 0;
+        let creditsHoldTimer = 0;
+        let maxCreditsScroll = 1050;
+        let bossDefeated = false;
+
+        // Ending cinematic assets
+        const endingSunriseImg = new Image();
+        let endingSunriseLoaded = false;
+        endingSunriseImg.onload = () => { endingSunriseLoaded = true; };
+        endingSunriseImg.src = 'assets/cinematics/ending_sunrise.png';
+
+        const studioLogoImg = new Image();
+        let studioLogoLoaded = false;
+        studioLogoImg.onload = () => { studioLogoLoaded = true; };
+        studioLogoImg.src = 'assets/sprites/studio_logo.png';
 
         let masterVolume = 0.8;
         let sfxVolume = 0.8;
@@ -427,7 +472,7 @@
         ];
 
         function playMenuMusicStep() {
-            if (!audioCtx || currentScreen === 'playing') return;
+            if (!audioCtx || currentScreen === 'playing' || currentScreen === SCREENS.CINEMATIC || currentScreen === SCREENS.CREDITS) return;
             const now = audioCtx.currentTime;
             
             // Play bass note
@@ -473,6 +518,62 @@
             if (musicInterval) {
                 clearInterval(musicInterval);
                 musicInterval = null;
+            }
+        }
+
+        // --- Web Audio Credits Music Loop ---
+        let creditsMusicInterval = null;
+        const creditsBassLine = [98, 98, 146, 146, 130, 130, 98, 98]; // G2, D3, C3, G2
+        const creditsMelody = [
+            392, 0, 493, 587, 784, 0, 739, 587, // G4, B4, D5, G5, F#5, D5
+            493, 493, 587, 0, 440, 0, 392, 0    // B4, B4, D5, A4, G4
+        ];
+
+        function playCreditsMusicStep() {
+            if (!audioCtx || currentScreen !== SCREENS.CREDITS) return;
+            const now = audioCtx.currentTime;
+            
+            const bassFreq = creditsBassLine[Math.floor(musicStep / 2) % creditsBassLine.length];
+            if (musicStep % 2 === 0 && bassFreq > 0) {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(bassFreq, now);
+                gain.gain.setValueAtTime(0.015 * masterVolume * musicVolume, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(now);
+                osc.stop(now + 0.45);
+            }
+            
+            const melFreq = creditsMelody[musicStep % creditsMelody.length];
+            if (melFreq > 0) {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(melFreq, now);
+                gain.gain.setValueAtTime(0.012 * masterVolume * musicVolume, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.28);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(now);
+                osc.stop(now + 0.28);
+            }
+            
+            musicStep++;
+        }
+
+        function startCreditsMusic() {
+            if (creditsMusicInterval) return;
+            musicStep = 0;
+            creditsMusicInterval = setInterval(playCreditsMusicStep, 250); // 120 bpm, 8th notes, slightly slower
+        }
+
+        function stopCreditsMusic() {
+            if (creditsMusicInterval) {
+                clearInterval(creditsMusicInterval);
+                creditsMusicInterval = null;
             }
         }
 
@@ -562,13 +663,15 @@
                 if (selectedMenuIndex === 0) { // START GAME
                     shipSelectSource = 'start';
                     transitionToScreen(SCREENS.SHIP_SELECT);
-                } else if (selectedMenuIndex === 1) { // SHIP SELECT
+                } else if (selectedMenuIndex === 1) { // UPGRADE SHOP
+                    window.location.href = 'upgrade_shop.html';
+                } else if (selectedMenuIndex === 2) { // SHIP SELECT
                     shipSelectSource = 'menu';
                     transitionToScreen(SCREENS.SHIP_SELECT);
-                } else if (selectedMenuIndex === 2) { // SETTINGS
+                } else if (selectedMenuIndex === 3) { // SETTINGS
                     selectedSettingsIndex = 0;
                     transitionToScreen(SCREENS.SETTINGS);
-                } else if (selectedMenuIndex === 3) { // CREDITS
+                } else if (selectedMenuIndex === 4) { // CREDITS
                     transitionToScreen(SCREENS.CREDITS);
                 }
             } else if (currentScreen === SCREENS.SHIP_SELECT) {
@@ -607,6 +710,13 @@
                 const startY = 210;
                 const spacing = 35;
                 
+                // Draw lifetime scrap balance on the menu screen
+                const lifetimeScrap = window.DS_UpgradeSystem ? window.DS_UpgradeSystem.state.scrap : 0;
+                ctx.fillStyle = '#00ff55';
+                ctx.font = 'bold 12px monospace';
+                ctx.fillText(`⚙️ SCRAP CORE: ${lifetimeScrap.toLocaleString()}`, canvas.width / 2, startY - 25);
+                
+                ctx.font = 'bold 15px monospace';
                 for (let i = 0; i < menuOptions.length; i++) {
                     const itemY = startY + i * spacing;
                     const isSelected = selectedMenuIndex === i;
@@ -745,57 +855,230 @@
                 ctx.fillText('LEFT/RIGHT to ADJUST VOLUME  |  ENTER / CLICK to TOGGLE  |  ESC to RETURN', canvas.width / 2, canvas.height - 25);
                 ctx.restore();
             } else if (currentScreen === SCREENS.CREDITS) {
+                // Dim the title loop background for legibility
+                ctx.fillStyle = 'rgba(5, 5, 12, 0.75)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
                 ctx.save();
-                ctx.textAlign = 'center';
-                ctx.fillStyle = '#00ffff';
-                ctx.font = 'bold 22px monospace';
-                ctx.shadowColor = '#00ffff';
-                ctx.shadowBlur = 10;
-                ctx.fillText('DARIUS STAR: CREDITS', canvas.width / 2, 60);
-                ctx.shadowBlur = 0;
                 
-                ctx.font = '12px monospace';
-                ctx.fillStyle = '#8a8a9f';
-                
-                const lines = [
-                    'PRODUCED BY',
-                    'WHAT AN ADVENTURE GAMES',
-                    '',
-                    'NARRATIVE ARCHITECTURE & GAME DESIGN',
-                    'FRED & AGY (AI AGENTS)',
-                    '',
-                    'GRAPHICS & CINEMATICS',
-                    'GOOGLE IMAGEN & VEO 3.1',
-                    '',
-                    'AUDIO SYNTHESIS',
-                    'WEB AUDIO CHIPTUNE GENERATOR',
-                    '',
-                    'POWERED BY',
-                    'ANTIGRAVITY CLI ENGINE'
+                const creditsList = [
+                    { type: 'logo' },
+                    { type: 'spacer', height: 40 },
+                    { type: 'title', text: 'DARIUS STAR: CYBER COELACANTH' },
+                    { type: 'subtitle', text: 'DEVELOPMENT CREDITS' },
+                    { type: 'spacer', height: 50 },
+                    { type: 'role', text: 'GAME DESIGN & NARRATIVE' },
+                    { type: 'name', text: 'Michael Gulden' },
+                    { type: 'spacer', height: 35 },
+                    { type: 'role', text: 'AI AGENT ENGINEERING' },
+                    { type: 'name', text: 'Fred (Implementation)' },
+                    { type: 'name', text: 'AGY (Content & Story)' },
+                    { type: 'spacer', height: 35 },
+                    { type: 'role', text: 'ART GENERATION' },
+                    { type: 'name', text: 'Imagen 3 (Vertex AI)' },
+                    { type: 'name', text: 'Google Flow' },
+                    { type: 'spacer', height: 35 },
+                    { type: 'role', text: 'VIDEO GENERATION' },
+                    { type: 'name', text: 'Veo 3.1 (Vertex AI)' },
+                    { type: 'spacer', height: 35 },
+                    { type: 'role', text: 'MUSIC PRODUCTION' },
+                    { type: 'name', text: 'Lyria 2/3 (Vertex AI)' },
+                    { type: 'spacer', height: 35 },
+                    { type: 'role', text: 'SOUND EFFECTS' },
+                    { type: 'name', text: 'jsfxr' },
+                    { type: 'name', text: 'Web Audio Synth Engine' },
+                    { type: 'spacer', height: 35 },
+                    { type: 'role', text: 'SPECIAL THANKS' },
+                    { type: 'name', text: 'Vertex AI Model Garden' },
+                    { type: 'name', text: 'Google DeepMind Team' },
+                    { type: 'name', text: 'GrowthWebDev Tester Squad' },
+                    { type: 'name', text: 'Our retro arcade community' },
+                    { type: 'spacer', height: 60 },
+                    { type: 'thanks', text: 'THANK YOU FOR PLAYING' },
+                    { type: 'spacer', height: 50 },
+                    { type: 'end', text: 'THE END' }
                 ];
-                
-                const startY = 110;
-                const spacing = 18;
-                for (let i = 0; i < lines.length; i++) {
-                    const itemY = startY + i * spacing;
-                    const isTitle = lines[i] === 'PRODUCED BY' || 
-                                    lines[i] === 'NARRATIVE ARCHITECTURE & GAME DESIGN' ||
-                                    lines[i] === 'GRAPHICS & CINEMATICS' ||
-                                    lines[i] === 'AUDIO SYNTHESIS' ||
-                                    lines[i] === 'POWERED BY';
-                                    
-                    ctx.fillStyle = isTitle ? '#ff0055' : '#ffffff';
-                    ctx.font = isTitle ? 'bold 10px monospace' : '12px monospace';
-                    ctx.fillText(lines[i], canvas.width / 2, itemY);
+
+                let currentY = canvas.height - creditsScrollY;
+                ctx.textAlign = 'center';
+
+                for (let i = 0; i < creditsList.length; i++) {
+                    const item = creditsList[i];
+                    
+                    if (currentY > -100 && currentY < canvas.height + 100) {
+                        if (item.type === 'logo') {
+                            if (studioLogoLoaded && studioLogoImg.naturalWidth > 0) {
+                                ctx.drawImage(studioLogoImg, canvas.width / 2 - 80, currentY - 50, 160, 160);
+                            } else {
+                                ctx.fillStyle = '#ff0055';
+                                ctx.font = 'bold 16px monospace';
+                                ctx.fillText('WHAT AN ADVENTURE GAMES', canvas.width / 2, currentY);
+                            }
+                        } else if (item.type === 'title') {
+                            ctx.fillStyle = '#00ffff';
+                            ctx.font = 'bold 18px monospace';
+                            ctx.shadowColor = '#00ffff';
+                            ctx.shadowBlur = 8;
+                            ctx.fillText(item.text, canvas.width / 2, currentY);
+                            ctx.shadowBlur = 0;
+                        } else if (item.type === 'subtitle') {
+                            ctx.fillStyle = '#8a8a9f';
+                            ctx.font = '9px monospace';
+                            ctx.fillText(item.text, canvas.width / 2, currentY);
+                        } else if (item.type === 'role') {
+                            ctx.fillStyle = '#ff0055';
+                            ctx.font = 'bold 11px monospace';
+                            ctx.fillText(item.text, canvas.width / 2, currentY);
+                        } else if (item.type === 'name') {
+                            ctx.fillStyle = '#ffffff';
+                            ctx.font = '13px monospace';
+                            ctx.fillText(item.text, canvas.width / 2, currentY);
+                        } else if (item.type === 'thanks') {
+                            ctx.fillStyle = '#00ff55';
+                            ctx.font = 'bold 18px monospace';
+                            ctx.shadowColor = '#00ff55';
+                            ctx.shadowBlur = 10;
+                            ctx.fillText(item.text, canvas.width / 2, currentY);
+                            ctx.shadowBlur = 0;
+                        } else if (item.type === 'end') {
+                            ctx.fillStyle = '#ff0055';
+                            ctx.font = 'bold 26px monospace';
+                            ctx.shadowColor = '#ff0055';
+                            ctx.shadowBlur = 12;
+                            ctx.fillText(item.text, canvas.width / 2, currentY);
+                            ctx.shadowBlur = 0;
+                        }
+                    }
+
+                    // Increment Y for next item
+                    if (item.type === 'spacer') {
+                        currentY += item.height;
+                    } else if (item.type === 'logo') {
+                        currentY += 100;
+                    } else if (item.type === 'title') {
+                        currentY += 22;
+                    } else if (item.type === 'subtitle') {
+                        currentY += 16;
+                    } else if (item.type === 'role') {
+                        currentY += 18;
+                    } else if (item.type === 'name') {
+                        currentY += 18;
+                    } else if (item.type === 'thanks') {
+                        currentY += 30;
+                    } else if (item.type === 'end') {
+                        currentY += 40;
+                    }
                 }
-                
-                ctx.fillStyle = '#00ffff';
-                ctx.font = 'bold 14px monospace';
-                ctx.fillText('BACK TO MENU', canvas.width / 2, 370);
-                
+
+                ctx.restore();
+
+                const totalCreditsHeight = currentY - (canvas.height - creditsScrollY);
+                if (typeof maxCreditsScroll !== 'undefined') {
+                    maxCreditsScroll = totalCreditsHeight;
+                }
+
                 ctx.fillStyle = '#4a4a5f';
                 ctx.font = '10px monospace';
-                ctx.fillText('CLICK / ENTER / ESC to RETURN', canvas.width / 2, canvas.height - 25);
+                ctx.textAlign = 'center';
+                ctx.fillText('CLICK / SPACE / ESC to SKIP TO MENU', canvas.width / 2, canvas.height - 15);
+            } else if (currentScreen === SCREENS.CINEMATIC) {
+                ctx.save();
+                
+                // Animate background image panning
+                if (endingSunriseLoaded && endingSunriseImg.naturalWidth > 0) {
+                    const progress = Math.min(cinematicTime / 20, 1.0);
+                    // Panning viewport (800x450) from the 1024x1024 source image
+                    // Start at top-left, pan slowly down and right
+                    const sx = progress * 120;
+                    const sy = 150 + Math.sin(progress * Math.PI / 2) * 250;
+                    
+                    ctx.drawImage(endingSunriseImg,
+                        sx, sy, 800, 450,
+                        0, 0, canvas.width, canvas.height
+                    );
+                } else {
+                    ctx.fillStyle = '#010108';
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                }
+
+                // Draw a retro screen glare overlay for cinematic effect
+                const scanlineGrad = ctx.createLinearGradient(0, 0, 0, canvas.height);
+                scanlineGrad.addColorStop(0, 'rgba(0, 255, 255, 0.05)');
+                scanlineGrad.addColorStop(0.5, 'rgba(0, 0, 0, 0.1)');
+                scanlineGrad.addColorStop(1, 'rgba(255, 0, 255, 0.05)');
+                ctx.fillStyle = scanlineGrad;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                // Draw player ship flying into the sunrise
+                if (cinematicTime > 3) {
+                    const flightProgress = Math.min((cinematicTime - 3) / 15, 1.0);
+                    const startX = -50;
+                    const startY = 320;
+                    const targetX = 480;
+                    const targetY = 220;
+
+                    const shipX = startX + (targetX - startX) * flightProgress;
+                    const shipY = startY + (targetY - startY) * flightProgress;
+                    const size = 32 * (1 - flightProgress * 0.75); // scales down
+
+                    // Draw retro flame
+                    ctx.fillStyle = Math.random() < 0.5 ? '#ff0055' : '#ffff00';
+                    ctx.beginPath();
+                    ctx.moveTo(shipX - 10, shipY + size/2);
+                    ctx.lineTo(shipX, shipY + size/2 - 4);
+                    ctx.lineTo(shipX, shipY + size/2 + 4);
+                    ctx.closePath();
+                    ctx.fill();
+
+                    // Draw player ship sprite
+                    const shipKey = selectedShip === 'scout' ? 'scout_0' : (selectedShip === 'heavy' ? 'heavy_0' : 'interceptor_0');
+                    const shipSprite = playerSprites[shipKey];
+                    if (shipSprite && shipSprite.complete && shipSprite.naturalWidth > 0) {
+                        ctx.drawImage(shipSprite, shipX, shipY, size, size);
+                    } else {
+                        ctx.fillStyle = '#00ffff';
+                        ctx.fillRect(shipX, shipY, size, size);
+                    }
+                }
+
+                // Narrative typography typing text
+                let txt = "";
+                if (cinematicTime < 3) {
+                    txt = "CYBER COELACANTH MELTDOWN INITIALIZED...";
+                } else if (cinematicTime < 7) {
+                    txt = "SECTOR 3 DEPTH LAIR SECURED. ESCAPING CAVERN...";
+                } else if (cinematicTime < 18) {
+                    txt = "The Cyber Coelacanth is defeated... but the galaxy still needs you.";
+                } else {
+                    txt = "TO BE CONTINUED...";
+                }
+
+                let subTime = 0;
+                if (cinematicTime < 3) subTime = cinematicTime;
+                else if (cinematicTime < 7) subTime = cinematicTime - 3;
+                else if (cinematicTime < 18) subTime = cinematicTime - 7;
+                else subTime = cinematicTime - 18;
+
+                const typedLength = Math.floor(subTime * 25);
+                const visibleText = txt.substring(0, typedLength);
+
+                // Dialog Box
+                ctx.fillStyle = 'rgba(5, 5, 15, 0.8)';
+                ctx.fillRect(50, canvas.height - 75, canvas.width - 100, 45);
+                ctx.strokeStyle = '#ff0055';
+                ctx.lineWidth = 2;
+                ctx.strokeRect(50, canvas.height - 75, canvas.width - 100, 45);
+
+                ctx.fillStyle = '#ffffff';
+                ctx.font = 'bold 11px monospace';
+                ctx.textAlign = 'left';
+                ctx.fillText(visibleText, 70, canvas.height - 48);
+
+                ctx.fillStyle = '#4a4a5f';
+                ctx.font = '9px monospace';
+                ctx.textAlign = 'center';
+                ctx.fillText('PRESS ENTER / ESC / CLICK to SKIP CUTSCENE', canvas.width / 2, canvas.height - 12);
+
                 ctx.restore();
             }
         }
@@ -834,7 +1117,7 @@
                 if (e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W') {
                     playSound('menu_select');
                     if (currentScreen === SCREENS.MENU) {
-                        selectedMenuIndex = (selectedMenuIndex - 1 + 4) % 4;
+                        selectedMenuIndex = (selectedMenuIndex - 1 + menuOptions.length) % menuOptions.length;
                     } else if (currentScreen === SCREENS.SETTINGS) {
                         selectedSettingsIndex = (selectedSettingsIndex - 1 + SETTINGS_OPTIONS.length) % SETTINGS_OPTIONS.length;
                     } else if (currentScreen === SCREENS.SHIP_SELECT) {
@@ -844,7 +1127,7 @@
                 } else if (e.key === 'ArrowDown' || e.key === 's' || e.key === 'S') {
                     playSound('menu_select');
                     if (currentScreen === SCREENS.MENU) {
-                        selectedMenuIndex = (selectedMenuIndex + 1) % 4;
+                        selectedMenuIndex = (selectedMenuIndex + 1) % menuOptions.length;
                     } else if (currentScreen === SCREENS.SETTINGS) {
                         selectedSettingsIndex = (selectedSettingsIndex + 1) % SETTINGS_OPTIONS.length;
                     } else if (currentScreen === SCREENS.SHIP_SELECT) {
@@ -873,6 +1156,8 @@
                         transitionToScreen(SCREENS.MENU);
                     }
                     e.preventDefault();
+                } else if ((e.key === 'u' || e.key === 'U') && (gameOver || gameWon || currentScreen === SCREENS.MENU)) {
+                    window.location.href = 'upgrade_shop.html';
                 }
             }
         });
@@ -956,6 +1241,42 @@
                     this.weaponLevel = 1;
                 }
                 
+                // Apply permanent upgrades from window.DS_UpgradeSystem
+                const mods = window.DS_UpgradeSystem ? window.DS_UpgradeSystem.getGameplayModifiers() : null;
+                if (mods) {
+                    // Weapons
+                    this.shootCooldown = this.shootCooldown / mods.weaponFireRateMultiplier;
+                    
+                    // Shields
+                    this.shieldMax += mods.shieldMaxHPBonus;
+                    
+                    // Engines
+                    this.speed = this.speed * mods.engineSpeedMultiplier;
+                    
+                    // Boost State
+                    this.boostFuel = 3.0 * mods.engineBoostDurationMultiplier;
+                    this.boostMaxFuel = 3.0 * mods.engineBoostDurationMultiplier;
+                    this.boostCooldown = 0;
+                    this.isBoosting = false;
+                    
+                    // Special State
+                    this.specialCooldown = 0;
+                    this.specialMaxCooldown = 15.0 * mods.specialCooldownMultiplier;
+                    this.specialActiveTimer = 0;
+                    this.specialMaxDuration = 4.0 + mods.specialDurationBonus;
+                    this.isSpecialActive = false;
+                } else {
+                    this.boostFuel = 3.0;
+                    this.boostMaxFuel = 3.0;
+                    this.boostCooldown = 0;
+                    this.isBoosting = false;
+                    this.specialCooldown = 0;
+                    this.specialMaxCooldown = 15.0;
+                    this.specialActiveTimer = 0;
+                    this.specialMaxDuration = 4.0;
+                    this.isSpecialActive = false;
+                }
+                
                 this.shield = this.shieldMax;
                 this.shootTimer = 0;
                 this.invulnerable = 0;
@@ -978,13 +1299,96 @@
                     dy *= 0.7071;
                 }
 
-                this.x += dx * this.speed * dt;
-                this.y += dy * this.speed * dt;
+                let currentSpeed = this.speed;
+
+                // Apply permanent upgrades modifiers in update loop
+                const mods = window.DS_UpgradeSystem ? window.DS_UpgradeSystem.getGameplayModifiers() : null;
+                if (mods) {
+                    // Shield Passive Regeneration
+                    this.shield = Math.min(this.shieldMax, this.shield + mods.shieldRegenRate * dt);
+                    
+                    // Engine Afterburner Boost
+                    const canBoost = keys['Shift'] && this.boostCooldown <= 0 && this.boostFuel > 0;
+                    if (canBoost) {
+                        this.isBoosting = true;
+                        this.boostFuel -= dt;
+                        currentSpeed *= 1.5; // +50% speed burst
+                        
+                        // Spawn boost exhaust particles (trail)
+                        if (Math.random() < 0.4) {
+                            const trailColor = mods.cosmetics.thrusterTrail === 'default' ? '#00ffff' : getTrailColorValue(mods.cosmetics.thrusterTrail);
+                            particles.push(new Particle(
+                                this.x, 
+                                this.y + this.height/2 + (Math.random()-0.5)*10, 
+                                trailColor
+                            ));
+                        }
+                        
+                        if (this.boostFuel <= 0) {
+                            this.boostFuel = 0;
+                            this.isBoosting = false;
+                            this.boostCooldown = 8.0 * mods.engineBoostCooldownMultiplier;
+                        }
+                    } else {
+                        this.isBoosting = false;
+                        if (this.boostCooldown > 0) {
+                            this.boostCooldown -= dt;
+                        } else if (this.boostFuel < this.boostMaxFuel) {
+                            this.boostFuel = Math.min(this.boostMaxFuel, this.boostFuel + dt * 0.7);
+                        }
+                    }
+                    
+                    // Cyber Overload Special Ability
+                    const canSpecial = (keys['k'] || keys['K']) && this.specialCooldown <= 0 && !this.isSpecialActive;
+                    if (canSpecial) {
+                        this.isSpecialActive = true;
+                        this.specialActiveTimer = this.specialMaxDuration;
+                        playSound('powerup');
+                        createExplosion(this.x + this.width/2, this.y + this.height/2, '#b026ff', 15);
+                    }
+                    
+                    if (this.isSpecialActive) {
+                        this.specialActiveTimer -= dt;
+                        if (this.specialActiveTimer <= 0) {
+                            this.isSpecialActive = false;
+                            this.specialCooldown = this.specialMaxCooldown;
+                        }
+                    } else if (this.specialCooldown > 0) {
+                        this.specialCooldown -= dt;
+                    }
+
+                    // Add normal thruster trail
+                    if (!this.isBoosting && Math.random() < 0.15) {
+                        const trailColor = mods.cosmetics.thrusterTrail === 'default' ? '#ff7700' : getTrailColorValue(mods.cosmetics.thrusterTrail);
+                        particles.push(new Particle(
+                            this.x, 
+                            this.y + this.height/2 + (Math.random()-0.5)*6, 
+                            trailColor
+                        ));
+                    }
+                } else {
+                    // Normal thruster trail fallback
+                    if (Math.random() < 0.15) {
+                        particles.push(new Particle(
+                            this.x, 
+                            this.y + this.height/2 + (Math.random()-0.5)*6, 
+                            '#ff7700'
+                        ));
+                    }
+                }
+
+                this.x += dx * currentSpeed * dt;
+                this.y += dy * currentSpeed * dt;
 
                 if (this.x < 10) this.x = 10;
                 if (this.x > canvas.width - this.width - 10) this.x = canvas.width - this.width - 10;
                 if (this.y < 10) this.y = 10;
                 if (this.y > canvas.height - this.height - 10) this.y = canvas.height - this.height - 10;
+
+                let currentShootCooldown = this.shootCooldown;
+                if (this.isSpecialActive) {
+                    currentShootCooldown *= 0.5; // fire twice as fast!
+                }
 
                 if (this.shootTimer > 0) {
                     this.shootTimer -= dt;
@@ -992,34 +1396,47 @@
 
                 if ((keys[' '] || keys['j'] || keys['J']) && this.shootTimer <= 0) {
                     this.shoot();
-                    this.shootTimer = this.shootCooldown;
+                    this.shootTimer = currentShootCooldown;
                 }
             }
 
             shoot() {
                 playSound('shoot');
-                const bulletSpeed = 550;
+                const mods = window.DS_UpgradeSystem ? window.DS_UpgradeSystem.getGameplayModifiers() : null;
+                const speedMultiplier = mods ? mods.weaponProjSpeedMultiplier : 1.0;
+                
+                const bulletSpeed = 550 * speedMultiplier;
                 const bulletSize = 4;
 
-                if (this.weaponLevel === 1) {
-                    bullets.push(new Bullet(this.x + this.width, this.y + this.height/2, bulletSpeed, 0, '#00ffff', bulletSize));
-                } else if (this.weaponLevel === 2) {
-                    bullets.push(new Bullet(this.x + this.width, this.y + 4, bulletSpeed, 0, '#00ffaa', bulletSize + 1));
-                    bullets.push(new Bullet(this.x + this.width, this.y + this.height - 4, bulletSpeed, 0, '#00ffaa', bulletSize + 1));
-                } else if (this.weaponLevel === 3) {
-                    bullets.push(new Bullet(this.x + this.width, this.y + this.height/2, bulletSpeed, 0, '#ffff00', bulletSize + 1));
-                    bullets.push(new Bullet(this.x + this.width, this.y + 2, bulletSpeed, -100, '#ffff00', bulletSize));
-                    bullets.push(new Bullet(this.x + this.width, this.y + this.height - 2, bulletSpeed, 100, '#ffff00', bulletSize));
-                } else if (this.weaponLevel === 4) {
-                    bullets.push(new Bullet(this.x + this.width, this.y + this.height/2, bulletSpeed, 0, '#ff00ff', 12, true));
-                    bullets.push(new Bullet(this.x + this.width, this.y + 2, bulletSpeed - 50, -120, '#00ffff', bulletSize));
-                    bullets.push(new Bullet(this.x + this.width, this.y + this.height - 2, bulletSpeed - 50, 120, '#00ffff', bulletSize));
+                const isSpecial = this.isSpecialActive;
+                const color = isSpecial ? '#ff00aa' : (this.weaponLevel === 1 ? '#00ffff' : (this.weaponLevel === 2 ? '#00ffaa' : (this.weaponLevel === 3 ? '#ffff00' : (this.weaponLevel === 4 ? '#ff00ff' : '#ffffff'))));
+
+                if (isSpecial) {
+                    // Supreme Purple waves
+                    bullets.push(new Bullet(this.x + this.width, this.y + this.height/2, bulletSpeed + 50, 0, color, 14, true));
+                    bullets.push(new Bullet(this.x + this.width, this.y + 2, bulletSpeed, -120, color, 8, true));
+                    bullets.push(new Bullet(this.x + this.width, this.y + this.height - 2, bulletSpeed, 120, color, 8, true));
                 } else {
-                    bullets.push(new Bullet(this.x + this.width, this.y + this.height/2, bulletSpeed + 50, 0, '#ffffff', 14, true));
-                    bullets.push(new Bullet(this.x + this.width, this.y + 2, bulletSpeed, -160, '#ff00aa', bulletSize + 2));
-                    bullets.push(new Bullet(this.x + this.width, this.y + this.height - 2, bulletSpeed, 160, '#ff00aa', bulletSize + 2));
-                    bullets.push(new Bullet(this.x + this.width, this.y + 4, bulletSpeed - 80, -300, '#ffff00', bulletSize + 1));
-                    bullets.push(new Bullet(this.x + this.width, this.y + this.height - 4, bulletSpeed - 80, 300, '#ffff00', bulletSize + 1));
+                    if (this.weaponLevel === 1) {
+                        bullets.push(new Bullet(this.x + this.width, this.y + this.height/2, bulletSpeed, 0, color, bulletSize));
+                    } else if (this.weaponLevel === 2) {
+                        bullets.push(new Bullet(this.x + this.width, this.y + 4, bulletSpeed, 0, color, bulletSize + 1));
+                        bullets.push(new Bullet(this.x + this.width, this.y + this.height - 4, bulletSpeed, 0, color, bulletSize + 1));
+                    } else if (this.weaponLevel === 3) {
+                        bullets.push(new Bullet(this.x + this.width, this.y + this.height/2, bulletSpeed, 0, color, bulletSize + 1));
+                        bullets.push(new Bullet(this.x + this.width, this.y + 2, bulletSpeed, -100, color, bulletSize));
+                        bullets.push(new Bullet(this.x + this.width, this.y + this.height - 2, bulletSpeed, 100, color, bulletSize));
+                    } else if (this.weaponLevel === 4) {
+                        bullets.push(new Bullet(this.x + this.width, this.y + this.height/2, bulletSpeed, 0, color, 12, true));
+                        bullets.push(new Bullet(this.x + this.width, this.y + 2, bulletSpeed - 50, -120, '#00ffff', bulletSize));
+                        bullets.push(new Bullet(this.x + this.width, this.y + this.height - 2, bulletSpeed - 50, 120, '#00ffff', bulletSize));
+                    } else {
+                        bullets.push(new Bullet(this.x + this.width, this.y + this.height/2, bulletSpeed + 50, 0, color, 14, true));
+                        bullets.push(new Bullet(this.x + this.width, this.y + 2, bulletSpeed, -160, '#ff00aa', bulletSize + 2));
+                        bullets.push(new Bullet(this.x + this.width, this.y + this.height - 2, bulletSpeed, 160, '#ff00aa', bulletSize + 2));
+                        bullets.push(new Bullet(this.x + this.width, this.y + 4, bulletSpeed - 80, -300, '#ffff00', bulletSize + 1));
+                        bullets.push(new Bullet(this.x + this.width, this.y + this.height - 4, bulletSpeed - 80, 300, '#ffff00', bulletSize + 1));
+                    }
                 }
             }
 
@@ -1031,7 +1448,10 @@
                 else if (difficulty === 'hard') damageMultiplier = 1.3;
                 
                 this.shield -= amt * damageMultiplier;
-                this.invulnerable = 0.8;
+                
+                const mods = window.DS_UpgradeSystem ? window.DS_UpgradeSystem.getGameplayModifiers() : null;
+                this.invulnerable = 0.8 + (mods ? mods.shieldInvulnBonus : 0);
+                
                 playSound('hit');
                 createExplosion(this.x + this.width/2, this.y + this.height/2, '#ffaa00', 8);
 
@@ -1050,6 +1470,10 @@
 
                 ctx.save();
                 ctx.translate(this.x, this.y);
+
+                // --- Apply Ship Color Cosmetic plating tint ---
+                const mods = window.DS_UpgradeSystem ? window.DS_UpgradeSystem.getGameplayModifiers() : null;
+                const cosmeticColor = mods ? mods.cosmetics.shipColor : 'default';
 
                 // Sprite frame: select ship model base sprite or cycle animation
                 let sprite;
@@ -1070,9 +1494,34 @@
                     // Render sprite scaled to 48x48 (ship area ~40x20, sprite is 1024x1024)
                     const spriteSize = 48;
                     ctx.drawImage(sprite, 0, 0, spriteSize, spriteSize);
+
+                    // Tint plating with chosen cosmetic color
+                    if (cosmeticColor !== 'default') {
+                        ctx.save();
+                        ctx.globalCompositeOperation = 'source-atop';
+                        switch(cosmeticColor) {
+                            case 'cyan': ctx.fillStyle = 'rgba(0, 255, 255, 0.3)'; break;
+                            case 'magenta': ctx.fillStyle = 'rgba(255, 0, 85, 0.3)'; break;
+                            case 'emerald': ctx.fillStyle = 'rgba(0, 255, 85, 0.3)'; break;
+                            case 'gold': ctx.fillStyle = 'rgba(255, 204, 0, 0.35)'; break;
+                            case 'purple': ctx.fillStyle = 'rgba(176, 38, 255, 0.3)'; break;
+                        }
+                        ctx.fillRect(0, 0, spriteSize, spriteSize);
+                        ctx.restore();
+                    }
                 } else {
                     // Fallback: simple triangle ship if sprite not loaded yet
-                    ctx.fillStyle = '#8a9fbc';
+                    if (cosmeticColor !== 'default') {
+                        switch(cosmeticColor) {
+                            case 'cyan': ctx.fillStyle = '#00ffff'; break;
+                            case 'magenta': ctx.fillStyle = '#ff00ff'; break;
+                            case 'emerald': ctx.fillStyle = '#00ff55'; break;
+                            case 'gold': ctx.fillStyle = '#ffcc00'; break;
+                            case 'purple': ctx.fillStyle = '#b026ff'; break;
+                        }
+                    } else {
+                        ctx.fillStyle = this.color;
+                    }
                     ctx.beginPath();
                     ctx.moveTo(0, 4);
                     ctx.lineTo(25, 4);
@@ -1089,6 +1538,15 @@
                     ctx.lineTo(0, this.height - 5);
                     ctx.closePath();
                     ctx.fill();
+                }
+
+                // Draw Overload active visual aura
+                if (this.isSpecialActive) {
+                    ctx.strokeStyle = '#ff00aa';
+                    ctx.lineWidth = 2 + Math.sin(gameTime * 15) * 1.5;
+                    ctx.beginPath();
+                    ctx.arc(20, this.height/2, 28, 0, Math.PI * 2);
+                    ctx.stroke();
                 }
 
                 // Weapon level 4+ shield aura (sprite-based)
@@ -1374,6 +1832,16 @@
 
                 this.stateTimer -= dt;
                 if (this.stateTimer <= 0) {
+                    // Spawn scrap drops on boss state transition
+                    if (typeof scrapDrops !== 'undefined') {
+                        const tx = this.x + 30;
+                        const ty = this.y + 60;
+                        scrapDrops.push(new ScrapDrop(tx, ty, 'cell'));
+                        if (Math.random() < 0.5) {
+                            scrapDrops.push(new ScrapDrop(tx, ty, 'fragment'));
+                        }
+                    }
+
                     if (this.state === 'idle') {
                         if (this.hp < this.hpMax / 2 && Math.random() > 0.4) {
                             this.state = 'laser_charge';
@@ -1428,20 +1896,33 @@
             }
 
             takeDamage(amt) {
+                if (this.hp <= 0) return;
                 this.hp -= amt;
                 playSound('hit');
                 createExplosion(this.x + Math.random()*120, this.y + Math.random()*100, '#ffffff', 5);
 
                 if (this.hp <= 0) {
                     this.hp = 0;
-                    gameWon = true;
+                    bossDefeated = true;
                     playSound('explosion');
+                    
+                    // Spawn Data Fragments on Boss defeat!
+                    if (typeof scrapDrops !== 'undefined') {
+                        for (let k = 0; k < 5; k++) {
+                            scrapDrops.push(new ScrapDrop(this.x + 50 + (Math.random()-0.5)*50, this.y + 60 + (Math.random()-0.5)*50, 'fragment'));
+                        }
+                    }
+
                     for (let i = 0; i < 35; i++) {
                         setTimeout(() => {
                             createExplosion(this.x + Math.random()*150, this.y + Math.random()*120, '#ff3300', 15);
                             playSound('explosion');
                         }, i * 100);
                     }
+                    
+                    setTimeout(() => {
+                        transitionToScreen(SCREENS.CINEMATIC);
+                    }, 3500);
                 }
             }
 
@@ -1721,6 +2202,121 @@
             }
         }
 
+        // --- ScrapDrop Class ---
+        class ScrapDrop {
+            constructor(x, y, type) {
+                this.x = x;
+                this.y = y;
+                this.type = type; // 'metal', 'cell', 'fragment'
+                this.width = 12;
+                this.height = 12;
+                this.vx = (Math.random() - 0.5) * 60 - 50; // drifting left
+                this.vy = (Math.random() - 0.5) * 80;
+                this.spin = Math.random() * Math.PI;
+                this.spinSpeed = 2 + Math.random() * 4;
+                
+                if (type === 'metal') {
+                    this.value = Math.floor(10 + Math.random() * 41); // 10-50
+                    this.color = '#c0c0c0'; // silver/grey
+                } else if (type === 'cell') {
+                    this.value = Math.floor(100 + Math.random() * 151); // 100-250
+                    this.color = '#00ffff'; // neon cyan
+                } else if (type === 'fragment') {
+                    this.value = Math.floor(500 + Math.random() * 501); // 500-1000
+                    this.color = '#ff00ff'; // neon purple
+                }
+            }
+            update(dt) {
+                // Apply magnetic pull toward player
+                const dx = player.x + player.width/2 - this.x;
+                const dy = player.y + player.height/2 - this.y;
+                const dist = Math.sqrt(dx*dx + dy*dy);
+                
+                const magnetRadius = 100;
+                if (dist < magnetRadius) {
+                    const pullForce = 350 * (1 - dist / magnetRadius);
+                    this.vx += (dx / dist) * pullForce * dt;
+                    this.vy += (dy / dist) * pullForce * dt;
+                } else {
+                    this.vx = this.vx * 0.98;
+                    this.vy = this.vy * 0.98;
+                    this.x -= 40 * dt;
+                }
+                
+                this.x += this.vx * dt;
+                this.y += this.vy * dt;
+                this.spin += this.spinSpeed * dt;
+            }
+            draw() {
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.spin);
+                
+                ctx.shadowColor = this.color;
+                ctx.shadowBlur = 8;
+                ctx.fillStyle = this.color;
+                
+                if (this.type === 'metal') {
+                    ctx.beginPath();
+                    for(let i=0; i<6; i++) {
+                        const angle = i * Math.PI / 3;
+                        ctx.lineTo(Math.cos(angle)*6, Math.sin(angle)*6);
+                    }
+                    ctx.closePath();
+                    ctx.fill();
+                } else if (this.type === 'cell') {
+                    ctx.fillRect(-3, -6, 6, 12);
+                    ctx.fillStyle = '#ffffff';
+                    ctx.fillRect(-1, -4, 2, 8);
+                } else if (this.type === 'fragment') {
+                    ctx.fillRect(-5, -5, 10, 10);
+                    ctx.strokeStyle = '#ffffff';
+                    ctx.lineWidth = 1;
+                    ctx.strokeRect(-5, -5, 10, 10);
+                }
+                
+                ctx.restore();
+            }
+        }
+
+        // --- FloatingText Class ---
+        class FloatingText {
+            constructor(x, y, text, color = '#00ff55') {
+                this.x = x;
+                this.y = y;
+                this.text = text;
+                this.color = color;
+                this.alpha = 1.0;
+                this.vy = -40; // floating upwards
+                this.life = 1.0; // seconds
+            }
+            update(dt) {
+                this.y += this.vy * dt;
+                this.life -= dt;
+                this.alpha = Math.max(0, this.life);
+            }
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.alpha;
+                ctx.fillStyle = this.color;
+                ctx.font = 'bold 11px monospace';
+                ctx.textAlign = 'center';
+                ctx.fillText(this.text, this.x, this.y);
+                ctx.restore();
+            }
+        }
+
+        function getTrailColorValue(name) {
+            switch(name) {
+                case 'cyan': return '#00ffff';
+                case 'magenta': return '#ff0055';
+                case 'emerald': return '#00ff55';
+                case 'gold': return '#ffcc00';
+                case 'purple': return '#ff00aa';
+                default: return '#ff7700';
+            }
+        }
+
         // --- Parallax Background System ---
         // Image-based parallax layers (bg_nebula, bg_city) + procedural starfield
 
@@ -1989,6 +2585,10 @@
         const enemies = [];
         const powerups = [];
         const particles = [];
+        const scrapDrops = [];
+        const floatingTexts = [];
+        let runScrap = 0;
+        let runScrapSaved = false;
 
         // Parallax background layers (image-based)
         const bgLayers = [
@@ -2031,6 +2631,10 @@
             boss = null;
             sirenTimer = 0;
             gameTime = 0;
+            bossDefeated = false;
+            
+            runScrap = 0;
+            runScrapSaved = false;
             
             // Re-instantiate player ship with the currently selected model
             player = new Player(SHIP_OPTIONS[selectedShipIndex]);
@@ -2041,6 +2645,8 @@
             powerups.length = 0;
             particles.length = 0;
             vfxExplosions.length = 0;
+            scrapDrops.length = 0;
+            floatingTexts.length = 0;
         }
 
         function loop(timestamp) {
@@ -2069,8 +2675,20 @@
                         currentScreen = targetScreen;
                         if (currentScreen === SCREENS.PLAYING) {
                             stopMenuMusic();
+                            stopCreditsMusic();
                             resetGame();
+                        } else if (currentScreen === SCREENS.CREDITS) {
+                            stopMenuMusic();
+                            startCreditsMusic();
+                            creditsScrollY = 0;
+                            creditsHoldTimer = 0;
+                        } else if (currentScreen === SCREENS.CINEMATIC) {
+                            stopMenuMusic();
+                            stopCreditsMusic();
+                            cinematicTime = 0;
+                            playSound('victory_fanfare');
                         } else {
+                            stopCreditsMusic();
                             startMenuMusic();
                         }
                     }
@@ -2083,7 +2701,36 @@
             }
 
             if (currentScreen !== SCREENS.PLAYING) {
+                if (currentScreen === SCREENS.CREDITS) {
+                    creditsScrollY += 35 * dt;
+                } else if (currentScreen === SCREENS.CINEMATIC) {
+                    cinematicTime += dt;
+                    if (cinematicTime >= 20 && !targetScreen) {
+                        transitionToScreen(SCREENS.CREDITS);
+                    }
+                }
                 updateTitleBackground(dt);
+                return;
+            }
+
+            if (bossDefeated) {
+                bgLayers.forEach(layer => layer.update(dt));
+                stars.forEach(star => star.update(dt));
+                seaParticles.forEach(p => p.update(dt));
+                player.invulnerable = 999;
+                player.update(dt);
+                if (boss) boss.update(dt);
+                
+                bullets.forEach(b => b.update(dt));
+                enemyBullets.forEach(eb => eb.update(dt));
+                for (let i = vfxExplosions.length - 1; i >= 0; i--) {
+                    vfxExplosions[i].update(dt);
+                    if (!vfxExplosions[i].alive) vfxExplosions.splice(i, 1);
+                }
+                for (let i = particles.length - 1; i >= 0; i--) {
+                    particles[i].update(dt);
+                    if (!particles[i].alive) particles.splice(i, 1);
+                }
                 return;
             }
 
@@ -2185,7 +2832,9 @@
                     const b = bullets[j];
                     const bBox = { x: b.x - b.size, y: b.y - 2, width: b.size*2, height: 4 };
                     if (checkCollision(bBox, e)) {
-                        e.hp -= (player.weaponLevel >= 4 ? 2 : 1);
+                        const mods = window.DS_UpgradeSystem ? window.DS_UpgradeSystem.getGameplayModifiers() : null;
+                        const dmg = (player.weaponLevel >= 4 ? 2 : 1) * (mods ? mods.weaponDamageMultiplier : 1.0);
+                        e.hp -= dmg;
                         bullets.splice(j, 1);
                         playSound('hit');
 
@@ -2193,6 +2842,15 @@
                             createExplosion(e.x + e.width/2, e.y + e.height/2, e.color, 12);
                             playSound('explosion');
                             score += e.scoreValue;
+
+                            // Spawn scrap drops
+                            const metalCount = e.type === 'heavy' ? 3 : 1;
+                            for (let k = 0; k < metalCount; k++) {
+                                scrapDrops.push(new ScrapDrop(e.x + (Math.random()-0.5)*15, e.y + (Math.random()-0.5)*15, 'metal'));
+                            }
+                            if (Math.random() < 0.15) {
+                                scrapDrops.push(new ScrapDrop(e.x, e.y, 'cell'));
+                            }
 
                             const dropChance = Math.random();
                             if (dropChance < 0.15) {
@@ -2217,7 +2875,8 @@
                     const b = bullets[j];
                     const bBox = { x: b.x - b.size, y: b.y - 2, width: b.size*2, height: 4 };
                     if (checkCollision(bBox, boss)) {
-                        const dmg = player.weaponLevel >= 4 ? 2 : 1;
+                        const mods = window.DS_UpgradeSystem ? window.DS_UpgradeSystem.getGameplayModifiers() : null;
+                        const dmg = (player.weaponLevel >= 4 ? 2 : 1) * (mods ? mods.weaponDamageMultiplier : 1.0);
                         boss.takeDamage(dmg);
                         bullets.splice(j, 1);
                     }
@@ -2258,6 +2917,31 @@
                 }
             }
 
+            for (let i = scrapDrops.length - 1; i >= 0; i--) {
+                const sd = scrapDrops[i];
+                sd.update(dt);
+
+                if (checkCollision(sd, player)) {
+                    playSound('powerup');
+                    runScrap += sd.value;
+                    floatingTexts.push(new FloatingText(sd.x, sd.y, `+⚙️${sd.value}`, '#00ff55'));
+                    scrapDrops.splice(i, 1);
+                    continue;
+                }
+
+                if (sd.x < -30) {
+                    scrapDrops.splice(i, 1);
+                }
+            }
+
+            for (let i = floatingTexts.length - 1; i >= 0; i--) {
+                const ft = floatingTexts[i];
+                ft.update(dt);
+                if (ft.life <= 0) {
+                    floatingTexts.splice(i, 1);
+                }
+            }
+
             for (let i = particles.length - 1; i >= 0; i--) {
                 const p = particles[i];
                 p.update(dt);
@@ -2273,10 +2957,44 @@
                 }
             }
 
+            if ((gameOver || gameWon) && !runScrapSaved) {
+                if (window.DS_UpgradeSystem) {
+                    window.DS_UpgradeSystem.addScrap(runScrap);
+                }
+                runScrapSaved = true;
+            }
+
             uiShield.innerText = Math.round(player.shield) + '%';
             uiShield.style.color = player.shield > 40 ? '#00ff00' : '#ff0033';
             uiWeapon.innerText = 'LVL ' + player.weaponLevel + (player.weaponLevel === 5 ? ' (MAX)' : '');
             uiScore.innerText = score;
+            if (uiScrap) uiScrap.innerText = '⚙️' + runScrap;
+            
+            if (uiBoost) {
+                if (player.isBoosting) {
+                    uiBoost.innerText = 'BOOSTING!';
+                    uiBoost.style.color = '#00ffff';
+                } else if (player.boostCooldown > 0) {
+                    uiBoost.innerText = `COOLDOWN (${Math.ceil(player.boostCooldown)}s)`;
+                    uiBoost.style.color = '#ff0033';
+                } else {
+                    uiBoost.innerText = 'READY';
+                    uiBoost.style.color = '#ffaa00';
+                }
+            }
+            
+            if (uiSpecial) {
+                if (player.isSpecialActive) {
+                    uiSpecial.innerText = `OVERLOAD (${Math.ceil(player.specialActiveTimer)}s)`;
+                    uiSpecial.style.color = '#ff00aa';
+                } else if (player.specialCooldown > 0) {
+                    uiSpecial.innerText = `COOLDOWN (${Math.ceil(player.specialCooldown)}s)`;
+                    uiSpecial.style.color = '#ff0033';
+                } else {
+                    uiSpecial.innerText = 'READY (K)';
+                    uiSpecial.style.color = '#b026ff';
+                }
+            }
         }
 
         function draw() {
@@ -2307,11 +3025,13 @@
             bullets.forEach(b => b.draw());
             enemyBullets.forEach(eb => eb.draw());
             powerups.forEach(pu => pu.draw());
+            scrapDrops.forEach(sd => sd.draw());
             enemies.forEach(e => e.draw());
             if (boss) boss.draw();
             player.draw();
             vfxExplosions.forEach(ex => ex.draw());
             particles.forEach(p => p.draw());
+            floatingTexts.forEach(ft => ft.draw());
 
             // Boss asset loading indicator
             if (bossAssetsLoading && !bossAssetsLoaded) {
@@ -2389,13 +3109,16 @@
                 ctx.fillStyle = '#ffffff';
                 ctx.font = '16px monospace';
                 ctx.fillText('SCORE: ' + score, canvas.width / 2, canvas.height / 2 + 10);
+                ctx.fillStyle = '#00ff55';
+                ctx.fillText('SCRAP EARNED: +' + runScrap, canvas.width / 2, canvas.height / 2 + 30);
                 ctx.font = '14px monospace';
                 ctx.fillStyle = '#8a8a9f';
-                ctx.fillText('Click screen or press SPACE to retry', canvas.width / 2, canvas.height / 2 + 45);
-                ctx.fillText('Press ESC to return to main menu', canvas.width / 2, canvas.height / 2 + 65);
+                ctx.fillText('Click screen or press SPACE to retry', canvas.width / 2, canvas.height / 2 + 55);
+                ctx.fillText('Press U to open Upgrades Shop', canvas.width / 2, canvas.height / 2 + 75);
+                ctx.fillText('Press ESC to return to main menu', canvas.width / 2, canvas.height / 2 + 95);
                 ctx.fillStyle = '#ff0055';
                 ctx.font = '11px monospace';
-                ctx.fillText('whatanadventure.games/darius-star', canvas.width / 2, canvas.height / 2 + 88);
+                ctx.fillText('whatanadventure.games/darius-star', canvas.width / 2, canvas.height / 2 + 118);
             }
 
             if (gameWon) {
@@ -2408,15 +3131,18 @@
                 ctx.fillStyle = '#ffffff';
                 ctx.font = '18px monospace';
                 ctx.fillText('SCORE: ' + score, canvas.width / 2, canvas.height / 2);
+                ctx.fillStyle = '#00ff55';
+                ctx.fillText('SCRAP EARNED: +' + runScrap, canvas.width / 2, canvas.height / 2 + 20);
                 ctx.fillStyle = '#00ffff';
-                ctx.fillText('Cyber Coelacanth eradicated.', canvas.width / 2, canvas.height / 2 + 25);
+                ctx.fillText('Cyber Coelacanth eradicated.', canvas.width / 2, canvas.height / 2 + 45);
                 ctx.fillStyle = '#8a8a9f';
                 ctx.font = '14px monospace';
-                ctx.fillText('Click screen or press SPACE to replay', canvas.width / 2, canvas.height / 2 + 60);
-                ctx.fillText('Press ESC to return to main menu', canvas.width / 2, canvas.height / 2 + 80);
+                ctx.fillText('Click screen or press SPACE to replay', canvas.width / 2, canvas.height / 2 + 75);
+                ctx.fillText('Press U to open Upgrades Shop', canvas.width / 2, canvas.height / 2 + 95);
+                ctx.fillText('Press ESC to return to main menu', canvas.width / 2, canvas.height / 2 + 115);
                 ctx.fillStyle = '#ff0055';
                 ctx.font = '11px monospace';
-                ctx.fillText('whatanadventure.games/darius-star', canvas.width / 2, canvas.height / 2 + 103);
+                ctx.fillText('whatanadventure.games/darius-star', canvas.width / 2, canvas.height / 2 + 138);
             }
 
             if (screenFadeAlpha > 0) {
@@ -2434,7 +3160,7 @@
             if (currentScreen === SCREENS.MENU) {
                 const startY = 210;
                 const spacing = 35;
-                for (let i = 0; i < 4; i++) {
+                for (let i = 0; i < menuOptions.length; i++) {
                     const itemY = startY + i * spacing;
                     if (x >= 280 && x <= 520 && y >= itemY - 18 && y <= itemY + 8) {
                         if (selectedMenuIndex !== i) {
@@ -2495,7 +3221,7 @@
             if (currentScreen === SCREENS.MENU) {
                 const startY = 210;
                 const spacing = 35;
-                for (let i = 0; i < 4; i++) {
+                for (let i = 0; i < menuOptions.length; i++) {
                     const itemY = startY + i * spacing;
                     if (x >= 280 && x <= 520 && y >= itemY - 18 && y <= itemY + 8) {
                         selectedMenuIndex = i;
@@ -2550,6 +3276,9 @@
             } else if (currentScreen === SCREENS.CREDITS) {
                 playSound('menu_click');
                 transitionToScreen(SCREENS.MENU);
+            } else if (currentScreen === SCREENS.CINEMATIC) {
+                playSound('menu_click');
+                transitionToScreen(SCREENS.CREDITS);
             }
         });
 

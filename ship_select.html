@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Darius Star — Ship Selection</title>
+    <meta name="description" content="Select your fighter for Darius Star: Cyber Coelacanth — 5 unique ships with distinct abilities.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #03030c;
+            --panel-bg: #07071c;
+            --border-color: #1a1a40;
+            --accent-cyan: #00ffff;
+            --accent-pink: #ff0055;
+            --accent-green: #00ff55;
+            --accent-gold: #ffcc00;
+            --accent-purple: #b026ff;
+            --text-color: #e2e2ec;
+            --text-muted: #6f6f96;
+            --font-display: 'Orbitron', sans-serif;
+            --font-mono: 'Share Tech Mono', monospace;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(circle at 50% 20%, rgba(26, 26, 80, 0.4) 0%, transparent 60%),
+                linear-gradient(rgba(18, 18, 30, 0.2) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(18, 18, 30, 0.2) 1px, transparent 1px);
+            background-size: 100% 100%, 30px 30px, 30px 30px;
+            color: var(--text-color);
+            font-family: var(--font-mono);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        /* ---- HEADER ---- */
+        header {
+            width: 100%;
+            max-width: 1100px;
+            margin-bottom: 20px;
+            text-align: center;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 15px;
+            position: relative;
+        }
+
+        h1 {
+            font-family: var(--font-display);
+            font-size: 28px;
+            font-weight: 900;
+            letter-spacing: 3px;
+            color: var(--accent-cyan);
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.5), 0 0 20px rgba(0, 0, 255, 0.3);
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            font-size: 13px;
+            color: var(--accent-pink);
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            text-shadow: 0 0 8px rgba(255, 0, 85, 0.3);
+        }
+
+        /* ---- SHIP GRID ---- */
+        .ship-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 16px;
+            width: 100%;
+            max-width: 1100px;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 900px) {
+            .ship-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 550px) {
+            .ship-grid {
+                grid-template-columns: 1fr;
+                max-width: 380px;
+            }
+        }
+
+        /* ---- SHIP CARD ---- */
+        .ship-card {
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 16px 14px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .ship-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            border-radius: 8px;
+            opacity: 0;
+            transition: opacity 0.25s ease;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .ship-card:hover {
+            border-color: var(--accent-cyan);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(0, 255, 255, 0.12);
+        }
+
+        .ship-card.selected {
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.25), inset 0 0 20px rgba(0, 255, 255, 0.05);
+            transform: translateY(-6px);
+        }
+
+        .ship-card.selected::after {
+            content: 'SELECTED';
+            position: absolute;
+            top: 10px;
+            right: 12px;
+            font-family: var(--font-display);
+            font-size: 9px;
+            letter-spacing: 2px;
+            color: var(--accent-cyan);
+            text-shadow: 0 0 6px var(--accent-cyan);
+            z-index: 1;
+        }
+
+        .ship-card > * { position: relative; z-index: 1; }
+
+        /* ---- SHIP PREVIEW (placeholder + animation) ---- */
+        .ship-preview {
+            width: 90px;
+            height: 90px;
+            margin-bottom: 10px;
+            position: relative;
+        }
+
+        .ship-sprite {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 56px;
+            animation: shipFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes shipFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+
+        .ship-engine-glow {
+            position: absolute;
+            bottom: -4px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 32px;
+            height: 8px;
+            border-radius: 50%;
+            animation: enginePulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes enginePulse {
+            0%, 100% { opacity: 0.4; transform: translateX(-50%) scaleY(1); }
+            50% { opacity: 1; transform: translateX(-50%) scaleY(2); }
+        }
+
+        /* ---- SHIP INFO ---- */
+        .ship-name {
+            font-family: var(--font-display);
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-bottom: 2px;
+        }
+
+        .ship-class {
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+
+        .ship-tagline {
+            font-size: 10px;
+            font-style: italic;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+            min-height: 28px;
+        }
+
+        /* ---- STAT BARS ---- */
+        .stat-bars {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-bottom: 10px;
+        }
+
+        .stat-row {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .stat-label {
+            font-family: var(--font-display);
+            font-size: 8px;
+            letter-spacing: 1px;
+            width: 38px;
+            text-align: right;
+            color: var(--text-muted);
+            flex-shrink: 0;
+        }
+
+        .stat-bar-track {
+            flex: 1;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .stat-bar-fill {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .stat-value {
+            font-family: var(--font-mono);
+            font-size: 9px;
+            width: 24px;
+            color: var(--text-muted);
+            flex-shrink: 0;
+        }
+
+        /* ---- SPECIAL ABILITY ---- */
+        .special-ability {
+            width: 100%;
+            font-size: 9px;
+            color: var(--accent-gold);
+            margin-bottom: 12px;
+            min-height: 30px;
+            line-height: 1.4;
+            display: flex;
+            align-items: flex-start;
+            gap: 4px;
+        }
+
+        .special-icon {
+            font-size: 11px;
+            flex-shrink: 0;
+        }
+
+        /* ---- SELECT BUTTON ---- */
+        .btn-select {
+            font-family: var(--font-display);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            padding: 8px 24px;
+            border: 2px solid var(--border-color);
+            border-radius: 4px;
+            background: transparent;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            width: 100%;
+        }
+
+        .ship-card.selected .btn-select {
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+            background: rgba(0, 255, 255, 0.08);
+            text-shadow: 0 0 8px rgba(0, 255, 255, 0.4);
+            box-shadow: 0 0 12px rgba(0, 255, 255, 0.15);
+        }
+
+        .btn-select:hover {
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+            background: rgba(0, 255, 255, 0.05);
+        }
+
+        .ship-card.selected .btn-select:hover {
+            background: rgba(0, 255, 255, 0.15);
+        }
+
+        /* ---- LAUNCH BAR ---- */
+        .launch-bar {
+            width: 100%;
+            max-width: 1100px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            align-items: center;
+            padding: 20px;
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+        }
+
+        .btn-launch {
+            font-family: var(--font-display);
+            font-size: 18px;
+            font-weight: 900;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            padding: 14px 50px;
+            border: 3px solid var(--accent-green);
+            border-radius: 6px;
+            background: rgba(0, 255, 85, 0.08);
+            color: var(--accent-green);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-shadow: 0 0 10px rgba(0, 255, 85, 0.4);
+            animation: launchPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes launchPulse {
+            0%, 100% { box-shadow: 0 0 10px rgba(0, 255, 85, 0.2); }
+            50% { box-shadow: 0 0 30px rgba(0, 255, 85, 0.4); }
+        }
+
+        .btn-launch:hover {
+            background: rgba(0, 255, 85, 0.2);
+            box-shadow: 0 0 40px rgba(0, 255, 85, 0.5);
+            transform: scale(1.03);
+        }
+
+        .launch-info {
+            font-size: 12px;
+            color: var(--text-muted);
+            text-align: left;
+            line-height: 1.6;
+        }
+
+        .launch-info .key {
+            display: inline-block;
+            background: rgba(0, 255, 255, 0.1);
+            border: 1px solid var(--accent-cyan);
+            border-radius: 3px;
+            padding: 2px 7px;
+            font-family: var(--font-mono);
+            color: var(--accent-cyan);
+            font-size: 11px;
+            margin: 0 2px;
+        }
+
+        /* ---- SELECTED SHIP SUMMARY ---- */
+        .selected-summary {
+            width: 100%;
+            max-width: 1100px;
+            margin-bottom: 16px;
+            padding: 12px 20px;
+            background: var(--panel-bg);
+            border: 1px dashed var(--border-color);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .summary-label {
+            font-family: var(--font-display);
+            font-size: 11px;
+            letter-spacing: 2px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .summary-ship-name {
+            font-family: var(--font-display);
+            font-size: 16px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: var(--accent-cyan);
+            text-shadow: 0 0 8px rgba(0, 255, 255, 0.4);
+        }
+
+        .summary-stat {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            color: var(--text-muted);
+        }
+
+        .summary-stat span {
+            color: var(--text-color);
+        }
+
+        /* ---- RESPONSIVE ---- */
+        @media (max-width: 900px) {
+            .launch-bar { flex-direction: column; text-align: center; }
+            .launch-info { text-align: center; }
+        }
+
+        /* ---- STARFIELD BACKGROUND ANIMATION ---- */
+        .starfield {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Starfield Canvas -->
+    <canvas class="starfield" id="starfield"></canvas>
+
+    <header>
+        <h1>Ship Selection</h1>
+        <div class="subtitle">Choose Your Fighter · Darius Star</div>
+    </header>
+
+    <!-- Selected ship summary bar -->
+    <div class="selected-summary" id="summary-bar">
+        <span class="summary-label">Selected:</span>
+        <span class="summary-ship-name" id="summary-name">STRIKER</span>
+        <span class="summary-stat">SPD: <span id="summary-spd">220</span></span>
+        <span class="summary-stat">SHIELD: <span id="summary-shield">110</span></span>
+        <span class="summary-stat">WPN: <span id="summary-wpn">140</span></span>
+        <span class="summary-stat">SPECIAL: <span id="summary-spc">110</span></span>
+    </div>
+
+    <!-- Ship card grid -->
+    <div class="ship-grid" id="ship-grid">
+        <!-- Cards built by JavaScript -->
+    </div>
+
+    <!-- Launch bar -->
+    <div class="launch-bar">
+        <button class="btn-launch" id="btn-launch">▸  LAUNCH  ◂</button>
+        <div class="launch-info">
+            Press <span class="key">ENTER</span> or click <span class="key">LAUNCH</span> to start.<br>
+            Use <span class="key">←</span> <span class="key">→</span> keys or click cards to select.
+        </div>
+    </div>
+
+    <script>
+        // --- Ship Data ---
+        const SHIPS = [
+            {
+                id: 'striker', name: 'STRIKER', className: 'X-01 · Balanced',
+                tagline: 'No weaknesses. Pure skill.',
+                color: '#00ffff', emoji: '🛡️',
+                stats: { spd: 220, shield: 110, wpn: 140, spc: 110 },
+                weapon: 'Standard Laser',
+                special: { name: 'Adaptive Surge (35s)', desc: 'All stats +15% for 5s.' }
+            },
+            {
+                id: 'phantom', name: 'PHANTOM', className: 'S-02 · Speed',
+                tagline: 'Too fast to hit.',
+                color: '#00ffaa', emoji: '💨',
+                stats: { spd: 290, shield: 60, wpn: 70, spc: 160 },
+                weapon: 'Rapid-Fire Weak Laser',
+                special: { name: 'Afterburner (30s)', desc: '2x speed for 5s. Invulnerable during boost.' }
+            },
+            {
+                id: 'bastion', name: 'BASTION', className: 'D-03 · Tank',
+                tagline: 'Nothing gets through.',
+                color: '#ffcc00', emoji: '🛡️',
+                stats: { spd: 140, shield: 200, wpn: 150, spc: 190 },
+                weapon: 'Slow Heavy Cannon',
+                special: { name: 'Aegis Protocol (40s)', desc: 'Passive shield regen 8/s. Absorbs 3 hits.' }
+            },
+            {
+                id: 'tempest', name: 'TEMPEST', className: 'F-04 · DPS',
+                tagline: 'Unleash the storm.',
+                color: '#ff0055', emoji: '🔥',
+                stats: { spd: 200, shield: 80, wpn: 200, spc: 140 },
+                weapon: '5-Shot Fan Spread',
+                special: { name: 'Overheat Barrage (25s)', desc: 'Unlimited fire rate for 3s. Burst-fire skill.' }
+            },
+            {
+                id: 'specter', name: 'SPECTER', className: 'A-05 · Stealth',
+                tagline: 'They never see it coming.',
+                color: '#b026ff', emoji: '👻',
+                stats: { spd: 230, shield: 70, wpn: 120, spc: 180 },
+                weapon: 'Piercing Single Shot',
+                special: { name: 'Phase Cloak (45s)', desc: 'Invisible 3s. First shot out of cloak = 3x damage.' }
+            }
+        ];
+
+        const STAT_MAX = 200;
+        let selectedIndex = 2; // default: BASTION (tank — middle card)
+
+        // --- Build Ship Cards ---
+        const grid = document.getElementById('ship-grid');
+        const summary = {
+            name: document.getElementById('summary-name'),
+            spd: document.getElementById('summary-spd'),
+            shield: document.getElementById('summary-shield'),
+            wpn: document.getElementById('summary-wpn'),
+            spc: document.getElementById('summary-spc')
+        };
+
+        function renderCards() {
+            grid.innerHTML = '';
+            SHIPS.forEach((ship, i) => {
+                const card = document.createElement('div');
+                card.className = 'ship-card' + (i === selectedIndex ? ' selected' : '');
+                card.dataset.index = i;
+                card.style.setProperty('--ship-color', ship.color);
+
+                // Stat bars
+                const statBars = ['spd', 'shield', 'wpn', 'spc'].map(stat => {
+                    const pct = (ship.stats[stat] / STAT_MAX * 100).toFixed(0);
+                    return `
+                        <div class="stat-row">
+                            <span class="stat-label">${stat.toUpperCase() === 'SPD' ? 'SPD' : stat.toUpperCase() === 'WPN' ? 'WPN' : stat.toUpperCase() === 'SPC' ? 'SPC' : 'SHIELD'}</span>
+                            <div class="stat-bar-track">
+                                <div class="stat-bar-fill" style="width:${pct}%;background:${ship.color};box-shadow:0 0 6px ${ship.color}44"></div>
+                            </div>
+                            <span class="stat-value">${ship.stats[stat]}</span>
+                        </div>`;
+                }).join('');
+
+                card.innerHTML = `
+                    <div class="ship-preview">
+                        <div class="ship-sprite" style="color:${ship.color};text-shadow:0 0 12px ${ship.color}">${ship.emoji}</div>
+                        <div class="ship-engine-glow" style="background:${ship.color};box-shadow:0 0 12px ${ship.color}"></div>
+                    </div>
+                    <div class="ship-name" style="color:${ship.color};text-shadow:0 0 6px ${ship.color}44">${ship.name}</div>
+                    <div class="ship-class">${ship.className}</div>
+                    <div class="ship-tagline">"${ship.tagline}"</div>
+                    <div class="stat-bars">${statBars}</div>
+                    <div class="special-ability">
+                        <span class="special-icon">✦</span>
+                        <span><strong style="color:${ship.color}">${ship.special.name}</strong><br>${ship.special.desc}</span>
+                    </div>
+                    <button class="btn-select" data-index="${i}">${i === selectedIndex ? '✦ SELECTED ✦' : 'SELECT'}</button>
+                `;
+
+                card.addEventListener('click', () => selectShip(i));
+                grid.appendChild(card);
+            });
+            updateSummary();
+        }
+
+        function selectShip(index) {
+            if (index === selectedIndex) return;
+            selectedIndex = index;
+            renderCards();
+            // Brief haptic-like visual feedback
+            const selectedCard = grid.querySelector('.ship-card.selected');
+            if (selectedCard) {
+                selectedCard.style.transition = 'none';
+                selectedCard.style.transform = 'translateY(-8px)';
+                requestAnimationFrame(() => {
+                    selectedCard.style.transition = 'all 0.25s ease';
+                    selectedCard.style.transform = 'translateY(-6px)';
+                });
+            }
+        }
+
+        function updateSummary() {
+            const ship = SHIPS[selectedIndex];
+            summary.name.textContent = ship.name;
+            summary.name.style.color = ship.color;
+            summary.name.style.textShadow = `0 0 8px ${ship.color}66`;
+            summary.spd.textContent = ship.stats.spd;
+            summary.shield.textContent = ship.stats.shield;
+            summary.wpn.textContent = ship.stats.wpn;
+            summary.spc.textContent = ship.stats.spc;
+        }
+
+        function launch() {
+            const ship = SHIPS[selectedIndex];
+            // Store selection in localStorage for the game to read
+            localStorage.setItem('dariusStar_shipSelection', JSON.stringify({
+                shipId: ship.id,
+                shipName: ship.name,
+                timestamp: Date.now()
+            }));
+            // Redirect to game
+            window.location.href = 'index.html';
+        }
+
+        // --- Keyboard Navigation ---
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === 'd') {
+                e.preventDefault();
+                selectShip((selectedIndex + 1) % SHIPS.length);
+            } else if (e.key === 'ArrowLeft' || e.key === 'a') {
+                e.preventDefault();
+                selectShip((selectedIndex - 1 + SHIPS.length) % SHIPS.length);
+            } else if (e.key === 'Enter') {
+                e.preventDefault();
+                launch();
+            }
+        });
+
+        // --- Launch Button ---
+        document.getElementById('btn-launch').addEventListener('click', launch);
+
+        // --- Initialize ---
+        renderCards();
+
+        // --- Animated Starfield Background ---
+        (function() {
+            const canvas = document.getElementById('starfield');
+            const ctx = canvas.getContext('2d');
+            let stars = [];
+
+            function resize() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+                initStars();
+            }
+
+            function initStars() {
+                const count = Math.floor((canvas.width * canvas.height) / 1200);
+                stars = [];
+                for (let i = 0; i < count; i++) {
+                    stars.push({
+                        x: Math.random() * canvas.width,
+                        y: Math.random() * canvas.height,
+                        r: Math.random() * 1.5 + 0.3,
+                        twinkle: Math.random() * Math.PI * 2,
+                        speed: Math.random() * 0.02 + 0.005
+                    });
+                }
+            }
+
+            function draw(timestamp) {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                stars.forEach(star => {
+                    star.twinkle += star.speed;
+                    const alpha = 0.3 + 0.7 * Math.abs(Math.sin(star.twinkle));
+                    ctx.beginPath();
+                    ctx.arc(star.x, star.y, star.r, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(180, 200, 255, ${alpha})`;
+                    ctx.fill();
+                });
+
+                requestAnimationFrame(draw);
+            }
+
+            window.addEventListener('resize', resize);
+            resize();
+            requestAnimationFrame(draw);
+        })();
+    </script>
+</body>
+</html>
