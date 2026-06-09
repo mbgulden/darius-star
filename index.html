@@ -82,6 +82,36 @@
             line-height: 1.4;
         }
 
+        /* Cinematic video overlay — full-size over the canvas */
+        .cinematic-video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 10;
+            display: none;
+            background: #000;
+        }
+        .cinematic-video-overlay.active {
+            display: block;
+        }
+        .skip-cinematic-hint {
+            position: absolute;
+            bottom: 10px;
+            right: 15px;
+            color: rgba(255, 255, 255, 0.5);
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            z-index: 11;
+            pointer-events: none;
+            display: none;
+        }
+        .skip-cinematic-hint.active {
+            display: block;
+        }
+
         .keys {
             color: #00ffff;
             font-weight: bold;
@@ -203,6 +233,13 @@
     <div class="studio-credit">A <a href="https://whatanadventure.games" target="_blank">What An Adventure</a> Game</div>
     <div id="game-container">
         <canvas id="gameCanvas" width="800" height="450"></canvas>
+        <video id="boss-intro-video" class="cinematic-video-overlay" 
+               src="assets/cinematics/cinematic_boss_intro.mp4" 
+               playsinline preload="auto" muted></video>
+        <video id="victory-video" class="cinematic-video-overlay" 
+               src="assets/cinematics/cinematic_victory.mp4" 
+               playsinline preload="auto" muted></video>
+        <div id="skip-cinematic-hint" class="skip-cinematic-hint">Press SPACE / ESC to skip</div>
         <div id="controls-overlay">
             <div style="color: #ff0055; font-weight: bold; margin-bottom: 4px;">SYSTEM STATUS</div>
             <div>SHIELD: <span id="ui-shield" style="color: #00ff00;">100%</span></div>
@@ -421,6 +458,17 @@
         let creditsHoldTimer = 0;
         let maxCreditsScroll = 1050;
         let bossDefeated = false;
+        let bossIntroPlaying = false;
+        let victoryVideoPlaying = false;
+
+        // Video elements for cinematics
+        const bossIntroVideo = document.getElementById('boss-intro-video');
+        const victoryVideo = document.getElementById('victory-video');
+        const skipHint = document.getElementById('skip-cinematic-hint');
+
+        // Click/touch to skip cinematic videos
+        bossIntroVideo.addEventListener('click', () => { if (bossIntroPlaying) skipBossIntro(); });
+        victoryVideo.addEventListener('click', () => { if (victoryVideoPlaying) skipVictoryCinematic(); });
 
         // Ending cinematic assets
         const endingSunriseImg = new Image();
@@ -581,6 +629,77 @@
             if (targetScreen) return; // already transitioning
             targetScreen = newScreen;
             transitionTimer = 0;
+        }
+
+        // ── Cinematic Video Playback ──
+
+        function playBossIntro() {
+            if (bossIntroPlaying) return;
+            bossIntroPlaying = true;
+            bossIntroVideo.muted = false; // audio allowed after user interaction (START GAME click)
+            bossIntroVideo.classList.add('active');
+            skipHint.classList.add('active');
+            bossIntroVideo.currentTime = 0;
+            bossIntroVideo.play().catch(() => {
+                // Autoplay blocked — try again on next user interaction
+                bossIntroPlaying = false;
+                bossIntroVideo.classList.remove('active');
+                skipHint.classList.remove('active');
+                spawnBossNow();
+                return;
+            });
+            bossIntroVideo.onended = () => {
+                bossIntroVideo.classList.remove('active');
+                skipHint.classList.remove('active');
+                bossIntroPlaying = false;
+                spawnBossNow();
+            };
+        }
+
+        function skipBossIntro() {
+            if (!bossIntroPlaying) return;
+            bossIntroVideo.pause();
+            bossIntroVideo.classList.remove('active');
+            skipHint.classList.remove('active');
+            bossIntroPlaying = false;
+            spawnBossNow();
+        }
+
+        function spawnBossNow() {
+            bossSpawned = true;
+            sirenTimer = 0; // skip siren, boss appears immediately after cinematic
+            boss = new Boss();
+        }
+
+        function playVictoryCinematic() {
+            if (victoryVideoPlaying) return;
+            victoryVideoPlaying = true;
+            victoryVideo.muted = false; // audio allowed after user interaction (START GAME click)
+            victoryVideo.classList.add('active');
+            skipHint.classList.add('active');
+            victoryVideo.currentTime = 0;
+            victoryVideo.play().catch(() => {
+                victoryVideoPlaying = false;
+                victoryVideo.classList.remove('active');
+                skipHint.classList.remove('active');
+                transitionToScreen(SCREENS.CINEMATIC);
+                return;
+            });
+            victoryVideo.onended = () => {
+                victoryVideo.classList.remove('active');
+                skipHint.classList.remove('active');
+                victoryVideoPlaying = false;
+                transitionToScreen(SCREENS.CINEMATIC);
+            };
+        }
+
+        function skipVictoryCinematic() {
+            if (!victoryVideoPlaying) return;
+            victoryVideo.pause();
+            victoryVideo.classList.remove('active');
+            skipHint.classList.remove('active');
+            victoryVideoPlaying = false;
+            transitionToScreen(SCREENS.CINEMATIC);
         }
 
         function updateTitleBackground(dt) {
@@ -1091,6 +1210,20 @@
             loadPlayerSprites();
             loadEnemySprites();
             loadVFXSprites();
+
+            // Cinematic skip: Space or Escape while a video is playing
+            if (e.key === ' ' || e.key === 'Space' || e.key === 'Escape') {
+                if (bossIntroPlaying) {
+                    skipBossIntro();
+                    e.preventDefault();
+                    return;
+                }
+                if (victoryVideoPlaying) {
+                    skipVictoryCinematic();
+                    e.preventDefault();
+                    return;
+                }
+            }
             
             if (currentScreen !== SCREENS.PLAYING) {
                 startMenuMusic();
@@ -1148,11 +1281,17 @@
                     e.preventDefault();
                 } else if (e.key === 'Enter' || e.key === ' ') {
                     playSound('menu_click');
-                    handleMenuConfirm();
+                    if (currentScreen === SCREENS.CINEMATIC) {
+                        transitionToScreen(SCREENS.CREDITS);
+                    } else {
+                        handleMenuConfirm();
+                    }
                     e.preventDefault();
                 } else if (e.key === 'Escape') {
                     playSound('menu_click');
-                    if (currentScreen === SCREENS.SHIP_SELECT || currentScreen === SCREENS.SETTINGS || currentScreen === SCREENS.CREDITS) {
+                    if (currentScreen === SCREENS.CINEMATIC) {
+                        transitionToScreen(SCREENS.CREDITS);
+                    } else if (currentScreen === SCREENS.SHIP_SELECT || currentScreen === SCREENS.SETTINGS || currentScreen === SCREENS.CREDITS) {
                         transitionToScreen(SCREENS.MENU);
                     }
                     e.preventDefault();
@@ -1921,7 +2060,7 @@
                     }
                     
                     setTimeout(() => {
-                        transitionToScreen(SCREENS.CINEMATIC);
+                        playVictoryCinematic();
                     }, 3500);
                 }
             }
@@ -2632,6 +2771,11 @@
             sirenTimer = 0;
             gameTime = 0;
             bossDefeated = false;
+            bossIntroPlaying = false;
+            victoryVideoPlaying = false;
+            if (bossIntroVideo) { bossIntroVideo.pause(); bossIntroVideo.classList.remove('active'); bossIntroVideo.muted = true; }
+            if (victoryVideo) { victoryVideo.pause(); victoryVideo.classList.remove('active'); victoryVideo.muted = true; }
+            skipHint.classList.remove('active');
             
             runScrap = 0;
             runScrapSaved = false;
@@ -2654,7 +2798,7 @@
             const dt = Math.min((timestamp - lastTime) / 1000, 0.1);
             lastTime = timestamp;
 
-            if (!paused && !gameOver && !gameWon) {
+            if (!paused && !gameOver && !gameWon && !bossIntroPlaying && !victoryVideoPlaying) {
                 gameTime += dt;
                 update(dt);
             }
@@ -2752,7 +2896,7 @@
 
             player.update(dt);
 
-            if (!bossSpawned) {
+            if (!bossSpawned && !bossIntroPlaying) {
                 enemySpawnTimer -= dt;
                 if (enemySpawnTimer <= 0) {
                     const r = Math.random();
@@ -2776,8 +2920,9 @@
                 }
 
                 if (score >= 2000) {
-                    bossSpawned = true;
-                    sirenTimer = 3.0;
+                    if (!bossSpawned) {
+                        playBossIntro();
+                    }
                 }
             } else {
                 if (sirenTimer > 0) {
