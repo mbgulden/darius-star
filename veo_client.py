@@ -44,7 +44,7 @@ VEO_ASSET_CATALOG = {
             "transparent background, 256x256, frame-by-frame animation, "
             "no camera movement, static side view."
         ),
-        "duration_sec": 2,
+        "duration_sec": 4,
         "fps": 8,
         "output_prefix": "scout_cycle",
         "extract_frames": True,
@@ -58,7 +58,7 @@ VEO_ASSET_CATALOG = {
             "consistent character, transparent background, 256x256, "
             "no camera movement, static side view."
         ),
-        "duration_sec": 2,
+        "duration_sec": 4,
         "fps": 8,
         "output_prefix": "interceptor_cycle",
         "extract_frames": True,
@@ -72,7 +72,7 @@ VEO_ASSET_CATALOG = {
             "consistent character, transparent background, 256x256, "
             "no camera movement, static side view."
         ),
-        "duration_sec": 2,
+        "duration_sec": 4,
         "fps": 8,
         "output_prefix": "heavy_cycle",
         "extract_frames": True,
@@ -87,7 +87,7 @@ VEO_ASSET_CATALOG = {
             "consistent design, dark transparent background, 512x512, "
             "no camera movement, static side view, subtle idle motion only."
         ),
-        "duration_sec": 3,
+        "duration_sec": 4,
         "fps": 8,
         "output_prefix": "boss_idle",
         "extract_frames": True,
@@ -102,7 +102,7 @@ VEO_ASSET_CATALOG = {
             "consistent character, dark background, 512x512, "
             "no camera movement, static side view."
         ),
-        "duration_sec": 2,
+        "duration_sec": 4,
         "fps": 8,
         "output_prefix": "boss_rage",
         "extract_frames": True,
@@ -117,7 +117,7 @@ VEO_ASSET_CATALOG = {
             "consistent character, dark background, 512x512, "
             "no camera movement, static side view."
         ),
-        "duration_sec": 2,
+        "duration_sec": 4,
         "fps": 8,
         "output_prefix": "boss_laser_charge",
         "extract_frames": True,
@@ -501,6 +501,187 @@ VEO_ASSET_CATALOG = {
         "output_prefix": "sfx_game_start",
         "extract_frames": True,
     },
+    # ═══════════════════════════════════════════════
+    # Damage & Collision SFX
+    # ═══════════════════════════════════════════════
+    "sfx_player_hit_laser": {
+        "category": "SFX Audio",
+        "prompt": (
+            "Player ship being struck by enemy laser, 16-bit pixel art, "
+            "cyan shield flashing white at impact, energy ripple rings, "
+            "with synchronized electrical sizzle sound — sharp crackling static "
+            "mixed with metallic ping, like energy weapon hitting armor, "
+            "short and impactful, 0.5 seconds, transparent background."
+        ),
+        "duration_sec": 1, "fps": 15,
+        "output_prefix": "sfx_player_hit_laser",
+        "extract_frames": True,
+    },
+    "sfx_player_hit_rocket": {
+        "category": "SFX Audio",
+        "prompt": (
+            "Player ship being struck by enemy rocket, 16-bit pixel art, "
+            "orange explosion flash at impact point, hull fragments scattering, "
+            "with synchronized heavy explosive impact — deep bass thud "
+            "followed by metallic screech of tearing armor, "
+            "heavier and more violent than laser hit, 0.8 seconds, transparent background."
+        ),
+        "duration_sec": 1, "fps": 15,
+        "output_prefix": "sfx_player_hit_rocket",
+        "extract_frames": True,
+    },
+    "sfx_collision_ship": {
+        "category": "SFX Audio",
+        "prompt": (
+            "Two spaceships colliding head-on, 16-bit pixel art, "
+            "metal hulls crumpling together, sparks flying from impact zone, "
+            "with synchronized harsh metal-on-metal crunch sound — "
+            "grinding screech followed by buckling thud, "
+            "like a car crash in space, 0.8 seconds, transparent background."
+        ),
+        "duration_sec": 1, "fps": 15,
+        "output_prefix": "sfx_collision_ship",
+        "extract_frames": True,
+    },
+    "sfx_player_low_health": {
+        "category": "SFX Audio",
+        "prompt": (
+            "Red warning indicator flashing on a cockpit dashboard, 16-bit pixel art, "
+            "pulsing red light with increasing urgency, "
+            "with synchronized urgent low-health warning beep — "
+            "high-pitched repeating pulse, faster as health decreases, "
+            "anxiety-inducing but not annoying, classic arcade danger alert, "
+            "1.5 seconds, transparent background."
+        ),
+        "duration_sec": 2, "fps": 15,
+        "output_prefix": "sfx_player_low_health",
+        "extract_frames": True,
+    },
+    "sfx_player_death": {
+        "category": "SFX Audio",
+        "prompt": (
+            "Player ship total destruction, 16-bit pixel art, "
+            "ship breaking apart into large chunks, core reactor going critical, "
+            "final bright white flash consuming everything, "
+            "with synchronized dramatic player death sound — "
+            "initial catastrophic explosion, secondary smaller blasts as systems fail, "
+            "fading into silence, 2 seconds, transparent background."
+        ),
+        "duration_sec": 2, "fps": 15,
+        "output_prefix": "sfx_player_death",
+        "extract_frames": True,
+    },
+    # ═══════════════════════════════════════════════
+    # Enemy Weapon SFX
+    # ═══════════════════════════════════════════════
+    "sfx_enemy_rocket_launch": {
+        "category": "SFX Audio",
+        "prompt": (
+            "Enemy rocket launching from a heavy ship, 16-bit pixel art, "
+            "orange missile with smoke trail emerging from launcher, "
+            "with synchronized rocket launch whoosh — "
+            "initial ignition crack, then accelerating deep rumble as it flies, "
+            "menacing and directional, 0.8 seconds, transparent background."
+        ),
+        "duration_sec": 1, "fps": 15,
+        "output_prefix": "sfx_enemy_rocket_launch",
+        "extract_frames": True,
+    },
+    "sfx_enemy_rocket_travel": {
+        "category": "SFX Audio",
+        "prompt": (
+            "Enemy rocket traveling through space, 16-bit pixel art, "
+            "missile with smoke trail, moving fast, "
+            "with synchronized rocket flyby sound — "
+            "doppler-effect whoosh, rising then falling pitch as it passes, "
+            "classic projectile travel sound, 0.5 seconds, transparent background."
+        ),
+        "duration_sec": 1, "fps": 15,
+        "output_prefix": "sfx_enemy_rocket_travel",
+        "extract_frames": True,
+    },
+    "sfx_enemy_mine_drop": {
+        "category": "SFX Audio",
+        "prompt": (
+            "Enemy ship dropping a proximity mine, 16-bit pixel art, "
+            "spiked metal sphere with blinking red light falling from ship, "
+            "with synchronized mine deployment clunk — "
+            "mechanical click followed by arming beep, "
+            "ominous and deliberate, 0.5 seconds, transparent background."
+        ),
+        "duration_sec": 1, "fps": 15,
+        "output_prefix": "sfx_enemy_mine_drop",
+        "extract_frames": True,
+    },
+    # ═══════════════════════════════════════════════
+    # Gameplay Feedback SFX
+    # ═══════════════════════════════════════════════
+    "sfx_score_milestone": {
+        "category": "SFX Audio",
+        "prompt": (
+            "Score counter ticking up rapidly with milestone celebration, 16-bit pixel art, "
+            "numbers glowing gold as they roll over, sparkle particles, "
+            "with synchronized score milestone chime — "
+            "bright ascending ding-ding-ding like a pinball machine jackpot, "
+            "satisfying reward feedback, 1 second, transparent background."
+        ),
+        "duration_sec": 1, "fps": 15,
+        "output_prefix": "sfx_score_milestone",
+        "extract_frames": True,
+    },
+    "sfx_wave_incoming": {
+        "category": "SFX Audio",
+        "prompt": (
+            "New enemy wave incoming warning, 16-bit pixel art, "
+            "arrow indicators appearing at screen edge pointing right, "
+            "with synchronized wave alert sting — "
+            "two-note rising alarm, similar to classic arcade 'new enemies approaching' sound, "
+            "attention-grabbing but short, 0.5 seconds, transparent background."
+        ),
+        "duration_sec": 1, "fps": 15,
+        "output_prefix": "sfx_wave_incoming",
+        "extract_frames": True,
+    },
+    "sfx_weapon_overheat": {
+        "category": "SFX Audio",
+        "prompt": (
+            "Weapon system overheating warning, 16-bit pixel art, "
+            "temperature gauge going from green to red, steam venting, "
+            "with synchronized overheat alarm — "
+            "rising pitched whine that cuts off with a steam-release hiss, "
+            "urgency and mechanical stress, 1 second, transparent background."
+        ),
+        "duration_sec": 1, "fps": 15,
+        "output_prefix": "sfx_weapon_overheat",
+        "extract_frames": True,
+    },
+    "sfx_shield_break": {
+        "category": "SFX Audio",
+        "prompt": (
+            "Energy shield shattering, 16-bit pixel art, "
+            "cyan force-field cracking like glass, fragments dissolving, "
+            "with synchronized shield break sound — "
+            "initial high-pitched crack like breaking glass, "
+            "followed by power-down descending whine as energy fades, "
+            "dramatic and final, 1 second, transparent background."
+        ),
+        "duration_sec": 1, "fps": 15,
+        "output_prefix": "sfx_shield_break",
+        "extract_frames": True,
+    },
+    "sfx_achievement": {
+        "category": "SFX Audio",
+        "prompt": (
+            "Achievement unlocked popup appearing, 16-bit pixel art, "
+            "golden banner unfurling with sparkle effects, "
+            "with synchronized achievement fanfare — "
+            "triumphant ascending melody, like finding a rare item, "
+            "pure gaming dopamine hit, 1.5 seconds, transparent background."
+        ),
+        "duration_sec": 2, "fps": 15,
+        "output_prefix": "sfx_achievement",
+        "extract_frames": True,
+    },
 }
 
 REPO_ROOT = Path(__file__).parent
@@ -568,7 +749,7 @@ def check_veo_availability(project_id: str, region: str = "us-central1") -> str 
         )
         payload = json.dumps({
             "instances": [{"prompt": "test pixel"}],
-            "parameters": {"durationSeconds": 1}
+            "parameters": {"durationSeconds": 4}
         }).encode()
         req = urllib.request.Request(probe_url, data=payload, headers={
             "Authorization": f"Bearer {token}",
@@ -591,82 +772,123 @@ def check_veo_availability(project_id: str, region: str = "us-central1") -> str 
 
 def generate_veo(asset_id: str, config: dict, project_id: str,
                  region: str = "us-central1", model_name: str = None):
-    """Generate video via Vertex AI Veo.
+    """Generate video via Vertex AI Veo — submit then poll async operation.
 
-    Returns: True if generated successfully, False otherwise.
+    Veo uses :predictLongRunning → :fetchPredictOperation (custom LRO, not
+    the standard Vertex AI operations endpoint). Returns: True on success.
     """
     import urllib.request
     import urllib.error
+    import time
 
     if model_name is None:
         model_name = check_veo_availability(project_id, region)
         if model_name is None:
             print("  ✗ Veo not available in this project.")
-            print("  → Visit: https://console.cloud.google.com/vertex-ai/model-garden")
-            print("  → Search 'Veo' → Click 'Enable'")
             return False
 
     token = get_access_token()
-
-    url = (
+    base_url = (
         f"https://{region}-aiplatform.googleapis.com"
         f"/v1/projects/{project_id}/locations/{region}"
-        f"/publishers/google/models/{model_name}:predictLongRunning"
+        f"/publishers/google/models/{model_name}"
     )
 
+    # Veo minimum duration is 4 seconds
+    duration = max(config.get("duration_sec", 4), 4)
+    # Round to nearest valid duration: [4, 6, 8]
+    if duration <= 4:
+        duration = 4
+    elif duration <= 6:
+        duration = 6
+    else:
+        duration = 8
+
+    # ── Step 1: Submit ──
+    submit_url = f"{base_url}:predictLongRunning"
     payload = json.dumps({
-        "instances": [{
-            "prompt": config["prompt"],
-        }],
-        "parameters": {
-            "durationSeconds": config.get("duration_sec", 4),
-        }
+        "instances": [{"prompt": config["prompt"]}],
+        "parameters": {"durationSeconds": duration}
     }).encode()
 
-    req = urllib.request.Request(url, data=payload, headers={
+    print(f"  → Submitting to Veo ({model_name}, {duration}s)...")
+    submit_req = urllib.request.Request(submit_url, data=payload, headers={
         "Authorization": f"Bearer {token}",
         "Content-Type": "application/json",
     })
-
-    print(f"  → Calling Veo ({model_name})...")
     try:
-        with urllib.request.urlopen(req, timeout=300) as resp:
-            result = json.loads(resp.read())
+        with urllib.request.urlopen(submit_req, timeout=60) as resp:
+            submit_result = json.loads(resp.read())
     except urllib.error.HTTPError as e:
         error_body = e.read().decode()
         if e.code == 429:
-            print(f"  ⚠ Quota exceeded — need to increase Veo quota.")
-            print(f"  → Visit: https://cloud.google.com/vertex-ai/docs/generative-ai/quotas-genai")
-            print(f"  → Increase: long_running_online_prediction_requests_per_base_model")
+            print(f"  ⚠ Quota exceeded (429). Skipping.")
             return False
-        print(f"  ✗ API error ({e.code}): {error_body[:500]}")
+        print(f"  ✗ Submit error ({e.code}): {error_body[:500]}")
         return False
 
-    # Extract video from response
-    predictions = result.get("predictions", [])
-    if not predictions:
-        print(f"  ✗ No predictions returned.")
+    op_name = submit_result.get("name", "")
+    if not op_name:
+        print(f"  ✗ No operation name returned: {json.dumps(submit_result)[:200]}")
         return False
+    print(f"  ✓ Submitted (op: ...{op_name[-20:]})")
 
-    prediction = predictions[0]
-    video_b64 = prediction.get("bytesBase64Encoded", "")
-    if not video_b64:
-        print(f"  ✗ No video data in response.")
-        return False
+    # ── Step 2: Poll with :fetchPredictOperation ──
+    poll_url = f"{base_url}:fetchPredictOperation"
+    max_polls = 60  # up to 10 minutes
+    for attempt in range(max_polls):
+        time.sleep(10)
+        poll_payload = json.dumps({"operationName": op_name}).encode()
+        poll_req = urllib.request.Request(poll_url, data=poll_payload, headers={
+            "Authorization": f"Bearer {token}",
+            "Content-Type": "application/json",
+        })
+        try:
+            with urllib.request.urlopen(poll_req, timeout=30) as resp:
+                poll_result = json.loads(resp.read())
+        except urllib.error.HTTPError as e:
+            print(f"  ✗ Poll error ({e.code}): {e.read().decode()[:300]}")
+            return False
 
-    # Save video
-    prefix = config["output_prefix"]
-    video_path = CINEMATICS_DIR / f"{prefix}.mp4"
-    CINEMATICS_DIR.mkdir(parents=True, exist_ok=True)
-    with open(video_path, "wb") as f:
-        f.write(base64.b64decode(video_b64))
-    print(f"  ✓ Saved: {video_path}")
+        if not poll_result.get("done"):
+            if attempt % 6 == 0:
+                print(f"  ⏳ Polling... ({attempt * 10}s)")
+            continue
 
-    # Extract frames if requested
-    if config.get("extract_frames"):
-        extract_frames_from_video(video_path, prefix, config.get("fps", 15))
+        # Done — check for error
+        if "error" in poll_result:
+            err = poll_result["error"]
+            print(f"  ✗ Veo error: {err.get('message', err)}")
+            return False
 
-    return True
+        # ── Step 3: Extract video ──
+        videos = poll_result.get("response", {}).get("videos", [])
+        if not videos:
+            print(f"  ✗ No videos in response.")
+            return False
+
+        video_b64 = videos[0].get("bytesBase64Encoded", "")
+        if not video_b64:
+            gcs = videos[0].get("_self", {}).get("gcsUri", "N/A")
+            print(f"  ✗ No inline video bytes. GCS URI: {gcs}")
+            return False
+
+        # Save video
+        prefix = config["output_prefix"]
+        CINEMATICS_DIR.mkdir(parents=True, exist_ok=True)
+        video_path = CINEMATICS_DIR / f"{prefix}.mp4"
+        with open(video_path, "wb") as f:
+            f.write(base64.b64decode(video_b64))
+        print(f"  ✓ Saved: {video_path} ({len(video_b64)} chars b64)")
+
+        # Extract frames if requested
+        if config.get("extract_frames"):
+            extract_frames_from_video(video_path, prefix, config.get("fps", 8))
+
+        return True
+
+    print(f"  ✗ Timed out after {max_polls * 10}s")
+    return False
 
 
 def extract_frames_from_video(video_path: Path, prefix: str, fps: int = 15):
