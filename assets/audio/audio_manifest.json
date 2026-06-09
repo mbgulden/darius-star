@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-06-09T22:51:46Z",
+  "updated": "2026-06-09T23:05:54Z",
   "tracks": {
     "title": {
       "scene": "Title Screen Music",
@@ -908,6 +908,96 @@
       "path": "assets/audio/victory_b10_core.mp3",
       "duration_sec": 15,
       "loop": false,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "relief_post_boss": {
+      "scene": "Relief: Post-Boss Victory Calm",
+      "file": "relief_post_boss.mp3",
+      "path": "assets/audio/relief_post_boss.mp3",
+      "duration_sec": 30,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "relief_checkpoint": {
+      "scene": "Relief: Checkpoint Safety",
+      "file": "relief_checkpoint.mp3",
+      "path": "assets/audio/relief_checkpoint.mp3",
+      "duration_sec": 30,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "relief_bonding": {
+      "scene": "Relief: Character Bonding Moment",
+      "file": "relief_bonding.mp3",
+      "path": "assets/audio/relief_bonding.mp3",
+      "duration_sec": 30,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "relief_story_resolution": {
+      "scene": "Relief: Major Story Resolution",
+      "file": "relief_story_resolution.mp3",
+      "path": "assets/audio/relief_story_resolution.mp3",
+      "duration_sec": 30,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "relief_interlude": {
+      "scene": "Relief: Quiet Interlude Between Levels",
+      "file": "relief_interlude.mp3",
+      "path": "assets/audio/relief_interlude.mp3",
+      "duration_sec": 30,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "relief_near_miss": {
+      "scene": "Relief: Near-Miss Survival",
+      "file": "relief_near_miss.mp3",
+      "path": "assets/audio/relief_near_miss.mp3",
+      "duration_sec": 30,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "relief_home_base": {
+      "scene": "Relief: Return to Home Base",
+      "file": "relief_home_base.mp3",
+      "path": "assets/audio/relief_home_base.mp3",
+      "duration_sec": 30,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "relief_companion": {
+      "scene": "Relief: Companion Theme \u2014 Trust & Loyalty",
+      "file": "relief_companion.mp3",
+      "path": "assets/audio/relief_companion.mp3",
+      "duration_sec": 30,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "relief_star_gazing": {
+      "scene": "Relief: Quiet Stargazing Moment",
+      "file": "relief_star_gazing.mp3",
+      "path": "assets/audio/relief_star_gazing.mp3",
+      "duration_sec": 30,
+      "loop": true,
+      "generated": true,
+      "size_bytes": 525357
+    },
+    "relief_aftermath": {
+      "scene": "Relief: Battle Aftermath \u2014 Somber Hope",
+      "file": "relief_aftermath.mp3",
+      "path": "assets/audio/relief_aftermath.mp3",
+      "duration_sec": 30,
+      "loop": true,
       "generated": true,
       "size_bytes": 525357
     }

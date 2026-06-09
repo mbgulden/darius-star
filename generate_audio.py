@@ -831,6 +831,132 @@ MUSIC_CATALOG = {
         "duration": 15, "output": "assets/audio/victory_b10_core.mp3", "loop": False,
     },
 
+    # ═══════════════════════════════════════════════
+    # Relief & Resolution Themes (GRO-1015)
+    # "Show-don't-tell" — the exhale moments after intensity.
+    # Post-battle calm, checkpoint safety, character bonding.
+    # 16-bit Sega Genesis, softer instrumentation, contrast to combat.
+    # ═══════════════════════════════════════════════
+    "relief_post_boss": {
+        "scene": "Relief: Post-Boss Victory Calm",
+        "prompt": (
+            "The exhale after an intense boss battle, triumphant but gentle, "
+            "soft synth pads with descending melodic resolution, "
+            "slowly fading percussion like a heartbeat returning to rest, "
+            "major-key warmth settling over the silence, "
+            "30-second seamless loop, 16-bit Sega Genesis style, softer instrumentation, "
+            "instrumental, no vocals, calm after the storm, peaceful resolution."
+        ),
+        "duration": 30, "output": "assets/audio/relief_post_boss.mp3", "loop": True,
+    },
+    "relief_checkpoint": {
+        "scene": "Relief: Checkpoint Safety",
+        "prompt": (
+            "Safe haven reached, checkpoint activated, "
+            "warm comforting chiptune melody, gentle arpeggiated synth like a lullaby, "
+            "sense of security and rest, soft pulse bass like a protective heartbeat, "
+            "30-second seamless loop, 16-bit Sega Genesis style, softer instrumentation, "
+            "instrumental, no vocals, home away from danger, serene and reassuring."
+        ),
+        "duration": 30, "output": "assets/audio/relief_checkpoint.mp3", "loop": True,
+    },
+    "relief_bonding": {
+        "scene": "Relief: Character Bonding Moment",
+        "prompt": (
+            "Tender character bonding moment, two melodies gently intertwining, "
+            "soft flute-like synth lead with warm pad accompaniment, "
+            "gentle melodic dialogue between high and low voices, "
+            "emotional connection without words, hopeful ascending phrases, "
+            "30-second seamless loop, 16-bit Sega Genesis style, softer instrumentation, "
+            "instrumental, no vocals, quiet friendship and trust."
+        ),
+        "duration": 30, "output": "assets/audio/relief_bonding.mp3", "loop": True,
+    },
+    "relief_story_resolution": {
+        "scene": "Relief: Major Story Resolution",
+        "prompt": (
+            "Emotional story beat resolution, swelling but gentle, "
+            "layered synth strings building to a warm major-key climax, "
+            "orchestral chiptune with soft brass stabs, cathartic release, "
+            "closure and hope, bittersweet beauty like saying goodbye, "
+            "30-second seamless loop, 16-bit Sega Genesis style, softer instrumentation, "
+            "instrumental, no vocals, emotional resolution, the weight lifts."
+        ),
+        "duration": 30, "output": "assets/audio/relief_story_resolution.mp3", "loop": True,
+    },
+    "relief_interlude": {
+        "scene": "Relief: Quiet Interlude Between Levels",
+        "prompt": (
+            "Quiet interlude between intense levels, calm reflection, "
+            "sparse arrangement with solo melody over gentle ambient pads, "
+            "space to breathe before the next challenge, "
+            "meditative and restorative, like floating in still water, "
+            "30-second seamless loop, 16-bit Sega Genesis style, softer instrumentation, "
+            "instrumental, no vocals, peaceful transition, the journey pauses."
+        ),
+        "duration": 30, "output": "assets/audio/relief_interlude.mp3", "loop": True,
+    },
+    "relief_near_miss": {
+        "scene": "Relief: Near-Miss Survival",
+        "prompt": (
+            "Survived by a hair, adrenaline fading into profound relief, "
+            "slowing tempo from racing to calm, dissonant tones resolving to warm major, "
+            "trembling synth pads settling into steady peace, "
+            "heartbeat-like percussion gradually slowing to rest, "
+            "30-second seamless loop, 16-bit Sega Genesis style, softer instrumentation, "
+            "instrumental, no vocals, I'm still alive, grateful exhale."
+        ),
+        "duration": 30, "output": "assets/audio/relief_near_miss.mp3", "loop": True,
+    },
+    "relief_home_base": {
+        "scene": "Relief: Return to Home Base",
+        "prompt": (
+            "Returning home after a long journey, feeling of safety and belonging, "
+            "warm analog-synth pads like a welcoming embrace, "
+            "gentle repeating motif that says you're safe now, "
+            "subtle major-key melody like familiar surroundings, "
+            "30-second seamless loop, 16-bit Sega Genesis style, softer instrumentation, "
+            "instrumental, no vocals, comfort of home, the mission is over."
+        ),
+        "duration": 30, "output": "assets/audio/relief_home_base.mp3", "loop": True,
+    },
+    "relief_companion": {
+        "scene": "Relief: Companion Theme — Trust & Loyalty",
+        "prompt": (
+            "Theme of companionship and unwavering loyalty, "
+            "warm duet between two synth voices supporting each other, "
+            "uplifting but gentle, like walking side by side, "
+            "steady reassuring bass pulse, harmonious counterpoint, "
+            "30-second seamless loop, 16-bit Sega Genesis style, softer instrumentation, "
+            "instrumental, no vocals, together we're stronger, quiet devotion."
+        ),
+        "duration": 30, "output": "assets/audio/relief_companion.mp3", "loop": True,
+    },
+    "relief_star_gazing": {
+        "scene": "Relief: Quiet Stargazing Moment",
+        "prompt": (
+            "Stargazing in deep space, quiet wonder and peace, "
+            "shimmering high-register chimes like distant stars, "
+            "floating ambient melody free of urgency, "
+            "sense of awe at the cosmos, vast and calm, "
+            "30-second seamless loop, 16-bit Sega Genesis style, softer instrumentation, "
+            "instrumental, no vocals, infinite stillness, beautiful emptiness."
+        ),
+        "duration": 30, "output": "assets/audio/relief_star_gazing.mp3", "loop": True,
+    },
+    "relief_aftermath": {
+        "scene": "Relief: Battle Aftermath — Somber Hope",
+        "prompt": (
+            "The battlefield is silent, somber but hopeful aftermath, "
+            "slow rebuilding theme, minor-key opening resolving to major, "
+            "sparse piano-like chiptune with gentle string pads, "
+            "respect for what was lost, hope for what comes next, "
+            "30-second seamless loop, 16-bit Sega Genesis style, softer instrumentation, "
+            "instrumental, no vocals, the cost of victory, quiet resilience."
+        ),
+        "duration": 30, "output": "assets/audio/relief_aftermath.mp3", "loop": True,
+    },
+
 }
 
 REPO_ROOT = Path(__file__).parent
