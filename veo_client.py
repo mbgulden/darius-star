@@ -285,27 +285,61 @@ def check_veo_availability(project_id: str, region: str = "us-central1") -> str 
 
     token = get_access_token()
     veo_models = [
+        "veo-3.1-lite-generate-001",
         "veo-3.1-generate-preview",
         "veo-2.0-generate-001",
-        "veo-3.0-generate-001",
     ]
 
     for model_name in veo_models:
-        url = (
+        # Check model metadata (GET — no quota cost)
+        get_url = (
             f"https://{region}-aiplatform.googleapis.com"
             f"/v1/projects/{project_id}/locations/{region}"
             f"/publishers/google/models/{model_name}"
         )
-        req = urllib.request.Request(url, headers={
+        req = urllib.request.Request(get_url, headers={
             "Authorization": f"Bearer {token}",
         })
         try:
             with urllib.request.urlopen(req, timeout=15) as resp:
-                if resp.status == 200:
-                    print(f"✅ Veo available: {model_name}")
-                    return model_name
+                print(f"✅ Veo available: {model_name}")
+                return model_name
         except urllib.error.HTTPError as e:
-            continue
+            # Some models don't expose metadata — try POST probe
+            if e.code == 404:
+                continue
+            body = e.read().decode()[:200]
+            # 403 = model exists but needs different auth
+            if e.code == 403:
+                print(f"✅ Veo found (needs auth): {model_name}")
+                return model_name
+
+    # Fallback: probe with a lightweight POST to detect the model
+    for model_name in veo_models:
+        probe_url = (
+            f"https://{region}-aiplatform.googleapis.com"
+            f"/v1/projects/{project_id}/locations/{region}"
+            f"/publishers/google/models/{model_name}:predictLongRunning"
+        )
+        payload = json.dumps({
+            "instances": [{"prompt": "test pixel"}],
+            "parameters": {"durationSeconds": 1}
+        }).encode()
+        req = urllib.request.Request(probe_url, data=payload, headers={
+            "Authorization": f"Bearer {token}",
+            "Content-Type": "application/json",
+        })
+        try:
+            with urllib.request.urlopen(req, timeout=30) as resp:
+                print(f"✅ Veo available: {model_name} (HTTP {resp.status})")
+                return model_name
+        except urllib.error.HTTPError as e:
+            if e.code == 404:
+                continue
+            # 400/403/429 = model exists
+            body = e.read().decode()[:200]
+            print(f"✅ Veo found: {model_name} (HTTP {e.code})")
+            return model_name
 
     return None
 
@@ -332,7 +366,7 @@ def generate_veo(asset_id: str, config: dict, project_id: str,
     url = (
         f"https://{region}-aiplatform.googleapis.com"
         f"/v1/projects/{project_id}/locations/{region}"
-        f"/publishers/google/models/{model_name}:predict"
+        f"/publishers/google/models/{model_name}:predictLongRunning"
     )
 
     payload = json.dumps({
@@ -341,8 +375,6 @@ def generate_veo(asset_id: str, config: dict, project_id: str,
         }],
         "parameters": {
             "durationSeconds": config.get("duration_sec", 4),
-            "aspectRatio": config.get("aspect_ratio", "16:9"),
-            "personGeneration": "dont_allow",
         }
     }).encode()
 
@@ -357,6 +389,11 @@ def generate_veo(asset_id: str, config: dict, project_id: str,
             result = json.loads(resp.read())
     except urllib.error.HTTPError as e:
         error_body = e.read().decode()
+        if e.code == 429:
+            print(f"  ⚠ Quota exceeded — need to increase Veo quota.")
+            print(f"  → Visit: https://cloud.google.com/vertex-ai/docs/generative-ai/quotas-genai")
+            print(f"  → Increase: long_running_online_prediction_requests_per_base_model")
+            return False
         print(f"  ✗ API error ({e.code}): {error_body[:500]}")
         return False
 
