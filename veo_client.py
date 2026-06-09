@@ -551,7 +551,14 @@ def main():
     generated = []
     failed = []
 
+    # Veo quota: 1 request/minute — space requests 90s apart
+    first = True
     for asset_id, config in assets_to_gen.items():
+        if not first:
+            import time
+            print(f"  ⏱  Rate limit (1/min) — waiting 90s...")
+            time.sleep(90)
+        first = False
         print(f"\n[{config['category']}] {asset_id}")
         print(f"  Prompt: {config['prompt'][:100]}...")
         if generate_veo(asset_id, config, args.project, args.region, model_name):
