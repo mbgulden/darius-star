@@ -248,6 +248,7 @@
             <div>SCRAP: <span id="ui-scrap" style="color: #00ff55;">⚙️0</span></div>
             <div>BOOST: <span id="ui-boost" style="color: #ffaa00;">READY</span></div>
             <div>SPECIAL: <span id="ui-special" style="color: #b026ff;">READY</span></div>
+            <div>DODGE: <span id="ui-dodge" style="color: #00ffff;">READY (E)</span></div>
         </div>
     </div>
 
@@ -420,6 +421,7 @@
         const uiScrap = document.getElementById('ui-scrap');
         const uiBoost = document.getElementById('ui-boost');
         const uiSpecial = document.getElementById('ui-special');
+        const uiDodge = document.getElementById('ui-dodge');
 
         // Game state variables
         let score = 0;
@@ -970,7 +972,7 @@
                 ctx.textAlign = 'center';
                 ctx.fillStyle = '#4a4a5f';
                 ctx.font = '10px monospace';
-                ctx.fillText('CONTROLS: WASD / ARROWS to MOVE  |  SPACE / J to FIRE  |  P to PAUSE', canvas.width / 2, 335);
+                ctx.fillText('CONTROLS: WASD / ARROWS to MOVE  |  SPACE / J to FIRE  |  E to DODGE  |  P to PAUSE', canvas.width / 2, 335);
                 ctx.fillText('LEFT/RIGHT to ADJUST VOLUME  |  ENTER / CLICK to TOGGLE  |  ESC to RETURN', canvas.width / 2, canvas.height - 25);
                 ctx.restore();
             } else if (currentScreen === SCREENS.CREDITS) {
@@ -1234,7 +1236,7 @@
                     paused = !paused;
                 }
                 keys[e.key] = true;
-                if (['Space', ' ', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].indexOf(e.key) > -1) {
+                if (['Space', ' ', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'e', 'E'].indexOf(e.key) > -1) {
                     e.preventDefault();
                 }
                 if (e.key === ' ' && (gameOver || gameWon)) {
@@ -1404,6 +1406,14 @@
                     this.specialActiveTimer = 0;
                     this.specialMaxDuration = 4.0 + mods.specialDurationBonus;
                     this.isSpecialActive = false;
+
+                    // Dodge/Evade State
+                    this.dodgeCooldown = 0;
+                    this.dodgeMaxCooldown = 3.5 * (mods.engineBoostCooldownMultiplier || 1.0);
+                    this.dodgeDistance = 90;
+                    this.isDodging = false;
+                    this.dodgeInvulnTimer = 0;
+                    this.dodgeMaxInvuln = 0.25;
                 } else {
                     this.boostFuel = 3.0;
                     this.boostMaxFuel = 3.0;
@@ -1414,6 +1424,14 @@
                     this.specialActiveTimer = 0;
                     this.specialMaxDuration = 4.0;
                     this.isSpecialActive = false;
+
+                    // Dodge/Evade State
+                    this.dodgeCooldown = 0;
+                    this.dodgeMaxCooldown = 3.5;
+                    this.dodgeDistance = 90;
+                    this.isDodging = false;
+                    this.dodgeInvulnTimer = 0;
+                    this.dodgeMaxInvuln = 0.25;
                 }
                 
                 this.shield = this.shieldMax;
@@ -1524,6 +1542,21 @@
                 if (this.y < 10) this.y = 10;
                 if (this.y > canvas.height - this.height - 10) this.y = canvas.height - this.height - 10;
 
+                // --- Dodge/Evade ---
+                // Update dodge invulnerability timer
+                if (this.dodgeInvulnTimer > 0) {
+                    this.dodgeInvulnTimer -= dt;
+                }
+                // Update dodge cooldown
+                if (this.dodgeCooldown > 0) {
+                    this.dodgeCooldown -= dt;
+                }
+                // Execute dodge on E key press
+                const canDodge = (keys['e'] || keys['E']) && this.dodgeCooldown <= 0 && !this.isDodging;
+                if (canDodge) {
+                    this.dodge();
+                }
+
                 let currentShootCooldown = this.shootCooldown;
                 if (this.isSpecialActive) {
                     currentShootCooldown *= 0.5; // fire twice as fast!
@@ -1577,6 +1610,63 @@
                         bullets.push(new Bullet(this.x + this.width, this.y + this.height - 4, bulletSpeed - 80, 300, '#ffff00', bulletSize + 1));
                     }
                 }
+            }
+
+            dodge() {
+                // Determine dodge direction based on current movement input
+                let ddx = 0, ddy = 0;
+                if (keys['w'] || keys['W'] || keys['ArrowUp']) ddy -= 1;
+                if (keys['s'] || keys['S'] || keys['ArrowDown']) ddy += 1;
+                if (keys['a'] || keys['A'] || keys['ArrowLeft']) ddx -= 1;
+                if (keys['d'] || keys['D'] || keys['ArrowRight']) ddx += 1;
+                
+                // If no direction input, dodge backward (left)
+                if (ddx === 0 && ddy === 0) {
+                    ddx = -1;
+                }
+                
+                // Normalize diagonal
+                const mag = Math.sqrt(ddx*ddx + ddy*ddy);
+                ddx = (ddx / mag) * this.dodgeDistance;
+                ddy = (ddy / mag) * this.dodgeDistance;
+                
+                // Spawn particle burst at starting position
+                createExplosion(this.x + this.width/2, this.y + this.height/2, '#00ffff', 6);
+                
+                // Apply the blink / teleport
+                this.x += ddx;
+                this.y += ddy;
+                
+                // Clamp to bounds after dodge
+                if (this.x < 10) this.x = 10;
+                if (this.x > canvas.width - this.width - 10) this.x = canvas.width - this.width - 10;
+                if (this.y < 10) this.y = 10;
+                if (this.y > canvas.height - this.height - 10) this.y = canvas.height - this.height - 10;
+                
+                // Spawn particle burst at destination
+                createExplosion(this.x + this.width/2, this.y + this.height/2, '#00ffaa', 5);
+                
+                // Trail particles between start and destination
+                const trailSteps = 5;
+                const startX = this.x - ddx;
+                const startY = this.y - ddy;
+                for (let i = 1; i <= trailSteps; i++) {
+                    const t = i / (trailSteps + 1);
+                    const tx = startX + ddx * t;
+                    const ty = startY + ddy * t;
+                    particles.push(new Particle(tx + this.width/2, ty + this.height/2, '#44ffff'));
+                }
+                
+                // Activate dodge invulnerability and cooldown
+                this.dodgeInvulnTimer = this.dodgeMaxInvuln;
+                this.invulnerable = Math.max(this.invulnerable, this.dodgeMaxInvuln);
+                this.dodgeCooldown = this.dodgeMaxCooldown;
+                this.isDodging = true;
+                
+                // Reset dodging flag after brief delay (for visual feedback)
+                setTimeout(() => { this.isDodging = false; }, 100);
+                
+                playSound('powerup');
             }
 
             takeDamage(amt) {
@@ -1710,6 +1800,18 @@
                         ctx.arc(24, this.height / 2, 28, 0, Math.PI * 2);
                         ctx.stroke();
                     }
+                }
+
+                // Dodge-ready glow ring
+                if (this.dodgeCooldown <= 0 && !this.isDodging) {
+                    const dodgePulse = 0.3 + Math.sin(gameTime * 5) * 0.2;
+                    ctx.strokeStyle = `rgba(0, 255, 170, ${dodgePulse})`;
+                    ctx.lineWidth = 1.5;
+                    ctx.setLineDash([4, 3]);
+                    ctx.beginPath();
+                    ctx.arc(20, this.height / 2, 26, 0, Math.PI * 2);
+                    ctx.stroke();
+                    ctx.setLineDash([]);
                 }
 
                 ctx.restore();
@@ -3138,6 +3240,19 @@
                 } else {
                     uiSpecial.innerText = 'READY (K)';
                     uiSpecial.style.color = '#b026ff';
+                }
+            }
+            
+            if (uiDodge) {
+                if (player.isDodging) {
+                    uiDodge.innerText = 'EVADING!';
+                    uiDodge.style.color = '#00ffaa';
+                } else if (player.dodgeCooldown > 0) {
+                    uiDodge.innerText = `COOLDOWN (${Math.ceil(player.dodgeCooldown)}s)`;
+                    uiDodge.style.color = '#ff0033';
+                } else {
+                    uiDodge.innerText = 'READY (E)';
+                    uiDodge.style.color = '#00ffff';
                 }
             }
         }
