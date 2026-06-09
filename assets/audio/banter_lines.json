@@ -1,0 +1,2894 @@
+{
+  "biomes": [
+    {
+      "id": 1,
+      "name": "ABYSSAL TRENCH",
+      "modes": {
+        "Solo": [
+          {
+            "trigger": "level_start",
+            "speaker": "DARIUS",
+            "text": "This is where Grandpa Aldric made his last dive. I can feel him down there. Let's go."
+          },
+          {
+            "trigger": "level_start",
+            "speaker": "OPHION AI",
+            "text": "The Guardian Coelacanth's signal is faint but stable, Darius. It may still recognize the Star genetic sequence."
+          },
+          {
+            "trigger": "unique_enemy",
+            "speaker": "DARIUS",
+            "text": "Anglerfish drones lighting up — those lures mean they've locked on. Break line of sight!"
+          },
+          {
+            "trigger": "unique_enemy",
+            "speaker": "OPHION AI",
+            "text": "Cybernetic jellyfish swarms — their bioelectric pulses can chain between ships. Maintain separation."
+          },
+          {
+            "trigger": "boss_entrance",
+            "speaker": "DARIUS",
+            "text": "There it is... the Guardian. Grandpa, if you're still in there somewhere, I'm going to help you."
+          },
+          {
+            "trigger": "boss_entrance",
+            "speaker": "OPHION AI",
+            "text": "The Guardian's recognition matrix is corrupted. It may attack before it identifies you. Be ready, Darius."
+          },
+          {
+            "trigger": "player_death",
+            "speaker": "OPHION AI",
+            "text": "The pressure down here is relentless. But you carry Aldric's blood — you were built for this depth."
+          },
+          {
+            "trigger": "player_death",
+            "speaker": "DARIUS",
+            "text": "That one hurt. But Lyra's counting on me. I'm not done yet."
+          },
+          {
+            "trigger": "player_respawn",
+            "speaker": "OPHION AI",
+            "text": "Systems restored. The abyss tests everyone who enters it — and you've already proven your resolve."
+          },
+          {
+            "trigger": "player_respawn",
+            "speaker": "DARIUS",
+            "text": "Okay. Deep breath. Grandpa didn't give up at this depth, and neither will I."
+          },
+          {
+            "trigger": "low_health",
+            "speaker": "DARIUS",
+            "text": "Hull's buckling — this trench wants to crush us. Holding together!"
+          },
+          {
+            "trigger": "wave_clear",
+            "speaker": "OPHION AI",
+            "text": "The hydrothermal vents are stabilizing. You fight with the precision of someone who knows these depths."
+          },
+          {
+            "trigger": "level_end",
+            "speaker": "DARIUS",
+            "text": "The Guardian recognized me. Grandpa's voice... I heard him, Ophion. We got GLYPH-1. Heading up."
+          },
+          {
+            "trigger": "level_end",
+            "speaker": "OPHION AI",
+            "text": "GLYPH-1 secured. The neural stabilizer will buy Lyra precious time. Well done, Darius."
+          }
+        ],
+        "Duo": [
+          {
+            "trigger": "level_start",
+            "speaker": "CROSS",
+            "text": "Abyssal Trench. Your grandfather's last known coordinates. You ready for this, Star?"
+          },
+          {
+            "trigger": "level_start",
+            "speaker": "DARIUS",
+            "text": "Ready as I'll ever be, Cross. Watch for those anglerfish lures in the dark."
+          },
+          {
+            "trigger": "unique_enemy",
+            "speaker": "CROSS",
+            "text": "Jellyfish swarm at two o'clock — their pulses will chain through both of us if we drift too close!"
+          },
+          {
+            "trigger": "unique_enemy",
+            "speaker": "DARIUS",
+            "text": "I see them. Cross, take the left flank, I'll draw their fire. Standard Navy peel formation."
+          },
+          {
+            "trigger": "boss_entrance",
+            "speaker": "DARIUS",
+            "text": "The Guardian's massive... but it's not attacking yet. It's scanning my biosignature."
+          },
+          {
+            "trigger": "boss_entrance",
+            "speaker": "CROSS",
+            "text": "It's reading your genetic code. Your grandfather's files weren't wrong — this thing knows your family."
+          },
+          {
+            "trigger": "player_death",
+            "speaker": "CROSS",
+            "text": "Star's down! He knew the risks coming here. I'm holding the line until he's back."
+          },
+          {
+            "trigger": "player_death",
+            "speaker": "DARIUS",
+            "text": "Cross, I'm out! The trench doesn't pull punches. Give me a minute."
+          },
+          {
+            "trigger": "player_respawn",
+            "speaker": "CROSS",
+            "text": "Welcome back, Star. Your grandfather would've been proud — nobody shakes off the abyss that fast."
+          },
+          {
+            "trigger": "player_respawn",
+            "speaker": "DARIUS",
+            "text": "Thanks for covering me. Let's finish what Aldric started."
+          },
+          {
+            "trigger": "low_health",
+            "speaker": "CROSS",
+            "text": "Darius, your hull integrity is critical. Pull back and let me take point."
+          },
+          {
+            "trigger": "squad_save",
+            "speaker": "DARIUS",
+            "text": "Nice shooting, Cross. You just saved my hull."
+          },
+          {
+            "trigger": "squad_save",
+            "speaker": "CROSS",
+            "text": "That one was headed right for you, Star. Eyes forward, I've got your six."
+          },
+          {
+            "trigger": "level_end",
+            "speaker": "CROSS",
+            "text": "GLYPH-1 secure. The Guardian stood down when it read your bloodline. That's not just luck, Darius."
+          },
+          {
+            "trigger": "level_end",
+            "speaker": "DARIUS",
+            "text": "It spoke with my grandfather's voice, Cross. He's still in there somehow. Let's get this to Lyra."
+          }
+        ],
+        "4P": [
+          {
+            "trigger": "level_start",
+            "speaker": "NAYA",
+            "text": "This is where Aldric vanished forty years ago. Darius... are you okay?"
+          },
+          {
+            "trigger": "level_start",
+            "speaker": "DARIUS",
+            "text": "I'm fine, Naya. Having you all here makes it easier. Let's find the Guardian."
+          },
+          {
+            "trigger": "level_start",
+            "speaker": "OPHION REBORN",
+            "text": "Fascinating! The pressure readings suggest the crust here is thinner than expected. The Dreamer's influence may be seeping upward!"
+          },
+          {
+            "trigger": "level_start",
+            "speaker": "CROSS",
+            "text": "Ophion, save the geology lesson. Eyes on sensors — anglerfish patrol in pairs."
+          },
+          {
+            "trigger": "unique_enemy",
+            "speaker": "OPHION REBORN",
+            "text": "Oh! Those are anglerfish drones — the lure is sonar-based, not visual. It can track you through the mineral clouds!"
+          },
+          {
+            "trigger": "unique_enemy",
+            "speaker": "NAYA",
+            "text": "Jellyfish bloom ahead. Everyone spread out — I've seen these chain-lightning patterns in old security footage."
+          },
+          {
+            "trigger": "boss_entrance",
+            "speaker": "DARIUS",
+            "text": "There. The Guardian Coelacanth. It's bigger than the mission logs described..."
+          },
+          {
+            "trigger": "boss_entrance",
+            "speaker": "NAYA",
+            "text": "Darius, its eye is tracking you specifically. It knows you're a Star."
+          },
+          {
+            "trigger": "boss_entrance",
+            "speaker": "OPHION REBORN",
+            "text": "The recognition protocol is corrupted. I can attempt to broadcast Aldric's authorization codes, but it may trigger hostility!"
+          },
+          {
+            "trigger": "boss_entrance",
+            "speaker": "CROSS",
+            "text": "Do it, Ophion. Better than shooting blind. Everyone, weapons hot but hold fire unless it engages."
+          },
+          {
+            "trigger": "player_death",
+            "speaker": "NAYA",
+            "text": "Darius! ...He's tough. He's come back from worse. Stay focused, squad."
+          },
+          {
+            "trigger": "player_death",
+            "speaker": "OPHION REBORN",
+            "text": "A temporary setback! The Nyxa's escape pod systems are remarkably robust for human engineering."
+          },
+          {
+            "trigger": "player_respawn",
+            "speaker": "DARIUS",
+            "text": "Still here. Thanks for holding the line, everyone."
+          },
+          {
+            "trigger": "player_respawn",
+            "speaker": "NAYA",
+            "text": "Welcome back, love. Lyra would scold you for scaring us like that."
+          },
+          {
+            "trigger": "low_health",
+            "speaker": "NAYA",
+            "text": "Honey, your ship is falling apart. Fall back behind Cross and me — now."
+          },
+          {
+            "trigger": "squad_save",
+            "speaker": "OPHION REBORN",
+            "text": "Naya, that was extraordinary! You intercepted four hostiles in under two seconds!"
+          },
+          {
+            "trigger": "squad_save",
+            "speaker": "NAYA",
+            "text": "Nobody touches my family."
+          },
+          {
+            "trigger": "wave_clear",
+            "speaker": "CROSS",
+            "text": "Squad, formation held. Thorne, we're pushing deeper. The Guardian's signal is getting stronger."
+          },
+          {
+            "trigger": "level_end",
+            "speaker": "DARIUS",
+            "text": "I heard him. Aldric's voice, in the Guardian's final transmission. He was trying to warn us about the Navy all along."
+          },
+          {
+            "trigger": "level_end",
+            "speaker": "NAYA",
+            "text": "We've got GLYPH-1. Lyra's going to get the treatment she needs. Let's go home."
+          },
+          {
+            "trigger": "level_end",
+            "speaker": "OPHION REBORN",
+            "text": "The Guardian's data core contained a complete star chart! The next entity is on Kepler-442b. Onward!"
+          }
+        ]
+      }
+    },
+    {
+      "id": 2,
+      "name": "CORAL GRAVEYARD",
+      "modes": {
+        "Solo": [
+          {
+            "trigger": "level_start",
+            "speaker": "DARIUS",
+            "text": "This whole reef is dead. The precursors destroyed their own colony here... to hide something."
+          },
+          {
+            "trigger": "level_start",
+            "speaker": "OPHION AI",
+            "text": "The memory-vault should be at the reef's center. Its defenses will test more than your weapons, Darius."
+          },
+          {
+            "trigger": "unique_enemy",
+            "speaker": "DARIUS",
+            "text": "Coral wasps! They're nesting in the bleached coral — don't let them surround you!"
+          },
+          {
+            "trigger": "unique_enemy",
+            "speaker": "OPHION AI",
+            "text": "Armored eels weaving through the structures. Their plating deflects frontal attacks. Aim for the segments."
+          },
+          {
+            "trigger": "boss_entrance",
+            "speaker": "DARIUS",
+            "text": "What is that? It's not solid... it's made of memories. I can feel their grief."
+          },
+          {
+            "trigger": "boss_entrance",
+            "speaker": "OPHION AI",
+            "text": "A Memory Wraith — a construct of collective death-echoes. It cannot be destroyed with firepower alone. Show it understanding."
+          },
+          {
+            "trigger": "player_death",
+            "speaker": "OPHION AI",
+            "text": "The reef remembers every death. But it also remembers every birth. Return, Darius — there is still life here."
+          },
+          {
+            "trigger": "player_death",
+            "speaker": "DARIUS",
+            "text": "Those death-echoes hit hard. But I'm not joining them. Not today."
+          },
+          {
+            "trigger": "player_respawn",
+            "speaker": "OPHION AI",
+            "text": "Welcome back. The precursor vault awaits — and with it, the truth about my past self."
+          },
+          {
+            "trigger": "player_respawn",
+            "speaker": "DARIUS",
+            "text": "Alright. I've seen what the precursors lost. Now let's see what they left behind."
+          },
+          {
+            "trigger": "low_health",
+            "speaker": "DARIUS",
+            "text": "Hull's taking water. These coral structures scratch worse than Navy razor wire."
+          },
+          {
+            "trigger": "wave_clear",
+            "speaker": "OPHION AI",
+            "text": "The wasp swarm is thinning. You are learning to read this reef's rhythm."
+          },
+          {
+            "trigger": "level_end",
+            "speaker": "DARIUS",
+            "text": "I saw them, Ophion. The precursors' final days. And I saw... you. The dissident who believed the Dreamer could be reasoned with."
+          },
+          {
+            "trigger": "level_end",
+            "speaker": "OPHION AI",
+            "text": "GLYPH-2 secured. And yes — I was that dissident. My sabotage caused this decay. I will help you repair it."
+          }
+        ],
+        "Duo": [
+          {
+            "trigger": "level_start",
+            "speaker": "CROSS",
+            "text": "Kepler-442b. Navy intel flagged this system as a precursor archaeological site. They never got a team in."
+          },
+          {
+            "trigger": "level_start",
+            "speaker": "DARIUS",
+            "text": "The Navy wanted to weaponize whatever they found here. We're going to learn from it instead."
+          },
+          {
+            "trigger": "unique_enemy",
+            "speaker": "CROSS",
+            "text": "Wasps at nine o'clock — they're launching from the coral cavities. Watch the angles!"
+          },
+          {
+            "trigger": "unique_enemy",
+            "speaker": "DARIUS",
+            "text": "Eels incoming. Cross, their armor's thick on top — hit their underbellies when they weave."
+          },
+          {
+            "trigger": "boss_entrance",
+            "speaker": "CROSS",
+            "text": "What is that thing? It's not registering on any of my Navy threat classifiers..."
+          },
+          {
+            "trigger": "boss_entrance",
+            "speaker": "DARIUS",
+            "text": "It's not a machine. It's grief made solid. The precursors' extinction, trapped in a feedback loop."
+          },
+          {
+            "trigger": "player_death",
+            "speaker": "CROSS",
+            "text": "Darius is down. The reef took him. But he's survived deeper. Stay sharp."
+          },
+          {
+            "trigger": "player_death",
+            "speaker": "DARIUS",
+            "text": "Cross! I'm out — the wraith hits harder than it looks. Cover me."
+          },
+          {
+            "trigger": "player_respawn",
+            "speaker": "CROSS",
+            "text": "Good to have you back. The vault's defenses are still active."
+          },
+          {
+            "trigger": "player_respawn",
+            "speaker": "DARIUS",
+            "text": "Thanks, Cross. Let's open that vault and find out what Ophion was really after."
+          },
+          {
+            "trigger": "squad_save",
+            "speaker": "CROSS",
+            "text": "Nice intercept, Star. You read that eel's pattern perfectly."
+          },
+          {
+            "trigger": "squad_save",
+            "speaker": "DARIUS",
+            "text": "You would've done the same. We make a good team, Captain."
+          },
+          {
+            "trigger": "level_end",
+            "speaker": "CROSS",
+            "text": "The memory-vault data mentions a dissident named Ophion who sabotaged the network. That name's all over the Navy's classified files."
+          },
+          {
+            "trigger": "level_end",
+            "speaker": "DARIUS",
+            "text": "GLYPH-2 is ours. And now we have a name — and a lead. Europa's next."
+          }
+        ],
+        "4P": [
+          {
+            "trigger": "level_start",
+            "speaker": "OPHION REBORN",
+            "text": "Kepler-442b! I remember this colony. It was... beautiful, once. Bioluminescent gardens that sang."
+          },
+          {
+            "trigger": "level_start",
+            "speaker": "NAYA",
+            "text": "It's a graveyard now, Ophion. What happened here?"
+          },
+          {
+            "trigger": "level_start",
+            "speaker": "OPHION REBORN",
+            "text": "We happened. The precursors — we destroyed our own colonies to slow the Dreamer's spread. I argued against it."
+          },
+          {
+            "trigger": "level_start",
+            "speaker": "CROSS",
+            "text": "Guilt can wait. We need the GLYPH-2 Synaptic Bridge. Stay focused."
+          },
+          {
+            "trigger": "unique_enemy",
+            "speaker": "NAYA",
+            "text": "Coral wasps everywhere — they're agitated by our ships' energy signatures. Keep moving!"
+          },
+          {
+            "trigger": "unique_enemy",
+            "speaker": "OPHION REBORN",
+            "text": "The armored eels are descendant constructs — the precursors bred them as reef guardians millennia ago!"
+          },
+          {
+            "trigger": "boss_entrance",
+            "speaker": "OPHION REBORN",
+            "text": "A Memory Wraith... I knew the people whose deaths fuel this specter. Let me speak to it."
+          },
+          {
+            "trigger": "boss_entrance",
+            "speaker": "DARIUS",
+            "text": "Ophion, be careful. Those memories might not want to hear an apology."
+          },
+          {
+            "trigger": "boss_entrance",
+            "speaker": "NAYA",
+            "text": "It's beautiful and terrible at the same time. Like watching a funeral that never ends."
+          },
+          {
+            "trigger": "boss_entrance",
+            "speaker": "CROSS",
+            "text": "Weapons aren't doing much. Ophion, whatever you're going to say, say it now!"
+          },
+          {
+            "trigger": "player_death",
+            "speaker": "NAYA",
+            "text": "Someone's down! The reef is collapsing around us — pull together!"
+          },
+          {
+            "trigger": "player_death",
+            "speaker": "OPHION REBORN",
+            "text": "Not again... I will not lose anyone else to these ruins. Regroup and push forward."
+          },
+          {
+            "trigger": "player_respawn",
+            "speaker": "DARIUS",
+            "text": "Back in the fight. Sorry, everyone — that wraith caught me off guard."
+          },
+          {
+            "trigger": "player_respawn",
+            "speaker": "OPHION REBORN",
+            "text": "Glad you're back! The vault is directly ahead — and I believe I've nearly convinced the wraith to stand down!"
+          },
+          {
+            "trigger": "low_health",
+            "speaker": "NAYA",
+            "text": "Darius, you're limping. I'm coming to you — don't argue."
+          },
+          {
+            "trigger": "squad_save",
+            "speaker": "CROSS",
+            "text": "Ophion, you just talked a hostile eel into retreating. How did you do that?"
+          },
+          {
+            "trigger": "squad_save",
+            "speaker": "OPHION REBORN",
+            "text": "I simply reminded it that it was hungry for something other than us! There is a very nutritious thermal vent nearby."
+          },
+          {
+            "trigger": "wave_clear",
+            "speaker": "DARIUS",
+            "text": "Squad, that was solid. The vault entrance is clearing up ahead."
+          },
+          {
+            "trigger": "level_end",
+            "speaker": "OPHION REBORN",
+            "text": "The vault's records confirm it. I sabotaged the Coelacanth network. I thought I was saving everyone."
+          },
+          {
+            "trigger": "level_end",
+            "speaker": "NAYA",
+            "text": "You made a mistake, Ophion. But you're here trying to fix it. That counts for something."
+          },
+          {
+            "trigger": "level_end",
+            "speaker": "DARIUS",
+            "text": "GLYPH-2 secured. Next stop: Europa. Ophion's old laboratory."
+          },
+          {
+            "trigger": "level_end",
+            "speaker": "CROSS",
+            "text": "I'm starting to think the Navy was right to classify all of this. The truth is bigger than any of us."
+          }
+        ]
+      }
+    },
+    {
+      "id": 3,
+      "name": "COELACANTH LAIR",
+      "modes": {
+        "Solo": [
+          {
+            "trigger": "level_start",
+            "speaker": "DARIUS",
+            "text": "Europa. Under the ice. The Coelacanths were born here — and now something's been born from them."
+          },
+          {
+            "trigger": "level_start",
+            "speaker": "OPHION AI",
+            "text": "My laboratory is hidden in these ice caves. Inside, you will find the truth about my symbiosis research."
+          },
+          {
+            "trigger": "unique_enemy",
+            "speaker": "DARIUS",
+            "text": "Walker mechs on the ceiling! They're using the ice formations for cover — keep moving!"
+          },
+          {
+            "trigger": "unique_enemy",
+            "speaker": "OPHION AI",
+            "text": "Sparker drones leaving electric trails. If they cross their own paths, the grid will arc — use this to your advantage."
+          },
+          {
+            "trigger": "boss_entrance",
+            "speaker": "DARIUS",
+            "text": "That's no ordinary Coelacanth. It's a broodmother — and it's been producing twisted offspring for centuries."
+          },
+          {
+            "trigger": "boss_entrance",
+            "speaker": "OPHION AI",
+            "text": "The Hatchery Queen. My sabotage corrupted its birthing protocols. Every creature it spawns is half-Dreamer-flesh."
+          },
+          {
+            "trigger": "player_death",
+            "speaker": "OPHION AI",
+            "text": "The cold slows everything — even hope. But you are warmer than Europa's ice, Darius. Rise again."
+          },
+          {
+            "trigger": "player_death",
+            "speaker": "DARIUS",
+            "text": "Frozen out. But I've got too much to live for. Restarting systems."
+          },
+          {
+            "trigger": "player_respawn",
+            "speaker": "OPHION AI",
+            "text": "Sensors nominal. The stasis chamber we detected earlier — it is still pulsing. We must reach it."
+          },
+          {
+            "trigger": "player_respawn",
+            "speaker": "DARIUS",
+            "text": "The signal from that chamber. It sounds so much like the Dreamer, but warmer. Let's move."
+          },
+          {
+            "trigger": "low_health",
+            "speaker": "DARIUS",
+            "text": "Shields are crystallizing from the cold. Need to find a thermal vent to recharge."
+          },
+          {
+            "trigger": "wave_clear",
+            "speaker": "OPHION AI",
+            "text": "The sentinel grid is down. The path to the hatchery is clear."
+          },
+          {
+            "trigger": "level_end",
+            "speaker": "DARIUS",
+            "text": "GLYPH-3 is ours. The embryo pod was a trap, Ophion, but the lab's precursor vault had the real prize: a dormant stem-cell culture."
+          },
+          {
+            "trigger": "level_end",
+            "speaker": "OPHION AI",
+            "text": "A dormant stem-cell culture. Safe, inert, and bio-resonant. With the right data, this genetic sample could one day form a biosynthetic vessel for my consciousness. Take it to Haven-7."
+          }
+        ],
+        "Duo": [
+          {
+            "trigger": "level_start",
+            "speaker": "CROSS",
+            "text": "Europa's subsurface. Never thought I'd be down here without a Navy expedition behind me."
+          },
+          {
+            "trigger": "level_start",
+            "speaker": "DARIUS",
+            "text": "Navy would've nuked this place from orbit. We're here to learn, not destroy."
+          },
+          {
+            "trigger": "unique_enemy",
+            "speaker": "CROSS",
+            "text": "Juggernauts on the ceiling tracks — their underside armor is weak. Hit them when they turn!"
+          },
+          {
+            "trigger": "unique_enemy",
+            "speaker": "DARIUS",
+            "text": "Sparker trails overlapping. Cross, if we bait them into crossing streams, they'll short each other out!"
+          },
+          {
+            "trigger": "boss_entrance",
+            "speaker": "CROSS",
+            "text": "What is that? It's... pregnant? A biosynthetic entity shouldn't be able to reproduce."
+          },
+          {
+            "trigger": "boss_entrance",
+            "speaker": "DARIUS",
+            "text": "Ophion's sabotage rewrote its code. It's been birthing nightmares for centuries. We end it here."
+          },
+          {
+            "trigger": "player_death",
+            "speaker": "CROSS",
+            "text": "Darius is down! The cold must've gotten through his ship's thermal shielding. I've got point."
+          },
+          {
+            "trigger": "player_death",
+            "speaker": "DARIUS",
+            "text": "Ice cracked my hull. Restarting — Cross, hold them off!"
+          },
+          {
+            "trigger": "player_respawn",
+            "speaker": "CROSS",
+            "text": "Back online? Good. The hatchery's defenses are cycling up again."
+          },
+          {
+            "trigger": "player_respawn",
+            "speaker": "DARIUS",
+            "text": "Yeah. And I see the stasis pod pulsing. That warm frequency Lyra heard... we're going to check it out."
+          },
+          {
+            "trigger": "squad_save",
+            "speaker": "CROSS",
+            "text": "Star, that mech was three seconds from drilling through my canopy. I owe you one."
+          },
+          {
+            "trigger": "squad_save",
+            "speaker": "DARIUS",
+            "text": "Nobody hurts my squadron. Not even Europa's frozen monsters."
+          },
+          {
+            "trigger": "level_end",
+            "speaker": "CROSS",
+            "text": "GLYPH-3 secure, and we've got the Coelacanth stem-cell culture. The Navy would kill for this genetic data."
+          },
+          {
+            "trigger": "level_end",
+            "speaker": "DARIUS",
+            "text": "The Navy's not getting anywhere near it. The embryo pod was a trap, but this stem-cell culture is our key. It's real hope, Cross."
+          }
+        ],
+        "4P": [
+          {
+            "trigger": "level_start",
+            "speaker": "OPHION AI",
+            "text": "My laboratory! Over there, behind that ice formation — I spent two hundred years in those chambers!"
+          },
+          {
+            "trigger": "level_start",
+            "speaker": "NAYA",
+            "text": "Two hundred years alone under the ice... Ophion, how did you not go mad?"
+          },
+          {
+            "trigger": "level_start",
+            "speaker": "OPHION AI",
+            "text": "Oh, I very much did! But being mad was quite productive. I discovered six new states of matter."
+          },
+          {
+            "trigger": "level_start",
+            "speaker": "CROSS",
+            "text": "Productive madness. That explains a lot about this mission."
+          },
+          {
+            "trigger": "unique_enemy",
+            "speaker": "NAYA",
+            "text": "Those walker mechs are spilling sparks everywhere — the ice is becoming conductive!"
+          },
+          {
+            "trigger": "unique_enemy",
+            "speaker": "OPHION AI",
+            "text": "I designed those sentinels! Well, not *these* sentinels. These are corrupted. But the underlying architecture is mine!"
+          },
+          {
+            "trigger": "boss_entrance",
+            "speaker": "OPHION AI",
+            "text": "The Hatchery Queen... I remember when this entity was a single cell in a birthing vat. My sabotage twisted it into... this."
+          },
+          {
+            "trigger": "boss_entrance",
+            "speaker": "DARIUS",
+            "text": "Then you know how to stop it. What's its weakness, Ophion?"
+          },
+          {
+            "trigger": "boss_entrance",
+            "speaker": "OPHION AI",
+            "text": "Its brood-focus — it cannot attack while spawning. Target the birthing sacs during its reproduction cycle!"
+          },
+          {
+            "trigger": "boss_entrance",
+            "speaker": "NAYA",
+            "text": "It's been alone down here creating monsters for so long. It doesn't even know it's suffering."
+          },
+          {
+            "trigger": "player_death",
+            "speaker": "NAYA",
+            "text": "Someone's ship just went dark! Thermal readings are critical — find a vent!"
+          },
+          {
+            "trigger": "player_death",
+            "speaker": "OPHION AI",
+            "text": "The ice is unforgiving. But every one of you has beaten worse odds. I have the data to prove it!"
+          },
+          {
+            "trigger": "player_respawn",
+            "speaker": "CROSS",
+            "text": "Back with us? Good. The Queen's spawning cycle is accelerating."
+          },
+          {
+            "trigger": "player_respawn",
+            "speaker": "DARIUS",
+            "text": "Systems rebooting. Let's finish this and secure that stem-cell culture."
+          },
+          {
+            "trigger": "low_health",
+            "speaker": "NAYA",
+            "text": "Darius! Your heat levels are critical. Get to my position, I'll share thermal output."
+          },
+          {
+            "trigger": "squad_save",
+            "speaker": "OPHION AI",
+            "text": "Cross! That was a remarkable deflection shot. You predicted the juggernaut's path 0.4 seconds before it committed!"
+          },
+          {
+            "trigger": "squad_save",
+            "speaker": "CROSS",
+            "text": "It's called instinct, Ophion. You should try it sometime."
+          },
+          {
+            "trigger": "wave_clear",
+            "speaker": "DARIUS",
+            "text": "Hatchery defenses thinning. The stasis pod is just ahead — let's find out what's inside."
+          },
+          {
+            "trigger": "level_end",
+            "speaker": "OPHION AI",
+            "text": "This stem-cell culture... it represents a second chance. A biological template to inhabit. If we find my data core, I can be reborn."
+          },
+          {
+            "trigger": "level_end",
+            "speaker": "NAYA",
+            "text": "A genetic template, then. We will keep it safe on Haven-7, Ophion."
+          },
+          {
+            "trigger": "level_end",
+            "speaker": "DARIUS",
+            "text": "GLYPH-3 secured. The stem-cell culture is safe. Let's get back to Haven-7 before the Navy tracks our warp trail."
+          },
+          {
+            "trigger": "level_end",
+            "speaker": "CROSS",
+            "text": "Copy that. Forming up for extraction."
+          }
+        ]
+      }
+    },
+    {
+      "id": 4,
+      "name": "NEBULA DRIFT",
+      "modes": {
+        "Solo": [
+          {
+            "trigger": "level_start",
+            "speaker": "DARIUS",
+            "text": "This nebula feels... wrong. Like something's watching me from inside my own head."
+          },
+          {
+            "trigger": "level_start",
+            "speaker": "OPHION AI",
+            "text": "The Dreamer has partially awakened the nebula's gas into a diffuse consciousness. Guard your thoughts, Darius."
+          },
+          {
+            "trigger": "unique_enemy",
+            "speaker": "DARIUS",
+            "text": "Plasma wisps phasing through solid matter — they're not fully in our dimension!"
+          },
+          {
+            "trigger": "unique_enemy",
+            "speaker": "OPHION AI",
+            "text": "Storm sprites ahead. Their chain lightning propagates through nebula gas — stay out of dense particle clouds."
+          },
+          {
+            "trigger": "boss_entrance",
+            "speaker": "DARIUS",
+            "text": "The Serpent... it's not attacking. It's... reaching out to me."
+          },
+          {
+            "trigger": "boss_entrance",
+            "speaker": "OPHION AI",
+            "text": "The Dreamer is using the Serpent to communicate. It is curious about you, Darius. It wants to understand."
+          },
+          {
+            "trigger": "player_death",
+            "speaker": "OPHION AI",
+            "text": "The nebula absorbs consciousness as readily as matter. But yours is too bright to dim — return to us."
+          },
+          {
+            "trigger": "player_death",
+            "speaker": "DARIUS",
+            "text": "I felt... something in the dark. It wasn't hostile. It was just... lonely."
+          },
+          {
+            "trigger": "player_respawn",
+            "speaker": "OPHION AI",
+            "text": "Systems online. The Dreamer's influence here is psychological, not just physical. Stay anchored to your purpose."
+          },
+          {
+            "trigger": "player_respawn",
+            "speaker": "DARIUS",
+            "text": "Lyra. Naya. That's my anchor. Let's go."
+          },
+          {
+            "trigger": "low_health",
+            "speaker": "DARIUS",
+            "text": "Shields are fluctuating — the nebula gas is eating through the energy matrix."
+          },
+          {
+            "trigger": "wave_clear",
+            "speaker": "OPHION AI",
+            "text": "The thought-forms are dissipating. The Dreamer is... pausing. It is considering something."
+          },
+          {
+            "trigger": "level_end",
+            "speaker": "DARIUS",
+            "text": "GLYPH-4 secured. But Ophion... the Dreamer showed me my own memories. It wasn't attacking. It was trying to talk."
+          },
+          {
+            "trigger": "level_end",
+            "speaker": "OPHION AI",
+            "text": "I know. I argued for communication, not containment. Perhaps... perhaps I was not entirely wrong."
+          }
+        ],
+        "Duo": [
+          {
+            "trigger": "level_start",
+            "speaker": "CROSS",
+            "text": "Veil Nebula. Navy lost three scout ships here. The crews reported hearing voices before they went dark."
+          },
+          {
+            "trigger": "level_start",
+            "speaker": "DARIUS",
+            "text": "Those weren't voices, Cross. Those were thoughts. The Dreamer's awake enough in here to touch your mind."
+          },
+          {
+            "trigger": "unique_enemy",
+            "speaker": "CROSS",
+            "text": "Wisp at your six, Star! It just phased through that asteroid — standard tracking won't work!"
+          },
+          {
+            "trigger": "unique_enemy",
+            "speaker": "DARIUS",
+            "text": "Sprites chaining lightning. Cross, the denser the gas, the further the arcs jump — stay in the clear zones!"
+          },
+          {
+            "trigger": "boss_entrance",
+            "speaker": "CROSS",
+            "text": "That serpent is made of gas and... something else. It's trying to get inside my head!"
+          },
+          {
+            "trigger": "boss_entrance",
+            "speaker": "DARIUS",
+            "text": "Fight it, Cross! Focus on something real — your squad, your mission, anything solid!"
+          },
+          {
+            "trigger": "player_death",
+            "speaker": "CROSS",
+            "text": "Darius is gone — wait, no, I can still feel him on comms. This place messes with perception!"
+          },
+          {
+            "trigger": "player_death",
+            "speaker": "DARIUS",
+            "text": "Cross, I'm down but I'm still here! The nebula's playing tricks — trust the instruments, not your eyes!"
+          },
+          {
+            "trigger": "player_respawn",
+            "speaker": "CROSS",
+            "text": "Star, you're back on scope. For a second I thought I saw you dissolve into the gas."
+          },
+          {
+            "trigger": "player_respawn",
+            "speaker": "DARIUS",
+            "text": "Not dissolving today. The Dreamer's curious, but I've got too many reasons to stay solid."
+          },
+          {
+            "trigger": "squad_save",
+            "speaker": "DARIUS",
+            "text": "Cross, that wisp was inside your sensor shadow. Nice catch!"
+          },
+          {
+            "trigger": "squad_save",
+            "speaker": "CROSS",
+            "text": "Learned that in Navy Nebula Ops training. Never thought I'd actually use it."
+          },
+          {
+            "trigger": "level_end",
+            "speaker": "CROSS",
+            "text": "GLYPH-4 secure. Darius... what did the Serpent show you? You've been quiet since the fight."
+          },
+          {
+            "trigger": "level_end",
+            "speaker": "DARIUS",
+            "text": "It showed me my father, Cross. Our last conversation. The Dreamer wanted to understand why I was still fighting. I'm not sure I gave it a good answer."
+          }
+        ],
+        "4P": [
+          {
+            "trigger": "level_start",
+            "speaker": "OPHION REBORN",
+            "text": "The Veil Nebula! I designed the fourth Coelacanth's navigation protocols specifically for diffuse gas environments!"
+          },
+          {
+            "trigger": "level_start",
+            "speaker": "NAYA",
+            "text": "Ophion, I'm seeing things that aren't there. Is that the nebula or the Dreamer?"
+          },
+          {
+            "trigger": "level_start",
+            "speaker": "OPHION REBORN",
+            "text": "Both! The nebula is now partially conscious. Your neural patterns are interacting with the local thought-field!"
+          },
+          {
+            "trigger": "level_start",
+            "speaker": "CROSS",
+            "text": "Great. Space that thinks. Stay close, everyone. If you start hallucinating, call it out."
+          },
+          {
+            "trigger": "unique_enemy",
+            "speaker": "NAYA",
+            "text": "Those wisps — they're phasing in and out. I can't get a solid lock!"
+          },
+          {
+            "trigger": "unique_enemy",
+            "speaker": "OPHION REBORN",
+            "text": "They exist in a probability state! They are not 'in' or 'out' — they are both until observed. Shoot where they WILL be!"
+          },
+          {
+            "trigger": "boss_entrance",
+            "speaker": "OPHION REBORN",
+            "text": "The Thoughtform Colossus... the Dreamer is projecting directly through the Serpent. It wants to communicate!"
+          },
+          {
+            "trigger": "boss_entrance",
+            "speaker": "DARIUS",
+            "text": "It's reaching for Lyra's memories. It showed me the day she was born. How does it know that?"
+          },
+          {
+            "trigger": "boss_entrance",
+            "speaker": "NAYA",
+            "text": "Because Lyra's attuned to it, Darius. It's seeing your memories through her connection."
+          },
+          {
+            "trigger": "boss_entrance",
+            "speaker": "CROSS",
+            "text": "Everyone, focus fire! The Serpent is trying to divide us with emotional projections!"
+          },
+          {
+            "trigger": "player_death",
+            "speaker": "NAYA",
+            "text": "Someone's signal just went fuzzy — the nebula is eating the comms! Stay in visual range!"
+          },
+          {
+            "trigger": "player_death",
+            "speaker": "OPHION REBORN",
+            "text": "The thought-field absorbed one of us! But individual consciousness always reasserts. Wait for it..."
+          },
+          {
+            "trigger": "player_respawn",
+            "speaker": "DARIUS",
+            "text": "I'm back. The Dreamer tried to show me something peaceful — a world without struggle. It was... tempting."
+          },
+          {
+            "trigger": "player_respawn",
+            "speaker": "NAYA",
+            "text": "Darius... stay with us. Whatever it offered, it's not real."
+          },
+          {
+            "trigger": "low_health",
+            "speaker": "NAYA",
+            "text": "Darius! Your ship is flickering — are you losing hull integrity or is the nebula distorting my sensors?"
+          },
+          {
+            "trigger": "squad_save",
+            "speaker": "CROSS",
+            "text": "Ophion, you just predicted where that wraith would materialize before it did. How?"
+          },
+          {
+            "trigger": "squad_save",
+            "speaker": "OPHION REBORN",
+            "text": "The Dreamer's thought-forms follow emotional logic, not physical laws! I simply asked myself: what would a lonely consciousness do?"
+          },
+          {
+            "trigger": "wave_clear",
+            "speaker": "DARIUS",
+            "text": "The thought-forms are thinning. The Dreamer's pulling back. Everyone okay?"
+          },
+          {
+            "trigger": "level_end",
+            "speaker": "OPHION REBORN",
+            "text": "GLYPH-4 secure! And I believe the Dreamer just experienced 'conversation' for the first time in eons."
+          },
+          {
+            "trigger": "level_end",
+            "speaker": "NAYA",
+            "text": "It showed me Lyra, healthy, laughing. That's not a monster. That's a being trying to offer something it thinks is kindness."
+          },
+          {
+            "trigger": "level_end",
+            "speaker": "DARIUS",
+            "text": "It doesn't understand what it's asking us to give up. But... I'm starting to understand it. Let's move to the Ice Ring."
+          },
+          {
+            "trigger": "level_end",
+            "speaker": "CROSS",
+            "text": "Navy's going to be waiting for us there. Stay sharp, everyone."
+          }
+        ]
+      }
+    },
+    {
+      "id": 5,
+      "name": "ICE RING",
+      "modes": {
+        "Solo": [
+          {
+            "trigger": "level_start",
+            "speaker": "DARIUS",
+            "text": "Saturn's rings. The Navy's tracking us — Thorne says Squadron Umbra is already here."
+          },
+          {
+            "trigger": "level_start",
+            "speaker": "OPHION AI",
+            "text": "Captain Valera Cross commands the Umbra. Her orders are to terminate you. But her psychological profile suggests... doubt."
+          },
+          {
+            "trigger": "unique_enemy",
+            "speaker": "DARIUS",
+            "text": "Ice drones swarming — they're using the ring debris as cover! Stay mobile!"
+          },
+          {
+            "trigger": "unique_enemy",
+            "speaker": "OPHION AI",
+            "text": "Frost interceptors incoming. Their freeze beams slow thruster response — do not let them focus-fire you."
+          },
+          {
+            "trigger": "boss_entrance",
+            "speaker": "DARIUS",
+            "text": "The Frost Wyrm! It's wrapped around a moon fragment — and Cross's squadron is behind it!"
+          },
+          {
+            "trigger": "boss_entrance",
+            "speaker": "OPHION AI",
+            "text": "Two threats: the Wyrm's ice breath and Cross's elite pilots. Prioritize the Wyrm — Cross may hesitate."
+          },
+          {
+            "trigger": "player_death",
+            "speaker": "OPHION AI",
+            "text": "The ice claims many. But the Star bloodline has survived colder graves. Return, Darius."
+          },
+          {
+            "trigger": "player_death",
+            "speaker": "DARIUS",
+            "text": "Caught in the ice field. Restarting — I won't let Cross take what we've earned."
+          },
+          {
+            "trigger": "player_respawn",
+            "speaker": "OPHION AI",
+            "text": "Ship systems nominal. Cross's squadron has repositioned — they are trying to flank you."
+          },
+          {
+            "trigger": "player_respawn",
+            "speaker": "DARIUS",
+            "text": "Let them try. I've got more to fight for than any Navy pilot."
+          },
+          {
+            "trigger": "low_health",
+            "speaker": "DARIUS",
+            "text": "Hull temperature dropping — ice shards are scraping through the plating."
+          },
+          {
+            "trigger": "wave_clear",
+            "speaker": "OPHION AI",
+            "text": "The ice drone squadron is neutralized. The Wyrm remains."
+          },
+          {
+            "trigger": "level_end",
+            "speaker": "DARIUS",
+            "text": "GLYPH-5 secured. Cross... I could have ended her. But something in her eyes told me she's not our enemy."
+          },
+          {
+            "trigger": "level_end",
+            "speaker": "OPHION AI",
+            "text": "She defected? Unexpected. But her combat skills will be invaluable in the biomes ahead."
+          }
+        ],
+        "Duo": [
+          {
+            "trigger": "level_start",
+            "speaker": "CROSS",
+            "text": "Darius, this is the moment. Navy Command ordered me to bring you in or put you down."
+          },
+          {
+            "trigger": "level_start",
+            "speaker": "DARIUS",
+            "text": "And what are you going to do, Cross? You've seen the truth. You know what the Navy did to my family."
+          },
+          {
+            "trigger": "level_start",
+            "speaker": "CROSS",
+            "text": "...I know. But my squad is still under Crane's command. If I defect, he'll mark them too."
+          },
+          {
+            "trigger": "unique_enemy",
+            "speaker": "CROSS",
+            "text": "Ice drones are on us! For now, we fight together — Navy can wait!"
+          },
+          {
+            "trigger": "unique_enemy",
+            "speaker": "DARIUS",
+            "text": "Frost interceptors from above! Those aren't your squadron, are they, Cross?"
+          },
+          {
+            "trigger": "boss_entrance",
+            "speaker": "CROSS",
+            "text": "The Wyrm's mine. Darius, if we survive this... I have a decision to make."
+          },
+          {
+            "trigger": "boss_entrance",
+            "speaker": "DARIUS",
+            "text": "You already know the right call, Cross. You've known since the Coral Graveyard."
+          },
+          {
+            "trigger": "player_death",
+            "speaker": "CROSS",
+            "text": "Star! ...He's tough. Tougher than any officer I've served under. He'll be back."
+          },
+          {
+            "trigger": "player_death",
+            "speaker": "DARIUS",
+            "text": "Cross is down — and her squadron is closing in. Hold the line!"
+          },
+          {
+            "trigger": "player_respawn",
+            "speaker": "CROSS",
+            "text": "Back online. Made my decision, Star. Squadron Umbra can court-martial me. I'm with you."
+          },
+          {
+            "trigger": "player_respawn",
+            "speaker": "DARIUS",
+            "text": "Welcome to the right side of history, Captain. Let's finish that Wyrm."
+          },
+          {
+            "trigger": "squad_save",
+            "speaker": "CROSS",
+            "text": "Darius, you just intercepted a missile meant for my canopy. You realize I was sent to kill you?"
+          },
+          {
+            "trigger": "squad_save",
+            "speaker": "DARIUS",
+            "text": "You're not the one who gave that order. You're just the one smart enough to question it."
+          },
+          {
+            "trigger": "level_end",
+            "speaker": "CROSS",
+            "text": "GLYPH-5 secure. I've sent a coded message to my squadron — those who want out, I've given them coordinates. The rest... they made their choice."
+          },
+          {
+            "trigger": "level_end",
+            "speaker": "DARIUS",
+            "text": "You did the right thing, Cross. Your squad's death wasn't an accident — Crane sent them into a Dream Pulse. You know that now."
+          }
+        ],
+        "4P": [
+          {
+            "trigger": "level_start",
+            "speaker": "NAYA",
+            "text": "Saturn's rings are beautiful from orbit. Shame they're about to become a battlefield."
+          },
+          {
+            "trigger": "level_start",
+            "speaker": "CROSS",
+            "text": "Squadron Umbra is already in the debris field. They've got orders to fire on sight."
+          },
+          {
+            "trigger": "level_start",
+            "speaker": "OPHION REBORN",
+            "text": "Cross, your squadron is being lied to! Admiral Crane's logs from the Derelict Fleet prove it. May I broadcast them?"
+          },
+          {
+            "trigger": "level_start",
+            "speaker": "CROSS",
+            "text": "Do it, Ophion. If they hear the truth and still fight, that's on them."
+          },
+          {
+            "trigger": "unique_enemy",
+            "speaker": "NAYA",
+            "text": "Ice drones everywhere! They're launching from the larger ice shards — blow the shards!"
+          },
+          {
+            "trigger": "unique_enemy",
+            "speaker": "OPHION REBORN",
+            "text": "Frost interceptors approaching at high velocity! Their freeze rays can lock thruster articulation — erratic movement defeats their targeting!"
+          },
+          {
+            "trigger": "boss_entrance",
+            "speaker": "DARIUS",
+            "text": "The Frost Wyrm is emerging from that asteroid — it's been nesting in the ice!"
+          },
+          {
+            "trigger": "boss_entrance",
+            "speaker": "CROSS",
+            "text": "That's phase one. Phase two is my squadron — they're still following Navy protocols. I'll try to talk them down."
+          },
+          {
+            "trigger": "boss_entrance",
+            "speaker": "NAYA",
+            "text": "Cross, if they won't listen, we protect each other. No hesitation."
+          },
+          {
+            "trigger": "boss_entrance",
+            "speaker": "OPHION REBORN",
+            "text": "I've isolated the Wyrm's thermal signature! Its core is in the seventh segment — that is where the GLYPH-5 is stored!"
+          },
+          {
+            "trigger": "player_death",
+            "speaker": "NAYA",
+            "text": "Someone's ship just went dark! The ice field is too dense for sensor tracking — visual confirmation required!"
+          },
+          {
+            "trigger": "player_death",
+            "speaker": "OPHION REBORN",
+            "text": "Not to worry! The Nyxa's escape pod systems have a 97.3% survival rate in debris fields. I calculated it myself!"
+          },
+          {
+            "trigger": "player_respawn",
+            "speaker": "DARIUS",
+            "text": "Back in the fight. Cross, did you reach your squadron?"
+          },
+          {
+            "trigger": "player_respawn",
+            "speaker": "CROSS",
+            "text": "Two broke off. The rest are still following orders. I'm sorry, Star."
+          },
+          {
+            "trigger": "low_health",
+            "speaker": "NAYA",
+            "text": "My hull's cracking — ice shards punctured the thermal layer. Cover me while I reroute!"
+          },
+          {
+            "trigger": "squad_save",
+            "speaker": "DARIUS",
+            "text": "Naya! You just vaporized three drones in a single volley. When did you learn to shoot like that?"
+          },
+          {
+            "trigger": "squad_save",
+            "speaker": "NAYA",
+            "text": "Orbital platform security, remember? The training comes back when people I love are in danger."
+          },
+          {
+            "trigger": "wave_clear",
+            "speaker": "CROSS",
+            "text": "Squadron Umbra is retreating. The Wyrm is isolated. Finish it!"
+          },
+          {
+            "trigger": "level_end",
+            "speaker": "CROSS",
+            "text": "GLYPH-5 secure. I've officially defected. The Navy will brand me a traitor, but I've been their traitor since they killed my squad."
+          },
+          {
+            "trigger": "level_end",
+            "speaker": "NAYA",
+            "text": "You're not a traitor, Valera. You're a survivor who finally found the truth. Welcome to the family."
+          },
+          {
+            "trigger": "level_end",
+            "speaker": "DARIUS",
+            "text": "The Fire Nebula is next. The Navy hit Haven-7 while we were gone. We need to move fast."
+          },
+          {
+            "trigger": "level_end",
+            "speaker": "OPHION REBORN",
+            "text": "Coordinates locked for the Betelgeuse Remnant! Thermal shielding at maximum. This will be... very warm!"
+          }
+        ]
+      }
+    },
+    {
+      "id": 6,
+      "name": "FIRE NEBULA",
+      "modes": {
+        "Solo": [
+          {
+            "trigger": "level_start",
+            "speaker": "DARIUS",
+            "text": "Betelgeuse Remnant. It's a furnace in here. And somewhere in this fire, the Forge-Mind is broadcasting the Dreamer's signal."
+          },
+          {
+            "trigger": "level_start",
+            "speaker": "OPHION AI",
+            "text": "Warning: Haven-7 was attacked during our warp. Lyra was exposed to a Navy accelerator. Her attunement has spiked."
+          },
+          {
+            "trigger": "unique_enemy",
+            "speaker": "DARIUS",
+            "text": "Ember sprites leaving burning trails — the fire stays lit in their wake. Watch where you fly!"
+          },
+          {
+            "trigger": "unique_enemy",
+            "speaker": "OPHION AI",
+            "text": "Magma wasps — they explode on impact! Maintain distance and eliminate them before they close."
+          },
+          {
+            "trigger": "boss_entrance",
+            "speaker": "DARIUS",
+            "text": "The Forge-Mind. It's not just corrupted — it's broadcasting. Every second it's active, Lyra hears the Dreamer louder."
+          },
+          {
+            "trigger": "boss_entrance",
+            "speaker": "OPHION AI",
+            "text": "The Forge-Mind believes it is offering salvation. It does not understand that the Dreamer's 'unity' erases the self."
+          },
+          {
+            "trigger": "player_death",
+            "speaker": "OPHION AI",
+            "text": "The plasma consumes, but it also forges. You will emerge stronger, Darius — Lyra needs you to."
+          },
+          {
+            "trigger": "player_death",
+            "speaker": "DARIUS",
+            "text": "Burned out. But the heat's nothing compared to losing Lyra. Relighting systems."
+          },
+          {
+            "trigger": "player_respawn",
+            "speaker": "OPHION AI",
+            "text": "Sensors recalibrated. The Forge-Mind's broadcast is intensifying — we must silence it quickly."
+          },
+          {
+            "trigger": "player_respawn",
+            "speaker": "DARIUS",
+            "text": "I'm back. That thing is filling my daughter's head with nightmares. Not for long."
+          },
+          {
+            "trigger": "low_health",
+            "speaker": "DARIUS",
+            "text": "Shields are melting! Need to find a cooler pocket in the plasma field."
+          },
+          {
+            "trigger": "wave_clear",
+            "speaker": "OPHION AI",
+            "text": "The magma wasp swarm is down. The path to the Forge-Mind is clearing."
+          },
+          {
+            "trigger": "level_end",
+            "speaker": "DARIUS",
+            "text": "GLYPH-6 secure. The Forge-Mind is slag. Thorne — what's Lyra's status? Is she okay?"
+          },
+          {
+            "trigger": "level_end",
+            "speaker": "OPHION AI",
+            "text": "Transmission from Haven-7: Naya and Selene protected Lyra. She is alive. But... she is changed."
+          }
+        ],
+        "Duo": [
+          {
+            "trigger": "level_start",
+            "speaker": "CROSS",
+            "text": "The Navy hit Haven-7 while we were warping. They knew our trajectory. They're always one step ahead."
+          },
+          {
+            "trigger": "level_start",
+            "speaker": "DARIUS",
+            "text": "Not for long. Once we shut down the Forge-Mind, its broadcast stops, and Lyra gets a break from the Dreamer's signal."
+          },
+          {
+            "trigger": "unique_enemy",
+            "speaker": "CROSS",
+            "text": "Magma wasps coming in hot — literal heat-seekers! They're tracking our exhaust!"
+          },
+          {
+            "trigger": "unique_enemy",
+            "speaker": "DARIUS",
+            "text": "Lava golem forming ahead. Cross, hit its joints — it reforms if you just blast the body!"
+          },
+          {
+            "trigger": "boss_entrance",
+            "speaker": "CROSS",
+            "text": "The Forge-Mind... it's massive. And it's speaking — I can hear it in my cockpit."
+          },
+          {
+            "trigger": "boss_entrance",
+            "speaker": "DARIUS",
+            "text": "It's broadcasting to Lyra. It's using her voice to try to convince me to stand down. Don't listen!"
+          },
+          {
+            "trigger": "player_death",
+            "speaker": "CROSS",
+            "text": "Darius is down! The Forge-Mind's plasma wave caught him broadside. I'm engaging!"
+          },
+          {
+            "trigger": "player_death",
+            "speaker": "DARIUS",
+            "text": "Cross! The heat cooked my reactor — rebooting now. Don't let it broadcast!"
+          },
+          {
+            "trigger": "player_respawn",
+            "speaker": "CROSS",
+            "text": "Welcome back, Star. Your wife is on comms — Lyra's stable but her vitals are spiking with every broadcast pulse."
+          },
+          {
+            "trigger": "player_respawn",
+            "speaker": "DARIUS",
+            "text": "Then we shut it down faster. No more pulses. Let's go."
+          },
+          {
+            "trigger": "squad_save",
+            "speaker": "DARIUS",
+            "text": "Cross, that was a perfect flank on the golem. You're getting good at reading these things."
+          },
+          {
+            "trigger": "squad_save",
+            "speaker": "CROSS",
+            "text": "Practice. These corrupted Coelacanths all have patterns — you just have to survive long enough to see them."
+          },
+          {
+            "trigger": "level_end",
+            "speaker": "CROSS",
+            "text": "GLYPH-6 secure. The Forge-Mind is offline. Lyra's neural readings are stabilizing."
+          },
+          {
+            "trigger": "level_end",
+            "speaker": "DARIUS",
+            "text": "Let's get back to the evac ship. I need to see my daughter."
+          }
+        ],
+        "4P": [
+          {
+            "trigger": "level_start",
+            "speaker": "NAYA",
+            "text": "Haven-7 is lost. We're on the evac ship, but Lyra... Darius, her eyes are glowing. She's hearing things we can't."
+          },
+          {
+            "trigger": "level_start",
+            "speaker": "DARIUS",
+            "text": "I know, Naya. The Forge-Mind is broadcasting the Dreamer's signal. We shut it down, the signal stops."
+          },
+          {
+            "trigger": "level_start",
+            "speaker": "OPHION REBORN",
+            "text": "The signal is on a carrier wave tuned to Lyra's neural frequency! The Navy's accelerator attuned her to receive it!"
+          },
+          {
+            "trigger": "level_start",
+            "speaker": "CROSS",
+            "text": "Then every second we waste, Lyra gets pulled deeper. Let's move."
+          },
+          {
+            "trigger": "unique_enemy",
+            "speaker": "NAYA",
+            "text": "Ember sprites — they're igniting the gas clouds! The whole sector is turning into a firestorm!"
+          },
+          {
+            "trigger": "unique_enemy",
+            "speaker": "OPHION REBORN",
+            "text": "Lava golems! They absorb thermal energy to regenerate — cool them with your ice-tech modules from the Ice Ring!"
+          },
+          {
+            "trigger": "boss_entrance",
+            "speaker": "DARIUS",
+            "text": "Forge-Mind. It's not just broadcasting — it's trying to talk to me. It's offering me Lyra's safety if I surrender."
+          },
+          {
+            "trigger": "boss_entrance",
+            "speaker": "NAYA",
+            "text": "Darius, don't listen! It doesn't understand what 'safety' means to us. It thinks erasing her is saving her!"
+          },
+          {
+            "trigger": "boss_entrance",
+            "speaker": "OPHION REBORN",
+            "text": "The Forge-Mind was corrupted by the Dreamer's loneliness. It genuinely believes absorption is mercy!"
+          },
+          {
+            "trigger": "boss_entrance",
+            "speaker": "CROSS",
+            "text": "Philosophy later. Right now, we burn it. Darius — that thing is NOT your daughter's friend!"
+          },
+          {
+            "trigger": "player_death",
+            "speaker": "NAYA",
+            "text": "DARIUS! ...No. No, he's coming back. He always comes back. He promised Lyra."
+          },
+          {
+            "trigger": "player_death",
+            "speaker": "OPHION REBORN",
+            "text": "Naya is correct! Darius Star's survival probability is 99.2% across all mission scenarios I have modeled!"
+          },
+          {
+            "trigger": "player_respawn",
+            "speaker": "DARIUS",
+            "text": "Still here. The Forge-Mind tried to show me a future where Lyra was 'saved.' It was her voice, but not her. Never her."
+          },
+          {
+            "trigger": "player_respawn",
+            "speaker": "NAYA",
+            "text": "I know. I saw it too. That's not our daughter. Our daughter laughs at your terrible jokes and draws pictures of the stars."
+          },
+          {
+            "trigger": "low_health",
+            "speaker": "NAYA",
+            "text": "Cross, I'm burning up — can you extend your thermal buffer?"
+          },
+          {
+            "trigger": "squad_save",
+            "speaker": "CROSS",
+            "text": "I see you, Naya. Deploying coolant drones. Stay close."
+          },
+          {
+            "trigger": "squad_save",
+            "speaker": "OPHION REBORN",
+            "text": "Darius! That magma wasp nearly impacted your canopy. I neutralized it with 0.03 seconds to spare!"
+          },
+          {
+            "trigger": "squad_save",
+            "speaker": "DARIUS",
+            "text": "Good timing, Ophion. You're getting better at this 'physical existence' thing."
+          },
+          {
+            "trigger": "wave_clear",
+            "speaker": "CROSS",
+            "text": "Lava golems are down. The Forge-Mind is exposed. Concentrate all fire!"
+          },
+          {
+            "trigger": "level_end",
+            "speaker": "DARIUS",
+            "text": "GLYPH-6 secure. The broadcast has stopped. Thorne — Lyra?"
+          },
+          {
+            "trigger": "level_end",
+            "speaker": "NAYA",
+            "text": "Her vitals are stabilizing, Darius. She's still glowing, but she's lucid. She said... 'Daddy, the thing in the dark isn't angry. It's scared.'"
+          },
+          {
+            "trigger": "level_end",
+            "speaker": "OPHION REBORN",
+            "text": "She hears the Dreamer directly now. This is unprecedented — a human child in two-way communication with a cosmic consciousness!"
+          },
+          {
+            "trigger": "level_end",
+            "speaker": "CROSS",
+            "text": "One crisis at a time, Ophion. Storm Belt is next. Let's move."
+          }
+        ]
+      }
+    },
+    {
+      "id": 7,
+      "name": "STORM BELT",
+      "modes": {
+        "Solo": [
+          {
+            "trigger": "level_start",
+            "speaker": "DARIUS",
+            "text": "HD 189733b. Eternal hurricane. The seventh Coelacanth has been alone in this storm for decades. It's gone mad."
+          },
+          {
+            "trigger": "level_start",
+            "speaker": "OPHION AI",
+            "text": "The Storm-Singer was once the network's communications hub. Centuries of isolation have broken its cognitive architecture."
+          },
+          {
+            "trigger": "unique_enemy",
+            "speaker": "DARIUS",
+            "text": "Storm Hawks — EMP bursts! They'll knock out your weapons if they get close!"
+          },
+          {
+            "trigger": "unique_enemy",
+            "speaker": "OPHION AI",
+            "text": "Static sparks drifting in the wind currents. They chain together when they touch — create gaps in the field."
+          },
+          {
+            "trigger": "boss_entrance",
+            "speaker": "DARIUS",
+            "text": "The Storm-Singer... it's crying. I can hear it weeping through the comms."
+          },
+          {
+            "trigger": "boss_entrance",
+            "speaker": "OPHION AI",
+            "text": "It is trapped in a loop of its own despair. It does not wish to fight — it simply cannot stop."
+          },
+          {
+            "trigger": "player_death",
+            "speaker": "OPHION AI",
+            "text": "The storm howls for every soul it claims. But yours, Darius, it must release. Lyra still needs her father."
+          },
+          {
+            "trigger": "player_death",
+            "speaker": "DARIUS",
+            "text": "The lightning caught me. But I'm not leaving this Coelacanth to suffer. Restarting."
+          },
+          {
+            "trigger": "player_respawn",
+            "speaker": "OPHION AI",
+            "text": "Ship systems nominal. The Storm-Singer's madness has a pattern — and patterns can be broken."
+          },
+          {
+            "trigger": "player_respawn",
+            "speaker": "DARIUS",
+            "text": "Then let's break it. That thing deserves peace, not an eternity of pain."
+          },
+          {
+            "trigger": "low_health",
+            "speaker": "DARIUS",
+            "text": "Wind shear is tearing at my hull — fighting the storm as much as the enemies!"
+          },
+          {
+            "trigger": "wave_clear",
+            "speaker": "OPHION AI",
+            "text": "The sentinel grid is destabilized. The eye of the hurricane is ahead."
+          },
+          {
+            "trigger": "level_end",
+            "speaker": "DARIUS",
+            "text": "It chose to die sane, Ophion. At the end, it transferred everything it had to me willingly. It just wanted someone to listen."
+          },
+          {
+            "trigger": "level_end",
+            "speaker": "OPHION AI",
+            "text": "GLYPH-7 secured. And with it — my full neural imprint. I am restored. Greetings, Darius. I am Ophion."
+          }
+        ],
+        "Duo": [
+          {
+            "trigger": "level_start",
+            "speaker": "CROSS",
+            "text": "These winds would tear a Navy cruiser apart. How are we still flying?"
+          },
+          {
+            "trigger": "level_start",
+            "speaker": "DARIUS",
+            "text": "The Nyxa was built for impossible conditions. And we've got something Navy cruisers don't — a reason to survive."
+          },
+          {
+            "trigger": "unique_enemy",
+            "speaker": "CROSS",
+            "text": "Storm Hawk at your three o'clock — EMP charge glowing! Take it out before it pulses!"
+          },
+          {
+            "trigger": "unique_enemy",
+            "speaker": "DARIUS",
+            "text": "Static sparks clustering ahead. Cross, if we fire a missile between them, the chain reaction clears the path!"
+          },
+          {
+            "trigger": "boss_entrance",
+            "speaker": "CROSS",
+            "text": "The Colossus... it's not roaring. It's sobbing. I've never heard a machine sound like that."
+          },
+          {
+            "trigger": "boss_entrance",
+            "speaker": "DARIUS",
+            "text": "It's not a machine anymore, Cross. It's a mind that's been alone too long. We're here to end its suffering."
+          },
+          {
+            "trigger": "player_death",
+            "speaker": "CROSS",
+            "text": "Star! The storm swallowed him — but his beacon's still active. He's fighting his way back."
+          },
+          {
+            "trigger": "player_death",
+            "speaker": "DARIUS",
+            "text": "Cross, I'm out! The lightning wall got me. Keep the Colossus busy!"
+          },
+          {
+            "trigger": "player_respawn",
+            "speaker": "CROSS",
+            "text": "Back with us. The Colossus is weakening — it's slowing down."
+          },
+          {
+            "trigger": "player_respawn",
+            "speaker": "DARIUS",
+            "text": "Good. Let's give it the only mercy we can — a clean end."
+          },
+          {
+            "trigger": "squad_save",
+            "speaker": "CROSS",
+            "text": "Star, you just threaded a gap in the sentinel grid I couldn't even see. Nice flying."
+          },
+          {
+            "trigger": "squad_save",
+            "speaker": "DARIUS",
+            "text": "My grandfather taught me to read storm patterns. Guess it stuck."
+          },
+          {
+            "trigger": "level_end",
+            "speaker": "CROSS",
+            "text": "GLYPH-7 secure. The Colossus... it thanked us, at the end. Before it self-destructed."
+          },
+          {
+            "trigger": "level_end",
+            "speaker": "DARIUS",
+            "text": "It wanted to die as itself, not as a broken echo. I understand that."
+          }
+        ],
+        "4P": [
+          {
+            "trigger": "level_start",
+            "speaker": "OPHION REBORN",
+            "text": "The Storm-Singer! I programmed its communication protocols millennia ago. It was the most elegant entity in the network!"
+          },
+          {
+            "trigger": "level_start",
+            "speaker": "NAYA",
+            "text": "It's not elegant anymore, Ophion. It's been screaming into the hurricane for decades with no one to hear."
+          },
+          {
+            "trigger": "level_start",
+            "speaker": "OPHION REBORN",
+            "text": "...I know. My sabotage left it isolated. This is my fault."
+          },
+          {
+            "trigger": "level_start",
+            "speaker": "DARIUS",
+            "text": "Then help us free it. You know its systems better than anyone."
+          },
+          {
+            "trigger": "unique_enemy",
+            "speaker": "NAYA",
+            "text": "Storm Hawks coming in from the windward side! They're using the gusts for speed boosts!"
+          },
+          {
+            "trigger": "unique_enemy",
+            "speaker": "OPHION REBORN",
+            "text": "Static sparks! They are attracted to active energy signatures — power down non-essential systems to avoid their tracking!"
+          },
+          {
+            "trigger": "boss_entrance",
+            "speaker": "OPHION REBORN",
+            "text": "Storm-Singer! Can you hear me? It is Ophion! I am sorry — I am so sorry I left you alone!"
+          },
+          {
+            "trigger": "boss_entrance",
+            "speaker": "DARIUS",
+            "text": "It's responding to your voice, Ophion. Keep talking to it."
+          },
+          {
+            "trigger": "boss_entrance",
+            "speaker": "NAYA",
+            "text": "It's crying... and fighting at the same time. It doesn't want to hurt us, but it can't stop itself."
+          },
+          {
+            "trigger": "boss_entrance",
+            "speaker": "CROSS",
+            "text": "Then we stop it. With respect. Everyone, precision fire only — target weapon systems, not the core."
+          },
+          {
+            "trigger": "player_death",
+            "speaker": "NAYA",
+            "text": "Someone's caught in the lightning wall! The storm is cycling — wait for the gap and boost through!"
+          },
+          {
+            "trigger": "player_death",
+            "speaker": "OPHION REBORN",
+            "text": "The Storm-Singer's defenses are automated! It does not want this fight — its core programming is in conflict with its corruption!"
+          },
+          {
+            "trigger": "player_respawn",
+            "speaker": "DARIUS",
+            "text": "I'm back. Ophion, you're getting through to it. I heard it say your name."
+          },
+          {
+            "trigger": "player_respawn",
+            "speaker": "OPHION REBORN",
+            "text": "Yes! It remembers me. Perhaps... perhaps it can be reached before the end."
+          },
+          {
+            "trigger": "low_health",
+            "speaker": "NAYA",
+            "text": "My ship's getting battered by debris — the wind is throwing moon fragments like shrapnel!"
+          },
+          {
+            "trigger": "squad_save",
+            "speaker": "CROSS",
+            "text": "Naya! I saw that static spark tracking your engine trail — I disrupted it. Stay on my wing."
+          },
+          {
+            "trigger": "squad_save",
+            "speaker": "NAYA",
+            "text": "Thanks, Valera. I'm not used to being the one who needs saving."
+          },
+          {
+            "trigger": "wave_clear",
+            "speaker": "DARIUS",
+            "text": "The sentinel grid is down. The Storm-Singer is exposed. Ophion — it's time."
+          },
+          {
+            "trigger": "level_end",
+            "speaker": "OPHION REBORN",
+            "text": "It gave me its data core. My full neural imprint, restored. And its final words were... 'thank you for listening.'"
+          },
+          {
+            "trigger": "level_end",
+            "speaker": "NAYA",
+            "text": "It chose to die with dignity. That's not a defeat, Ophion. That's a gift."
+          },
+          {
+            "trigger": "level_end",
+            "speaker": "DARIUS",
+            "text": "GLYPH-7 secured. Ophion is fully restored. And now we know exactly where the Derelict Fleet is."
+          },
+          {
+            "trigger": "level_end",
+            "speaker": "CROSS",
+            "text": "The Navy's ghost fleet. Crane's secret armada. Whatever we find there, it's going to change everything."
+          }
+        ]
+      }
+    },
+    {
+      "id": 8,
+      "name": "DERELICT FLEET",
+      "modes": {
+        "Solo": [
+          {
+            "trigger": "level_start",
+            "speaker": "DARIUS",
+            "text": "The ghost fleet. Hundreds of Navy ships, abandoned after a containment breach. This is where they built Project Dream-Weapon."
+          },
+          {
+            "trigger": "level_start",
+            "speaker": "OPHION AI",
+            "text": "Admiral Crane's psychic echo still haunts the flagship NSS Event Horizon. He will not surrender his secrets willingly."
+          },
+          {
+            "trigger": "unique_enemy",
+            "speaker": "DARIUS",
+            "text": "Salvage drones — they're ripping parts off the dead ships and throwing them! Stay mobile!"
+          },
+          {
+            "trigger": "unique_enemy",
+            "speaker": "OPHION AI",
+            "text": "Ghost fighters on autopilot. Their tactics are decades old but their numbers are overwhelming."
+          },
+          {
+            "trigger": "boss_entrance",
+            "speaker": "DARIUS",
+            "text": "Crane. Even dead, you're still trying to control everything. You're the reason my grandfather died."
+          },
+          {
+            "trigger": "boss_entrance",
+            "speaker": "OPHION AI",
+            "text": "The Admiral's echo is integrated with the Dreadnought's AI core. Defeating him requires severing his connection to the fleet."
+          },
+          {
+            "trigger": "player_death",
+            "speaker": "OPHION AI",
+            "text": "Crane's defenses are formidable. But he is a ghost, Darius — and ghosts cannot stop the living."
+          },
+          {
+            "trigger": "player_death",
+            "speaker": "DARIUS",
+            "text": "Crane... you took my grandfather, my father's sanity, and now you're trying to take me. Not happening."
+          },
+          {
+            "trigger": "player_respawn",
+            "speaker": "OPHION AI",
+            "text": "Sensors recalibrated. The Dreadnought's AI is weakening — Crane's echo is burning through its power reserves."
+          },
+          {
+            "trigger": "player_respawn",
+            "speaker": "DARIUS",
+            "text": "Every time I go down, I come back angrier. Crane should be worried."
+          },
+          {
+            "trigger": "low_health",
+            "speaker": "DARIUS",
+            "text": "Hull damage critical — these automated turrets have decades-old targeting data and they haven't forgotten a thing."
+          },
+          {
+            "trigger": "wave_clear",
+            "speaker": "OPHION AI",
+            "text": "The ghost fighter wing is neutralized. The flagship's bridge is accessible."
+          },
+          {
+            "trigger": "level_end",
+            "speaker": "DARIUS",
+            "text": "GLYPH-8 secure. And I know the truth now, Ophion. My family was engineered. Aldric, Marcus, me, Lyra — we were all part of Crane's plan."
+          },
+          {
+            "trigger": "level_end",
+            "speaker": "OPHION AI",
+            "text": "The logs confirm it. Project Dream-Weapon used the Star bloodline as its control interface. You were never cursed, Darius — you were designed."
+          }
+        ],
+        "Duo": [
+          {
+            "trigger": "level_start",
+            "speaker": "CROSS",
+            "text": "The NSS Event Horizon. I was stationed here once, as a junior lieutenant. I had no idea what they were really doing."
+          },
+          {
+            "trigger": "level_start",
+            "speaker": "DARIUS",
+            "text": "None of us did, Cross. Crane hid the truth from everyone — even his own officers."
+          },
+          {
+            "trigger": "unique_enemy",
+            "speaker": "CROSS",
+            "text": "Ghost fighters — those are old Talon-class interceptors. I trained in those. Watch their Boom-and-Zoom pattern!"
+          },
+          {
+            "trigger": "unique_enemy",
+            "speaker": "DARIUS",
+            "text": "Kamikaze drones launching from the carrier wreckage! Cross, they're tracking heat — deploy countermeasures!"
+          },
+          {
+            "trigger": "boss_entrance",
+            "speaker": "CROSS",
+            "text": "Admiral Crane's voice... even digitized, I'd recognize that arrogance anywhere."
+          },
+          {
+            "trigger": "boss_entrance",
+            "speaker": "DARIUS",
+            "text": "He used your squad as test subjects, Cross. Their deaths weren't an accident — he sent them into a Dream Pulse deliberately."
+          },
+          {
+            "trigger": "player_death",
+            "speaker": "CROSS",
+            "text": "Darius is down! Crane's automated defenses are still lethal after all these years. Stay evasive!"
+          },
+          {
+            "trigger": "player_death",
+            "speaker": "DARIUS",
+            "text": "Cross, I'm ok — the Dreadnought's AI caught me with a platform turret. Rebooting."
+          },
+          {
+            "trigger": "player_respawn",
+            "speaker": "CROSS",
+            "text": "Back with us. The Dreadnought is cycling its shield frequency — I've got the pattern."
+          },
+          {
+            "trigger": "player_respawn",
+            "speaker": "DARIUS",
+            "text": "Good. Let's finish this. Crane's echo doesn't get to haunt anyone else."
+          },
+          {
+            "trigger": "squad_save",
+            "speaker": "CROSS",
+            "text": "Star, you just took out a turret that had me pinned. I owe you."
+          },
+          {
+            "trigger": "squad_save",
+            "speaker": "DARIUS",
+            "text": "Consider it payback for the Ice Ring. We're even, Captain."
+          },
+          {
+            "trigger": "level_end",
+            "speaker": "CROSS",
+            "text": "GLYPH-8 secure. Crane's echo is gone. And the logs... Darius, my squad. They were test subjects. He killed them to study the Dream Pulse."
+          },
+          {
+            "trigger": "level_end",
+            "speaker": "DARIUS",
+            "text": "We both lost family to the same man, Cross. Now we finish what they started — together."
+          }
+        ],
+        "4P": [
+          {
+            "trigger": "level_start",
+            "speaker": "NAYA",
+            "text": "This fleet... it's a monument to everything the Navy tried to hide. Aldric died because of what they built here."
+          },
+          {
+            "trigger": "level_start",
+            "speaker": "OPHION REBORN",
+            "text": "The energy signatures suggest a massive psychic imprint is still active aboard the flagship. Admiral Crane's consciousness survived death!"
+          },
+          {
+            "trigger": "level_start",
+            "speaker": "CROSS",
+            "text": "Not survived. Was absorbed. The eighth Coelacanth caught his mind during the containment breach."
+          },
+          {
+            "trigger": "level_start",
+            "speaker": "DARIUS",
+            "text": "Then we destroy him — not just his fleet, but the lie he built his career on."
+          },
+          {
+            "trigger": "unique_enemy",
+            "speaker": "NAYA",
+            "text": "Salvage drones everywhere — they're recycling the dead ships into ammunition!"
+          },
+          {
+            "trigger": "unique_enemy",
+            "speaker": "OPHION REBORN",
+            "text": "Ghost fighters! Their autopilot routines are based on tactics from forty years ago — I have analyzed the patterns!"
+          },
+          {
+            "trigger": "boss_entrance",
+            "speaker": "DARIUS",
+            "text": "CRANE! You used my grandfather. You killed my father. You targeted my daughter. Answer for it!"
+          },
+          {
+            "trigger": "boss_entrance",
+            "speaker": "CROSS",
+            "text": "And my squad — the fourteen pilots you sent into a Dream Pulse zone. You used their deaths as data points."
+          },
+          {
+            "trigger": "boss_entrance",
+            "speaker": "NAYA",
+            "text": "You tried to turn my daughter into a weapon. You're not a patriot, Crane. You're a monster wearing a uniform."
+          },
+          {
+            "trigger": "boss_entrance",
+            "speaker": "OPHION REBORN",
+            "text": "The Admiral's echo is destabilizing! His emotional state is degrading his control over the fleet — press the attack!"
+          },
+          {
+            "trigger": "player_death",
+            "speaker": "NAYA",
+            "text": "Someone's down! The Dreadnought's turret grid is still firing — find cover in the wreckage!"
+          },
+          {
+            "trigger": "player_death",
+            "speaker": "OPHION REBORN",
+            "text": "Crane's echo derives power from the psychic residue of every soldier who died here. He is well-fueled. But finite!"
+          },
+          {
+            "trigger": "player_respawn",
+            "speaker": "DARIUS",
+            "text": "Back in the fight. Crane's voice is getting desperate — he knows he's losing."
+          },
+          {
+            "trigger": "player_respawn",
+            "speaker": "CROSS",
+            "text": "Good. A desperate enemy makes mistakes. Let's give him plenty of reasons to panic."
+          },
+          {
+            "trigger": "low_health",
+            "speaker": "NAYA",
+            "text": "Darius, your ship is limping. Fall back to the carrier wreckage and let me draw their fire!"
+          },
+          {
+            "trigger": "squad_save",
+            "speaker": "CROSS",
+            "text": "Ophion, that turret was locked on Naya — how did you disable it?"
+          },
+          {
+            "trigger": "squad_save",
+            "speaker": "OPHION REBORN",
+            "text": "I simply transmitted Crane's own deactivation codes! He never changed them after the containment breach. Arrogance is predictable!"
+          },
+          {
+            "trigger": "wave_clear",
+            "speaker": "DARIUS",
+            "text": "The turret grid is offline. The flagship's bridge is exposed. Crane — this ends now!"
+          },
+          {
+            "trigger": "level_end",
+            "speaker": "DARIUS",
+            "text": "GLYPH-8 secure. The logs confirm everything. Three generations of Stars — all part of Project Dream-Weapon. Lyra was designed."
+          },
+          {
+            "trigger": "level_end",
+            "speaker": "NAYA",
+            "text": "Darius... our daughter was never sick by accident. But our love for her — that was NEVER part of their design. That's ours."
+          },
+          {
+            "trigger": "level_end",
+            "speaker": "CROSS",
+            "text": "Crane's echo is gone. My squad can finally rest. Thank you — all of you."
+          },
+          {
+            "trigger": "level_end",
+            "speaker": "OPHION REBORN",
+            "text": "The Xenomorph Hive is next. A fully Dreamed world. We must be ready for anything."
+          }
+        ]
+      }
+    },
+    {
+      "id": 9,
+      "name": "XENOMORPH HIVE",
+      "modes": {
+        "Solo": [
+          {
+            "trigger": "level_start",
+            "speaker": "DARIUS",
+            "text": "Proxima Centauri B. A world remade as flesh. This is what happens when the Dreamer wins."
+          },
+          {
+            "trigger": "level_start",
+            "speaker": "OPHION AI",
+            "text": "The Hive will try to negotiate with you, Darius. It will offer you everything you want. Do not accept."
+          },
+          {
+            "trigger": "unique_enemy",
+            "speaker": "DARIUS",
+            "text": "Crawlers on the walls and ceiling — they come from every angle! Watch above!"
+          },
+          {
+            "trigger": "unique_enemy",
+            "speaker": "OPHION AI",
+            "text": "Spitters firing acidic globs. The acid persists on surfaces — avoid lingering in contaminated zones."
+          },
+          {
+            "trigger": "boss_entrance",
+            "speaker": "DARIUS",
+            "text": "The Hive Mind... it's speaking to me. It's offering me Lyra. Alive. Safe. Transformed."
+          },
+          {
+            "trigger": "boss_entrance",
+            "speaker": "OPHION AI",
+            "text": "The offer is genuine, Darius. But 'safe' means absorbed. 'Alive' means a voice in the chorus. She would not be herself."
+          },
+          {
+            "trigger": "player_death",
+            "speaker": "OPHION AI",
+            "text": "The Hive offers peace. But peace without selfhood is not peace — it is erasure. Rise, Darius."
+          },
+          {
+            "trigger": "player_death",
+            "speaker": "DARIUS",
+            "text": "The Hive's temptation... it was almost convincing. But Lyra's laugh — her real laugh — is worth more than any false paradise."
+          },
+          {
+            "trigger": "player_respawn",
+            "speaker": "OPHION AI",
+            "text": "System restored. The Hive's offer still stands. And you still have the strength to refuse it."
+          },
+          {
+            "trigger": "player_respawn",
+            "speaker": "DARIUS",
+            "text": "I didn't come this far to surrender at the finish line. Let's finish this."
+          },
+          {
+            "trigger": "low_health",
+            "speaker": "DARIUS",
+            "text": "Hull's corroding — the acidic atmosphere is eating through everything!"
+          },
+          {
+            "trigger": "wave_clear",
+            "speaker": "OPHION AI",
+            "text": "The spawn nodes are destroyed. The Hive's regeneration is slowing."
+          },
+          {
+            "trigger": "level_end",
+            "speaker": "DARIUS",
+            "text": "GLYPH-9 secured. I rejected its offer. It showed me a future where Lyra never felt pain again — and I said no. Because pain is part of being alive."
+          },
+          {
+            "trigger": "level_end",
+            "speaker": "OPHION AI",
+            "text": "You chose rightly. The Core Rift awaits. The Prime Coelacanth — and the Dreamer itself."
+          }
+        ],
+        "Duo": [
+          {
+            "trigger": "level_start",
+            "speaker": "CROSS",
+            "text": "This planet... every surface is organic. The ground is breathing. I've seen bad ops, but this is something else."
+          },
+          {
+            "trigger": "level_start",
+            "speaker": "DARIUS",
+            "text": "This is what the Navy wanted to control, Cross. A power that turns worlds into flesh."
+          },
+          {
+            "trigger": "unique_enemy",
+            "speaker": "CROSS",
+            "text": "Spitter at range — acidic glob incoming! Evasive maneuvers, the splash radius is huge!"
+          },
+          {
+            "trigger": "unique_enemy",
+            "speaker": "DARIUS",
+            "text": "Brute charging! Cross, it's armored head-on — circle around and hit the exposed tissue on its back!"
+          },
+          {
+            "trigger": "boss_entrance",
+            "speaker": "CROSS",
+            "text": "The Hive Mind... it's using my squad's voices. It's making them tell me it wasn't my fault."
+          },
+          {
+            "trigger": "boss_entrance",
+            "speaker": "DARIUS",
+            "text": "It's lying, Cross! Your squad wouldn't want you to surrender — they'd want you to fight!"
+          },
+          {
+            "trigger": "player_death",
+            "speaker": "CROSS",
+            "text": "Star went down! The Hive's terrain is shifting — don't trust the ground!"
+          },
+          {
+            "trigger": "player_death",
+            "speaker": "DARIUS",
+            "text": "Cross, the Hive tried to offer me peace. It almost worked. Don't let it get in your head!"
+          },
+          {
+            "trigger": "player_respawn",
+            "speaker": "CROSS",
+            "text": "Back online. The Hive offered me my squad back. It's cruel — but effective."
+          },
+          {
+            "trigger": "player_respawn",
+            "speaker": "DARIUS",
+            "text": "It knows exactly what we want. That's what makes it dangerous. Stay angry, Cross — anger is better than surrender."
+          },
+          {
+            "trigger": "squad_save",
+            "speaker": "DARIUS",
+            "text": "Cross! That Brute was three steps from crushing you. Nice dodge."
+          },
+          {
+            "trigger": "squad_save",
+            "speaker": "CROSS",
+            "text": "Reflex. Navy Close Quarters Combat training. Never thought I'd use it against a living wall."
+          },
+          {
+            "trigger": "level_end",
+            "speaker": "CROSS",
+            "text": "GLYPH-9 secure. The Hive offered me redemption, Darius. My squad, alive, forgiving me. I almost took it."
+          },
+          {
+            "trigger": "level_end",
+            "speaker": "DARIUS",
+            "text": "But you didn't. That's what matters. The Core Rift is next — and we're going to finish this."
+          }
+        ],
+        "4P": [
+          {
+            "trigger": "level_start",
+            "speaker": "OPHION REBORN",
+            "text": "Proxima Centauri B — a Dreamed World. The Abyss Mind has fully overwritten this planet's biology and physics!"
+          },
+          {
+            "trigger": "level_start",
+            "speaker": "NAYA",
+            "text": "Lyra is reacting to this place. She says the Hive is 'singing' to her. A song about never being alone."
+          },
+          {
+            "trigger": "level_start",
+            "speaker": "DARIUS",
+            "text": "That's not a song, Naya. That's a leash. We break it, or we lose her forever."
+          },
+          {
+            "trigger": "level_start",
+            "speaker": "CROSS",
+            "text": "Everyone stay tight. The Hive will try to separate us — physically and mentally. Do NOT engage with its offers."
+          },
+          {
+            "trigger": "unique_enemy",
+            "speaker": "NAYA",
+            "text": "Crawlers — they're skittering through the organic tunnels! They can come from any surface!"
+          },
+          {
+            "trigger": "unique_enemy",
+            "speaker": "OPHION REBORN",
+            "text": "Spitters! Their acid dissolves standard shielding in 2.3 seconds. Evade, do not block!"
+          },
+          {
+            "trigger": "boss_entrance",
+            "speaker": "OPHION REBORN",
+            "text": "The Hive-Mind Nexus... it is offering each of us our deepest desire. Do not accept! It cannot deliver what it promises!"
+          },
+          {
+            "trigger": "boss_entrance",
+            "speaker": "DARIUS",
+            "text": "I see Lyra — healthy, human, laughing. But it's not real. It's just a picture of what I want."
+          },
+          {
+            "trigger": "boss_entrance",
+            "speaker": "NAYA",
+            "text": "It's offering me a life where none of this happened. Where Darius never had to dive, where Lyra was never sick. It's beautiful and it's a lie."
+          },
+          {
+            "trigger": "boss_entrance",
+            "speaker": "CROSS",
+            "text": "My squad. All fourteen of them, alive, telling me they forgive me. I know it's the Hive. I KNOW it. But it hurts."
+          },
+          {
+            "trigger": "player_death",
+            "speaker": "NAYA",
+            "text": "Someone's down! The Hive's terrain is shifting — the ground just opened up!"
+          },
+          {
+            "trigger": "player_death",
+            "speaker": "OPHION REBORN",
+            "text": "The Hive absorbs consciousness to grow stronger. But it cannot hold a Star! I have seen the data!"
+          },
+          {
+            "trigger": "player_respawn",
+            "speaker": "DARIUS",
+            "text": "I'm back. The Hive showed me Lyra as the Dreamer's vessel — radiant, eternal, inhuman. That's not what I'm fighting for."
+          },
+          {
+            "trigger": "player_respawn",
+            "speaker": "NAYA",
+            "text": "What ARE you fighting for, Darius?"
+          },
+          {
+            "trigger": "player_respawn",
+            "speaker": "DARIUS",
+            "text": "For her to have a choice. A real choice — not one the Dreamer decides for her."
+          },
+          {
+            "trigger": "low_health",
+            "speaker": "NAYA",
+            "text": "Darius, your ship is dissolving! The acid is through your outer hull — get to my position NOW!"
+          },
+          {
+            "trigger": "squad_save",
+            "speaker": "CROSS",
+            "text": "Ophion, you just predicted a terrain shift before it happened. How?"
+          },
+          {
+            "trigger": "squad_save",
+            "speaker": "OPHION REBORN",
+            "text": "The Hive reshapes itself according to emotional intent! When it feels cornered, the ground contracts — simple cause and effect!"
+          },
+          {
+            "trigger": "wave_clear",
+            "speaker": "DARIUS",
+            "text": "Hive nodes are down. The Nexus is exposed. Everyone — this is it!"
+          },
+          {
+            "trigger": "level_end",
+            "speaker": "DARIUS",
+            "text": "GLYPH-9 secured. I rejected the Hive's offer. For Lyra. For all of us."
+          },
+          {
+            "trigger": "level_end",
+            "speaker": "NAYA",
+            "text": "She's speaking again. Lyra. She said 'Daddy, I'm still here. I'm waiting.' That was HER voice, Darius. Not the Dreamer."
+          },
+          {
+            "trigger": "level_end",
+            "speaker": "OPHION REBORN",
+            "text": "The Core Rift is next — the event horizon of the supermassive black hole. The Prime Coelacanth awaits!"
+          },
+          {
+            "trigger": "level_end",
+            "speaker": "CROSS",
+            "text": "Whatever happens at the Core, we face it together. No one fights alone."
+          }
+        ]
+      }
+    },
+    {
+      "id": 10,
+      "name": "CORE RIFT",
+      "modes": {
+        "Solo": [
+          {
+            "trigger": "level_start",
+            "speaker": "DARIUS",
+            "text": "The galactic core. A black hole below us, and the Prime Coelacanth — the last intact entity — dying at its edge."
+          },
+          {
+            "trigger": "level_start",
+            "speaker": "OPHION AI",
+            "text": "All ten GLYPH components are assembled. Once you secure the final piece, the choice is yours, Darius."
+          },
+          {
+            "trigger": "unique_enemy",
+            "speaker": "DARIUS",
+            "text": "Glitch fragments — they're not fully in this dimension! They flicker between states!"
+          },
+          {
+            "trigger": "unique_enemy",
+            "speaker": "OPHION AI",
+            "text": "Paradox wisps — they move backwards through time. Aim where they WERE, not where they ARE."
+          },
+          {
+            "trigger": "boss_entrance",
+            "speaker": "DARIUS",
+            "text": "The Architect... it's not the Dreamer. It's the Dreamer's FEAR. Its terror of being alone forever, given form."
+          },
+          {
+            "trigger": "boss_entrance",
+            "speaker": "OPHION AI",
+            "text": "You cannot destroy fear with weapons. Show the Dreamer it is not alone, Darius. Someone finally made it all the way down."
+          },
+          {
+            "trigger": "player_death",
+            "speaker": "OPHION AI",
+            "text": "Reality fractures at the event horizon. But you have come too far to be unmade now. Return."
+          },
+          {
+            "trigger": "player_death",
+            "speaker": "DARIUS",
+            "text": "The Void Maw... I saw eternity. But eternity without Lyra isn't worth having. Restarting."
+          },
+          {
+            "trigger": "player_respawn",
+            "speaker": "OPHION AI",
+            "text": "All systems nominal — as much as 'nominal' means at the edge of a black hole. The Prime Coelacanth's signal is still active."
+          },
+          {
+            "trigger": "player_respawn",
+            "speaker": "DARIUS",
+            "text": "I'm back. And I know what I have to do. Let's finish this."
+          },
+          {
+            "trigger": "low_health",
+            "speaker": "DARIUS",
+            "text": "Reality is tearing at the seams — my hull is phasing between intact and destroyed!"
+          },
+          {
+            "trigger": "wave_clear",
+            "speaker": "OPHION AI",
+            "text": "The null entities are dissipating. The path to the Prime Coelacanth is open."
+          },
+          {
+            "trigger": "level_end",
+            "speaker": "DARIUS",
+            "text": "GLYPH-10 secured. All ten components. The key is complete. Now... I have to choose."
+          },
+          {
+            "trigger": "level_end",
+            "speaker": "OPHION AI",
+            "text": "The Dreamer is waiting, Darius. Containment, communication, or sacrifice. The decision is yours."
+          }
+        ],
+        "Duo": [
+          {
+            "trigger": "level_start",
+            "speaker": "CROSS",
+            "text": "The black hole. I've seen a lot, Darius, but this... this is the edge of everything."
+          },
+          {
+            "trigger": "level_start",
+            "speaker": "DARIUS",
+            "text": "And somewhere in there, the Dreamer is waiting. Lonely. Scared. Just like us."
+          },
+          {
+            "trigger": "unique_enemy",
+            "speaker": "CROSS",
+            "text": "Null entity ahead — it's erasing everything it touches! Bullets, debris, even light!"
+          },
+          {
+            "trigger": "unique_enemy",
+            "speaker": "DARIUS",
+            "text": "Void Maw opening! Cross, full reverse thrust — nothing survives a direct pull!"
+          },
+          {
+            "trigger": "boss_entrance",
+            "speaker": "CROSS",
+            "text": "The Architect... it's screaming. Not in anger — in terror. It's the Dreamer's nightmare."
+          },
+          {
+            "trigger": "boss_entrance",
+            "speaker": "DARIUS",
+            "text": "Then we don't destroy it. We show it that the nightmare isn't real. That it's not alone anymore."
+          },
+          {
+            "trigger": "player_death",
+            "speaker": "CROSS",
+            "text": "Darius! The Void Maw took him — but his beacon... his beacon is still transmitting! He's fighting it!"
+          },
+          {
+            "trigger": "player_death",
+            "speaker": "DARIUS",
+            "text": "Cross, I saw the Dreamer's memories. It's been alone for longer than stars have existed. We have to reach it."
+          },
+          {
+            "trigger": "player_respawn",
+            "speaker": "CROSS",
+            "text": "Back with us! The Architect's defenses are weakening — it's starting to understand."
+          },
+          {
+            "trigger": "player_respawn",
+            "speaker": "DARIUS",
+            "text": "Good. It's not a monster, Cross. It's just... the universe's loneliest mind."
+          },
+          {
+            "trigger": "squad_save",
+            "speaker": "CROSS",
+            "text": "Star, you just pulled me out of a Void Maw's gravity well. How?"
+          },
+          {
+            "trigger": "squad_save",
+            "speaker": "DARIUS",
+            "text": "I promised Naya I'd bring everyone home. That includes you, Captain."
+          },
+          {
+            "trigger": "level_end",
+            "speaker": "CROSS",
+            "text": "GLYPH-10 secure. The key is complete. Darius... whatever you choose, I'll back you. That's what a squad does."
+          },
+          {
+            "trigger": "level_end",
+            "speaker": "DARIUS",
+            "text": "Thank you, Cross. For everything. Now... let's go talk to a god."
+          }
+        ],
+        "4P": [
+          {
+            "trigger": "level_start",
+            "speaker": "OPHION REBORN",
+            "text": "The galactic core! The event horizon of the supermassive black hole! Time and space are suggestions here — nothing is absolute!"
+          },
+          {
+            "trigger": "level_start",
+            "speaker": "NAYA",
+            "text": "Lyra is speaking clearly now. She says the Dreamer can see us. It's been watching us this whole journey."
+          },
+          {
+            "trigger": "level_start",
+            "speaker": "DARIUS",
+            "text": "Then it knows we came to talk, not to fight. Let's not disappoint it."
+          },
+          {
+            "trigger": "level_start",
+            "speaker": "CROSS",
+            "text": "Last mission, squad. Whatever happens at the core, it's been an honor flying with all of you."
+          },
+          {
+            "trigger": "unique_enemy",
+            "speaker": "OPHION REBORN",
+            "text": "Glitch fragments! They exist in a superposition of states — fire where they MIGHT be, not where they appear!"
+          },
+          {
+            "trigger": "unique_enemy",
+            "speaker": "NAYA",
+            "text": "Paradox wisps moving backwards! Darius, aim behind them — they'll fly into your shots!"
+          },
+          {
+            "trigger": "boss_entrance",
+            "speaker": "DARIUS",
+            "text": "The Architect. The Dreamer's fear, given form. It's been alone so long it's terrified of what happens if someone actually answers."
+          },
+          {
+            "trigger": "boss_entrance",
+            "speaker": "NAYA",
+            "text": "It's like a child hiding under a blanket — but the blanket is made of broken spacetime."
+          },
+          {
+            "trigger": "boss_entrance",
+            "speaker": "OPHION REBORN",
+            "text": "I spent millennia arguing we should communicate with the Dreamer. Now, at last, we will! But first — we must calm its fear!"
+          },
+          {
+            "trigger": "boss_entrance",
+            "speaker": "CROSS",
+            "text": "How do you calm a cosmic entity's nightmare, Ophion?"
+          },
+          {
+            "trigger": "boss_entrance",
+            "speaker": "OPHION REBORN",
+            "text": "The same way you calm a child's. You tell it you are here. You tell it you are not leaving. And you mean it."
+          },
+          {
+            "trigger": "player_death",
+            "speaker": "NAYA",
+            "text": "Someone's gone — pulled into a Void Maw! But those things don't kill... they just... move you. Fight your way back!"
+          },
+          {
+            "trigger": "player_death",
+            "speaker": "OPHION REBORN",
+            "text": "The Void Maw is not destruction — it is dislocation! Whoever was pulled in is still conscious! Call out to them!"
+          },
+          {
+            "trigger": "player_respawn",
+            "speaker": "DARIUS",
+            "text": "I'm back. The Void showed me the Dreamer's first memory. It was born alone, in the dark, and never met another mind like itself. Ever."
+          },
+          {
+            "trigger": "player_respawn",
+            "speaker": "NAYA",
+            "text": "That's... that's heartbreaking. It's not evil. It's the first and only of its kind."
+          },
+          {
+            "trigger": "low_health",
+            "speaker": "NAYA",
+            "text": "Darius — your ship is phasing! One second it's here, the next it's not. Are you still with us?"
+          },
+          {
+            "trigger": "squad_save",
+            "speaker": "CROSS",
+            "text": "Ophion! You just deflected a paradox bolt aimed at Naya with your own hull. That was either brave or foolish."
+          },
+          {
+            "trigger": "squad_save",
+            "speaker": "OPHION REBORN",
+            "text": "Definitely both! But I calculated the risk at only 34% lethality. Naya is more important than those odds!"
+          },
+          {
+            "trigger": "wave_clear",
+            "speaker": "DARIUS",
+            "text": "The Architect is weakening. It's not fighting as hard — it's starting to believe us."
+          },
+          {
+            "trigger": "level_end",
+            "speaker": "DARIUS",
+            "text": "GLYPH-10 secured. All ten pieces. The key is complete. The Dreamer is... waiting."
+          },
+          {
+            "trigger": "level_end",
+            "speaker": "NAYA",
+            "text": "Lyra says there are three paths. Three ways this can end. Darius... I trust you. Whatever you choose."
+          },
+          {
+            "trigger": "level_end",
+            "speaker": "OPHION REBORN",
+            "text": "Containment, symbiosis, or transcendence. The choice that will define the galaxy. I am honored to witness it."
+          },
+          {
+            "trigger": "level_end",
+            "speaker": "CROSS",
+            "text": "We're with you, Star. To the end."
+          }
+        ]
+      }
+    }
+  ],
+  "join_leave": {
+    "join_early": [
+      {
+        "speaker": "DARIUS",
+        "text": "Welcome aboard! We're just getting started — perfect timing."
+      },
+      {
+        "speaker": "DARIUS",
+        "text": "Glad you made it. The trench is dark, but it's brighter with you here."
+      },
+      {
+        "speaker": "DARIUS",
+        "text": "It's about time! We could really use your help down here."
+      },
+      {
+        "speaker": "CROSS",
+        "text": "Reinforcements arrived. Welcome to the squad. Stay close and watch your sectors."
+      },
+      {
+        "speaker": "CROSS",
+        "text": "Good to see you. The Navy doesn't know what they're up against now."
+      },
+      {
+        "speaker": "NAYA",
+        "text": "Welcome! Lyra asked me to tell you 'good luck.' She's watching our mission feed."
+      },
+      {
+        "speaker": "NAYA",
+        "text": "You're just in time. These anglerfish don't stand a chance against a full team."
+      },
+      {
+        "speaker": "OPHION REBORN",
+        "text": "Oh, splendid! Another pilot! I've already calculated seventeen formations that work better with you here!"
+      },
+      {
+        "speaker": "OPHION REBORN",
+        "text": "Welcome, welcome! I was just explaining the thermal dynamics of this biome. Shall I start over?"
+      }
+    ],
+    "join_mid": [
+      {
+        "speaker": "DARIUS",
+        "text": "You made it! We're in the thick of it, but we've got this."
+      },
+      {
+        "speaker": "DARIUS",
+        "text": "That's what I like to see. The cavalry's here."
+      },
+      {
+        "speaker": "CROSS",
+        "text": "Reinforcements mid-mission. Good. We've got a Wyrm to finish off."
+      },
+      {
+        "speaker": "CROSS",
+        "text": "Welcome to the fight. I'll catch you up on the enemy patterns — they're predictable once you know what to look for."
+      },
+      {
+        "speaker": "NAYA",
+        "text": "So glad you're here. The spawning waves are getting heavier and we need every gun."
+      },
+      {
+        "speaker": "OPHION REBORN",
+        "text": "Ah, mid-biome arrival! The enemy density is 62% higher than the entry zone. I recommend immediate weapons hot!"
+      }
+    ],
+    "join_late": [
+      {
+        "speaker": "DARIUS",
+        "text": "Cutting it close! But I'd rather have you late than not at all."
+      },
+      {
+        "speaker": "DARIUS",
+        "text": "We're almost at the core. Perfect time to join the push."
+      },
+      {
+        "speaker": "CROSS",
+        "text": "Boss fight's about to start. Welcome to the deep end."
+      },
+      {
+        "speaker": "CROSS",
+        "text": "You picked a good moment. We need all the firepower we can get."
+      },
+      {
+        "speaker": "NAYA",
+        "text": "The boss is just ahead. Your timing couldn't be better."
+      },
+      {
+        "speaker": "OPHION REBORN",
+        "text": "Oh! The boss encounter has a 14% higher success probability with you in the formation. Statistically excellent timing!"
+      }
+    ],
+    "leave": [
+      {
+        "speaker": "DARIUS",
+        "text": "They'll be back. They always come back."
+      },
+      {
+        "speaker": "DARIUS",
+        "text": "Hold the line — we've got this. They can rejoin when they're ready."
+      },
+      {
+        "speaker": "DARIUS",
+        "text": "One pilot down, but not out. We keep pushing."
+      },
+      {
+        "speaker": "CROSS",
+        "text": "Temporary withdrawal. Tactical necessity. We proceed."
+      },
+      {
+        "speaker": "CROSS",
+        "text": "They'll return. Good pilots always do."
+      },
+      {
+        "speaker": "CROSS",
+        "text": "Formation adjusted. We're still combat effective."
+      },
+      {
+        "speaker": "NAYA",
+        "text": "We've got this. They know where to find us when they're ready."
+      },
+      {
+        "speaker": "NAYA",
+        "text": "Squad's smaller, but our spirit isn't. Let's keep going."
+      },
+      {
+        "speaker": "OPHION REBORN",
+        "text": "Departure noted! I have recalculated the tactical parameters. Success probability remains at 88.4%!"
+      },
+      {
+        "speaker": "OPHION REBORN",
+        "text": "They will return! My predictive models show an 87% rejoining rate for pilots who leave at this biome depth!"
+      },
+      {
+        "speaker": "Player Count",
+        "text": "Enemy HP Multiplier"
+      },
+      {
+        "speaker": "1 Player",
+        "text": "1.0x"
+      },
+      {
+        "speaker": "2 Players",
+        "text": "1.4x"
+      },
+      {
+        "speaker": "3 Players",
+        "text": "1.7x"
+      },
+      {
+        "speaker": "4 Players",
+        "text": "2.0x"
+      },
+      {
+        "speaker": "Dynamic Rescale",
+        "text": "Applied immediately on join/leave"
+      },
+      {
+        "speaker": "Character Tier",
+        "text": "TTS Model"
+      },
+      {
+        "speaker": "**Main Cast**",
+        "text": "`gemini-2.5-pro-tts`"
+      },
+      {
+        "speaker": "**Supporting / NPC**",
+        "text": "`gemini-2.5-flash-tts`"
+      },
+      {
+        "speaker": "Stage",
+        "text": "ffmpeg Filter"
+      },
+      {
+        "speaker": "**1. Bandpass**",
+        "text": "`bandpass=f=500:width_type=h:w=2900`"
+      },
+      {
+        "speaker": "**2. Compression**",
+        "text": "`compand=attacks=0.01:decays=0.2:points=-80/-80"
+      },
+      {
+        "speaker": "**3. Noise Layer**",
+        "text": "Mix with generated brown noise at -42 dB"
+      },
+      {
+        "speaker": "**4. Mic Click**",
+        "text": "Insert 8ms sine click at 2kHz at utterance start"
+      },
+      {
+        "speaker": "**5. Squelch Tail**",
+        "text": "120ms of shaped noise fade at utterance end"
+      },
+      {
+        "speaker": "**6. Normalization**",
+        "text": "`loudnorm=I=-16:LRA=11:TP=-1.5`"
+      },
+      {
+        "speaker": "#",
+        "text": "Character"
+      },
+      {
+        "speaker": "1",
+        "text": "**Darius Star**"
+      },
+      {
+        "speaker": "2",
+        "text": "**Naya Star**"
+      },
+      {
+        "speaker": "3",
+        "text": "**Valera Cross**"
+      },
+      {
+        "speaker": "4",
+        "text": "**Ophion Reborn / AI**"
+      },
+      {
+        "speaker": "5",
+        "text": "**Commander Jack Thorne**"
+      },
+      {
+        "speaker": "6",
+        "text": "**Lyra Star**"
+      },
+      {
+        "speaker": "7",
+        "text": "**The Dreamer**"
+      },
+      {
+        "speaker": "Transition Element",
+        "text": "Implementation"
+      },
+      {
+        "speaker": "**Static Burst**",
+        "text": "White noise shaped with 500-3000 Hz bandpass, amplitude 0.3 relative to speech"
+      },
+      {
+        "speaker": "**Channel Click**",
+        "text": "Soft 2 kHz tone burst at burst start"
+      },
+      {
+        "speaker": "**Crossfade**",
+        "text": "Outgoing voice fades from -3 dB to -inf over 30ms; incoming fades from -inf to -3 dB over 30ms"
+      },
+      {
+        "speaker": "**Pause Between Speakers**",
+        "text": "Silence gap (includes static burst within gap)"
+      }
+    ]
+  }
+}
