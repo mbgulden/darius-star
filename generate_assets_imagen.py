@@ -136,6 +136,45 @@ ASSET_CATALOG = {
         "width": 800, "height": 450, "frames": 1,
         "prefix": "title", "output_prefix": "title", "aspect_ratio": "16:9",
     },
+    # ═══════════════════════════════════════════════
+    # Enemy Sprites — All 10 Biomes
+    # ═══════════════════════════════════════════════
+    "enemy_biome1_crawler": {
+        "category": "Enemy Fleet",
+        "prompt": "Heavy crustacean tank chassis, jagged black basalt armor plating, bright orange-glowing hydraulic limbs, warning steam vents pulsing on upper shell, 16-bit pixel art, side-view game sprite, retro Sega Genesis shmup style, transparent background.",
+        "width": 64, "height": 64, "frames": 1,
+        "prefix": "enemy_b1_crawler", "output_prefix": "enemy_b1_crawler", "aspect_ratio": "1:1",
+    },
+    "enemy_biome2_wraith": {
+        "category": "Enemy Fleet",
+        "prompt": "Skeletal bleached white coral structure with chrome servo joints, neon-pink fiber-optic wisps trailing from spinal ports, 16-bit pixel art, side-view game sprite, retro Sega Genesis shmup style, transparent background.",
+        "width": 64, "height": 64, "frames": 1,
+        "prefix": "enemy_b2_wraith", "output_prefix": "enemy_b2_wraith", "aspect_ratio": "1:1",
+    },
+    "enemy_biome3_spider": {
+        "category": "Enemy Fleet",
+        "prompt": "Compact hexagonal chrome chassis with 8 needle-like mechanical limbs, single blinking red optical sensor throwing electric sparks, 16-bit pixel art, side-view game sprite, retro Sega Genesis shmup style, transparent background.",
+        "width": 32, "height": 32, "frames": 1,
+        "prefix": "enemy_b3_spider", "output_prefix": "enemy_b3_spider", "aspect_ratio": "1:1",
+    },
+    "enemy_biome4_wisp": {
+        "category": "Enemy Fleet",
+        "prompt": "Swirling orb of concentrated purple and cyan plasma with trailing gaseous filaments, white-hot central core with soft magenta aura, 16-bit pixel art, side-view game sprite, retro Sega Genesis shmup style, transparent background.",
+        "width": 32, "height": 32, "frames": 1,
+        "prefix": "enemy_b4_wisp", "output_prefix": "enemy_b4_wisp", "aspect_ratio": "1:1",
+    },
+    "enemy_biome4_rider": {
+        "category": "Enemy Fleet",
+        "prompt": "Sleek forward-swept wing jet, chrome-magenta finish, crackling blue electrical arcs across wings, persistent neon jet trail, 16-bit pixel art, side-view game sprite, retro Sega Genesis shmup style, transparent background.",
+        "width": 64, "height": 64, "frames": 1,
+        "prefix": "enemy_b4_rider", "output_prefix": "enemy_b4_rider", "aspect_ratio": "1:1",
+    },
+    "enemy_biome4_serpent": {
+        "category": "Enemy Fleet",
+        "prompt": "Massive segmented dragon-like mech, heavy dark-purple hull plates with glowing pink joints, dual head-mounted optical sensors, 16-bit pixel art, side-view game sprite, retro Sega Genesis shmup style, transparent background.",
+        "width": 128, "height": 64, "frames": 1,
+        "prefix": "enemy_b4_serpent", "output_prefix": "enemy_b4_serpent", "aspect_ratio": "2:1",
+    },
 }
 
 REPO_ROOT = Path(__file__).parent
