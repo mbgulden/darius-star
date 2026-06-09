@@ -477,6 +477,7 @@
         let gameTime = 0;
         let bossSpawned = false;
         let sirenTimer = 0;
+        let biomeLevel = 1;  // Economy segment tracking
 
         // --- Menu & Settings State Variables ---
         const SCREENS = {
@@ -493,6 +494,10 @@
         let selectedMenuIndex = 0;
         const menuOptions = ['CONTINUE', 'START GAME', 'UPGRADE SHOP', 'SHIP SELECT', 'SETTINGS', 'LEADERBOARD', 'CREDITS'];
         let shipSelectSource = 'menu'; // 'menu' or 'start'
+        
+        let pauseMenuIndex = 0;
+        const PAUSE_OPTIONS = ['RESUME', 'SETTINGS', 'QUIT TO MENU'];
+        let pauseSubScreen = 'menu'; // 'menu' or 'settings'
         
         let selectedSettingsIndex = 0;
         const SETTINGS_OPTIONS = ['MASTER VOLUME', 'SFX VOLUME', 'MUSIC VOLUME', 'DIFFICULTY', 'BACK'];
@@ -937,6 +942,27 @@
         function deleteSaveSlot(slot) {
             CampaignSave.delete(slot);
             window._loadSaves = CampaignSave.loadAll();
+        }
+
+        function handlePauseMenuSelect() {
+            if (pauseSubScreen === 'menu') {
+                if (pauseMenuIndex === 0) { // RESUME
+                    paused = false;
+                    pauseSubScreen = 'menu';
+                } else if (pauseMenuIndex === 1) { // SETTINGS
+                    pauseSubScreen = 'settings';
+                    selectedSettingsIndex = 0;
+                } else if (pauseMenuIndex === 2) { // QUIT TO MENU
+                    paused = false;
+                    pauseSubScreen = 'menu';
+                    gameOver = true;
+                    transitionToScreen(SCREENS.MENU);
+                }
+            } else if (pauseSubScreen === 'settings') {
+                if (selectedSettingsIndex === 4) { // BACK
+                    pauseSubScreen = 'menu';
+                }
+            }
         }
 
         function handleMenuConfirm() {
@@ -1587,8 +1613,67 @@
                     e.preventDefault();
                     return;
                 }
+                
+                // Pause menu input (overrides all other input when paused)
+                if (paused) {
+                    if (e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W') {
+                        playSound('menu_select');
+                        if (pauseSubScreen === 'menu') {
+                            pauseMenuIndex = (pauseMenuIndex - 1 + PAUSE_OPTIONS.length) % PAUSE_OPTIONS.length;
+                        } else {
+                            selectedSettingsIndex = (selectedSettingsIndex - 1 + SETTINGS_OPTIONS.length) % SETTINGS_OPTIONS.length;
+                        }
+                        e.preventDefault(); return;
+                    } else if (e.key === 'ArrowDown' || e.key === 's' || e.key === 'S') {
+                        playSound('menu_select');
+                        if (pauseSubScreen === 'menu') {
+                            pauseMenuIndex = (pauseMenuIndex + 1) % PAUSE_OPTIONS.length;
+                        } else {
+                            selectedSettingsIndex = (selectedSettingsIndex + 1) % SETTINGS_OPTIONS.length;
+                        }
+                        e.preventDefault(); return;
+                    } else if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') {
+                        if (pauseSubScreen === 'settings') {
+                            playSound('menu_select');
+                            adjustSetting(selectedSettingsIndex, -1);
+                        }
+                        e.preventDefault(); return;
+                    } else if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') {
+                        if (pauseSubScreen === 'settings') {
+                            playSound('menu_select');
+                            adjustSetting(selectedSettingsIndex, 1);
+                        }
+                        e.preventDefault(); return;
+                    } else if (e.key === 'Enter' || e.key === ' ' || e.key === 'Space') {
+                        playSound('menu_click');
+                        handlePauseMenuSelect();
+                        e.preventDefault(); return;
+                    } else if (e.key === 'p' || e.key === 'P') {
+                        playSound('menu_click');
+                        if (pauseSubScreen === 'settings') {
+                            pauseSubScreen = 'menu';
+                        } else {
+                            paused = false;
+                            pauseSubScreen = 'menu';
+                        }
+                        e.preventDefault(); return;
+                    } else if (e.key === 'Escape') {
+                        playSound('menu_click');
+                        if (pauseSubScreen === 'settings') {
+                            pauseSubScreen = 'menu';
+                        } else {
+                            paused = false;
+                            pauseSubScreen = 'menu';
+                        }
+                        e.preventDefault(); return;
+                    }
+                    return; // Block all other input when paused
+                }
+                
                 if (e.key === 'p' || e.key === 'P') {
+                    playSound('menu_click');
                     paused = !paused;
+                    if (paused) { pauseMenuIndex = 0; pauseSubScreen = 'menu'; }
                 }
                 keys[e.key] = true;
                 if (['Space', ' ', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'e', 'E'].indexOf(e.key) > -1) {
@@ -2477,24 +2562,29 @@
         class Enemy {
             constructor(type) {
                 this.type = type;
+                this.id = ++enemyIdCounter;  // Unique ID for Economy.shouldDrop()
                 this.x = canvas.width + 50;
                 this.y = 50 + Math.random() * (canvas.height - 100);
                 this.width = 30;
                 this.height = 30;
                 this.age = 0;
 
+                // Map game enemy type to Economy scrapDropTable key
                 if (type === 'scout') {
+                    this.enemyType = 'grunt';
                     this.speed = 150;
                     this.hp = 1;
                     this.scoreValue = 100;
                     this.color = '#ff5500';
                     this.startY = this.y;
                 } else if (type === 'interceptor') {
+                    this.enemyType = 'elite';
                     this.speed = 280;
                     this.hp = 1;
                     this.scoreValue = 150;
                     this.color = '#ff0055';
                 } else if (type === 'heavy') {
+                    this.enemyType = 'elite';
                     this.speed = 80;
                     this.hp = 4;
                     this.scoreValue = 300;
@@ -2502,6 +2592,7 @@
                     this.shootCooldown = 1.2 + Math.random() * 0.8;
                     this.shootTimer = this.shootCooldown;
                 } else {
+                    this.enemyType = 'grunt';
                     this.speed = 180;
                     this.hp = 2;
                     this.scoreValue = 50;
@@ -2580,6 +2671,8 @@
         // --- Boss Fighter Class (Cyber Coelacanth) ---
         class Boss {
             constructor() {
+                this.id = ++enemyIdCounter;  // Unique ID for Economy.shouldDrop()
+                this.enemyType = 'boss';     // Economy scrapDropTable key
                 this.x = canvas.width + 100;
                 this.y = canvas.height / 2 - 80;
                 this.width = 180;
@@ -2612,14 +2705,13 @@
 
                 this.stateTimer -= dt;
                 if (this.stateTimer <= 0) {
-                    // Spawn scrap drops on boss state transition
-                    if (typeof scrapDrops !== 'undefined') {
+                    // Economy-based scrap drops on boss state transition
+                    if (typeof scrapDrops !== 'undefined' && window.Economy && Economy.shouldDrop(this.id)) {
                         const tx = this.x + 30;
                         const ty = this.y + 60;
-                        scrapDrops.push(new ScrapDrop(tx, ty, 'cell'));
-                        if (Math.random() < 0.5) {
-                            scrapDrops.push(new ScrapDrop(tx, ty, 'fragment'));
-                        }
+                        const drop = Economy.rollDrop(this.enemyType, biomeLevel);
+                        const ecoDrop = Economy.createDrop(tx, ty, drop.type, drop.amount);
+                        scrapDrops.push(new ScrapDrop(ecoDrop.x, ecoDrop.y, ecoDrop.type, drop.amount));
                     }
 
                     if (this.state === 'idle') {
@@ -2686,10 +2778,17 @@
                     bossDefeated = true;
                     playSound('explosion');
                     
-                    // Spawn Data Fragments on Boss defeat!
-                    if (typeof scrapDrops !== 'undefined') {
+                    // Spawn Economy-based Data Fragments on Boss defeat!
+                    if (typeof scrapDrops !== 'undefined' && window.Economy) {
+                        // Boss always drops (already checked in state transition, but one more guaranteed drop)
                         for (let k = 0; k < 5; k++) {
-                            scrapDrops.push(new ScrapDrop(this.x + 50 + (Math.random()-0.5)*50, this.y + 60 + (Math.random()-0.5)*50, 'fragment'));
+                            const drop = Economy.rollDrop(this.enemyType, biomeLevel);
+                            const ecoDrop = Economy.createDrop(
+                                this.x + 50 + (Math.random()-0.5)*50,
+                                this.y + 60 + (Math.random()-0.5)*50,
+                                drop.type, drop.amount
+                            );
+                            scrapDrops.push(new ScrapDrop(ecoDrop.x, ecoDrop.y, ecoDrop.type, drop.amount));
                         }
                     }
 
@@ -2984,10 +3083,10 @@
 
         // --- ScrapDrop Class ---
         class ScrapDrop {
-            constructor(x, y, type) {
+            constructor(x, y, type, value = null) {
                 this.x = x;
                 this.y = y;
-                this.type = type; // 'metal', 'cell', 'fragment'
+                this.type = type; // 'metal', 'alloy', 'cell', 'core', 'essence', 'fragment'
                 this.width = 12;
                 this.height = 12;
                 this.vx = (Math.random() - 0.5) * 60 - 50; // drifting left
@@ -2995,14 +3094,33 @@
                 this.spin = Math.random() * Math.PI;
                 this.spinSpeed = 2 + Math.random() * 4;
                 
-                if (type === 'metal') {
+                if (value !== null && value !== undefined) {
+                    this.value = value;
+                } else if (type === 'metal') {
                     this.value = Math.floor(10 + Math.random() * 41); // 10-50
-                    this.color = '#c0c0c0'; // silver/grey
+                } else if (type === 'alloy') {
+                    this.value = 50 + Math.floor(Math.random() * 51); // 50-100
                 } else if (type === 'cell') {
                     this.value = Math.floor(100 + Math.random() * 151); // 100-250
-                    this.color = '#00ffff'; // neon cyan
+                } else if (type === 'core') {
+                    this.value = 250 + Math.floor(Math.random() * 251); // 250-500
+                } else if (type === 'essence') {
+                    this.value = 500 + Math.floor(Math.random() * 501); // 500-1000
                 } else if (type === 'fragment') {
                     this.value = Math.floor(500 + Math.random() * 501); // 500-1000
+                }
+                
+                if (type === 'metal') {
+                    this.color = '#c0c0c0'; // silver/grey
+                } else if (type === 'alloy') {
+                    this.color = '#4A90D9'; // blue alloy
+                } else if (type === 'cell') {
+                    this.color = '#00ffff'; // neon cyan
+                } else if (type === 'core') {
+                    this.color = '#FFD700'; // gold
+                } else if (type === 'essence') {
+                    this.color = '#FF44CC'; // pink/purple
+                } else if (type === 'fragment') {
                     this.color = '#ff00ff'; // neon purple
                 }
             }
@@ -3044,10 +3162,37 @@
                     }
                     ctx.closePath();
                     ctx.fill();
+                } else if (this.type === 'alloy') {
+                    // Blue alloy plate with circuit traces
+                    ctx.fillRect(-7, -5, 14, 10);
+                    ctx.fillStyle = '#2266AA';
+                    ctx.fillRect(-3, -3, 6, 6);
                 } else if (this.type === 'cell') {
                     ctx.fillRect(-3, -6, 6, 12);
                     ctx.fillStyle = '#ffffff';
                     ctx.fillRect(-1, -4, 2, 8);
+                } else if (this.type === 'core') {
+                    // Gold precursor core with pulsing glow
+                    ctx.shadowBlur = 14;
+                    ctx.beginPath();
+                    ctx.arc(0, 0, 8, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.fillStyle = '#ffffff';
+                    ctx.shadowBlur = 0;
+                    ctx.beginPath();
+                    ctx.arc(0, 0, 3, 0, Math.PI * 2);
+                    ctx.fill();
+                } else if (this.type === 'essence') {
+                    // Pink/purple Dreamer essence orb
+                    ctx.shadowBlur = 16;
+                    ctx.beginPath();
+                    ctx.arc(0, 0, 9, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.fillStyle = '#ffffff';
+                    ctx.shadowBlur = 0;
+                    ctx.beginPath();
+                    ctx.arc(0, 0, 4, 0, Math.PI * 2);
+                    ctx.fill();
                 } else if (this.type === 'fragment') {
                     ctx.fillRect(-5, -5, 10, 10);
                     ctx.strokeStyle = '#ffffff';
@@ -4021,31 +4166,36 @@
 
         function updateActiveBiome(score) {
             let oldBiome = activeBiomeName;
+            let oldBiomeLevel = biomeLevel;
             if (score < 300) {
-                activeBiomeName = '1: Abyssal Trench';
+                activeBiomeName = '1: Abyssal Trench'; biomeLevel = 1;
             } else if (score < 600) {
-                activeBiomeName = '2: Coral Graveyard';
+                activeBiomeName = '2: Coral Graveyard'; biomeLevel = 2;
             } else if (score < 900) {
-                activeBiomeName = '3: Coelacanth Lair';
+                activeBiomeName = '3: Coelacanth Lair'; biomeLevel = 3;
             } else if (score < 1200) {
-                activeBiomeName = '4: Nebula Drift';
+                activeBiomeName = '4: Nebula Drift'; biomeLevel = 4;
             } else if (score < 1500) {
-                activeBiomeName = '5: Ice Ring';
+                activeBiomeName = '5: Ice Ring'; biomeLevel = 5;
             } else if (score < 1800) {
-                activeBiomeName = '6: Fire Nebula';
+                activeBiomeName = '6: Fire Nebula'; biomeLevel = 6;
             } else if (score < 2100) {
-                activeBiomeName = '7: Storm Belt';
+                activeBiomeName = '7: Storm Belt'; biomeLevel = 7;
             } else if (score < 2400) {
-                activeBiomeName = '8: Derelict Fleet';
+                activeBiomeName = '8: Derelict Fleet'; biomeLevel = 8;
             } else if (score < 2700) {
-                activeBiomeName = '9: Xenomorph Hive';
+                activeBiomeName = '9: Xenomorph Hive'; biomeLevel = 9;
             } else {
-                activeBiomeName = '10: Core Rift';
+                activeBiomeName = '10: Core Rift'; biomeLevel = 10;
             }
 
             if (oldBiome !== activeBiomeName) {
                 floatingTexts.push(new FloatingText(canvas.width / 2, canvas.height / 3, `ENTERING BIOME ${activeBiomeName.toUpperCase()}`, '#00ffff'));
                 playSound('menu_select');
+                // Notify Economy of new segment for loot tracking
+                if (window.Economy && oldBiomeLevel !== biomeLevel) {
+                    Economy.newSegment();
+                }
             }
         }
 
@@ -4070,6 +4220,7 @@
         const floatingTexts = [];
         let runScrap = 0;
         let runScrapSaved = false;
+        let enemyIdCounter = 0;  // Unique IDs for Economy.shouldDrop()
 
         // Parallax background layers (image-based)
         const bgLayers = [
@@ -4168,7 +4319,10 @@
             Combo.init();
             // Re-initialize campaign modules if loaded to avoid stale state on retry/restart
             if (window.Multiplayer) Multiplayer.init();
+            // Preserve looted segments across restarts (prevents checkpoint farming)
+            const savedLooted = (window.Economy) ? new Set(Economy._lootedSegments || []) : null;
             if (window.Economy) Economy.init();
+            if (savedLooted && window.Economy) Economy._lootedSegments = savedLooted;
             if (window.BanterEngine) {
                 BanterEngine.init(window.Multiplayer ? Multiplayer.count : 1);
                 BanterEngine.trigger('level_start', 1);
@@ -4239,6 +4393,8 @@
                 updateTitleBackground(dt);
                 return;
             }
+
+            updateActiveBiome(score);
 
             if (activeDialogue) {
                 activeDialogue.update(dt);
@@ -4407,13 +4563,11 @@
                             const comboMult = Combo.onKill();
                             score += Math.floor(e.scoreValue * comboMult);
 
-                            // Spawn scrap drops
-                            const metalCount = e.type === 'heavy' ? 3 : 1;
-                            for (let k = 0; k < metalCount; k++) {
-                                scrapDrops.push(new ScrapDrop(e.x + (Math.random()-0.5)*15, e.y + (Math.random()-0.5)*15, 'metal'));
-                            }
-                            if (Math.random() < 0.15) {
-                                scrapDrops.push(new ScrapDrop(e.x, e.y, 'cell'));
+                            // Economy-based scrap drops (prevents checkpoint farming)
+                            if (window.Economy && Economy.shouldDrop(e.id)) {
+                                const drop = Economy.rollDrop(e.enemyType, biomeLevel);
+                                const ecoDrop = Economy.createDrop(e.x + e.width/2, e.y + e.height/2, drop.type, drop.amount);
+                                scrapDrops.push(new ScrapDrop(ecoDrop.x, ecoDrop.y, ecoDrop.type, drop.amount));
                             }
 
                             const dropChance = Math.random();
@@ -4749,14 +4903,103 @@
             }
 
             if (paused) {
-                ctx.fillStyle = 'rgba(5, 5, 15, 0.75)';
+                ctx.save();
+                ctx.fillStyle = 'rgba(5, 5, 15, 0.82)';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
-                ctx.fillStyle = '#00ffff';
-                ctx.font = 'bold 36px monospace';
-                ctx.textAlign = 'center';
-                ctx.fillText('SYSTEM PAUSED', canvas.width / 2, canvas.height / 2);
-                ctx.font = '14px monospace';
-                ctx.fillText('Press P to Resume System', canvas.width / 2, canvas.height / 2 + 30);
+                
+                if (pauseSubScreen === 'menu') {
+                    // Title
+                    ctx.fillStyle = '#00ffff';
+                    ctx.font = 'bold 36px monospace';
+                    ctx.textAlign = 'center';
+                    ctx.shadowColor = '#00ffff';
+                    ctx.shadowBlur = 12;
+                    ctx.fillText('SYSTEM PAUSED', canvas.width / 2, 150);
+                    ctx.shadowBlur = 0;
+                    
+                    // Pause menu options
+                    const startY = 240;
+                    const spacing = 44;
+                    for (let i = 0; i < PAUSE_OPTIONS.length; i++) {
+                        const itemY = startY + i * spacing;
+                        const isSelected = pauseMenuIndex === i;
+                        
+                        ctx.textAlign = 'center';
+                        ctx.font = 'bold ' + (isSelected ? '22' : '18') + 'px monospace';
+                        
+                        // Selection indicator
+                        if (isSelected) {
+                            ctx.fillStyle = 'rgba(0, 255, 255, 0.1)';
+                            ctx.fillRect(canvas.width / 2 - 140, itemY - 18, 280, 36);
+                            ctx.strokeStyle = 'rgba(0, 255, 255, 0.4)';
+                            ctx.strokeRect(canvas.width / 2 - 140, itemY - 18, 280, 36);
+                        }
+                        
+                        ctx.fillStyle = isSelected ? '#00ffff' : '#8a8a9f';
+                        ctx.fillText(PAUSE_OPTIONS[i], canvas.width / 2, itemY + 6);
+                    }
+                    
+                    // Footer hints
+                    ctx.fillStyle = '#4a4a5f';
+                    ctx.font = '11px monospace';
+                    ctx.textAlign = 'center';
+                    ctx.fillText('ARROW KEYS to Navigate  |  ENTER to Select  |  P / ESC to Resume', canvas.width / 2, canvas.height - 40);
+                    
+                } else if (pauseSubScreen === 'settings') {
+                    // Settings sub-screen title
+                    ctx.fillStyle = '#ffaa00';
+                    ctx.font = 'bold 28px monospace';
+                    ctx.textAlign = 'center';
+                    ctx.shadowColor = '#ffaa00';
+                    ctx.shadowBlur = 10;
+                    ctx.fillText('SYSTEM SETTINGS', canvas.width / 2, 100);
+                    ctx.shadowBlur = 0;
+                    
+                    const startY = 190;
+                    const spacing = 40;
+                    for (let i = 0; i < SETTINGS_OPTIONS.length; i++) {
+                        const itemY = startY + i * spacing;
+                        const isSelected = selectedSettingsIndex === i;
+                        
+                        ctx.textAlign = 'left';
+                        ctx.font = 'bold 14px monospace';
+                        ctx.fillStyle = isSelected ? '#00ffff' : '#8a8a9f';
+                        
+                        if (i < 3) {
+                            const volVal = i === 0 ? masterVolume : (i === 1 ? sfxVolume : musicVolume);
+                            ctx.fillText(SETTINGS_OPTIONS[i], 220, itemY + 5);
+                            
+                            const sliderX = 450;
+                            const sliderWidth = 130;
+                            ctx.fillStyle = '#222';
+                            ctx.fillRect(sliderX, itemY - 6, sliderWidth, 12);
+                            
+                            ctx.fillStyle = isSelected ? '#00ffff' : '#ff0055';
+                            ctx.fillRect(sliderX, itemY - 6, sliderWidth * volVal, 12);
+                            
+                            ctx.strokeStyle = '#fff';
+                            ctx.strokeRect(sliderX, itemY - 6, sliderWidth, 12);
+                            
+                            ctx.fillText(Math.round(volVal * 100) + '%', 595, itemY + 5);
+                        } else if (i === 3) {
+                            ctx.fillText(SETTINGS_OPTIONS[i], 220, itemY + 5);
+                            ctx.fillStyle = isSelected ? '#ffffff' : '#6a6a7f';
+                            ctx.fillText(difficulty.toUpperCase(), 450, itemY + 5);
+                        } else if (i === 4) {
+                            ctx.textAlign = 'center';
+                            ctx.fillStyle = isSelected ? '#ff0055' : '#8a8a9f';
+                            ctx.fillText('BACK', canvas.width / 2, itemY + 5);
+                        }
+                    }
+                    
+                    // Footer hints
+                    ctx.fillStyle = '#4a4a5f';
+                    ctx.font = '11px monospace';
+                    ctx.textAlign = 'center';
+                    ctx.fillText('LEFT/RIGHT to Adjust  |  ENTER to Toggle  |  P / ESC to Return', canvas.width / 2, canvas.height - 40);
+                }
+                
+                ctx.restore();
             }
 
             if (gameOver) {
