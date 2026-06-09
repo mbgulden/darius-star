@@ -5,21 +5,14 @@ Veo 3.1 Client — Vertex AI Model Garden
 Video generation client for Darius Star: Cyber Coelacanth.
 Generates animated sprite cycles, parallax backgrounds, VFX with audio.
 
-STATUS: Veo is NOT currently available in the darius-star-game project.
-        Imagen 3 works (HTTP 200). Veo API returns 404 — either:
-        - Veo needs Trusted Tester / allowlist access
-        - Veo is in a different region
-        - Veo 3.1 requires a separate GCP project or billing setup
+STATUS: Veo LIVE — veo-3.1-lite-generate-001 confirmed working (HTTP 200).
+        Imagen 3 works (HTTP 200). 1 request/minute quota.
 
-NEXT STEP FOR MICHAEL: Check Vertex AI Model Garden in GCP Console at:
-  https://console.cloud.google.com/vertex-ai/model-garden
-  Search for "Veo" → click "Enable" if available.
-
-PREREQUISITES (once enabled):
+PREREQUISITES (all working):
   1. GCP project with Vertex AI API enabled ✅ (darius-star-game)
   2. gcloud auth ✅ (mbgulden@gmail.com)
-  3. Veo model enabled in Model Garden ❌ (needs Michael)
-  4. IAM: Vertex AI User role ✅
+  3. Veo model enabled ✅ (veo-3.1-lite-generate-001)
+  4. Quota: 1 request/minute — auto-spaced 90s apart
 
 Usage (once Veo is enabled):
   python3 veo_client.py --asset enemy_scout_cycle
@@ -255,6 +248,258 @@ VEO_ASSET_CATALOG = {
         "fps": 24,
         "output_prefix": "cinematic_victory",
         "extract_frames": False,
+    },
+    # ═══════════════════════════════════════════════
+    # SFX with Synchronized Audio (Veo 3.1)
+    # ═══════════════════════════════════════════════
+    "sfx_player_laser_l1": {
+        "category": "SFX Audio",
+        "prompt": (
+            "Single cyan laser bolt firing from right to left, 16-bit pixel art, "
+            "bright core with softer glow edges, muzzle flash at origin point, "
+            "with synchronized sharp pew sound effect — crisp, short, satisfying, "
+            "like a Sega Genesis laser sound, 0.5 seconds, transparent background, "
+            "static position, no camera movement."
+        ),
+        "duration_sec": 1, "fps": 15,
+        "output_prefix": "sfx_player_laser_l1",
+        "extract_frames": True,
+    },
+    "sfx_player_laser_l3": {
+        "category": "SFX Audio",
+        "prompt": (
+            "Triple yellow laser spread firing from right to left, 16-bit pixel art, "
+            "three parallel beams with bright cores, widening spread pattern, "
+            "with synchronized deeper powerful pew sound — heavier, more bass, "
+            "satisfying triple-fire audio, 0.8 seconds, transparent background, "
+            "static position, no camera movement."
+        ),
+        "duration_sec": 1, "fps": 15,
+        "output_prefix": "sfx_player_laser_l3",
+        "extract_frames": True,
+    },
+    "sfx_player_laser_l5": {
+        "category": "SFX Audio",
+        "prompt": (
+            "Massive white nova beam firing from right to left, 16-bit pixel art, "
+            "thick brilliant white energy beam with purple corona, screen-shaking intensity, "
+            "with synchronized thunderous bass-heavy blast sound — the ultimate weapon, "
+            "deep satisfying rumble with crackling energy, 1 second, transparent background."
+        ),
+        "duration_sec": 1, "fps": 15,
+        "output_prefix": "sfx_player_laser_l5",
+        "extract_frames": True,
+    },
+    "sfx_enemy_laser": {
+        "category": "SFX Audio",
+        "prompt": (
+            "Red enemy blaster bolt firing from left to right, 16-bit pixel art, "
+            "menacing red energy projectile with dark glow, "
+            "with synchronized harsh zap sound — sharp, threatening, "
+            "like an alien weapon discharging, 0.5 seconds, transparent background."
+        ),
+        "duration_sec": 1, "fps": 15,
+        "output_prefix": "sfx_enemy_laser",
+        "extract_frames": True,
+    },
+    "sfx_explosion_small": {
+        "category": "SFX Audio",
+        "prompt": (
+            "Small enemy ship explosion, 16-bit pixel art, "
+            "orange fireball expanding from center, debris particles scattering outward, "
+            "with synchronized satisfying pop-boom sound — crisp initial crack "
+            "followed by short rumble tail, classic arcade explosion, 1 second, "
+            "transparent background."
+        ),
+        "duration_sec": 1, "fps": 15,
+        "output_prefix": "sfx_explosion_small",
+        "extract_frames": True,
+    },
+    "sfx_explosion_large": {
+        "category": "SFX Audio",
+        "prompt": (
+            "Large boss-damage explosion, 16-bit pixel art, "
+            "massive multi-layered fireball, orange core with yellow edges, "
+            "smoke ring expanding, sparks flying, "
+            "with synchronized deep booming explosion — powerful bass thud "
+            "followed by crackling debris, cinematic impact, 2 seconds, transparent background."
+        ),
+        "duration_sec": 2, "fps": 15,
+        "output_prefix": "sfx_explosion_large",
+        "extract_frames": True,
+    },
+    "sfx_boss_death": {
+        "category": "SFX Audio",
+        "prompt": (
+            "Massive boss destruction sequence, 16-bit pixel art, "
+            "chain explosions rippling across a large mechanical structure, "
+            "final core meltdown with expanding blue-white shockwave, "
+            "with synchronized epic multi-stage destruction audio — "
+            "initial catastrophic boom, cascading smaller explosions, "
+            "deep resonant final blast with metallic debris rain, 4 seconds."
+        ),
+        "duration_sec": 4, "fps": 15,
+        "output_prefix": "sfx_boss_death",
+        "extract_frames": True,
+    },
+    "sfx_shield_activate": {
+        "category": "SFX Audio",
+        "prompt": (
+            "Blue energy shield activating around a spaceship, 16-bit pixel art, "
+            "translucent cyan force-field ring expanding outward from center, "
+            "pulsing once then stabilizing into a sphere, "
+            "with synchronized rising hum sound — starting low, quickly sweeping up "
+            "to a bright sustained energy tone, satisfying shield power-up audio, "
+            "1 second, transparent background."
+        ),
+        "duration_sec": 1, "fps": 15,
+        "output_prefix": "sfx_shield_activate",
+        "extract_frames": True,
+    },
+    "sfx_shield_hit": {
+        "category": "SFX Audio",
+        "prompt": (
+            "Energy shield being struck by enemy fire, 16-bit pixel art, "
+            "cyan force-field flashing white at impact point, ripple rings spreading, "
+            "with synchronized metallic clang mixed with electrical crackle — "
+            "sharp impact followed by fizzing static discharge, "
+            "1 second, transparent background."
+        ),
+        "duration_sec": 1, "fps": 15,
+        "output_prefix": "sfx_shield_hit",
+        "extract_frames": True,
+    },
+    "sfx_powerup_weapon": {
+        "category": "SFX Audio",
+        "prompt": (
+            "Red weapon power-up orb being collected, 16-bit pixel art, "
+            "orb shattering into particles that fly upward, bright red glow burst, "
+            "with synchronized ascending power-up chime — "
+            "rising arpeggio of 4 notes, each higher and brighter, "
+            "classic arcade weapon-upgrade jingle, 0.8 seconds, transparent background."
+        ),
+        "duration_sec": 1, "fps": 15,
+        "output_prefix": "sfx_powerup_weapon",
+        "extract_frames": True,
+    },
+    "sfx_powerup_shield": {
+        "category": "SFX Audio",
+        "prompt": (
+            "Green shield restore orb being collected, 16-bit pixel art, "
+            "orb dissolving into healing particles that swirl inward, soft green glow, "
+            "with synchronized soothing restoration chime — "
+            "gentle rising tone with harmonic overtone, healing/recovery sound, "
+            "0.8 seconds, transparent background."
+        ),
+        "duration_sec": 1, "fps": 15,
+        "output_prefix": "sfx_powerup_shield",
+        "extract_frames": True,
+    },
+    "sfx_boss_laser_charge": {
+        "category": "SFX Audio",
+        "prompt": (
+            "Massive boss cannon charging up, 16-bit pixel art, "
+            "cyan energy particles spiraling into the cannon barrel, "
+            "glow intensifying from dim to blinding, screen vibrating, "
+            "with synchronized charging whine — starting as low hum, "
+            "rising in pitch and intensity over 2 seconds, "
+            "culminating in a held high-frequency energy peak, "
+            "threatening and ominous, 2 seconds."
+        ),
+        "duration_sec": 2, "fps": 15,
+        "output_prefix": "sfx_boss_laser_charge",
+        "extract_frames": True,
+    },
+    "sfx_boss_laser_fire": {
+        "category": "SFX Audio",
+        "prompt": (
+            "Massive horizontal cyan laser beam erupting from a cannon, 16-bit pixel art, "
+            "thick brilliant beam with white-hot core, expanding shockwave rings, "
+            "with synchronized devastating laser blast — "
+            "deep bass explosion followed by sustained roaring energy beam, "
+            "powerful enough to shake the screen, 2 seconds."
+        ),
+        "duration_sec": 2, "fps": 15,
+        "output_prefix": "sfx_boss_laser_fire",
+        "extract_frames": True,
+    },
+    "sfx_boss_siren": {
+        "category": "SFX Audio",
+        "prompt": (
+            "Red alert siren effect, 16-bit pixel art, "
+            "flashing red warning lights pulsing in sequence, "
+            "with synchronized urgent alarm siren — "
+            "alternating high-low pitch in rapid pattern, "
+            "classic boss-warning klaxon, attention-grabbing, 1.5 seconds."
+        ),
+        "duration_sec": 2, "fps": 15,
+        "output_prefix": "sfx_boss_siren",
+        "extract_frames": True,
+    },
+    "sfx_engine_hum": {
+        "category": "SFX Audio",
+        "prompt": (
+            "Spaceship engine thruster flame burning steadily, 16-bit pixel art, "
+            "blue-white flame with subtle flicker, exhaust particles, "
+            "with synchronized constant low engine hum — "
+            "deep bass drone with subtle harmonic overtones, "
+            "smooth continuous rumble, 3 seconds, transparent background."
+        ),
+        "duration_sec": 3, "fps": 15,
+        "output_prefix": "sfx_engine_hum",
+        "extract_frames": True,
+    },
+    "sfx_enemy_spawn": {
+        "category": "SFX Audio",
+        "prompt": (
+            "Enemy ship materializing from a portal, 16-bit pixel art, "
+            "dark portal ring expanding then collapsing, enemy ship appearing, "
+            "with synchronized menacing spawn sound — "
+            "low whoosh rising then cutting off sharply, "
+            "like something emerging from the void, 0.8 seconds, transparent background."
+        ),
+        "duration_sec": 1, "fps": 15,
+        "output_prefix": "sfx_enemy_spawn",
+        "extract_frames": True,
+    },
+    "sfx_level_clear": {
+        "category": "SFX Audio",
+        "prompt": (
+            "Level clear celebration effect, 16-bit pixel art, "
+            "burst of golden sparkles and confetti particles, "
+            "with synchronized triumphant fanfare sting — "
+            "bright major chord resolution, 3 ascending notes, "
+            "pure arcade satisfaction, 1 second, transparent background."
+        ),
+        "duration_sec": 1, "fps": 15,
+        "output_prefix": "sfx_level_clear",
+        "extract_frames": True,
+    },
+    "sfx_menu_select": {
+        "category": "SFX Audio",
+        "prompt": (
+            "Menu selection click effect, 16-bit pixel art, "
+            "small cyan flash dot appearing and fading, "
+            "with synchronized crisp UI click sound — "
+            "short bright ping, satisfying menu navigation tone, "
+            "0.3 seconds, transparent background."
+        ),
+        "duration_sec": 1, "fps": 15,
+        "output_prefix": "sfx_menu_select",
+        "extract_frames": True,
+    },
+    "sfx_game_start": {
+        "category": "SFX Audio",
+        "prompt": (
+            "Game start sequence effect, 16-bit pixel art, "
+            "arcade countdown numbers 3-2-1 appearing in sequence, "
+            "with synchronized dramatic launch sting — "
+            "building tension, three accelerating beeps, then explosive GO blast, "
+            "2 seconds, retro arcade style."
+        ),
+        "duration_sec": 2, "fps": 15,
+        "output_prefix": "sfx_game_start",
+        "extract_frames": True,
     },
 }
 
