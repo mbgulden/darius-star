@@ -1,220 +1,158 @@
 # Darius Star: Cyber Coelacanth — Comprehensive Gap Analysis
-
 **Date:** June 9, 2026  
-**Agent:** AGY  
-**Project:** Darius Star (Linear: `aa3f825d-74c8-4366-9155-799100abccdd`)  
-**New Issues Created:** GRO-923 through GRO-934 (12 issues)
+**Phase:** Audit - Comprehensive Gap Analysis  
+**Auditor Agent:** Antigravity (research)  
+**Project ID:** `aa3f825d-74c8-4366-9155-799100abccdd`
 
 ---
 
-## Executive Summary
+## 1. Executive Summary
 
-The Darius Star project has 61 Linear issues (GRO-831–GRO-922) spanning asset generation, VFX, audio, story, and multiplayer. The core rendering pipeline (Phases 1–6) is substantially complete with 22 Done issues. However, the project has **critical gaps in UI, metaprogression, boss variety, enemy diversity, and gameplay depth** that must be addressed to deliver a complete 10-biome shmup.
+This audit represents a exhaustive review of the current codebase, asset registry (`sprites.json`), audio plans, narrative drafts, and tracking board of the **Darius Star: Cyber Coelacanth** project. 
 
-This analysis produced **12 new issues** (GRO-923–GRO-934) filling the highest-priority gaps across 6 dimensions.
+The game has made massive progress, moving from a canvas-only mockup to a fully integrated sprite-driven side-scrolling shoot-'em-up. The repository currently contains **2,233 sprite files** on disk, with all **1,804 unlisted frame animations** successfully merged into the `sprites.json` manifest and validated to ensure a passing linter state.
+
+However, deep-dive examination reveals critical gaps in UI flow, metaprogression, asset coverage for the 10-biome scope, narrative display scripting, and a significant technical misunderstanding regarding the use of Google Veo for speech synthesis. To resolve these gaps, **8 new Linear issues (GRO-935 to GRO-942)** have been created, adding to the 12 issues from the previous audit (GRO-923 to GRO-934), bringing the current project issue count to **81**.
+
+```mermaid
+graph TD
+    A[Darius Star Baseline] --> B[Asset Generation & Slicing]
+    B --> C[Sprite Manifest Registry]
+    C --> D[Dynamic Engine Integration]
+    D --> E{Comprehensive Gap Analysis}
+    E --> F[UI / Screen Flow Gaps]
+    E --> G[Asset Scope Gaps]
+    E --> H[Audio & Voice Gaps]
+    E --> I[Narrative & Story Gaps]
+    E --> J[Gameplay & Tuning Gaps]
+    F --> K[GRO-923, 927, 932 Menu/Pause/UI]
+    G --> L[GRO-912, 913, 934 Bosses/Enemies/Ships]
+    H --> M[GRO-939, 940 TTS Pipeline & Subtitles]
+    I --> N[GRO-936 Dialogue System UI]
+    J --> O[GRO-924, 935 Upgrades & Saves]
+```
 
 ---
 
-## Current State
+## 2. Project State Matrix
 
-### Issue Summary
-- **Total issues:** 61 (GRO-831 through GRO-922)
-- **Done:** 22 (36%) — Core rendering pipeline, sprite integration, deployment
-- **In Progress:** 2 (GRO-903 Veo API, GRO-863 Audio research)
-- **Backlog:** 37 (61%)
+### 2.1 Issue Statistics
+* **Total Project Issues:** 81 (GRO-831 through GRO-942)
+* **Completed (Done):** 22 issues (27%) — Core rendering pipeline, base player/enemy/boss sprites, deployment
+* **In Progress:** 2 issues (GRO-903: Veo API Setup, GRO-863: Audio Research)
+* **Todo / Backlog:** 57 issues (71%) — Remaining audio, level design, and recently uncovered gaps
 
-### Asset Inventory
-| Category | Count | Status |
-|---|---|---|
-| Background strips (parallax) | 4 | Abyssal Trench, Coral Graveyard, Coelacanth Lair, Title — Done |
-| Base sprites (player, enemies, boss, VFX) | 23 | Generated, needs QA pass |
-| SFX frame sequences (60f) | 27 categories | PNG frames generated, not audio files |
-| Audio files | 3 | sfx_explosion.wav, sfx_laser_pew.wav, sfx_powerup.wav |
-| Music tracks | 0 | GRO-864 (9 tracks) planned; GRO-919 (7 filler) planned |
-| Ship sprites | 1 (Striker) | 4 more planned in GRO-913 |
-| Boss sprites | 1 (Cyber Coelacanth) | 5 states generated |
+### 2.2 Asset Coverage Analysis
+The game is designed around a **10-biome system** with **5 playable ships**. The asset sheet registry shows a high concentration of visual SFX frames but severe deficiencies in environmental, boss, and enemy variety:
 
-### Biome Coverage
-| Biome | Background | Enemies | Boss | Music |
+| Category | Available | Needed | Gap | Notes |
 |---|---|---|---|---|
-| 1. Abyssal Trench | ✅ | ✅ (4 types) | ❌ (shared) | ❌ |
-| 2. Coral Graveyard | ✅ | ✅ | ❌ (shared) | ❌ |
-| 3. Coelacanth Lair | ✅ | ✅ | ✅ (Cyber Coelacanth) | ❌ |
-| 4. Nebula Drift | ❌ | ❌ | ❌ | ❌ |
-| 5. Ice Ring | ❌ | ❌ | ❌ | ❌ |
-| 6. Fire Nebula | ❌ | ❌ | ❌ | ❌ |
-| 7. Storm Belt | ❌ | ❌ | ❌ | ❌ |
-| 8. Derelict Fleet | ❌ | ❌ | ❌ | ❌ |
-| 9. Xenomorph Hive | ❌ | ❌ | ❌ | ❌ |
-| 10. Core Rift | ❌ | ❌ | ❌ | ❌ |
+| **Player Ships** | 1 (Striker) | 5 ships | **-4 ships** | Sprites for Phantom, Bastion, Tempest, and Specter needed. |
+| **Biome Backgrounds** | 3 biomes | 10 biomes | **-7 biomes** | Biomes 4-10 lack parallax scrolling sheets. |
+| **Biome Bosses** | 1 (Coelacanth) | 10 bosses | **-9 bosses** | Only Biome 3 (Coelacanth Lair) has boss sprite animation frames. |
+| **Enemy Types** | 4 types | 40 types | **-36 types** | Biomes 4-10 require 4 unique thematic enemies each. |
+| **Music Tracks** | 0 files | 16 tracks | **-16 tracks** | Gameplay loops (GRO-864) and filler UI music (GRO-919) must be generated. |
+| **SFX Waveforms** | 3 files | 32 tracks | **-29 files** | Procedural Web Audio is active, but high-quality WAV files are missing. |
 
 ---
 
-## Gap Analysis by Dimension
+## 3. Deep-Dive Gap Analysis by Dimension
 
-### 1. UI GAPS (Critical)
+### 3.1 Dimension 1: Linear Gaps
+* **Missing Level Implementations:** Existing issues cover coding the specific logic for Levels 1-3 (`GRO-871`, `GRO-873`, `GRO-875`), but there is no issue in the backlog for coding levels 4-10. This would leave the game incomplete.
+  > [!IMPORTANT]
+  > Resolved by creating **GRO-937: Levels 4-10 Wave Scripting & Progression Programming**.
+* **Dialogue Engine Programming:** While writing story briefs is tracked in `GRO-915` and portraits in `GRO-930`, there was no task to code the UI presentation layer in `index.html`.
+  > [!NOTE]
+  > Resolved by creating **GRO-936: Dialogue & Briefing UI System Programming**.
+* **Wave Configuration Tooling:** Manually coding spawning coordinates for 100 levels is highly error-prone. A tooling gap exists for wave scripting.
+  > [!TIP]
+  > Resolved by creating **GRO-938: Campaign Wave Schema & Level Configuration Tooling**.
 
-| Feature | Status | Severity | New Issue |
-|---|---|---|---|
-| Main Menu | ❌ Missing — only "PRESS SPACE TO START" | CRITICAL | **GRO-923** |
-| Ship Select Screen | 🟡 Design only (GRO-910), no implementation | HIGH | GRO-910 |
-| Upgrade Shop | 🟡 Mentioned in GRO-918, no dedicated issue | HIGH | **GRO-924** |
-| Post-Level Summary | 🟡 GRO-918 covers design, not implemented | MEDIUM | GRO-918 |
-| Pause Menu | ❌ Missing — no pause during gameplay | HIGH | **GRO-927** |
-| Settings Screen | ❌ Missing — no volume/control/difficulty | HIGH | **GRO-927** (bundled) |
-| Credits Screen | ❌ Missing | MEDIUM | **GRO-932** |
-| Leaderboard | ❌ Missing | MEDIUM | **GRO-931** |
-| Difficulty Select | ❌ Missing — single difficulty only | HIGH | **GRO-928** |
-| Game Over Screen | 🟡 Bare bones (canvas text only) | LOW | — |
+### 3.2 Dimension 2: Asset Gaps
+* **sprites.json Status:** Currently registers **2,233 files** on disk. This is heavily padded by 60-frame visual animations for SFX (e.g. `sfx_player_laser_l1` contains 60 separate PNG frames).
+* **Missing Assets:**
+  - **4 Player Ships:** Sprites for secondary ships (Phantom, Bastion, Tempest, Specter).
+  - **36 Enemy Varieties:** Visual indicators matching hostile conditions (such as high-pressure abyssal zones, high-heat solar wind drift).
+  - **Secondary Weapons & Hazards:** Visual models for homing missiles, deployable mines, floating debris, and destructible asteroids.
 
-### 2. ASSET GAPS
+### 3.3 Dimension 3: Art Gaps
+* **UI Screen Visual Assets:** The game currently has a title image (`title_0.png`) but lacks artwork for the Upgrade Shop menu, Ship Selection blueprints, Game Over screen overlays, and HUD borders.
+* **Story Mode Portraits:** 16-bit pixel art portraits for narrative delivery:
+  - **Commander Selene** (Mission Director)
+  - **Darius Star** (Protagonist Pilot)
+  - **Naval Officers & Antagonists**
+  - **AI Biosphere Projections**
 
-#### Backgrounds
-- **Have:** 4 of 10 (biomes 1-3 + title)
-- **Need:** 7 more biome backgrounds
-- **Coverage:** GRO-912 (Level 4-10 backgrounds)
+### 3.4 Dimension 4: Sound Gaps
+* **UI Interactions:** System sounds are currently procedurally generated. For a premium retro experience, specific WAV/MP3 files for:
+  - UI button hover (light high-pitch beep)
+  - UI button select (satisfying double chirp)
+  - Upgrade purchase success (ascending chime)
+  - Error/insufficient scrap (dull buzzy thud)
+* **Environmental/Engine Ambiance:** Low rumble hum for space flight that dynamically pitch-shifts based on speed. Water/current sonar swooshes for underwater biomes.
 
-#### Enemies
-- **Have:** 4 types (scout, interceptor, heavy, boss_minion) — all themed for biome 1
-- **Need:** 28-31 unique enemies across all 10 biomes (3-4 per biome)
-- **Coverage:** **GRO-934** (new — comprehensive enemy variety design)
+### 3.5 Dimension 5: Voice Gaps
+* **The "Veo Voice" Bug:** Issue `GRO-917` suggests generating voice lines using Google Veo. **Veo is a video generation tool**; using it for speech synthesis is incorrect. The voice generation pipeline must be corrected.
+  > [!WARNING]
+  > Resolved by creating **GRO-939: Speech & Voice Synthesis Pipeline (Text-to-Speech)** to establish a pipeline via Google Cloud TTS or Gemini audio models.
+* **Audio Playback:** A programming task was missing to bind voice assets to gameplay triggers and render captions.
+  > [!IMPORTANT]
+  > Resolved by creating **GRO-940: Voice Playback & Subtitle Accessibility Integration**.
 
-#### Bosses
-- **Have:** 1 boss (Cyber Coelacanth, biome 3)
-- **Need:** 9 more biome-specific bosses
-- **Coverage:** **GRO-925** (new — all 9 boss designs)
-
-#### Ships
-- **Have:** 1 ship sprite (Striker)
-- **Need:** 4 more (Phantom, Bastion, Tempest, Specter)
-- **Coverage:** GRO-913
-
-#### Character Art
-- **Have:** 0 character portraits
-- **Need:** Commander, engineer, pilot, antagonist, squad (10+ portraits)
-- **Coverage:** **GRO-930** (new)
-
-#### Power-ups / Props
-- **Have:** 2 power-up sprites (weapon W, shield S)
-- **Need:** Speed boost, secondary weapon, score multiplier, environmental props
-- **Coverage:** ❌ Gap remains
-
-### 3. AUDIO GAPS
-
-| Category | Status | Coverage |
-|---|---|---|
-| Gameplay music (9 tracks) | 🟡 Planned (GRO-864) | GRO-864 |
-| Menu/transition music (7 tracks) | 🟡 Planned (GRO-919) | GRO-919 |
-| SFX (>32 planned) | 🟡 27 SFX categories generated as PNG frames | GRO-866, GRO-867, GRO-906 |
-| Voice/briefing audio | 🟡 Planned (GRO-917) | GRO-917 |
-| UI SFX (navigation, selection) | ❌ Not explicitly covered | **GRO-923** (menu SFX) |
-| Biome ambient tracks | 🟡 1 per biome mentioned in GRO-912 | GRO-912 |
-| Enemy-specific SFX | ❌ Not covered | ❌ Gap remains |
-| Environmental audio (wind, water, mechanical) | ❌ Not covered | ❌ Gap remains |
-
-### 4. GAMEPLAY GAPS
-
-| Feature | Status | Severity | New Issue |
-|---|---|---|---|
-| Primary Weapons (5 levels) | ✅ Implemented | — | — |
-| Secondary Weapons (bombs/missiles) | ❌ Missing | HIGH | **GRO-929** |
-| Melee Attacks | ❌ Missing | LOW | ❌ Not planned |
-| Dodge/Evade Mechanic | ❌ Missing | MEDIUM | **GRO-933** |
-| Combo System | ❌ Missing (scoring only) | HIGH | **GRO-926** |
-| Permanent Upgrades (metaprogression) | ❌ Missing | CRITICAL | **GRO-924** |
-| Skill Tree | ❌ Missing | LOW | ❌ Deferred |
-| Shield System | ✅ Implemented | — | — |
-| Power-up System | ✅ Implemented | — | — |
-| Multiplayer (2P co-op) | 🟡 Architecture (GRO-911), no implementation | MEDIUM | GRO-911 |
-| Difficulty Modes | ❌ Missing | HIGH | **GRO-928** |
-
-### 5. STORY GAPS
-
-| Feature | Status | Coverage |
-|---|---|---|
-| Narrative structure | 🟡 Research planned (GRO-914) | GRO-914 |
-| Mission briefings (10 biomes) | 🟡 Scripts planned (GRO-915) | GRO-915 |
-| Cut-scenes | 🟡 Prompts planned (GRO-916), 1 cinematic (GRO-907) | GRO-916, GRO-907 |
-| Voice/audio for story | 🟡 Planned (GRO-917) | GRO-917 |
-| Character art/portraits | ❌ Missing | **GRO-930** (new) |
-| Ending/credits sequence | ❌ Missing | **GRO-932** (new) |
-| Dialogue system | 🟡 Briefing format in GRO-915 | GRO-915 |
-| Character backstories | 🟡 In GRO-914 scope | GRO-914 |
-
-### 6. INFRASTRUCTURE GAPS
-
-| Feature | Status |
-|---|---|
-| Cloudflare Pages deploy | ✅ Done (GRO-849) |
-| Mobile/touch controls | ✅ Done (GRO-850) |
-| tasks.json automation | ✅ Done (GRO-848) |
-| High score persistence | ❌ Missing → **GRO-931** |
-| Analytics/telemetry | ❌ Not planned |
-| Automated testing | ❌ Not planned |
-| Build/minification | 🟡 Partial (tasks.json has build command) |
+### 3.6 Dimension 6: Story Gaps
+* **Story Arc Verification:** The narrative structure outlined in `story-mode-narrative.md` covers all 10 biomes, tracing Darius's journey to harvest Coelacanth elements to cure his daughter Lyra's attunement. However, there is a lack of localization structures to deliver this story globally.
+  > [!NOTE]
+  > Resolved by creating **GRO-942: Localization & Multi-Language Subtitles Infrastructure**.
 
 ---
 
-## New Issues Created (GRO-923 through GRO-934)
+## 4. Newly Created Linear Issues
 
-| ID | Title | Priority | Labels |
-|---|---|---|---|
-| **GRO-923** | Main Menu Screen: Full menu UI with Start, Ship Select, Settings, Credits | 🔴 P1 | agent:fred, agent:agy |
-| **GRO-924** | Permanent Upgrade System: Scrap-based metaprogression across runs | 🔴 P1 | agent:fred, agent:agy |
-| **GRO-925** | Biome Boss Design: 9 unique boss encounters for biomes 4-10 | 🔴 P1 | agent:fred, agent:agy |
-| **GRO-926** | Combo System: Kill-streak multiplier with visual feedback | 🟡 P2 | agent:fred |
-| **GRO-927** | Pause Menu: Overlay with Resume, Settings, Quit | 🟡 P2 | agent:fred |
-| **GRO-928** | Difficulty System: Easy/Normal/Hard/Insane modes | 🟡 P2 | agent:fred |
-| **GRO-929** | Secondary Weapons: Bombs, missiles, ship-specific specials | 🟡 P2 | agent:fred |
-| **GRO-930** | Character Art & Commander Portraits for Story Briefings | 🟡 P2 | agent:agy, agent:fred |
-| **GRO-931** | High Score & Leaderboard: localStorage persistence | 🟢 P3 | agent:fred |
-| **GRO-932** | Credits Screen: Team credits, tools, ending cinematic | 🟢 P3 | agent:fred, agent:agy |
-| **GRO-933** | Dodge/Evade Mechanic: Blink dash with invulnerability frames | 🟢 P3 | agent:fred |
-| **GRO-934** | Enemy Variety Expansion: 28 new enemy types for biomes 4-10 | 🔴 P1 | agent:agy, agent:fred |
+We have registered the following **8 issues** via the Linear GraphQL API, tagged for `agent:fred` as backlog items:
 
----
-
-## Priority Roadmap
-
-### P1 (Critical — Must Have for MVP)
-1. **GRO-923** Main Menu — No game ships without a menu
-2. **GRO-924** Permanent Upgrades — Metaprogression is expected in modern shmups
-3. **GRO-925** Biome Bosses — 9 biomes need unique boss encounters
-4. **GRO-934** Enemy Variety — Cannot reuse biome-1 enemies for all 10 biomes
-
-### P2 (High — Core Gameplay Completeness)
-5. **GRO-926** Combo System — Scoring depth
-6. **GRO-927** Pause Menu — Basic UX requirement
-7. **GRO-928** Difficulty System — Accessibility and replayability
-8. **GRO-929** Secondary Weapons — Combat variety
-9. **GRO-930** Character Art — Story immersion
-
-### P3 (Medium — Polish & Completion)
-10. **GRO-931** Leaderboard — Competitive replayability
-11. **GRO-932** Credits — Game completion
-12. **GRO-933** Dodge Mechanic — Skill expression (nice-to-have)
+1. **GRO-935: Campaign Save & Load Persistence System** (High Priority)
+   - *Description:* Implement campaign state saving using `localStorage`. Persist unlocked player ships, campaign level progress (e.g. Biome 4 Level 2), current scrap count, and permanent upgrades purchased in the shop. Provide fallback reset options.
+2. **GRO-936: Dialogue & Briefing UI System Programming** (High Priority)
+   - *Description:* Program the story briefing UI screen in `index.html`. This includes rendering 16-bit commander/character portraits, drawing a text scroll box with typewriter text effect, support for clicking to skip/advance text, and clean transitions into gameplay.
+3. **GRO-937: Levels 4-10 Wave Scripting & Progression Programming** (High Priority)
+   - *Description:* Implement spawning waves, level flow, and biome transitions for levels 4 through 10 in the main game loops. Integrate background parallax strips, enemy spawning logic, and boss triggers for these biomes.
+4. **GRO-938: Campaign Wave Schema & Level Configuration Tooling** (Medium Priority)
+   - *Description:* Design a structured JSON wave schema (`waves.json`) for the 100 stages of the campaign. Write a validator script that verifies wave balance (total enemies, spawn rates, scrap yield) and loads it dynamically into the game.
+5. **GRO-939: Speech & Voice Synthesis Pipeline (Text-to-Speech)** (Medium Priority)
+   - *Description:* Setup a pipeline using Google Cloud Text-to-Speech (TTS) or Gemini audio generation to synthesize the mission briefings and voice reactions into WAV/MP3 files. Replace the incorrect Veo voice generation concept.
+6. **GRO-940: Voice Playback & Subtitle Accessibility Integration** (Medium Priority)
+   - *Description:* Integrate audio playback of generated voice lines into the game loop. Implement synchronous, high-visibility subtitles for all voice-overs and story briefings to support accessibility and web audio settings.
+7. **GRO-941: Automated Playtesting & Balancing Bot** (Low Priority)
+   - *Description:* Develop a headless simulation run-mode (or simple autoplay bot) that plays through game levels to verify balance. Collect telemetry on player death rates, weapon levels, scrap accumulation, and boss defeat times.
+8. **GRO-942: Localization & Multi-Language Subtitles Infrastructure** (Low Priority)
+   - *Description:* Setup localization framework in `index.html` to support translation of story dialogue, briefings, and UI text into major languages (English, Japanese, Spanish, German) using static language dictionary files.
 
 ---
 
-## Remaining Unaddressed Gaps
+## 5. Development Roadmap & Priority Matrix
 
-These gaps were identified but not given new issues (lower priority or covered by existing issues):
+To execute these tasks, the team should tackle them in the following order to maximize pipeline efficiency:
 
-- **Environmental props** (asteroids, debris) — Could fold into GRO-912
-- **Melee attacks** — Genre-appropriate omission for a shmup
-- **Skill tree** — Covered by GRO-924 permanent upgrade system
-- **Automated testing** — Future phase after MVP
-- **Analytics** — Post-launch consideration
-- **Power-up visual variants** — Minor asset gap, fold into existing sprite generation
-- **Enemy-specific SFX** — Could be addressed in GRO-866 scope
-- **Environmental audio** — Could fold into GRO-912 or GRO-919
+```
+[Phase A: Infrastructure & UI Foundation]
+  ├── GRO-923: Main Menu Implementation
+  ├── GRO-936: Dialogue & Briefing UI Programming
+  └── GRO-935: Campaign Save & Load System (localStorage)
 
----
+[Phase B: Level & Asset Expansion]
+  ├── GRO-938: Wave Schema JSON configuration
+  ├── GRO-937: Levels 4-10 Code Integration
+  ├── GRO-934: Enemy Variety Sprites (28 types)
+  └── GRO-925: Biome Boss Designs (9 bosses)
 
-## Methodology
+[Phase C: Narrative Audio & Accessibility]
+  ├── GRO-939: Voice Synthesis Pipeline (TTS)
+  ├── GRO-940: Voice Playback & Subtitles
+  └── GRO-942: Localization Dictionary setup
 
-1. **Linear API Audit:** Queried all 61 issues across project `aa3f825d-74c8-4366-9155-799100abccdd`
-2. **File System Audit:** Scanned `/home/ubuntu/work/darius-star/assets/` — verified sprites, SFX frames, audio files, background strips
-3. **Code Review:** Analyzed `index.html` (1839 lines), `sprites.json` (5536 lines), and all docs
-4. **Gap Matrix:** Cross-referenced existing issues against the 6 gap dimensions
-5. **Issue Creation:** 12 new issues filed via Linear GraphQL API with detailed specs
+[Phase D: Balancing & Release Polish]
+  ├── GRO-924: Metaprogression Upgrade Shop wiring
+  ├── GRO-941: Automated Balance Playtesting Bot
+  └── GRO-932: Credits screen & Ending scroll
+```

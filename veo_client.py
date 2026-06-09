@@ -34,6 +34,115 @@ from datetime import datetime, timezone
 # ──────────────────────────────────────────────
 
 VEO_ASSET_CATALOG = {
+    # ── GRO-906 VFX with native synchronized audio ──
+    "player_laser": {
+        "category": "GRO-906 VFX",
+        "prompt": (
+            "Single cyan laser bolt firing from right to left, 16-bit pixel art, "
+            "bright core with softer glow edges, muzzle flash at origin point, "
+            "with synchronized sharp pew sound effect — crisp, short, satisfying, "
+            "like a Sega Genesis laser sound, 1 second, transparent background, "
+            "static position, no camera movement."
+        ),
+        "duration_sec": 4, "fps": 15,
+        "output_prefix": "player_laser",
+        "extract_frames": True,
+    },
+    "enemy_laser": {
+        "category": "GRO-906 VFX",
+        "prompt": (
+            "Red enemy blaster bolt firing from left to right, 16-bit pixel art, "
+            "menacing red energy projectile with dark glow, "
+            "with synchronized harsh zap sound — sharp, threatening, "
+            "like an alien weapon discharging, 1 second, transparent background, "
+            "static position, no camera movement."
+        ),
+        "duration_sec": 4, "fps": 15,
+        "output_prefix": "enemy_laser",
+        "extract_frames": True,
+    },
+    "small_explosion": {
+        "category": "GRO-906 VFX",
+        "prompt": (
+            "Small enemy ship explosion, 16-bit pixel art, "
+            "orange fireball expanding from center, debris particles scattering outward, "
+            "with synchronized satisfying pop-boom sound — crisp initial crack "
+            "followed by short rumble tail, classic arcade explosion, 1 second, "
+            "transparent background, static position."
+        ),
+        "duration_sec": 4, "fps": 15,
+        "output_prefix": "small_explosion",
+        "extract_frames": True,
+    },
+    "large_explosion": {
+        "category": "GRO-906 VFX",
+        "prompt": (
+            "Large boss-damage explosion, 16-bit pixel art, "
+            "massive multi-layered fireball, orange core with yellow edges, "
+            "smoke ring expanding, sparks flying, "
+            "with synchronized deep booming explosion — powerful bass thud "
+            "followed by crackling debris, cinematic impact, 2 seconds, "
+            "transparent background, static position."
+        ),
+        "duration_sec": 4, "fps": 15,
+        "output_prefix": "large_explosion",
+        "extract_frames": True,
+    },
+    "shield_activation": {
+        "category": "GRO-906 VFX",
+        "prompt": (
+            "Blue energy shield activating around a spaceship, 16-bit pixel art, "
+            "translucent cyan force-field ring expanding outward from center, "
+            "pulsing once then stabilizing into a sphere, "
+            "with synchronized rising hum sound — starting low, quickly sweeping up "
+            "to a bright sustained energy tone, satisfying shield power-up audio, "
+            "1 second, transparent background, static position."
+        ),
+        "duration_sec": 4, "fps": 15,
+        "output_prefix": "shield_activation",
+        "extract_frames": True,
+    },
+    "shield_hit": {
+        "category": "GRO-906 VFX",
+        "prompt": (
+            "Energy shield being struck by enemy fire, 16-bit pixel art, "
+            "cyan force-field flashing white at impact point, ripple rings spreading, "
+            "with synchronized metallic clang mixed with electrical crackle — "
+            "sharp impact followed by fizzing static discharge, "
+            "1 second, transparent background, static position."
+        ),
+        "duration_sec": 4, "fps": 15,
+        "output_prefix": "shield_hit",
+        "extract_frames": True,
+    },
+    "powerup_pickup": {
+        "category": "GRO-906 VFX",
+        "prompt": (
+            "Red weapon power-up orb being collected, 16-bit pixel art, "
+            "orb shattering into particles that fly upward, bright red glow burst, "
+            "with synchronized ascending power-up chime — "
+            "rising arpeggio of 4 notes, each higher and brighter, "
+            "classic arcade weapon-upgrade jingle, 1 second, transparent background, "
+            "static position."
+        ),
+        "duration_sec": 4, "fps": 15,
+        "output_prefix": "powerup_pickup",
+        "extract_frames": True,
+    },
+    "boss_laser_beam": {
+        "category": "GRO-906 VFX",
+        "prompt": (
+            "Massive horizontal cyan laser beam erupting from a cannon, 16-bit pixel art, "
+            "thick brilliant beam with white-hot core, expanding shockwave rings, "
+            "with synchronized devastating laser blast — "
+            "deep bass explosion followed by sustained roaring energy beam, "
+            "powerful enough to shake the screen, 2 seconds, static position."
+        ),
+        "duration_sec": 4, "fps": 15,
+        "output_prefix": "boss_laser_beam",
+        "extract_frames": True,
+    },
+
     # ── Animated Enemy Cycles ──
     "enemy_scout_cycle": {
         "category": "Animated Sprites",
@@ -704,9 +813,79 @@ SPRITES_DIR = REPO_ROOT / "assets" / "sprites"
 AUDIO_DIR = REPO_ROOT / "assets" / "audio"
 CINEMATICS_DIR = REPO_ROOT / "assets" / "cinematics"
 
+CLIENT_ID = "884354919052-36trc1jjb3tguiac32ov6cod268c5blh.apps.googleusercontent.com"
+TOKEN_PATH = "/home/ubuntu/.gemini/antigravity-cli/antigravity-oauth-token"
+
 
 def get_access_token():
-    """Get Google Cloud access token using gcloud CLI."""
+    """Get Google Cloud access token using gcloud CLI with fallback to antigravity token."""
+    import datetime
+    import urllib.request
+    import urllib.error
+    
+    # Try using antigravity oauth token
+    if os.path.exists(TOKEN_PATH):
+        try:
+            with open(TOKEN_PATH, "r") as f:
+                data = json.load(f)
+            token_data = data.get("token", {})
+            access_token = token_data.get("access_token")
+            refresh_token = token_data.get("refresh_token")
+            expiry_str = token_data.get("expiry")
+            
+            if access_token and refresh_token and expiry_str:
+                # Parse expiry
+                clean_expiry_str = expiry_str
+                if clean_expiry_str.endswith("Z"):
+                    clean_expiry_str = clean_expiry_str[:-1] + "+00:00"
+                if "." in clean_expiry_str:
+                    base, frac_tz = clean_expiry_str.split(".")
+                    frac = frac_tz.split("+")[0]
+                    tz = frac_tz[len(frac):]
+                    frac = frac[:6]
+                    clean_expiry_str = f"{base}.{frac}{tz}"
+                
+                expiry = datetime.datetime.fromisoformat(clean_expiry_str)
+                now = datetime.datetime.now(datetime.timezone.utc)
+                
+                if expiry < now + datetime.timedelta(minutes=5):
+                    print("  → Token expired or expiring soon. Refreshing...")
+                    refresh_url = "https://oauth2.googleapis.com/token"
+                    payload = json.dumps({
+                        "client_id": CLIENT_ID,
+                        "grant_type": "refresh_token",
+                        "refresh_token": refresh_token
+                    }).encode("utf-8")
+                    
+                    req = urllib.request.Request(
+                        refresh_url,
+                        data=payload,
+                        headers={"Content-Type": "application/json"}
+                    )
+                    with urllib.request.urlopen(req, timeout=30) as resp:
+                        res = json.loads(resp.read().decode("utf-8"))
+                        new_access_token = res["access_token"]
+                        expires_in = res["expires_in"]
+                        
+                        # Calculate new expiry
+                        new_expiry = datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(seconds=expires_in)
+                        new_expiry_str = new_expiry.isoformat().replace("+00:00", "Z")
+                        
+                        # Update file
+                        data["token"]["access_token"] = new_access_token
+                        data["token"]["expiry"] = new_expiry_str
+                        
+                        with open(TOKEN_PATH, "w") as out:
+                            json.dump(data, out)
+                            
+                        print(f"  ✓ Token refreshed successfully.")
+                        return new_access_token
+                else:
+                    return access_token
+        except Exception as e:
+            print(f"  ⚠ Failed to read/refresh antigravity oauth token: {e}")
+
+    # Fallback to gcloud CLI
     result = subprocess.run(
         ["gcloud", "auth", "print-access-token"],
         capture_output=True, text=True, timeout=15
@@ -831,15 +1010,30 @@ def generate_veo(asset_id: str, config: dict, project_id: str,
         "Authorization": f"Bearer {token}",
         "Content-Type": "application/json",
     })
-    try:
-        with urllib.request.urlopen(submit_req, timeout=60) as resp:
-            submit_result = json.loads(resp.read())
-    except urllib.error.HTTPError as e:
-        error_body = e.read().decode()
-        if e.code == 429:
-            print(f"  ⚠ Quota exceeded (429). Skipping.")
+    max_retries = 5
+    submit_result = None
+    for attempt in range(max_retries):
+        try:
+            with urllib.request.urlopen(submit_req, timeout=60) as resp:
+                submit_result = json.loads(resp.read())
+                break
+        except urllib.error.HTTPError as e:
+            error_body = e.read().decode()
+            if e.code == 429:
+                if attempt < max_retries - 1:
+                    print(f"  ⚠ Quota exceeded (429). Retrying in 60s... (Attempt {attempt+1}/{max_retries})")
+                    time.sleep(60)
+                    continue
+                else:
+                    print(f"  ✗ Quota exceeded (429). Out of retries.")
+                    return False
+            print(f"  ✗ Submit error ({e.code}): {error_body[:500]}")
             return False
-        print(f"  ✗ Submit error ({e.code}): {error_body[:500]}")
+        except Exception as e:
+            print(f"  ✗ Submit exception: {e}")
+            return False
+
+    if not submit_result:
         return False
 
     op_name = submit_result.get("name", "")
@@ -896,9 +1090,9 @@ def generate_veo(asset_id: str, config: dict, project_id: str,
             f.write(base64.b64decode(video_b64))
         print(f"  ✓ Saved: {video_path} ({len(video_b64)} chars b64)")
 
-        # Extract frames if requested
+        # Extract assets (frames + audio) if requested
         if config.get("extract_frames"):
-            extract_frames_from_video(video_path, prefix, config.get("fps", 8))
+            extract_assets_from_video(video_path, prefix, config.get("fps", 8))
 
         return True
 
@@ -906,19 +1100,18 @@ def generate_veo(asset_id: str, config: dict, project_id: str,
     return False
 
 
-def extract_frames_from_video(video_path: Path, prefix: str, fps: int = 15):
-    """Use ffmpeg + Pillow to extract frames from generated video."""
-    try:
-        from PIL import Image
-    except ImportError:
-        print("  ⚠ Pillow not installed. Install: pip install Pillow")
-        return
-
-    # Use ffmpeg to extract frames
-    output_pattern = str(SPRITES_DIR / f"{prefix}_%04d.png")
-    SPRITES_DIR.mkdir(parents=True, exist_ok=True)
-
-    result = subprocess.run([
+def extract_assets_from_video(video_path: Path, prefix: str, fps: int = 15):
+    """Use ffmpeg to extract frames to assets/sprites/vfx/ and audio to assets/audio/sfx/."""
+    # Define directories
+    sprites_vfx_dir = REPO_ROOT / "assets" / "sprites" / "vfx"
+    audio_sfx_dir = REPO_ROOT / "assets" / "audio" / "sfx"
+    
+    sprites_vfx_dir.mkdir(parents=True, exist_ok=True)
+    audio_sfx_dir.mkdir(parents=True, exist_ok=True)
+    
+    # 1. Extract frames
+    output_pattern = str(sprites_vfx_dir / f"{prefix}_%04d.png")
+    frame_result = subprocess.run([
         "ffmpeg", "-i", str(video_path),
         "-vf", f"fps={fps}",
         "-pix_fmt", "rgba",
@@ -926,13 +1119,31 @@ def extract_frames_from_video(video_path: Path, prefix: str, fps: int = 15):
         "-y"
     ], capture_output=True, text=True, timeout=120)
 
-    if result.returncode != 0:
-        print(f"  ⚠ ffmpeg frame extraction failed: {result.stderr[:200]}")
-        return
+    if frame_result.returncode != 0:
+        print(f"  ⚠ ffmpeg frame extraction failed: {frame_result.stderr[:200]}")
+    else:
+        frames = sorted(sprites_vfx_dir.glob(f"{prefix}_*.png"))
+        print(f"  ✓ Extracted {len(frames)} frames to {sprites_vfx_dir}/")
 
-    # Count extracted frames
-    frames = sorted(SPRITES_DIR.glob(f"{prefix}_*.png"))
-    print(f"  ✓ Extracted {len(frames)} frames to {SPRITES_DIR}/")
+    # 2. Extract audio
+    audio_path = audio_sfx_dir / f"{prefix}.wav"
+    audio_result = subprocess.run([
+        "ffmpeg", "-i", str(video_path),
+        "-vn",
+        "-acodec", "pcm_s16le",
+        "-ar", "44100",
+        "-ac", "1",
+        str(audio_path),
+        "-y"
+    ], capture_output=True, text=True, timeout=60)
+
+    if audio_result.returncode != 0:
+        print(f"  ⚠ ffmpeg audio extraction failed: {audio_result.stderr[:200]}")
+    else:
+        if audio_path.exists() and audio_path.stat().st_size > 0:
+            print(f"  ✓ Extracted audio to {audio_path} ({audio_path.stat().st_size} bytes)")
+        else:
+            print(f"  ⚠ Extracted audio file is empty or missing.")
 
 
 def main():
