@@ -1,0 +1,414 @@
+{
+  "catalog_version": "1.0",
+  "generated_at": "2026-06-09T12:02:11.627185+00:00",
+  "description": "Complete asset catalog for Darius Star: Cyber Coelacanth - all biomes 1-10",
+  "total_entries": 42,
+  "assets": [
+    {
+      "asset_id": "E27",
+      "type": "enemy_scout",
+      "biome": 4,
+      "name": "Plasma Wisp",
+      "hp": 1,
+      "points": 125,
+      "filename": "enemy_plasma_wisp_0.png",
+      "status": "mock_generated"
+    },
+    {
+      "asset_id": "E28",
+      "type": "enemy_interceptor",
+      "biome": 4,
+      "name": "Storm Sprite",
+      "hp": 2,
+      "points": 200,
+      "filename": "enemy_storm_sprite_0.png",
+      "status": "mock_generated"
+    },
+    {
+      "asset_id": "E29",
+      "type": "enemy_heavy",
+      "biome": 4,
+      "name": "Gas Giant",
+      "hp": 6,
+      "points": 400,
+      "filename": "enemy_gas_giant_0.png",
+      "status": "mock_generated"
+    },
+    {
+      "asset_id": "E30",
+      "type": "enemy_special",
+      "biome": 4,
+      "name": "Nebula Wraith",
+      "hp": 3,
+      "points": 250,
+      "filename": "enemy_nebula_wraith_0.png",
+      "status": "mock_generated"
+    },
+    {
+      "asset_id": "MB_04",
+      "type": "mid_boss",
+      "biome": 4,
+      "name": "Storm Cell Core",
+      "hp": 120,
+      "points": 3500,
+      "filename": "midboss_b4_0.png",
+      "status": "mock_generated"
+    },
+    {
+      "asset_id": "AUDIO_04",
+      "type": "ambient_audio",
+      "biome": 4,
+      "name": "Nebula Drift Ambient",
+      "filename": "nebula_drift_ambient.wav",
+      "status": "placeholder"
+    },
+    {
+      "asset_id": "E31",
+      "type": "enemy_scout",
+      "biome": 5,
+      "name": "Ice Shard",
+      "hp": 1,
+      "points": 125,
+      "filename": "enemy_ice_shard_0.png",
+      "status": "mock_generated"
+    },
+    {
+      "asset_id": "E32",
+      "type": "enemy_interceptor",
+      "biome": 5,
+      "name": "Frost Drone",
+      "hp": 2,
+      "points": 200,
+      "filename": "enemy_frost_drone_0.png",
+      "status": "mock_generated"
+    },
+    {
+      "asset_id": "E33",
+      "type": "enemy_heavy",
+      "biome": 5,
+      "name": "Glacier",
+      "hp": 7,
+      "points": 450,
+      "filename": "enemy_glacier_0.png",
+      "status": "mock_generated"
+    },
+    {
+      "asset_id": "E34",
+      "type": "enemy_special",
+      "biome": 5,
+      "name": "Ice Drone Swarm",
+      "hp": 1,
+      "points": 75,
+      "filename": "enemy_ice_swarm_0.png",
+      "status": "mock_generated"
+    },
+    {
+      "asset_id": "MB_05",
+      "type": "mid_boss",
+      "biome": 5,
+      "name": "Crystal Golem",
+      "hp": 140,
+      "points": 4000,
+      "filename": "midboss_b5_0.png",
+      "status": "mock_generated"
+    },
+    {
+      "asset_id": "AUDIO_05",
+      "type": "ambient_audio",
+      "biome": 5,
+      "name": "Ice Rings Ambient",
+      "filename": "ice_rings_ambient.wav",
+      "status": "placeholder"
+    },
+    {
+      "asset_id": "E35",
+      "type": "enemy_scout",
+      "biome": 6,
+      "name": "Ember Sprite",
+      "hp": 1,
+      "points": 150,
+      "filename": "enemy_ember_sprite_0.png",
+      "status": "mock_generated"
+    },
+    {
+      "asset_id": "E36",
+      "type": "enemy_interceptor",
+      "biome": 6,
+      "name": "Magma Wasp",
+      "hp": 2,
+      "points": 225,
+      "filename": "enemy_magma_wasp_0.png",
+      "status": "mock_generated"
+    },
+    {
+      "asset_id": "E37",
+      "type": "enemy_heavy",
+      "biome": 6,
+      "name": "Lava Golem",
+      "hp": 8,
+      "points": 500,
+      "filename": "enemy_lava_golem_0.png",
+      "status": "mock_generated"
+    },
+    {
+      "asset_id": "E38",
+      "type": "enemy_special",
+      "biome": 6,
+      "name": "Inferno Node",
+      "hp": 5,
+      "points": 350,
+      "filename": "enemy_inferno_node_0.png",
+      "status": "mock_generated"
+    },
+    {
+      "asset_id": "MB_06",
+      "type": "mid_boss",
+      "biome": 6,
+      "name": "Caldera Wyrm",
+      "hp": 160,
+      "points": 4500,
+      "filename": "midboss_b6_0.png",
+      "status": "mock_generated"
+    },
+    {
+      "asset_id": "AUDIO_06",
+      "type": "ambient_audio",
+      "biome": 6,
+      "name": "Inferno Core Ambient",
+      "filename": "inferno_core_ambient.wav",
+      "status": "placeholder"
+    },
+    {
+      "asset_id": "E39",
+      "type": "enemy_scout",
+      "biome": 7,
+      "name": "Static Spark",
+      "hp": 1,
+      "points": 150,
+      "filename": "enemy_static_spark_0.png",
+      "status": "mock_generated"
+    },
+    {
+      "asset_id": "E40",
+      "type": "enemy_interceptor",
+      "biome": 7,
+      "name": "Storm Hawk",
+      "hp": 3,
+      "points": 250,
+      "filename": "enemy_storm_hawk_0.png",
+      "status": "mock_generated"
+    },
+    {
+      "asset_id": "E41",
+      "type": "enemy_heavy",
+      "biome": 7,
+      "name": "Thunderhead",
+      "hp": 8,
+      "points": 500,
+      "filename": "enemy_thunderhead_0.png",
+      "status": "mock_generated"
+    },
+    {
+      "asset_id": "E42",
+      "type": "enemy_special",
+      "biome": 7,
+      "name": "Storm Sentinel",
+      "hp": 5,
+      "points": 350,
+      "filename": "enemy_storm_sentinel_0.png",
+      "status": "mock_generated"
+    },
+    {
+      "asset_id": "MB_07",
+      "type": "mid_boss",
+      "biome": 7,
+      "name": "Eye Of The Storm",
+      "hp": 180,
+      "points": 5000,
+      "filename": "midboss_b7_0.png",
+      "status": "mock_generated"
+    },
+    {
+      "asset_id": "AUDIO_07",
+      "type": "ambient_audio",
+      "biome": 7,
+      "name": "Storm Belt Ambient",
+      "filename": "storm_belt_ambient.wav",
+      "status": "placeholder"
+    },
+    {
+      "asset_id": "E43",
+      "type": "enemy_scout",
+      "biome": 8,
+      "name": "Salvage Drone",
+      "hp": 1,
+      "points": 150,
+      "filename": "enemy_salvage_drone_0.png",
+      "status": "mock_generated"
+    },
+    {
+      "asset_id": "E44",
+      "type": "enemy_interceptor",
+      "biome": 8,
+      "name": "Ghost Fighter",
+      "hp": 3,
+      "points": 250,
+      "filename": "enemy_ghost_fighter_0.png",
+      "status": "mock_generated"
+    },
+    {
+      "asset_id": "E45",
+      "type": "enemy_heavy",
+      "biome": 8,
+      "name": "Turret Battery",
+      "hp": 10,
+      "points": 600,
+      "filename": "enemy_turret_battery_0.png",
+      "status": "mock_generated"
+    },
+    {
+      "asset_id": "E46",
+      "type": "enemy_special",
+      "biome": 8,
+      "name": "Fleet Turret",
+      "hp": 4,
+      "points": 300,
+      "filename": "enemy_fleet_turret_0.png",
+      "status": "mock_generated"
+    },
+    {
+      "asset_id": "MB_08",
+      "type": "mid_boss",
+      "biome": 8,
+      "name": "Reactor Core Guardian",
+      "hp": 200,
+      "points": 5500,
+      "filename": "midboss_b8_0.png",
+      "status": "mock_generated"
+    },
+    {
+      "asset_id": "AUDIO_08",
+      "type": "ambient_audio",
+      "biome": 8,
+      "name": "Derelict Fleet Ambient",
+      "filename": "derelict_fleet_ambient.wav",
+      "status": "placeholder"
+    },
+    {
+      "asset_id": "E47",
+      "type": "enemy_scout",
+      "biome": 9,
+      "name": "Crawler",
+      "hp": 2,
+      "points": 175,
+      "filename": "enemy_crawler_0.png",
+      "status": "mock_generated"
+    },
+    {
+      "asset_id": "E48",
+      "type": "enemy_interceptor",
+      "biome": 9,
+      "name": "Spitter",
+      "hp": 3,
+      "points": 275,
+      "filename": "enemy_spitter_0.png",
+      "status": "mock_generated"
+    },
+    {
+      "asset_id": "E49",
+      "type": "enemy_heavy",
+      "biome": 9,
+      "name": "Brute",
+      "hp": 10,
+      "points": 600,
+      "filename": "enemy_brute_0.png",
+      "status": "mock_generated"
+    },
+    {
+      "asset_id": "E50",
+      "type": "enemy_special",
+      "biome": 9,
+      "name": "Hive Node",
+      "hp": 8,
+      "points": 400,
+      "filename": "enemy_hive_node_0.png",
+      "status": "mock_generated"
+    },
+    {
+      "asset_id": "MB_09",
+      "type": "mid_boss",
+      "biome": 9,
+      "name": "Brood Mother",
+      "hp": 220,
+      "points": 6000,
+      "filename": "midboss_b9_0.png",
+      "status": "mock_generated"
+    },
+    {
+      "asset_id": "AUDIO_09",
+      "type": "ambient_audio",
+      "biome": 9,
+      "name": "Xenomorph Hive Ambient",
+      "filename": "xenomorph_hive_ambient.wav",
+      "status": "placeholder"
+    },
+    {
+      "asset_id": "E51",
+      "type": "enemy_scout",
+      "biome": 10,
+      "name": "Glitch Fragment",
+      "hp": 2,
+      "points": 200,
+      "filename": "enemy_glitch_fragment_0.png",
+      "status": "mock_generated"
+    },
+    {
+      "asset_id": "E52",
+      "type": "enemy_interceptor",
+      "biome": 10,
+      "name": "Paradox Wisp",
+      "hp": 3,
+      "points": 300,
+      "filename": "enemy_paradox_wisp_0.png",
+      "status": "mock_generated"
+    },
+    {
+      "asset_id": "E53",
+      "type": "enemy_heavy",
+      "biome": 10,
+      "name": "Null Entity",
+      "hp": 12,
+      "points": 700,
+      "filename": "enemy_null_entity_0.png",
+      "status": "mock_generated"
+    },
+    {
+      "asset_id": "E54",
+      "type": "enemy_special",
+      "biome": 10,
+      "name": "Rift Aberration",
+      "hp": 6,
+      "points": 450,
+      "filename": "enemy_rift_aberration_0.png",
+      "status": "mock_generated"
+    },
+    {
+      "asset_id": "MB_10",
+      "type": "mid_boss",
+      "biome": 10,
+      "name": "Reality Anchor",
+      "hp": 240,
+      "points": 7000,
+      "filename": "midboss_b10_0.png",
+      "status": "mock_generated"
+    },
+    {
+      "asset_id": "AUDIO_10",
+      "type": "ambient_audio",
+      "biome": 10,
+      "name": "Core Rift Ambient",
+      "filename": "core_rift_ambient.wav",
+      "status": "placeholder"
+    }
+  ]
+}

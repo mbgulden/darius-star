@@ -1,0 +1,135 @@
+{
+  "catalog_version": "1.0",
+  "generated_at": "2026-06-09T12:02:11.629490+00:00",
+  "description": "Veo/Imagen/Lyria generation prompts and status for biome 4-10 assets",
+  "generator": "Veo 3.1-lite (video), Imagen 3 (sprites), Lyria 2 (audio)",
+  "total_entries": 14,
+  "assets": [
+    {
+      "asset_id": "BG_04",
+      "type": "parallax_background",
+      "biome": 4,
+      "name": "Nebula Drift Background",
+      "prompt": "Parallax scrolling space background for Nebula Drift, (0, 191, 255) dominant with (255, 0, 255) accents, 16-bit pixel art style, 3-layer parallax depth, 1280x720, seamless loop",
+      "status": "mock_generated",
+      "generated_at": "2026-06-09T11:58:19.228368+00:00"
+    },
+    {
+      "asset_id": "BOSS_04",
+      "type": "biome_boss",
+      "biome": 4,
+      "name": "Nebula Serpent",
+      "hp": 180,
+      "prompt": "16-bit pixel art boss sprite for nebula serpent, cyberpunk biomechanical aesthetic, 256x256, transparent background",
+      "status": "concept_exists_game_mock_generated"
+    },
+    {
+      "asset_id": "BG_05",
+      "type": "parallax_background",
+      "biome": 5,
+      "name": "Ice Rings Background",
+      "prompt": "Parallax scrolling space background for Ice Rings, (100, 200, 255) dominant with (200, 230, 255) accents, 16-bit pixel art style, 3-layer parallax depth, 1280x720, seamless loop",
+      "status": "mock_generated",
+      "generated_at": "2026-06-09T11:58:45.343955+00:00"
+    },
+    {
+      "asset_id": "BOSS_05",
+      "type": "biome_boss",
+      "biome": 5,
+      "name": "Frost Wyrm",
+      "hp": 200,
+      "prompt": "16-bit pixel art boss sprite for frost wyrm, cyberpunk biomechanical aesthetic, 256x256, transparent background",
+      "status": "concept_exists_game_mock_generated"
+    },
+    {
+      "asset_id": "BG_06",
+      "type": "parallax_background",
+      "biome": 6,
+      "name": "Inferno Core Background",
+      "prompt": "Parallax scrolling space background for Inferno Core, (255, 68, 0) dominant with (255, 170, 0) accents, 16-bit pixel art style, 3-layer parallax depth, 1280x720, seamless loop",
+      "status": "mock_generated",
+      "generated_at": "2026-06-09T11:59:16.717831+00:00"
+    },
+    {
+      "asset_id": "BOSS_06",
+      "type": "biome_boss",
+      "biome": 6,
+      "name": "Inferno Titan",
+      "hp": 220,
+      "prompt": "16-bit pixel art boss sprite for inferno titan, cyberpunk biomechanical aesthetic, 256x256, transparent background",
+      "status": "concept_exists_game_mock_generated"
+    },
+    {
+      "asset_id": "BG_07",
+      "type": "parallax_background",
+      "biome": 7,
+      "name": "Storm Belt Background",
+      "prompt": "Parallax scrolling space background for Storm Belt, (255, 255, 255) dominant with (68, 102, 255) accents, 16-bit pixel art style, 3-layer parallax depth, 1280x720, seamless loop",
+      "status": "mock_generated",
+      "generated_at": "2026-06-09T11:59:48.388961+00:00"
+    },
+    {
+      "asset_id": "BOSS_07",
+      "type": "biome_boss",
+      "biome": 7,
+      "name": "Tempest Overlord",
+      "hp": 360,
+      "prompt": "16-bit pixel art boss sprite for tempest overlord, cyberpunk biomechanical aesthetic, 256x256, transparent background",
+      "status": "concept_exists_game_mock_generated"
+    },
+    {
+      "asset_id": "BG_08",
+      "type": "parallax_background",
+      "biome": 8,
+      "name": "Derelict Fleet Background",
+      "prompt": "Parallax scrolling space background for Derelict Fleet, (85, 85, 102) dominant with (255, 34, 34) accents, 16-bit pixel art style, 3-layer parallax depth, 1280x720, seamless loop",
+      "status": "mock_generated",
+      "generated_at": "2026-06-09T12:00:23.206611+00:00"
+    },
+    {
+      "asset_id": "BOSS_08",
+      "type": "biome_boss",
+      "biome": 8,
+      "name": "Warship Hulk",
+      "hp": 400,
+      "prompt": "16-bit pixel art boss sprite for warship hulk, cyberpunk biomechanical aesthetic, 256x256, transparent background",
+      "status": "concept_exists_game_mock_generated"
+    },
+    {
+      "asset_id": "BG_09",
+      "type": "parallax_background",
+      "biome": 9,
+      "name": "Xenomorph Hive Background",
+      "prompt": "Parallax scrolling space background for Xenomorph Hive, (204, 102, 119) dominant with (51, 255, 51) accents, 16-bit pixel art style, 3-layer parallax depth, 1280x720, seamless loop",
+      "status": "mock_generated",
+      "generated_at": "2026-06-09T12:00:53.864918+00:00"
+    },
+    {
+      "asset_id": "BOSS_09",
+      "type": "biome_boss",
+      "biome": 9,
+      "name": "Hive Queen",
+      "hp": 440,
+      "prompt": "16-bit pixel art boss sprite for hive queen, cyberpunk biomechanical aesthetic, 256x256, transparent background",
+      "status": "concept_exists_game_mock_generated"
+    },
+    {
+      "asset_id": "BG_10",
+      "type": "parallax_background",
+      "biome": 10,
+      "name": "Core Rift Background",
+      "prompt": "Parallax scrolling space background for Core Rift, (0, 0, 0) dominant with (255, 255, 255) accents, 16-bit pixel art style, 3-layer parallax depth, 1280x720, seamless loop",
+      "status": "mock_generated",
+      "generated_at": "2026-06-09T12:01:34.167393+00:00"
+    },
+    {
+      "asset_id": "BOSS_10",
+      "type": "biome_boss",
+      "biome": 10,
+      "name": "Reality Warp",
+      "hp": 480,
+      "prompt": "16-bit pixel art boss sprite for reality warp, cyberpunk biomechanical aesthetic, 256x256, transparent background",
+      "status": "concept_exists_game_mock_generated"
+    }
+  ]
+}
