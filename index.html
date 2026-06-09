@@ -495,6 +495,17 @@
         let sirenTimer = 0;
         let biomeLevel = 1;  // Economy segment tracking
         let currentNGLevel = 0; // NG+ level (0 = normal run)
+
+        // --- Polish system variables (GRO-990: screen shake tints, hit-flash, overheat, low-health) ---
+        let screenFlashAlpha = 0;
+        let screenFlashColor = '#FFFFFF';
+        const hitFlashes = [];
+        let overheatWarning = false;
+        let overheatCritical = false;
+        let overheatTimer = 0;
+        let lowHealthPulseTimer = 0;
+        let glitchTimer = 0;
+        let glitchCooldown = 0;
         let ngPlusRun = false;  // Whether current run is NG+
         let _winTransition = false; // Flag for win screen transition
 
@@ -2381,6 +2392,14 @@
                 ctx.save();
                 ctx.translate(this.x, this.y);
 
+                // Faint red outline glow on player ship at low HP (§6.4)
+                const hpPct = this.shield / this.shieldMax;
+                if (hpPct < 0.25) {
+                    const outlineOpacity = hpPct < 0.10 ? 0.60 : 0.30;
+                    ctx.shadowColor = `rgba(255, 0, 0, ${outlineOpacity})`;
+                    ctx.shadowBlur = 6;
+                }
+
                 // --- Apply Ship Color Cosmetic plating tint ---
                 const mods = window.DS_UpgradeSystem ? window.DS_UpgradeSystem.getGameplayModifiers() : null;
                 const cosmeticColor = mods ? mods.cosmetics.shipColor : 'default';
@@ -2871,6 +2890,9 @@
                 this.hp -= amt;
                 playSound('hit');
                 createExplosion(this.x + Math.random()*120, this.y + Math.random()*100, '#ffffff', 5);
+                // Spawn hit-flash (§6.2) — boss gets 'boss_armored' or 'boss_vulnerable'
+                const flashType = this.hp > this.hpMax * 0.5 ? 'boss_armored' : 'boss_vulnerable';
+                spawnHitFlash(this.x + this.width/2, this.y + this.height/2, flashType);
 
                 if (this.hp <= 0) {
                     this.hp = 0;
@@ -3643,9 +3665,18 @@
         // --- Screen Shake & Cavern Navigation Helper Functions ---
         let shakeDuration = 0;
         let shakeIntensity = 0;
+
+        // Biome shake tint lookup (§6.1) — maps activeBiome number to flash color
+        const BIOME_SHAKE_TINTS = {
+            1: '#0A2244', 2: '#CC5500', 3: '#CC0000', 4: '#FF00FF', 5: '#88CCFF',
+            6: '#FF4400', 7: '#CCDDFF', 8: '#FF2222', 9: '#33FF33', 10: '#FF0088'
+        };
         function triggerScreenShake(duration, intensity) {
             shakeDuration = duration;
             shakeIntensity = intensity;
+            // Trigger biome-tinted screen flash (§6.1)
+            screenFlashAlpha = Math.min(0.15, intensity / 200);
+            screenFlashColor = BIOME_SHAKE_TINTS[biomeLevel] || '#FFFFFF';
         }
 
         let cavernNavActive = false;
@@ -4375,6 +4406,30 @@
             }
         }
 
+        // --- Hit-flash spawner (§6.2) — 5-tier hit-flash effects ---
+        const HIT_FLASH_CONFIG = {
+            scout:   { size: 16, maxFrames: 4,  frameRate: 0.025, duration: 0.10, color: '#FFFFFF' },
+            interceptor: { size: 24, maxFrames: 6,  frameRate: 0.025, duration: 0.15, color: '#FF0055' },
+            heavy:   { size: 32, maxFrames: 8,  frameRate: 0.025, duration: 0.20, color: '#FF5500' },
+            elite:   { size: 32, maxFrames: 8,  frameRate: 0.025, duration: 0.20, color: '#FF5500' },
+            grunt:   { size: 16, maxFrames: 4,  frameRate: 0.025, duration: 0.10, color: '#FFFFFF' },
+            boss_armored:  { size: 48, maxFrames: 10, frameRate: 0.025, duration: 0.25, color: '#FF3333' },
+            boss_vulnerable: { size: 64, maxFrames: 12, frameRate: 0.025, duration: 0.30, color: '#FFD700' },
+            boss:    { size: 48, maxFrames: 10, frameRate: 0.025, duration: 0.25, color: '#FF3333' }
+        };
+        function spawnHitFlash(x, y, enemyType) {
+            const cfg = HIT_FLASH_CONFIG[enemyType] || HIT_FLASH_CONFIG['scout'];
+            // 5% chance of critical hit-flash (upgrade one tier)
+            const isCrit = Math.random() < 0.05;
+            const critCfg = isCrit ? (enemyType === 'boss_vulnerable' ? HIT_FLASH_CONFIG['boss_vulnerable'] :
+                           (HIT_FLASH_CONFIG['heavy'] || cfg)) : cfg;
+            hitFlashes.push({
+                x, y, size: critCfg.size, maxFrames: critCfg.maxFrames,
+                frameRate: critCfg.frameRate, duration: critCfg.duration,
+                color: critCfg.color, life: critCfg.duration, frame: 0, frameTime: 0
+            });
+        }
+
         function checkCollision(rect1, rect2) {
             return rect1.x < rect2.x + rect2.width &&
                    rect1.x + rect1.width > rect2.x &&
@@ -4427,6 +4482,15 @@
             cavernStage = '';
             shakeDuration = 0;
             shakeIntensity = 0;
+            screenFlashAlpha = 0;
+            screenFlashColor = '#FFFFFF';
+            hitFlashes.length = 0;
+            overheatWarning = false;
+            overheatCritical = false;
+            overheatTimer = 0;
+            lowHealthPulseTimer = 0;
+            glitchTimer = 0;
+            glitchCooldown = 0;
             activeBiomeName = '1: Abyssal Trench';
             loadPortraitSprites();
             bossDefeated = false;
@@ -4492,6 +4556,7 @@
             particles.length = 0;
             vfxExplosions.length = 0;
             floatingTexts.length = 0;
+            hitFlashes.length = 0;
             scrapDrops.length = 0;
             pdgZaps.length = 0;
 
@@ -4722,6 +4787,56 @@
 
             player.update(dt);
 
+            // --- Overheat detection (§6.3) — Supreme Nova (weapon 5) held fire tracking ---
+            const playerFiring = (keys[' '] || keys['j'] || keys['J']) && player.weaponLevel === 5;
+            if (playerFiring && !player.isSpecialActive) {
+                overheatTimer += dt;
+                overheatWarning = overheatTimer >= 3.0;
+                overheatCritical = overheatTimer >= 4.0;
+                if (overheatCritical) {
+                    // Overheat trigger: screen flash, weapon reset, damage, smoke
+                    screenFlashAlpha = Math.max(screenFlashAlpha, 0.08);
+                    screenFlashColor = '#FF0000';
+                    player.weaponLevel = 1;
+                    player.takeDamage(1);
+                    overheatTimer = 0;
+                    overheatWarning = false;
+                    overheatCritical = false;
+                    // Smoke particles from ship
+                    for (let s = 0; s < 8; s++) {
+                        particles.push(new Particle(
+                            player.x + player.width/2, player.y + player.height/2, '#888888'
+                        ));
+                    }
+                }
+            } else {
+                // Cool down when not firing at level 5
+                if (overheatTimer > 0) overheatTimer = Math.max(0, overheatTimer - dt * 2);
+                if (overheatTimer === 0) { overheatWarning = false; overheatCritical = false; }
+            }
+
+            // --- Low-health pulse & glitch timers (§6.4) ---
+            const hpPct = player.shield / player.shieldMax;
+            if (hpPct < 0.25) {
+                lowHealthPulseTimer += dt;
+                // Glitch lines at <10% HP: cycle 100ms glitch, then 1-2s cooldown
+                if (hpPct < 0.10) {
+                    if (glitchTimer > 0) {
+                        glitchTimer -= dt; // glitch active, count down
+                    } else {
+                        glitchCooldown -= dt;
+                        if (glitchCooldown <= 0) {
+                            glitchTimer = 0.10; // trigger 100ms glitch
+                            glitchCooldown = 1.0 + Math.random() * 2.0; // 1-3s until next
+                        }
+                    }
+                }
+            } else {
+                lowHealthPulseTimer = 0;
+                glitchTimer = 0;
+                glitchCooldown = 1.0;
+            }
+
             if (!bossSpawned && !bossIntroPlaying) {
                 enemySpawnTimer -= dt;
                 if (enemySpawnTimer <= 0) {
@@ -4808,6 +4923,8 @@
                         e.hp -= dmg;
                         bullets.splice(j, 1);
                         playSound('hit');
+                        // Spawn hit-flash (§6.2) at impact point
+                        spawnHitFlash(e.x + e.width/2, e.y + e.height/2, e.enemyType);
 
                         if (e.hp <= 0) {
                             createExplosion(e.x + e.width/2, e.y + e.height/2, e.color, 12);
@@ -5018,6 +5135,19 @@
 
             uiShield.innerText = Math.round(player.shield) + '%';
             uiShield.style.color = player.shield > 40 ? '#00ff00' : '#ff0033';
+            // Low-health health bar pulse animation (§6.4)
+            const uiHpPercent = player.shield / player.shieldMax;
+            if (uiHpPercent < 0.25) {
+                const pulse = Math.sin(lowHealthPulseTimer * 9) * 0.5 + 0.5;
+                const r = Math.floor(255 * pulse);
+                const g = Math.floor(0 * pulse);
+                const b = Math.floor(0 * pulse);
+                uiShield.style.textShadow = `0 0 ${4 + pulse * 8}px rgb(${r},${g},${b})`;
+                uiShield.style.transform = `scale(${1 + pulse * 0.15})`;
+            } else {
+                uiShield.style.textShadow = '';
+                uiShield.style.transform = '';
+            }
             uiWeapon.innerText = 'LVL ' + player.weaponLevel + (player.weaponLevel === 5 ? ' (MAX)' : '');
             uiScore.innerText = score;
             if (uiScrap) uiScrap.innerText = '⚙️' + runScrap;
@@ -5130,7 +5260,106 @@
             particles.forEach(p => p.draw());
             floatingTexts.forEach(ft => ft.draw());
 
-            // Boss asset loading indicator
+            // --- Hit-flash effects (5-tier weapon hit) ---
+            for (const hf of hitFlashes) {
+                hf.frameTime += 0.016;
+                if (hf.frameTime >= hf.frameRate) {
+                    hf.frameTime -= hf.frameRate;
+                    hf.frame++;
+                }
+                const lifeRatio = hf.life / hf.duration;
+                const alpha = lifeRatio;
+                const size = hf.size * (1 + (1 - lifeRatio) * 0.3);
+                if (hf.frame < hf.maxFrames) {
+                    ctx.save();
+                    ctx.globalAlpha = alpha;
+                    ctx.fillStyle = hf.color;
+                    ctx.shadowColor = hf.color;
+                    ctx.shadowBlur = size * 0.5;
+                    const hs = size * (1 - hf.frame / hf.maxFrames);
+                    ctx.fillRect(hf.x - hs/2, hf.y - hs/2, hs, hs);
+                    ctx.restore();
+                }
+            }
+            // Cull expired hit flashes
+            for (let i = hitFlashes.length - 1; i >= 0; i--) {
+                hitFlashes[i].life -= 0.016;
+                if (hitFlashes[i].life <= 0) hitFlashes.splice(i, 1);
+            }
+
+            // --- Screen flash overlay (biome shake tint) ---
+            if (screenFlashAlpha > 0) {
+                ctx.save();
+                ctx.globalAlpha = screenFlashAlpha;
+                ctx.fillStyle = screenFlashColor;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.restore();
+                screenFlashAlpha = Math.max(0, screenFlashAlpha - 0.016);
+            }
+
+            // --- Low-health pulse (screen border red at <25% HP) ---
+            const drawHpPercent = player.shield / player.shieldMax;
+            if (drawHpPercent < 0.25) {
+                const urgency = drawHpPercent < 0.10 ? 1.0 : 0.5;
+                const pulseAlpha = (0.10 + Math.sin(lowHealthPulseTimer * 9) * 0.06) * urgency;
+                const borderWidth = 8 + (drawHpPercent < 0.10 ? 6 : 0);
+                ctx.save();
+                ctx.globalAlpha = pulseAlpha;
+                ctx.fillStyle = '#FF0000';
+                ctx.fillRect(0, 0, canvas.width, borderWidth);
+                ctx.fillRect(0, canvas.height - borderWidth, canvas.width, borderWidth);
+                ctx.fillRect(0, 0, borderWidth, canvas.height);
+                ctx.fillRect(canvas.width - borderWidth, 0, borderWidth, canvas.height);
+                ctx.restore();
+
+                // Static glitch lines at <10% HP
+                if (glitchTimer > 0) {
+                    ctx.save();
+                    ctx.globalAlpha = 0.05;
+                    ctx.fillStyle = '#FFFFFF';
+                    for (let g = 0; g < 3; g++) {
+                        const gy = Math.random() * canvas.height;
+                        ctx.fillRect(0, gy, canvas.width, 2 + Math.random() * 4);
+                    }
+                    ctx.restore();
+                }
+            }
+
+            // --- Overheat glow (weapon barrel white-to-red gradient) ---
+            if (overheatWarning) {
+                const owAlpha = overheatCritical ? 0.25 : 0.12;
+                const pulse = Math.sin(gameTime * 12) * 0.5 + 0.5;
+                ctx.save();
+                ctx.globalAlpha = owAlpha * (0.5 + pulse * 0.5);
+                const shipCX = player.x + player.width;
+                const shipCY = player.y + player.height / 2;
+                const glowRadius = overheatCritical ? 60 : 40;
+                const grad = ctx.createRadialGradient(shipCX - 10, shipCY, 0, shipCX, shipCY, glowRadius);
+                grad.addColorStop(0, '#FFFFFF');
+                grad.addColorStop(0.2, '#FFAA00');
+                grad.addColorStop(0.6, '#FF4400');
+                grad.addColorStop(1, 'transparent');
+                ctx.fillStyle = grad;
+                ctx.fillRect(shipCX - glowRadius, shipCY - glowRadius, glowRadius * 2, glowRadius * 2);
+                if (overheatCritical) {
+                    ctx.fillStyle = `rgba(255, 0, 0, ${0.3 + pulse * 0.3})`;
+                    ctx.fillRect(10, canvas.height - 18, 120, 10);
+                    ctx.fillStyle = '#FFFFFF';
+                    ctx.font = '9px monospace';
+                    ctx.fillText('OVERHEAT!', 14, canvas.height - 10);
+                }
+                ctx.restore();
+            }
+
+            // --- Screen shake decay ---
+            if (shakeDuration > 0) {
+                shakeDuration = Math.max(0, shakeDuration - 0.016);
+                if (shakeDuration <= 0) {
+                    shakeIntensity = 0;
+                }
+            }
+            
+            // --- Biome environmental particles ---
             if (bossAssetsLoading && !bossAssetsLoaded) {
                 const loadY = canvas.height - 30;
                 ctx.fillStyle = 'rgba(5, 5, 15, 0.8)';
