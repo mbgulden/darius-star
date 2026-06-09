@@ -1,168 +1,2433 @@
 {
-  "version": 2,
-  "updated": "2026-06-09T07:31:01Z",
-  "total_sprites": 23,
-  "sprites": [
-    {
-      "name": "bg_city_0",
-      "file": "bg_city_0.png",
-      "path": "assets/sprites/bg_city_0.png",
-      "size_bytes": 7906,
-      "sha256_short": "f3a684e09a74"
+  "manifest_version": "1.0",
+  "generated_at": "2026-06-09T08:51:14.815929Z",
+  "sprites": {
+    "bg_city": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "bg_city_0.png",
+          "path": "assets/sprites/bg_city_0.png",
+          "width": 800,
+          "height": 450,
+          "is_power_of_two": false
+        }
+      ],
+      "frame_count": 1,
+      "width": 800,
+      "height": 450,
+      "is_valid_power_of_two": false
     },
-    {
-      "name": "bg_nebula_0",
-      "file": "bg_nebula_0.png",
-      "path": "assets/sprites/bg_nebula_0.png",
-      "size_bytes": 1023389,
-      "sha256_short": "30738e7131ea"
+    "bg_nebula": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "bg_nebula_0.png",
+          "path": "assets/sprites/bg_nebula_0.png",
+          "width": 1408,
+          "height": 768,
+          "is_power_of_two": false
+        }
+      ],
+      "frame_count": 1,
+      "width": 1408,
+      "height": 768,
+      "is_valid_power_of_two": false
     },
-    {
-      "name": "boss_0",
-      "file": "boss_0.png",
-      "path": "assets/sprites/boss_0.png",
-      "size_bytes": 1827289,
-      "sha256_short": "0d0d088b0eab"
+    "boss": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "boss_0.png",
+          "path": "assets/sprites/boss_0.png",
+          "width": 1280,
+          "height": 896,
+          "is_power_of_two": false
+        }
+      ],
+      "frame_count": 1,
+      "width": 1280,
+      "height": 896,
+      "is_valid_power_of_two": false
     },
-    {
-      "name": "boss_minion_0",
-      "file": "boss_minion_0.png",
-      "path": "assets/sprites/boss_minion_0.png",
-      "size_bytes": 601383,
-      "sha256_short": "82b4b06f7ac8"
+    "boss_death": {
+      "frames": [
+        {
+          "index": 1,
+          "filename": "boss_death_0001.png",
+          "path": "assets/sprites/boss_death_0001.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 2,
+          "filename": "boss_death_0002.png",
+          "path": "assets/sprites/boss_death_0002.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 3,
+          "filename": "boss_death_0003.png",
+          "path": "assets/sprites/boss_death_0003.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 4,
+          "filename": "boss_death_0004.png",
+          "path": "assets/sprites/boss_death_0004.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 5,
+          "filename": "boss_death_0005.png",
+          "path": "assets/sprites/boss_death_0005.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 6,
+          "filename": "boss_death_0006.png",
+          "path": "assets/sprites/boss_death_0006.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 7,
+          "filename": "boss_death_0007.png",
+          "path": "assets/sprites/boss_death_0007.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 8,
+          "filename": "boss_death_0008.png",
+          "path": "assets/sprites/boss_death_0008.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 9,
+          "filename": "boss_death_0009.png",
+          "path": "assets/sprites/boss_death_0009.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 10,
+          "filename": "boss_death_0010.png",
+          "path": "assets/sprites/boss_death_0010.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 11,
+          "filename": "boss_death_0011.png",
+          "path": "assets/sprites/boss_death_0011.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 12,
+          "filename": "boss_death_0012.png",
+          "path": "assets/sprites/boss_death_0012.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 13,
+          "filename": "boss_death_0013.png",
+          "path": "assets/sprites/boss_death_0013.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 14,
+          "filename": "boss_death_0014.png",
+          "path": "assets/sprites/boss_death_0014.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 15,
+          "filename": "boss_death_0015.png",
+          "path": "assets/sprites/boss_death_0015.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 16,
+          "filename": "boss_death_0016.png",
+          "path": "assets/sprites/boss_death_0016.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 17,
+          "filename": "boss_death_0017.png",
+          "path": "assets/sprites/boss_death_0017.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 18,
+          "filename": "boss_death_0018.png",
+          "path": "assets/sprites/boss_death_0018.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 19,
+          "filename": "boss_death_0019.png",
+          "path": "assets/sprites/boss_death_0019.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 20,
+          "filename": "boss_death_0020.png",
+          "path": "assets/sprites/boss_death_0020.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 21,
+          "filename": "boss_death_0021.png",
+          "path": "assets/sprites/boss_death_0021.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 22,
+          "filename": "boss_death_0022.png",
+          "path": "assets/sprites/boss_death_0022.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 23,
+          "filename": "boss_death_0023.png",
+          "path": "assets/sprites/boss_death_0023.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 24,
+          "filename": "boss_death_0024.png",
+          "path": "assets/sprites/boss_death_0024.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 25,
+          "filename": "boss_death_0025.png",
+          "path": "assets/sprites/boss_death_0025.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 26,
+          "filename": "boss_death_0026.png",
+          "path": "assets/sprites/boss_death_0026.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 27,
+          "filename": "boss_death_0027.png",
+          "path": "assets/sprites/boss_death_0027.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 28,
+          "filename": "boss_death_0028.png",
+          "path": "assets/sprites/boss_death_0028.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 29,
+          "filename": "boss_death_0029.png",
+          "path": "assets/sprites/boss_death_0029.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 30,
+          "filename": "boss_death_0030.png",
+          "path": "assets/sprites/boss_death_0030.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 31,
+          "filename": "boss_death_0031.png",
+          "path": "assets/sprites/boss_death_0031.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 32,
+          "filename": "boss_death_0032.png",
+          "path": "assets/sprites/boss_death_0032.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        }
+      ],
+      "frame_count": 32,
+      "width": 1280,
+      "height": 720,
+      "is_valid_power_of_two": false
     },
-    {
-      "name": "explosion_0",
-      "file": "explosion_0.png",
-      "path": "assets/sprites/explosion_0.png",
-      "size_bytes": 1016253,
-      "sha256_short": "518c74a0ac40"
+    "boss_idle": {
+      "frames": [
+        {
+          "index": 1,
+          "filename": "boss_idle_0001.png",
+          "path": "assets/sprites/boss_idle_0001.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 2,
+          "filename": "boss_idle_0002.png",
+          "path": "assets/sprites/boss_idle_0002.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 3,
+          "filename": "boss_idle_0003.png",
+          "path": "assets/sprites/boss_idle_0003.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 4,
+          "filename": "boss_idle_0004.png",
+          "path": "assets/sprites/boss_idle_0004.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 5,
+          "filename": "boss_idle_0005.png",
+          "path": "assets/sprites/boss_idle_0005.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 6,
+          "filename": "boss_idle_0006.png",
+          "path": "assets/sprites/boss_idle_0006.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 7,
+          "filename": "boss_idle_0007.png",
+          "path": "assets/sprites/boss_idle_0007.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 8,
+          "filename": "boss_idle_0008.png",
+          "path": "assets/sprites/boss_idle_0008.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 9,
+          "filename": "boss_idle_0009.png",
+          "path": "assets/sprites/boss_idle_0009.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 10,
+          "filename": "boss_idle_0010.png",
+          "path": "assets/sprites/boss_idle_0010.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 11,
+          "filename": "boss_idle_0011.png",
+          "path": "assets/sprites/boss_idle_0011.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 12,
+          "filename": "boss_idle_0012.png",
+          "path": "assets/sprites/boss_idle_0012.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 13,
+          "filename": "boss_idle_0013.png",
+          "path": "assets/sprites/boss_idle_0013.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 14,
+          "filename": "boss_idle_0014.png",
+          "path": "assets/sprites/boss_idle_0014.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 15,
+          "filename": "boss_idle_0015.png",
+          "path": "assets/sprites/boss_idle_0015.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 16,
+          "filename": "boss_idle_0016.png",
+          "path": "assets/sprites/boss_idle_0016.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 17,
+          "filename": "boss_idle_0017.png",
+          "path": "assets/sprites/boss_idle_0017.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 18,
+          "filename": "boss_idle_0018.png",
+          "path": "assets/sprites/boss_idle_0018.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 19,
+          "filename": "boss_idle_0019.png",
+          "path": "assets/sprites/boss_idle_0019.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 20,
+          "filename": "boss_idle_0020.png",
+          "path": "assets/sprites/boss_idle_0020.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 21,
+          "filename": "boss_idle_0021.png",
+          "path": "assets/sprites/boss_idle_0021.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 22,
+          "filename": "boss_idle_0022.png",
+          "path": "assets/sprites/boss_idle_0022.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 23,
+          "filename": "boss_idle_0023.png",
+          "path": "assets/sprites/boss_idle_0023.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 24,
+          "filename": "boss_idle_0024.png",
+          "path": "assets/sprites/boss_idle_0024.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 25,
+          "filename": "boss_idle_0025.png",
+          "path": "assets/sprites/boss_idle_0025.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 26,
+          "filename": "boss_idle_0026.png",
+          "path": "assets/sprites/boss_idle_0026.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 27,
+          "filename": "boss_idle_0027.png",
+          "path": "assets/sprites/boss_idle_0027.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 28,
+          "filename": "boss_idle_0028.png",
+          "path": "assets/sprites/boss_idle_0028.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 29,
+          "filename": "boss_idle_0029.png",
+          "path": "assets/sprites/boss_idle_0029.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 30,
+          "filename": "boss_idle_0030.png",
+          "path": "assets/sprites/boss_idle_0030.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 31,
+          "filename": "boss_idle_0031.png",
+          "path": "assets/sprites/boss_idle_0031.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 32,
+          "filename": "boss_idle_0032.png",
+          "path": "assets/sprites/boss_idle_0032.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        }
+      ],
+      "frame_count": 32,
+      "width": 1280,
+      "height": 720,
+      "is_valid_power_of_two": false
     },
-    {
-      "name": "explosion_1",
-      "file": "explosion_1.png",
-      "path": "assets/sprites/explosion_1.png",
-      "size_bytes": 992536,
-      "sha256_short": "bd699dce3be4"
+    "boss_laser_charge": {
+      "frames": [
+        {
+          "index": 1,
+          "filename": "boss_laser_charge_0001.png",
+          "path": "assets/sprites/boss_laser_charge_0001.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 2,
+          "filename": "boss_laser_charge_0002.png",
+          "path": "assets/sprites/boss_laser_charge_0002.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 3,
+          "filename": "boss_laser_charge_0003.png",
+          "path": "assets/sprites/boss_laser_charge_0003.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 4,
+          "filename": "boss_laser_charge_0004.png",
+          "path": "assets/sprites/boss_laser_charge_0004.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 5,
+          "filename": "boss_laser_charge_0005.png",
+          "path": "assets/sprites/boss_laser_charge_0005.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 6,
+          "filename": "boss_laser_charge_0006.png",
+          "path": "assets/sprites/boss_laser_charge_0006.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 7,
+          "filename": "boss_laser_charge_0007.png",
+          "path": "assets/sprites/boss_laser_charge_0007.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 8,
+          "filename": "boss_laser_charge_0008.png",
+          "path": "assets/sprites/boss_laser_charge_0008.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 9,
+          "filename": "boss_laser_charge_0009.png",
+          "path": "assets/sprites/boss_laser_charge_0009.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 10,
+          "filename": "boss_laser_charge_0010.png",
+          "path": "assets/sprites/boss_laser_charge_0010.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 11,
+          "filename": "boss_laser_charge_0011.png",
+          "path": "assets/sprites/boss_laser_charge_0011.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 12,
+          "filename": "boss_laser_charge_0012.png",
+          "path": "assets/sprites/boss_laser_charge_0012.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 13,
+          "filename": "boss_laser_charge_0013.png",
+          "path": "assets/sprites/boss_laser_charge_0013.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 14,
+          "filename": "boss_laser_charge_0014.png",
+          "path": "assets/sprites/boss_laser_charge_0014.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 15,
+          "filename": "boss_laser_charge_0015.png",
+          "path": "assets/sprites/boss_laser_charge_0015.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 16,
+          "filename": "boss_laser_charge_0016.png",
+          "path": "assets/sprites/boss_laser_charge_0016.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 17,
+          "filename": "boss_laser_charge_0017.png",
+          "path": "assets/sprites/boss_laser_charge_0017.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 18,
+          "filename": "boss_laser_charge_0018.png",
+          "path": "assets/sprites/boss_laser_charge_0018.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 19,
+          "filename": "boss_laser_charge_0019.png",
+          "path": "assets/sprites/boss_laser_charge_0019.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 20,
+          "filename": "boss_laser_charge_0020.png",
+          "path": "assets/sprites/boss_laser_charge_0020.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 21,
+          "filename": "boss_laser_charge_0021.png",
+          "path": "assets/sprites/boss_laser_charge_0021.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 22,
+          "filename": "boss_laser_charge_0022.png",
+          "path": "assets/sprites/boss_laser_charge_0022.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 23,
+          "filename": "boss_laser_charge_0023.png",
+          "path": "assets/sprites/boss_laser_charge_0023.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 24,
+          "filename": "boss_laser_charge_0024.png",
+          "path": "assets/sprites/boss_laser_charge_0024.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 25,
+          "filename": "boss_laser_charge_0025.png",
+          "path": "assets/sprites/boss_laser_charge_0025.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 26,
+          "filename": "boss_laser_charge_0026.png",
+          "path": "assets/sprites/boss_laser_charge_0026.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 27,
+          "filename": "boss_laser_charge_0027.png",
+          "path": "assets/sprites/boss_laser_charge_0027.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 28,
+          "filename": "boss_laser_charge_0028.png",
+          "path": "assets/sprites/boss_laser_charge_0028.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 29,
+          "filename": "boss_laser_charge_0029.png",
+          "path": "assets/sprites/boss_laser_charge_0029.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 30,
+          "filename": "boss_laser_charge_0030.png",
+          "path": "assets/sprites/boss_laser_charge_0030.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 31,
+          "filename": "boss_laser_charge_0031.png",
+          "path": "assets/sprites/boss_laser_charge_0031.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 32,
+          "filename": "boss_laser_charge_0032.png",
+          "path": "assets/sprites/boss_laser_charge_0032.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        }
+      ],
+      "frame_count": 32,
+      "width": 1280,
+      "height": 720,
+      "is_valid_power_of_two": false
     },
-    {
-      "name": "explosion_2",
-      "file": "explosion_2.png",
-      "path": "assets/sprites/explosion_2.png",
-      "size_bytes": 801059,
-      "sha256_short": "836b7f71a89d"
+    "boss_minion": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "boss_minion_0.png",
+          "path": "assets/sprites/boss_minion_0.png",
+          "width": 1024,
+          "height": 1024,
+          "is_power_of_two": true
+        }
+      ],
+      "frame_count": 1,
+      "width": 1024,
+      "height": 1024,
+      "is_valid_power_of_two": true
     },
-    {
-      "name": "explosion_3",
-      "file": "explosion_3.png",
-      "path": "assets/sprites/explosion_3.png",
-      "size_bytes": 872896,
-      "sha256_short": "b4c7e76d527d"
+    "boss_rage": {
+      "frames": [
+        {
+          "index": 1,
+          "filename": "boss_rage_0001.png",
+          "path": "assets/sprites/boss_rage_0001.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 2,
+          "filename": "boss_rage_0002.png",
+          "path": "assets/sprites/boss_rage_0002.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 3,
+          "filename": "boss_rage_0003.png",
+          "path": "assets/sprites/boss_rage_0003.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 4,
+          "filename": "boss_rage_0004.png",
+          "path": "assets/sprites/boss_rage_0004.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 5,
+          "filename": "boss_rage_0005.png",
+          "path": "assets/sprites/boss_rage_0005.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 6,
+          "filename": "boss_rage_0006.png",
+          "path": "assets/sprites/boss_rage_0006.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 7,
+          "filename": "boss_rage_0007.png",
+          "path": "assets/sprites/boss_rage_0007.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 8,
+          "filename": "boss_rage_0008.png",
+          "path": "assets/sprites/boss_rage_0008.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 9,
+          "filename": "boss_rage_0009.png",
+          "path": "assets/sprites/boss_rage_0009.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 10,
+          "filename": "boss_rage_0010.png",
+          "path": "assets/sprites/boss_rage_0010.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 11,
+          "filename": "boss_rage_0011.png",
+          "path": "assets/sprites/boss_rage_0011.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 12,
+          "filename": "boss_rage_0012.png",
+          "path": "assets/sprites/boss_rage_0012.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 13,
+          "filename": "boss_rage_0013.png",
+          "path": "assets/sprites/boss_rage_0013.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 14,
+          "filename": "boss_rage_0014.png",
+          "path": "assets/sprites/boss_rage_0014.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 15,
+          "filename": "boss_rage_0015.png",
+          "path": "assets/sprites/boss_rage_0015.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 16,
+          "filename": "boss_rage_0016.png",
+          "path": "assets/sprites/boss_rage_0016.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 17,
+          "filename": "boss_rage_0017.png",
+          "path": "assets/sprites/boss_rage_0017.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 18,
+          "filename": "boss_rage_0018.png",
+          "path": "assets/sprites/boss_rage_0018.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 19,
+          "filename": "boss_rage_0019.png",
+          "path": "assets/sprites/boss_rage_0019.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 20,
+          "filename": "boss_rage_0020.png",
+          "path": "assets/sprites/boss_rage_0020.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 21,
+          "filename": "boss_rage_0021.png",
+          "path": "assets/sprites/boss_rage_0021.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 22,
+          "filename": "boss_rage_0022.png",
+          "path": "assets/sprites/boss_rage_0022.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 23,
+          "filename": "boss_rage_0023.png",
+          "path": "assets/sprites/boss_rage_0023.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 24,
+          "filename": "boss_rage_0024.png",
+          "path": "assets/sprites/boss_rage_0024.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 25,
+          "filename": "boss_rage_0025.png",
+          "path": "assets/sprites/boss_rage_0025.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 26,
+          "filename": "boss_rage_0026.png",
+          "path": "assets/sprites/boss_rage_0026.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 27,
+          "filename": "boss_rage_0027.png",
+          "path": "assets/sprites/boss_rage_0027.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 28,
+          "filename": "boss_rage_0028.png",
+          "path": "assets/sprites/boss_rage_0028.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 29,
+          "filename": "boss_rage_0029.png",
+          "path": "assets/sprites/boss_rage_0029.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 30,
+          "filename": "boss_rage_0030.png",
+          "path": "assets/sprites/boss_rage_0030.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 31,
+          "filename": "boss_rage_0031.png",
+          "path": "assets/sprites/boss_rage_0031.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 32,
+          "filename": "boss_rage_0032.png",
+          "path": "assets/sprites/boss_rage_0032.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        }
+      ],
+      "frame_count": 32,
+      "width": 1280,
+      "height": 720,
+      "is_valid_power_of_two": false
     },
-    {
-      "name": "heavy_0",
-      "file": "heavy_0.png",
-      "path": "assets/sprites/heavy_0.png",
-      "size_bytes": 545468,
-      "sha256_short": "b0af12491bad"
+    "explosion": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "explosion_0.png",
+          "path": "assets/sprites/explosion_0.png",
+          "width": 1024,
+          "height": 1024,
+          "is_power_of_two": true
+        },
+        {
+          "index": 1,
+          "filename": "explosion_1.png",
+          "path": "assets/sprites/explosion_1.png",
+          "width": 1024,
+          "height": 1024,
+          "is_power_of_two": true
+        },
+        {
+          "index": 2,
+          "filename": "explosion_2.png",
+          "path": "assets/sprites/explosion_2.png",
+          "width": 1024,
+          "height": 1024,
+          "is_power_of_two": true
+        },
+        {
+          "index": 3,
+          "filename": "explosion_3.png",
+          "path": "assets/sprites/explosion_3.png",
+          "width": 1024,
+          "height": 1024,
+          "is_power_of_two": true
+        }
+      ],
+      "frame_count": 4,
+      "width": 1024,
+      "height": 1024,
+      "is_valid_power_of_two": true
     },
-    {
-      "name": "interceptor_0",
-      "file": "interceptor_0.png",
-      "path": "assets/sprites/interceptor_0.png",
-      "size_bytes": 543040,
-      "sha256_short": "0ce410559529"
+    "heavy": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "heavy_0.png",
+          "path": "assets/sprites/heavy_0.png",
+          "width": 1024,
+          "height": 1024,
+          "is_power_of_two": true
+        }
+      ],
+      "frame_count": 1,
+      "width": 1024,
+      "height": 1024,
+      "is_valid_power_of_two": true
     },
-    {
-      "name": "laser_0",
-      "file": "laser_0.png",
-      "path": "assets/sprites/laser_0.png",
-      "size_bytes": 637004,
-      "sha256_short": "d2234da389c7"
+    "heavy_cycle": {
+      "frames": [
+        {
+          "index": 1,
+          "filename": "heavy_cycle_0001.png",
+          "path": "assets/sprites/heavy_cycle_0001.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 2,
+          "filename": "heavy_cycle_0002.png",
+          "path": "assets/sprites/heavy_cycle_0002.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 3,
+          "filename": "heavy_cycle_0003.png",
+          "path": "assets/sprites/heavy_cycle_0003.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 4,
+          "filename": "heavy_cycle_0004.png",
+          "path": "assets/sprites/heavy_cycle_0004.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 5,
+          "filename": "heavy_cycle_0005.png",
+          "path": "assets/sprites/heavy_cycle_0005.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 6,
+          "filename": "heavy_cycle_0006.png",
+          "path": "assets/sprites/heavy_cycle_0006.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 7,
+          "filename": "heavy_cycle_0007.png",
+          "path": "assets/sprites/heavy_cycle_0007.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 8,
+          "filename": "heavy_cycle_0008.png",
+          "path": "assets/sprites/heavy_cycle_0008.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 9,
+          "filename": "heavy_cycle_0009.png",
+          "path": "assets/sprites/heavy_cycle_0009.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 10,
+          "filename": "heavy_cycle_0010.png",
+          "path": "assets/sprites/heavy_cycle_0010.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 11,
+          "filename": "heavy_cycle_0011.png",
+          "path": "assets/sprites/heavy_cycle_0011.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 12,
+          "filename": "heavy_cycle_0012.png",
+          "path": "assets/sprites/heavy_cycle_0012.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 13,
+          "filename": "heavy_cycle_0013.png",
+          "path": "assets/sprites/heavy_cycle_0013.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 14,
+          "filename": "heavy_cycle_0014.png",
+          "path": "assets/sprites/heavy_cycle_0014.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 15,
+          "filename": "heavy_cycle_0015.png",
+          "path": "assets/sprites/heavy_cycle_0015.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 16,
+          "filename": "heavy_cycle_0016.png",
+          "path": "assets/sprites/heavy_cycle_0016.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 17,
+          "filename": "heavy_cycle_0017.png",
+          "path": "assets/sprites/heavy_cycle_0017.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 18,
+          "filename": "heavy_cycle_0018.png",
+          "path": "assets/sprites/heavy_cycle_0018.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 19,
+          "filename": "heavy_cycle_0019.png",
+          "path": "assets/sprites/heavy_cycle_0019.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 20,
+          "filename": "heavy_cycle_0020.png",
+          "path": "assets/sprites/heavy_cycle_0020.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 21,
+          "filename": "heavy_cycle_0021.png",
+          "path": "assets/sprites/heavy_cycle_0021.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 22,
+          "filename": "heavy_cycle_0022.png",
+          "path": "assets/sprites/heavy_cycle_0022.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 23,
+          "filename": "heavy_cycle_0023.png",
+          "path": "assets/sprites/heavy_cycle_0023.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 24,
+          "filename": "heavy_cycle_0024.png",
+          "path": "assets/sprites/heavy_cycle_0024.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 25,
+          "filename": "heavy_cycle_0025.png",
+          "path": "assets/sprites/heavy_cycle_0025.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 26,
+          "filename": "heavy_cycle_0026.png",
+          "path": "assets/sprites/heavy_cycle_0026.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 27,
+          "filename": "heavy_cycle_0027.png",
+          "path": "assets/sprites/heavy_cycle_0027.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 28,
+          "filename": "heavy_cycle_0028.png",
+          "path": "assets/sprites/heavy_cycle_0028.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 29,
+          "filename": "heavy_cycle_0029.png",
+          "path": "assets/sprites/heavy_cycle_0029.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 30,
+          "filename": "heavy_cycle_0030.png",
+          "path": "assets/sprites/heavy_cycle_0030.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 31,
+          "filename": "heavy_cycle_0031.png",
+          "path": "assets/sprites/heavy_cycle_0031.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 32,
+          "filename": "heavy_cycle_0032.png",
+          "path": "assets/sprites/heavy_cycle_0032.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        }
+      ],
+      "frame_count": 32,
+      "width": 1280,
+      "height": 720,
+      "is_valid_power_of_two": false
     },
-    {
-      "name": "laser_0_glow",
-      "file": "laser_0_glow.png",
-      "path": "assets/sprites/laser_0_glow.png",
-      "size_bytes": 191620,
-      "sha256_short": "afc4b1db5b90"
+    "interceptor": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "interceptor_0.png",
+          "path": "assets/sprites/interceptor_0.png",
+          "width": 1024,
+          "height": 1024,
+          "is_power_of_two": true
+        }
+      ],
+      "frame_count": 1,
+      "width": 1024,
+      "height": 1024,
+      "is_valid_power_of_two": true
     },
-    {
-      "name": "laser_enemy",
-      "file": "laser_enemy.png",
-      "path": "assets/sprites/laser_enemy.png",
-      "size_bytes": 163176,
-      "sha256_short": "5fe64ccc1257"
+    "interceptor_cycle": {
+      "frames": [
+        {
+          "index": 1,
+          "filename": "interceptor_cycle_0001.png",
+          "path": "assets/sprites/interceptor_cycle_0001.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 2,
+          "filename": "interceptor_cycle_0002.png",
+          "path": "assets/sprites/interceptor_cycle_0002.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 3,
+          "filename": "interceptor_cycle_0003.png",
+          "path": "assets/sprites/interceptor_cycle_0003.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 4,
+          "filename": "interceptor_cycle_0004.png",
+          "path": "assets/sprites/interceptor_cycle_0004.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 5,
+          "filename": "interceptor_cycle_0005.png",
+          "path": "assets/sprites/interceptor_cycle_0005.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 6,
+          "filename": "interceptor_cycle_0006.png",
+          "path": "assets/sprites/interceptor_cycle_0006.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 7,
+          "filename": "interceptor_cycle_0007.png",
+          "path": "assets/sprites/interceptor_cycle_0007.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 8,
+          "filename": "interceptor_cycle_0008.png",
+          "path": "assets/sprites/interceptor_cycle_0008.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 9,
+          "filename": "interceptor_cycle_0009.png",
+          "path": "assets/sprites/interceptor_cycle_0009.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 10,
+          "filename": "interceptor_cycle_0010.png",
+          "path": "assets/sprites/interceptor_cycle_0010.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 11,
+          "filename": "interceptor_cycle_0011.png",
+          "path": "assets/sprites/interceptor_cycle_0011.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 12,
+          "filename": "interceptor_cycle_0012.png",
+          "path": "assets/sprites/interceptor_cycle_0012.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 13,
+          "filename": "interceptor_cycle_0013.png",
+          "path": "assets/sprites/interceptor_cycle_0013.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 14,
+          "filename": "interceptor_cycle_0014.png",
+          "path": "assets/sprites/interceptor_cycle_0014.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 15,
+          "filename": "interceptor_cycle_0015.png",
+          "path": "assets/sprites/interceptor_cycle_0015.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 16,
+          "filename": "interceptor_cycle_0016.png",
+          "path": "assets/sprites/interceptor_cycle_0016.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 17,
+          "filename": "interceptor_cycle_0017.png",
+          "path": "assets/sprites/interceptor_cycle_0017.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 18,
+          "filename": "interceptor_cycle_0018.png",
+          "path": "assets/sprites/interceptor_cycle_0018.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 19,
+          "filename": "interceptor_cycle_0019.png",
+          "path": "assets/sprites/interceptor_cycle_0019.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 20,
+          "filename": "interceptor_cycle_0020.png",
+          "path": "assets/sprites/interceptor_cycle_0020.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 21,
+          "filename": "interceptor_cycle_0021.png",
+          "path": "assets/sprites/interceptor_cycle_0021.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 22,
+          "filename": "interceptor_cycle_0022.png",
+          "path": "assets/sprites/interceptor_cycle_0022.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 23,
+          "filename": "interceptor_cycle_0023.png",
+          "path": "assets/sprites/interceptor_cycle_0023.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 24,
+          "filename": "interceptor_cycle_0024.png",
+          "path": "assets/sprites/interceptor_cycle_0024.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 25,
+          "filename": "interceptor_cycle_0025.png",
+          "path": "assets/sprites/interceptor_cycle_0025.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 26,
+          "filename": "interceptor_cycle_0026.png",
+          "path": "assets/sprites/interceptor_cycle_0026.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 27,
+          "filename": "interceptor_cycle_0027.png",
+          "path": "assets/sprites/interceptor_cycle_0027.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 28,
+          "filename": "interceptor_cycle_0028.png",
+          "path": "assets/sprites/interceptor_cycle_0028.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 29,
+          "filename": "interceptor_cycle_0029.png",
+          "path": "assets/sprites/interceptor_cycle_0029.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 30,
+          "filename": "interceptor_cycle_0030.png",
+          "path": "assets/sprites/interceptor_cycle_0030.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 31,
+          "filename": "interceptor_cycle_0031.png",
+          "path": "assets/sprites/interceptor_cycle_0031.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 32,
+          "filename": "interceptor_cycle_0032.png",
+          "path": "assets/sprites/interceptor_cycle_0032.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        }
+      ],
+      "frame_count": 32,
+      "width": 1280,
+      "height": 720,
+      "is_valid_power_of_two": false
     },
-    {
-      "name": "player_0",
-      "file": "player_0.png",
-      "path": "assets/sprites/player_0.png",
-      "size_bytes": 590196,
-      "sha256_short": "4d72b4654d73"
+    "laser": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "laser_0.png",
+          "path": "assets/sprites/laser_0.png",
+          "width": 1024,
+          "height": 1024,
+          "is_power_of_two": true
+        }
+      ],
+      "frame_count": 1,
+      "width": 1024,
+      "height": 1024,
+      "is_valid_power_of_two": true
     },
-    {
-      "name": "player_0_glow",
-      "file": "player_0_glow.png",
-      "path": "assets/sprites/player_0_glow.png",
-      "size_bytes": 220197,
-      "sha256_short": "373b6b56ce18"
+    "laser_0_glow": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "laser_0_glow.png",
+          "path": "assets/sprites/laser_0_glow.png",
+          "width": 1024,
+          "height": 1024,
+          "is_power_of_two": true
+        }
+      ],
+      "frame_count": 1,
+      "width": 1024,
+      "height": 1024,
+      "is_valid_power_of_two": true
     },
-    {
-      "name": "player_1",
-      "file": "player_1.png",
-      "path": "assets/sprites/player_1.png",
-      "size_bytes": 484090,
-      "sha256_short": "3996faeea2f3"
+    "laser_enemy": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "laser_enemy.png",
+          "path": "assets/sprites/laser_enemy.png",
+          "width": 1024,
+          "height": 1024,
+          "is_power_of_two": true
+        }
+      ],
+      "frame_count": 1,
+      "width": 1024,
+      "height": 1024,
+      "is_valid_power_of_two": true
     },
-    {
-      "name": "player_1_glow",
-      "file": "player_1_glow.png",
-      "path": "assets/sprites/player_1_glow.png",
-      "size_bytes": 219535,
-      "sha256_short": "22dc6cc2a182"
+    "player": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "player_0.png",
+          "path": "assets/sprites/player_0.png",
+          "width": 1024,
+          "height": 1024,
+          "is_power_of_two": true
+        },
+        {
+          "index": 1,
+          "filename": "player_1.png",
+          "path": "assets/sprites/player_1.png",
+          "width": 1024,
+          "height": 1024,
+          "is_power_of_two": true
+        }
+      ],
+      "frame_count": 2,
+      "width": 1024,
+      "height": 1024,
+      "is_valid_power_of_two": true
     },
-    {
-      "name": "powerup_s_0",
-      "file": "powerup_s_0.png",
-      "path": "assets/sprites/powerup_s_0.png",
-      "size_bytes": 767050,
-      "sha256_short": "13579b1342e8"
+    "player_0_glow": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "player_0_glow.png",
+          "path": "assets/sprites/player_0_glow.png",
+          "width": 1024,
+          "height": 1024,
+          "is_power_of_two": true
+        }
+      ],
+      "frame_count": 1,
+      "width": 1024,
+      "height": 1024,
+      "is_valid_power_of_two": true
     },
-    {
-      "name": "powerup_w_0",
-      "file": "powerup_w_0.png",
-      "path": "assets/sprites/powerup_w_0.png",
-      "size_bytes": 930377,
-      "sha256_short": "deaeefdc6d37"
+    "player_1_glow": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "player_1_glow.png",
+          "path": "assets/sprites/player_1_glow.png",
+          "width": 1024,
+          "height": 1024,
+          "is_power_of_two": true
+        }
+      ],
+      "frame_count": 1,
+      "width": 1024,
+      "height": 1024,
+      "is_valid_power_of_two": true
     },
-    {
-      "name": "scout_0",
-      "file": "scout_0.png",
-      "path": "assets/sprites/scout_0.png",
-      "size_bytes": 675275,
-      "sha256_short": "1c086cf48de7"
+    "powerup_s": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "powerup_s_0.png",
+          "path": "assets/sprites/powerup_s_0.png",
+          "width": 1024,
+          "height": 1024,
+          "is_power_of_two": true
+        }
+      ],
+      "frame_count": 1,
+      "width": 1024,
+      "height": 1024,
+      "is_valid_power_of_two": true
     },
-    {
-      "name": "shield_0",
-      "file": "shield_0.png",
-      "path": "assets/sprites/shield_0.png",
-      "size_bytes": 896214,
-      "sha256_short": "22245a0b5db7"
+    "powerup_w": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "powerup_w_0.png",
+          "path": "assets/sprites/powerup_w_0.png",
+          "width": 1024,
+          "height": 1024,
+          "is_power_of_two": true
+        }
+      ],
+      "frame_count": 1,
+      "width": 1024,
+      "height": 1024,
+      "is_valid_power_of_two": true
     },
-    {
-      "name": "shield_0_glow",
-      "file": "shield_0_glow.png",
-      "path": "assets/sprites/shield_0_glow.png",
-      "size_bytes": 608200,
-      "sha256_short": "1e019c6e9a02"
+    "scout": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "scout_0.png",
+          "path": "assets/sprites/scout_0.png",
+          "width": 1024,
+          "height": 1024,
+          "is_power_of_two": true
+        }
+      ],
+      "frame_count": 1,
+      "width": 1024,
+      "height": 1024,
+      "is_valid_power_of_two": true
     },
-    {
-      "name": "title_0",
-      "file": "title_0.png",
-      "path": "assets/sprites/title_0.png",
-      "size_bytes": 1002905,
-      "sha256_short": "c9f9f5b54897"
+    "scout_cycle": {
+      "frames": [
+        {
+          "index": 1,
+          "filename": "scout_cycle_0001.png",
+          "path": "assets/sprites/scout_cycle_0001.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 2,
+          "filename": "scout_cycle_0002.png",
+          "path": "assets/sprites/scout_cycle_0002.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 3,
+          "filename": "scout_cycle_0003.png",
+          "path": "assets/sprites/scout_cycle_0003.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 4,
+          "filename": "scout_cycle_0004.png",
+          "path": "assets/sprites/scout_cycle_0004.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 5,
+          "filename": "scout_cycle_0005.png",
+          "path": "assets/sprites/scout_cycle_0005.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 6,
+          "filename": "scout_cycle_0006.png",
+          "path": "assets/sprites/scout_cycle_0006.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 7,
+          "filename": "scout_cycle_0007.png",
+          "path": "assets/sprites/scout_cycle_0007.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 8,
+          "filename": "scout_cycle_0008.png",
+          "path": "assets/sprites/scout_cycle_0008.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 9,
+          "filename": "scout_cycle_0009.png",
+          "path": "assets/sprites/scout_cycle_0009.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 10,
+          "filename": "scout_cycle_0010.png",
+          "path": "assets/sprites/scout_cycle_0010.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 11,
+          "filename": "scout_cycle_0011.png",
+          "path": "assets/sprites/scout_cycle_0011.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 12,
+          "filename": "scout_cycle_0012.png",
+          "path": "assets/sprites/scout_cycle_0012.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 13,
+          "filename": "scout_cycle_0013.png",
+          "path": "assets/sprites/scout_cycle_0013.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 14,
+          "filename": "scout_cycle_0014.png",
+          "path": "assets/sprites/scout_cycle_0014.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 15,
+          "filename": "scout_cycle_0015.png",
+          "path": "assets/sprites/scout_cycle_0015.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 16,
+          "filename": "scout_cycle_0016.png",
+          "path": "assets/sprites/scout_cycle_0016.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 17,
+          "filename": "scout_cycle_0017.png",
+          "path": "assets/sprites/scout_cycle_0017.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 18,
+          "filename": "scout_cycle_0018.png",
+          "path": "assets/sprites/scout_cycle_0018.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 19,
+          "filename": "scout_cycle_0019.png",
+          "path": "assets/sprites/scout_cycle_0019.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 20,
+          "filename": "scout_cycle_0020.png",
+          "path": "assets/sprites/scout_cycle_0020.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 21,
+          "filename": "scout_cycle_0021.png",
+          "path": "assets/sprites/scout_cycle_0021.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 22,
+          "filename": "scout_cycle_0022.png",
+          "path": "assets/sprites/scout_cycle_0022.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 23,
+          "filename": "scout_cycle_0023.png",
+          "path": "assets/sprites/scout_cycle_0023.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 24,
+          "filename": "scout_cycle_0024.png",
+          "path": "assets/sprites/scout_cycle_0024.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 25,
+          "filename": "scout_cycle_0025.png",
+          "path": "assets/sprites/scout_cycle_0025.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 26,
+          "filename": "scout_cycle_0026.png",
+          "path": "assets/sprites/scout_cycle_0026.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 27,
+          "filename": "scout_cycle_0027.png",
+          "path": "assets/sprites/scout_cycle_0027.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 28,
+          "filename": "scout_cycle_0028.png",
+          "path": "assets/sprites/scout_cycle_0028.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 29,
+          "filename": "scout_cycle_0029.png",
+          "path": "assets/sprites/scout_cycle_0029.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 30,
+          "filename": "scout_cycle_0030.png",
+          "path": "assets/sprites/scout_cycle_0030.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 31,
+          "filename": "scout_cycle_0031.png",
+          "path": "assets/sprites/scout_cycle_0031.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        },
+        {
+          "index": 32,
+          "filename": "scout_cycle_0032.png",
+          "path": "assets/sprites/scout_cycle_0032.png",
+          "width": 1280,
+          "height": 720,
+          "is_power_of_two": false
+        }
+      ],
+      "frame_count": 32,
+      "width": 1280,
+      "height": 720,
+      "is_valid_power_of_two": false
+    },
+    "shield": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "shield_0.png",
+          "path": "assets/sprites/shield_0.png",
+          "width": 1024,
+          "height": 1024,
+          "is_power_of_two": true
+        }
+      ],
+      "frame_count": 1,
+      "width": 1024,
+      "height": 1024,
+      "is_valid_power_of_two": true
+    },
+    "shield_0_glow": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "shield_0_glow.png",
+          "path": "assets/sprites/shield_0_glow.png",
+          "width": 1024,
+          "height": 1024,
+          "is_power_of_two": true
+        }
+      ],
+      "frame_count": 1,
+      "width": 1024,
+      "height": 1024,
+      "is_valid_power_of_two": true
+    },
+    "title": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "title_0.png",
+          "path": "assets/sprites/title_0.png",
+          "width": 1408,
+          "height": 768,
+          "is_power_of_two": false
+        }
+      ],
+      "frame_count": 1,
+      "width": 1408,
+      "height": 768,
+      "is_valid_power_of_two": false
     }
-  ]
+  },
+  "validation": {
+    "total_files_scanned": 247,
+    "valid_power_of_two_count": 19,
+    "invalid_power_of_two_count": 228,
+    "errors": [
+      "Asset 'bg_city_0.png' has non-power-of-two dimensions: 800x450",
+      "Asset 'bg_nebula_0.png' has non-power-of-two dimensions: 1408x768",
+      "Asset 'boss_0.png' has non-power-of-two dimensions: 1280x896",
+      "Asset 'boss_death_0001.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_death_0002.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_death_0003.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_death_0004.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_death_0005.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_death_0006.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_death_0007.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_death_0008.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_death_0009.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_death_0010.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_death_0011.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_death_0012.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_death_0013.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_death_0014.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_death_0015.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_death_0016.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_death_0017.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_death_0018.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_death_0019.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_death_0020.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_death_0021.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_death_0022.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_death_0023.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_death_0024.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_death_0025.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_death_0026.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_death_0027.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_death_0028.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_death_0029.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_death_0030.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_death_0031.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_death_0032.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_idle_0001.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_idle_0002.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_idle_0003.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_idle_0004.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_idle_0005.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_idle_0006.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_idle_0007.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_idle_0008.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_idle_0009.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_idle_0010.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_idle_0011.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_idle_0012.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_idle_0013.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_idle_0014.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_idle_0015.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_idle_0016.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_idle_0017.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_idle_0018.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_idle_0019.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_idle_0020.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_idle_0021.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_idle_0022.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_idle_0023.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_idle_0024.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_idle_0025.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_idle_0026.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_idle_0027.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_idle_0028.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_idle_0029.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_idle_0030.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_idle_0031.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_idle_0032.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_laser_charge_0001.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_laser_charge_0002.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_laser_charge_0003.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_laser_charge_0004.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_laser_charge_0005.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_laser_charge_0006.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_laser_charge_0007.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_laser_charge_0008.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_laser_charge_0009.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_laser_charge_0010.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_laser_charge_0011.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_laser_charge_0012.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_laser_charge_0013.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_laser_charge_0014.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_laser_charge_0015.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_laser_charge_0016.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_laser_charge_0017.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_laser_charge_0018.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_laser_charge_0019.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_laser_charge_0020.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_laser_charge_0021.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_laser_charge_0022.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_laser_charge_0023.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_laser_charge_0024.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_laser_charge_0025.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_laser_charge_0026.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_laser_charge_0027.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_laser_charge_0028.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_laser_charge_0029.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_laser_charge_0030.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_laser_charge_0031.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_laser_charge_0032.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_rage_0001.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_rage_0002.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_rage_0003.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_rage_0004.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_rage_0005.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_rage_0006.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_rage_0007.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_rage_0008.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_rage_0009.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_rage_0010.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_rage_0011.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_rage_0012.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_rage_0013.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_rage_0014.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_rage_0015.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_rage_0016.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_rage_0017.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_rage_0018.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_rage_0019.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_rage_0020.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_rage_0021.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_rage_0022.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_rage_0023.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_rage_0024.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_rage_0025.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_rage_0026.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_rage_0027.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_rage_0028.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_rage_0029.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_rage_0030.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_rage_0031.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'boss_rage_0032.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'heavy_cycle_0001.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'heavy_cycle_0002.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'heavy_cycle_0003.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'heavy_cycle_0004.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'heavy_cycle_0005.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'heavy_cycle_0006.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'heavy_cycle_0007.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'heavy_cycle_0008.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'heavy_cycle_0009.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'heavy_cycle_0010.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'heavy_cycle_0011.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'heavy_cycle_0012.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'heavy_cycle_0013.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'heavy_cycle_0014.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'heavy_cycle_0015.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'heavy_cycle_0016.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'heavy_cycle_0017.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'heavy_cycle_0018.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'heavy_cycle_0019.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'heavy_cycle_0020.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'heavy_cycle_0021.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'heavy_cycle_0022.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'heavy_cycle_0023.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'heavy_cycle_0024.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'heavy_cycle_0025.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'heavy_cycle_0026.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'heavy_cycle_0027.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'heavy_cycle_0028.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'heavy_cycle_0029.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'heavy_cycle_0030.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'heavy_cycle_0031.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'heavy_cycle_0032.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'interceptor_cycle_0001.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'interceptor_cycle_0002.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'interceptor_cycle_0003.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'interceptor_cycle_0004.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'interceptor_cycle_0005.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'interceptor_cycle_0006.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'interceptor_cycle_0007.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'interceptor_cycle_0008.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'interceptor_cycle_0009.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'interceptor_cycle_0010.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'interceptor_cycle_0011.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'interceptor_cycle_0012.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'interceptor_cycle_0013.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'interceptor_cycle_0014.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'interceptor_cycle_0015.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'interceptor_cycle_0016.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'interceptor_cycle_0017.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'interceptor_cycle_0018.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'interceptor_cycle_0019.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'interceptor_cycle_0020.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'interceptor_cycle_0021.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'interceptor_cycle_0022.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'interceptor_cycle_0023.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'interceptor_cycle_0024.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'interceptor_cycle_0025.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'interceptor_cycle_0026.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'interceptor_cycle_0027.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'interceptor_cycle_0028.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'interceptor_cycle_0029.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'interceptor_cycle_0030.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'interceptor_cycle_0031.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'interceptor_cycle_0032.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'scout_cycle_0001.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'scout_cycle_0002.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'scout_cycle_0003.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'scout_cycle_0004.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'scout_cycle_0005.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'scout_cycle_0006.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'scout_cycle_0007.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'scout_cycle_0008.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'scout_cycle_0009.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'scout_cycle_0010.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'scout_cycle_0011.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'scout_cycle_0012.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'scout_cycle_0013.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'scout_cycle_0014.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'scout_cycle_0015.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'scout_cycle_0016.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'scout_cycle_0017.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'scout_cycle_0018.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'scout_cycle_0019.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'scout_cycle_0020.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'scout_cycle_0021.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'scout_cycle_0022.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'scout_cycle_0023.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'scout_cycle_0024.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'scout_cycle_0025.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'scout_cycle_0026.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'scout_cycle_0027.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'scout_cycle_0028.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'scout_cycle_0029.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'scout_cycle_0030.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'scout_cycle_0031.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'scout_cycle_0032.png' has non-power-of-two dimensions: 1280x720",
+      "Asset 'title_0.png' has non-power-of-two dimensions: 1408x768"
+    ],
+    "warnings": [
+      "Filename 'laser_0_glow.png' does not follow standard 'prefix_index.ext' naming convention. Defaulted to prefix 'laser_0_glow', index 0",
+      "Filename 'laser_enemy.png' does not follow standard 'prefix_index.ext' naming convention. Defaulted to prefix 'laser_enemy', index 0",
+      "Filename 'player_0_glow.png' does not follow standard 'prefix_index.ext' naming convention. Defaulted to prefix 'player_0_glow', index 0",
+      "Filename 'player_1_glow.png' does not follow standard 'prefix_index.ext' naming convention. Defaulted to prefix 'player_1_glow', index 0",
+      "Filename 'shield_0_glow.png' does not follow standard 'prefix_index.ext' naming convention. Defaulted to prefix 'shield_0_glow', index 0"
+    ],
+    "missing_assets": []
+  }
 }
