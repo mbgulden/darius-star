@@ -1,6 +1,6 @@
 {
   "manifest_version": "1.0",
-  "generated_at": "2026-06-09T12:22:49.450571Z",
+  "generated_at": "2026-06-09T12:45:00.000000Z",
   "sprites": {
     "bg_abyssal_trench": {
       "frames": [
@@ -21089,6 +21089,141 @@
       "width": 1408,
       "height": 768,
       "is_valid_power_of_two": false
+    },
+    "portrait_antagonist_neutral": {
+      "filename": "antagonist_neutral.png",
+      "path": "assets/sprites/portraits/antagonist_neutral.png",
+      "width": 256,
+      "height": 256,
+      "sha256": "3328f33121b401b95631f96b7e9736540f7ecbc99bfc932bc1cd851d69a0ae8a",
+      "category": "portrait",
+      "is_power_of_two": true
+    },
+    "portrait_antagonist_reactive": {
+      "filename": "antagonist_reactive.png",
+      "path": "assets/sprites/portraits/antagonist_reactive.png",
+      "width": 256,
+      "height": 256,
+      "sha256": "4320c41c339b64fa612dcf0c3d7884854b0c9f730114e0ed31ecc68ce92b34a1",
+      "category": "portrait",
+      "is_power_of_two": true
+    },
+    "portrait_comms_overlay": {
+      "filename": "comms_overlay.png",
+      "path": "assets/sprites/portraits/comms_overlay.png",
+      "width": 256,
+      "height": 256,
+      "sha256": "03a7f974b713fdb50ac08ef29c6e70d0be290036f3d568e8ca8f147fa337af71",
+      "category": "portrait",
+      "is_power_of_two": true
+    },
+    "portrait_kai_neutral": {
+      "filename": "kai_neutral.png",
+      "path": "assets/sprites/portraits/kai_neutral.png",
+      "width": 256,
+      "height": 256,
+      "sha256": "b4c895a30a1164094f8aad038f29eddf511e1fd0910550d1cc5bd14083801ea5",
+      "category": "portrait",
+      "is_power_of_two": true
+    },
+    "portrait_kai_reactive": {
+      "filename": "kai_reactive.png",
+      "path": "assets/sprites/portraits/kai_reactive.png",
+      "width": 256,
+      "height": 256,
+      "sha256": "d3b7760cff1fc01534e68ee8343be7b8dda806ccf8611943d20899100bd68e6e",
+      "category": "portrait",
+      "is_power_of_two": true
+    },
+    "portrait_pilot_blue": {
+      "filename": "pilot_blue.png",
+      "path": "assets/sprites/portraits/pilot_blue.png",
+      "width": 256,
+      "height": 256,
+      "sha256": "84ab56ab32e343947d692d1da8ed664b92957a7c8d84fa45975155caf08f8ce7",
+      "category": "portrait",
+      "is_power_of_two": true
+    },
+    "portrait_pilot_green": {
+      "filename": "pilot_green.png",
+      "path": "assets/sprites/portraits/pilot_green.png",
+      "width": 256,
+      "height": 256,
+      "sha256": "2b9a6cba86911d0d56bebf1796e3019edb47ed3257f7784d39ffac5ec02e172f",
+      "category": "portrait",
+      "is_power_of_two": true
+    },
+    "portrait_pilot_red": {
+      "filename": "pilot_red.png",
+      "path": "assets/sprites/portraits/pilot_red.png",
+      "width": 256,
+      "height": 256,
+      "sha256": "9db1551771c690790ea87ebf9cde9229a4efe1a006ab8be19864529657604439",
+      "category": "portrait",
+      "is_power_of_two": true
+    },
+    "portrait_pilot_yellow": {
+      "filename": "pilot_yellow.png",
+      "path": "assets/sprites/portraits/pilot_yellow.png",
+      "width": 256,
+      "height": 256,
+      "sha256": "cf63002a1484d0fe60f17f1597641692de77fa71dc5c8a36dd0da8034615bad1",
+      "category": "portrait",
+      "is_power_of_two": true
+    },
+    "portrait_squad_pilot1": {
+      "filename": "squad_pilot1.png",
+      "path": "assets/sprites/portraits/squad_pilot1.png",
+      "width": 256,
+      "height": 256,
+      "sha256": "f776272eb5710f06df1f1160b10475c8d8c31442225b965bdd0ffd54671e7973",
+      "category": "portrait",
+      "is_power_of_two": true
+    },
+    "portrait_squad_pilot2": {
+      "filename": "squad_pilot2.png",
+      "path": "assets/sprites/portraits/squad_pilot2.png",
+      "width": 256,
+      "height": 256,
+      "sha256": "0cb6df8de2b217e7d724616743d0a7568a916ae23333e727822e9a4e8cccf31c",
+      "category": "portrait",
+      "is_power_of_two": true
+    },
+    "portrait_squad_pilot3": {
+      "filename": "squad_pilot3.png",
+      "path": "assets/sprites/portraits/squad_pilot3.png",
+      "width": 256,
+      "height": 256,
+      "sha256": "501ddb6824bec83fa0f189f7bd7851dff0a5ac0fee532a6eb210148b0fac1d37",
+      "category": "portrait",
+      "is_power_of_two": true
+    },
+    "portrait_squad_pilot4": {
+      "filename": "squad_pilot4.png",
+      "path": "assets/sprites/portraits/squad_pilot4.png",
+      "width": 256,
+      "height": 256,
+      "sha256": "46ea1ac87dab4fa003693fc9510759e64048e2e26f0bc7c7f30b6434d8c3bc25",
+      "category": "portrait",
+      "is_power_of_two": true
+    },
+    "portrait_voss_neutral": {
+      "filename": "voss_neutral.png",
+      "path": "assets/sprites/portraits/voss_neutral.png",
+      "width": 256,
+      "height": 256,
+      "sha256": "18ca7948fb39bec464eee7d2e30b52abf822e939641768212e25e3c07b8c7635",
+      "category": "portrait",
+      "is_power_of_two": true
+    },
+    "portrait_voss_reactive": {
+      "filename": "voss_reactive.png",
+      "path": "assets/sprites/portraits/voss_reactive.png",
+      "width": 256,
+      "height": 256,
+      "sha256": "fcee6a9fcc74165515b2112c145deb4fa691ed71fc0a1af57f79c5d9c87382bb",
+      "category": "portrait",
+      "is_power_of_two": true
     }
   },
   "validation": {

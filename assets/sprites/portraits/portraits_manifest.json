@@ -1,0 +1,55 @@
+{
+  "manifest_version": "1.0",
+  "game": "Darius Star: Cyber Coelacanth",
+  "asset_type": "Character Portraits",
+  "description": "Portraits for mission briefings and story cutscenes",
+  "resolution": "256x256",
+  "portraits": {
+    "voss": {
+      "name": "Commander Elara Voss",
+      "role": "Commander / Fleet Veteran",
+      "neutral": "assets/sprites/portraits/voss_neutral.png",
+      "reactive": "assets/sprites/portraits/voss_reactive.png"
+    },
+    "kai": {
+      "name": "Chief Engineer Kai",
+      "role": "Chief Systems Engineer / Tech Specialist",
+      "neutral": "assets/sprites/portraits/kai_neutral.png",
+      "reactive": "assets/sprites/portraits/kai_reactive.png"
+    },
+    "pilot": {
+      "name": "Player Pilot",
+      "role": "Player / Ship Pilot",
+      "variants": {
+        "blue": "assets/sprites/portraits/pilot_blue.png",
+        "red": "assets/sprites/portraits/pilot_red.png",
+        "green": "assets/sprites/portraits/pilot_green.png",
+        "yellow": "assets/sprites/portraits/pilot_yellow.png"
+      }
+    },
+    "antagonist": {
+      "name": "Cyber Coelacanth",
+      "role": "Hostile Prehistoric AI Hologram",
+      "neutral": "assets/sprites/portraits/antagonist_neutral.png",
+      "reactive": "assets/sprites/portraits/antagonist_reactive.png"
+    },
+    "resistance_squad": {
+      "name": "Resistance Pilots",
+      "role": "Co-op / Multiplayer Pilots",
+      "squad_pilot1": "assets/sprites/portraits/squad_pilot1.png",
+      "squad_pilot2": "assets/sprites/portraits/squad_pilot2.png",
+      "squad_pilot3": "assets/sprites/portraits/squad_pilot3.png",
+      "squad_pilot4": "assets/sprites/portraits/squad_pilot4.png"
+    }
+  },
+  "overlay": {
+    "file": "assets/sprites/portraits/comms_overlay.png",
+    "description": "Comms window frame overlay with scanlines and border for mission briefings",
+    "resolution": "256x256"
+  },
+  "usage": {
+    "briefing_display": "Render portrait underneath comms_overlay.png for mission briefing comms window effect",
+    "typewriter_text": "Display briefing text with typewriter animation alongside portrait",
+    "radio_filter": "Apply CSS filter: sepia(0.3) contrast(1.1) to simulate radio transmission look"
+  }
+}
