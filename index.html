@@ -652,26 +652,33 @@
                 const angle = Math.atan2(this.vy, this.vx);
                 ctx.rotate(angle);
 
-                const sprite = vfxSprites['laser'];
+                const renderSize = this.size * 4;
+                const pulse = 0.7 + Math.sin(gameTime * 8 + this.x * 0.05) * 0.3;
+
+                // Subtle shimmer accent — faint radial glow behind the bolt
+                const glowGrad = ctx.createRadialGradient(0, 0, renderSize * 0.15, 0, 0, renderSize * 0.8);
+                glowGrad.addColorStop(0, 'rgba(255, 100, 30, 0.5)');
+                glowGrad.addColorStop(0.5, 'rgba(255, 30, 0, 0.15)');
+                glowGrad.addColorStop(1, 'rgba(255, 0, 0, 0)');
+
+                ctx.globalAlpha = pulse * 0.7;
+                ctx.fillStyle = glowGrad;
+                ctx.fillRect(-renderSize * 0.8, -renderSize * 0.8, renderSize * 1.6, renderSize * 1.6);
+
+                // Enemy laser bolt sprite on top
+                const sprite = vfxSprites['laser_enemy'];
                 if (sprite && sprite.complete && sprite.naturalWidth > 0) {
-                    const renderSize = this.size * 3;
-                    // Red tint: draw sprite then overlay red semi-transparent
-                    ctx.globalAlpha = 0.85;
-                    ctx.drawImage(sprite, -renderSize / 2, -renderSize / 2, renderSize, renderSize);
-                    // Red overlay for enemy tint
-                    ctx.globalCompositeOperation = 'source-atop';
-                    ctx.fillStyle = 'rgba(255, 30, 0, 0.6)';
-                    ctx.fillRect(-renderSize / 2, -renderSize / 2, renderSize, renderSize);
-                    ctx.globalCompositeOperation = 'source-over';
-                    ctx.globalAlpha = 1;
-                } else {
-                    // Fallback: red circle
-                    ctx.fillStyle = this.color;
-                    ctx.beginPath();
-                    ctx.arc(0, 0, this.size, 0, Math.PI * 2);
-                    ctx.fill();
+                    ctx.globalAlpha = 0.9;
+                    // Center the 1024×1024 sprite, scale to renderSize
+                    const sw = sprite.naturalWidth;
+                    const sh = sprite.naturalHeight;
+                    ctx.drawImage(sprite,
+                        0, 0, sw, sh,                           // source rect (full sprite)
+                        -renderSize / 2, -renderSize / 2,       // dest x, y
+                        renderSize, renderSize);                 // dest w, h
                 }
 
+                ctx.globalAlpha = 1;
                 ctx.restore();
             }
         }
@@ -1259,9 +1266,14 @@
         function loadVFXSprites() {
             if (vfxSpritesLoaded) return;
             vfxSpritesLoaded = true;
-            // Laser (player + enemy bullets)
+            // Laser (player bullets)
             vfxSprites['laser'] = new Image();
             vfxSprites['laser'].src = 'assets/sprites/laser_0.png';
+            // Enemy laser + glow
+            vfxSprites['laser_enemy'] = new Image();
+            vfxSprites['laser_enemy'].src = 'assets/sprites/laser_enemy.png';
+            vfxSprites['laser_glow'] = new Image();
+            vfxSprites['laser_glow'].src = 'assets/sprites/laser_0_glow.png';
             // Multi-frame explosion (4 frames)
             for (let f = 0; f < 4; f++) {
                 vfxSprites['explosion_' + f] = new Image();
