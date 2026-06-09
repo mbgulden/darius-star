@@ -250,12 +250,14 @@
                 const gain = audioCtx.createGain();
                 osc.connect(gain);
                 gain.connect(audioCtx.destination);
+                
+                const volMultiplier = masterVolume * sfxVolume;
 
                 if (type === 'shoot') {
                     osc.type = 'sawtooth';
                     osc.frequency.setValueAtTime(500, audioCtx.currentTime);
                     osc.frequency.exponentialRampToValueAtTime(120, audioCtx.currentTime + 0.12);
-                    gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+                    gain.gain.setValueAtTime(0.08 * volMultiplier, audioCtx.currentTime);
                     gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.12);
                     osc.start();
                     osc.stop(audioCtx.currentTime + 0.12);
@@ -263,7 +265,7 @@
                     osc.type = 'triangle';
                     osc.frequency.setValueAtTime(140, audioCtx.currentTime);
                     osc.frequency.exponentialRampToValueAtTime(30, audioCtx.currentTime + 0.1);
-                    gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                    gain.gain.setValueAtTime(0.15 * volMultiplier, audioCtx.currentTime);
                     gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
                     osc.start();
                     osc.stop(audioCtx.currentTime + 0.1);
@@ -271,7 +273,7 @@
                     osc.type = 'sawtooth';
                     osc.frequency.setValueAtTime(80, audioCtx.currentTime);
                     osc.frequency.exponentialRampToValueAtTime(10, audioCtx.currentTime + 0.45);
-                    gain.gain.setValueAtTime(0.25, audioCtx.currentTime);
+                    gain.gain.setValueAtTime(0.25 * volMultiplier, audioCtx.currentTime);
                     gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.45);
                     osc.start();
                     osc.stop(audioCtx.currentTime + 0.45);
@@ -280,7 +282,7 @@
                     osc.frequency.setValueAtTime(280, audioCtx.currentTime);
                     osc.frequency.linearRampToValueAtTime(520, audioCtx.currentTime + 0.08);
                     osc.frequency.linearRampToValueAtTime(850, audioCtx.currentTime + 0.2);
-                    gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
+                    gain.gain.setValueAtTime(0.12 * volMultiplier, audioCtx.currentTime);
                     gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.2);
                     osc.start();
                     osc.stop(audioCtx.currentTime + 0.2);
@@ -289,7 +291,7 @@
                     osc.frequency.setValueAtTime(350, audioCtx.currentTime);
                     osc.frequency.linearRampToValueAtTime(450, audioCtx.currentTime + 0.2);
                     osc.frequency.linearRampToValueAtTime(350, audioCtx.currentTime + 0.4);
-                    gain.gain.setValueAtTime(0.06, audioCtx.currentTime);
+                    gain.gain.setValueAtTime(0.06 * volMultiplier, audioCtx.currentTime);
                     gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.4);
                     osc.start();
                     osc.stop(audioCtx.currentTime + 0.4);
@@ -297,18 +299,34 @@
                     osc.type = 'sine';
                     osc.frequency.setValueAtTime(100, audioCtx.currentTime);
                     osc.frequency.exponentialRampToValueAtTime(1000, audioCtx.currentTime + 1.2);
-                    gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
-                    gain.gain.exponentialRampToValueAtTime(0.1, audioCtx.currentTime + 1.2);
+                    gain.gain.setValueAtTime(0.05 * volMultiplier, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.1 * volMultiplier, audioCtx.currentTime + 1.2);
                     osc.start();
                     osc.stop(audioCtx.currentTime + 1.2);
                 } else if (type === 'laser_fire') {
                     osc.type = 'sawtooth';
                     osc.frequency.setValueAtTime(120, audioCtx.currentTime);
                     osc.frequency.linearRampToValueAtTime(80, audioCtx.currentTime + 1.5);
-                    gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                    gain.gain.setValueAtTime(0.2 * volMultiplier, audioCtx.currentTime);
                     gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 1.5);
                     osc.start();
                     osc.stop(audioCtx.currentTime + 1.5);
+                } else if (type === 'menu_select') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(300, audioCtx.currentTime + 0.05);
+                    gain.gain.setValueAtTime(0.05 * volMultiplier, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.05);
+                } else if (type === 'menu_click') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(400, audioCtx.currentTime);
+                    osc.frequency.linearRampToValueAtTime(800, audioCtx.currentTime + 0.08);
+                    gain.gain.setValueAtTime(0.08 * volMultiplier, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.08);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.08);
                 }
             } catch (e) {
                 console.log("Audio play blocked/failed:", e);
@@ -350,6 +368,438 @@
         let bossSpawned = false;
         let sirenTimer = 0;
 
+        // --- Menu & Settings State Variables ---
+        const SCREENS = {
+            MENU: 'menu',
+            SHIP_SELECT: 'ship_select',
+            SETTINGS: 'settings',
+            CREDITS: 'credits',
+            PLAYING: 'playing'
+        };
+        let currentScreen = SCREENS.MENU;
+        let selectedMenuIndex = 0;
+        const menuOptions = ['START GAME', 'SHIP SELECT', 'SETTINGS', 'CREDITS'];
+        let shipSelectSource = 'menu'; // 'menu' or 'start'
+        
+        let selectedSettingsIndex = 0;
+        const SETTINGS_OPTIONS = ['MASTER VOLUME', 'SFX VOLUME', 'MUSIC VOLUME', 'DIFFICULTY', 'BACK'];
+        
+        let selectedShipIndex = 1; // 0=scout, 1=interceptor, 2=heavy
+        const SHIP_OPTIONS = ['scout', 'interceptor', 'heavy'];
+        let selectedShip = 'interceptor';
+
+        let masterVolume = 0.8;
+        let sfxVolume = 0.8;
+        let musicVolume = 0.6;
+        let difficulty = 'normal'; // 'easy', 'normal', 'hard'
+
+        let screenFadeAlpha = 0;
+        let targetScreen = null;
+        let transitionTimer = 0;
+        const TRANSITION_DURATION = 0.3; // 300ms transition fade
+
+        // Background title loop strip assets
+        const titleBgImage = new Image();
+        let titleBgLoaded = false;
+        titleBgImage.onload = () => { titleBgLoaded = true; };
+        titleBgImage.src = 'assets/sprites/backgrounds/bg_title_strip.png';
+
+        let titleBgFrame = 0;
+        let titleBgTimer = 0;
+        const TITLE_FRAME_WIDTH = 1280;
+        const TITLE_FRAME_HEIGHT = 720;
+        const TITLE_TOTAL_FRAMES = 31;
+        const TITLE_FRAME_DURATION = 0.067; // ~15fps (1/15s)
+
+        // Title logo asset
+        const titleLogoImg = new Image();
+        let titleLogoLoaded = false;
+        titleLogoImg.onload = () => { titleLogoLoaded = true; };
+        titleLogoImg.src = 'assets/sprites/title_0.png';
+
+        // --- Web Audio Chiptune Synthesizer Loop ---
+        let musicInterval = null;
+        let musicStep = 0;
+        const bassLine = [110, 110, 130, 130, 146, 146, 165, 165]; // A2, C3, D3, E3
+        const melody = [
+            220, 0, 261, 293, 329, 0, 293, 261,
+            220, 220, 329, 0, 293, 0, 261, 0
+        ];
+
+        function playMenuMusicStep() {
+            if (!audioCtx || currentScreen === 'playing') return;
+            const now = audioCtx.currentTime;
+            
+            // Play bass note
+            const bassFreq = bassLine[Math.floor(musicStep / 2) % bassLine.length];
+            if (musicStep % 2 === 0 && bassFreq > 0) {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(bassFreq, now);
+                gain.gain.setValueAtTime(0.015 * masterVolume * musicVolume, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(now);
+                osc.stop(now + 0.35);
+            }
+            
+            // Play melody note
+            const melFreq = melody[musicStep % melody.length];
+            if (melFreq > 0) {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(melFreq, now);
+                gain.gain.setValueAtTime(0.02 * masterVolume * musicVolume, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(now);
+                osc.stop(now + 0.18);
+            }
+            
+            musicStep++;
+        }
+
+        function startMenuMusic() {
+            if (musicInterval) return;
+            musicStep = 0;
+            musicInterval = setInterval(playMenuMusicStep, 200); // 120 bpm, 8th notes
+        }
+
+        function stopMenuMusic() {
+            if (musicInterval) {
+                clearInterval(musicInterval);
+                musicInterval = null;
+            }
+        }
+
+        function transitionToScreen(newScreen) {
+            if (targetScreen) return; // already transitioning
+            targetScreen = newScreen;
+            transitionTimer = 0;
+        }
+
+        function updateTitleBackground(dt) {
+            titleBgTimer += dt;
+            if (titleBgTimer >= TITLE_FRAME_DURATION) {
+                titleBgTimer -= TITLE_FRAME_DURATION;
+                titleBgFrame = (titleBgFrame + 1) % TITLE_TOTAL_FRAMES;
+            }
+        }
+
+        function drawTitleBackground() {
+            if (titleBgLoaded && titleBgImage.naturalWidth > 0) {
+                const sx = titleBgFrame * TITLE_FRAME_WIDTH;
+                const sy = 0;
+                ctx.drawImage(titleBgImage, 
+                    sx, sy, TITLE_FRAME_WIDTH, TITLE_FRAME_HEIGHT,
+                    0, 0, canvas.width, canvas.height
+                );
+            } else {
+                ctx.fillStyle = '#01010c';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+                stars.forEach(star => {
+                    const alpha = star.getAlpha();
+                    ctx.globalAlpha = alpha;
+                    ctx.fillRect(star.x, star.y, star.size, star.size);
+                });
+                ctx.globalAlpha = 1.0;
+            }
+        }
+
+        function drawTitleLogo() {
+            if (titleLogoLoaded && titleLogoImg.naturalWidth > 0) {
+                ctx.save();
+                const lw = 420;
+                const lh = 140;
+                const lx = canvas.width / 2 - lw / 2;
+                const ly = 30 + Math.sin(gameTime * 2.5) * 6; // floating effect
+                
+                ctx.shadowColor = '#00ffff';
+                ctx.shadowBlur = 12 + Math.sin(gameTime * 5) * 6;
+                ctx.drawImage(titleLogoImg, lx, ly, lw, lh);
+                ctx.restore();
+            } else {
+                ctx.save();
+                ctx.textAlign = 'center';
+                ctx.font = 'bold 36px Courier New';
+                ctx.shadowColor = '#00ffff';
+                ctx.shadowBlur = 15 + Math.sin(gameTime * 5) * 8;
+                ctx.fillStyle = '#00ffff';
+                ctx.fillText('DARIUS STAR', canvas.width / 2, 85 + Math.sin(gameTime * 2) * 4);
+                
+                ctx.font = 'bold 16px Courier New';
+                ctx.fillStyle = '#ff0055';
+                ctx.shadowColor = '#ff0055';
+                ctx.shadowBlur = 8;
+                ctx.fillText('CYBER COELACANTH', canvas.width / 2, 115 + Math.sin(gameTime * 2) * 4);
+                ctx.restore();
+            }
+        }
+
+        function adjustSetting(index, dir) {
+            const step = 0.1;
+            if (index === 0) { // Master Volume
+                masterVolume = Math.max(0, Math.min(1.0, masterVolume + dir * step));
+            } else if (index === 1) { // SFX Volume
+                sfxVolume = Math.max(0, Math.min(1.0, sfxVolume + dir * step));
+            } else if (index === 2) { // Music Volume
+                musicVolume = Math.max(0, Math.min(1.0, musicVolume + dir * step));
+            } else if (index === 3) { // Difficulty
+                const diffs = ['easy', 'normal', 'hard'];
+                let currentIdx = diffs.indexOf(difficulty);
+                currentIdx = (currentIdx + dir + 3) % 3;
+                difficulty = diffs[currentIdx];
+            }
+        }
+
+        function handleMenuConfirm() {
+            if (currentScreen === SCREENS.MENU) {
+                if (selectedMenuIndex === 0) { // START GAME
+                    shipSelectSource = 'start';
+                    transitionToScreen(SCREENS.SHIP_SELECT);
+                } else if (selectedMenuIndex === 1) { // SHIP SELECT
+                    shipSelectSource = 'menu';
+                    transitionToScreen(SCREENS.SHIP_SELECT);
+                } else if (selectedMenuIndex === 2) { // SETTINGS
+                    selectedSettingsIndex = 0;
+                    transitionToScreen(SCREENS.SETTINGS);
+                } else if (selectedMenuIndex === 3) { // CREDITS
+                    transitionToScreen(SCREENS.CREDITS);
+                }
+            } else if (currentScreen === SCREENS.SHIP_SELECT) {
+                selectedShip = SHIP_OPTIONS[selectedShipIndex];
+                if (shipSelectSource === 'start') {
+                    transitionToScreen(SCREENS.PLAYING);
+                } else {
+                    transitionToScreen(SCREENS.MENU);
+                }
+            } else if (currentScreen === SCREENS.SETTINGS) {
+                if (selectedSettingsIndex === 4) { // BACK
+                    transitionToScreen(SCREENS.MENU);
+                }
+            } else if (currentScreen === SCREENS.CREDITS) {
+                transitionToScreen(SCREENS.MENU);
+            }
+        }
+
+        function getCanvasMouseCoords(e) {
+            const rect = canvas.getBoundingClientRect();
+            const x = (e.clientX - rect.left) * (canvas.width / rect.width);
+            const y = (e.clientY - rect.top) * (canvas.height / rect.height);
+            return { x, y };
+        }
+
+        function drawMenuScreens() {
+            drawTitleBackground();
+            
+            if (currentScreen === SCREENS.MENU) {
+                drawTitleLogo();
+                
+                ctx.save();
+                ctx.textAlign = 'center';
+                ctx.font = 'bold 15px monospace';
+                
+                const startY = 210;
+                const spacing = 35;
+                
+                for (let i = 0; i < menuOptions.length; i++) {
+                    const itemY = startY + i * spacing;
+                    const isSelected = selectedMenuIndex === i;
+                    
+                    if (isSelected) {
+                        ctx.fillStyle = '#00ffff';
+                        ctx.shadowColor = '#00ffff';
+                        ctx.shadowBlur = 10;
+                        ctx.fillText(`>  ${menuOptions[i]}  <`, canvas.width / 2, itemY);
+                        ctx.shadowBlur = 0;
+                    } else {
+                        ctx.fillStyle = '#8a8a9f';
+                        ctx.fillText(menuOptions[i], canvas.width / 2, itemY);
+                    }
+                }
+                
+                ctx.fillStyle = '#4a4a5f';
+                ctx.font = '10px monospace';
+                ctx.fillText('USE W/S or ARROWS to NAVIGATE | ENTER to SELECT', canvas.width / 2, canvas.height - 25);
+                ctx.restore();
+            } else if (currentScreen === SCREENS.SHIP_SELECT) {
+                ctx.save();
+                ctx.textAlign = 'center';
+                ctx.fillStyle = '#00ffff';
+                ctx.font = 'bold 22px monospace';
+                ctx.shadowColor = '#00ffff';
+                ctx.shadowBlur = 10;
+                ctx.fillText('SELECT YOUR FIGHTER', canvas.width / 2, 60);
+                ctx.shadowBlur = 0;
+                
+                const startY = 140;
+                const spacing = 65;
+                const shipNames = ['X-1 SCOUT', 'Y-2 INTERCEPTOR', 'Z-3 DREADNOUGHT'];
+                const shipStats = [
+                    { speed: 'HIGH (280)', shield: 'LOW (80)', weapon: 'RAPID SINGLE' },
+                    { speed: 'MID (220)', shield: 'MID (100)', weapon: 'SPREAD DOUBLE' },
+                    { speed: 'LOW (170)', shield: 'HIGH (150)', weapon: 'SLOW WAVE' }
+                ];
+                
+                for (let i = 0; i < 3; i++) {
+                    const itemY = startY + i * spacing;
+                    const isSelected = selectedShipIndex === i;
+                    
+                    ctx.fillStyle = isSelected ? 'rgba(0, 255, 255, 0.08)' : 'rgba(255, 255, 255, 0.02)';
+                    ctx.strokeStyle = isSelected ? '#00ffff' : '#3a3a4a';
+                    ctx.lineWidth = isSelected ? 2 : 1;
+                    ctx.fillRect(80, itemY - 25, 640, 52);
+                    ctx.strokeRect(80, itemY - 25, 640, 52);
+                    
+                    const spriteKey = i === 0 ? 'scout_0' : (i === 2 ? 'heavy_0' : 'interceptor_0');
+                    const sprite = playerSprites[spriteKey];
+                    if (sprite && sprite.complete && sprite.naturalWidth > 0) {
+                        ctx.drawImage(sprite, 105, itemY - 20, 40, 40);
+                    } else {
+                        ctx.fillStyle = i === 0 ? '#00ffff' : (i === 2 ? '#ff9900' : '#00ffaa');
+                        ctx.fillRect(115, itemY - 10, 20, 20);
+                    }
+                    
+                    ctx.textAlign = 'left';
+                    ctx.font = 'bold 14px monospace';
+                    ctx.fillStyle = isSelected ? '#00ffff' : '#8a8a9f';
+                    ctx.fillText(shipNames[i], 170, itemY - 5);
+                    
+                    ctx.font = '10px monospace';
+                    ctx.fillStyle = isSelected ? '#ffffff' : '#6a6a7f';
+                    ctx.fillText(`SPEED: ${shipStats[i].speed}  |  SHIELD: ${shipStats[i].shield}  |  WEAPON: ${shipStats[i].weapon}`, 170, itemY + 14);
+                    
+                    if (isSelected) {
+                        ctx.font = 'bold 14px monospace';
+                        ctx.fillStyle = '#00ffff';
+                        ctx.fillText('SELECTED', 620, itemY + 5);
+                    }
+                }
+                
+                ctx.textAlign = 'center';
+                ctx.font = 'bold 14px monospace';
+                ctx.fillStyle = '#ff0055';
+                ctx.fillText('BACK TO MENU', canvas.width / 2, 365);
+                
+                ctx.fillStyle = '#4a4a5f';
+                ctx.font = '10px monospace';
+                ctx.fillText('ENTER / CLICK to CHOOSE  |  ESC to RETURN', canvas.width / 2, canvas.height - 25);
+                ctx.restore();
+            } else if (currentScreen === SCREENS.SETTINGS) {
+                ctx.save();
+                ctx.textAlign = 'center';
+                ctx.fillStyle = '#00ffff';
+                ctx.font = 'bold 22px monospace';
+                ctx.shadowColor = '#00ffff';
+                ctx.shadowBlur = 10;
+                ctx.fillText('SYSTEM SETTINGS', canvas.width / 2, 60);
+                ctx.shadowBlur = 0;
+                
+                const startY = 175;
+                const spacing = 36;
+                
+                for (let i = 0; i < SETTINGS_OPTIONS.length; i++) {
+                    const itemY = startY + i * spacing;
+                    const isSelected = selectedSettingsIndex === i;
+                    
+                    ctx.textAlign = 'left';
+                    ctx.font = 'bold 14px monospace';
+                    ctx.fillStyle = isSelected ? '#00ffff' : '#8a8a9f';
+                    
+                    if (i < 3) {
+                        const volVal = i === 0 ? masterVolume : (i === 1 ? sfxVolume : musicVolume);
+                        ctx.fillText(SETTINGS_OPTIONS[i], 220, itemY + 5);
+                        
+                        const sliderX = 450;
+                        const sliderWidth = 130;
+                        ctx.fillStyle = '#222';
+                        ctx.fillRect(sliderX, itemY - 6, sliderWidth, 12);
+                        
+                        ctx.fillStyle = isSelected ? '#00ffff' : '#ff0055';
+                        ctx.fillRect(sliderX, itemY - 6, sliderWidth * volVal, 12);
+                        
+                        ctx.strokeStyle = '#fff';
+                        ctx.strokeRect(sliderX, itemY - 6, sliderWidth, 12);
+                        
+                        ctx.fillText(Math.round(volVal * 100) + '%', 595, itemY + 5);
+                    } else if (i === 3) {
+                        ctx.fillText(SETTINGS_OPTIONS[i], 220, itemY + 5);
+                        ctx.fillStyle = isSelected ? '#ffffff' : '#6a6a7f';
+                        ctx.fillText(difficulty.toUpperCase(), 450, itemY + 5);
+                    } else if (i === 4) {
+                        ctx.textAlign = 'center';
+                        ctx.fillStyle = isSelected ? '#ff0055' : '#8a8a9f';
+                        ctx.fillText('BACK TO MENU', canvas.width / 2, itemY + 5);
+                    }
+                }
+                
+                ctx.textAlign = 'center';
+                ctx.fillStyle = '#4a4a5f';
+                ctx.font = '10px monospace';
+                ctx.fillText('CONTROLS: WASD / ARROWS to MOVE  |  SPACE / J to FIRE  |  P to PAUSE', canvas.width / 2, 335);
+                ctx.fillText('LEFT/RIGHT to ADJUST VOLUME  |  ENTER / CLICK to TOGGLE  |  ESC to RETURN', canvas.width / 2, canvas.height - 25);
+                ctx.restore();
+            } else if (currentScreen === SCREENS.CREDITS) {
+                ctx.save();
+                ctx.textAlign = 'center';
+                ctx.fillStyle = '#00ffff';
+                ctx.font = 'bold 22px monospace';
+                ctx.shadowColor = '#00ffff';
+                ctx.shadowBlur = 10;
+                ctx.fillText('DARIUS STAR: CREDITS', canvas.width / 2, 60);
+                ctx.shadowBlur = 0;
+                
+                ctx.font = '12px monospace';
+                ctx.fillStyle = '#8a8a9f';
+                
+                const lines = [
+                    'PRODUCED BY',
+                    'WHAT AN ADVENTURE GAMES',
+                    '',
+                    'NARRATIVE ARCHITECTURE & GAME DESIGN',
+                    'FRED & AGY (AI AGENTS)',
+                    '',
+                    'GRAPHICS & CINEMATICS',
+                    'GOOGLE IMAGEN & VEO 3.1',
+                    '',
+                    'AUDIO SYNTHESIS',
+                    'WEB AUDIO CHIPTUNE GENERATOR',
+                    '',
+                    'POWERED BY',
+                    'ANTIGRAVITY CLI ENGINE'
+                ];
+                
+                const startY = 110;
+                const spacing = 18;
+                for (let i = 0; i < lines.length; i++) {
+                    const itemY = startY + i * spacing;
+                    const isTitle = lines[i] === 'PRODUCED BY' || 
+                                    lines[i] === 'NARRATIVE ARCHITECTURE & GAME DESIGN' ||
+                                    lines[i] === 'GRAPHICS & CINEMATICS' ||
+                                    lines[i] === 'AUDIO SYNTHESIS' ||
+                                    lines[i] === 'POWERED BY';
+                                    
+                    ctx.fillStyle = isTitle ? '#ff0055' : '#ffffff';
+                    ctx.font = isTitle ? 'bold 10px monospace' : '12px monospace';
+                    ctx.fillText(lines[i], canvas.width / 2, itemY);
+                }
+                
+                ctx.fillStyle = '#00ffff';
+                ctx.font = 'bold 14px monospace';
+                ctx.fillText('BACK TO MENU', canvas.width / 2, 370);
+                
+                ctx.fillStyle = '#4a4a5f';
+                ctx.font = '10px monospace';
+                ctx.fillText('CLICK / ENTER / ESC to RETURN', canvas.width / 2, canvas.height - 25);
+                ctx.restore();
+            }
+        }
+
         // Keys pressed
         const keys = {};
         window.addEventListener('keydown', e => {
@@ -358,12 +808,72 @@
             loadPlayerSprites();
             loadEnemySprites();
             loadVFXSprites();
-            if (e.key === 'p' || e.key === 'P') {
-                paused = !paused;
+            
+            if (currentScreen !== SCREENS.PLAYING) {
+                startMenuMusic();
             }
-            keys[e.key] = true;
-            if (['Space', ' ', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].indexOf(e.key) > -1) {
-                e.preventDefault();
+
+            if (currentScreen === SCREENS.PLAYING) {
+                if (e.key === 'p' || e.key === 'P') {
+                    paused = !paused;
+                }
+                keys[e.key] = true;
+                if (['Space', ' ', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].indexOf(e.key) > -1) {
+                    e.preventDefault();
+                }
+                if (e.key === ' ' && (gameOver || gameWon)) {
+                    resetGame();
+                }
+                if (e.key === 'Escape' && (gameOver || gameWon)) {
+                    playSound('menu_click');
+                    transitionToScreen(SCREENS.MENU);
+                }
+            } else {
+                if (targetScreen) return;
+                
+                if (e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W') {
+                    playSound('menu_select');
+                    if (currentScreen === SCREENS.MENU) {
+                        selectedMenuIndex = (selectedMenuIndex - 1 + 4) % 4;
+                    } else if (currentScreen === SCREENS.SETTINGS) {
+                        selectedSettingsIndex = (selectedSettingsIndex - 1 + SETTINGS_OPTIONS.length) % SETTINGS_OPTIONS.length;
+                    } else if (currentScreen === SCREENS.SHIP_SELECT) {
+                        selectedShipIndex = (selectedShipIndex - 1 + 3) % 3;
+                    }
+                    e.preventDefault();
+                } else if (e.key === 'ArrowDown' || e.key === 's' || e.key === 'S') {
+                    playSound('menu_select');
+                    if (currentScreen === SCREENS.MENU) {
+                        selectedMenuIndex = (selectedMenuIndex + 1) % 4;
+                    } else if (currentScreen === SCREENS.SETTINGS) {
+                        selectedSettingsIndex = (selectedSettingsIndex + 1) % SETTINGS_OPTIONS.length;
+                    } else if (currentScreen === SCREENS.SHIP_SELECT) {
+                        selectedShipIndex = (selectedShipIndex + 1) % 3;
+                    }
+                    e.preventDefault();
+                } else if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') {
+                    if (currentScreen === SCREENS.SETTINGS) {
+                        playSound('menu_select');
+                        adjustSetting(selectedSettingsIndex, -1);
+                    }
+                    e.preventDefault();
+                } else if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') {
+                    if (currentScreen === SCREENS.SETTINGS) {
+                        playSound('menu_select');
+                        adjustSetting(selectedSettingsIndex, 1);
+                    }
+                    e.preventDefault();
+                } else if (e.key === 'Enter' || e.key === ' ') {
+                    playSound('menu_click');
+                    handleMenuConfirm();
+                    e.preventDefault();
+                } else if (e.key === 'Escape') {
+                    playSound('menu_click');
+                    if (currentScreen === SCREENS.SHIP_SELECT || currentScreen === SCREENS.SETTINGS || currentScreen === SCREENS.CREDITS) {
+                        transitionToScreen(SCREENS.MENU);
+                    }
+                    e.preventDefault();
+                }
             }
         });
         // --- Touch Controls ---
@@ -410,18 +920,44 @@
 
         // --- Player Ship Class ---
         class Player {
-            constructor() {
+            constructor(shipType = 'interceptor') {
                 this.x = 80;
                 this.y = canvas.height / 2;
                 this.width = 40;
                 this.height = 20;
-                this.speed = 220;
-                this.shieldMax = 100;
-                this.shield = 100;
-                this.weaponLevel = 1;
-                this.shootCooldown = 0.15;
+                this.shipType = shipType;
+                
+                // Set stats based on ship model type
+                if (shipType === 'scout') {
+                    this.speed = 280;
+                    this.shieldMax = 80;
+                    this.color = '#00ffff';
+                    this.shootCooldown = 0.12; // faster reload
+                } else if (shipType === 'heavy') {
+                    this.speed = 170;
+                    this.shieldMax = 150;
+                    this.color = '#ff9900';
+                    this.shootCooldown = 0.18; // slower reload
+                } else { // interceptor (default)
+                    this.speed = 220;
+                    this.shieldMax = 100;
+                    this.color = '#00ffaa';
+                    this.shootCooldown = 0.15;
+                }
+                
+                // Adjust base stats based on difficulty level
+                if (difficulty === 'easy') {
+                    this.shieldMax += 30;
+                    this.weaponLevel = 2;
+                } else if (difficulty === 'hard') {
+                    this.shieldMax = Math.round(this.shieldMax * 0.8);
+                    this.weaponLevel = 1;
+                } else {
+                    this.weaponLevel = 1;
+                }
+                
+                this.shield = this.shieldMax;
                 this.shootTimer = 0;
-                this.color = '#00ffff';
                 this.invulnerable = 0;
             }
 
@@ -489,7 +1025,12 @@
 
             takeDamage(amt) {
                 if (this.invulnerable > 0) return;
-                this.shield -= amt;
+                
+                let damageMultiplier = 1.0;
+                if (difficulty === 'easy') damageMultiplier = 0.7;
+                else if (difficulty === 'hard') damageMultiplier = 1.3;
+                
+                this.shield -= amt * damageMultiplier;
                 this.invulnerable = 0.8;
                 playSound('hit');
                 createExplosion(this.x + this.width/2, this.y + this.height/2, '#ffaa00', 8);
@@ -510,9 +1051,20 @@
                 ctx.save();
                 ctx.translate(this.x, this.y);
 
-                // Sprite frame: toggle between player_0 and player_1 for thruster animation
-                const frameKey = (Math.floor(gameTime * 6) % 2 === 0) ? 'player_0' : 'player_1';
-                const sprite = playerSprites[frameKey];
+                // Sprite frame: select ship model base sprite or cycle animation
+                let sprite;
+                if (this.shipType === 'scout') {
+                    sprite = playerSprites['scout_0'];
+                } else if (this.shipType === 'heavy') {
+                    sprite = playerSprites['heavy_0'];
+                } else {
+                    sprite = playerSprites['interceptor_0'];
+                }
+                
+                if (!sprite || !sprite.complete || sprite.naturalWidth === 0) {
+                    const frameKey = (Math.floor(gameTime * 6) % 2 === 0) ? 'player_0' : 'player_1';
+                    sprite = playerSprites[frameKey];
+                }
 
                 if (sprite && sprite.complete && sprite.naturalWidth > 0) {
                     // Render sprite scaled to 48x48 (ship area ~40x20, sprite is 1024x1024)
@@ -1238,7 +1790,7 @@
         function loadPlayerSprites() {
             if (playerSpritesLoaded) return;
             playerSpritesLoaded = true;
-            const frames = ['player_0', 'player_1'];
+            const frames = ['player_0', 'player_1', 'scout_0', 'interceptor_0', 'heavy_0'];
             frames.forEach(key => {
                 playerSprites[key] = new Image();
                 playerSprites[key].src = `assets/sprites/${key}.png`;
@@ -1431,7 +1983,7 @@
         }
 
         // --- Game Entity Pools ---
-        const player = new Player();
+        let player = new Player();
         const bullets = [];
         const enemyBullets = [];
         const enemies = [];
@@ -1479,10 +2031,10 @@
             boss = null;
             sirenTimer = 0;
             gameTime = 0;
-            player.shield = 100;
-            player.weaponLevel = 1;
-            player.x = 80;
-            player.y = canvas.height / 2;
+            
+            // Re-instantiate player ship with the currently selected model
+            player = new Player(SHIP_OPTIONS[selectedShipIndex]);
+            
             bullets.length = 0;
             enemyBullets.length = 0;
             enemies.length = 0;
@@ -1506,6 +2058,35 @@
         }
 
         function update(dt) {
+            // Screen transition overlay fading
+            if (targetScreen) {
+                transitionTimer += dt;
+                const halfDuration = TRANSITION_DURATION / 2;
+                if (transitionTimer < halfDuration) {
+                    screenFadeAlpha = transitionTimer / halfDuration;
+                } else if (transitionTimer >= halfDuration && transitionTimer < TRANSITION_DURATION) {
+                    if (currentScreen !== targetScreen) {
+                        currentScreen = targetScreen;
+                        if (currentScreen === SCREENS.PLAYING) {
+                            stopMenuMusic();
+                            resetGame();
+                        } else {
+                            startMenuMusic();
+                        }
+                    }
+                    screenFadeAlpha = 1 - (transitionTimer - halfDuration) / halfDuration;
+                } else {
+                    currentScreen = targetScreen;
+                    targetScreen = null;
+                    screenFadeAlpha = 0;
+                }
+            }
+
+            if (currentScreen !== SCREENS.PLAYING) {
+                updateTitleBackground(dt);
+                return;
+            }
+
             bgLayers.forEach(layer => layer.update(dt));
             stars.forEach(star => star.update(dt));
             seaParticles.forEach(p => p.update(dt));
@@ -1535,7 +2116,12 @@
                     } else {
                         enemies.push(new Enemy('heavy'));
                     }
-                    enemySpawnTimer = Math.max(0.6, 1.5 - (score / 15000));
+                    
+                    let spawnModifier = 1.0;
+                    if (difficulty === 'easy') spawnModifier = 1.3;
+                    else if (difficulty === 'hard') spawnModifier = 0.8;
+                    
+                    enemySpawnTimer = Math.max(0.5, (1.5 - (score / 15000)) * spawnModifier);
                 }
 
                 if (score >= 1500 && !bossAssetsLoaded) {
@@ -1694,6 +2280,17 @@
         }
 
         function draw() {
+            if (currentScreen !== SCREENS.PLAYING) {
+                drawMenuScreens();
+                if (screenFadeAlpha > 0) {
+                    ctx.save();
+                    ctx.fillStyle = `rgba(0, 0, 0, ${screenFadeAlpha})`;
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    ctx.restore();
+                }
+                return;
+            }
+
             ctx.fillStyle = '#010108';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -1795,9 +2392,10 @@
                 ctx.font = '14px monospace';
                 ctx.fillStyle = '#8a8a9f';
                 ctx.fillText('Click screen or press SPACE to retry', canvas.width / 2, canvas.height / 2 + 45);
+                ctx.fillText('Press ESC to return to main menu', canvas.width / 2, canvas.height / 2 + 65);
                 ctx.fillStyle = '#ff0055';
                 ctx.font = '11px monospace';
-                ctx.fillText('whatanadventure.games/darius-star', canvas.width / 2, canvas.height / 2 + 68);
+                ctx.fillText('whatanadventure.games/darius-star', canvas.width / 2, canvas.height / 2 + 88);
             }
 
             if (gameWon) {
@@ -1815,21 +2413,143 @@
                 ctx.fillStyle = '#8a8a9f';
                 ctx.font = '14px monospace';
                 ctx.fillText('Click screen or press SPACE to replay', canvas.width / 2, canvas.height / 2 + 60);
+                ctx.fillText('Press ESC to return to main menu', canvas.width / 2, canvas.height / 2 + 80);
                 ctx.fillStyle = '#ff0055';
                 ctx.font = '11px monospace';
-                ctx.fillText('whatanadventure.games/darius-star', canvas.width / 2, canvas.height / 2 + 83);
+                ctx.fillText('whatanadventure.games/darius-star', canvas.width / 2, canvas.height / 2 + 103);
+            }
+
+            if (screenFadeAlpha > 0) {
+                ctx.save();
+                ctx.fillStyle = `rgba(0, 0, 0, ${screenFadeAlpha})`;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.restore();
             }
         }
 
-        function handleInteraction() {
-            if (gameOver || gameWon) {
-                resetGame();
+        canvas.addEventListener('mousemove', e => {
+            if (currentScreen === SCREENS.PLAYING || targetScreen) return;
+            const { x, y } = getCanvasMouseCoords(e);
+            
+            if (currentScreen === SCREENS.MENU) {
+                const startY = 210;
+                const spacing = 35;
+                for (let i = 0; i < 4; i++) {
+                    const itemY = startY + i * spacing;
+                    if (x >= 280 && x <= 520 && y >= itemY - 18 && y <= itemY + 8) {
+                        if (selectedMenuIndex !== i) {
+                            selectedMenuIndex = i;
+                            playSound('menu_select');
+                        }
+                    }
+                }
+            } else if (currentScreen === SCREENS.SHIP_SELECT) {
+                const startY = 140;
+                const spacing = 65;
+                for (let i = 0; i < 3; i++) {
+                    const itemY = startY + i * spacing;
+                    if (x >= 80 && x <= 720 && y >= itemY - 25 && y <= itemY + 27) {
+                        if (selectedShipIndex !== i) {
+                            selectedShipIndex = i;
+                            playSound('menu_select');
+                        }
+                    }
+                }
+            } else if (currentScreen === SCREENS.SETTINGS) {
+                const startY = 175;
+                const spacing = 36;
+                for (let i = 0; i < SETTINGS_OPTIONS.length; i++) {
+                    const itemY = startY + i * spacing;
+                    if (x >= 200 && x <= 600 && y >= itemY - 15 && y <= itemY + 15) {
+                        if (selectedSettingsIndex !== i) {
+                            selectedSettingsIndex = i;
+                            playSound('menu_select');
+                        }
+                    }
+                }
             }
-        }
-        canvas.addEventListener('click', handleInteraction);
-        window.addEventListener('keydown', e => {
-            if (e.key === ' ' && (gameOver || gameWon)) {
-                resetGame();
+        });
+
+        canvas.addEventListener('click', e => {
+            ensureBackgroundImages();
+            initAudio();
+            loadPlayerSprites();
+            loadEnemySprites();
+            loadVFXSprites();
+            
+            if (currentScreen !== SCREENS.PLAYING) {
+                startMenuMusic();
+            }
+
+            if (currentScreen === SCREENS.PLAYING) {
+                if (gameOver || gameWon) {
+                    resetGame();
+                }
+                return;
+            }
+            
+            if (targetScreen) return;
+            
+            const { x, y } = getCanvasMouseCoords(e);
+            
+            if (currentScreen === SCREENS.MENU) {
+                const startY = 210;
+                const spacing = 35;
+                for (let i = 0; i < 4; i++) {
+                    const itemY = startY + i * spacing;
+                    if (x >= 280 && x <= 520 && y >= itemY - 18 && y <= itemY + 8) {
+                        selectedMenuIndex = i;
+                        playSound('menu_click');
+                        handleMenuConfirm();
+                    }
+                }
+            } else if (currentScreen === SCREENS.SHIP_SELECT) {
+                const startY = 140;
+                const spacing = 65;
+                for (let i = 0; i < 3; i++) {
+                    const itemY = startY + i * spacing;
+                    if (x >= 80 && x <= 720 && y >= itemY - 25 && y <= itemY + 27) {
+                        selectedShipIndex = i;
+                        playSound('menu_click');
+                        handleMenuConfirm();
+                        return;
+                    }
+                }
+                if (x >= 300 && x <= 500 && y >= 345 && y <= 375) {
+                    playSound('menu_click');
+                    transitionToScreen(SCREENS.MENU);
+                }
+            } else if (currentScreen === SCREENS.SETTINGS) {
+                const startY = 175;
+                const spacing = 36;
+                
+                for (let i = 0; i < SETTINGS_OPTIONS.length; i++) {
+                    const itemY = startY + i * spacing;
+                    if (x >= 200 && x <= 600 && y >= itemY - 15 && y <= itemY + 15) {
+                        selectedSettingsIndex = i;
+                        if (i === 4) {
+                            playSound('menu_click');
+                            handleMenuConfirm();
+                        } else {
+                            if (i < 3) {
+                                if (x >= 430 && x <= 600) {
+                                    const rawVal = (x - 450) / 130;
+                                    const newVal = Math.max(0, Math.min(1.0, rawVal));
+                                    playSound('menu_select');
+                                    if (i === 0) masterVolume = newVal;
+                                    else if (i === 1) sfxVolume = newVal;
+                                    else if (i === 2) musicVolume = newVal;
+                                }
+                            } else if (i === 3) {
+                                playSound('menu_select');
+                                adjustSetting(3, 1);
+                            }
+                        }
+                    }
+                }
+            } else if (currentScreen === SCREENS.CREDITS) {
+                playSound('menu_click');
+                transitionToScreen(SCREENS.MENU);
             }
         });
 
