@@ -175,6 +175,69 @@ ASSET_CATALOG = {
         "width": 128, "height": 64, "frames": 1,
         "prefix": "enemy_b4_serpent", "output_prefix": "enemy_b4_serpent", "aspect_ratio": "2:1",
     },
+    # ═══════════════════════════════════════════════
+    # UNIQUE UNITS — One surprise enemy per biome
+    # ═══════════════════════════════════════════════
+    "unique_b1_angler": {
+        "category": "Unique Units",
+        "prompt": "Giant cybernetic anglerfish with dangling bioluminescent lure, massive hinged jaw with serrated metal teeth, dark armored body with faint blue glow patterns, 16-bit pixel art, side-view game sprite, retro Sega Genesis shmup style, transparent background, menacing deep-sea predator.",
+        "width": 96, "height": 96, "frames": 1,
+        "prefix": "unique_b1_angler", "output_prefix": "unique_b1_angler", "aspect_ratio": "1:1",
+    },
+    "unique_b2_siren": {
+        "category": "Unique Units",
+        "prompt": "Ghostly holographic siren entity emerging from shattered coral, translucent cyan and pink form, trailing data-stream hair, sings distortion waves that ripple visually, 16-bit pixel art, side-view game sprite, retro Sega Genesis shmup style, transparent background, ethereal and haunting.",
+        "width": 64, "height": 96, "frames": 1,
+        "prefix": "unique_b2_siren", "output_prefix": "unique_b2_siren", "aspect_ratio": "1:1",
+    },
+    "unique_b3_parasite": {
+        "category": "Unique Units",
+        "prompt": "Biomechanical parasite that latches onto the screen border, tentacled flesh-metal hybrid with glowing red feeding tubes, pulsating sack body, 16-bit pixel art, side-view game sprite, retro Sega Genesis shmup style, transparent background, body-horror design.",
+        "width": 96, "height": 64, "frames": 1,
+        "prefix": "unique_b3_parasite", "output_prefix": "unique_b3_parasite", "aspect_ratio": "1:1",
+    },
+    "unique_b4_mirror": {
+        "category": "Unique Units",
+        "prompt": "Crystalline mirror entity that reflects the player's own ship silhouette, faceted chrome surface with rainbow refraction edges, constantly shifting geometric shape, 16-bit pixel art, side-view game sprite, retro Sega Genesis shmup style, transparent background, unsettling doppelganger.",
+        "width": 64, "height": 64, "frames": 1,
+        "prefix": "unique_b4_mirror", "output_prefix": "unique_b4_mirror", "aspect_ratio": "1:1",
+    },
+    "unique_b5_shatterer": {
+        "category": "Unique Units",
+        "prompt": "Frozen crystalline golem that shatters and reforms, angular ice shards held together by magnetic energy, glowing blue-white core visible through translucent body, 16-bit pixel art, side-view game sprite, retro Sega Genesis shmup style, transparent background, fragile but deadly.",
+        "width": 80, "height": 80, "frames": 1,
+        "prefix": "unique_b5_shatterer", "output_prefix": "unique_b5_shatterer", "aspect_ratio": "1:1",
+    },
+    "unique_b6_phoenix": {
+        "category": "Unique Units",
+        "prompt": "Mechanical phoenix made of flame-resistant alloys, wings spread wide trailing molten metal droplets, body glows from internal furnace visible through heat vents, 16-bit pixel art, side-view game sprite, retro Sega Genesis shmup style, transparent background, rebirth from ashes theme.",
+        "width": 96, "height": 80, "frames": 1,
+        "prefix": "unique_b6_phoenix", "output_prefix": "unique_b6_phoenix", "aspect_ratio": "1:1",
+    },
+    "unique_b7_conductor": {
+        "category": "Unique Units",
+        "prompt": "Floating Tesla coil orb surrounded by arcing electricity, copper-wound rings spinning independently, captive lightning stored in glass capacitors, 16-bit pixel art, side-view game sprite, retro Sega Genesis shmup style, transparent background, electrical hazard.",
+        "width": 64, "height": 64, "frames": 1,
+        "prefix": "unique_b7_conductor", "output_prefix": "unique_b7_conductor", "aspect_ratio": "1:1",
+    },
+    "unique_b8_salvager": {
+        "category": "Unique Units",
+        "prompt": "Scrap-collecting scavenger drone made of salvaged ship parts, asymmetrical design with mismatched armor plates, tractor beam emitter and cutting torch arms, 16-bit pixel art, side-view game sprite, retro Sega Genesis shmup style, transparent background, junkyard aesthetic.",
+        "width": 72, "height": 56, "frames": 1,
+        "prefix": "unique_b8_salvager", "output_prefix": "unique_b8_salvager", "aspect_ratio": "1:1",
+    },
+    "unique_b9_broodmother": {
+        "category": "Unique Units",
+        "prompt": "Grotesque alien broodmother swollen with egg sacs, chitinous armored carapace, multiple insectoid legs, constantly spawning smaller creatures from abdominal pores, 16-bit pixel art, side-view game sprite, retro Sega Genesis shmup style, transparent background, body horror.",
+        "width": 128, "height": 96, "frames": 1,
+        "prefix": "unique_b9_broodmother", "output_prefix": "unique_b9_broodmother", "aspect_ratio": "1:1",
+    },
+    "unique_b10_paradox": {
+        "category": "Unique Units",
+        "prompt": "Reality-warping entity that exists in multiple positions simultaneously, fragmented across 3 ghostly after-images, impossible geometry body with M.C. Escher angles, 16-bit pixel art, side-view game sprite, retro Sega Genesis shmup style, transparent background, mind-bending.",
+        "width": 64, "height": 64, "frames": 1,
+        "prefix": "unique_b10_paradox", "output_prefix": "unique_b10_paradox", "aspect_ratio": "1:1",
+    },
 }
 
 REPO_ROOT = Path(__file__).parent
