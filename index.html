@@ -974,14 +974,38 @@
                 if (this.state === 'laser_fire') {
                     ctx.shadowColor = '#00ffff';
                     ctx.shadowBlur = 25;
-                    const bGrd = ctx.createLinearGradient(0, 0, 0, 140);
+                    const bGrd = ctx.createLinearGradient(0, 50, 0, 90);
                     bGrd.addColorStop(0, 'rgba(0, 255, 255, 0.2)');
                     bGrd.addColorStop(0.4, '#ffffff');
                     bGrd.addColorStop(0.5, '#00ffff');
                     bGrd.addColorStop(0.6, '#ffffff');
                     bGrd.addColorStop(1, 'rgba(0, 255, 255, 0.2)');
                     ctx.fillStyle = bGrd;
-                    ctx.fillRect(-this.x, 50, this.x + 20, 40);
+
+                    // Beam starts at 10px high at mouth (y: 65-75), expanding to 40px (y: 50-90) over first 100px
+                    const endX = -this.x;
+                    const transX = Math.max(-this.x, -100);
+                    ctx.beginPath();
+                    ctx.moveTo(0, 65);
+                    ctx.lineTo(transX, 50);
+                    ctx.lineTo(endX, 50);
+                    ctx.lineTo(endX, 90);
+                    ctx.lineTo(transX, 90);
+                    ctx.lineTo(0, 75);
+                    ctx.closePath();
+                    ctx.fill();
+
+                    // Concentrated muzzle flash at origin (0, 70)
+                    const muzzleGrd = ctx.createRadialGradient(0, 70, 0, 0, 70, 30);
+                    muzzleGrd.addColorStop(0, '#ffffff');
+                    muzzleGrd.addColorStop(0.3, '#ffffff');
+                    muzzleGrd.addColorStop(0.7, 'rgba(0, 255, 255, 0.8)');
+                    muzzleGrd.addColorStop(1, 'rgba(0, 255, 255, 0)');
+                    ctx.fillStyle = muzzleGrd;
+                    ctx.beginPath();
+                    ctx.arc(0, 70, 30, 0, Math.PI * 2);
+                    ctx.fill();
+
                     ctx.shadowBlur = 0;
                 }
 
