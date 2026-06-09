@@ -185,6 +185,21 @@ VEO_ASSET_CATALOG = {
         "extract_frames": True,
         "loop": True,
     },
+    "bg_title": {
+        "category": "Background Loops",
+        "prompt": (
+            "Seamless looping parallax background, 16-bit pixel art, "
+            "deep space starfield with distant nebula clouds in purple and cyan hues, "
+            "slowly drifting stellar dust lanes, faint pulsing stars, "
+            "subtle parallax depth with bright foreground stars and dim background stars, "
+            "horizontal scroll-ready, 800x450, seamless loop, retro arcade shmup title screen."
+        ),
+        "duration_sec": 8,
+        "fps": 15,
+        "output_prefix": "bg_title",
+        "extract_frames": True,
+        "loop": True,
+    },
 
     # ── VFX with Audio ──
     "vfx_player_laser": {
