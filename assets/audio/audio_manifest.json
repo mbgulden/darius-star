@@ -1,6 +1,6 @@
 {
-  "version": 2,
-  "updated": "2026-06-10T04:15:00Z",
+  "version": 1,
+  "updated": "2026-06-09T22:35:34Z",
   "tracks": {
     "title": {
       "scene": "Title Screen Music",
@@ -731,245 +731,95 @@
       "generated": true,
       "size_bytes": 525357
     },
-    "ambient_b1_atmosphere": {
-      "scene": "Biome 1: Abyssal Trench \u2014 Atmosphere",
-      "file": "ambient/ambient_b1_atmosphere.wav",
-      "path": "assets/audio/ambient/ambient_b1_atmosphere.wav",
-      "duration_sec": 60,
+    "mystery_first_contact": {
+      "scene": "Mystery: First Contact \u2014 Ancient Alien Tech Awakens",
+      "file": "mystery_first_contact.mp3",
+      "path": "assets/audio/mystery_first_contact.mp3",
+      "duration_sec": 30,
       "loop": true,
       "generated": true,
-      "size_bytes": 2646044,
-      "layer": "atmosphere",
-      "biome": 1,
-      "volume": 0.15
+      "size_bytes": 525357
     },
-    "ambient_b1_narrative": {
-      "scene": "Biome 1: Abyssal Trench \u2014 Narrative Noise",
-      "file": "ambient/ambient_b1_narrative.wav",
-      "path": "assets/audio/ambient/ambient_b1_narrative.wav",
-      "duration_sec": 60,
+    "mystery_biome_reveal": {
+      "scene": "Mystery: First Biome Entry \u2014 A World Unknown",
+      "file": "mystery_biome_reveal.mp3",
+      "path": "assets/audio/mystery_biome_reveal.mp3",
+      "duration_sec": 30,
       "loop": true,
       "generated": true,
-      "size_bytes": 2646044,
-      "layer": "narrative",
-      "biome": 1,
-      "volume": 0.15
+      "size_bytes": 525357
     },
-    "ambient_b2_atmosphere": {
-      "scene": "Biome 2: Coral Graveyard \u2014 Atmosphere",
-      "file": "ambient/ambient_b2_atmosphere.wav",
-      "path": "assets/audio/ambient/ambient_b2_atmosphere.wav",
-      "duration_sec": 60,
+    "mystery_lyra_vision": {
+      "scene": "Mystery: Lyra's Prophetic Vision",
+      "file": "mystery_lyra_vision.mp3",
+      "path": "assets/audio/mystery_lyra_vision.mp3",
+      "duration_sec": 30,
       "loop": true,
       "generated": true,
-      "size_bytes": 2646044,
-      "layer": "atmosphere",
-      "biome": 2,
-      "volume": 0.15
+      "size_bytes": 525357
     },
-    "ambient_b2_narrative": {
-      "scene": "Biome 2: Coral Graveyard \u2014 Narrative Noise",
-      "file": "ambient/ambient_b2_narrative.wav",
-      "path": "assets/audio/ambient/ambient_b2_narrative.wav",
-      "duration_sec": 60,
+    "mystery_precursor_awakening": {
+      "scene": "Mystery: Precursor Technology Awakening",
+      "file": "mystery_precursor_awakening.mp3",
+      "path": "assets/audio/mystery_precursor_awakening.mp3",
+      "duration_sec": 30,
       "loop": true,
       "generated": true,
-      "size_bytes": 2646044,
-      "layer": "narrative",
-      "biome": 2,
-      "volume": 0.15
+      "size_bytes": 525357
     },
-    "ambient_b3_atmosphere": {
-      "scene": "Biome 3: Coelacanth Lair \u2014 Atmosphere",
-      "file": "ambient/ambient_b3_atmosphere.wav",
-      "path": "assets/audio/ambient/ambient_b3_atmosphere.wav",
-      "duration_sec": 60,
+    "mystery_hidden_chamber": {
+      "scene": "Mystery: Hidden Chamber Discovery",
+      "file": "mystery_hidden_chamber.mp3",
+      "path": "assets/audio/mystery_hidden_chamber.mp3",
+      "duration_sec": 30,
       "loop": true,
       "generated": true,
-      "size_bytes": 2646044,
-      "layer": "atmosphere",
-      "biome": 3,
-      "volume": 0.15
+      "size_bytes": 525357
     },
-    "ambient_b3_narrative": {
-      "scene": "Biome 3: Coelacanth Lair \u2014 Narrative Noise",
-      "file": "ambient/ambient_b3_narrative.wav",
-      "path": "assets/audio/ambient/ambient_b3_narrative.wav",
-      "duration_sec": 60,
+    "mystery_cosmic_secret": {
+      "scene": "Mystery: Cosmic Secret Revealed",
+      "file": "mystery_cosmic_secret.mp3",
+      "path": "assets/audio/mystery_cosmic_secret.mp3",
+      "duration_sec": 30,
       "loop": true,
       "generated": true,
-      "size_bytes": 2646044,
-      "layer": "narrative",
-      "biome": 3,
-      "volume": 0.15
+      "size_bytes": 525357
     },
-    "ambient_b4_atmosphere": {
-      "scene": "Biome 4: Nebula Drift \u2014 Atmosphere",
-      "file": "ambient/ambient_b4_atmosphere.wav",
-      "path": "assets/audio/ambient/ambient_b4_atmosphere.wav",
-      "duration_sec": 60,
+    "mystery_ancient_signal": {
+      "scene": "Mystery: Decoding the Ancient Signal",
+      "file": "mystery_ancient_signal.mp3",
+      "path": "assets/audio/mystery_ancient_signal.mp3",
+      "duration_sec": 30,
       "loop": true,
       "generated": true,
-      "size_bytes": 2646044,
-      "layer": "atmosphere",
-      "biome": 4,
-      "volume": 0.15
+      "size_bytes": 525357
     },
-    "ambient_b4_narrative": {
-      "scene": "Biome 4: Nebula Drift \u2014 Narrative Noise",
-      "file": "ambient/ambient_b4_narrative.wav",
-      "path": "assets/audio/ambient/ambient_b4_narrative.wav",
-      "duration_sec": 60,
+    "mystery_revelation": {
+      "scene": "Mystery: Major Story Revelation",
+      "file": "mystery_revelation.mp3",
+      "path": "assets/audio/mystery_revelation.mp3",
+      "duration_sec": 30,
       "loop": true,
       "generated": true,
-      "size_bytes": 2646044,
-      "layer": "narrative",
-      "biome": 4,
-      "volume": 0.15
+      "size_bytes": 525357
     },
-    "ambient_b5_atmosphere": {
-      "scene": "Biome 5: Ice Ring \u2014 Atmosphere",
-      "file": "ambient/ambient_b5_atmosphere.wav",
-      "path": "assets/audio/ambient/ambient_b5_atmosphere.wav",
-      "duration_sec": 60,
+    "mystery_lost_civilization": {
+      "scene": "Mystery: Ruins of a Lost Civilization",
+      "file": "mystery_lost_civilization.mp3",
+      "path": "assets/audio/mystery_lost_civilization.mp3",
+      "duration_sec": 30,
       "loop": true,
       "generated": true,
-      "size_bytes": 2646044,
-      "layer": "atmosphere",
-      "biome": 5,
-      "volume": 0.15
+      "size_bytes": 525357
     },
-    "ambient_b5_narrative": {
-      "scene": "Biome 5: Ice Ring \u2014 Narrative Noise",
-      "file": "ambient/ambient_b5_narrative.wav",
-      "path": "assets/audio/ambient/ambient_b5_narrative.wav",
-      "duration_sec": 60,
+    "mystery_transcendence": {
+      "scene": "Mystery: Moment of Transcendence",
+      "file": "mystery_transcendence.mp3",
+      "path": "assets/audio/mystery_transcendence.mp3",
+      "duration_sec": 30,
       "loop": true,
       "generated": true,
-      "size_bytes": 2646044,
-      "layer": "narrative",
-      "biome": 5,
-      "volume": 0.15
-    },
-    "ambient_b6_atmosphere": {
-      "scene": "Biome 6: Fire Nebula \u2014 Atmosphere",
-      "file": "ambient/ambient_b6_atmosphere.wav",
-      "path": "assets/audio/ambient/ambient_b6_atmosphere.wav",
-      "duration_sec": 60,
-      "loop": true,
-      "generated": true,
-      "size_bytes": 2646044,
-      "layer": "atmosphere",
-      "biome": 6,
-      "volume": 0.15
-    },
-    "ambient_b6_narrative": {
-      "scene": "Biome 6: Fire Nebula \u2014 Narrative Noise",
-      "file": "ambient/ambient_b6_narrative.wav",
-      "path": "assets/audio/ambient/ambient_b6_narrative.wav",
-      "duration_sec": 60,
-      "loop": true,
-      "generated": true,
-      "size_bytes": 2646044,
-      "layer": "narrative",
-      "biome": 6,
-      "volume": 0.15
-    },
-    "ambient_b7_atmosphere": {
-      "scene": "Biome 7: Storm Belt \u2014 Atmosphere",
-      "file": "ambient/ambient_b7_atmosphere.wav",
-      "path": "assets/audio/ambient/ambient_b7_atmosphere.wav",
-      "duration_sec": 60,
-      "loop": true,
-      "generated": true,
-      "size_bytes": 2646044,
-      "layer": "atmosphere",
-      "biome": 7,
-      "volume": 0.15
-    },
-    "ambient_b7_narrative": {
-      "scene": "Biome 7: Storm Belt \u2014 Narrative Noise",
-      "file": "ambient/ambient_b7_narrative.wav",
-      "path": "assets/audio/ambient/ambient_b7_narrative.wav",
-      "duration_sec": 60,
-      "loop": true,
-      "generated": true,
-      "size_bytes": 2646044,
-      "layer": "narrative",
-      "biome": 7,
-      "volume": 0.15
-    },
-    "ambient_b8_atmosphere": {
-      "scene": "Biome 8: Derelict Fleet \u2014 Atmosphere",
-      "file": "ambient/ambient_b8_atmosphere.wav",
-      "path": "assets/audio/ambient/ambient_b8_atmosphere.wav",
-      "duration_sec": 60,
-      "loop": true,
-      "generated": true,
-      "size_bytes": 2646044,
-      "layer": "atmosphere",
-      "biome": 8,
-      "volume": 0.15
-    },
-    "ambient_b8_narrative": {
-      "scene": "Biome 8: Derelict Fleet \u2014 Narrative Noise",
-      "file": "ambient/ambient_b8_narrative.wav",
-      "path": "assets/audio/ambient/ambient_b8_narrative.wav",
-      "duration_sec": 60,
-      "loop": true,
-      "generated": true,
-      "size_bytes": 2646044,
-      "layer": "narrative",
-      "biome": 8,
-      "volume": 0.15
-    },
-    "ambient_b9_atmosphere": {
-      "scene": "Biome 9: Xenomorph Hive \u2014 Atmosphere",
-      "file": "ambient/ambient_b9_atmosphere.wav",
-      "path": "assets/audio/ambient/ambient_b9_atmosphere.wav",
-      "duration_sec": 60,
-      "loop": true,
-      "generated": true,
-      "size_bytes": 2646044,
-      "layer": "atmosphere",
-      "biome": 9,
-      "volume": 0.15
-    },
-    "ambient_b9_narrative": {
-      "scene": "Biome 9: Xenomorph Hive \u2014 Narrative Noise",
-      "file": "ambient/ambient_b9_narrative.wav",
-      "path": "assets/audio/ambient/ambient_b9_narrative.wav",
-      "duration_sec": 60,
-      "loop": true,
-      "generated": true,
-      "size_bytes": 2646044,
-      "layer": "narrative",
-      "biome": 9,
-      "volume": 0.15
-    },
-    "ambient_b10_atmosphere": {
-      "scene": "Biome 10: Core Rift \u2014 Atmosphere",
-      "file": "ambient/ambient_b10_atmosphere.wav",
-      "path": "assets/audio/ambient/ambient_b10_atmosphere.wav",
-      "duration_sec": 60,
-      "loop": true,
-      "generated": true,
-      "size_bytes": 2646044,
-      "layer": "atmosphere",
-      "biome": 10,
-      "volume": 0.15
-    },
-    "ambient_b10_narrative": {
-      "scene": "Biome 10: Core Rift \u2014 Narrative Noise",
-      "file": "ambient/ambient_b10_narrative.wav",
-      "path": "assets/audio/ambient/ambient_b10_narrative.wav",
-      "duration_sec": 60,
-      "loop": true,
-      "generated": true,
-      "size_bytes": 2646044,
-      "layer": "narrative",
-      "biome": 10,
-      "volume": 0.15
+      "size_bytes": 525357
     }
   }
 }
