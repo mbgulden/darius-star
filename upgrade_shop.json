@@ -1,0 +1,80 @@
+{
+  "version": "1.0",
+  "description": "Darius Star metaprogression upgrade shop — permanent upgrades purchasable with scrap between missions",
+  "currencies": {
+    "scrap_metal": { "id": "scrap_metal", "name": "Scrap Metal", "icon": "🔩", "color": "#cccccc", "description": "Common salvage from destroyed enemies" },
+    "energy_cells": { "id": "energy_cells", "name": "Energy Cells", "icon": "🔋", "color": "#00ffff", "description": "Rare drops from enemy interceptors and heavies" },
+    "data_fragments": { "id": "data_fragments", "name": "Data Fragments", "icon": "💾", "color": "#b026ff", "description": "Boss-exclusive drops. Unlocks advanced tech." }
+  },
+  "categories": [
+    {
+      "id": "weapons",
+      "name": "Weapon Systems",
+      "icon": "⚔️",
+      "description": "Increase firepower and unlock new attack patterns",
+      "upgrades": [
+        { "id": "wpn_damage_1", "name": "Enhanced Capacitors", "description": "Weapon damage +10%", "cost": { "scrap_metal": 50 }, "tier": 1, "maxTier": 5, "effect": { "stat": "weaponDamage", "multiplier": 1.10 }, "shipFilter": "all" },
+        { "id": "wpn_damage_2", "name": "Overcharged Coils", "description": "Weapon damage +20% (total)", "cost": { "scrap_metal": 120 }, "tier": 2, "maxTier": 5, "effect": { "stat": "weaponDamage", "multiplier": 1.20 }, "shipFilter": "all", "requires": "wpn_damage_1" },
+        { "id": "wpn_damage_3", "name": "Plasma Injectors", "description": "Weapon damage +30% (total)", "cost": { "scrap_metal": 250, "energy_cells": 5 }, "tier": 3, "maxTier": 5, "effect": { "stat": "weaponDamage", "multiplier": 1.30 }, "shipFilter": "all", "requires": "wpn_damage_2" },
+        { "id": "wpn_firerate_1", "name": "Quick-Release Trigger", "description": "Fire rate +15%", "cost": { "scrap_metal": 75 }, "tier": 1, "maxTier": 4, "effect": { "stat": "fireRate", "multiplier": 1.15 }, "shipFilter": "all" },
+        { "id": "wpn_firerate_2", "name": "Twin-Cycle Feeder", "description": "Fire rate +30% (total)", "cost": { "scrap_metal": 180, "energy_cells": 3 }, "tier": 2, "maxTier": 4, "effect": { "stat": "fireRate", "multiplier": 1.30 }, "shipFilter": "all", "requires": "wpn_firerate_1" },
+        { "id": "wpn_spread_1", "name": "Dual-Barrel Mod", "description": "Adds 1 extra projectile to spread patterns", "cost": { "scrap_metal": 100, "data_fragments": 1 }, "tier": 1, "maxTier": 2, "effect": { "stat": "spreadCount", "add": 1 }, "shipFilter": ["tempest"] }
+      ]
+    },
+    {
+      "id": "shields",
+      "name": "Shield Systems",
+      "icon": "🛡️",
+      "description": "Improved survivability and damage absorption",
+      "upgrades": [
+        { "id": "shd_capacity_1", "name": "Reinforced Plating", "description": "Shield capacity +15%", "cost": { "scrap_metal": 60 }, "tier": 1, "maxTier": 5, "effect": { "stat": "shieldMax", "multiplier": 1.15 }, "shipFilter": "all" },
+        { "id": "shd_capacity_2", "name": "Alloy-Laminate Hull", "description": "Shield capacity +30% (total)", "cost": { "scrap_metal": 150, "energy_cells": 3 }, "tier": 2, "maxTier": 5, "effect": { "stat": "shieldMax", "multiplier": 1.30 }, "shipFilter": "all", "requires": "shd_capacity_1" },
+        { "id": "shd_regen_1", "name": "Auto-Repair Nanites", "description": "Shield regenerates 2/s while not taking damage", "cost": { "scrap_metal": 80, "data_fragments": 1 }, "tier": 1, "maxTier": 3, "effect": { "stat": "shieldRegen", "value": 2 }, "shipFilter": "all" },
+        { "id": "shd_absorb_1", "name": "Impact Dampeners", "description": "First hit each wave deals 50% damage", "cost": { "scrap_metal": 100, "energy_cells": 5 }, "tier": 1, "maxTier": 1, "effect": { "stat": "firstHitReduction", "multiplier": 0.50 }, "shipFilter": ["bastion"] }
+      ]
+    },
+    {
+      "id": "engines",
+      "name": "Engine Systems",
+      "icon": "🚀",
+      "description": "Speed, maneuverability, and dodge enhancements",
+      "upgrades": [
+        { "id": "eng_speed_1", "name": "Afterburner Tuning", "description": "Ship speed +10%", "cost": { "scrap_metal": 45 }, "tier": 1, "maxTier": 5, "effect": { "stat": "speed", "multiplier": 1.10 }, "shipFilter": "all" },
+        { "id": "eng_speed_2", "name": "Thrust Vectoring", "description": "Ship speed +20% (total)", "cost": { "scrap_metal": 110, "energy_cells": 2 }, "tier": 2, "maxTier": 5, "effect": { "stat": "speed", "multiplier": 1.20 }, "shipFilter": "all", "requires": "eng_speed_1" },
+        { "id": "eng_dodge_cooldown_1", "name": "Blink Capacitor", "description": "Dodge cooldown -15%", "cost": { "scrap_metal": 70, "energy_cells": 3 }, "tier": 1, "maxTier": 4, "effect": { "stat": "dodgeCooldown", "multiplier": 0.85 }, "shipFilter": "all" },
+        { "id": "eng_dodge_range_1", "name": "Extended Blink Drive", "description": "Dodge distance +25%", "cost": { "scrap_metal": 90, "data_fragments": 2 }, "tier": 1, "maxTier": 3, "effect": { "stat": "dodgeRange", "multiplier": 1.25 }, "shipFilter": ["phantom", "specter"] }
+      ]
+    },
+    {
+      "id": "specials",
+      "name": "Special Systems",
+      "icon": "⚡",
+      "description": "Ship-specific ability enhancements",
+      "upgrades": [
+        { "id": "spc_cooldown_1", "name": "Rapid-Cycle Core", "description": "Special ability cooldown -20%", "cost": { "scrap_metal": 120, "energy_cells": 5 }, "tier": 1, "maxTier": 3, "effect": { "stat": "specialCooldown", "multiplier": 0.80 }, "shipFilter": "all" },
+        { "id": "spc_duration_1", "name": "Extended Overcharge", "description": "Special ability duration +30%", "cost": { "scrap_metal": 100, "data_fragments": 2 }, "tier": 1, "maxTier": 3, "effect": { "stat": "specialDuration", "multiplier": 1.30 }, "shipFilter": ["striker", "phantom", "tempest"] },
+        { "id": "spc_striker_mastery", "name": "Adaptive Surge Mastery", "description": "STRIKER: Adaptive Surge now grants +25% all stats (was 15%)", "cost": { "scrap_metal": 200, "data_fragments": 3 }, "tier": 1, "maxTier": 1, "effect": { "stat": "striker_surge_bonus", "value": 25 }, "shipFilter": ["striker"], "requires": "spc_cooldown_1" },
+        { "id": "spc_bastion_mastery", "name": "Aegis Protocol Mastery", "description": "BASTION: Aegis now absorbs 5 hits (was 3)", "cost": { "scrap_metal": 200, "data_fragments": 3 }, "tier": 1, "maxTier": 1, "effect": { "stat": "bastion_aegis_hits", "value": 5 }, "shipFilter": ["bastion"], "requires": "spc_cooldown_1" }
+      ]
+    },
+    {
+      "id": "cosmetics",
+      "name": "Cosmetic Upgrades",
+      "icon": "🎨",
+      "description": "Visual customization — ship colors and trail effects",
+      "upgrades": [
+        { "id": "cos_color_crimson", "name": "Crimson Hull", "description": "Unlock crimson ship color variant", "cost": { "scrap_metal": 30 }, "tier": 1, "maxTier": 1, "effect": { "stat": "shipColor", "value": "#cc0033" }, "shipFilter": "all" },
+        { "id": "cos_color_obsidian", "name": "Obsidian Hull", "description": "Unlock obsidian ship color variant", "cost": { "scrap_metal": 50 }, "tier": 1, "maxTier": 1, "effect": { "stat": "shipColor", "value": "#1a1a2e" }, "shipFilter": "all" },
+        { "id": "cos_trail_ion", "name": "Ion Trail", "description": "Unlock ion-blue engine trail effect", "cost": { "scrap_metal": 40, "energy_cells": 2 }, "tier": 1, "maxTier": 1, "effect": { "stat": "trailEffect", "value": "ion_blue" }, "shipFilter": "all" },
+        { "id": "cos_trail_void", "name": "Void Trail", "description": "Unlock void-purple engine trail effect", "cost": { "scrap_metal": 60, "data_fragments": 1 }, "tier": 1, "maxTier": 1, "effect": { "stat": "trailEffect", "value": "void_purple" }, "shipFilter": "all" },
+        { "id": "cos_trail_phoenix", "name": "Phoenix Trail", "description": "Unlock phoenix-fire engine trail effect", "cost": { "scrap_metal": 80, "data_fragments": 3 }, "tier": 1, "maxTier": 1, "effect": { "stat": "trailEffect", "value": "phoenix_fire" }, "shipFilter": "all" }
+      ]
+    }
+  ],
+  "shop_meta": {
+    "unlock_condition": "Complete first mission",
+    "reset_policy": "Upgrades are PERMANENT across all runs. Scrap persists between missions.",
+    "max_tier_display": "Upgrades with maxTier > 1 can be purchased multiple times, each increasing the effect.",
+    "ship_specific_note": "Upgrades with shipFilter list only appear for the specified ships. 'all' means available for every ship."
+  }
+}

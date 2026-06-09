@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mission Complete — Darius Star</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #03030c;
+            --panel-bg: #070719;
+            --border-color: #1a1a40;
+            --accent-cyan: #00ffff;
+            --accent-pink: #ff0055;
+            --accent-green: #00ff55;
+            --accent-gold: #ffcc00;
+            --accent-purple: #b026ff;
+            --text-color: #e2e2ec;
+            --text-muted: #6f6f96;
+            --font-display: 'Orbitron', sans-serif;
+            --font-mono: 'Share Tech Mono', monospace;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(circle at 50% 20%, rgba(0, 255, 85, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(0, 255, 255, 0.05) 0%, transparent 50%),
+                linear-gradient(rgba(18, 18, 30, 0.2) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(18, 18, 30, 0.2) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 30px 30px, 30px 30px;
+            color: var(--text-color);
+            font-family: var(--font-mono);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        /* ── HEADER ── */
+        .mission-header {
+            text-align: center;
+            margin-bottom: 10px;
+            animation: headerEntry 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes headerEntry {
+            0% { opacity: 0; transform: translateY(-30px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .mission-header .badge {
+            font-family: var(--font-display);
+            font-size: 11px;
+            letter-spacing: 6px;
+            color: var(--accent-pink);
+            text-transform: uppercase;
+            text-shadow: 0 0 8px rgba(255, 0, 85, 0.3);
+            margin-bottom: 8px;
+        }
+
+        .mission-header h1 {
+            font-family: var(--font-display);
+            font-size: 36px;
+            font-weight: 900;
+            letter-spacing: 4px;
+            color: var(--accent-green);
+            text-shadow: 0 0 20px rgba(0, 255, 85, 0.6), 0 0 40px rgba(0, 255, 85, 0.2);
+            text-transform: uppercase;
+            animation: glowPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes glowPulse {
+            0%, 100% { text-shadow: 0 0 20px rgba(0, 255, 85, 0.6), 0 0 40px rgba(0, 255, 85, 0.2); }
+            50% { text-shadow: 0 0 30px rgba(0, 255, 85, 0.9), 0 0 60px rgba(0, 255, 85, 0.4); }
+        }
+
+        .mission-header .biome-name {
+            font-size: 14px;
+            color: var(--accent-cyan);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-top: 4px;
+            text-shadow: 0 0 8px rgba(0, 255, 255, 0.3);
+        }
+
+        /* ── MAIN CONTAINER ── */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        /* ── PANEL ── */
+        .panel {
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 20px 25px;
+            box-shadow: inset 0 0 20px rgba(0, 255, 255, 0.03);
+            animation: panelEntry 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation-fill-mode: both;
+        }
+
+        .panel:nth-child(1) { animation-delay: 0.15s; }
+        .panel:nth-child(2) { animation-delay: 0.30s; }
+        .panel:nth-child(3) { animation-delay: 0.45s; }
+        .panel:nth-child(4) { animation-delay: 0.60s; }
+
+        @keyframes panelEntry {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .panel-header {
+            font-family: var(--font-display);
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: var(--accent-cyan);
+            text-transform: uppercase;
+            text-shadow: 0 0 8px rgba(0, 255, 255, 0.3);
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(0, 255, 255, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .panel-header .icon { font-size: 18px; }
+
+        /* ── SCORE BREAKDOWN ── */
+        .score-grid {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 8px 20px;
+            align-items: center;
+        }
+
+        .score-row {
+            display: contents;
+        }
+
+        .score-label {
+            font-size: 14px;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+        }
+
+        .score-value {
+            font-family: var(--font-display);
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--accent-cyan);
+            text-align: right;
+            text-shadow: 0 0 8px rgba(0, 255, 255, 0.3);
+            min-width: 80px;
+        }
+
+        .score-value.bonus { color: var(--accent-gold); text-shadow: 0 0 8px rgba(255, 204, 0, 0.4); }
+        .score-value.perfect { color: var(--accent-purple); text-shadow: 0 0 8px rgba(176, 38, 255, 0.4); }
+
+        .score-divider {
+            grid-column: 1 / -1;
+            border: none;
+            border-top: 1px dashed rgba(255, 255, 255, 0.1);
+            margin: 4px 0;
+        }
+
+        .score-total {
+            grid-column: 1 / -1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 10px;
+            border-top: 1px solid rgba(0, 255, 85, 0.3);
+            margin-top: 5px;
+        }
+
+        .score-total .label {
+            font-family: var(--font-display);
+            font-size: 16px;
+            font-weight: 900;
+            letter-spacing: 2px;
+            color: var(--accent-green);
+            text-shadow: 0 0 10px rgba(0, 255, 85, 0.5);
+        }
+
+        .score-total .value {
+            font-family: var(--font-display);
+            font-size: 28px;
+            font-weight: 900;
+            color: var(--accent-green);
+            text-shadow: 0 0 15px rgba(0, 255, 85, 0.7);
+        }
+
+        /* ── SCRAP COLLECTED ── */
+        .scrap-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .scrap-card {
+            background: rgba(26, 26, 64, 0.3);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 14px;
+            text-align: center;
+            transition: border-color 0.3s;
+        }
+
+        .scrap-card:hover {
+            border-color: var(--accent-cyan);
+        }
+
+        .scrap-card .icon {
+            font-size: 28px;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .scrap-card .count {
+            font-family: var(--font-display);
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--accent-green);
+            text-shadow: 0 0 8px rgba(0, 255, 85, 0.4);
+        }
+
+        .scrap-card .name {
+            font-size: 11px;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-top: 4px;
+        }
+
+        .scrap-total {
+            grid-column: 1 / -1;
+            text-align: right;
+            font-family: var(--font-display);
+            font-size: 14px;
+            color: var(--accent-gold);
+            letter-spacing: 1px;
+            padding-top: 4px;
+            border-top: 1px dashed rgba(255, 204, 0, 0.2);
+        }
+
+        /* ── POWER-UPS ── */
+        .powerup-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .powerup-tag {
+            background: rgba(0, 255, 255, 0.08);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            border-radius: 3px;
+            padding: 6px 14px;
+            font-size: 12px;
+            color: var(--accent-cyan);
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .powerup-tag .count {
+            font-weight: 700;
+            color: var(--accent-green);
+        }
+
+        .none-found {
+            font-size: 13px;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        /* ── BUTTONS ── */
+        .action-bar {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 5px;
+            animation: panelEntry 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation-delay: 0.75s;
+            animation-fill-mode: both;
+        }
+
+        .btn {
+            font-family: var(--font-display);
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            padding: 14px 32px;
+            border: 2px solid transparent;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            outline: none;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-primary {
+            background-color: var(--accent-pink);
+            color: #fff;
+            box-shadow: 0 0 15px rgba(255, 0, 85, 0.3);
+            flex: 1;
+            justify-content: center;
+        }
+
+        .btn-primary:hover {
+            background-color: #ff3377;
+            box-shadow: 0 0 25px rgba(255, 0, 85, 0.6);
+            transform: translateY(-2px);
+        }
+
+        .btn-next {
+            background-color: transparent;
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+            flex: 1;
+            justify-content: center;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.15);
+        }
+
+        .btn-next:hover {
+            background-color: rgba(0, 255, 255, 0.08);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.35);
+            transform: translateY(-2px);
+        }
+
+        /* ── TICK-UP ANIMATION ── */
+        .tick-up {
+            animation: tickUp 0.5s ease-out;
+        }
+
+        @keyframes tickUp {
+            0% { transform: scale(1.5); opacity: 0.5; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* ── PERFECT BADGE ── */
+        .perfect-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink));
+            color: #fff;
+            font-family: var(--font-display);
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            padding: 4px 12px;
+            border-radius: 3px;
+            margin-left: 8px;
+            text-shadow: 0 0 6px rgba(255, 255, 255, 0.4);
+            animation: badgeShine 2s ease-in-out infinite;
+        }
+
+        @keyframes badgeShine {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.3); }
+        }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 600px) {
+            .mission-header h1 { font-size: 24px; }
+            .scrap-grid { grid-template-columns: 1fr; }
+            .action-bar { flex-direction: column; }
+            .btn { width: 100%; justify-content: center; }
+            .score-value { font-size: 15px; min-width: 60px; }
+            .score-total .value { font-size: 22px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ── MISSION HEADER ── -->
+    <div class="mission-header">
+        <div class="badge">⚡ Mission Report</div>
+        <h1>Mission Complete</h1>
+        <div class="biome-name" id="biomeName">Abyssal Trench — Level 1</div>
+    </div>
+
+    <!-- ── SCORE BREAKDOWN ── -->
+    <div class="container">
+        <div class="panel" id="scorePanel">
+            <div class="panel-header">
+                <span class="icon">🎯</span> Score Breakdown
+                <span class="perfect-badge" id="perfectBadge" style="display:none;">★ NO DAMAGE</span>
+            </div>
+            <div class="score-grid" id="scoreGrid">
+                <!-- Populated by JS -->
+            </div>
+        </div>
+
+        <!-- ── SCRAP COLLECTED ── -->
+        <div class="panel" id="scrapPanel">
+            <div class="panel-header">
+                <span class="icon">📦</span> Salvage Collected
+            </div>
+            <div class="scrap-grid" id="scrapGrid">
+                <!-- Populated by JS -->
+            </div>
+        </div>
+
+        <!-- ── POWER-UPS COLLECTED ── -->
+        <div class="panel" id="powerupPanel">
+            <div class="panel-header">
+                <span class="icon">💊</span> Power-Ups Collected
+            </div>
+            <div class="powerup-list" id="powerupList">
+                <span class="none-found">No power-ups collected this mission.</span>
+            </div>
+        </div>
+
+        <!-- ── ACTIONS ── -->
+        <div class="action-bar">
+            <a class="btn btn-primary" href="upgrade_shop.html" id="upgradeBtn">
+                ⬆️ Upgrade Shop
+            </a>
+            <button class="btn btn-next" id="nextMissionBtn" onclick="nextMission()">
+                ▶ Next Mission
+            </button>
+        </div>
+    </div>
+
+    <script>
+    // ── DATA MODEL ──
+    // Reads from URL params with sensible defaults.
+    // Expected params:
+    //   biome=N&level=N&biomeName=Abyssal Trench
+    //   enemiesKilled=N&enemiesValue=N
+    //   bossDefeated=true&bossBonus=N
+    //   timeSeconds=N&timeBonus=N
+    //   comboCount=N&comboMultiplier=N&comboBonus=N
+    //   noDamage=true&noDamageBonus=N
+    //   scrapMetal=N&energyCells=N&dataFragments=N
+    //   powerups=shield:2,weapon:1,drone:0  (comma-separated name:count)
+
+    function getParam(name, fallback) {
+        const url = new URL(window.location.href);
+        const val = url.searchParams.get(name);
+        return val !== null ? val : fallback;
+    }
+
+    function getInt(name, fallback) { return parseInt(getParam(name, fallback), 10); }
+    function getBool(name) { return getParam(name, 'false') === 'true'; }
+
+    // Parse mission data
+    const missionData = {
+        biome: getInt('biome', 1),
+        level: getInt('level', 1),
+        biomeName: getParam('biomeName', 'Abyssal Trench'),
+        enemiesKilled: getInt('enemiesKilled', 47),
+        enemyValue: getInt('enemyValue', 100),
+        bossDefeated: getBool('bossDefeated', 'true'),
+        bossBonus: getInt('bossBonus', 5000),
+        timeSeconds: getInt('timeSeconds', 187),
+        timeBonus: getInt('timeBonus', 1200),
+        maxCombo: getInt('comboCount', 18),
+        comboMultiplier: parseFloat(getParam('comboMultiplier', '2.5')),
+        comboBonus: getInt('comboBonus', 800),
+        noDamage: getBool('noDamage', 'false'),
+        noDamageBonus: getInt('noDamageBonus', 3000),
+        scrapMetal: getInt('scrapMetal', 85),
+        energyCells: getInt('energyCells', 12),
+        dataFragments: getInt('dataFragments', 1),
+    };
+
+    // Parse powerups (comma-separated name:count)
+    const powerupRaw = getParam('powerups', 'shield_restore:2,weapon_boost:1,drone:0,overcharge:0');
+    const powerups = powerupRaw.split(',').map(p => {
+        const [name, count] = p.split(':');
+        return { name: name.replace(/_/g, ' '), count: parseInt(count, 10) };
+    }).filter(p => p.count > 0);
+
+    // ── RENDER ──
+    document.getElementById('biomeName').textContent = 
+        `${missionData.biomeName} — Level ${missionData.level}`;
+
+    // Build score breakdown
+    const enemiesScore = missionData.enemiesKilled * missionData.enemyValue;
+    const totalScore = enemiesScore + missionData.bossBonus + missionData.timeBonus + 
+                       missionData.comboBonus + missionData.noDamageBonus;
+
+    const scoreRows = [
+        { label: `Enemies Destroyed (${missionData.enemiesKilled} × ${missionData.enemyValue})`, value: enemiesScore, cls: '' },
+        { label: 'Boss Defeated Bonus', value: missionData.bossBonus, cls: 'bonus' },
+        { label: `Time Bonus (${Math.floor(missionData.timeSeconds / 60)}:${String(missionData.timeSeconds % 60).padStart(2, '0')})`, value: missionData.timeBonus, cls: 'bonus' },
+        { label: `Combo Bonus (×${missionData.comboMultiplier} max)`, value: missionData.comboBonus, cls: 'bonus' },
+    ];
+
+    if (missionData.noDamage) {
+        scoreRows.push({ label: 'No-Damage Perfect Run', value: missionData.noDamageBonus, cls: 'perfect' });
+        document.getElementById('perfectBadge').style.display = 'inline-block';
+    }
+
+    const scoreGrid = document.getElementById('scoreGrid');
+    let html = '';
+    scoreRows.forEach((row, i) => {
+        html += `
+            <span class="score-label">${row.label}</span>
+            <span class="score-value ${row.cls} tick-up" style="animation-delay:${0.3 + i * 0.1}s">${row.value.toLocaleString()}</span>
+        `;
+    });
+    html += '<hr class="score-divider">';
+    html += `
+        <div class="score-total">
+            <span class="label">Total Score</span>
+            <span class="value tick-up" style="animation-delay:0.8s">${totalScore.toLocaleString()}</span>
+        </div>
+    `;
+    scoreGrid.innerHTML = html;
+
+    // Build scrap grid
+    const scrapItems = [
+        { icon: '🔩', count: missionData.scrapMetal, name: 'Scrap Metal', color: '#cccccc' },
+        { icon: '🔋', count: missionData.energyCells, name: 'Energy Cells', color: '#00ffff' },
+        { icon: '💾', count: missionData.dataFragments, name: 'Data Fragments', color: '#b026ff' },
+    ];
+
+    const totalScrapValue = missionData.scrapMetal + (missionData.energyCells * 5) + (missionData.dataFragments * 25);
+    const scrapGrid = document.getElementById('scrapGrid');
+    scrapGrid.innerHTML = scrapItems.map(s => `
+        <div class="scrap-card">
+            <span class="icon">${s.icon}</span>
+            <div class="count tick-up">${s.count}</div>
+            <div class="name">${s.name}</div>
+        </div>
+    `).join('') + `
+        <div class="scrap-total">Total Scrap Value: ${totalScrapValue} ⚙️</div>
+    `;
+
+    // Build powerup list
+    const powerupList = document.getElementById('powerupList');
+    if (powerups.length > 0) {
+        powerupList.innerHTML = powerups.map(p => `
+            <span class="powerup-tag">
+                💊 <span class="name">${p.name}</span> <span class="count">×${p.count}</span>
+            </span>
+        `).join('');
+    }
+
+    // Store mission results for upgrade shop
+    const shopUrl = new URL('upgrade_shop.html', window.location.href);
+    shopUrl.searchParams.set('scrapMetal', missionData.scrapMetal);
+    shopUrl.searchParams.set('energyCells', missionData.energyCells);
+    shopUrl.searchParams.set('dataFragments', missionData.dataFragments);
+    shopUrl.searchParams.set('fromMission', `${missionData.biome}-${missionData.level}`);
+    document.getElementById('upgradeBtn').href = shopUrl.toString();
+
+    // ── NEXT MISSION ──
+    function nextMission() {
+        const nextLevel = missionData.level + 1;
+        if (nextLevel > 10) {
+            // Next biome
+            const nextBiome = missionData.biome + 1;
+            if (nextBiome > 10) {
+                alert('🎉 ALL BIOMES COMPLETE! You are the savior of the fleet. Final score: ' + totalScore.toLocaleString());
+                window.location.href = 'index.html';
+                return;
+            }
+            window.location.href = `index.html?biome=${nextBiome}&level=1`;
+        } else {
+            window.location.href = `index.html?biome=${missionData.biome}&level=${nextLevel}`;
+        }
+    }
+
+    // ── KEYBOARD SHORTCUTS ──
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'u' || e.key === 'U') {
+            window.location.href = document.getElementById('upgradeBtn').href;
+        }
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            nextMission();
+        }
+    });
+
+    // Flash the "NEXT MISSION" button hint
+    setTimeout(() => {
+        const nextBtn = document.getElementById('nextMissionBtn');
+        nextBtn.style.borderColor = 'var(--accent-green)';
+        nextBtn.style.color = 'var(--accent-green)';
+        nextBtn.style.boxShadow = '0 0 15px rgba(0,255,85,0.3)';
+        setTimeout(() => {
+            nextBtn.style.borderColor = 'var(--accent-cyan)';
+            nextBtn.style.color = 'var(--accent-cyan)';
+            nextBtn.style.boxShadow = '0 0 10px rgba(0,255,255,0.15)';
+        }, 1500);
+    }, 2000);
+    </script>
+</body>
+</html>
