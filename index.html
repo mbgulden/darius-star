@@ -66,22 +66,44 @@
         canvas {
             display: block;
             background: #000;
-            /* Responsive scaling: fit viewport, maintain 16:9 */
-            max-width: 100vw;
-            max-height: 100vh;
-            width: auto;
+            /* Fill container, maintain aspect ratio */
+            width: 100%;
             height: auto;
+            max-width: 100vw;
+            max-height: calc(100vh - 120px);
+            aspect-ratio: 16 / 9;
         }
 
-        .instructions {
-            margin-top: 10px;
-            font-size: 14px;
-            color: #8a8a9f;
-            text-align: center;
-            max-width: 800px;
-            line-height: 1.4;
+        /* Mobile landscape: fill screen, hide chrome */
+        @media (max-width: 900px) and (orientation: landscape) {
+            h1 { display: none; }
+            .studio-credit { display: none; }
+            .instructions { display: none; }
+            #game-container {
+                border: none;
+                box-shadow: none;
+                max-height: 100vh;
+                max-width: 100vw;
+            }
+            canvas {
+                max-height: 100vh;
+                max-width: 100vw;
+            }
+            body {
+                overflow: hidden;
+                justify-content: center;
+            }
         }
 
+        /* Hide instructions on mobile */
+        @media (max-width: 600px) {
+            .instructions {
+                display: none;
+            }
+            h1 {
+                font-size: 16px;
+            }
+        }
         /* Cinematic video overlay — full-size over the canvas */
         .cinematic-video-overlay {
             position: absolute;
