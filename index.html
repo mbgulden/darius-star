@@ -3674,12 +3674,27 @@
                             shieldSize, shieldSize);
                         ctx.globalAlpha = 1;
                     } else {
-                        // Fallback: procedural circle
-                        ctx.strokeStyle = 'rgba(0, 255, 255, 0.4)';
-                        ctx.lineWidth = 2;
+                        // Fallback: double-ring procedural shield
+                        const pulse = 0.25 + Math.sin(gameTime * 3) * 0.15;
+                        // Outer ring
+                        ctx.strokeStyle = `rgba(0, 200, 255, ${pulse + 0.1})`;
+                        ctx.lineWidth = 3;
                         ctx.beginPath();
-                        ctx.arc(24, this.height / 2, 28, 0, Math.PI * 2);
+                        ctx.arc(24, this.height / 2, 32, 0, Math.PI * 2);
                         ctx.stroke();
+                        // Inner ring
+                        ctx.strokeStyle = `rgba(0, 255, 255, ${pulse + 0.2})`;
+                        ctx.lineWidth = 1.5;
+                        ctx.beginPath();
+                        ctx.arc(24, this.height / 2, 26, 0, Math.PI * 2);
+                        ctx.stroke();
+                        // Glow dots at cardinal points
+                        ctx.fillStyle = `rgba(0, 255, 255, ${pulse + 0.3})`;
+                        for (let a = 0; a < Math.PI * 2; a += Math.PI / 3) {
+                            ctx.beginPath();
+                            ctx.arc(24 + Math.cos(a) * 29, this.height / 2 + Math.sin(a) * 29, 2, 0, Math.PI * 2);
+                            ctx.fill();
+                        }
                     }
                 }
 
