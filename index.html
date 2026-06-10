@@ -509,6 +509,65 @@
         let ngPlusRun = false;  // Whether current run is NG+
         let _winTransition = false; // Flag for win screen transition
 
+        // --- Narrative Flags & Ending System (GRO-1009) ---
+        // Tracks player story choices throughout the game. Flags accrue from dialogue
+        // choices and biome milestones. At Biome 10 climax, determineEnding() picks
+        // one of three endings: sacrifice, transcendence, dominion.
+        const narrativeFlags = {
+            lyra_trust: 0,           // Lyra dialogue choices
+            coelacanth_mercy: 0,     // Mercy shown to Coelacanth minions/boss
+            power_lust: 0,           // Aggressive/dominant choices
+            dreamer_connection: 0,   // Connection to the Dreamer entity
+            sacrifice_seen: 0        // Lyra sacrifice foreshadowing witnessed
+        };
+        let selectedEnding = null;   // 'sacrifice' | 'transcendence' | 'dominion'
+        let endingEligible = [];     // Which endings are eligible (for player choice)
+
+        function setNarrativeFlag(key, value) {
+            if (narrativeFlags.hasOwnProperty(key)) {
+                narrativeFlags[key] = Math.max(0, narrativeFlags[key] + value);
+            }
+        }
+
+        function getNarrativeFlag(key) {
+            return narrativeFlags[key] || 0;
+        }
+
+        // Determine which ending(s) the player qualifies for.
+        // Returns array of eligible ending ids. If multiple, player chooses at climax.
+        function determineEnding() {
+            const flags = narrativeFlags;
+            const eligible = [];
+
+            // SACRIFICE: Lyra trust high + sacrifice foreshadowing + mercy
+            if (flags.lyra_trust >= 3 && flags.sacrifice_seen >= 1 && flags.coelacanth_mercy >= 2) {
+                eligible.push('sacrifice');
+            }
+            // TRANSCENDENCE: Dreamer connection high + lyra trust
+            if (flags.dreamer_connection >= 2 && flags.lyra_trust >= 2) {
+                eligible.push('transcendence');
+            }
+            // DOMINION: Power lust high + low mercy
+            if (flags.power_lust >= 3 && flags.coelacanth_mercy <= 1) {
+                eligible.push('dominion');
+            }
+
+            // Fallback: if no ending qualifies, enable all three (player's choice)
+            if (eligible.length === 0) {
+                eligible.push('sacrifice', 'transcendence', 'dominion');
+            }
+
+            // If only one eligible, select it automatically
+            if (eligible.length === 1) {
+                selectedEnding = eligible[0];
+            } else {
+                endingEligible = eligible;
+                // Player will choose from endingEligible at the climax screen
+            }
+
+            return eligible;
+        }
+
         // --- Menu & Settings State Variables ---
         const SCREENS = {
             MENU: 'menu',
@@ -1435,11 +1494,13 @@
 
                 ctx.save();
                 
+                // GRO-1009: Ending-specific credits
+                const endingCredit = selectedEnding || 'transcendence';
                 const creditsList = [
                     { type: 'logo' },
                     { type: 'spacer', height: 40 },
                     { type: 'title', text: 'DARIUS STAR: CYBER COELACANTH' },
-                    { type: 'subtitle', text: 'DEVELOPMENT CREDITS' },
+                    { type: 'subtitle', text: endingCredit === 'sacrifice' ? 'SACRIFICE ENDING' : (endingCredit === 'transcendence' ? 'TRANSCENDENCE ENDING' : 'DOMINION ENDING') },
                     { type: 'spacer', height: 50 },
                     { type: 'role', text: 'GAME DESIGN & NARRATIVE' },
                     { type: 'name', text: 'Michael Gulden' },
@@ -1467,10 +1528,13 @@
                     { type: 'name', text: 'Google DeepMind Team' },
                     { type: 'name', text: 'GrowthWebDev Tester Squad' },
                     { type: 'name', text: 'Our retro arcade community' },
+                    { type: 'spacer', height: 40 },
+                    { type: 'role', text: 'ENDING CREDITS' },
+                    { type: 'name', text: endingCredit === 'sacrifice' ? 'Lyra — The light that guides us home' : (endingCredit === 'transcendence' ? 'The Dreamer — Weaver of infinite possibility' : 'Darius Star — Master of the Coelacanth') },
                     { type: 'spacer', height: 60 },
-                    { type: 'thanks', text: 'THANK YOU FOR PLAYING' },
+                    { type: 'thanks', text: endingCredit === 'sacrifice' ? 'IN MEMORY OF LYRA' : (endingCredit === 'transcendence' ? 'BEYOND THE STARS' : 'THE GALAXY IS YOURS') },
                     { type: 'spacer', height: 50 },
-                    { type: 'end', text: 'THE END' }
+                    { type: 'end', text: endingCredit === 'sacrifice' ? 'SACRIFICE' : (endingCredit === 'transcendence' ? 'TRANSCENDENCE' : 'DOMINION') }
                 ];
 
                 let currentY = canvas.height - creditsScrollY;
@@ -1558,6 +1622,69 @@
             } else if (currentScreen === SCREENS.CINEMATIC) {
                 ctx.save();
                 
+                // GRO-1009: Ending choice screen — when multiple endings are eligible
+                if (endingEligible.length > 1 && !selectedEnding) {
+                    // Dark background
+                    ctx.fillStyle = 'rgba(5, 5, 15, 0.9)';
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    
+                    // Title
+                    ctx.fillStyle = '#00ffff';
+                    ctx.font = 'bold 28px monospace';
+                    ctx.textAlign = 'center';
+                    ctx.shadowColor = '#00ffff';
+                    ctx.shadowBlur = 15;
+                    ctx.fillText('CHOOSE YOUR DESTINY', canvas.width / 2, 100);
+                    ctx.shadowBlur = 0;
+                    
+                    // Ending options
+                    const endingNames = {
+                        sacrifice: 'SACRIFICE — Lyra merges with the Coelacanth core, trading her life for victory.',
+                        transcendence: 'TRANSCENDENCE — Evolve beyond physical form with the Dreamer.',
+                        dominion: 'DOMINION — Seize the Coelacanth\'s power and rule the galaxy.'
+                    };
+                    const endingColors = { sacrifice: '#00ffff', transcendence: '#ff00ff', dominion: '#ff3300' };
+                    
+                    let choiceY = 160;
+                    endingEligible.forEach((endId, idx) => {
+                        const isHovered = false; // keyboard selection handled via keydown
+                        ctx.fillStyle = endingColors[endId] || '#ffffff';
+                        ctx.font = 'bold 20px monospace';
+                        ctx.textAlign = 'center';
+                        ctx.fillText(`[${idx + 1}] ${endId.toUpperCase()}`, canvas.width / 2, choiceY);
+                        
+                        ctx.fillStyle = '#cccccc';
+                        ctx.font = '12px monospace';
+                        // Wrap text for the description
+                        const desc = endingNames[endId] || '';
+                        const words = desc.split(' ');
+                        let line = '';
+                        let lineY = choiceY + 22;
+                        const maxW = 600;
+                        words.forEach(w => {
+                            const test = line + w + ' ';
+                            if (ctx.measureText(test).width > maxW && line !== '') {
+                                ctx.fillText(line, canvas.width / 2, lineY);
+                                line = w + ' ';
+                                lineY += 16;
+                            } else {
+                                line = test;
+                            }
+                        });
+                        if (line) ctx.fillText(line, canvas.width / 2, lineY);
+                        
+                        choiceY += 70;
+                    });
+                    
+                    // Prompt
+                    ctx.fillStyle = '#8a8a9f';
+                    ctx.font = '13px monospace';
+                    ctx.fillText('PRESS 1, 2, or 3 to SELECT YOUR ENDING', canvas.width / 2, canvas.height - 40);
+                    
+                    ctx.restore();
+                    return; // Skip normal cinematic rendering during choice
+                }
+                
                 // Animate background image panning
                 if (endingSunriseLoaded && endingSunriseImg.naturalWidth > 0) {
                     const progress = Math.min(cinematicTime / 20, 1.0);
@@ -1575,11 +1702,22 @@
                     ctx.fillRect(0, 0, canvas.width, canvas.height);
                 }
 
-                // Draw a retro screen glare overlay for cinematic effect
+                // Draw a retro screen glare overlay for cinematic effect — GRO-1009: ending tint
                 const scanlineGrad = ctx.createLinearGradient(0, 0, 0, canvas.height);
-                scanlineGrad.addColorStop(0, 'rgba(0, 255, 255, 0.05)');
-                scanlineGrad.addColorStop(0.5, 'rgba(0, 0, 0, 0.1)');
-                scanlineGrad.addColorStop(1, 'rgba(255, 0, 255, 0.05)');
+                const endTint = selectedEnding || 'transcendence';
+                if (endTint === 'sacrifice') {
+                    scanlineGrad.addColorStop(0, 'rgba(0, 255, 255, 0.08)');
+                    scanlineGrad.addColorStop(0.5, 'rgba(0, 0, 0, 0.1)');
+                    scanlineGrad.addColorStop(1, 'rgba(0, 100, 255, 0.08)');
+                } else if (endTint === 'transcendence') {
+                    scanlineGrad.addColorStop(0, 'rgba(200, 0, 255, 0.08)');
+                    scanlineGrad.addColorStop(0.5, 'rgba(0, 0, 0, 0.1)');
+                    scanlineGrad.addColorStop(1, 'rgba(255, 255, 255, 0.06)');
+                } else {
+                    scanlineGrad.addColorStop(0, 'rgba(255, 50, 0, 0.08)');
+                    scanlineGrad.addColorStop(0.5, 'rgba(0, 0, 0, 0.1)');
+                    scanlineGrad.addColorStop(1, 'rgba(255, 150, 0, 0.08)');
+                }
                 ctx.fillStyle = scanlineGrad;
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -1615,16 +1753,37 @@
                     }
                 }
 
-                // Narrative typography typing text
+                // Narrative typography typing text — GRO-1009: ending-specific
                 let txt = "";
+                const ending = selectedEnding || 'transcendence';
                 if (cinematicTime < 3) {
                     txt = "CYBER COELACANTH MELTDOWN INITIALIZED...";
                 } else if (cinematicTime < 7) {
                     txt = "SECTOR 3 DEPTH LAIR SECURED. ESCAPING CAVERN...";
+                } else if (cinematicTime < 12) {
+                    if (ending === 'sacrifice') {
+                        txt = "Lyra's voice fills the comms one last time. 'It's okay, Daddy. I know what I have to do.' Her signal merges with the Coelacanth core, neutralizing it from within.";
+                    } else if (ending === 'transcendence') {
+                        txt = "The Dreamer's frequency harmonizes with the Nyxa. Light peels away from matter. Lyra whispers: 'We're not ending. We're becoming something else.'";
+                    } else {
+                        txt = "The Coelacanth's power core flickers — exposed, vulnerable. Darius seizes control. 'This technology belongs to humanity now.' The Archon network goes silent.";
+                    }
                 } else if (cinematicTime < 18) {
-                    txt = "The Cyber Coelacanth is defeated... but the galaxy still needs you.";
+                    if (ending === 'sacrifice') {
+                        txt = "One life exchanged for a galaxy. Lyra's sacrifice breaks the Coelacanth's hold forever. The Nyxa emerges alone into the sunrise.";
+                    } else if (ending === 'transcendence') {
+                        txt = "Physical form becomes irrelevant. The Nyxa and its crew transcend into the Dreamer's realm — a new species, a new beginning, beyond the reach of war.";
+                    } else {
+                        txt = "Absolute power bends to Darius Star. The Coelacanth's network is now under his command. But power has a cost — and the galaxy will soon learn what that cost is.";
+                    }
                 } else {
-                    txt = "TO BE CONTINUED...";
+                    if (ending === 'sacrifice') {
+                        txt = "ENDING: SACRIFICE — 'For her, the stars will always shine.'";
+                    } else if (ending === 'transcendence') {
+                        txt = "ENDING: TRANSCENDENCE — 'We dreamed ourselves into gods.'";
+                    } else {
+                        txt = "ENDING: DOMINION — 'The galaxy bends to a new master.'";
+                    }
                 }
 
                 let subTime = 0;
@@ -1667,6 +1826,17 @@
             loadEnemySprites();
             loadVFXSprites();
 
+            // GRO-1009: Ending choice keyboard handling
+            if (currentScreen === SCREENS.CINEMATIC && endingEligible.length > 1 && !selectedEnding) {
+                const numKeys = { '1': 0, '2': 1, '3': 2 };
+                if (numKeys[e.key] !== undefined && numKeys[e.key] < endingEligible.length) {
+                    selectedEnding = endingEligible[numKeys[e.key]];
+                    playSound('menu_click');
+                    e.preventDefault();
+                    return;
+                }
+            }
+            
             // Cinematic skip: Space or Escape while a video is playing
             if (e.key === ' ' || e.key === 'Space' || e.key === 'Escape') {
                 if (bossIntroPlaying) {
@@ -2804,6 +2974,7 @@
                 this.laserWarningTimer = 0;
                 this.color = '#305080';
                 this.shieldColor = '#ff00aa';
+                this.architectPhase = null; // GRO-1009: 'sacrifice'|'transcendence'|'dominion' — set at low HP
             }
 
             update(dt) {
@@ -2833,7 +3004,23 @@
                     }
 
                     if (this.state === 'idle') {
-                        if (this.hp < this.hpMax / 2 && Math.random() > 0.4) {
+                        // GRO-1009: Architect final phase — set dominant theme at 25% HP
+                        if (this.hp < this.hpMax * 0.25 && !this.architectPhase) {
+                            const flags = narrativeFlags;
+                            // Determine which theme dominates for the final phase
+                            if (flags.sacrifice_seen >= 1 && flags.lyra_trust >= 2) {
+                                this.architectPhase = 'sacrifice';
+                            } else if (flags.dreamer_connection >= 2) {
+                                this.architectPhase = 'transcendence';
+                            } else if (flags.power_lust >= 2) {
+                                this.architectPhase = 'dominion';
+                            } else {
+                                this.architectPhase = 'transcendence'; // default
+                            }
+                            this.state = 'architect_final';
+                            this.stateTimer = 999; // Stay in final phase until death
+                            playSound('victory_fanfare');
+                        } else if (this.hp < this.hpMax / 2 && Math.random() > 0.4) {
                             this.state = 'laser_charge';
                             this.stateTimer = 1.5;
                             playSound('laser_charge');
@@ -2841,6 +3028,9 @@
                             this.state = 'rage';
                             this.stateTimer = 4;
                         }
+                    } else if (this.state === 'architect_final') {
+                        // Architect final phase: relentless attacks, no exit until death
+                        this.stateTimer = 999; // persist
                     } else if (this.state === 'rage') {
                         this.state = 'idle';
                         this.stateTimer = 3;
@@ -2866,7 +3056,35 @@
             }
 
             shootAttack() {
-                if (this.state === 'idle') {
+                if (this.state === 'architect_final') {
+                    // GRO-1009: Architect final phase — unique attack per ending theme
+                    const phase = this.architectPhase;
+                    if (phase === 'sacrifice') {
+                        // SACRIFICE: Converging energy rings — Lyra's resonance
+                        for (let a = 0; a < 8; a++) {
+                            const angle = (a / 8) * Math.PI * 2 + this.bobTimer;
+                            enemyBullets.push(new EnemyBullet(this.x + 90, this.y + 70, Math.cos(angle) * 180, Math.sin(angle) * 180));
+                        }
+                    } else if (phase === 'transcendence') {
+                        // TRANSCENDENCE: Spiral wave of light — dreamer ascension
+                        for (let a = 0; a < 5; a++) {
+                            const angle = (a / 5) * Math.PI * 2 + this.bobTimer * 3;
+                            enemyBullets.push(new EnemyBullet(this.x + 90, this.y + 70, Math.cos(angle) * 220, Math.sin(angle) * 220));
+                        }
+                        // Plus homing shot toward player
+                        const dx = player.x - (this.x + 90);
+                        const dy = player.y - (this.y + 70);
+                        const dist = Math.sqrt(dx*dx + dy*dy) || 1;
+                        enemyBullets.push(new EnemyBullet(this.x + 90, this.y + 70, (dx/dist) * 300, (dy/dist) * 300));
+                    } else {
+                        // DOMINION: Overwhelming firepower — seize control
+                        for (let r = 0; r < 3; r++) {
+                            const spread = (r - 1) * 0.4;
+                            enemyBullets.push(new EnemyBullet(this.x + 90, this.y + 70, -300, -100 + spread * 100));
+                            enemyBullets.push(new EnemyBullet(this.x + 90, this.y + 70, -300, 100 + spread * 100));
+                        }
+                    }
+                } else if (this.state === 'idle') {
                     enemyBullets.push(new EnemyBullet(this.x + 10, this.y + 50, -260, -80));
                     enemyBullets.push(new EnemyBullet(this.x + 10, this.y + 70, -280, 0));
                     enemyBullets.push(new EnemyBullet(this.x + 10, this.y + 90, -260, 80));
@@ -2898,6 +3116,17 @@
                     this.hp = 0;
                     bossDefeated = true;
                     _winTransition = true; // Flag for transition handler
+                    
+                    // GRO-1009: Determine ending based on narrative flags
+                    determineEnding();
+                    // If multiple endings eligible but none selected yet (architect phase set one),
+                    // use the architect phase as the default
+                    if (!selectedEnding && endingEligible.length > 0) {
+                        selectedEnding = this.architectPhase && endingEligible.includes(this.architectPhase)
+                            ? this.architectPhase : endingEligible[0];
+                    }
+                    if (!selectedEnding) selectedEnding = 'transcendence'; // ultimate fallback
+                    
                     // Save NG+ eligibility for this completed run
                     try {
                         const ngKey = 'darius_star_ngplus_eligible';
@@ -2959,6 +3188,33 @@
                         ctx.fillStyle = 'rgba(255, 0, 30, 0.25)';
                         ctx.fillRect(0, 0, renderW, renderH);
                         ctx.globalCompositeOperation = 'source-over';
+                    } else if (this.state === 'architect_final') {
+                        // GRO-1009: Architect final phase — ending-specific boss aura
+                        ctx.drawImage(sprite, 0, 0, renderW, renderH);
+                        const phase = this.architectPhase;
+                        const pulse = Math.sin(this.bobTimer * 6) * 0.5 + 0.5;
+                        if (phase === 'sacrifice') {
+                            ctx.shadowColor = '#00ffff';
+                            ctx.shadowBlur = 20 + pulse * 15;
+                            ctx.globalCompositeOperation = 'source-atop';
+                            ctx.fillStyle = `rgba(0, 255, 255, ${0.15 + pulse * 0.1})`;
+                            ctx.fillRect(0, 0, renderW, renderH);
+                            ctx.globalCompositeOperation = 'source-over';
+                        } else if (phase === 'transcendence') {
+                            ctx.shadowColor = '#ff00ff';
+                            ctx.shadowBlur = 25 + pulse * 20;
+                            ctx.globalCompositeOperation = 'source-atop';
+                            ctx.fillStyle = `rgba(255, 0, 255, ${0.12 + pulse * 0.08})`;
+                            ctx.fillRect(0, 0, renderW, renderH);
+                            ctx.globalCompositeOperation = 'source-over';
+                        } else {
+                            ctx.shadowColor = '#ff3300';
+                            ctx.shadowBlur = 18 + pulse * 22;
+                            ctx.globalCompositeOperation = 'source-atop';
+                            ctx.fillStyle = `rgba(255, 50, 0, ${0.2 + pulse * 0.15})`;
+                            ctx.fillRect(0, 0, renderW, renderH);
+                            ctx.globalCompositeOperation = 'source-over';
+                        }
                     } else if (this.state === 'intro') {
                         // Intro: fade in from the right edge
                         const introProgress = Math.min(1, (canvas.width - 210 - this.x) / 100 + 1);
@@ -4674,6 +4930,7 @@
                 ],
                 onChoice: function(choiceValue) {
                     if (choiceValue === 'center') {
+                        setNarrativeFlag('lyra_trust', 1);
                         activeDialogue = new DialogueSequence([
                             {
                                 speaker: 'Darius',
@@ -4786,6 +5043,8 @@
                 ],
                 onChoice: function(choiceValue) {
                     if (choiceValue === 'down') {
+                        setNarrativeFlag('lyra_trust', 1);
+                        setNarrativeFlag('dreamer_connection', 1);
                         activeDialogue = new DialogueSequence([
                             {
                                 speaker: 'Darius',
@@ -4888,6 +5147,8 @@
                 ],
                 onChoice: function(choiceValue) {
                     if (choiceValue === 'ice') {
+                        setNarrativeFlag('lyra_trust', 1);
+                        setNarrativeFlag('dreamer_connection', 1);
                         activeDialogue = new DialogueSequence([
                             {
                                 speaker: 'Darius',
@@ -4935,6 +5196,7 @@
                             }
                         ]);
                     } else {
+                        setNarrativeFlag('power_lust', 1);
                         activeDialogue = new DialogueSequence([
                             {
                                 speaker: 'Darius',
@@ -5002,6 +5264,7 @@
                         text: "[EFFECT] Lyra is offline. No navigator route warnings. Wind shear active. Lightning storm active.",
                         onStart: () => {
                             stormActive = true;
+                            setNarrativeFlag('sacrifice_seen', 1);
                         }
                     }
                 ]
@@ -5046,6 +5309,8 @@
                         onStart: () => {
                             stormActive = false;
                             pathfinderActive = true;
+                            setNarrativeFlag('dreamer_connection', 1);
+                            setNarrativeFlag('sacrifice_seen', 1);
                         }
                     }
                 ]
@@ -5083,6 +5348,14 @@
                 // Notify Economy of new segment for loot tracking
                 if (window.Economy && oldBiomeLevel !== biomeLevel) {
                     Economy.newSegment();
+                }
+
+                // Narrative flags: entering biome 3 (Coelacanth Lair) — dreamer connection deepens
+                if (biomeLevel === 3) setNarrativeFlag('dreamer_connection', 1);
+                // Biome 10 (Core Rift) — final confrontation, all flags intensify
+                if (biomeLevel === 10) {
+                    setNarrativeFlag('coelacanth_mercy', 1);
+                    setNarrativeFlag('power_lust', 1);
                 }
 
                 // Campaign Save System: save checkpoint on entering a new biome
@@ -5237,6 +5510,11 @@
             gameWon = false;
             bossSpawned = false;
             boss = null;
+            
+            // GRO-1009: Reset narrative state for new run
+            selectedEnding = null;
+            endingEligible = [];
+            Object.keys(narrativeFlags).forEach(k => narrativeFlags[k] = 0);
             sirenTimer = 0;
             gameTime = 0;
             
@@ -6368,7 +6646,13 @@
                 ctx.fillStyle = '#00ff55';
                 ctx.font = 'bold 42px monospace';
                 ctx.textAlign = 'center';
-                ctx.fillText('VICTORY ACHIEVED', canvas.width / 2, canvas.height / 2 - 40);
+                ctx.fillText('VICTORY ACHIEVED', canvas.width / 2, canvas.height / 2 - 55);
+                // GRO-1009: Show ending achieved
+                const endingName = selectedEnding || 'transcendence';
+                const endingColor = endingName === 'sacrifice' ? '#00ffff' : (endingName === 'transcendence' ? '#ff00ff' : '#ff3300');
+                ctx.fillStyle = endingColor;
+                ctx.font = 'bold 16px monospace';
+                ctx.fillText('ENDING: ' + endingName.toUpperCase(), canvas.width / 2, canvas.height / 2 - 32);
                 ctx.fillStyle = '#ffffff';
                 ctx.font = '18px monospace';
                 ctx.fillText('SCORE: ' + score, canvas.width / 2, canvas.height / 2);
