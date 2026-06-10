@@ -5373,7 +5373,8 @@
                         shieldMax: player.shieldMax,
                         shield: player.shield,
                         difficulty: difficulty,
-                        lives: currentLives
+                        lives: currentLives,
+                        inGameFlags: narrativeFlags,
                     });
                     console.log(`Saved Campaign Checkpoint in slot ${activeSaveSlot}: Biome ${biomeLevel}, Lives ${currentLives}`);
                 }
@@ -5515,6 +5516,14 @@
             selectedEnding = null;
             endingEligible = [];
             Object.keys(narrativeFlags).forEach(k => narrativeFlags[k] = 0);
+            // GRO-1007: Restore in-game narrative flags from save if available
+            if (campaignSave && campaignSave.inGameFlags) {
+                Object.keys(campaignSave.inGameFlags).forEach(k => {
+                    if (narrativeFlags.hasOwnProperty(k)) {
+                        narrativeFlags[k] = campaignSave.inGameFlags[k] || 0;
+                    }
+                });
+            }
             sirenTimer = 0;
             gameTime = 0;
             
@@ -5708,7 +5717,8 @@
                                         shieldMax: player.shieldMax,
                                         shield: player.shield,
                                         difficulty: difficulty,
-                                        ngLevel: currentNGLevel
+                                        ngLevel: currentNGLevel,
+                                        inGameFlags: narrativeFlags,
                                     });
                                     
                                     // Upgrade the slot to New Game+
