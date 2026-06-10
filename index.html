@@ -1206,6 +1206,10 @@
         
         // Check for redirect from ship select page
         window.addEventListener('DOMContentLoaded', () => {
+            if (window.LevelManager && !LevelManager.initialized) {
+                LevelManager.initialized = true;
+                LevelManager.init();
+            }
             const urlParams = new URLSearchParams(window.location.search);
             if (urlParams.get('launch') === 'true') {
                 const url = new URL(window.location.href);
@@ -1266,6 +1270,8 @@
         let gameTime = 0;
         let bossSpawned = false;
         let sirenTimer = 0;
+        let bossesDefeated = 0; // Track how many bosses killed for per-biome progression
+        const BOSS_SCORE_THRESHOLDS = [290, 590, 890, 1190, 1490, 1790, 2090, 2390, 2690, 2990];
         let biomeLevel = 1;  // Economy segment tracking
         let currentNGLevel = 0; // NG+ level (0 = normal run)
 
@@ -1354,6 +1360,7 @@
         };
         let currentScreen = SCREENS.MENU;
         let selectedMenuIndex = 0;
+        let hoveredMenuIndex = -1; // distinct from selected for hover state
         const menuOptions = ['CONTINUE', 'START GAME', 'UPGRADE SHOP', 'SHIP SELECT', 'SETTINGS', 'LEADERBOARD', 'CREDITS'];
         let shipSelectSource = 'menu'; // 'menu' or 'start'
         
@@ -1362,9 +1369,11 @@
         let pauseSubScreen = 'menu'; // 'menu' or 'settings'
         
         let selectedSettingsIndex = 0;
-        const SETTINGS_OPTIONS = ['MASTER VOLUME', 'SFX VOLUME', 'MUSIC VOLUME', 'DIFFICULTY', 'BACK'];
+        let hoveredSettingsIndex = -1;
+        const SETTINGS_OPTIONS = ['MASTER VOLUME', 'SFX VOLUME', 'MUSIC VOLUME', 'DIFFICULTY', 'AUDIO TUNNELS', 'BANTER SYSTEM', 'STREAMER MODE', 'BACK'];
         
         let selectedShipIndex = 1; // 0=scout, 1=interceptor, 2=heavy
+        let hoveredShipIndex = -1;
         const SHIP_OPTIONS = ['scout', 'interceptor', 'heavy'];
         let selectedShip = 'interceptor';
 
@@ -1408,6 +1417,11 @@
         let sfxVolume = 0.8;
         let musicVolume = 0.6;
         let difficulty = 'normal'; // 'easy', 'normal', 'hard'
+        
+        // Content channel toggles — "Go Big or Go Home" immersion settings
+        let banterEnabled = true;       // Banter System — character dialogue during gameplay
+        let audioTunnelsEnabled = true; // Audio Tunnels — between-stage immersive audio
+        let streamerMode = false;       // Streamer Mode — disables all voice content
 
         let screenFadeAlpha = 0;
         let targetScreen = null;
@@ -1625,6 +1639,58 @@
             transitionToScreen(SCREENS.CINEMATIC);
         }
 
+        function advanceToNextBiome() {
+            // Called after boss defeat in biomes 1-9
+            // Advances the game to the next biome without resetting player progress
+            
+            bossesDefeated++;
+            const oldBiome = biomeLevel;
+            
+            // Show biome clear message
+            floatingTexts.push(new FloatingText(canvas.width / 2, canvas.height / 3, 
+                `BIOME ${oldBiome} CLEAR!`, '#00ffff'));
+            
+            // Reset boss state for new biome
+            boss = null;
+            bossDefeated = false;
+            bossSpawned = false;
+            bossIntroPlaying = false;
+            sirenTimer = 0;
+            bossAssetsLoaded = false;
+            
+            // Stop any boss intro video still playing
+            if (bossIntroVideo) {
+                bossIntroVideo.pause();
+                bossIntroVideo.classList.remove('active');
+            }
+            if (victoryVideo) {
+                victoryVideo.pause();
+                victoryVideo.classList.remove('active');
+            }
+            skipHint.classList.remove('active');
+            
+            // Clear all enemies and projectiles for clean biome transition
+            enemies.length = 0;
+            enemyBullets.length = 0;
+            powerups.length = 0;
+            
+            // Reset spawn timer — enemies will start fresh
+            enemySpawnTimer = 1.0;
+            
+            // Update biome display and ambient audio
+            updateActiveBiome(score);
+            if (uiBiome) uiBiome.innerText = activeBiomeName;
+            
+            // Re-seed environmental particles for new biome
+            envParticles.length = 0;
+            envSpawnAccum = 0;
+            const newSeedType = biomeLevel <= 2 ? 'mote' : (biomeLevel <= 4 ? 'rust_flake' : 'mote');
+            for (let i = 0; i < 30; i++) envParticles.push(new EnvironmentParticle(newSeedType));
+            envBuffer.markDirty();
+            
+            console.log(`Advanced to Biome ${biomeLevel}: ${activeBiomeName}`);
+        }
+
         function updateTitleBackground(dt) {
             titleBgTimer += dt;
             if (titleBgTimer >= TITLE_FRAME_DURATION) {
@@ -1697,6 +1763,16 @@
                 let currentIdx = diffs.indexOf(difficulty);
                 currentIdx = (currentIdx + dir + 3) % 3;
                 difficulty = diffs[currentIdx];
+            } else if (index === 4) { // Audio Tunnels — toggle
+                audioTunnelsEnabled = !audioTunnelsEnabled;
+            } else if (index === 5) { // Banter System — toggle
+                banterEnabled = !banterEnabled;
+            } else if (index === 6) { // Streamer Mode — toggle (disables both voice channels)
+                streamerMode = !streamerMode;
+                if (streamerMode) {
+                    banterEnabled = false;
+                    audioTunnelsEnabled = false;
+                }
             }
         }
 
@@ -1749,6 +1825,9 @@
             masterVolume = save.masterVolume || 0.8;
             sfxVolume = save.sfxVolume || 0.8;
             musicVolume = save.musicVolume || 0.6;
+            banterEnabled = save.banterEnabled !== undefined ? save.banterEnabled : true;
+            audioTunnelsEnabled = save.audioTunnelsEnabled !== undefined ? save.audioTunnelsEnabled : true;
+            streamerMode = save.streamerMode || false;
 
             // Restore ship
             selectedShipIndex = SHIP_OPTIONS.indexOf(save.ship);
@@ -1785,7 +1864,7 @@
                     transitionToScreen(SCREENS.MENU);
                 }
             } else if (pauseSubScreen === 'settings') {
-                if (selectedSettingsIndex === 4) { // BACK
+                if (selectedSettingsIndex === 7) { // BACK
                     pauseSubScreen = 'menu';
                 }
             }
@@ -1828,7 +1907,7 @@
                     transitionToScreen(SCREENS.MENU);
                 }
             } else if (currentScreen === SCREENS.SETTINGS) {
-                if (selectedSettingsIndex === 4) { // BACK
+                if (selectedSettingsIndex === 7) { // BACK
                     transitionToScreen(SCREENS.MENU);
                 }
             } else if (currentScreen === SCREENS.CREDITS) {
@@ -1889,6 +1968,7 @@
                 for (let i = 0; i < menuOptions.length; i++) {
                     const itemY = startY + i * spacing;
                     const isSelected = selectedMenuIndex === i;
+                    const isHovered = hoveredMenuIndex === i && !isSelected;
                     const isContinue = (menuOptions[i] === 'CONTINUE');
                     const grayedOut = isContinue && !hasSaves;
                     
@@ -1898,17 +1978,23 @@
                         ctx.shadowBlur = grayedOut ? 2 : 10;
                         ctx.fillText(`>  ${menuOptions[i]}  <`, canvas.width / 2, itemY);
                         ctx.shadowBlur = 0;
+                    } else if (isHovered) {
+                        ctx.fillStyle = grayedOut ? '#555533' : '#ffaa00';
+                        ctx.shadowColor = '#ffaa00';
+                        ctx.shadowBlur = 6;
+                        ctx.fillText(menuOptions[i], canvas.width / 2, itemY);
+                        ctx.shadowBlur = 0;
                     } else {
-                        ctx.fillStyle = grayedOut ? '#334' : '#8a8a9f';
+                        ctx.fillStyle = grayedOut ? '#333344' : '#8a8a9f';
                         ctx.fillText(menuOptions[i], canvas.width / 2, itemY);
                     }
                     if (isContinue && hasSaves) {
-                        ctx.fillStyle = '#0f0';
+                        ctx.fillStyle = '#00ff55';
                         ctx.font = '9px monospace';
                         ctx.fillText('● SAVES AVAILABLE', canvas.width / 2, itemY + 15);
                         ctx.font = 'bold 15px monospace';
                     } else if (isContinue && !hasSaves) {
-                        ctx.fillStyle = '#333';
+                        ctx.fillStyle = '#666';
                         ctx.font = '9px monospace';
                         ctx.fillText('NO SAVES FOUND', canvas.width / 2, itemY + 15);
                         ctx.font = 'bold 15px monospace';
@@ -2023,7 +2109,21 @@
                         ctx.fillText(SETTINGS_OPTIONS[i], 220, itemY + 5);
                         ctx.fillStyle = isSelected ? '#ffffff' : '#6a6a7f';
                         ctx.fillText(difficulty.toUpperCase(), 450, itemY + 5);
-                    } else if (i === 4) {
+                    } else if (i >= 4 && i <= 6) {
+                        // Toggle settings: AUDIO TUNNELS, BANTER SYSTEM, STREAMER MODE
+                        ctx.fillText(SETTINGS_OPTIONS[i], 220, itemY + 5);
+                        let toggleVal = false;
+                        if (i === 4) toggleVal = audioTunnelsEnabled;
+                        else if (i === 5) toggleVal = banterEnabled;
+                        else if (i === 6) toggleVal = streamerMode;
+                        ctx.fillStyle = toggleVal ? '#00ff88' : '#ff3355';
+                        ctx.fillText(toggleVal ? 'ON' : 'OFF', 470, itemY + 5);
+                        // Draw toggle indicator
+                        ctx.fillStyle = toggleVal ? '#00ff88' : '#ff3355';
+                        ctx.beginPath();
+                        ctx.arc(445, itemY + 1, 5, 0, Math.PI * 2);
+                        ctx.fill();
+                    } else if (i === 7) {
                         ctx.textAlign = 'center';
                         ctx.fillStyle = isSelected ? '#ff0055' : '#8a8a9f';
                         ctx.fillText('BACK TO MENU', canvas.width / 2, itemY + 5);
@@ -2391,7 +2491,7 @@
                 ctx.fillStyle = '#4a4a5f';
                 ctx.font = '10px monospace';
                 ctx.textAlign = 'center';
-                ctx.fillText('CLICK / SPACE / ESC to SKIP TO MENU', canvas.width / 2, canvas.height - 15);
+                ctx.fillText('CLICK / SPACE / ESC to SKIP  |  Hold S to SPEED UP', canvas.width / 2, canvas.height - 15);
             } else if (currentScreen === SCREENS.CINEMATIC) {
                 ctx.save();
                 
@@ -2860,9 +2960,17 @@
 
         // --- Player Ship Class ---
         class Player {
-            constructor(shipType = 'interceptor') {
+            constructor(shipType = 'interceptor', playerId = 1) {
                 this.x = 80;
                 this.y = canvas.height / 2;
+                this.playerId = playerId;
+                // Per-player input binding — each player uses their own keys
+                this.inputKeys = {
+                    1: { up:'w', down:'s', left:'a', right:'d', fire:' ', special:'k', dodge:'e', boost:'Shift' },
+                    2: { up:'ArrowUp', down:'ArrowDown', left:'ArrowLeft', right:'ArrowRight', fire:'0', special:'1', dodge:'2', boost:'Enter' },
+                    3: { up:'Gamepad1U', down:'Gamepad1D', left:'Gamepad1L', right:'Gamepad1R', fire:'Gamepad1A', special:'Gamepad1B', dodge:'Gamepad1X', boost:'Gamepad1L' },
+                    4: { up:'Gamepad2U', down:'Gamepad2D', left:'Gamepad2L', right:'Gamepad2R', fire:'Gamepad2A', special:'Gamepad2B', dodge:'Gamepad2X', boost:'Gamepad2L' },
+                }[playerId];
                 this.width = 40;
                 this.height = 20;
                 this.shipType = shipType;
@@ -2967,19 +3075,44 @@
                 this.shield = this.shieldMax;
                 this.shootTimer = 0;
                 this.invulnerable = 0;
+                
+                // GRO-1003: Pull-out system — replaces death
+                this.isPulledOut = false;       // Ship disabled, auto-repairing
+                this.pullOutTimer = 0;          // Seconds until auto-repair completes
+                this.pullOutReturnInvuln = 0;   // 3s invulnerability after return
             }
 
             update(dt) {
+                // GRO-1003: Pull-out system — disable during repair, auto-return
+                if (this.isPulledOut) {
+                    if (this.pullOutTimer > 0) {
+                        this.pullOutTimer -= dt;
+                        // Drift slowly during pull-out (disabled, not totally frozen)
+                        this.x -= 30 * dt; // Drift left as if recoiling
+                        this.y += Math.sin(this.pullOutTimer * 3) * 20 * dt; // Gentle bob
+                        return; // No input, no shooting, no abilities while pulled out
+                    }
+                    // Auto-repair complete: return to battle
+                    this.isPulledOut = false;
+                    this.shield = this.shieldMax;
+                    this.pullOutReturnInvuln = 3.0; // 3s invulnerability on return
+                    this.invulnerable = Math.max(this.invulnerable, 3.0);
+                    playSound('powerup');
+                    createExplosion(this.x + this.width/2, this.y + this.height/2, '#00ff88', 20);
+                    // Return flash text
+                    floatingTexts.push({ text: 'REPAIRED', x: this.x + this.width/2, y: this.y - 30, life: 2.0, color: '#00ff88' });
+                }
+                
                 if (this.invulnerable > 0) {
                     this.invulnerable -= dt;
                 }
 
                 let dx = 0;
                 let dy = 0;
-                if (keys['w'] || keys['W'] || keys['ArrowUp']) dy -= 1;
-                if (keys['s'] || keys['S'] || keys['ArrowDown']) dy += 1;
-                if (keys['a'] || keys['A'] || keys['ArrowLeft']) dx -= 1;
-                if (keys['d'] || keys['D'] || keys['ArrowRight']) dx += 1;
+                if (keys[this.inputKeys.up]) dy -= 1;
+                if (keys[this.inputKeys.down]) dy += 1;
+                if (keys[this.inputKeys.left]) dx -= 1;
+                if (keys[this.inputKeys.right]) dx += 1;
 
                 if (dx !== 0 && dy !== 0) {
                     dx *= 0.7071;
@@ -2995,7 +3128,7 @@
                     this.shield = Math.min(this.shieldMax, this.shield + mods.shieldRegenRate * dt);
                     
                     // Engine Afterburner Boost
-                    const canBoost = keys['Shift'] && this.boostCooldown <= 0 && this.boostFuel > 0;
+                    const canBoost = keys[this.inputKeys.boost] && this.boostCooldown <= 0 && this.boostFuel > 0;
                     if (canBoost) {
                         this.isBoosting = true;
                         this.boostFuel -= dt;
@@ -3031,7 +3164,7 @@
                     }
                     
                     // Cyber Overload / Guardian Protocol Special Ability
-                    const canSpecial = (keys['k'] || keys['K']) && this.specialCooldown <= 0 && !this.isSpecialActive;
+                    const canSpecial = keys[this.inputKeys.special] && this.specialCooldown <= 0 && !this.isSpecialActive;
                     if (canSpecial) {
                         this.isSpecialActive = true;
                         this.specialActiveTimer = this.specialMaxDuration;
@@ -3097,7 +3230,7 @@
                     this.dodgeCooldown -= dt;
                 }
                 // Execute dodge on E key press
-                const canDodge = (keys['e'] || keys['E']) && this.dodgeCooldown <= 0 && !this.isDodging;
+                const canDodge = keys[this.inputKeys.dodge] && this.dodgeCooldown <= 0 && !this.isDodging;
                 if (canDodge) {
                     this.dodge();
                 }
@@ -3159,7 +3292,7 @@
                     this.shootTimer -= dt;
                 }
 
-                if ((keys[' '] || keys['j'] || keys['J']) && this.shootTimer <= 0) {
+                if (keys[this.inputKeys.fire] && this.shootTimer <= 0) {
                     this.shoot();
                     this.shootTimer = currentShootCooldown;
                 }
@@ -3233,10 +3366,10 @@
             dodge() {
                 // Determine dodge direction based on current movement input
                 let ddx = 0, ddy = 0;
-                if (keys['w'] || keys['W'] || keys['ArrowUp']) ddy -= 1;
-                if (keys['s'] || keys['S'] || keys['ArrowDown']) ddy += 1;
-                if (keys['a'] || keys['A'] || keys['ArrowLeft']) ddx -= 1;
-                if (keys['d'] || keys['D'] || keys['ArrowRight']) ddx += 1;
+                if (keys[this.inputKeys.up]) ddy -= 1;
+                if (keys[this.inputKeys.down]) ddy += 1;
+                if (keys[this.inputKeys.left]) ddx -= 1;
+                if (keys[this.inputKeys.right]) ddx += 1;
                 
                 // If no direction input, dodge backward (left)
                 if (ddx === 0 && ddy === 0) {
@@ -3289,6 +3422,7 @@
 
             takeDamage(amt) {
                 if (this.invulnerable > 0) return;
+                if (this.isPulledOut) return; // GRO-1003: No damage while repairing
                 
                 let damageMultiplier = 1.0;
                 if (difficulty === 'easy') damageMultiplier = 0.7;
@@ -3320,14 +3454,92 @@
                 createExplosion(this.x + this.width/2, this.y + this.height/2, '#ffaa00', 8);
 
                 if (this.shield <= 0) {
+                    // GRO-1003: Pull-out system replaces death
+                    // Capture overkill before zeroing shield
+                    const overkill = Math.abs(this.shield);
                     this.shield = 0;
-                    gameOver = true;
-                    playSound('explosion');
-                    createExplosion(this.x, this.y, '#ff0000', 40);
+                    
+                    if (!this.isPulledOut) {
+                        this.isPulledOut = true;
+                        // Repair time: 15s base + up to 15s based on overkill damage
+                        this.pullOutTimer = 15 + Math.min(15, overkill * 0.8);
+                        playSound('explosion');
+                        createExplosion(this.x, this.y, '#ff6600', 30);
+                        
+                        // Trigger pull-out banter — use the player's assigned character, not ship type
+                        if (window.BanterEngine && currentBiome > 0 && banterEnabled && !streamerMode) {
+                            const character = this.character || 'D';
+                            const line = BanterEngine.getLine('pull_out', currentBiome, character);
+                            if (line && window.activeDialogue === undefined) {
+                                // Queue pull-out line as floating text (non-blocking)
+                                floatingTexts.push({ text: line.l, x: this.x + this.width/2, y: this.y - 20, life: 3.0, color: '#ff6600' });
+                            }
+                        }
+                        
+                        // Check if ALL players are pulled out (multiplayer check)
+                        let allPulledOut = true;
+                        if (window.Multiplayer && Multiplayer.players.length > 1) {
+                            for (const mp of Multiplayer.players) {
+                                if (mp.alive && !mp.isHost) allPulledOut = false;
+                            }
+                            if (allPulledOut) {
+                                gameOver = true;
+                                Multiplayer.onPlayerPullOut(this.id || 1);
+                            }
+                        }
+                        // Single player: no gameOver, auto-repair will handle return
+                    }
                 }
             }
 
             draw() {
+                // GRO-1003: Pull-out visual — damaged ship with repair indicator
+                if (this.isPulledOut) {
+                    ctx.save();
+                    ctx.translate(this.x, this.y);
+                    
+                    // Pulsing red-orange glow behind ship
+                    const pulse = Math.sin(this.pullOutTimer * 4) * 0.4 + 0.6;
+                    ctx.shadowColor = `rgba(255, 100, 0, ${pulse})`;
+                    ctx.shadowBlur = 20 * pulse;
+                    
+                    // Draw ship at reduced opacity
+                    ctx.globalAlpha = 0.5 + Math.sin(this.pullOutTimer * 8) * 0.2;
+                    
+                    let sprite;
+                    const frameIdx = (Math.floor(gameTime * 6) % 2 === 0) ? '0' : '1';
+                    if (this.shipType === 'phantom') sprite = playerSprites[`player_phantom_${frameIdx}`];
+                    else if (this.shipType === 'bastion') sprite = playerSprites[`player_bastion_${frameIdx}`];
+                    else if (this.shipType === 'tempest') sprite = playerSprites[`player_tempest_${frameIdx}`];
+                    else if (this.shipType === 'specter') sprite = playerSprites[`player_specter_${frameIdx}`];
+                    else if (this.shipType === 'warden') sprite = playerSprites[`player_warden_${frameIdx}`];
+                    else if (this.shipType === 'scout') sprite = playerSprites['scout_0'];
+                    else if (this.shipType === 'heavy') sprite = playerSprites['heavy_0'];
+                    else if (this.shipType === 'interceptor') sprite = playerSprites['interceptor_0'];
+                    else sprite = playerSprites[`player_${frameIdx}`];
+                    
+                    if (sprite && sprite.complete && sprite.naturalWidth > 0) {
+                        ctx.drawImage(sprite, 0, 0, 48, 48);
+                    } else {
+                        ctx.fillStyle = '#ff4400';
+                        ctx.beginPath();
+                        ctx.moveTo(40, 10); ctx.lineTo(0, 0); ctx.lineTo(0, 20); ctx.closePath();
+                        ctx.fill();
+                    }
+                    
+                    ctx.restore();
+                    
+                    // Repair timer text above ship
+                    ctx.save();
+                    ctx.font = 'bold 12px monospace';
+                    ctx.textAlign = 'center';
+                    ctx.fillStyle = `rgba(255, 136, 0, ${0.7 + pulse * 0.3})`;
+                    ctx.fillText(`REPAIRING ${Math.ceil(this.pullOutTimer)}s`, this.x + this.width/2, this.y - 15);
+                    ctx.restore();
+                    
+                    return; // Skip normal draw
+                }
+                
                 if (this.invulnerable > 0 && Math.floor(this.invulnerable * 15) % 2 === 0) {
                     return;
                 }
@@ -3598,6 +3810,18 @@
             }
         }
 
+        // --- Seeded RNG for procedural variation (GRO-1006) ---
+        // mulberry32: fast, high-quality 32-bit PRNG — deterministic per seed
+        function mulberry32(a) {
+            return function() {
+                a |= 0;
+                a = a + 0x6D2B79F5 | 0;
+                var t = Math.imul(a ^ a >>> 15, 1 | a);
+                t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+                return ((t ^ t >>> 14) >>> 0) / 4294967296;
+            };
+        }
+
         // --- Enemy Ship Classes ---
         class Enemy {
             constructor(type) {
@@ -3609,21 +3833,30 @@
                 this.height = 30;
                 this.age = 0;
 
-                // Map game enemy type to Economy scrapDropTable key
-                if (type === 'scout') {
+                // Determine behavior pattern and map attributes
+                this.behaviorPattern = 'scout'; // default fallback
+                
+                const isScout = type === 'scout' || type.includes('crawler') || type.includes('drone') || type.includes('sprite') || type.includes('wisp') || type.includes('spark') || type.includes('fragment');
+                const isInterceptor = type === 'interceptor' || type.includes('spitter') || type.includes('wraith') || type.includes('fighter') || type.includes('hawk') || type.includes('aberration');
+                const isHeavy = type === 'heavy' || type.includes('brute') || type.includes('turret') || type.includes('battery') || type.includes('sentinel') || type.includes('golem') || type.includes('giant') || type.includes('node') || type.includes('glacier') || type.includes('thunderhead') || type.includes('shard') || type.includes('swarm');
+                
+                if (isScout) {
+                    this.behaviorPattern = 'scout';
                     this.enemyType = 'grunt';
                     this.speed = 150;
                     this.hp = 1;
                     this.scoreValue = 100;
                     this.color = '#ff5500';
                     this.startY = this.y;
-                } else if (type === 'interceptor') {
+                } else if (isInterceptor) {
+                    this.behaviorPattern = 'interceptor';
                     this.enemyType = 'elite';
                     this.speed = 280;
                     this.hp = 1;
                     this.scoreValue = 150;
                     this.color = '#ff0055';
-                } else if (type === 'heavy') {
+                } else if (isHeavy) {
+                    this.behaviorPattern = 'heavy';
                     this.enemyType = 'elite';
                     this.speed = 80;
                     this.hp = 4;
@@ -3631,12 +3864,21 @@
                     this.color = '#9a33cc';
                     this.shootCooldown = 1.2 + Math.random() * 0.8;
                     this.shootTimer = this.shootCooldown;
-                } else {
+                } else if (type === 'boss_minion') {
+                    this.behaviorPattern = 'boss_minion';
                     this.enemyType = 'grunt';
                     this.speed = 180;
                     this.hp = 2;
                     this.scoreValue = 50;
                     this.color = '#33cc55';
+                } else {
+                    this.behaviorPattern = 'scout';
+                    this.enemyType = 'grunt';
+                    this.speed = 180;
+                    this.hp = 2;
+                    this.scoreValue = 50;
+                    this.color = '#33cc55';
+                    this.startY = this.y;
                 }
 
                 // NG+ Paradox roll: chance to upgrade spawned enemy
@@ -3646,24 +3888,39 @@
                         NGPlus.applyParadox(this, paradox);
                     }
                 }
+
+                // GRO-1006: Procedural mob variation — seed-based per-enemy variance
+                // Uses mulberry32 seeded RNG: (runSeed * prime + enemyId) for deterministic uniqueness
+                const _varRng = mulberry32(runSeed * 31 + this.id);
+                this._speedVar = 0.88 + _varRng() * 0.24;       // ±12% speed variance
+                this.speed = Math.round(this.speed * this._speedVar);
+                this._moveVariant = Math.floor(_varRng() * 3);   // 0-2 movement pattern
+                this._bulletAngleShift = (_varRng() - 0.5) * 0.10; // ±5% bullet angle shift (radians)
             }
 
             update(dt) {
                 this.age += dt;
 
-                if (this.type === 'scout') {
+                if (this.behaviorPattern === 'scout') {
                     this.x -= this.speed * dt;
-                    this.y = this.startY + Math.sin(this.age * 5) * 60;
-                } else if (this.type === 'interceptor') {
+                    // GRO-1006: path variant — 3 different sine patterns
+                    const _freq = [4.5, 5.0, 6.0][this._moveVariant];
+                    const _amp = [55, 60, 70][this._moveVariant];
+                    this.y = this.startY + Math.sin(this.age * _freq) * _amp;
+                } else if (this.behaviorPattern === 'interceptor') {
                     this.x -= this.speed * dt;
-                } else if (this.type === 'heavy') {
+                    // GRO-1006: interceptor gets subtle y-drift on variants 1-2
+                    if (this._moveVariant > 0) {
+                        this.y += Math.sin(this.age * (3 + this._moveVariant)) * 25 * dt;
+                    }
+                } else if (this.behaviorPattern === 'heavy') {
                     this.x -= this.speed * dt;
                     this.shootTimer -= dt;
                     if (this.shootTimer <= 0) {
                         this.shoot();
                         this.shootTimer = this.shootCooldown;
                     }
-                } else if (this.type === 'boss_minion') {
+                } else if (this.behaviorPattern === 'boss_minion') {
                     this.x -= this.speed * dt;
                     this.y += Math.sin(this.age * 8) * 80 * dt;
                 }
@@ -3675,7 +3932,10 @@
                 const dist = Math.sqrt(dx*dx + dy*dy);
                 const bulletSpeed = -220;
 
-                enemyBullets.push(new EnemyBullet(this.x, this.y + this.height/2, bulletSpeed, (dy/dist) * 100));
+                // GRO-1006: apply per-enemy bullet angle shift
+                const _shiftedDy = (dy/dist) + this._bulletAngleShift;
+
+                enemyBullets.push(new EnemyBullet(this.x, this.y + this.height/2, bulletSpeed, _shiftedDy * 100));
             }
 
             draw() {
@@ -3720,7 +3980,7 @@
                 // If Paradox, draw name text above
                 if (this.isParadox) {
                     ctx.fillStyle = this.paradoxColor;
-                    ctx.font = 'bold 9px "Share Tech Mono", monospace';
+                    ctx.font = 'bold 9px monospace';
                     ctx.textAlign = 'center';
                     ctx.fillText(this.paradoxName, 15, -6);
                 }
@@ -3888,30 +4148,30 @@
                 if (this.hp <= 0) {
                     this.hp = 0;
                     bossDefeated = true;
-                    _winTransition = true; // Flag for transition handler
                     
-                    // GRO-1009: Determine ending based on narrative flags
-                    determineEnding();
-                    // If multiple endings eligible but none selected yet (architect phase set one),
-                    // use the architect phase as the default
-                    if (!selectedEnding && endingEligible.length > 0) {
-                        selectedEnding = this.architectPhase && endingEligible.includes(this.architectPhase)
-                            ? this.architectPhase : endingEligible[0];
+                    // GRO-1009: Determine ending only on final boss (biome 10)
+                    if (biomeLevel >= 10) {
+                        _winTransition = true; // Victory flag — triggers game won screen
+                        determineEnding();
+                        if (!selectedEnding && endingEligible.length > 0) {
+                            selectedEnding = this.architectPhase && endingEligible.includes(this.architectPhase)
+                                ? this.architectPhase : endingEligible[0];
+                        }
+                        if (!selectedEnding) selectedEnding = 'transcendence';
+                        
+                        // Save NG+ eligibility
+                        try {
+                            const ngKey = 'darius_star_ngplus_eligible';
+                            const eligible = JSON.parse(localStorage.getItem(ngKey) || '{}');
+                            eligible[selectedShip] = { biome: biomeLevel, score: score, scrap: runScrap, date: new Date().toISOString() };
+                            localStorage.setItem(ngKey, JSON.stringify(eligible));
+                        } catch(e) {}
                     }
-                    if (!selectedEnding) selectedEnding = 'transcendence'; // ultimate fallback
                     
-                    // Save NG+ eligibility for this completed run
-                    try {
-                        const ngKey = 'darius_star_ngplus_eligible';
-                        const eligible = JSON.parse(localStorage.getItem(ngKey) || '{}');
-                        eligible[selectedShip] = { biome: biomeLevel, score: score, scrap: runScrap, date: new Date().toISOString() };
-                        localStorage.setItem(ngKey, JSON.stringify(eligible));
-                    } catch(e) {}
                     playSound('explosion');
                     
                     // Spawn Economy-based Data Fragments on Boss defeat!
                     if (typeof scrapDrops !== 'undefined' && window.Economy) {
-                        // Boss always drops (already checked in state transition, but one more guaranteed drop)
                         for (let k = 0; k < 5; k++) {
                             const drop = Economy.rollDrop(this.enemyType, biomeLevel);
                             const ecoDrop = Economy.createDrop(
@@ -3930,9 +4190,13 @@
                         }, i * 100);
                     }
                     
-                    setTimeout(() => {
-                        playVictoryCinematic();
-                    }, 3500);
+                    if (biomeLevel >= 10) {
+                        // Final boss — victory cinematic
+                        setTimeout(() => { playVictoryCinematic(); }, 3500);
+                    } else {
+                        // Biome clear — advance to next biome after explosions
+                        setTimeout(() => { advanceToNextBiome(); }, 3000);
+                    }
                 }
             }
 
@@ -4440,6 +4704,26 @@
                 return bgImages[this.key] || null;
             }
 
+            setKey(newKey) {
+                // Switch to a different background image (biome transition)
+                // Map biome number keys to named strip files
+                const BIOME_STRIP_MAP = {
+                    'bg_1': 'abyssal_trench', 'bg_2': 'coral_graveyard',
+                    'bg_3': 'coelacanth_lair', 'bg_4': 'nebula_drift',
+                    'bg_5': 'ice_rings', 'bg_6': 'inferno_core',
+                    'bg_7': 'storm_belt', 'bg_8': 'derelict_fleet',
+                    'bg_9': 'core_rift', 'bg_10': 'core_rift'
+                };
+                const stripName = BIOME_STRIP_MAP[newKey] || 'abyssal_trench';
+                if (!bgImages[newKey]) {
+                    const img = new Image();
+                    img.src = `assets/sprites/backgrounds/bg_${stripName}_strip.png`;
+                    bgImages[newKey] = img;
+                }
+                this.key = newKey;
+                this.offset = 0; // Reset scroll position for new background
+            }
+
             update(dt) {
                 const img = this.getImg();
                 this.offset = (this.offset + this.speed * dt) % (img ? img.width : canvas.width);
@@ -4513,11 +4797,30 @@
         function loadEnemySprites() {
             if (enemySpritesLoaded) return;
             enemySpritesLoaded = true;
-            const types = ['scout', 'interceptor', 'heavy', 'boss_minion'];
+            // Load all actual enemy sprite files
+            const types = [
+                'enemy_crawler', 'enemy_brute', 'enemy_spitter',
+                'enemy_b1_crawler', 'enemy_b2_wraith', 'enemy_b3_spider',
+                'enemy_b4_rider', 'enemy_b4_serpent', 'enemy_b4_wisp',
+                'enemy_ember_sprite', 'enemy_fleet_turret', 'enemy_frost_drone',
+                'enemy_gas_giant', 'enemy_ghost_fighter', 'enemy_glacier',
+                'enemy_glitch_fragment', 'enemy_hive_node', 'enemy_ice_shard',
+                'enemy_ice_swarm', 'enemy_inferno_node', 'enemy_lava_golem',
+                'enemy_magma_wasp', 'enemy_nebula_wraith', 'enemy_null_entity',
+                'enemy_paradox_wisp', 'enemy_plasma_wisp', 'enemy_rift_aberration',
+                'enemy_salvage_drone', 'enemy_static_spark', 'enemy_storm_hawk',
+                'enemy_storm_sentinel', 'enemy_storm_sprite', 'enemy_thunderhead',
+                'enemy_turret_battery'
+            ];
             types.forEach(key => {
                 enemySprites[key] = new Image();
                 enemySprites[key].src = `assets/sprites/${key}_0.png`;
             });
+            // Legacy aliases — map old type names to new sprites
+            enemySprites['scout'] = enemySprites['enemy_crawler'];
+            enemySprites['interceptor'] = enemySprites['enemy_spitter'];
+            enemySprites['heavy'] = enemySprites['enemy_brute'];
+            enemySprites['boss_minion'] = enemySprites['enemy_b1_crawler'];
         }
 
         // --- VFX Sprite Preloading ---
@@ -5081,122 +5384,53 @@
 
         // Spawning helper: creates biome-appropriate particles each frame
         function spawnBiomeParticles(dt) {
-            const b = biomeLevel;
+            if (!window.LevelManager || !LevelManager.currentLevelConfig) return;
+            const settings = LevelManager.currentLevelConfig.particleSettings;
+            if (!settings) return;
+
             // Accumulator-based spawning to avoid frame-rate dependency
             envSpawnAccum += dt;
 
-            switch (b) {
-                case 1: // Abyssal Trench — bioluminescent motes + vent smoke
-                    while (envSpawnAccum >= 0.03) {
-                        envSpawnAccum -= 0.03;
-                        envParticles.push(new EnvironmentParticle('mote'));
-                    }
-                    if (Math.random() < dt * 0.3) {
-                        envParticles.push(new EnvironmentParticle('vent_smoke'));
-                    }
-                    break;
-                case 2: // Coral Graveyard — rust flakes + neon flicker
-                    while (envSpawnAccum >= 0.05) {
-                        envSpawnAccum -= 0.05;
-                        envParticles.push(new EnvironmentParticle('rust_flake'));
-                    }
-                    if (Math.random() < dt * 0.15) {
-                        envParticles.push(new EnvironmentParticle('neon_glow'));
-                    }
-                    break;
-                case 3: // Coelacanth Lair — tesla arcs + coolant drips
-                    while (envSpawnAccum >= 0.4) {
-                        envSpawnAccum -= 0.4;
-                        envParticles.push(new EnvironmentParticle('tesla_bolt'));
-                    }
-                    while (envSpawnAccum >= 0.06) {
-                        envSpawnAccum -= 0.06;
-                        envParticles.push(new EnvironmentParticle('coolant_drip'));
-                    }
-                    break;
-                case 4: // Nebula Drift — plasma ribbons + storm flashes
-                    while (envSpawnAccum >= 0.5) {
-                        envSpawnAccum -= 0.5;
-                        envParticles.push(new EnvironmentParticle('plasma_ribbon'));
-                    }
-                    if (Math.random() < dt * 0.2) {
-                        envParticles.push(new EnvironmentParticle('storm_flash'));
-                    }
-                    break;
-                case 5: // Ice Ring — diamond dust + prismatic beams
-                    while (envSpawnAccum >= 0.03) {
-                        envSpawnAccum -= 0.03;
-                        envParticles.push(new EnvironmentParticle('ice_crystal'));
-                    }
-                    if (Math.random() < dt * 0.1) {
-                        envParticles.push(new EnvironmentParticle('prism_beam'));
-                    }
-                    break;
-                case 6: // Fire Nebula — embers + ash clouds
-                    while (envSpawnAccum >= 0.02) {
-                        envSpawnAccum -= 0.02;
-                        envParticles.push(new EnvironmentParticle('ember'));
-                    }
-                    if (Math.random() < dt * 0.08) {
-                        envParticles.push(new EnvironmentParticle('ash_cloud'));
-                    }
-                    break;
-                case 7: // Storm Belt — lightning + static bands + rain
-                    while (envSpawnAccum >= 0.35) {
-                        envSpawnAccum -= 0.35;
-                        envParticles.push(new EnvironmentParticle('lightning_strike'));
-                    }
-                    while (envSpawnAccum >= 0.08) {
-                        envSpawnAccum -= 0.08;
-                        envParticles.push(new EnvironmentParticle('static_band'));
-                    }
-                    if (Math.random() < dt * 0.5) {
-                        envParticles.push(new EnvironmentParticle('rain_drop'));
-                    }
-                    // Also spawn rain drops more frequently
-                    while (envSpawnAccum >= 0.01) {
-                        envSpawnAccum -= 0.01;
-                        break;
-                    }
-                    break;
-                case 8: // Derelict Fleet — debris + beacon + coolant gas
-                    while (envSpawnAccum >= 0.15) {
-                        envSpawnAccum -= 0.15;
-                        envParticles.push(new EnvironmentParticle('debris'));
-                    }
-                    if (Math.random() < dt * 0.12) {
-                        envParticles.push(new EnvironmentParticle('beacon_flash'));
-                    }
-                    if (Math.random() < dt * 0.1) {
-                        envParticles.push(new EnvironmentParticle('coolant_gas'));
-                    }
-                    break;
-                case 9: // Xenomorph Hive — acid drips + vein pulses + spores
-                    while (envSpawnAccum >= 0.07) {
-                        envSpawnAccum -= 0.07;
-                        envParticles.push(new EnvironmentParticle('acid_drip'));
-                    }
-                    while (envSpawnAccum >= 0.04) {
-                        envSpawnAccum -= 0.04;
-                        envParticles.push(new EnvironmentParticle('vein_pulse'));
-                    }
-                    if (Math.random() < dt * 0.15) {
-                        envParticles.push(new EnvironmentParticle('spore'));
-                    }
-                    break;
-                case 10: // Core Rift — code streams + rift tears + echo shards
-                    while (envSpawnAccum >= 0.04) {
-                        envSpawnAccum -= 0.04;
-                        envParticles.push(new EnvironmentParticle('code_stream'));
-                    }
-                    if (Math.random() < dt * 0.08) {
-                        envParticles.push(new EnvironmentParticle('rift_tear'));
-                    }
-                    if (Math.random() < dt * 0.05) {
-                        envParticles.push(new EnvironmentParticle('echo_shard'));
-                    }
-                    break;
+            // 1. Primary particle (accumulated spawning)
+            if (settings.primary) {
+                const rate = settings.primary.rate;
+                const type = settings.primary.type;
+                while (envSpawnAccum >= rate) {
+                    envSpawnAccum -= rate;
+                    envParticles.push(new EnvironmentParticle(type));
+                }
             }
+
+            // 2. Secondary particle (chance or rate)
+            if (settings.secondary) {
+                const sec = settings.secondary;
+                if (sec.rate) {
+                    while (envSpawnAccum >= sec.rate) {
+                        envSpawnAccum -= sec.rate;
+                        envParticles.push(new EnvironmentParticle(sec.type));
+                    }
+                } else if (sec.chance) {
+                    if (Math.random() < dt * sec.chance) {
+                        envParticles.push(new EnvironmentParticle(sec.type));
+                    }
+                }
+            }
+
+            // 3. Tertiary particle (chance or rate)
+            if (settings.tertiary) {
+                const tert = settings.tertiary;
+                if (tert.rate) {
+                    while (envSpawnAccum >= tert.rate) {
+                        envSpawnAccum -= tert.rate;
+                        envParticles.push(new EnvironmentParticle(tert.type));
+                    }
+                } else if (tert.chance) {
+                    if (Math.random() < dt * tert.chance) {
+                        envParticles.push(new EnvironmentParticle(tert.type));
+                    }
+                }
+            }
+
             // Cap accumulator
             envSpawnAccum = Math.min(envSpawnAccum, 1.0);
         }
@@ -6090,33 +6324,67 @@
             }
         };
 
-        function updateActiveBiome(score) {
+        function updateActiveBiome(dt, score) {
             let oldBiome = activeBiomeName;
             let oldBiomeLevel = biomeLevel;
-            if (score < 300) {
-                activeBiomeName = '1: Abyssal Trench'; biomeLevel = 1;
-            } else if (score < 600) {
-                activeBiomeName = '2: Coral Graveyard'; biomeLevel = 2;
-            } else if (score < 900) {
-                activeBiomeName = '3: Coelacanth Lair'; biomeLevel = 3;
-            } else if (score < 1200) {
-                activeBiomeName = '4: Nebula Drift'; biomeLevel = 4;
-            } else if (score < 1500) {
-                activeBiomeName = '5: Ice Ring'; biomeLevel = 5;
-            } else if (score < 1800) {
-                activeBiomeName = '6: Fire Nebula'; biomeLevel = 6;
-            } else if (score < 2100) {
-                activeBiomeName = '7: Storm Belt'; biomeLevel = 7;
-            } else if (score < 2400) {
-                activeBiomeName = '8: Derelict Fleet'; biomeLevel = 8;
-            } else if (score < 2700) {
-                activeBiomeName = '9: Xenomorph Hive'; biomeLevel = 9;
+
+            if (window.LevelManager) {
+                LevelManager.update(dt, score);
+                biomeLevel = LevelManager.currentBiome;
             } else {
-                activeBiomeName = '10: Core Rift'; biomeLevel = 10;
+                if (score < 300) {
+                    activeBiomeName = '1: Abyssal Trench'; biomeLevel = 1;
+                } else if (score < 600) {
+                    activeBiomeName = '2: Coral Graveyard'; biomeLevel = 2;
+                } else if (score < 900) {
+                    activeBiomeName = '3: Coelacanth Lair'; biomeLevel = 3;
+                } else if (score < 1200) {
+                    activeBiomeName = '4: Nebula Drift'; biomeLevel = 4;
+                } else if (score < 1500) {
+                    activeBiomeName = '5: Ice Ring'; biomeLevel = 5;
+                } else if (score < 1800) {
+                    activeBiomeName = '6: Fire Nebula'; biomeLevel = 6;
+                } else if (score < 2100) {
+                    activeBiomeName = '7: Storm Belt'; biomeLevel = 7;
+                } else if (score < 2400) {
+                    activeBiomeName = '8: Derelict Fleet'; biomeLevel = 8;
+                } else if (score < 2700) {
+                    activeBiomeName = '9: Xenomorph Hive'; biomeLevel = 9;
+                } else {
+                    activeBiomeName = '10: Core Rift'; biomeLevel = 10;
+                }
+            }
+
+            const biomeNames = {
+                1: '1: Abyssal Trench',
+                2: '2: Coral Graveyard',
+                3: '3: Coelacanth Lair',
+                4: '4: Nebula Drift',
+                5: '5: Ice Ring',
+                6: '6: Fire Nebula',
+                7: '7: Storm Belt',
+                8: '8: Derelict Fleet',
+                9: '9: Xenomorph Hive',
+                10: '10: Core Rift'
+            };
+            activeBiomeName = biomeNames[biomeLevel] || '1: Abyssal Trench';
+
+            if (window.LevelManager && uiBiome) {
+                uiBiome.innerText = `BIOME: ${activeBiomeName} — LEVEL: ${LevelManager.currentLevel}`;
+            } else if (uiBiome) {
+                uiBiome.innerText = `BIOME: ${activeBiomeName}`;
             }
 
             if (oldBiome !== activeBiomeName) {
                 floatingTexts.push(new FloatingText(canvas.width / 2, canvas.height / 3, `ENTERING BIOME ${activeBiomeName.toUpperCase()}`, '#00ffff'));
+                
+                // Set the biome background dynamically using LevelManager settings
+                if (bgLayers.length > 0 && window.LevelManager && LevelManager.currentLevelConfig) {
+                    bgLayers[0].setKey(LevelManager.currentLevelConfig.background);
+                } else if (bgLayers.length > 0) {
+                    bgLayers[0].setKey('bg_' + biomeLevel);
+                }
+
                 // GRO-1028: Play biome-specific ambient drone on transition
                 triggerBiomeAmbient();
                 // GRO-1028: Trigger audio-only story beat for this biome
@@ -6141,7 +6409,7 @@
                     const currentLives = save ? save.lives : 3;
                     CampaignSave.checkpoint(activeSaveSlot, {
                         biome: biomeLevel,
-                        wave: 1,
+                        wave: window.LevelManager ? LevelManager.currentLevel : 1,
                         score: score,
                         runScrap: runScrap,
                         ship: player.shipType,
@@ -6149,6 +6417,9 @@
                         shieldMax: player.shieldMax,
                         shield: player.shield,
                         difficulty: difficulty,
+                        banterEnabled: banterEnabled,
+                        audioTunnelsEnabled: audioTunnelsEnabled,
+                        streamerMode: streamerMode,
                         lives: currentLives,
                         inGameFlags: narrativeFlags,
                     });
@@ -6185,6 +6456,7 @@
             }
         } catch(e) {}
         let player = new Player(initialShip);
+        let remotePlayers = [];  // P2-P4 ship instances (GRO-958 multiplayer)
         const bullets = [];
         const enemyBullets = [];
         const enemies = [];
@@ -6195,6 +6467,9 @@
         let runScrap = 0;
         let runScrapSaved = false;
         let enemyIdCounter = 0;  // Unique IDs for Economy.shouldDrop()
+
+        // Procedural variation seed (GRO-1006): set at run start, stored in save
+        let runSeed = Math.floor(Math.random() * 2147483648);
 
         // Parallax background layers (image-based)
         const bgLayers = [
@@ -6326,6 +6601,7 @@
             loadPortraitSprites();
             bossDefeated = false;
             bossIntroPlaying = false;
+            bossesDefeated = 0;
             victoryVideoPlaying = false;
             if (bossIntroVideo) { bossIntroVideo.pause(); bossIntroVideo.classList.remove('active'); bossIntroVideo.muted = true; }
             if (victoryVideo) { victoryVideo.pause(); victoryVideo.classList.remove('active'); victoryVideo.muted = true; }
@@ -6364,11 +6640,28 @@
                 }
             }
             player = new Player(activeShip);
+            
+            // GRO-958: Multiplayer — sync Player instances with Multiplayer module
+            remotePlayers = [];
+            if (window.Multiplayer && Multiplayer.players.length > 1) {
+                for (let i = 1; i < Multiplayer.players.length; i++) {
+                    const mp = Multiplayer.players[i];
+                    if (!mp.alive) continue;
+                    const shipType = mp.ship || 'interceptor';
+                    const rp = new Player(shipType, mp.id);
+                    rp.x = mp.x || (80 + i * 40);
+                    rp.y = mp.y || (180 + i * 30);
+                    rp.isRemote = true;
+                    remotePlayers.push(rp);
+                }
+            }
 
             // Restore other campaign progress
             if (campaignSave) {
                 difficulty = campaignSave.difficulty || 'normal';
                 currentNGLevel = campaignSave.ngLevel || 0;
+                // GRO-1006: Restore procedural variation seed from save
+                runSeed = campaignSave.seed || Math.floor(Math.random() * 2147483648);
                 score = campaignSave.score || 0;
                 runScrap = campaignSave.scrap || 0;
                 if (campaignSave.weaponLevel) player.weaponLevel = campaignSave.weaponLevel;
@@ -6377,8 +6670,17 @@
                 currentNGLevel = 0;
             }
 
+            // Set LevelManager state
+            if (window.LevelManager) {
+                if (campaignSave) {
+                    LevelManager.setBiomeAndLevel(campaignSave.biome || 1, campaignSave.wave || 1);
+                } else {
+                    LevelManager.setBiomeAndLevel(1, 1);
+                }
+            }
+
             // Re-apply score to get correct biome level
-            updateActiveBiome(score);
+            updateActiveBiome(0.016, score);
             
             bullets.length = 0;
             enemyBullets.length = 0;
@@ -6549,7 +6851,7 @@
                 return;
             }
 
-            updateActiveBiome(score);
+            updateActiveBiome(dt, score);
             
             // GRO-1028: Audio drama systems — biome ambient loop & story beats
             updateBiomeAmbientLoop(dt);
@@ -6639,9 +6941,12 @@
             }
 
             player.update(dt);
+            for (const rp of remotePlayers) {
+                if (!rp.isPulledOut || rp.pullOutTimer > 0) rp.update(dt);
+            }
 
             // --- Overheat detection (§6.3) — Supreme Nova (weapon 5) held fire tracking ---
-            const playerFiring = (keys[' '] || keys['j'] || keys['J']) && player.weaponLevel === 5;
+            const playerFiring = keys[player.inputKeys.fire] && player.weaponLevel === 5;
             if (playerFiring && !player.isSpecialActive) {
                 overheatTimer += dt;
                 overheatWarning = overheatTimer >= 3.0;
@@ -6670,6 +6975,48 @@
 
             // --- Low-health pulse & glitch timers (§6.4) ---
             const hpPct = player.shield / player.shieldMax;
+
+            // GRO-958: Multiplayer — process joins/leaves, sync remote player state
+            if (window.Multiplayer) {
+                Multiplayer.update(dt);
+                // P2 joins by pressing Enter/NumpadEnter during gameplay
+                if (keys['Enter'] && Multiplayer.count < Multiplayer.maxPlayers && !remotePlayers.find(rp => rp.playerId === 2)) {
+                    Multiplayer.requestJoin('interceptor');
+                    Multiplayer.processJoins(biomeLevel);
+                    const rp2 = new Player('interceptor', 2);
+                    rp2.x = 120; rp2.y = 200;
+                    rp2.isRemote = true;
+                    remotePlayers.push(rp2);
+                }
+                // P3 joins by pressing Numpad3  (key '3')
+                if (keys['3'] && Multiplayer.count < Multiplayer.maxPlayers && !remotePlayers.find(rp => rp.playerId === 3)) {
+                    Multiplayer.requestJoin('interceptor');
+                    Multiplayer.processJoins(biomeLevel);
+                    const rp3 = new Player('interceptor', 3);
+                    rp3.x = 140; rp3.y = 240;
+                    rp3.isRemote = true;
+                    remotePlayers.push(rp3);
+                }
+                // Sync remote player shield/state back to Multiplayer module
+                for (const rp of remotePlayers) {
+                    const mp = Multiplayer.players.find(p => p.id === rp.playerId);
+                    if (mp && mp.alive) {
+                        mp.shield = rp.shield;
+                        mp.x = rp.x;
+                        mp.y = rp.y;
+                        if (rp.isPulledOut && !mp._wasPulledOut) {
+                            mp._wasPulledOut = true;
+                            Multiplayer.requestLeave(rp.playerId);
+                        }
+                        if (!rp.isPulledOut) mp._wasPulledOut = false;
+                    }
+                }
+                // Process any queued leaves
+                const leaveLine = Multiplayer.processLeaves();
+                if (leaveLine) {
+                    floatingTexts.push({ text: leaveLine, x: canvas.width/2, y: 60, life: 3.0, color: '#ff6600' });
+                }
+            }
             if (hpPct < 0.25) {
                 lowHealthPulseTimer += dt;
                 // Glitch lines at <10% HP: cycle 100ms glitch, then 1-2s cooldown
@@ -6691,29 +7038,18 @@
             }
 
             if (!bossSpawned && !bossIntroPlaying) {
-                enemySpawnTimer -= dt;
-                if (enemySpawnTimer <= 0) {
-                    const r = Math.random();
-                    if (r < 0.45) {
-                        enemies.push(new Enemy('scout'));
-                    } else if (r < 0.8) {
-                        enemies.push(new Enemy('interceptor'));
-                    } else {
-                        enemies.push(new Enemy('heavy'));
-                    }
-                    
-                    let spawnModifier = 1.0;
-                    if (difficulty === 'easy') spawnModifier = 1.3;
-                    else if (difficulty === 'hard') spawnModifier = 0.8;
-                    
-                    enemySpawnTimer = Math.max(0.5, (1.5 - (score / 15000)) * spawnModifier);
-                }
+                // Feeds wave spawner: LevelManager handles queuing and spawning of enemies
+                // (no direct spawning code needed here, LevelManager.update does it)
 
-                if (score >= 1500 && !bossAssetsLoaded) {
+                // Preload boss assets when approaching the current biome's boss threshold
+                const nextBossIdx = bossesDefeated;
+                const preloadThreshold = nextBossIdx < 10 ? BOSS_SCORE_THRESHOLDS[nextBossIdx] - 100 : 2900;
+                if (score >= preloadThreshold && !bossAssetsLoaded) {
                     preloadBossAssets();
                 }
 
-                if (score >= 2000) {
+                // Check if current level has a boss trigger condition
+                if (window.LevelManager && LevelManager.currentLevelConfig && LevelManager.currentLevelConfig.bossTrigger) {
                     if (!bossSpawned) {
                         playBossIntro();
                     }
@@ -6750,6 +7086,19 @@
                     enemyBullets.splice(i, 1);
                     continue;
                 }
+                // GRO-958: Check remote players too
+                let ebHitRemote = false;
+                for (const rp of remotePlayers) {
+                    if (checkCollision(ebBox, rp)) {
+                        rp.takeDamage(12);
+                        ebHitRemote = true;
+                        break;
+                    }
+                }
+                if (ebHitRemote) {
+                    enemyBullets.splice(i, 1);
+                    continue;
+                }
 
                 if (eb.x < -20) {
                     enemyBullets.splice(i, 1);
@@ -6763,6 +7112,20 @@
                 if (checkCollision(e, player)) {
                     player.takeDamage(20);
                     createExplosion(e.x + e.width/2, e.y + e.height/2, e.color, 10);
+                    enemies.splice(i, 1);
+                    continue;
+                }
+                // GRO-958: Check remote players
+                let enemyHitRemote = false;
+                for (const rp of remotePlayers) {
+                    if (checkCollision(e, rp)) {
+                        rp.takeDamage(20);
+                        createExplosion(e.x + e.width/2, e.y + e.height/2, e.color, 10);
+                        enemyHitRemote = true;
+                        break;
+                    }
+                }
+                if (enemyHitRemote) {
                     enemies.splice(i, 1);
                     continue;
                 }
@@ -6986,8 +7349,13 @@
                 }
             }
 
-            uiShield.innerText = Math.round(player.shield) + '%';
-            uiShield.style.color = player.shield > 40 ? '#00ff00' : '#ff0033';
+            if (player.isPulledOut) {
+                uiShield.innerText = 'REPAIR ' + Math.ceil(player.pullOutTimer) + 's';
+                uiShield.style.color = '#ff6600';
+            } else {
+                uiShield.innerText = Math.round(player.shield) + '%';
+                uiShield.style.color = player.shield > 40 ? '#00ff00' : '#ff0033';
+            }
             // Low-health health bar pulse animation (§6.4)
             const uiHpPercent = player.shield / player.shieldMax;
             if (uiHpPercent < 0.25) {
@@ -7106,6 +7474,7 @@
             enemies.forEach(e => e.draw());
             if (boss) boss.draw();
             player.draw();
+            for (const rp of remotePlayers) rp.draw();
             vfxExplosions.forEach(ex => ex.draw());
             
             // Combo counter HUD overlay
@@ -7364,7 +7733,20 @@
                             ctx.fillText(SETTINGS_OPTIONS[i], 220, itemY + 5);
                             ctx.fillStyle = isSelected ? '#ffffff' : '#6a6a7f';
                             ctx.fillText(difficulty.toUpperCase(), 450, itemY + 5);
-                        } else if (i === 4) {
+                        } else if (i >= 4 && i <= 6) {
+                            // Toggle settings: AUDIO TUNNELS, BANTER SYSTEM, STREAMER MODE
+                            ctx.fillText(SETTINGS_OPTIONS[i], 220, itemY + 5);
+                            let toggleVal = false;
+                            if (i === 4) toggleVal = audioTunnelsEnabled;
+                            else if (i === 5) toggleVal = banterEnabled;
+                            else if (i === 6) toggleVal = streamerMode;
+                            ctx.fillStyle = toggleVal ? '#00ff88' : '#ff3355';
+                            ctx.fillText(toggleVal ? 'ON' : 'OFF', 470, itemY + 5);
+                            ctx.fillStyle = toggleVal ? '#00ff88' : '#ff3355';
+                            ctx.beginPath();
+                            ctx.arc(445, itemY + 1, 5, 0, Math.PI * 2);
+                            ctx.fill();
+                        } else if (i === 7) {
                             ctx.textAlign = 'center';
                             ctx.fillStyle = isSelected ? '#ff0055' : '#8a8a9f';
                             ctx.fillText('BACK', canvas.width / 2, itemY + 5);
@@ -7414,15 +7796,16 @@
                     ctx.restore();
                 }
                 
-                ctx.fillStyle = '#ff0033';
+                ctx.fillStyle = '#ff6600';
                 ctx.font = 'bold 42px monospace';
                 ctx.textAlign = 'center';
-                ctx.fillText('FIGHTER CRUSHED', canvas.width / 2, canvas.height / 2 - 30);
+                ctx.fillText('SQUADRON WIPED', canvas.width / 2, canvas.height / 2 - 30);
                 ctx.fillStyle = '#ffffff';
-                ctx.font = '16px monospace';
-                ctx.fillText('SCORE: ' + score, canvas.width / 2, canvas.height / 2 + 10);
+                ctx.font = '14px monospace';
+                ctx.fillText('All ships pulled out — no one left to cover.', canvas.width / 2, canvas.height / 2 - 5);
+                ctx.fillText('SCORE: ' + score, canvas.width / 2, canvas.height / 2 + 20);
                 
-                let yOffset = 28;
+                let yOffset = 38;
                 const topScrap = window.Leaderboard ? Leaderboard.getTop('scrapLord', 1)[0] : null;
                 if (topScrap) {
                     ctx.fillStyle = '#ffaa00';
@@ -7527,40 +7910,40 @@
             if (currentScreen === SCREENS.MENU) {
                 const startY = 210;
                 const spacing = 35;
+                hoveredMenuIndex = -1;
                 for (let i = 0; i < menuOptions.length; i++) {
                     const itemY = startY + i * spacing;
                     if (x >= 280 && x <= 520 && y >= itemY - 18 && y <= itemY + 8) {
-                        if (selectedMenuIndex !== i) {
-                            selectedMenuIndex = i;
-                            playSound('menu_select');
-                        }
+                        hoveredMenuIndex = i;
                     }
                 }
             } else if (currentScreen === SCREENS.SHIP_SELECT) {
                 const startY = 140;
                 const spacing = 65;
+                hoveredShipIndex = -1;
                 for (let i = 0; i < 3; i++) {
                     const itemY = startY + i * spacing;
                     if (x >= 80 && x <= 720 && y >= itemY - 25 && y <= itemY + 27) {
-                        if (selectedShipIndex !== i) {
-                            selectedShipIndex = i;
-                            playSound('menu_select');
-                        }
+                        hoveredShipIndex = i;
                     }
                 }
             } else if (currentScreen === SCREENS.SETTINGS) {
                 const startY = 175;
                 const spacing = 36;
+                hoveredSettingsIndex = -1;
                 for (let i = 0; i < SETTINGS_OPTIONS.length; i++) {
                     const itemY = startY + i * spacing;
                     if (x >= 200 && x <= 600 && y >= itemY - 15 && y <= itemY + 15) {
-                        if (selectedSettingsIndex !== i) {
-                            selectedSettingsIndex = i;
-                            playSound('menu_select');
-                        }
+                        hoveredSettingsIndex = i;
                     }
                 }
             }
+        });
+
+        canvas.addEventListener('mouseleave', () => {
+            hoveredMenuIndex = -1;
+            hoveredShipIndex = -1;
+            hoveredSettingsIndex = -1;
         });
 
         canvas.addEventListener('click', e => {
@@ -7570,6 +7953,10 @@
             loadPortraitSprites();
             loadEnemySprites();
             loadVFXSprites();
+            if (window.LevelManager && !LevelManager.initialized) {
+                LevelManager.initialized = true;
+                LevelManager.init();
+            }
             
             if (currentScreen !== SCREENS.PLAYING) {
                 startMenuMusic();
@@ -7591,57 +7978,41 @@
             const { x, y } = getCanvasMouseCoords(e);
             
             if (currentScreen === SCREENS.MENU) {
-                const startY = 210;
-                const spacing = 35;
-                for (let i = 0; i < menuOptions.length; i++) {
-                    const itemY = startY + i * spacing;
-                    if (x >= 280 && x <= 520 && y >= itemY - 18 && y <= itemY + 8) {
-                        selectedMenuIndex = i;
-                        playSound('menu_click');
-                        handleMenuConfirm();
-                    }
+                if (hoveredMenuIndex >= 0) {
+                    selectedMenuIndex = hoveredMenuIndex;
+                    playSound('menu_click');
+                    handleMenuConfirm();
                 }
             } else if (currentScreen === SCREENS.SHIP_SELECT) {
-                const startY = 140;
-                const spacing = 65;
-                for (let i = 0; i < 3; i++) {
-                    const itemY = startY + i * spacing;
-                    if (x >= 80 && x <= 720 && y >= itemY - 25 && y <= itemY + 27) {
-                        selectedShipIndex = i;
-                        playSound('menu_click');
-                        handleMenuConfirm();
-                        return;
-                    }
-                }
-                if (x >= 300 && x <= 500 && y >= 345 && y <= 375) {
+                if (hoveredShipIndex >= 0) {
+                    selectedShipIndex = hoveredShipIndex;
+                    playSound('menu_click');
+                    handleMenuConfirm();
+                } else if (x >= 300 && x <= 500 && y >= 345 && y <= 375) {
                     playSound('menu_click');
                     transitionToScreen(SCREENS.MENU);
                 }
             } else if (currentScreen === SCREENS.SETTINGS) {
-                const startY = 175;
-                const spacing = 36;
-                
-                for (let i = 0; i < SETTINGS_OPTIONS.length; i++) {
-                    const itemY = startY + i * spacing;
-                    if (x >= 200 && x <= 600 && y >= itemY - 15 && y <= itemY + 15) {
-                        selectedSettingsIndex = i;
-                        if (i === 4) {
-                            playSound('menu_click');
-                            handleMenuConfirm();
-                        } else {
-                            if (i < 3) {
-                                if (x >= 430 && x <= 600) {
-                                    const rawVal = (x - 450) / 130;
-                                    const newVal = Math.max(0, Math.min(1.0, rawVal));
-                                    playSound('menu_select');
-                                    if (i === 0) masterVolume = newVal;
-                                    else if (i === 1) sfxVolume = newVal;
-                                    else if (i === 2) musicVolume = newVal;
-                                }
-                            } else if (i === 3) {
-                                playSound('menu_select');
-                                adjustSetting(3, 1);
-                            }
+                if (hoveredSettingsIndex >= 0) {
+                    selectedSettingsIndex = hoveredSettingsIndex;
+                    const i = hoveredSettingsIndex;
+                    if (i === 7) {
+                        playSound('menu_click');
+                        handleMenuConfirm();
+                    } else if (i >= 4 && i <= 6) {
+                        playSound('menu_click');
+                        adjustSetting(i, 1);
+                    } else if (i === 3) {
+                        playSound('menu_select');
+                        adjustSetting(3, 1);
+                    } else if (i < 3) {
+                        if (x >= 430 && x <= 600) {
+                            const rawVal = (x - 450) / 130;
+                            const newVal = Math.max(0, Math.min(1.0, rawVal));
+                            playSound('menu_select');
+                            if (i === 0) masterVolume = newVal;
+                            else if (i === 1) sfxVolume = newVal;
+                            else if (i === 2) musicVolume = newVal;
                         }
                     }
                 }
