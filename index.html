@@ -305,14 +305,27 @@
         function playSound(type) {
             if (!audioCtx) return;
             try {
-                const osc = audioCtx.createOscillator();
-                const gain = audioCtx.createGain();
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
-                
                 const volMultiplier = masterVolume * sfxVolume;
+                
+                // Helper to create white noise buffer
+                const createNoiseNode = (duration) => {
+                    const bufferSize = audioCtx.sampleRate * duration;
+                    const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+                    const data = buffer.getChannelData(0);
+                    for (let i = 0; i < bufferSize; i++) {
+                        data[i] = Math.random() * 2 - 1;
+                    }
+                    const noiseNode = audioCtx.createBufferSource();
+                    noiseNode.buffer = buffer;
+                    return noiseNode;
+                };
 
+                // Standard Web Audio Synth for gameplay sounds and the 30 audio drama cues
                 if (type === 'shoot') {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
                     osc.type = 'sawtooth';
                     osc.frequency.setValueAtTime(500, audioCtx.currentTime);
                     osc.frequency.exponentialRampToValueAtTime(120, audioCtx.currentTime + 0.12);
@@ -321,6 +334,10 @@
                     osc.start();
                     osc.stop(audioCtx.currentTime + 0.12);
                 } else if (type === 'hit') {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
                     osc.type = 'triangle';
                     osc.frequency.setValueAtTime(140, audioCtx.currentTime);
                     osc.frequency.exponentialRampToValueAtTime(30, audioCtx.currentTime + 0.1);
@@ -329,6 +346,10 @@
                     osc.start();
                     osc.stop(audioCtx.currentTime + 0.1);
                 } else if (type === 'explosion') {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
                     osc.type = 'sawtooth';
                     osc.frequency.setValueAtTime(80, audioCtx.currentTime);
                     osc.frequency.exponentialRampToValueAtTime(10, audioCtx.currentTime + 0.45);
@@ -337,6 +358,10 @@
                     osc.start();
                     osc.stop(audioCtx.currentTime + 0.45);
                 } else if (type === 'powerup') {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
                     osc.type = 'sine';
                     osc.frequency.setValueAtTime(280, audioCtx.currentTime);
                     osc.frequency.linearRampToValueAtTime(520, audioCtx.currentTime + 0.08);
@@ -346,6 +371,10 @@
                     osc.start();
                     osc.stop(audioCtx.currentTime + 0.2);
                 } else if (type === 'siren') {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
                     osc.type = 'sawtooth';
                     osc.frequency.setValueAtTime(350, audioCtx.currentTime);
                     osc.frequency.linearRampToValueAtTime(450, audioCtx.currentTime + 0.2);
@@ -355,6 +384,10 @@
                     osc.start();
                     osc.stop(audioCtx.currentTime + 0.4);
                 } else if (type === 'laser_charge') {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
                     osc.type = 'sine';
                     osc.frequency.setValueAtTime(100, audioCtx.currentTime);
                     osc.frequency.exponentialRampToValueAtTime(1000, audioCtx.currentTime + 1.2);
@@ -363,6 +396,10 @@
                     osc.start();
                     osc.stop(audioCtx.currentTime + 1.2);
                 } else if (type === 'laser_fire') {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
                     osc.type = 'sawtooth';
                     osc.frequency.setValueAtTime(120, audioCtx.currentTime);
                     osc.frequency.linearRampToValueAtTime(80, audioCtx.currentTime + 1.5);
@@ -371,6 +408,10 @@
                     osc.start();
                     osc.stop(audioCtx.currentTime + 1.5);
                 } else if (type === 'menu_select') {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
                     osc.type = 'sine';
                     osc.frequency.setValueAtTime(600, audioCtx.currentTime);
                     osc.frequency.exponentialRampToValueAtTime(300, audioCtx.currentTime + 0.05);
@@ -379,6 +420,10 @@
                     osc.start();
                     osc.stop(audioCtx.currentTime + 0.05);
                 } else if (type === 'menu_click') {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
                     osc.type = 'sine';
                     osc.frequency.setValueAtTime(400, audioCtx.currentTime);
                     osc.frequency.linearRampToValueAtTime(800, audioCtx.currentTime + 0.08);
@@ -387,7 +432,6 @@
                     osc.start();
                     osc.stop(audioCtx.currentTime + 0.08);
                 } else if (type === 'victory_fanfare') {
-                    // Triumphant 16-bit melody: C4, E4, G4, C5, G4, C5, E5
                     const notes = [261.63, 329.63, 392.00, 523.25, 392.00, 523.25, 659.25];
                     const durations = [0.12, 0.12, 0.12, 0.24, 0.12, 0.12, 0.48];
                     let accumTime = 0;
@@ -395,7 +439,7 @@
                         const noteTime = audioCtx.currentTime + accumTime;
                         const oscNode = audioCtx.createOscillator();
                         const gainNode = audioCtx.createGain();
-                        oscNode.type = 'square'; // chiptune brass/lead feel
+                        oscNode.type = 'square';
                         oscNode.frequency.setValueAtTime(freq, noteTime);
                         gainNode.gain.setValueAtTime(0.05 * volMultiplier, noteTime);
                         gainNode.gain.exponentialRampToValueAtTime(0.001, noteTime + durations[idx]);
@@ -406,10 +450,739 @@
                         accumTime += durations[idx] * 0.8;
                     });
                 }
+                
+                // --- GRO-1028: Environmental & Audio-Drama Cues ---
+                
+                // BIOME 1 CUES
+                else if (type === 'ambient_crushing_depths') {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    const filter = audioCtx.createBiquadFilter();
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(45, audioCtx.currentTime); // sub-bass hum
+                    filter.type = 'lowpass';
+                    filter.frequency.setValueAtTime(90, audioCtx.currentTime);
+                    gain.gain.setValueAtTime(0.3 * volMultiplier, audioCtx.currentTime);
+                    gain.gain.linearRampToValueAtTime(0.3 * volMultiplier, audioCtx.currentTime + 2.0);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 3.0);
+                    osc.connect(filter);
+                    filter.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 3.0);
+                } else if (type === 'sfx_bioluminescent_crackle') {
+                    // 5 rapid micro-clicks representing biological light discharge
+                    for (let i = 0; i < 5; i++) {
+                        const clickTime = audioCtx.currentTime + i * 0.08;
+                        const osc = audioCtx.createOscillator();
+                        const gain = audioCtx.createGain();
+                        osc.type = 'sine';
+                        osc.frequency.setValueAtTime(3200 + Math.random() * 800, clickTime);
+                        gain.gain.setValueAtTime(0.03 * volMultiplier, clickTime);
+                        gain.gain.exponentialRampToValueAtTime(0.001, clickTime + 0.015);
+                        osc.connect(gain);
+                        gain.connect(audioCtx.destination);
+                        osc.start(clickTime);
+                        osc.stop(clickTime + 0.015);
+                    }
+                } else if (type === 'sfx_guardian_heartbeat') {
+                    // Double heartbeat thump (lub-dub)
+                    [0.0, 0.35].forEach((delay) => {
+                        const thumpTime = audioCtx.currentTime + delay;
+                        const osc = audioCtx.createOscillator();
+                        const gain = audioCtx.createGain();
+                        const filter = audioCtx.createBiquadFilter();
+                        osc.type = 'triangle';
+                        osc.frequency.setValueAtTime(95, thumpTime);
+                        osc.frequency.exponentialRampToValueAtTime(20, thumpTime + 0.12);
+                        filter.type = 'lowpass';
+                        filter.frequency.setValueAtTime(120, thumpTime);
+                        gain.gain.setValueAtTime(0.28 * volMultiplier, thumpTime);
+                        gain.gain.exponentialRampToValueAtTime(0.001, thumpTime + 0.12);
+                        osc.connect(filter);
+                        filter.connect(gain);
+                        gain.connect(audioCtx.destination);
+                        osc.start(thumpTime);
+                        osc.stop(thumpTime + 0.12);
+                    });
+                }
+                
+                // BIOME 2 CUES
+                else if (type === 'ambient_dead_reef_creak') {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    const filter = audioCtx.createBiquadFilter();
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(140, audioCtx.currentTime);
+                    osc.frequency.linearRampToValueAtTime(180, audioCtx.currentTime + 2.0);
+                    filter.type = 'bandpass';
+                    filter.frequency.setValueAtTime(600, audioCtx.currentTime);
+                    filter.Q.setValueAtTime(4.0, audioCtx.currentTime);
+                    gain.gain.setValueAtTime(0.08 * volMultiplier, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 2.0);
+                    osc.connect(filter);
+                    filter.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 2.0);
+                } else if (type === 'sfx_ghost_whale_song') {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(380, audioCtx.currentTime);
+                    osc.frequency.linearRampToValueAtTime(450, audioCtx.currentTime + 0.8);
+                    osc.frequency.linearRampToValueAtTime(320, audioCtx.currentTime + 2.0);
+                    // Tremolo
+                    const lfo = audioCtx.createOscillator();
+                    const lfoGain = audioCtx.createGain();
+                    lfo.frequency.value = 5.0; // 5Hz vibrato
+                    lfoGain.gain.value = 15; // frequency depth
+                    lfo.connect(lfoGain);
+                    lfoGain.connect(osc.frequency);
+                    gain.gain.setValueAtTime(0.08 * volMultiplier, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 2.2);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    lfo.start();
+                    osc.start();
+                    lfo.stop(audioCtx.currentTime + 2.2);
+                    osc.stop(audioCtx.currentTime + 2.2);
+                } else if (type === 'sfx_precursor_collapse') {
+                    const noise = createNoiseNode(1.5);
+                    const gain = audioCtx.createGain();
+                    const filter = audioCtx.createBiquadFilter();
+                    filter.type = 'lowpass';
+                    filter.frequency.setValueAtTime(1200, audioCtx.currentTime);
+                    filter.frequency.exponentialRampToValueAtTime(80, audioCtx.currentTime + 1.5);
+                    gain.gain.setValueAtTime(0.25 * volMultiplier, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 1.5);
+                    noise.connect(filter);
+                    filter.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    noise.start();
+                    noise.stop(audioCtx.currentTime + 1.5);
+                }
+                
+                // BIOME 3 CUES
+                else if (type === 'ambient_ice_cave_groan') {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(90, audioCtx.currentTime);
+                    osc.frequency.linearRampToValueAtTime(80, audioCtx.currentTime + 2.5);
+                    gain.gain.setValueAtTime(0.12 * volMultiplier, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 2.5);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 2.5);
+                } else if (type === 'sfx_embryonic_pulse') {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(180, audioCtx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(35, audioCtx.currentTime + 0.25);
+                    gain.gain.setValueAtTime(0.18 * volMultiplier, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.25);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.25);
+                } else if (type === 'sfx_cryo_shatter') {
+                    [1400, 1800, 2200, 2900].forEach((freq, idx) => {
+                        const noteTime = audioCtx.currentTime + idx * 0.05;
+                        const osc = audioCtx.createOscillator();
+                        const gain = audioCtx.createGain();
+                        osc.type = 'sine';
+                        osc.frequency.setValueAtTime(freq, noteTime);
+                        gain.gain.setValueAtTime(0.05 * volMultiplier, noteTime);
+                        gain.gain.exponentialRampToValueAtTime(0.001, noteTime + 0.15);
+                        osc.connect(gain);
+                        gain.connect(audioCtx.destination);
+                        osc.start(noteTime);
+                        osc.stop(noteTime + 0.15);
+                    });
+                }
+                
+                // BIOME 4 CUES
+                else if (type === 'ambient_ionized_hum') {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(150, audioCtx.currentTime);
+                    // Slow frequency shift LFO
+                    const lfo = audioCtx.createOscillator();
+                    const lfoGain = audioCtx.createGain();
+                    lfo.frequency.value = 0.4;
+                    lfoGain.gain.value = 30;
+                    lfo.connect(lfoGain);
+                    lfoGain.connect(osc.frequency);
+                    gain.gain.setValueAtTime(0.15 * volMultiplier, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 2.8);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    lfo.start();
+                    osc.start();
+                    lfo.stop(audioCtx.currentTime + 2.8);
+                    osc.stop(audioCtx.currentTime + 2.8);
+                } else if (type === 'sfx_reality_glitch') {
+                    // Random frequency jumps every 50ms for a glitched state
+                    for (let i = 0; i < 8; i++) {
+                        const jumpTime = audioCtx.currentTime + i * 0.06;
+                        const osc = audioCtx.createOscillator();
+                        const gain = audioCtx.createGain();
+                        osc.type = 'square';
+                        osc.frequency.setValueAtTime(150 + Math.random() * 800, jumpTime);
+                        gain.gain.setValueAtTime(0.04 * volMultiplier, jumpTime);
+                        gain.gain.exponentialRampToValueAtTime(0.001, jumpTime + 0.05);
+                        osc.connect(gain);
+                        gain.connect(audioCtx.destination);
+                        osc.start(jumpTime);
+                        osc.stop(jumpTime + 0.05);
+                    }
+                } else if (type === 'sfx_dreamer_lonely_note') {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(220, audioCtx.currentTime); // A3 note
+                    // Tremolo
+                    const lfo = audioCtx.createOscillator();
+                    const lfoGain = audioCtx.createGain();
+                    lfo.frequency.value = 4.2; 
+                    lfoGain.gain.value = 8;
+                    lfo.connect(lfoGain);
+                    lfoGain.connect(osc.frequency);
+                    gain.gain.setValueAtTime(0.14 * volMultiplier, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 2.8);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    lfo.start();
+                    osc.start();
+                    lfo.stop(audioCtx.currentTime + 2.8);
+                    osc.stop(audioCtx.currentTime + 2.8);
+                }
+                
+                // BIOME 5 CUES
+                else if (type === 'ambient_ice_ring_crunch') {
+                    const noise = createNoiseNode(1.5);
+                    const gain = audioCtx.createGain();
+                    const filter = audioCtx.createBiquadFilter();
+                    filter.type = 'bandpass';
+                    filter.frequency.setValueAtTime(450, audioCtx.currentTime);
+                    filter.Q.setValueAtTime(3.0, audioCtx.currentTime);
+                    gain.gain.setValueAtTime(0.06 * volMultiplier, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 1.5);
+                    noise.connect(filter);
+                    filter.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    noise.start();
+                    noise.stop(audioCtx.currentTime + 1.5);
+                } else if (type === 'sfx_navy_radio_static') {
+                    const noise = createNoiseNode(0.6);
+                    const gain = audioCtx.createGain();
+                    const filter = audioCtx.createBiquadFilter();
+                    filter.type = 'bandpass';
+                    filter.frequency.setValueAtTime(1100, audioCtx.currentTime);
+                    // Rapid gain fluctuations
+                    gain.gain.setValueAtTime(0.12 * volMultiplier, audioCtx.currentTime);
+                    gain.gain.linearRampToValueAtTime(0.01 * volMultiplier, audioCtx.currentTime + 0.15);
+                    gain.gain.linearRampToValueAtTime(0.15 * volMultiplier, audioCtx.currentTime + 0.35);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.6);
+                    noise.connect(filter);
+                    filter.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    noise.start();
+                    noise.stop(audioCtx.currentTime + 0.6);
+                } else if (type === 'sfx_decompression_boom') {
+                    const noise = createNoiseNode(1.2);
+                    const osc = audioCtx.createOscillator();
+                    const noiseGain = audioCtx.createGain();
+                    const oscGain = audioCtx.createGain();
+                    const filter = audioCtx.createBiquadFilter();
+                    
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(100, audioCtx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(10, audioCtx.currentTime + 0.6);
+                    oscGain.gain.setValueAtTime(0.22 * volMultiplier, audioCtx.currentTime);
+                    oscGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.6);
+                    
+                    filter.type = 'lowpass';
+                    filter.frequency.setValueAtTime(140, audioCtx.currentTime);
+                    noiseGain.gain.setValueAtTime(0.24 * volMultiplier, audioCtx.currentTime);
+                    noiseGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 1.2);
+                    
+                    noise.connect(filter);
+                    filter.connect(noiseGain);
+                    noiseGain.connect(audioCtx.destination);
+                    
+                    osc.connect(oscGain);
+                    oscGain.connect(audioCtx.destination);
+                    
+                    noise.start();
+                    osc.start();
+                    noise.stop(audioCtx.currentTime + 1.2);
+                    osc.stop(audioCtx.currentTime + 0.6);
+                }
+                
+                // BIOME 6 CUES
+                else if (type === 'ambient_plasma_roar') {
+                    const noise = createNoiseNode(2.0);
+                    const gain = audioCtx.createGain();
+                    const filter = audioCtx.createBiquadFilter();
+                    filter.type = 'lowpass';
+                    filter.frequency.setValueAtTime(110, audioCtx.currentTime);
+                    gain.gain.setValueAtTime(0.25 * volMultiplier, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 2.0);
+                    noise.connect(filter);
+                    filter.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    noise.start();
+                    noise.stop(audioCtx.currentTime + 2.0);
+                } else if (type === 'sfx_flare_sizzle') {
+                    const noise = createNoiseNode(1.0);
+                    const gain = audioCtx.createGain();
+                    const filter = audioCtx.createBiquadFilter();
+                    filter.type = 'highpass';
+                    filter.frequency.setValueAtTime(4500, audioCtx.currentTime);
+                    gain.gain.setValueAtTime(0.06 * volMultiplier, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 1.0);
+                    noise.connect(filter);
+                    filter.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    noise.start();
+                    noise.stop(audioCtx.currentTime + 1.0);
+                } else if (type === 'sfx_lyra_energy_arcs') {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'square';
+                    osc.frequency.setValueAtTime(100, audioCtx.currentTime);
+                    // Rapid electricity volume gate
+                    gain.gain.setValueAtTime(0.12 * volMultiplier, audioCtx.currentTime);
+                    for (let i = 0; i < 20; i++) {
+                        const gateTime = audioCtx.currentTime + i * 0.05;
+                        gain.gain.setValueAtTime(i % 2 === 0 ? 0.12 * volMultiplier : 0.01 * volMultiplier, gateTime);
+                    }
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 1.0);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 1.0);
+                }
+                
+                // BIOME 7 CUES
+                else if (type === 'ambient_hurricane_howl') {
+                    const noise = createNoiseNode(2.5);
+                    const gain = audioCtx.createGain();
+                    const filter = audioCtx.createBiquadFilter();
+                    filter.type = 'bandpass';
+                    filter.frequency.setValueAtTime(450, audioCtx.currentTime);
+                    filter.frequency.linearRampToValueAtTime(800, audioCtx.currentTime + 1.2);
+                    filter.frequency.linearRampToValueAtTime(500, audioCtx.currentTime + 2.5);
+                    filter.Q.setValueAtTime(3.5, audioCtx.currentTime);
+                    gain.gain.setValueAtTime(0.14 * volMultiplier, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 2.5);
+                    noise.connect(filter);
+                    filter.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    noise.start();
+                    noise.stop(audioCtx.currentTime + 2.5);
+                } else if (type === 'sfx_singer_weeping') {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(850, audioCtx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(380, audioCtx.currentTime + 1.4);
+                    gain.gain.setValueAtTime(0.08 * volMultiplier, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 1.4);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 1.4);
+                } else if (type === 'sfx_data_burst_transfer') {
+                    // Ascending retro chiptune chimes
+                    [523.25, 659.25, 783.99, 1046.50].forEach((freq, idx) => {
+                        const noteTime = audioCtx.currentTime + idx * 0.06;
+                        const osc = audioCtx.createOscillator();
+                        const gain = audioCtx.createGain();
+                        osc.type = 'square';
+                        osc.frequency.setValueAtTime(freq, noteTime);
+                        gain.gain.setValueAtTime(0.04 * volMultiplier, noteTime);
+                        gain.gain.exponentialRampToValueAtTime(0.001, noteTime + 0.12);
+                        osc.connect(gain);
+                        gain.connect(audioCtx.destination);
+                        osc.start(noteTime);
+                        osc.stop(noteTime + 0.12);
+                    });
+                }
+                
+                // BIOME 8 CUES
+                else if (type === 'ambient_hull_groan_distress') {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(75, audioCtx.currentTime);
+                    osc.frequency.linearRampToValueAtTime(65, audioCtx.currentTime + 2.0);
+                    gain.gain.setValueAtTime(0.12 * volMultiplier, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 2.0);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 2.0);
+                    
+                    // Periodic emergency locator beep
+                    const beepTime = audioCtx.currentTime + 0.5;
+                    const beep = audioCtx.createOscillator();
+                    const beepGain = audioCtx.createGain();
+                    beep.type = 'square';
+                    beep.frequency.setValueAtTime(1200, beepTime);
+                    beepGain.gain.setValueAtTime(0.03 * volMultiplier, beepTime);
+                    beepGain.gain.exponentialRampToValueAtTime(0.001, beepTime + 0.08);
+                    beep.connect(beepGain);
+                    beepGain.connect(audioCtx.destination);
+                    beep.start(beepTime);
+                    beep.stop(beepTime + 0.08);
+                } else if (type === 'sfx_crane_whisper') {
+                    const noise = createNoiseNode(1.5);
+                    const gain = audioCtx.createGain();
+                    const filter = audioCtx.createBiquadFilter();
+                    filter.type = 'bandpass';
+                    filter.frequency.setValueAtTime(950, audioCtx.currentTime);
+                    // Whispering breathing envelope
+                    gain.gain.setValueAtTime(0.001, audioCtx.currentTime);
+                    gain.gain.linearRampToValueAtTime(0.08 * volMultiplier, audioCtx.currentTime + 0.5);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 1.5);
+                    noise.connect(filter);
+                    filter.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    noise.start();
+                    noise.stop(audioCtx.currentTime + 1.5);
+                } else if (type === 'sfx_pressure_door_heartbeat') {
+                    // System hiss
+                    const noise = createNoiseNode(0.5);
+                    const hissGain = audioCtx.createGain();
+                    const filter = audioCtx.createBiquadFilter();
+                    filter.type = 'highpass';
+                    filter.frequency.setValueAtTime(3000, audioCtx.currentTime);
+                    hissGain.gain.setValueAtTime(0.06 * volMultiplier, audioCtx.currentTime);
+                    hissGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.5);
+                    noise.connect(filter);
+                    filter.connect(hissGain);
+                    hissGain.connect(audioCtx.destination);
+                    noise.start();
+                    noise.stop(audioCtx.currentTime + 0.5);
+                    
+                    // Double heartbeat
+                    [0.6, 0.95].forEach((delay) => {
+                        const heartbeatTime = audioCtx.currentTime + delay;
+                        const osc = audioCtx.createOscillator();
+                        const thumpGain = audioCtx.createGain();
+                        osc.type = 'triangle';
+                        osc.frequency.setValueAtTime(80, heartbeatTime);
+                        osc.frequency.exponentialRampToValueAtTime(20, heartbeatTime + 0.12);
+                        thumpGain.gain.setValueAtTime(0.22 * volMultiplier, heartbeatTime);
+                        thumpGain.gain.exponentialRampToValueAtTime(0.001, heartbeatTime + 0.12);
+                        osc.connect(thumpGain);
+                        thumpGain.connect(audioCtx.destination);
+                        osc.start(heartbeatTime);
+                        osc.stop(heartbeatTime + 0.12);
+                    });
+                }
+                
+                // BIOME 9 CUES
+                else if (type === 'ambient_hive_breathing') {
+                    const noise = createNoiseNode(3.0);
+                    const gain = audioCtx.createGain();
+                    const filter = audioCtx.createBiquadFilter();
+                    filter.type = 'lowpass';
+                    filter.frequency.setValueAtTime(140, audioCtx.currentTime);
+                    // 3s breathing loop (1.2s swell, 1.8s fade)
+                    gain.gain.setValueAtTime(0.01 * volMultiplier, audioCtx.currentTime);
+                    gain.gain.linearRampToValueAtTime(0.20 * volMultiplier, audioCtx.currentTime + 1.2);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 3.0);
+                    noise.connect(filter);
+                    filter.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    noise.start();
+                    noise.stop(audioCtx.currentTime + 3.0);
+                } else if (type === 'sfx_hive_seductive_choir') {
+                    // Soft Major 7th chord (C4, E4, G4, B4)
+                    [261.63, 329.63, 392.00, 493.88].forEach((freq) => {
+                        const osc = audioCtx.createOscillator();
+                        const gain = audioCtx.createGain();
+                        osc.type = 'triangle';
+                        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+                        gain.gain.setValueAtTime(0.03 * volMultiplier, audioCtx.currentTime);
+                        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 2.0);
+                        osc.connect(gain);
+                        gain.connect(audioCtx.destination);
+                        osc.start();
+                        osc.stop(audioCtx.currentTime + 2.0);
+                    });
+                } else if (type === 'sfx_rejection_alarm') {
+                    const osc1 = audioCtx.createOscillator();
+                    const osc2 = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc1.type = 'square';
+                    osc2.type = 'square';
+                    osc1.frequency.setValueAtTime(440, audioCtx.currentTime);
+                    osc2.frequency.setValueAtTime(465, audioCtx.currentTime); // dissonant interval
+                    
+                    // Gated alarm volume
+                    gain.gain.setValueAtTime(0.06 * volMultiplier, audioCtx.currentTime);
+                    for (let i = 0; i < 5; i++) {
+                        const gateTime = audioCtx.currentTime + i * 0.2;
+                        gain.gain.setValueAtTime(i % 2 === 0 ? 0.06 * volMultiplier : 0.002 * volMultiplier, gateTime);
+                    }
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 1.0);
+                    
+                    osc1.connect(gain);
+                    osc2.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc1.start();
+                    osc2.start();
+                    osc1.stop(audioCtx.currentTime + 1.0);
+                    osc2.stop(audioCtx.currentTime + 1.0);
+                }
+                
+                // BIOME 10 CUES
+                else if (type === 'ambient_singularity_hum') {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(40, audioCtx.currentTime);
+                    osc.frequency.linearRampToValueAtTime(20, audioCtx.currentTime + 2.5); // sub-bass descent
+                    gain.gain.setValueAtTime(0.28 * volMultiplier, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 2.5);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 2.5);
+                } else if (type === 'sfx_prime_data_clicks') {
+                    // Rapid series of 12 click chirps
+                    for (let i = 0; i < 12; i++) {
+                        const clickTime = audioCtx.currentTime + i * 0.04;
+                        const osc = audioCtx.createOscillator();
+                        const gain = audioCtx.createGain();
+                        osc.type = 'sine';
+                        osc.frequency.setValueAtTime(2600 + i * 120, clickTime);
+                        gain.gain.setValueAtTime(0.03 * volMultiplier, clickTime);
+                        gain.gain.exponentialRampToValueAtTime(0.001, clickTime + 0.02);
+                        osc.connect(gain);
+                        gain.connect(audioCtx.destination);
+                        osc.start(clickTime);
+                        osc.stop(clickTime + 0.02);
+                    }
+                } else if (type === 'sfx_event_horizon_lensing') {
+                    // Quick lowpass filter sweep representing audio absorption
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    const filter = audioCtx.createBiquadFilter();
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(180, audioCtx.currentTime);
+                    osc.frequency.linearRampToValueAtTime(90, audioCtx.currentTime + 1.8);
+                    
+                    filter.type = 'lowpass';
+                    filter.frequency.setValueAtTime(4000, audioCtx.currentTime);
+                    filter.frequency.exponentialRampToValueAtTime(110, audioCtx.currentTime + 1.5);
+                    
+                    gain.gain.setValueAtTime(0.12 * volMultiplier, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 1.8);
+                    
+                    osc.connect(filter);
+                    filter.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 1.8);
+                }
             } catch (e) {
                 console.log("Audio play blocked/failed:", e);
             }
         }
+
+        // ====================================================================
+        // GRO-1028: Biome Ambient System & Audio-Only Story Beats
+        // "Show-don't-tell" audio drama — silence, SFX, environmental cues
+        // ====================================================================
+
+        // Maps biomeLevel → ambient drone cue ID
+        const BIOME_AMBIENT_MAP = {
+            1: 'ambient_crushing_depths',
+            2: 'ambient_dead_reef_creak',
+            3: 'ambient_ice_cave_groan',
+            4: 'ambient_ionized_hum',
+            5: 'ambient_ice_ring_crunch',
+            6: 'ambient_plasma_roar',
+            7: 'ambient_hurricane_howl',
+            8: 'ambient_hull_groan_distress',
+            9: 'ambient_hive_breathing',
+            10: 'ambient_singularity_hum'
+        };
+
+        let _biomeAmbientTimer = 0;
+        const BIOME_AMBIENT_INTERVAL = 8.0; // seconds between ambient drone pulses
+
+        // Called on biome transition — plays the ambient drone once immediately,
+        // and the update loop will re-trigger periodically
+        function triggerBiomeAmbient() {
+            const cue = BIOME_AMBIENT_MAP[biomeLevel];
+            if (cue) {
+                playSound(cue);
+                _biomeAmbientTimer = 0; // reset timer so next pulse is a full interval away
+            }
+        }
+
+        // Called every frame from update(). Periodically re-triggers the
+        // current biome's ambient drone to maintain environmental presence.
+        function updateBiomeAmbientLoop(dt) {
+            _biomeAmbientTimer += dt;
+            if (_biomeAmbientTimer >= BIOME_AMBIENT_INTERVAL) {
+                _biomeAmbientTimer = 0;
+                const cue = BIOME_AMBIENT_MAP[biomeLevel];
+                if (cue) playSound(cue);
+            }
+        }
+
+        // ====================================================================
+        // Audio-Only Story Beats — multi-cue sequences for key narrative moments
+        // Each beat is a timed sequence of sounds, often ending in silence.
+        // These are the "100-level audio drama" moments where dialogue stops
+        // and the acoustic environment carries the story.
+        // ====================================================================
+
+        let _activeStoryBeat = null;
+        let _storyBeatTimer = 0;
+
+        function playAudioStoryBeat(biomeLevel) {
+            // Only one story beat at a time
+            if (_activeStoryBeat) return;
+
+            const beat = AUDIO_STORY_BEATS[biomeLevel];
+            if (!beat) return;
+
+            _activeStoryBeat = beat;
+            _storyBeatTimer = 0;
+        }
+
+        function updateAudioStoryBeat(dt) {
+            if (!_activeStoryBeat) return;
+            _storyBeatTimer += dt;
+
+            const beat = _activeStoryBeat;
+            // Check for cues whose trigger time has been reached
+            for (let i = beat._nextIdx || 0; i < beat.steps.length; i++) {
+                const step = beat.steps[i];
+                if (_storyBeatTimer >= step.t) {
+                    playSound(step.cue);
+                    beat._nextIdx = i + 1;
+                } else {
+                    break; // steps are in time order
+                }
+            }
+
+            // Mark complete when all steps have fired
+            if (beat._nextIdx >= beat.steps.length) {
+                _activeStoryBeat = null;
+            }
+        }
+
+        // Story beat definitions — timed sequences of cue IDs
+        const AUDIO_STORY_BEATS = {
+            // BIOME 1: Abyssal Trench — "Descent into the Canyon"
+            // Dialogue drops, double-thump Guardian heartbeat + neural static
+            1: {
+                steps: [
+                    {t: 0.0, cue: 'sfx_guardian_heartbeat'},
+                    {t: 1.2, cue: 'sfx_guardian_heartbeat'},
+                    {t: 2.4, cue: 'sfx_bioluminescent_crackle'},
+                    {t: 3.0, cue: 'ambient_crushing_depths'}
+                ]
+            },
+            // BIOME 2: Coral Graveyard — "Decoding the Vault"
+            // Crystalline chorus rises to peak, collapses into absolute silence
+            2: {
+                steps: [
+                    {t: 0.0, cue: 'sfx_ghost_whale_song'},
+                    {t: 2.0, cue: 'sfx_precursor_collapse'},
+                    {t: 2.8, cue: 'ambient_dead_reef_creak'}
+                    // silence after collapse
+                ]
+            },
+            // BIOME 3: Coelacanth Hatchery — "The Embryo Birth"
+            // Wet tearing sound, rapid double-heartbeat, low-frequency rumble
+            3: {
+                steps: [
+                    {t: 0.0, cue: 'sfx_embryonic_pulse'},
+                    {t: 1.0, cue: 'sfx_cryo_shatter'},
+                    {t: 1.6, cue: 'sfx_embryonic_pulse'},
+                    {t: 2.5, cue: 'ambient_ice_cave_groan'}
+                ]
+            },
+            // BIOME 4: Veil Nebula — "First Contact"
+            // All music fades out, a single achingly lonely note sweeps across
+            4: {
+                steps: [
+                    {t: 0.0, cue: 'sfx_reality_glitch'},
+                    {t: 1.5, cue: 'sfx_dreamer_lonely_note'},
+                    {t: 4.0, cue: 'ambient_ionized_hum'}
+                ]
+            },
+            // BIOME 5: Ice Ring — "Finding Aldric's Wreckage"
+            // Morse code sequence, deep grandfatherly sigh lost in static
+            5: {
+                steps: [
+                    {t: 0.0, cue: 'sfx_navy_radio_static'},
+                    {t: 1.5, cue: 'sfx_decompression_boom'},
+                    {t: 3.0, cue: 'ambient_ice_ring_crunch'}
+                ]
+            },
+            // BIOME 6: Fire Nebula — "Lyra's Transformation"
+            // Voice disappears, crackling energy arcs, overlapping harmonics
+            6: {
+                steps: [
+                    {t: 0.0, cue: 'sfx_flare_sizzle'},
+                    {t: 1.0, cue: 'sfx_lyra_energy_arcs'},
+                    {t: 2.5, cue: 'sfx_lyra_energy_arcs'},
+                    {t: 4.0, cue: 'ambient_plasma_roar'}
+                ]
+            },
+            // BIOME 7: Storm Belt — "The Storm-Singer's Death"
+            // Storm wind drops to whisper, ascending chime, total silence
+            7: {
+                steps: [
+                    {t: 0.0, cue: 'sfx_singer_weeping'},
+                    {t: 2.0, cue: 'sfx_data_burst_transfer'},
+                    {t: 3.5, cue: 'ambient_hurricane_howl'}
+                    // silence after chime
+                ]
+            },
+            // BIOME 8: Derelict Fleet — "Entering the Flagship Hangar"
+            // Pressure seal failing, faint heartbeat, child's toy chime
+            8: {
+                steps: [
+                    {t: 0.0, cue: 'sfx_pressure_door_heartbeat'},
+                    {t: 1.5, cue: 'sfx_crane_whisper'},
+                    {t: 3.0, cue: 'ambient_hull_groan_distress'}
+                ]
+            },
+            // BIOME 9: Hive Mind Core — "The Temptation of Peace"
+            // Warm harmonic choir + Lyra's laughter → cut by harsh metallic alarm
+            9: {
+                steps: [
+                    {t: 0.0, cue: 'sfx_hive_seductive_choir'},
+                    {t: 2.5, cue: 'sfx_rejection_alarm'},
+                    {t: 3.2, cue: 'ambient_hive_breathing'}
+                ]
+            },
+            // BIOME 10: Core Rift — "Reaching the Event Horizon"
+            // All sounds lose high frequencies, only sub-bass hum remains
+            10: {
+                steps: [
+                    {t: 0.0, cue: 'sfx_event_horizon_lensing'},
+                    {t: 2.0, cue: 'sfx_prime_data_clicks'},
+                    {t: 3.5, cue: 'ambient_singularity_hum'}
+                ]
+            }
+        };
 
         // --- Game Setup ---
         const canvas = document.getElementById('gameCanvas');
@@ -581,6 +1354,7 @@
         };
         let currentScreen = SCREENS.MENU;
         let selectedMenuIndex = 0;
+        let hoveredMenuIndex = -1; // distinct from selected for hover state
         const menuOptions = ['CONTINUE', 'START GAME', 'UPGRADE SHOP', 'SHIP SELECT', 'SETTINGS', 'LEADERBOARD', 'CREDITS'];
         let shipSelectSource = 'menu'; // 'menu' or 'start'
         
@@ -589,9 +1363,11 @@
         let pauseSubScreen = 'menu'; // 'menu' or 'settings'
         
         let selectedSettingsIndex = 0;
-        const SETTINGS_OPTIONS = ['MASTER VOLUME', 'SFX VOLUME', 'MUSIC VOLUME', 'DIFFICULTY', 'BACK'];
+        let hoveredSettingsIndex = -1;
+        const SETTINGS_OPTIONS = ['MASTER VOLUME', 'SFX VOLUME', 'MUSIC VOLUME', 'DIFFICULTY', 'AUDIO TUNNELS', 'BANTER SYSTEM', 'STREAMER MODE', 'BACK'];
         
         let selectedShipIndex = 1; // 0=scout, 1=interceptor, 2=heavy
+        let hoveredShipIndex = -1;
         const SHIP_OPTIONS = ['scout', 'interceptor', 'heavy'];
         let selectedShip = 'interceptor';
 
@@ -635,6 +1411,11 @@
         let sfxVolume = 0.8;
         let musicVolume = 0.6;
         let difficulty = 'normal'; // 'easy', 'normal', 'hard'
+        
+        // Content channel toggles — "Go Big or Go Home" immersion settings
+        let banterEnabled = true;       // Banter System — character dialogue during gameplay
+        let audioTunnelsEnabled = true; // Audio Tunnels — between-stage immersive audio
+        let streamerMode = false;       // Streamer Mode — disables all voice content
 
         let screenFadeAlpha = 0;
         let targetScreen = null;
@@ -924,6 +1705,16 @@
                 let currentIdx = diffs.indexOf(difficulty);
                 currentIdx = (currentIdx + dir + 3) % 3;
                 difficulty = diffs[currentIdx];
+            } else if (index === 4) { // Audio Tunnels — toggle
+                audioTunnelsEnabled = !audioTunnelsEnabled;
+            } else if (index === 5) { // Banter System — toggle
+                banterEnabled = !banterEnabled;
+            } else if (index === 6) { // Streamer Mode — toggle (disables both voice channels)
+                streamerMode = !streamerMode;
+                if (streamerMode) {
+                    banterEnabled = false;
+                    audioTunnelsEnabled = false;
+                }
             }
         }
 
@@ -976,6 +1767,9 @@
             masterVolume = save.masterVolume || 0.8;
             sfxVolume = save.sfxVolume || 0.8;
             musicVolume = save.musicVolume || 0.6;
+            banterEnabled = save.banterEnabled !== undefined ? save.banterEnabled : true;
+            audioTunnelsEnabled = save.audioTunnelsEnabled !== undefined ? save.audioTunnelsEnabled : true;
+            streamerMode = save.streamerMode || false;
 
             // Restore ship
             selectedShipIndex = SHIP_OPTIONS.indexOf(save.ship);
@@ -1012,7 +1806,7 @@
                     transitionToScreen(SCREENS.MENU);
                 }
             } else if (pauseSubScreen === 'settings') {
-                if (selectedSettingsIndex === 4) { // BACK
+                if (selectedSettingsIndex === 7) { // BACK
                     pauseSubScreen = 'menu';
                 }
             }
@@ -1055,7 +1849,7 @@
                     transitionToScreen(SCREENS.MENU);
                 }
             } else if (currentScreen === SCREENS.SETTINGS) {
-                if (selectedSettingsIndex === 4) { // BACK
+                if (selectedSettingsIndex === 7) { // BACK
                     transitionToScreen(SCREENS.MENU);
                 }
             } else if (currentScreen === SCREENS.CREDITS) {
@@ -1116,6 +1910,7 @@
                 for (let i = 0; i < menuOptions.length; i++) {
                     const itemY = startY + i * spacing;
                     const isSelected = selectedMenuIndex === i;
+                    const isHovered = hoveredMenuIndex === i && !isSelected;
                     const isContinue = (menuOptions[i] === 'CONTINUE');
                     const grayedOut = isContinue && !hasSaves;
                     
@@ -1125,17 +1920,23 @@
                         ctx.shadowBlur = grayedOut ? 2 : 10;
                         ctx.fillText(`>  ${menuOptions[i]}  <`, canvas.width / 2, itemY);
                         ctx.shadowBlur = 0;
+                    } else if (isHovered) {
+                        ctx.fillStyle = grayedOut ? '#555533' : '#ffaa00';
+                        ctx.shadowColor = '#ffaa00';
+                        ctx.shadowBlur = 6;
+                        ctx.fillText(menuOptions[i], canvas.width / 2, itemY);
+                        ctx.shadowBlur = 0;
                     } else {
-                        ctx.fillStyle = grayedOut ? '#334' : '#8a8a9f';
+                        ctx.fillStyle = grayedOut ? '#333344' : '#8a8a9f';
                         ctx.fillText(menuOptions[i], canvas.width / 2, itemY);
                     }
                     if (isContinue && hasSaves) {
-                        ctx.fillStyle = '#0f0';
+                        ctx.fillStyle = '#00ff55';
                         ctx.font = '9px monospace';
                         ctx.fillText('● SAVES AVAILABLE', canvas.width / 2, itemY + 15);
                         ctx.font = 'bold 15px monospace';
                     } else if (isContinue && !hasSaves) {
-                        ctx.fillStyle = '#333';
+                        ctx.fillStyle = '#666';
                         ctx.font = '9px monospace';
                         ctx.fillText('NO SAVES FOUND', canvas.width / 2, itemY + 15);
                         ctx.font = 'bold 15px monospace';
@@ -1250,7 +2051,21 @@
                         ctx.fillText(SETTINGS_OPTIONS[i], 220, itemY + 5);
                         ctx.fillStyle = isSelected ? '#ffffff' : '#6a6a7f';
                         ctx.fillText(difficulty.toUpperCase(), 450, itemY + 5);
-                    } else if (i === 4) {
+                    } else if (i >= 4 && i <= 6) {
+                        // Toggle settings: AUDIO TUNNELS, BANTER SYSTEM, STREAMER MODE
+                        ctx.fillText(SETTINGS_OPTIONS[i], 220, itemY + 5);
+                        let toggleVal = false;
+                        if (i === 4) toggleVal = audioTunnelsEnabled;
+                        else if (i === 5) toggleVal = banterEnabled;
+                        else if (i === 6) toggleVal = streamerMode;
+                        ctx.fillStyle = toggleVal ? '#00ff88' : '#ff3355';
+                        ctx.fillText(toggleVal ? 'ON' : 'OFF', 470, itemY + 5);
+                        // Draw toggle indicator
+                        ctx.fillStyle = toggleVal ? '#00ff88' : '#ff3355';
+                        ctx.beginPath();
+                        ctx.arc(445, itemY + 1, 5, 0, Math.PI * 2);
+                        ctx.fill();
+                    } else if (i === 7) {
                         ctx.textAlign = 'center';
                         ctx.fillStyle = isSelected ? '#ff0055' : '#8a8a9f';
                         ctx.fillText('BACK TO MENU', canvas.width / 2, itemY + 5);
@@ -1618,7 +2433,7 @@
                 ctx.fillStyle = '#4a4a5f';
                 ctx.font = '10px monospace';
                 ctx.textAlign = 'center';
-                ctx.fillText('CLICK / SPACE / ESC to SKIP TO MENU', canvas.width / 2, canvas.height - 15);
+                ctx.fillText('CLICK / SPACE / ESC to SKIP  |  Hold S to SPEED UP', canvas.width / 2, canvas.height - 15);
             } else if (currentScreen === SCREENS.CINEMATIC) {
                 ctx.save();
                 
@@ -2194,9 +3009,34 @@
                 this.shield = this.shieldMax;
                 this.shootTimer = 0;
                 this.invulnerable = 0;
+                
+                // GRO-1003: Pull-out system — replaces death
+                this.isPulledOut = false;       // Ship disabled, auto-repairing
+                this.pullOutTimer = 0;          // Seconds until auto-repair completes
+                this.pullOutReturnInvuln = 0;   // 3s invulnerability after return
             }
 
             update(dt) {
+                // GRO-1003: Pull-out system — disable during repair, auto-return
+                if (this.isPulledOut) {
+                    if (this.pullOutTimer > 0) {
+                        this.pullOutTimer -= dt;
+                        // Drift slowly during pull-out (disabled, not totally frozen)
+                        this.x -= 30 * dt; // Drift left as if recoiling
+                        this.y += Math.sin(this.pullOutTimer * 3) * 20 * dt; // Gentle bob
+                        return; // No input, no shooting, no abilities while pulled out
+                    }
+                    // Auto-repair complete: return to battle
+                    this.isPulledOut = false;
+                    this.shield = this.shieldMax;
+                    this.pullOutReturnInvuln = 3.0; // 3s invulnerability on return
+                    this.invulnerable = Math.max(this.invulnerable, 3.0);
+                    playSound('powerup');
+                    createExplosion(this.x + this.width/2, this.y + this.height/2, '#00ff88', 20);
+                    // Return flash text
+                    floatingTexts.push({ text: 'REPAIRED', x: this.x + this.width/2, y: this.y - 30, life: 2.0, color: '#00ff88' });
+                }
+                
                 if (this.invulnerable > 0) {
                     this.invulnerable -= dt;
                 }
@@ -2516,6 +3356,7 @@
 
             takeDamage(amt) {
                 if (this.invulnerable > 0) return;
+                if (this.isPulledOut) return; // GRO-1003: No damage while repairing
                 
                 let damageMultiplier = 1.0;
                 if (difficulty === 'easy') damageMultiplier = 0.7;
@@ -2547,14 +3388,92 @@
                 createExplosion(this.x + this.width/2, this.y + this.height/2, '#ffaa00', 8);
 
                 if (this.shield <= 0) {
+                    // GRO-1003: Pull-out system replaces death
+                    // Capture overkill before zeroing shield
+                    const overkill = Math.abs(this.shield);
                     this.shield = 0;
-                    gameOver = true;
-                    playSound('explosion');
-                    createExplosion(this.x, this.y, '#ff0000', 40);
+                    
+                    if (!this.isPulledOut) {
+                        this.isPulledOut = true;
+                        // Repair time: 15s base + up to 15s based on overkill damage
+                        this.pullOutTimer = 15 + Math.min(15, overkill * 0.8);
+                        playSound('explosion');
+                        createExplosion(this.x, this.y, '#ff6600', 30);
+                        
+                        // Trigger pull-out banter — use the player's assigned character, not ship type
+                        if (window.BanterEngine && currentBiome > 0 && banterEnabled && !streamerMode) {
+                            const character = this.character || 'D';
+                            const line = BanterEngine.getLine('pull_out', currentBiome, character);
+                            if (line && window.activeDialogue === undefined) {
+                                // Queue pull-out line as floating text (non-blocking)
+                                floatingTexts.push({ text: line.l, x: this.x + this.width/2, y: this.y - 20, life: 3.0, color: '#ff6600' });
+                            }
+                        }
+                        
+                        // Check if ALL players are pulled out (multiplayer check)
+                        let allPulledOut = true;
+                        if (window.DS_Multiplayer && DS_Multiplayer.players.length > 1) {
+                            for (const mp of DS_Multiplayer.players) {
+                                if (mp.alive && mp.id !== 'local') allPulledOut = false;
+                            }
+                            if (allPulledOut) {
+                                gameOver = true;
+                                if (DS_Multiplayer) DS_Multiplayer.onPlayerPullOut('local');
+                            }
+                        }
+                        // Single player: no gameOver, auto-repair will handle return
+                    }
                 }
             }
 
             draw() {
+                // GRO-1003: Pull-out visual — damaged ship with repair indicator
+                if (this.isPulledOut) {
+                    ctx.save();
+                    ctx.translate(this.x, this.y);
+                    
+                    // Pulsing red-orange glow behind ship
+                    const pulse = Math.sin(this.pullOutTimer * 4) * 0.4 + 0.6;
+                    ctx.shadowColor = `rgba(255, 100, 0, ${pulse})`;
+                    ctx.shadowBlur = 20 * pulse;
+                    
+                    // Draw ship at reduced opacity
+                    ctx.globalAlpha = 0.5 + Math.sin(this.pullOutTimer * 8) * 0.2;
+                    
+                    let sprite;
+                    const frameIdx = (Math.floor(gameTime * 6) % 2 === 0) ? '0' : '1';
+                    if (this.shipType === 'phantom') sprite = playerSprites[`player_phantom_${frameIdx}`];
+                    else if (this.shipType === 'bastion') sprite = playerSprites[`player_bastion_${frameIdx}`];
+                    else if (this.shipType === 'tempest') sprite = playerSprites[`player_tempest_${frameIdx}`];
+                    else if (this.shipType === 'specter') sprite = playerSprites[`player_specter_${frameIdx}`];
+                    else if (this.shipType === 'warden') sprite = playerSprites[`player_warden_${frameIdx}`];
+                    else if (this.shipType === 'scout') sprite = playerSprites['scout_0'];
+                    else if (this.shipType === 'heavy') sprite = playerSprites['heavy_0'];
+                    else if (this.shipType === 'interceptor') sprite = playerSprites['interceptor_0'];
+                    else sprite = playerSprites[`player_${frameIdx}`];
+                    
+                    if (sprite && sprite.complete && sprite.naturalWidth > 0) {
+                        ctx.drawImage(sprite, 0, 0, 48, 48);
+                    } else {
+                        ctx.fillStyle = '#ff4400';
+                        ctx.beginPath();
+                        ctx.moveTo(40, 10); ctx.lineTo(0, 0); ctx.lineTo(0, 20); ctx.closePath();
+                        ctx.fill();
+                    }
+                    
+                    ctx.restore();
+                    
+                    // Repair timer text above ship
+                    ctx.save();
+                    ctx.font = 'bold 12px monospace';
+                    ctx.textAlign = 'center';
+                    ctx.fillStyle = `rgba(255, 136, 0, ${0.7 + pulse * 0.3})`;
+                    ctx.fillText(`REPAIRING ${Math.ceil(this.pullOutTimer)}s`, this.x + this.width/2, this.y - 15);
+                    ctx.restore();
+                    
+                    return; // Skip normal draw
+                }
+                
                 if (this.invulnerable > 0 && Math.floor(this.invulnerable * 15) % 2 === 0) {
                     return;
                 }
@@ -2825,6 +3744,18 @@
             }
         }
 
+        // --- Seeded RNG for procedural variation (GRO-1006) ---
+        // mulberry32: fast, high-quality 32-bit PRNG — deterministic per seed
+        function mulberry32(a) {
+            return function() {
+                a |= 0;
+                a = a + 0x6D2B79F5 | 0;
+                var t = Math.imul(a ^ a >>> 15, 1 | a);
+                t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+                return ((t ^ t >>> 14) >>> 0) / 4294967296;
+            };
+        }
+
         // --- Enemy Ship Classes ---
         class Enemy {
             constructor(type) {
@@ -2873,6 +3804,14 @@
                         NGPlus.applyParadox(this, paradox);
                     }
                 }
+
+                // GRO-1006: Procedural mob variation — seed-based per-enemy variance
+                // Uses mulberry32 seeded RNG: (runSeed * prime + enemyId) for deterministic uniqueness
+                const _varRng = mulberry32(runSeed * 31 + this.id);
+                this._speedVar = 0.88 + _varRng() * 0.24;       // ±12% speed variance
+                this.speed = Math.round(this.speed * this._speedVar);
+                this._moveVariant = Math.floor(_varRng() * 3);   // 0-2 movement pattern
+                this._bulletAngleShift = (_varRng() - 0.5) * 0.10; // ±5% bullet angle shift (radians)
             }
 
             update(dt) {
@@ -2880,9 +3819,16 @@
 
                 if (this.type === 'scout') {
                     this.x -= this.speed * dt;
-                    this.y = this.startY + Math.sin(this.age * 5) * 60;
+                    // GRO-1006: path variant — 3 different sine patterns
+                    const _freq = [4.5, 5.0, 6.0][this._moveVariant];
+                    const _amp = [55, 60, 70][this._moveVariant];
+                    this.y = this.startY + Math.sin(this.age * _freq) * _amp;
                 } else if (this.type === 'interceptor') {
                     this.x -= this.speed * dt;
+                    // GRO-1006: interceptor gets subtle y-drift on variants 1-2
+                    if (this._moveVariant > 0) {
+                        this.y += Math.sin(this.age * (3 + this._moveVariant)) * 25 * dt;
+                    }
                 } else if (this.type === 'heavy') {
                     this.x -= this.speed * dt;
                     this.shootTimer -= dt;
@@ -2902,7 +3848,10 @@
                 const dist = Math.sqrt(dx*dx + dy*dy);
                 const bulletSpeed = -220;
 
-                enemyBullets.push(new EnemyBullet(this.x, this.y + this.height/2, bulletSpeed, (dy/dist) * 100));
+                // GRO-1006: apply per-enemy bullet angle shift
+                const _shiftedDy = (dy/dist) + this._bulletAngleShift;
+
+                enemyBullets.push(new EnemyBullet(this.x, this.y + this.height/2, bulletSpeed, _shiftedDy * 100));
             }
 
             draw() {
@@ -2947,7 +3896,7 @@
                 // If Paradox, draw name text above
                 if (this.isParadox) {
                     ctx.fillStyle = this.paradoxColor;
-                    ctx.font = 'bold 9px "Share Tech Mono", monospace';
+                    ctx.font = 'bold 9px monospace';
                     ctx.textAlign = 'center';
                     ctx.fillText(this.paradoxName, 15, -6);
                 }
@@ -3740,11 +4689,30 @@
         function loadEnemySprites() {
             if (enemySpritesLoaded) return;
             enemySpritesLoaded = true;
-            const types = ['scout', 'interceptor', 'heavy', 'boss_minion'];
+            // Load all actual enemy sprite files
+            const types = [
+                'enemy_crawler', 'enemy_brute', 'enemy_spitter',
+                'enemy_b1_crawler', 'enemy_b2_wraith', 'enemy_b3_spider',
+                'enemy_b4_rider', 'enemy_b4_serpent', 'enemy_b4_wisp',
+                'enemy_ember_sprite', 'enemy_fleet_turret', 'enemy_frost_drone',
+                'enemy_gas_giant', 'enemy_ghost_fighter', 'enemy_glacier',
+                'enemy_glitch_fragment', 'enemy_hive_node', 'enemy_ice_shard',
+                'enemy_ice_swarm', 'enemy_inferno_node', 'enemy_lava_golem',
+                'enemy_magma_wasp', 'enemy_nebula_wraith', 'enemy_null_entity',
+                'enemy_paradox_wisp', 'enemy_plasma_wisp', 'enemy_rift_aberration',
+                'enemy_salvage_drone', 'enemy_static_spark', 'enemy_storm_hawk',
+                'enemy_storm_sentinel', 'enemy_storm_sprite', 'enemy_thunderhead',
+                'enemy_turret_battery'
+            ];
             types.forEach(key => {
                 enemySprites[key] = new Image();
                 enemySprites[key].src = `assets/sprites/${key}_0.png`;
             });
+            // Legacy aliases — map old type names to new sprites
+            enemySprites['scout'] = enemySprites['enemy_crawler'];
+            enemySprites['interceptor'] = enemySprites['enemy_spitter'];
+            enemySprites['heavy'] = enemySprites['enemy_brute'];
+            enemySprites['boss_minion'] = enemySprites['enemy_b1_crawler'];
         }
 
         // --- VFX Sprite Preloading ---
@@ -5344,7 +6312,10 @@
 
             if (oldBiome !== activeBiomeName) {
                 floatingTexts.push(new FloatingText(canvas.width / 2, canvas.height / 3, `ENTERING BIOME ${activeBiomeName.toUpperCase()}`, '#00ffff'));
-                playSound('menu_select');
+                // GRO-1028: Play biome-specific ambient drone on transition
+                triggerBiomeAmbient();
+                // GRO-1028: Trigger audio-only story beat for this biome
+                playAudioStoryBeat(biomeLevel);
                 // Notify Economy of new segment for loot tracking
                 if (window.Economy && oldBiomeLevel !== biomeLevel) {
                     Economy.newSegment();
@@ -5373,7 +6344,11 @@
                         shieldMax: player.shieldMax,
                         shield: player.shield,
                         difficulty: difficulty,
-                        lives: currentLives
+                        banterEnabled: banterEnabled,
+                        audioTunnelsEnabled: audioTunnelsEnabled,
+                        streamerMode: streamerMode,
+                        lives: currentLives,
+                        inGameFlags: narrativeFlags,
                     });
                     console.log(`Saved Campaign Checkpoint in slot ${activeSaveSlot}: Biome ${biomeLevel}, Lives ${currentLives}`);
                 }
@@ -5418,6 +6393,9 @@
         let runScrap = 0;
         let runScrapSaved = false;
         let enemyIdCounter = 0;  // Unique IDs for Economy.shouldDrop()
+
+        // Procedural variation seed (GRO-1006): set at run start, stored in save
+        let runSeed = Math.floor(Math.random() * 2147483648);
 
         // Parallax background layers (image-based)
         const bgLayers = [
@@ -5515,6 +6493,14 @@
             selectedEnding = null;
             endingEligible = [];
             Object.keys(narrativeFlags).forEach(k => narrativeFlags[k] = 0);
+            // GRO-1007: Restore in-game narrative flags from save if available
+            if (campaignSave && campaignSave.inGameFlags) {
+                Object.keys(campaignSave.inGameFlags).forEach(k => {
+                    if (narrativeFlags.hasOwnProperty(k)) {
+                        narrativeFlags[k] = campaignSave.inGameFlags[k] || 0;
+                    }
+                });
+            }
             sirenTimer = 0;
             gameTime = 0;
             
@@ -5584,6 +6570,8 @@
             if (campaignSave) {
                 difficulty = campaignSave.difficulty || 'normal';
                 currentNGLevel = campaignSave.ngLevel || 0;
+                // GRO-1006: Restore procedural variation seed from save
+                runSeed = campaignSave.seed || Math.floor(Math.random() * 2147483648);
                 score = campaignSave.score || 0;
                 runScrap = campaignSave.scrap || 0;
                 if (campaignSave.weaponLevel) player.weaponLevel = campaignSave.weaponLevel;
@@ -5708,7 +6696,8 @@
                                         shieldMax: player.shieldMax,
                                         shield: player.shield,
                                         difficulty: difficulty,
-                                        ngLevel: currentNGLevel
+                                        ngLevel: currentNGLevel,
+                                        inGameFlags: narrativeFlags,
                                     });
                                     
                                     // Upgrade the slot to New Game+
@@ -5764,6 +6753,10 @@
             }
 
             updateActiveBiome(score);
+            
+            // GRO-1028: Audio drama systems — biome ambient loop & story beats
+            updateBiomeAmbientLoop(dt);
+            updateAudioStoryBeat(dt);
 
             if (activeDialogue) {
                 activeDialogue.update(dt);
@@ -5917,6 +6910,9 @@
                     else if (difficulty === 'hard') spawnModifier = 0.8;
                     
                     enemySpawnTimer = Math.max(0.5, (1.5 - (score / 15000)) * spawnModifier);
+                    // GRO-1006: apply seeded procedural spawn timing ±20%
+                    const _spawnRng = mulberry32(runSeed + Math.floor(gameTime * 100));
+                    enemySpawnTimer *= 0.8 + _spawnRng() * 0.4;
                 }
 
                 if (score >= 1500 && !bossAssetsLoaded) {
@@ -6196,8 +7192,13 @@
                 }
             }
 
-            uiShield.innerText = Math.round(player.shield) + '%';
-            uiShield.style.color = player.shield > 40 ? '#00ff00' : '#ff0033';
+            if (player.isPulledOut) {
+                uiShield.innerText = 'REPAIR ' + Math.ceil(player.pullOutTimer) + 's';
+                uiShield.style.color = '#ff6600';
+            } else {
+                uiShield.innerText = Math.round(player.shield) + '%';
+                uiShield.style.color = player.shield > 40 ? '#00ff00' : '#ff0033';
+            }
             // Low-health health bar pulse animation (§6.4)
             const uiHpPercent = player.shield / player.shieldMax;
             if (uiHpPercent < 0.25) {
@@ -6222,7 +7223,21 @@
                 const banterEl = document.getElementById('ui-banter');
                 if (banterEl) {
                     if (activeBanter) {
-                        banterEl.innerText = activeBanter.s + ': ' + activeBanter.l;
+                        // Play the procedural environmental cue once when it becomes active
+                        if (activeBanter.cue && !activeBanter._cuePlayed) {
+                            playSound(activeBanter.cue);
+                            activeBanter._cuePlayed = true;
+                        }
+                        if (activeBanter.l.startsWith('[SILENCE]')) {
+                            // Strip [SILENCE] tag and format as soft environmental action caption
+                            banterEl.innerText = activeBanter.l.replace('[SILENCE]', '').trim();
+                            banterEl.style.fontStyle = 'italic';
+                            banterEl.style.color = '#a0ffa0'; // soft cyber-green
+                        } else {
+                            banterEl.innerText = activeBanter.s + ': ' + activeBanter.l;
+                            banterEl.style.fontStyle = 'normal';
+                            banterEl.style.color = ''; // reset to default
+                        }
                         banterEl.style.opacity = '1';
                     } else {
                         banterEl.style.opacity = '0';
@@ -6560,7 +7575,20 @@
                             ctx.fillText(SETTINGS_OPTIONS[i], 220, itemY + 5);
                             ctx.fillStyle = isSelected ? '#ffffff' : '#6a6a7f';
                             ctx.fillText(difficulty.toUpperCase(), 450, itemY + 5);
-                        } else if (i === 4) {
+                        } else if (i >= 4 && i <= 6) {
+                            // Toggle settings: AUDIO TUNNELS, BANTER SYSTEM, STREAMER MODE
+                            ctx.fillText(SETTINGS_OPTIONS[i], 220, itemY + 5);
+                            let toggleVal = false;
+                            if (i === 4) toggleVal = audioTunnelsEnabled;
+                            else if (i === 5) toggleVal = banterEnabled;
+                            else if (i === 6) toggleVal = streamerMode;
+                            ctx.fillStyle = toggleVal ? '#00ff88' : '#ff3355';
+                            ctx.fillText(toggleVal ? 'ON' : 'OFF', 470, itemY + 5);
+                            ctx.fillStyle = toggleVal ? '#00ff88' : '#ff3355';
+                            ctx.beginPath();
+                            ctx.arc(445, itemY + 1, 5, 0, Math.PI * 2);
+                            ctx.fill();
+                        } else if (i === 7) {
                             ctx.textAlign = 'center';
                             ctx.fillStyle = isSelected ? '#ff0055' : '#8a8a9f';
                             ctx.fillText('BACK', canvas.width / 2, itemY + 5);
@@ -6610,15 +7638,16 @@
                     ctx.restore();
                 }
                 
-                ctx.fillStyle = '#ff0033';
+                ctx.fillStyle = '#ff6600';
                 ctx.font = 'bold 42px monospace';
                 ctx.textAlign = 'center';
-                ctx.fillText('FIGHTER CRUSHED', canvas.width / 2, canvas.height / 2 - 30);
+                ctx.fillText('SQUADRON WIPED', canvas.width / 2, canvas.height / 2 - 30);
                 ctx.fillStyle = '#ffffff';
-                ctx.font = '16px monospace';
-                ctx.fillText('SCORE: ' + score, canvas.width / 2, canvas.height / 2 + 10);
+                ctx.font = '14px monospace';
+                ctx.fillText('All ships pulled out — no one left to cover.', canvas.width / 2, canvas.height / 2 - 5);
+                ctx.fillText('SCORE: ' + score, canvas.width / 2, canvas.height / 2 + 20);
                 
-                let yOffset = 28;
+                let yOffset = 38;
                 const topScrap = window.Leaderboard ? Leaderboard.getTop('scrapLord', 1)[0] : null;
                 if (topScrap) {
                     ctx.fillStyle = '#ffaa00';
@@ -6723,40 +7752,40 @@
             if (currentScreen === SCREENS.MENU) {
                 const startY = 210;
                 const spacing = 35;
+                hoveredMenuIndex = -1;
                 for (let i = 0; i < menuOptions.length; i++) {
                     const itemY = startY + i * spacing;
                     if (x >= 280 && x <= 520 && y >= itemY - 18 && y <= itemY + 8) {
-                        if (selectedMenuIndex !== i) {
-                            selectedMenuIndex = i;
-                            playSound('menu_select');
-                        }
+                        hoveredMenuIndex = i;
                     }
                 }
             } else if (currentScreen === SCREENS.SHIP_SELECT) {
                 const startY = 140;
                 const spacing = 65;
+                hoveredShipIndex = -1;
                 for (let i = 0; i < 3; i++) {
                     const itemY = startY + i * spacing;
                     if (x >= 80 && x <= 720 && y >= itemY - 25 && y <= itemY + 27) {
-                        if (selectedShipIndex !== i) {
-                            selectedShipIndex = i;
-                            playSound('menu_select');
-                        }
+                        hoveredShipIndex = i;
                     }
                 }
             } else if (currentScreen === SCREENS.SETTINGS) {
                 const startY = 175;
                 const spacing = 36;
+                hoveredSettingsIndex = -1;
                 for (let i = 0; i < SETTINGS_OPTIONS.length; i++) {
                     const itemY = startY + i * spacing;
                     if (x >= 200 && x <= 600 && y >= itemY - 15 && y <= itemY + 15) {
-                        if (selectedSettingsIndex !== i) {
-                            selectedSettingsIndex = i;
-                            playSound('menu_select');
-                        }
+                        hoveredSettingsIndex = i;
                     }
                 }
             }
+        });
+
+        canvas.addEventListener('mouseleave', () => {
+            hoveredMenuIndex = -1;
+            hoveredShipIndex = -1;
+            hoveredSettingsIndex = -1;
         });
 
         canvas.addEventListener('click', e => {
@@ -6787,57 +7816,41 @@
             const { x, y } = getCanvasMouseCoords(e);
             
             if (currentScreen === SCREENS.MENU) {
-                const startY = 210;
-                const spacing = 35;
-                for (let i = 0; i < menuOptions.length; i++) {
-                    const itemY = startY + i * spacing;
-                    if (x >= 280 && x <= 520 && y >= itemY - 18 && y <= itemY + 8) {
-                        selectedMenuIndex = i;
-                        playSound('menu_click');
-                        handleMenuConfirm();
-                    }
+                if (hoveredMenuIndex >= 0) {
+                    selectedMenuIndex = hoveredMenuIndex;
+                    playSound('menu_click');
+                    handleMenuConfirm();
                 }
             } else if (currentScreen === SCREENS.SHIP_SELECT) {
-                const startY = 140;
-                const spacing = 65;
-                for (let i = 0; i < 3; i++) {
-                    const itemY = startY + i * spacing;
-                    if (x >= 80 && x <= 720 && y >= itemY - 25 && y <= itemY + 27) {
-                        selectedShipIndex = i;
-                        playSound('menu_click');
-                        handleMenuConfirm();
-                        return;
-                    }
-                }
-                if (x >= 300 && x <= 500 && y >= 345 && y <= 375) {
+                if (hoveredShipIndex >= 0) {
+                    selectedShipIndex = hoveredShipIndex;
+                    playSound('menu_click');
+                    handleMenuConfirm();
+                } else if (x >= 300 && x <= 500 && y >= 345 && y <= 375) {
                     playSound('menu_click');
                     transitionToScreen(SCREENS.MENU);
                 }
             } else if (currentScreen === SCREENS.SETTINGS) {
-                const startY = 175;
-                const spacing = 36;
-                
-                for (let i = 0; i < SETTINGS_OPTIONS.length; i++) {
-                    const itemY = startY + i * spacing;
-                    if (x >= 200 && x <= 600 && y >= itemY - 15 && y <= itemY + 15) {
-                        selectedSettingsIndex = i;
-                        if (i === 4) {
-                            playSound('menu_click');
-                            handleMenuConfirm();
-                        } else {
-                            if (i < 3) {
-                                if (x >= 430 && x <= 600) {
-                                    const rawVal = (x - 450) / 130;
-                                    const newVal = Math.max(0, Math.min(1.0, rawVal));
-                                    playSound('menu_select');
-                                    if (i === 0) masterVolume = newVal;
-                                    else if (i === 1) sfxVolume = newVal;
-                                    else if (i === 2) musicVolume = newVal;
-                                }
-                            } else if (i === 3) {
-                                playSound('menu_select');
-                                adjustSetting(3, 1);
-                            }
+                if (hoveredSettingsIndex >= 0) {
+                    selectedSettingsIndex = hoveredSettingsIndex;
+                    const i = hoveredSettingsIndex;
+                    if (i === 7) {
+                        playSound('menu_click');
+                        handleMenuConfirm();
+                    } else if (i >= 4 && i <= 6) {
+                        playSound('menu_click');
+                        adjustSetting(i, 1);
+                    } else if (i === 3) {
+                        playSound('menu_select');
+                        adjustSetting(3, 1);
+                    } else if (i < 3) {
+                        if (x >= 430 && x <= 600) {
+                            const rawVal = (x - 450) / 130;
+                            const newVal = Math.max(0, Math.min(1.0, rawVal));
+                            playSound('menu_select');
+                            if (i === 0) masterVolume = newVal;
+                            else if (i === 1) sfxVolume = newVal;
+                            else if (i === 2) musicVolume = newVal;
                         }
                     }
                 }
