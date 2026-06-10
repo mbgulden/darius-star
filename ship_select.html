@@ -1,0 +1,1555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Darius Star — Ship Selection</title>
+    <meta name="description" content="Select your fighter for Darius Star: Cyber Coelacanth — 6 unique ships with distinct stats and abilities.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #020208;
+            --panel-bg: rgba(7, 7, 24, 0.85);
+            --border-color: #161638;
+            --accent-cyan: #00ffff;
+            --accent-orange: #ff6600;
+            --accent-pink: #ff0055;
+            --accent-green: #00ff55;
+            --accent-gold: #ffcc00;
+            --accent-purple: #b026ff;
+            --text-color: #e2e2ec;
+            --text-muted: #5b5b85;
+            --font-display: 'Orbitron', sans-serif;
+            --font-mono: 'Share Tech Mono', monospace;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(circle at 50% 20%, rgba(20, 20, 60, 0.4) 0%, transparent 60%),
+                linear-gradient(rgba(18, 18, 30, 0.25) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(18, 18, 30, 0.25) 1px, transparent 1px);
+            background-size: 100% 100%, 30px 30px, 30px 30px;
+            color: var(--text-color);
+            font-family: var(--font-mono);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* ---- CRT SCANLINE EFFECT ---- */
+        body::after {
+            content: " ";
+            display: block;
+            position: fixed;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.2) 50%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.04), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.04));
+            z-index: 99999;
+            background-size: 100% 4px, 6px 100%;
+            pointer-events: none;
+        }
+
+        /* ---- HEADER ---- */
+        header {
+            width: 100%;
+            max-width: 1100px;
+            margin-bottom: 20px;
+            text-align: center;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 15px;
+            position: relative;
+        }
+
+        h1 {
+            font-family: var(--font-display);
+            font-size: 30px;
+            font-weight: 900;
+            letter-spacing: 4px;
+            color: var(--accent-cyan);
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.5), 0 0 20px rgba(0, 0, 255, 0.3);
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            font-size: 12px;
+            color: var(--accent-pink);
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            text-shadow: 0 0 8px rgba(255, 0, 85, 0.3);
+        }
+
+        /* ---- DUAL PLAYER PANELS ---- */
+        .players-panels {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            width: 100%;
+            max-width: 1100px;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 800px) {
+            .players-panels {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .player-panel {
+            background: var(--panel-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            padding: 18px 22px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            min-height: 270px;
+            backdrop-filter: blur(4px);
+        }
+
+        .player-panel.p1-panel-active {
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.15), inset 0 0 15px rgba(0, 255, 255, 0.05);
+        }
+
+        .player-panel.p2-panel-active {
+            border-color: var(--accent-orange);
+            box-shadow: 0 0 15px rgba(255, 102, 0, 0.15), inset 0 0 15px rgba(255, 102, 0, 0.05);
+        }
+
+        .player-panel.p2-panel-inactive {
+            border: 2px dashed var(--border-color);
+            background: rgba(4, 4, 16, 0.4);
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .player-panel.p2-panel-inactive:hover {
+            border-color: var(--accent-orange);
+            background: rgba(12, 8, 28, 0.5);
+            box-shadow: 0 0 12px rgba(255, 102, 0, 0.1);
+        }
+
+        .p2-join-prompt {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .p2-join-prompt .blink {
+            font-family: var(--font-display);
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--accent-orange);
+            text-shadow: 0 0 8px rgba(255, 102, 0, 0.5);
+            letter-spacing: 2px;
+            animation: textBlink 1.5s infinite;
+        }
+
+        @keyframes textBlink {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 1; }
+        }
+
+        .p2-join-sub {
+            font-size: 11px;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+        }
+
+        .player-header {
+            font-family: var(--font-display);
+            font-size: 14px;
+            font-weight: 900;
+            letter-spacing: 3px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        #p1-panel .player-header {
+            color: var(--accent-cyan);
+            text-shadow: 0 0 8px rgba(0, 255, 255, 0.4);
+        }
+
+        #p2-panel .player-header {
+            color: var(--accent-orange);
+            text-shadow: 0 0 8px rgba(255, 102, 0, 0.4);
+        }
+
+        .player-ship-details {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .player-ship-preview {
+            width: 65px;
+            height: 65px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+        }
+
+        .player-ship-sprite {
+            font-size: 40px;
+            animation: shipFloat 3s ease-in-out infinite;
+        }
+
+        .player-ship-glow {
+            position: absolute;
+            bottom: 4px;
+            width: 20px;
+            height: 5px;
+            border-radius: 50%;
+            animation: enginePulse 1.5s ease-in-out infinite;
+        }
+
+        .player-ship-glow-p2 {
+            position: absolute;
+            bottom: 4px;
+            width: 20px;
+            height: 5px;
+            border-radius: 50%;
+            animation: enginePulse 1.5s ease-in-out infinite;
+        }
+
+        .player-ship-info {
+            flex: 1;
+        }
+
+        .player-ship-name {
+            font-family: var(--font-display);
+            font-size: 18px;
+            font-weight: 900;
+            letter-spacing: 2px;
+            margin-bottom: 2px;
+        }
+
+        .player-ship-class {
+            font-size: 10px;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .color-customizer {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .customizer-label {
+            font-family: var(--font-display);
+            font-size: 9px;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+        }
+
+        .color-swatches {
+            display: flex;
+            gap: 8px;
+        }
+
+        .color-swatch {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .color-swatch:hover {
+            transform: scale(1.15);
+        }
+
+        .color-swatch.active {
+            border-color: #fff;
+            box-shadow: 0 0 8px currentColor;
+            transform: scale(1.1);
+        }
+
+        .player-stats {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-bottom: 12px;
+        }
+
+        .player-special {
+            font-size: 10px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 4px;
+            padding: 8px 10px;
+            margin-bottom: 12px;
+            line-height: 1.4;
+            color: var(--accent-gold);
+            min-height: 42px;
+        }
+
+        .player-bindings {
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding-top: 10px;
+            font-size: 9px;
+            color: var(--text-muted);
+        }
+
+        .binding-label {
+            font-family: var(--font-display);
+            font-size: 8px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .binding-keys {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 2px;
+        }
+
+        .btn-disconnect-p2 {
+            position: absolute;
+            top: 15px;
+            right: 18px;
+            font-family: var(--font-display);
+            font-size: 8px;
+            color: var(--accent-pink);
+            border: 1px solid var(--accent-pink);
+            background: transparent;
+            padding: 3px 6px;
+            border-radius: 3px;
+            cursor: pointer;
+            letter-spacing: 1px;
+            transition: all 0.2s;
+            z-index: 20;
+        }
+
+        .btn-disconnect-p2:hover {
+            background: rgba(255, 0, 85, 0.1);
+            box-shadow: 0 0 6px var(--accent-pink);
+        }
+
+        /* ---- SHIP GRID ---- */
+        .ship-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            width: 100%;
+            max-width: 1100px;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 900px) {
+            .ship-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 550px) {
+            .ship-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ---- SHIP CARD ---- */
+        .ship-card {
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 16px 16px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            backdrop-filter: blur(4px);
+            min-height: 250px;
+        }
+
+        .ship-card:hover {
+            border-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-4px);
+        }
+
+        .ship-card.p1-selected {
+            border-color: var(--p1-color, var(--accent-cyan));
+            box-shadow: 0 0 15px var(--p1-color, rgba(0, 255, 255, 0.25));
+            transform: translateY(-4px);
+        }
+
+        .ship-card.p2-selected {
+            border-color: var(--p2-color, var(--accent-orange));
+            box-shadow: 0 0 15px var(--p2-color, rgba(255, 102, 0, 0.25));
+            transform: translateY(-4px);
+        }
+
+        .ship-card.both-selected {
+            border-color: transparent;
+            box-shadow: 0 0 20px var(--p1-color, rgba(0, 255, 255, 0.2)), 0 0 20px var(--p2-color, rgba(255, 102, 0, 0.2));
+            background-image: linear-gradient(var(--panel-bg), var(--panel-bg)), linear-gradient(135deg, var(--p1-color, var(--accent-cyan)), var(--p2-color, var(--accent-orange)));
+            background-origin: border-box;
+            background-clip: content-box, border-box;
+            border: 2px solid transparent;
+            transform: translateY(-4px);
+        }
+
+        /* Badges */
+        .card-badge {
+            position: absolute;
+            top: 10px;
+            font-family: var(--font-display);
+            font-size: 8px;
+            font-weight: 900;
+            letter-spacing: 1px;
+            padding: 2px 6px;
+            border-radius: 3px;
+            z-index: 5;
+            color: #000;
+        }
+
+        .badge-p1 {
+            left: 10px;
+        }
+
+        .badge-p2 {
+            right: 10px;
+        }
+
+        /* Previews & Glows */
+        .ship-preview {
+            width: 70px;
+            height: 70px;
+            margin-bottom: 8px;
+            position: relative;
+        }
+
+        .ship-sprite {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            animation: shipFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes shipFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .ship-engine-glow {
+            position: absolute;
+            bottom: -2px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 24px;
+            height: 6px;
+            border-radius: 50%;
+            animation: enginePulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes enginePulse {
+            0%, 100% { opacity: 0.4; transform: translateX(-50%) scaleY(1); }
+            50% { opacity: 1; transform: translateX(-50%) scaleY(2.2); }
+        }
+
+        /* Ship info */
+        .ship-name {
+            font-family: var(--font-display);
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-bottom: 2px;
+        }
+
+        .ship-class {
+            font-size: 9px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+
+        .ship-tagline {
+            font-size: 10px;
+            font-style: italic;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+            min-height: 28px;
+        }
+
+        /* Stat Bars */
+        .stat-row {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            width: 100%;
+        }
+
+        .stat-label {
+            font-family: var(--font-display);
+            font-size: 8px;
+            letter-spacing: 1px;
+            width: 38px;
+            text-align: right;
+            color: var(--text-muted);
+            flex-shrink: 0;
+        }
+
+        .stat-bar-track {
+            flex: 1;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .stat-bar-fill {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .stat-value {
+            font-family: var(--font-mono);
+            font-size: 9px;
+            width: 24px;
+            color: var(--text-muted);
+            flex-shrink: 0;
+        }
+
+        /* Buttons on cards */
+        .card-select-buttons {
+            width: 100%;
+            display: flex;
+            gap: 8px;
+            margin-top: auto;
+            z-index: 15;
+            padding-top: 12px;
+        }
+
+        .btn-card-select {
+            flex: 1;
+            font-family: var(--font-display);
+            font-size: 9px;
+            font-weight: 900;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 6px 0;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background: transparent;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: var(--text-muted);
+        }
+
+        .p1-select-btn:hover {
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+            background: rgba(0, 255, 255, 0.05);
+        }
+
+        .p2-select-btn:hover {
+            border-color: var(--accent-orange);
+            color: var(--accent-orange);
+            background: rgba(255, 102, 0, 0.05);
+        }
+
+        .btn-select {
+            font-family: var(--font-display);
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            padding: 7px 12px;
+            border: 2px solid var(--border-color);
+            border-radius: 4px;
+            background: transparent;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            width: 100%;
+            margin-top: auto;
+            z-index: 15;
+        }
+
+        .btn-select:hover {
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+            background: rgba(0, 255, 255, 0.05);
+        }
+
+        /* Locked Card */
+        .ship-card.locked-card {
+            cursor: not-allowed;
+            border-color: rgba(30, 30, 50, 0.4);
+        }
+
+        .ship-card.locked-card:hover {
+            border-color: rgba(30, 30, 50, 0.4);
+            transform: none;
+        }
+
+        .lock-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(3, 3, 10, 0.85);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            color: var(--text-muted);
+        }
+
+        .lock-icon {
+            font-size: 26px;
+            margin-bottom: 6px;
+        }
+
+        .lock-text {
+            font-family: var(--font-display);
+            font-size: 9px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--accent-pink);
+            text-shadow: 0 0 6px rgba(255, 0, 85, 0.3);
+            font-weight: bold;
+        }
+
+        .lock-bypass {
+            font-size: 9px;
+            color: var(--text-muted);
+            text-decoration: underline;
+            margin-top: 12px;
+            cursor: pointer;
+            pointer-events: auto;
+            z-index: 20;
+        }
+
+        .lock-bypass:hover {
+            color: var(--accent-cyan);
+        }
+
+        /* ---- LAUNCH BAR ---- */
+        .launch-bar {
+            width: 100%;
+            max-width: 1100px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            align-items: center;
+            padding: 20px;
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            backdrop-filter: blur(4px);
+        }
+
+        .btn-launch {
+            font-family: var(--font-display);
+            font-size: 18px;
+            font-weight: 900;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            padding: 14px 44px;
+            border: 3px solid var(--accent-cyan);
+            border-radius: 6px;
+            background: rgba(0, 255, 255, 0.05);
+            color: var(--accent-cyan);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.4);
+            animation: launchPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes launchPulse {
+            0%, 100% { box-shadow: 0 0 10px rgba(0, 255, 255, 0.1); }
+            50% { box-shadow: 0 0 25px rgba(0, 255, 255, 0.3); }
+        }
+
+        .btn-launch:hover {
+            background: rgba(0, 255, 255, 0.15);
+            box-shadow: 0 0 35px rgba(0, 255, 255, 0.4);
+            transform: scale(1.02);
+        }
+
+        .launch-info {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-align: left;
+            line-height: 1.6;
+        }
+
+        .launch-info .key {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 3px;
+            padding: 1px 6px;
+            font-family: var(--font-mono);
+            color: var(--text-color);
+            font-size: 10px;
+            margin: 0 2px;
+        }
+
+        /* ---- RESPONSIVE ---- */
+        @media (max-width: 900px) {
+            .launch-bar { flex-direction: column; text-align: center; }
+            .launch-info { text-align: center; }
+        }
+
+        .starfield {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Starfield Canvas -->
+    <canvas class="starfield" id="starfield"></canvas>
+
+    <header>
+        <h1>Fighter Selection</h1>
+        <div class="subtitle">Choose Your Ship · Cyber Coelacanth</div>
+    </header>
+
+    <!-- Dual Player Select Panels -->
+    <div class="players-panels">
+        <!-- Player 1 Panel -->
+        <div class="player-panel p1-panel-active" id="p1-panel">
+            <div class="player-header">
+                <span>PLAYER 1</span>
+                <span style="font-size:10px;color:var(--text-muted)">SOLO / HOST</span>
+            </div>
+            <div class="player-ship-details">
+                <div class="player-ship-preview">
+                    <div class="player-ship-sprite" id="p1-sprite">🛡️</div>
+                    <div class="player-ship-glow" id="p1-glow"></div>
+                </div>
+                <div class="player-ship-info">
+                    <div class="player-ship-name" id="p1-ship-name">-</div>
+                    <div class="player-ship-class" id="p1-ship-class">-</div>
+                </div>
+            </div>
+            
+            <div class="color-customizer">
+                <span class="customizer-label">COLOR:</span>
+                <div class="color-swatches" id="p1-swatches"></div>
+            </div>
+
+            <div class="player-stats"></div>
+
+            <div class="player-special" id="p1-special"></div>
+
+            <div class="player-bindings">
+                <span class="binding-label">BINDINGS:</span>
+                <div class="binding-keys">
+                    <span class="key">W</span>
+                    <span class="key">A</span>
+                    <span class="key">S</span>
+                    <span class="key">D</span> to move · 
+                    <span class="key">SPACE</span> to fire · 
+                    <span class="key">L-SHIFT</span> to bomb
+                </div>
+            </div>
+        </div>
+
+        <!-- Player 2 Panel (Co-Op option) -->
+        <div class="player-panel p2-panel-inactive" id="p2-panel">
+            <!-- Join Prompt (Default) -->
+            <div class="p2-join-prompt" id="p2-join-prompt">
+                <div class="blink">CLICK HERE OR PRESS ANY ARROW TO JOIN</div>
+                <div class="p2-join-sub">ACTIVATE PLAYER 2 CO-OP MODE</div>
+            </div>
+
+            <!-- Active controls (Hidden initially) -->
+            <div id="p2-active-content" style="display: none; width: 100%;">
+                <button class="btn-disconnect-p2" id="btn-disconnect-p2">DISCONNECT P2</button>
+                <div class="player-header">
+                    <span>PLAYER 2</span>
+                    <span style="font-size:10px;color:var(--accent-orange)">CO-OP ACTIVE</span>
+                </div>
+                <div class="player-ship-details">
+                    <div class="player-ship-preview">
+                        <div class="player-ship-sprite" id="p2-sprite">🛡️</div>
+                        <div class="player-ship-glow-p2" id="p2-glow"></div>
+                    </div>
+                    <div class="player-ship-info">
+                        <div class="player-ship-name" id="p2-ship-name">-</div>
+                        <div class="player-ship-class" id="p2-ship-class">-</div>
+                    </div>
+                </div>
+
+                <div class="color-customizer">
+                    <span class="customizer-label">COLOR:</span>
+                    <div class="color-swatches" id="p2-swatches"></div>
+                </div>
+
+                <div class="player-stats"></div>
+
+                <div class="player-special" id="p2-special"></div>
+
+                <div class="player-bindings">
+                    <span class="binding-label">BINDINGS:</span>
+                    <div class="binding-keys">
+                        <span class="key">▲</span>
+                        <span class="key">◀</span>
+                        <span class="key">▼</span>
+                        <span class="key">▶</span> to move · 
+                        <span class="key">J</span> or <span class="key">NUM 0</span> to fire · 
+                        <span class="key">K</span> or <span class="key">NUM ENTER</span> to bomb
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ship Cards Grid -->
+    <div class="ship-grid" id="ship-grid"></div>
+
+    <!-- Launch Bar -->
+    <div class="launch-bar">
+        <button class="btn-launch" id="btn-launch">▸  LAUNCH SOLO  ◂</button>
+        <div class="launch-info">
+            Press <span class="key">ENTER</span> or click <span class="key">LAUNCH</span> to launch.<br>
+            Keyboard navigation: <span class="key">W</span><span class="key">A</span><span class="key">S</span><span class="key">D</span> (P1) · <span class="key">▲</span><span class="key">◀</span><span class="key">▼</span><span class="key">▶</span> (P2)
+        </div>
+    </div>
+
+    <script>
+        // Parse active save slot from URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const continueSlot = urlParams.get('continue');
+        if (continueSlot !== null) {
+            localStorage.setItem('dariusStar_activeSlot', continueSlot);
+            localStorage.setItem('dariusStar_isNewGame', 'false');
+        } else {
+            // Default to slot 0 and mark as new game if activeSlot doesn't exist
+            if (localStorage.getItem('dariusStar_activeSlot') === null) {
+                localStorage.setItem('dariusStar_activeSlot', '0');
+            }
+            localStorage.setItem('dariusStar_isNewGame', 'true');
+        }
+
+        // --- Ship Data ---
+        const SHIPS = [
+            {
+                id: 'striker', name: 'STRIKER', className: 'X-01 · Balanced',
+                tagline: 'No weaknesses. Pure skill.',
+                color: '#00ffff', emoji: '🛡️',
+                stats: { spd: 220, shield: 110, wpn: 140, spc: 110 },
+                weapon: 'Standard Laser',
+                special: { name: 'Adaptive Surge (35s)', desc: 'All stats +15% for 5s.' }
+            },
+            {
+                id: 'phantom', name: 'PHANTOM', className: 'S-02 · Speed',
+                tagline: 'Too fast to hit.',
+                color: '#00ffaa', emoji: '💨',
+                stats: { spd: 290, shield: 60, wpn: 70, spc: 160 },
+                weapon: 'Rapid-Fire Weak Laser',
+                special: { name: 'Afterburner (30s)', desc: '2x speed for 5s. Invulnerable during boost.' }
+            },
+            {
+                id: 'bastion', name: 'BASTION', className: 'D-03 · Tank',
+                tagline: 'Nothing gets through.',
+                color: '#ffcc00', emoji: '🛡️',
+                stats: { spd: 140, shield: 200, wpn: 150, spc: 190 },
+                weapon: 'Slow Heavy Cannon',
+                special: { name: 'Aegis Protocol (40s)', desc: 'Passive shield regen 8/s. Absorbs 3 hits.' }
+            },
+            {
+                id: 'tempest', name: 'TEMPEST', className: 'F-04 · DPS',
+                tagline: 'Unleash the storm.',
+                color: '#ff0055', emoji: '🔥',
+                stats: { spd: 200, shield: 80, wpn: 200, spc: 140 },
+                weapon: '5-Shot Fan Spread',
+                special: { name: 'Overheat Barrage (25s)', desc: 'Unlimited fire rate for 3s. Burst-fire skill.' }
+            },
+            {
+                id: 'specter', name: 'SPECTER', className: 'A-05 · Stealth',
+                tagline: 'They never see it coming.',
+                color: '#b026ff', emoji: '👻',
+                stats: { spd: 230, shield: 70, wpn: 120, spc: 180 },
+                weapon: 'Piercing Single Shot',
+                special: { name: 'Phase Cloak (45s)', desc: 'Invisible 3s. First shot out of cloak = 3x damage.' }
+            },
+            {
+                id: 'warden', name: 'WARDEN', className: 'NX-07 · Heavy Escort',
+                tagline: 'Bulkier, battle-scarred, lethal.',
+                color: '#ff6600', emoji: '🛰️',
+                stats: { spd: 160, shield: 180, wpn: 130, spc: 170 },
+                weapon: 'Twin Plasma Drivers',
+                special: { name: 'Guardian Protocol (90s)', desc: 'Deploy 500 HP shield dome. +15% ally shield regen.' }
+            }
+        ];
+
+        const STAT_MAX = 200;
+        const CUSTOM_COLORS = [
+            { name: 'Cyan', value: '#00ffff' },
+            { name: 'Orange', value: '#ff6600' },
+            { name: 'Green', value: '#00ffaa' },
+            { name: 'Pink', value: '#ff0055' },
+            { name: 'Gold', value: '#ffcc00' },
+            { name: 'Purple', value: '#b026ff' },
+            { name: 'Blue', value: '#0088ff' }
+        ];
+
+        // --- Audio Manager ---
+        const selectSfx = new Audio('assets/audio/sfx/sfx_menu_select.wav');
+        const launchSfx = new Audio('assets/audio/sfx/sfx_game_start.wav');
+
+        function playSfx(type) {
+            try {
+                if (type === 'select') {
+                    selectSfx.currentTime = 0;
+                    selectSfx.play();
+                } else if (type === 'launch') {
+                    launchSfx.currentTime = 0;
+                    launchSfx.play();
+                }
+            } catch (e) {
+                // Autoplay policy blocker catches
+            }
+        }
+
+        // --- Unlock System ---
+        function checkWardenUnlocked() {
+            if (localStorage.getItem('dariusStar_forceUnlockWarden') === 'true') {
+                return true;
+            }
+            const highestBiome = parseInt(localStorage.getItem('dariusStar_highestBiome') || '1');
+            if (highestBiome >= 6) {
+                return true;
+            }
+            try {
+                const raw = localStorage.getItem('darius_star_scores');
+                if (raw) {
+                    const data = JSON.parse(raw);
+                    if (data && data.highScores) {
+                        for (const score of data.highScores) {
+                            if (score.biome >= 6) return true;
+                        }
+                    }
+                }
+            } catch(e) {}
+            return false;
+        }
+
+        let isWardenUnlocked = checkWardenUnlocked();
+
+        function forceUnlockWarden() {
+            localStorage.setItem('dariusStar_forceUnlockWarden', 'true');
+            isWardenUnlocked = true;
+            renderCards();
+            updatePlayerPanel(1);
+            if (p2Active) updatePlayerPanel(2);
+            playSfx('select');
+        }
+
+        // --- Active States ---
+        let p1SelectedIndex = 0; // STRIKER
+        let p1Color = SHIPS[p1SelectedIndex].color;
+
+        let p2Active = false;
+        let p2SelectedIndex = 2; // BASTION
+        let p2Color = '#ff6600'; // Default orange
+
+        const grid = document.getElementById('ship-grid');
+
+        // --- Selection Logic ---
+        function selectShipForPlayer(playerNum, index) {
+            const ship = SHIPS[index];
+            
+            // Allow selecting but show locked warnings. If locked, launching will block it.
+            if (playerNum === 1) {
+                p1SelectedIndex = index;
+                p1Color = ship.color; // reset to default ship color upon selection change
+                updatePlayerPanel(1);
+            } else {
+                if (!p2Active) return;
+                p2SelectedIndex = index;
+                p2Color = ship.color; // reset to default ship color upon selection change
+                updatePlayerPanel(2);
+            }
+            renderCards();
+        }
+
+        function activateP2() {
+            if (p2Active) return;
+            p2Active = true;
+
+            document.getElementById('p2-join-prompt').style.display = 'none';
+            document.getElementById('p2-active-content').style.display = 'block';
+
+            const panel = document.getElementById('p2-panel');
+            panel.classList.remove('p2-panel-inactive');
+            panel.classList.add('p2-panel-active');
+
+            // Pick a different default ship than P1 if possible
+            p2SelectedIndex = (p1SelectedIndex === 0) ? 2 : 0;
+            p2Color = SHIPS[p2SelectedIndex].color;
+
+            updatePlayerPanel(2);
+            renderCards();
+            updateLaunchButton();
+        }
+
+        function deactivateP2() {
+            if (!p2Active) return;
+            p2Active = false;
+
+            document.getElementById('p2-active-content').style.display = 'none';
+            document.getElementById('p2-join-prompt').style.display = 'flex';
+
+            const panel = document.getElementById('p2-panel');
+            panel.classList.remove('p2-panel-active');
+            panel.classList.add('p2-panel-inactive');
+
+            renderCards();
+            updateLaunchButton();
+        }
+
+        // --- Render UI ---
+        function renderCards() {
+            grid.innerHTML = '';
+            SHIPS.forEach((ship, i) => {
+                const isP1 = (p1SelectedIndex === i);
+                const isP2 = (p2Active && p2SelectedIndex === i);
+
+                const card = document.createElement('div');
+                let selectionClass = '';
+                if (isP1 && isP2) selectionClass = ' both-selected';
+                else if (isP1) selectionClass = ' p1-selected';
+                else if (isP2) selectionClass = ' p2-selected';
+
+                card.className = 'ship-card' + selectionClass;
+                card.dataset.index = i;
+
+                // Color variables for player outlines
+                card.style.setProperty('--p1-color', p1Color);
+                card.style.setProperty('--p2-color', p2Color);
+
+                // Badges
+                let badges = '';
+                if (isP1) badges += `<span class="card-badge badge-p1" style="background:${p1Color};box-shadow:0 0 6px ${p1Color}bb">P1</span>`;
+                if (isP2) badges += `<span class="card-badge badge-p2" style="background:${p2Color};box-shadow:0 0 6px ${p2Color}bb">P2</span>`;
+
+                // Locked Overlay
+                const isLocked = (ship.id === 'warden' && !isWardenUnlocked);
+                const lockOverlay = isLocked ? `
+                    <div class="lock-overlay">
+                        <div class="lock-icon">🔒</div>
+                        <div class="lock-text">LOCKED: COMPLETE BIOME 6</div>
+                        <div class="lock-bypass" onclick="event.stopPropagation(); forceUnlockWarden()">[ BYPASS LOCK (DEBUG) ]</div>
+                    </div>
+                ` : '';
+
+                // Stats bars inside cards
+                const statBars = ['spd', 'shield', 'wpn', 'spc'].map(stat => {
+                    const pct = (ship.stats[stat] / STAT_MAX * 100).toFixed(0);
+                    const label = stat.toUpperCase() === 'SPD' ? 'SPD' : stat.toUpperCase() === 'WPN' ? 'WPN' : stat.toUpperCase() === 'SPC' ? 'SPC' : 'SHIELD';
+                    return `
+                        <div class="stat-row">
+                            <span class="stat-label">${label}</span>
+                            <div class="stat-bar-track">
+                                <div class="stat-bar-fill" style="width:${pct}%;background:${ship.color};box-shadow:0 0 4px ${ship.color}33"></div>
+                            </div>
+                            <span class="stat-value">${ship.stats[stat]}</span>
+                        </div>`;
+                }).join('');
+
+                // Custom select button code
+                let selectBtnHtml = '';
+                if (p2Active) {
+                    selectBtnHtml = `
+                        <div class="card-select-buttons">
+                            <button class="btn-card-select p1-select-btn" onclick="event.stopPropagation(); selectShipForPlayer(1, ${i}); playSfx('select')">P1 Select</button>
+                            <button class="btn-card-select p2-select-btn" onclick="event.stopPropagation(); selectShipForPlayer(2, ${i}); playSfx('select')">P2 Select</button>
+                        </div>
+                    `;
+                } else {
+                    selectBtnHtml = `
+                        <button class="btn-select" onclick="event.stopPropagation(); selectShipForPlayer(1, ${i}); playSfx('select')">SELECT</button>
+                    `;
+                }
+
+                card.innerHTML = `
+                    ${lockOverlay}
+                    ${badges}
+                    <div class="ship-preview">
+                        <div class="ship-sprite" style="color:${ship.color};text-shadow:0 0 12px ${ship.color}88">${ship.emoji}</div>
+                        <div class="ship-engine-glow" style="background:${ship.color};box-shadow:0 0 12px ${ship.color}88"></div>
+                    </div>
+                    <div class="ship-name" style="color:${ship.color};text-shadow:0 0 6px ${ship.color}44">${ship.name}</div>
+                    <div class="ship-class">${ship.className}</div>
+                    <div class="ship-tagline">"${ship.tagline}"</div>
+                    <div class="stat-bars" style="width:100%">${statBars}</div>
+                    ${selectBtnHtml}
+                `;
+
+                card.addEventListener('click', () => {
+                    if (isLocked) return;
+                    if (!p2Active) {
+                        selectShipForPlayer(1, i);
+                        playSfx('select');
+                    }
+                });
+
+                grid.appendChild(card);
+            });
+        }
+
+        function updatePlayerPanel(playerNum) {
+            if (playerNum === 1) {
+                const ship = SHIPS[p1SelectedIndex];
+                document.getElementById('p1-sprite').textContent = ship.emoji;
+                document.getElementById('p1-sprite').style.color = p1Color;
+                document.getElementById('p1-sprite').style.textShadow = `0 0 12px ${p1Color}`;
+                
+                document.getElementById('p1-glow').style.backgroundColor = p1Color;
+                document.getElementById('p1-glow').style.boxShadow = `0 0 12px ${p1Color}`;
+                
+                const nameNode = document.getElementById('p1-ship-name');
+                nameNode.textContent = ship.name;
+                nameNode.style.color = p1Color;
+                nameNode.style.textShadow = `0 0 8px ${p1Color}44`;
+                
+                document.getElementById('p1-ship-class').textContent = ship.className;
+                
+                const specialNode = document.getElementById('p1-special');
+                specialNode.innerHTML = `✦ <strong style="color:${p1Color}">${ship.special.name}</strong><br>${ship.special.desc}`;
+                
+                renderSwatches(1, p1Color);
+                renderStatsBars(1, ship.stats, p1Color);
+            } else {
+                if (!p2Active) return;
+                const ship = SHIPS[p2SelectedIndex];
+                document.getElementById('p2-sprite').textContent = ship.emoji;
+                document.getElementById('p2-sprite').style.color = p2Color;
+                document.getElementById('p2-sprite').style.textShadow = `0 0 12px ${p2Color}`;
+                
+                document.getElementById('p2-glow').style.backgroundColor = p2Color;
+                document.getElementById('p2-glow').style.boxShadow = `0 0 12px ${p2Color}`;
+                
+                const nameNode = document.getElementById('p2-ship-name');
+                nameNode.textContent = ship.name;
+                nameNode.style.color = p2Color;
+                nameNode.style.textShadow = `0 0 8px ${p2Color}44`;
+                
+                document.getElementById('p2-ship-class').textContent = ship.className;
+                
+                const specialNode = document.getElementById('p2-special');
+                specialNode.innerHTML = `✦ <strong style="color:${p2Color}">${ship.special.name}</strong><br>${ship.special.desc}`;
+                
+                renderSwatches(2, p2Color);
+                renderStatsBars(2, ship.stats, p2Color);
+            }
+        }
+
+        function renderSwatches(playerNum, activeColor) {
+            const container = document.getElementById(`p${playerNum}-swatches`);
+            container.innerHTML = '';
+            CUSTOM_COLORS.forEach(c => {
+                const swatch = document.createElement('div');
+                swatch.className = 'color-swatch' + (c.value === activeColor ? ' active' : '');
+                swatch.style.backgroundColor = c.value;
+                swatch.style.color = c.value;
+                swatch.title = c.name;
+                swatch.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    if (playerNum === 1) {
+                        p1Color = c.value;
+                    } else {
+                        p2Color = c.value;
+                    }
+                    playSfx('select');
+                    updatePlayerPanel(playerNum);
+                    renderCards();
+                });
+                container.appendChild(swatch);
+            });
+        }
+
+        function renderStatsBars(playerNum, stats, shipColor) {
+            const container = document.querySelector(`#p${playerNum}-panel .player-stats`);
+            if (!container) return;
+            
+            const statsKeys = ['spd', 'shield', 'wpn', 'spc'];
+            container.innerHTML = statsKeys.map(stat => {
+                const pct = (stats[stat] / STAT_MAX * 100).toFixed(0);
+                const label = stat.toUpperCase() === 'SPD' ? 'SPD' : stat.toUpperCase() === 'WPN' ? 'WPN' : stat.toUpperCase() === 'SPC' ? 'SPC' : 'SHIELD';
+                return `
+                    <div class="stat-row">
+                        <span class="stat-label">${label}</span>
+                        <div class="stat-bar-track">
+                            <div class="stat-bar-fill" style="width:${pct}%;background:${shipColor};box-shadow:0 0 4px ${shipColor}44"></div>
+                        </div>
+                        <span class="stat-value" style="color:${shipColor}">${stats[stat]}</span>
+                    </div>`;
+            }).join('');
+        }
+
+        function updateLaunchButton() {
+            const btn = document.getElementById('btn-launch');
+            if (p2Active) {
+                btn.textContent = '▸  LAUNCH CO-OP  ◂';
+                btn.style.borderColor = '#00ff55';
+                btn.style.color = '#00ff55';
+                btn.style.textShadow = '0 0 10px rgba(0, 255, 85, 0.4)';
+                btn.style.animation = 'launchPulseGreen 2s ease-in-out infinite';
+            } else {
+                btn.textContent = '▸  LAUNCH SOLO  ◂';
+                btn.style.borderColor = 'var(--accent-cyan)';
+                btn.style.color = 'var(--accent-cyan)';
+                btn.style.textShadow = '0 0 10px rgba(0, 255, 255, 0.4)';
+                btn.style.animation = 'launchPulse 2s ease-in-out infinite';
+            }
+        }
+
+        // Add additional keyframes style block dynamically
+        const keyframeStyle = document.createElement('style');
+        keyframeStyle.innerHTML = `
+            @keyframes launchPulseGreen {
+                0%, 100% { box-shadow: 0 0 10px rgba(0, 255, 85, 0.1); }
+                50% { box-shadow: 0 0 25px rgba(0, 255, 85, 0.3); }
+            }
+        `;
+        document.head.appendChild(keyframeStyle);
+
+        // --- Grid Navigation Math ---
+        function getNextGridIndex(current, offset) {
+            // organizar como 2x3 grid:
+            // 0: Striker | 1: Phantom | 2: Bastion
+            // 3: Tempest | 4: Specter | 5: Warden
+            
+            if (offset === 1) { // Left-to-Right
+                if (current === 2) return 0;
+                if (current === 5) return 3;
+                return current + 1;
+            }
+            if (offset === -1) { // Right-to-Left
+                if (current === 0) return 2;
+                if (current === 3) return 5;
+                return current - 1;
+            }
+            if (offset === 3) { // Up-to-Down
+                if (current >= 3) return current - 3;
+                return current + 3;
+            }
+            if (offset === -3) { // Down-to-Up
+                if (current < 3) return current + 3;
+                return current - 3;
+            }
+            return current;
+        }
+
+        // --- Keyboard Navigation ---
+        document.addEventListener('keydown', (e) => {
+            if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Space'].includes(e.key)) {
+                e.preventDefault();
+            }
+
+            // P2 Auto-activation check
+            if (!p2Active) {
+                if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'j', 'J', 'k', 'K', 'Numpad0', 'NumpadEnter'].includes(e.key)) {
+                    activateP2();
+                    playSfx('select');
+                    return;
+                }
+            }
+
+            // P1 Keyboard Navigation (WASD)
+            if (e.key === 'd' || e.key === 'D') {
+                const next = getNextGridIndex(p1SelectedIndex, 1);
+                selectShipForPlayer(1, next);
+                playSfx('select');
+            } else if (e.key === 'a' || e.key === 'A') {
+                const next = getNextGridIndex(p1SelectedIndex, -1);
+                selectShipForPlayer(1, next);
+                playSfx('select');
+            } else if (e.key === 's' || e.key === 'S') {
+                const next = getNextGridIndex(p1SelectedIndex, 3);
+                selectShipForPlayer(1, next);
+                playSfx('select');
+            } else if (e.key === 'w' || e.key === 'W') {
+                const next = getNextGridIndex(p1SelectedIndex, -3);
+                selectShipForPlayer(1, next);
+                playSfx('select');
+            }
+
+            // Arrow keys control P1 when solo, control P2 when co-op active
+            if (!p2Active) {
+                if (e.key === 'ArrowRight') {
+                    const next = getNextGridIndex(p1SelectedIndex, 1);
+                    selectShipForPlayer(1, next);
+                    playSfx('select');
+                } else if (e.key === 'ArrowLeft') {
+                    const next = getNextGridIndex(p1SelectedIndex, -1);
+                    selectShipForPlayer(1, next);
+                    playSfx('select');
+                } else if (e.key === 'ArrowDown') {
+                    const next = getNextGridIndex(p1SelectedIndex, 3);
+                    selectShipForPlayer(1, next);
+                    playSfx('select');
+                } else if (e.key === 'ArrowUp') {
+                    const next = getNextGridIndex(p1SelectedIndex, -3);
+                    selectShipForPlayer(1, next);
+                    playSfx('select');
+                }
+            } else {
+                // P2 Keyboard Navigation (Arrows)
+                if (e.key === 'ArrowRight') {
+                    const next = getNextGridIndex(p2SelectedIndex, 1);
+                    selectShipForPlayer(2, next);
+                    playSfx('select');
+                } else if (e.key === 'ArrowLeft') {
+                    const next = getNextGridIndex(p2SelectedIndex, -1);
+                    selectShipForPlayer(2, next);
+                    playSfx('select');
+                } else if (e.key === 'ArrowDown') {
+                    const next = getNextGridIndex(p2SelectedIndex, 3);
+                    selectShipForPlayer(2, next);
+                    playSfx('select');
+                } else if (e.key === 'ArrowUp') {
+                    const next = getNextGridIndex(p2SelectedIndex, -3);
+                    selectShipForPlayer(2, next);
+                    playSfx('select');
+                }
+            }
+
+            if (e.key === 'Enter') {
+                launch();
+            }
+        });
+
+        // --- Launch ---
+        function launch() {
+            // Check for lock block
+            const p1Ship = SHIPS[p1SelectedIndex];
+            const p2Ship = p2Active ? SHIPS[p2SelectedIndex] : null;
+
+            if (p1Ship.id === 'warden' && !isWardenUnlocked) {
+                alert("Fighter locked! Reconcile Biome 6 to Unlock Naya's Warden.");
+                return;
+            }
+            if (p2Active && p2Ship && p2Ship.id === 'warden' && !isWardenUnlocked) {
+                alert("Fighter locked! Reconcile Biome 6 to Unlock Naya's Warden.");
+                return;
+            }
+
+            playSfx('launch');
+
+            // Store configuration in localStorage
+            const selectionData = {
+                p1: {
+                    shipId: p1Ship.id,
+                    shipName: p1Ship.name,
+                    color: p1Color
+                },
+                p2: {
+                    active: p2Active,
+                    shipId: p2Active ? p2Ship.id : null,
+                    shipName: p2Active ? p2Ship.name : null,
+                    color: p2Active ? p2Color : null
+                },
+                timestamp: Date.now()
+            };
+            localStorage.setItem('dariusStar_shipSelection', JSON.stringify(selectionData));
+
+            // Small delay to let game start sound effect play
+            setTimeout(() => {
+                window.location.href = 'pre_level.html?biome=1&level=1&mode=solo';
+            }, 300);
+        }
+
+        // --- Gamepad API Polling ---
+        let gamepadActive = false;
+        window.addEventListener("gamepadconnected", (e) => {
+            console.log("Gamepad connected", e.gamepad.id);
+            if (!gamepadActive) {
+                gamepadActive = true;
+                pollGamepads();
+            }
+        });
+
+        let lastGamepadState = [];
+
+        function pollGamepads() {
+            const gamepads = navigator.getGamepads ? navigator.getGamepads() : [];
+            for (let i = 0; i < gamepads.length; i++) {
+                const gp = gamepads[i];
+                if (!gp) continue;
+
+                if (!lastGamepadState[i]) {
+                    lastGamepadState[i] = { buttons: {}, axes: {} };
+                }
+
+                const threshold = 0.5;
+                const leftStickX = gp.axes[0];
+                const leftStickY = gp.axes[1];
+
+                let dx = 0;
+                let dy = 0;
+
+                // Axes threshold trigger
+                if (leftStickX > threshold && (lastGamepadState[i].axes[0] || 0) <= threshold) dx = 1;
+                if (leftStickX < -threshold && (lastGamepadState[i].axes[0] || 0) >= -threshold) dx = -1;
+                if (leftStickY > threshold && (lastGamepadState[i].axes[1] || 0) <= threshold) dy = 3;
+                if (leftStickY < -threshold && (lastGamepadState[i].axes[1] || 0) >= -threshold) dy = -3;
+
+                // D-Pad buttons
+                if (gp.buttons[14] && gp.buttons[14].pressed && !lastGamepadState[i].buttons[14]) dx = -1; // Left
+                if (gp.buttons[15] && gp.buttons[15].pressed && !lastGamepadState[i].buttons[15]) dx = 1;  // Right
+                if (gp.buttons[12] && gp.buttons[12].pressed && !lastGamepadState[i].buttons[12]) dy = -3; // Up
+                if (gp.buttons[13] && gp.buttons[13].pressed && !lastGamepadState[i].buttons[13]) dy = 3;  // Down
+
+                const playerNum = (i === 0) ? 1 : 2;
+
+                if (playerNum === 2 && !p2Active) {
+                    let anyPressed = gp.buttons.some(b => b.pressed);
+                    if (anyPressed) {
+                        activateP2();
+                        playSfx('select');
+                    }
+                }
+
+                const activeIndex = (playerNum === 1) ? p1SelectedIndex : p2SelectedIndex;
+
+                if (dx !== 0) {
+                    const next = getNextGridIndex(activeIndex, dx);
+                    selectShipForPlayer(playerNum, next);
+                    playSfx('select');
+                } else if (dy !== 0) {
+                    const next = getNextGridIndex(activeIndex, dy);
+                    selectShipForPlayer(playerNum, next);
+                    playSfx('select');
+                }
+
+                // A Button (Launch or Select)
+                if (gp.buttons[0] && gp.buttons[0].pressed && !lastGamepadState[i].buttons[0]) {
+                    if (playerNum === 1) {
+                        launch();
+                    } else if (playerNum === 2 && !p2Active) {
+                        activateP2();
+                        playSfx('select');
+                    }
+                }
+
+                // Save current state
+                lastGamepadState[i].axes[0] = leftStickX;
+                lastGamepadState[i].axes[1] = leftStickY;
+                gp.buttons.forEach((b, btnIdx) => {
+                    lastGamepadState[i].buttons[btnIdx] = b.pressed;
+                });
+            }
+
+            if (gamepadActive) {
+                requestAnimationFrame(pollGamepads);
+            }
+        }
+
+        // --- Init Click Event Handlers ---
+        document.getElementById('p2-panel').addEventListener('click', () => {
+            if (!p2Active) {
+                activateP2();
+                playSfx('select');
+            }
+        });
+
+        document.getElementById('btn-disconnect-p2').addEventListener('click', (e) => {
+            e.stopPropagation();
+            deactivateP2();
+            playSfx('select');
+        });
+
+        document.getElementById('btn-launch').addEventListener('click', launch);
+
+        // --- Initialize UI State ---
+        renderCards();
+        updatePlayerPanel(1);
+        updateLaunchButton();
+
+        // --- Animated Starfield Background ---
+        (function() {
+            const canvas = document.getElementById('starfield');
+            const ctx = canvas.getContext('2d');
+            let stars = [];
+
+            function resize() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+                initStars();
+            }
+
+            function initStars() {
+                const count = Math.floor((canvas.width * canvas.height) / 1200);
+                stars = [];
+                for (let i = 0; i < count; i++) {
+                    stars.push({
+                        x: Math.random() * canvas.width,
+                        y: Math.random() * canvas.height,
+                        r: Math.random() * 1.5 + 0.3,
+                        twinkle: Math.random() * Math.PI * 2,
+                        speed: Math.random() * 0.02 + 0.005
+                    });
+                }
+            }
+
+            function draw(timestamp) {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                stars.forEach(star => {
+                    star.twinkle += star.speed;
+                    const alpha = 0.3 + 0.7 * Math.abs(Math.sin(star.twinkle));
+                    ctx.beginPath();
+                    ctx.arc(star.x, star.y, star.r, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(180, 200, 255, ${alpha})`;
+                    ctx.fill();
+                });
+
+                requestAnimationFrame(draw);
+            }
+
+            window.addEventListener('resize', resize);
+            resize();
+            requestAnimationFrame(draw);
+        })();
+    </script>
+</body>
+</html>

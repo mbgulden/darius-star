@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mission Briefing — Darius Star</title>
+    <meta name="description" content="Darius Star: Cyber Coelacanth — Mission Briefing">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #03030c;
+            --panel-bg: #070719;
+            --border-color: #1a1a40;
+            --accent-cyan: #00ffff;
+            --accent-pink: #ff0055;
+            --accent-green: #00ff55;
+            --accent-gold: #ffcc00;
+            --accent-purple: #b026ff;
+            --accent-orange: #ff6600;
+            --accent-red: #ff2244;
+            --text-color: #e2e2ec;
+            --text-muted: #6f6f96;
+            --font-display: 'Orbitron', sans-serif;
+            --font-mono: 'Share Tech Mono', monospace;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(circle at 50% 30%, rgba(0, 255, 255, 0.06) 0%, transparent 60%),
+                radial-gradient(circle at 20% 80%, rgba(255, 0, 85, 0.04) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(176, 38, 255, 0.04) 0%, transparent 50%),
+                linear-gradient(rgba(18, 18, 30, 0.12) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(18, 18, 30, 0.12) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 100% 100%, 30px 30px, 30px 30px;
+            color: var(--text-color);
+            font-family: var(--font-mono);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        /* ── STATIC INTERFERENCE OVERLAY ── */
+        .interference-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 100;
+            opacity: 0.03;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 255, 255, 0.03) 2px,
+                rgba(0, 255, 255, 0.03) 4px
+            );
+            animation: interference 0.1s steps(2) infinite;
+        }
+
+        @keyframes interference {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(4px); }
+        }
+
+        /* ── HEADER ── */
+        .briefing-header {
+            text-align: center;
+            margin-bottom: 8px;
+            animation: headerEntry 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes headerEntry {
+            0% { opacity: 0; transform: translateY(-30px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .briefing-header .classification {
+            font-family: var(--font-display);
+            font-size: 11px;
+            letter-spacing: 8px;
+            color: var(--accent-orange);
+            text-transform: uppercase;
+            text-shadow: 0 0 10px rgba(255, 102, 0, 0.4);
+            margin-bottom: 8px;
+        }
+
+        .briefing-header h1 {
+            font-family: var(--font-display);
+            font-size: 28px;
+            font-weight: 900;
+            letter-spacing: 4px;
+            color: var(--accent-cyan);
+            text-shadow: 0 0 20px rgba(0, 255, 255, 0.4), 0 0 40px rgba(0, 255, 255, 0.15);
+            text-transform: uppercase;
+        }
+
+        .briefing-header .codename {
+            font-size: 13px;
+            color: var(--text-muted);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-top: 2px;
+            font-family: var(--font-display);
+        }
+
+        /* ── MAIN CONTAINER ── */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        /* ── INTEL PANEL ── */
+        .panel {
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 18px 22px;
+            box-shadow: inset 0 0 20px rgba(0, 255, 255, 0.02);
+            animation: panelEntry 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation-fill-mode: both;
+        }
+
+        .panel:nth-child(1) { animation-delay: 0.1s; }
+        .panel:nth-child(2) { animation-delay: 0.2s; }
+        .panel:nth-child(3) { animation-delay: 0.3s; }
+
+        @keyframes panelEntry {
+            0% { opacity: 0; transform: translateY(15px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ── INTEL GRID ── */
+        .intel-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px 20px;
+        }
+
+        .intel-item {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .intel-item.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .intel-label {
+            font-family: var(--font-display);
+            font-size: 10px;
+            letter-spacing: 2px;
+            color: var(--accent-cyan);
+            text-transform: uppercase;
+            text-shadow: 0 0 6px rgba(0, 255, 255, 0.25);
+        }
+
+        .intel-value {
+            font-size: 14px;
+            color: var(--text-color);
+            letter-spacing: 0.5px;
+        }
+
+        .intel-value.location {
+            color: var(--accent-gold);
+            text-shadow: 0 0 6px rgba(255, 204, 0, 0.2);
+        }
+
+        /* ── THREAT INDICATOR ── */
+        .threat-bar-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 4px;
+        }
+
+        .threat-label {
+            font-family: var(--font-display);
+            font-size: 10px;
+            letter-spacing: 2px;
+            color: var(--accent-orange);
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .threat-bar {
+            flex: 1;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .threat-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            background: linear-gradient(90deg, var(--accent-green), var(--accent-gold), var(--accent-orange), var(--accent-red));
+            background-size: 400% 100%;
+            animation: threatPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes threatPulse {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.3); }
+        }
+
+        .threat-level-text {
+            font-family: var(--font-display);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            min-width: 70px;
+            text-align: right;
+        }
+
+        /* ── COMMS PANEL (DIALOGUE) ── */
+        .comms-panel {
+            min-height: 180px;
+            position: relative;
+        }
+
+        .comms-header {
+            font-family: var(--font-display);
+            font-size: 11px;
+            letter-spacing: 3px;
+            color: var(--accent-cyan);
+            text-transform: uppercase;
+            text-shadow: 0 0 8px rgba(0, 255, 255, 0.25);
+            margin-bottom: 14px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(0, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .comms-header .channel {
+            font-size: 10px;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+        }
+
+        .comms-content {
+            position: relative;
+            min-height: 120px;
+        }
+
+        .dialogue-line {
+            margin-bottom: 14px;
+            animation: lineFadeIn 0.3s ease-out;
+            animation-fill-mode: both;
+        }
+
+        .dialogue-line:last-child {
+            margin-bottom: 0;
+        }
+
+        @keyframes lineFadeIn {
+            0% { opacity: 0; transform: translateX(-8px); }
+            100% { opacity: 1; transform: translateX(0); }
+        }
+
+        .dialogue-speaker {
+            font-family: var(--font-display);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: var(--accent-cyan);
+            text-shadow: 0 0 6px rgba(0, 255, 255, 0.3);
+            margin-bottom: 4px;
+            text-transform: uppercase;
+        }
+
+        .dialogue-speaker.darius { color: var(--accent-pink); text-shadow: 0 0 6px rgba(255, 0, 85, 0.3); }
+        .dialogue-speaker.lyra { color: var(--accent-purple); text-shadow: 0 0 6px rgba(176, 38, 255, 0.3); }
+        .dialogue-speaker.thorne,
+        .dialogue-speaker.commander { color: var(--accent-cyan); text-shadow: 0 0 6px rgba(0, 255, 255, 0.3); }
+        .dialogue-speaker.naya { color: var(--accent-green); text-shadow: 0 0 6px rgba(0, 255, 85, 0.3); }
+        .dialogue-speaker.cross { color: var(--accent-gold); text-shadow: 0 0 6px rgba(255, 204, 0, 0.3); }
+        .dialogue-speaker.ophion { color: var(--accent-orange); text-shadow: 0 0 6px rgba(255, 102, 0, 0.3); }
+        .dialogue-speaker.selene { color: #8888ff; text-shadow: 0 0 6px rgba(136, 136, 255, 0.3); }
+        .dialogue-speaker.architect { color: var(--accent-red); text-shadow: 0 0 6px rgba(255, 34, 68, 0.3); }
+
+        .dialogue-text {
+            font-size: 14px;
+            line-height: 1.5;
+            color: var(--text-color);
+            letter-spacing: 0.3px;
+        }
+
+        .dialogue-text .cursor {
+            display: inline-block;
+            width: 8px;
+            height: 14px;
+            background: var(--accent-cyan);
+            animation: cursorBlink 0.6s step-end infinite;
+            vertical-align: text-bottom;
+            margin-left: 2px;
+        }
+
+        @keyframes cursorBlink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        .dialogue-text.complete .cursor {
+            display: none;
+        }
+
+        /* ── PROGRESS DOTS ── */
+        .dialogue-progress {
+            display: flex;
+            gap: 6px;
+            margin-top: 12px;
+            justify-content: center;
+        }
+
+        .dialogue-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        .dialogue-dot.active {
+            background: var(--accent-cyan);
+            box-shadow: 0 0 8px rgba(0, 255, 255, 0.5);
+            width: 16px;
+            border-radius: 3px;
+        }
+
+        .dialogue-dot.done {
+            background: var(--accent-green);
+            box-shadow: 0 0 4px rgba(0, 255, 85, 0.3);
+        }
+
+        /* ── BUTTONS ── */
+        .action-bar {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 5px;
+            animation: panelEntry 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation-delay: 0.5s;
+            animation-fill-mode: both;
+        }
+
+        .btn {
+            font-family: var(--font-display);
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            padding: 14px 32px;
+            border: 2px solid transparent;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            outline: none;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-launch {
+            background-color: var(--accent-pink);
+            color: #fff;
+            box-shadow: 0 0 20px rgba(255, 0, 85, 0.4);
+            flex: 1;
+            justify-content: center;
+            animation: launchGlow 2s ease-in-out infinite;
+        }
+
+        @keyframes launchGlow {
+            0%, 100% { box-shadow: 0 0 20px rgba(255, 0, 85, 0.4); }
+            50% { box-shadow: 0 0 35px rgba(255, 0, 85, 0.7); }
+        }
+
+        .btn-launch:hover {
+            background-color: #ff3377;
+            box-shadow: 0 0 30px rgba(255, 0, 85, 0.7);
+            transform: translateY(-2px);
+        }
+
+        .btn-launch:disabled {
+            background-color: #3a3a5a;
+            color: var(--text-muted);
+            cursor: not-allowed;
+            box-shadow: none;
+            animation: none;
+        }
+
+        .btn-skip {
+            background-color: transparent;
+            border-color: var(--border-color);
+            color: var(--text-muted);
+            flex: 0;
+            padding: 14px 20px;
+            box-shadow: none;
+            white-space: nowrap;
+        }
+
+        .btn-skip:hover {
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.15);
+        }
+
+        /* ── LAUNCH COUNTDOWN ── */
+        .launch-countdown {
+            font-family: var(--font-display);
+            font-size: 10px;
+            letter-spacing: 2px;
+            color: var(--text-muted);
+            text-align: center;
+            margin-top: 6px;
+            animation: panelEntry 0.6s ease-out;
+            animation-delay: 0.5s;
+            animation-fill-mode: both;
+        }
+
+        /* ── OBJECTIVE HIGHLIGHT ── */
+        .objective-text {
+            color: var(--accent-gold);
+            text-shadow: 0 0 6px rgba(255, 204, 0, 0.15);
+            font-weight: 700;
+        }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 600px) {
+            .briefing-header h1 { font-size: 20px; }
+            .intel-grid { grid-template-columns: 1fr; }
+            .action-bar { flex-direction: column; }
+            .btn { width: 100%; justify-content: center; }
+            .btn-skip { order: -1; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="interference-overlay"></div>
+
+    <!-- ── BRIEFING HEADER ── -->
+    <div class="briefing-header">
+        <div class="classification">⚠ CLASSIFIED // FLEETCOM EYES ONLY</div>
+        <h1>Mission Briefing</h1>
+        <div class="codename" id="codename">OPERATION: DEEP DESCENT</div>
+    </div>
+
+    <!-- ── INTEL ── -->
+    <div class="container">
+        <div class="panel" id="intelPanel">
+            <div class="intel-grid">
+                <div class="intel-item">
+                    <span class="intel-label">📡 Biome</span>
+                    <span class="intel-value" id="biomeName">Abyssal Trench</span>
+                </div>
+                <div class="intel-item">
+                    <span class="intel-label">📍 Location</span>
+                    <span class="intel-value location" id="biomeLocation">Earth — Pacific Ocean</span>
+                </div>
+                <div class="intel-item">
+                    <span class="intel-label">🎖 Commander</span>
+                    <span class="intel-value" id="biomeCommander">Commander Jack Thorne</span>
+                </div>
+                <div class="intel-item">
+                    <span class="intel-label">📊 Mission Level</span>
+                    <span class="intel-value" id="missionLevel">Level 1</span>
+                </div>
+                <div class="intel-item full-width">
+                    <span class="intel-label">☠ Threat Assessment</span>
+                    <div class="threat-bar-container">
+                        <span class="threat-label">LOW</span>
+                        <div class="threat-bar">
+                            <div class="threat-fill" id="threatFill" style="width: 10%;"></div>
+                        </div>
+                        <span class="threat-level-text" id="threatText" style="color: var(--accent-green);">MINIMAL</span>
+                        <span class="threat-label">CRITICAL</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── COMMS DIALOGUE ── -->
+        <div class="panel comms-panel" id="commsPanel">
+            <div class="comms-header">
+                <span>📻 COMMS CHANNEL</span>
+                <span class="channel" id="channelFreq">FLEETCOM-ALPHA // ENCRYPTED</span>
+            </div>
+            <div class="comms-content" id="commsContent">
+                <div class="dialogue-line" style="text-align: center; color: var(--text-muted); padding: 40px 0;">
+                    <span style="font-size: 20px;">📡</span><br><br>
+                    ESTABLISHING SECURE CHANNEL...
+                </div>
+            </div>
+            <div class="dialogue-progress" id="dialogueProgress"></div>
+        </div>
+
+        <!-- ── ACTIONS ── -->
+        <div class="action-bar">
+            <button class="btn btn-skip" id="skipBtn" onclick="skipBriefing()">
+                ⏭ Skip Briefing
+            </button>
+            <button class="btn btn-launch" id="launchBtn" disabled onclick="launchMission()">
+                🚀 Launch Mission
+            </button>
+        </div>
+        <div class="launch-countdown" id="countdownHint"></div>
+    </div>
+
+    <script>
+    // ── URL PARAMS ──
+    function getParam(name, fallback) {
+        const url = new URL(window.location.href);
+        const val = url.searchParams.get(name);
+        return val !== null ? val : fallback;
+    }
+    function getInt(name, fallback) { return parseInt(getParam(name, fallback), 10); }
+
+    const biomeId = getInt('biome', 1);
+    const level = getInt('level', 1);
+    const mode = getParam('mode', 'solo'); // solo, coop2, coop4
+
+    // ── THREAT MAPPING ──
+    const threatMap = [
+        { pct: 10, text: 'MINIMAL', color: 'var(--accent-green)' },
+        { pct: 20, text: 'LOW', color: 'var(--accent-green)' },
+        { pct: 30, text: 'MODERATE', color: 'var(--accent-gold)' },
+        { pct: 40, text: 'ELEVATED', color: 'var(--accent-gold)' },
+        { pct: 50, text: 'HIGH', color: 'var(--accent-orange)' },
+        { pct: 60, text: 'SEVERE', color: 'var(--accent-orange)' },
+        { pct: 70, text: 'EXTREME', color: 'var(--accent-red)' },
+        { pct: 80, text: 'CRITICAL', color: 'var(--accent-red)' },
+        { pct: 90, text: 'CATASTROPHIC', color: 'var(--accent-red)' },
+        { pct: 100, text: 'EXISTENTIAL', color: 'var(--accent-red)' },
+    ];
+
+    // ── TYPEWRITER ENGINE ──
+    let dialogueLines = [];
+    let currentLineIdx = -1;
+    let typewriterInterval = null;
+    let briefingComplete = false;
+    let briefingSkipped = false;
+
+    const normalSpeed = 35;   // ms per character
+    const slowSpeed = 70;
+    const fastSpeed = 18;
+
+    function getSpeed(speedStr) {
+        if (speedStr === 'slow') return slowSpeed;
+        if (speedStr === 'fast') return fastSpeed;
+        return normalSpeed;
+    }
+
+    function speakerClass(speaker) {
+        const s = speaker.toLowerCase();
+        if (s.includes('darius')) return 'darius';
+        if (s.includes('lyra')) return 'lyra';
+        if (s.includes('thorne') || s.includes('commander')) return 'thorne';
+        if (s.includes('naya')) return 'naya';
+        if (s.includes('cross')) return 'cross';
+        if (s.includes('ophion')) return 'ophion';
+        if (s.includes('selene')) return 'selene';
+        if (s.includes('architect')) return 'architect';
+        return '';
+    }
+
+    function playTypewriterSFX(sfx) {
+        // Audio SFX could be wired here — for now, visual-only
+        // The sfx field (comms_incoming, typewriter) can trigger sounds later
+    }
+
+    // ── LOAD BRIEFING DATA ──
+    async function loadBriefing() {
+        try {
+            const resp = await fetch('docs/mission-briefings.json');
+            if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+            const data = await resp.json();
+            renderIntel(data);
+        } catch (err) {
+            console.error('Failed to load mission briefings:', err);
+            showFallbackBriefing();
+        }
+    }
+
+    function renderIntel(data) {
+        // Find biome
+        const biome = data.biomes.find(b => b.id === biomeId);
+        if (!biome) {
+            showFallbackBriefing();
+            return;
+        }
+
+        // Update intel panel
+        document.getElementById('biomeName').textContent = biome.name;
+        document.getElementById('biomeLocation').textContent = biome.location;
+        document.getElementById('biomeCommander').textContent = biome.commander;
+        document.getElementById('missionLevel').textContent = `Biome ${biomeId} — Level ${level}`;
+        document.getElementById('codename').textContent = `OPERATION: ${biome.name.toUpperCase()}`;
+
+        // Threat indicator — scales with biome
+        const threatIdx = Math.min(biomeId - 1, threatMap.length - 1);
+        const threat = threatMap[threatIdx];
+        document.getElementById('threatFill').style.width = threat.pct + '%';
+        document.getElementById('threatText').textContent = threat.text;
+        document.getElementById('threatText').style.color = threat.color;
+
+        // Get dialogue lines for mode
+        const modeKey = mode === 'coop2' ? 'coop2' : (mode === 'coop4' ? 'coop4' : 'solo');
+        const preLevel = biome.pre_level || {};
+        dialogueLines = (preLevel[modeKey] || preLevel['solo'] || []);
+
+        if (dialogueLines.length === 0) {
+            showFallbackBriefing();
+            return;
+        }
+
+        // Build progress dots
+        const progressContainer = document.getElementById('dialogueProgress');
+        progressContainer.innerHTML = dialogueLines.map(() => '<span class="dialogue-dot"></span>').join('');
+
+        // Start dialogue sequence
+        advanceDialogue();
+    }
+
+    function showFallbackBriefing() {
+        document.getElementById('commsContent').innerHTML = `
+            <div class="dialogue-line" style="text-align: center; padding: 20px 0;">
+                <div class="dialogue-speaker" style="color: var(--accent-orange); font-size: 14px;">⚠ COMMS DEGRADED</div>
+                <div class="dialogue-text" style="color: var(--text-muted);">
+                    Secure channel unavailable. Proceed to target coordinates.<br>
+                    All mission parameters loaded to onboard systems.
+                </div>
+            </div>
+        `;
+        briefingComplete = true;
+        enableLaunch();
+    }
+
+    function advanceDialogue() {
+        currentLineIdx++;
+        if (currentLineIdx >= dialogueLines.length) {
+            briefingComplete = true;
+            enableLaunch();
+            return;
+        }
+
+        updateProgressDots();
+        renderDialogueLine(dialogueLines[currentLineIdx]);
+    }
+
+    function renderDialogueLine(line) {
+        const container = document.getElementById('commsContent');
+        const cls = speakerClass(line.speaker);
+        const speed = getSpeed(line.speed || 'normal');
+
+        // Create line element
+        const lineEl = document.createElement('div');
+        lineEl.className = 'dialogue-line';
+        lineEl.innerHTML = `
+            <div class="dialogue-speaker ${cls}">${line.speaker}</div>
+            <div class="dialogue-text"><span class="text-content"></span><span class="cursor"></span></div>
+        `;
+
+        // Replace existing content
+        container.innerHTML = '';
+        container.appendChild(lineEl);
+
+        const textSpan = lineEl.querySelector('.text-content');
+        const cursor = lineEl.querySelector('.cursor');
+        const fullText = line.text;
+
+        let charIdx = 0;
+        playTypewriterSFX(line.sfx);
+
+        clearInterval(typewriterInterval);
+        typewriterInterval = setInterval(() => {
+            if (charIdx >= fullText.length) {
+                clearInterval(typewriterInterval);
+                textSpan.parentElement.classList.add('complete');
+                cursor.style.display = 'none';
+                // Auto-advance after a pause
+                const pauseMs = line.speed === 'slow' ? 2500 : (line.speed === 'fast' ? 800 : 1500);
+                setTimeout(advanceDialogue, pauseMs);
+                return;
+            }
+            textSpan.textContent += fullText.charAt(charIdx);
+            charIdx++;
+            // Skip cursor flash on fast mode — immediate display
+            if (line.speed === 'fast') {
+                charIdx += 2;
+                if (charIdx >= fullText.length) {
+                    textSpan.textContent = fullText;
+                    charIdx = fullText.length;
+                }
+            }
+        }, speed);
+    }
+
+    function updateProgressDots() {
+        const dots = document.querySelectorAll('.dialogue-dot');
+        dots.forEach((dot, i) => {
+            dot.classList.remove('active', 'done');
+            if (i < currentLineIdx) dot.classList.add('done');
+            if (i === currentLineIdx) dot.classList.add('active');
+        });
+    }
+
+    function enableLaunch() {
+        clearInterval(typewriterInterval);
+        const launchBtn = document.getElementById('launchBtn');
+        launchBtn.disabled = false;
+        launchBtn.textContent = '🚀 Launch Mission';
+        document.getElementById('countdownHint').textContent = 'All systems nominal. Ready for deployment.';
+
+        // Flash the launch button
+        const skipBtn = document.getElementById('skipBtn');
+        skipBtn.style.display = 'none';
+
+        // Flash green briefly
+        launchBtn.style.backgroundColor = 'var(--accent-green)';
+        launchBtn.style.boxShadow = '0 0 25px rgba(0, 255, 85, 0.5)';
+        setTimeout(() => {
+            launchBtn.style.backgroundColor = 'var(--accent-pink)';
+            launchBtn.style.boxShadow = '0 0 20px rgba(255, 0, 85, 0.4)';
+        }, 800);
+    }
+
+    function skipBriefing() {
+        briefingSkipped = true;
+        clearInterval(typewriterInterval);
+
+        // Show all dialogue at once
+        const container = document.getElementById('commsContent');
+        container.innerHTML = dialogueLines.map((line, i) => {
+            const cls = speakerClass(line.speaker);
+            return `
+                <div class="dialogue-line" style="opacity: ${1 - (i * 0.05)}">
+                    <div class="dialogue-speaker ${cls}">${line.speaker}</div>
+                    <div class="dialogue-text complete">${line.text}</div>
+                </div>
+            `;
+        }).join('');
+
+        // Mark all progress dots done
+        document.querySelectorAll('.dialogue-dot').forEach(d => {
+            d.classList.add('done');
+            d.classList.remove('active');
+        });
+
+        briefingComplete = true;
+        enableLaunch();
+    }
+
+    function launchMission() {
+        if (!briefingComplete && !briefingSkipped) return;
+        const params = new URLSearchParams();
+        params.set('biome', biomeId);
+        params.set('level', level);
+        params.set('launch', 'true');
+        if (mode !== 'solo') params.set('mode', mode);
+        window.location.href = 'index.html?' + params.toString();
+    }
+
+    // ── KEYBOARD SHORTCUTS ──
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            e.preventDefault();
+            skipBriefing();
+        }
+        if ((e.key === 'Enter' || e.key === ' ') && briefingComplete) {
+            e.preventDefault();
+            launchMission();
+        }
+        // Space/Enter to skip current typewriter line and go to next
+        if (e.key === ' ' && !briefingComplete && typewriterInterval) {
+            e.preventDefault();
+            clearInterval(typewriterInterval);
+            advanceDialogue();
+        }
+    });
+
+    // ── INIT ──
+    document.getElementById('missionLevel').textContent = `Biome ${biomeId} — Level ${level}`;
+    loadBriefing();
+    </script>
+</body>
+</html>
