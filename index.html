@@ -3524,7 +3524,8 @@
                     return; // Skip normal draw
                 }
                 
-                if (this.invulnerable > 0 && Math.floor(this.invulnerable * 15) % 2 === 0) {
+                if (this.invulnerable > 0 && Math.floor(this.invulnerable * 8) % 3 === 0) {
+                    // Invulnerability blink: visible 2 of 3 frames at 8Hz → ~5.3Hz perceived flicker
                     return;
                 }
 
@@ -3638,26 +3639,34 @@
                     }
                 }
 
-                // Weapon level 4+ shield aura (sprite-based)
+                // Weapon level 4+ shield aura (sprite-based with procedural fallback)
                 if (this.weaponLevel >= 4) {
                     const shieldSprite = vfxSprites['shield'];
+                    const pulse = 0.25 + Math.sin(gameTime * 3) * 0.15;
+                    ctx.globalAlpha = pulse;
+                    const shieldSize = 72;
                     if (shieldSprite && shieldSprite.complete && shieldSprite.naturalWidth > 0) {
-                        // Pulsing alpha based on game time
-                        const pulse = 0.25 + Math.sin(gameTime * 3) * 0.15;
-                        ctx.globalAlpha = pulse;
                         // Render translucent blue forcefield ring (1024x1024 → 72x72)
-                        const shieldSize = 72;
                         ctx.drawImage(shieldSprite,
                             -shieldSize / 2 + 24,  // center x offset
                             -shieldSize / 2 + this.height / 2,  // center y offset
                             shieldSize, shieldSize);
                         ctx.globalAlpha = 1;
                     } else {
-                        // Fallback: procedural circle
-                        ctx.strokeStyle = 'rgba(0, 255, 255, 0.4)';
+                        // Procedural shield ring — double-ring with glow pulse
+                        const cx = 24, cy = this.height / 2;
+                        const ringR = 28;
+                        // Outer glow
+                        ctx.strokeStyle = `rgba(0, 180, 255, ${0.15 + pulse * 0.2})`;
+                        ctx.lineWidth = 5;
+                        ctx.beginPath();
+                        ctx.arc(cx, cy, ringR, 0, Math.PI * 2);
+                        ctx.stroke();
+                        // Inner crisp ring
+                        ctx.strokeStyle = `rgba(0, 255, 255, ${0.35 + pulse * 0.3})`;
                         ctx.lineWidth = 2;
                         ctx.beginPath();
-                        ctx.arc(24, this.height / 2, 28, 0, Math.PI * 2);
+                        ctx.arc(cx, cy, ringR - 3, 0, Math.PI * 2);
                         ctx.stroke();
                     }
                 }
@@ -3912,9 +3921,10 @@
                 const hasSprite = sprite && sprite.complete && sprite.naturalWidth > 0;
 
                 if (hasSprite) {
-                    // Map each type to appropriate render size (sprites are 1024x1024)
-                    const sizes = { scout: 36, interceptor: 36, heavy: 44, boss_minion: 32 };
-                    const size = sizes[this.type] || 36;
+                    // Dynamic size: heavies/bosses get larger, everything else 36px
+                    const isHeavy = this.type.includes('heavy') || this.type.includes('brute') || this.type.includes('boss');
+                    const isLarge = this.type.includes('golem') || this.type.includes('giant') || this.type.includes('glacier');
+                    const size = isHeavy ? 44 : (isLarge ? 48 : 36);
                     
                     if (this.isParadox) {
                         ctx.shadowBlur = 12;
@@ -3940,6 +3950,11 @@
                     } else if (this.type === 'boss_minion') {
                         ctx.beginPath();
                         ctx.arc(15, 15, 14, 0, Math.PI * 2); ctx.fill();
+                    } else {
+                        // Generic fallback for all 34 biome-specific enemy types
+                        ctx.beginPath();
+                        ctx.moveTo(28, 15); ctx.lineTo(8, 2); ctx.lineTo(2, 15); ctx.lineTo(8, 28);
+                        ctx.closePath(); ctx.fill();
                     }
                 }
 
