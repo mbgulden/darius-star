@@ -324,25 +324,41 @@
         // --- Ambient Audio System ---
         let ambientAudio = null;
         const AMBIENT_TRACKS = {
-            1: 'ambient_abyssal_trench.mp3',
-            2: 'ambient_coral_graveyard.mp3',
-            3: 'ambient_coelacanth_lair.mp3',
-            4: 'ambient_deep_space.mp3',
-            5: 'ambient_ice_rings.mp3',
-            6: 'ambient_fire_nebula.mp3',
-            7: 'ambient_storm_belt.mp3',
-            8: 'ambient_derelict_fleet.mp3',
-            9: 'ambient_xenomorph_hive.mp3',
-            10: 'ambient_core_rift.mp3'
+            1: 'ambient/ambient_b1_atmosphere.wav',
+            2: 'ambient/ambient_b2_atmosphere.wav',
+            3: 'ambient/ambient_b3_atmosphere.wav',
+            4: 'ambient/ambient_b4_atmosphere.wav',
+            5: 'ambient/ambient_b5_atmosphere.wav',
+            6: 'ambient/ambient_b6_atmosphere.wav',
+            7: 'ambient/ambient_b7_atmosphere.wav',
+            8: 'ambient/ambient_b8_atmosphere.wav',
+            9: 'ambient/ambient_b9_atmosphere.wav',
+            10: 'ambient/ambient_b10_atmosphere.wav'
         };
         function switchAmbientAudio(level) {
             const track = AMBIENT_TRACKS[level];
             if (!track) return;
-            if (!ambientAudio) { ambientAudio = new Audio(); ambientAudio.loop = true; ambientAudio.volume = 0.3; }
+            if (!ambientAudio) { 
+                ambientAudio = new Audio(); 
+                ambientAudio.loop = true; 
+                ambientAudio.volume = 0;
+            }
             const src = 'assets/audio/' + track;
-            if (ambientAudio.src && ambientAudio.src.endsWith(track)) return;
+            // Check if already playing this track to avoid reload
+            if (ambientAudio.src && ambientAudio.src.endsWith(track) && !ambientAudio.paused) return;
             ambientAudio.src = src;
-            ambientAudio.play().catch(() => {});
+            ambientAudio.load();
+            // Fade in from 0 to 0.3 over 2 seconds
+            ambientAudio.volume = 0;
+            const fadeStart = performance.now();
+            const fadeIn = () => {
+                const elapsed = (performance.now() - fadeStart) / 1000;
+                ambientAudio.volume = Math.min(0.3, elapsed * 0.15);
+                if (ambientAudio.volume < 0.3) requestAnimationFrame(fadeIn);
+            };
+            ambientAudio.play().then(() => {
+                requestAnimationFrame(fadeIn);
+            }).catch(() => {}); // Autoplay blocked — will start on first user click
         }
 
         function hexToRgb(hex) {
@@ -2028,7 +2044,7 @@
                     
                     const spriteKey = i === 0 ? 'scout_0' : (i === 2 ? 'heavy_0' : 'interceptor_0');
                     const sprite = playerSprites[spriteKey];
-                    if (sprite && sprite.complete && sprite.naturalWidth > 0) {
+                    if (sprite && spritesReady.has(sprite)) {
                         ctx.drawImage(sprite, 105, itemY - 20, 40, 40);
                     } else {
                         ctx.fillStyle = i === 0 ? '#00ffff' : (i === 2 ? '#ff9900' : '#00ffaa');
@@ -2610,7 +2626,7 @@
                     // Draw player ship sprite
                     const shipKey = selectedShip === 'scout' ? 'scout_0' : (selectedShip === 'heavy' ? 'heavy_0' : 'interceptor_0');
                     const shipSprite = playerSprites[shipKey];
-                    if (shipSprite && shipSprite.complete && shipSprite.naturalWidth > 0) {
+                    if (shipSprite && spritesReady.has(shipSprite)) {
                         ctx.drawImage(shipSprite, shipX, shipY, size, size);
                     } else {
                         ctx.fillStyle = '#00ffff';
@@ -3502,7 +3518,7 @@
                     else if (this.shipType === 'interceptor') sprite = playerSprites['interceptor_0'];
                     else sprite = playerSprites[`player_${frameIdx}`];
                     
-                    if (sprite && sprite.complete && sprite.naturalWidth > 0) {
+                    if (sprite && spritesReady.has(sprite)) {
                         ctx.drawImage(sprite, 0, 0, 48, 48);
                     } else {
                         ctx.fillStyle = '#ff4400';
@@ -3568,7 +3584,7 @@
                     sprite = playerSprites[`player_${frameIdx}`];
                 }
 
-                if (sprite && sprite.complete && sprite.naturalWidth > 0) {
+                if (sprite && spritesReady.has(sprite)) {
                     // Render sprite scaled to 48x48 (ship area ~40x20, sprite is 1024x1024)
                     const spriteSize = 48;
                     ctx.drawImage(sprite, 0, 0, spriteSize, spriteSize);
@@ -3645,7 +3661,7 @@
                     const pulse = 0.25 + Math.sin(gameTime * 3) * 0.15;
                     ctx.globalAlpha = pulse;
                     const shieldSize = 72;
-                    if (shieldSprite && shieldSprite.complete && shieldSprite.naturalWidth > 0) {
+                    if (shieldSprite && spritesReady.has(shieldSprite)) {
                         // Render translucent blue forcefield ring (1024x1024 → 72x72)
                         ctx.drawImage(shieldSprite,
                             -shieldSize / 2 + 24,  // center x offset
@@ -3719,7 +3735,7 @@
                 ctx.rotate(angle);
 
                 const sprite = vfxSprites['laser'];
-                if (sprite && sprite.complete && sprite.naturalWidth > 0) {
+                if (sprite && spritesReady.has(sprite)) {
                     // Render laser sprite scaled to bullet size (sprite is 1024x1024)
                     const renderSize = this.size * 3.5;
                     ctx.globalAlpha = 0.9;
@@ -3787,7 +3803,7 @@
 
                 // Enemy laser bolt sprite on top
                 const sprite = vfxSprites['laser_enemy'];
-                if (sprite && sprite.complete && sprite.naturalWidth > 0) {
+                if (sprite && spritesReady.has(sprite)) {
                     ctx.globalAlpha = 0.9;
                     // Center the 1024×1024 sprite, scale to renderSize
                     const sw = sprite.naturalWidth;
@@ -3918,7 +3934,7 @@
                 ctx.translate(this.x, this.y);
 
                 const sprite = enemySprites[this.type];
-                const hasSprite = sprite && sprite.complete && sprite.naturalWidth > 0;
+                const hasSprite = sprite && spritesReady.has(sprite);
 
                 if (hasSprite) {
                     // Dynamic size: heavies/bosses get larger, everything else 36px
@@ -4184,7 +4200,7 @@
                 // --- Sprite-based boss rendering ---
                 // boss_0.png is 1280x896; render scaled to 190x133 (matching original boss footprint)
                 const sprite = bossSprites['boss'];
-                const hasSprite = sprite && sprite.complete && sprite.naturalWidth > 0;
+                const hasSprite = sprite && spritesReady.has(sprite);
                 const renderW = 190;
                 const renderH = 133;
 
@@ -4458,7 +4474,7 @@
                 if (!this.alive) return;
                 const key = 'explosion_' + this.frame;
                 const sprite = vfxSprites[key];
-                if (sprite && sprite.complete && sprite.naturalWidth > 0) {
+                if (sprite && spritesReady.has(sprite)) {
                     ctx.save();
                     ctx.globalAlpha = 0.9;
                     ctx.drawImage(sprite,
@@ -4723,6 +4739,7 @@
         // --- Player Sprite Preloading ---
         const playerSprites = {};
         let playerSpritesLoaded = false;
+        const spritesReady = new Set(); // Track fully-loaded sprites
 
         function loadPlayerSprites() {
             if (playerSpritesLoaded) return;
@@ -4737,8 +4754,11 @@
                 'scout_0', 'interceptor_0', 'heavy_0'
             ];
             frames.forEach(key => {
-                playerSprites[key] = new Image();
-                playerSprites[key].src = `assets/sprites/${key}.png`;
+                const img = new Image();
+                img.onload = () => spritesReady.add(img);
+                img.onerror = () => console.warn('Failed to load player sprite:', key);
+                img.src = `assets/sprites/${key}.png`;
+                playerSprites[key] = img;
             });
         }
 
@@ -4787,8 +4807,11 @@
                 'enemy_turret_battery'
             ];
             types.forEach(key => {
-                enemySprites[key] = new Image();
-                enemySprites[key].src = `assets/sprites/${key}_0.png`;
+                const img = new Image();
+                img.onload = () => spritesReady.add(img);
+                img.onerror = () => console.warn('Failed to load enemy sprite:', key);
+                img.src = `assets/sprites/${key}_0.png`;
+                enemySprites[key] = img;
             });
             // Legacy aliases — map old type names to new sprites
             enemySprites['scout'] = enemySprites['enemy_crawler'];
@@ -4804,22 +4827,20 @@
         function loadVFXSprites() {
             if (vfxSpritesLoaded) return;
             vfxSpritesLoaded = true;
-            // Laser (player bullets)
-            vfxSprites['laser'] = new Image();
-            vfxSprites['laser'].src = 'assets/sprites/laser_0.png';
-            // Enemy laser + glow
-            vfxSprites['laser_enemy'] = new Image();
-            vfxSprites['laser_enemy'].src = 'assets/sprites/laser_enemy.png';
-            vfxSprites['laser_glow'] = new Image();
-            vfxSprites['laser_glow'].src = 'assets/sprites/laser_0_glow.png';
-            // Multi-frame explosion (4 frames)
+            const loadVFX = (key, path) => {
+                const img = new Image();
+                img.onload = () => spritesReady.add(img);
+                img.onerror = () => console.warn('Failed to load VFX sprite:', key);
+                img.src = path;
+                vfxSprites[key] = img;
+            };
+            loadVFX('laser', 'assets/sprites/laser_0.png');
+            loadVFX('laser_enemy', 'assets/sprites/laser_enemy.png');
+            loadVFX('laser_glow', 'assets/sprites/laser_0_glow.png');
             for (let f = 0; f < 4; f++) {
-                vfxSprites['explosion_' + f] = new Image();
-                vfxSprites['explosion_' + f].src = `assets/sprites/explosion_${f}.png`;
+                loadVFX('explosion_' + f, `assets/sprites/explosion_${f}.png`);
             }
-            // Shield forcefield ring
-            vfxSprites['shield'] = new Image();
-            vfxSprites['shield'].src = 'assets/sprites/shield_0.png';
+            loadVFX('shield', 'assets/sprites/shield_0.png');
         }
 
         // --- Boss Asset Lazy-Loading ---
