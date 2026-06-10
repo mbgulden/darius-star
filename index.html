@@ -149,6 +149,10 @@
             border: 1px solid #00ffff;
             font-size: 12px;
             pointer-events: none;
+            display: none; /* Hidden by default — Tab to toggle */
+        }
+        #controls-overlay.visible {
+            display: block;
         }
 
         /* On-screen touch controls (hidden on desktop by default) */
@@ -315,6 +319,30 @@
             if (audioCtx.state === 'suspended') {
                 audioCtx.resume();
             }
+        }
+
+        // --- Ambient Audio System ---
+        let ambientAudio = null;
+        const AMBIENT_TRACKS = {
+            1: 'ambient_abyssal_trench.mp3',
+            2: 'ambient_coral_graveyard.mp3',
+            3: 'ambient_coelacanth_lair.mp3',
+            4: 'ambient_deep_space.mp3',
+            5: 'ambient_ice_rings.mp3',
+            6: 'ambient_fire_nebula.mp3',
+            7: 'ambient_storm_belt.mp3',
+            8: 'ambient_derelict_fleet.mp3',
+            9: 'ambient_xenomorph_hive.mp3',
+            10: 'ambient_core_rift.mp3'
+        };
+        function switchAmbientAudio(level) {
+            const track = AMBIENT_TRACKS[level];
+            if (!track) return;
+            if (!ambientAudio) { ambientAudio = new Audio(); ambientAudio.loop = true; ambientAudio.volume = 0.3; }
+            const src = 'assets/audio/' + track;
+            if (ambientAudio.src && ambientAudio.src.endsWith(track)) return;
+            ambientAudio.src = src;
+            ambientAudio.play().catch(() => {});
         }
 
         function hexToRgb(hex) {
@@ -4604,6 +4632,16 @@
         const bgImages = {};
         function loadBackgroundImages() {
             const toLoad = [
+                { key: 'bg_1', src: 'assets/sprites/backgrounds/bg_abyssal_trench_strip.png' },
+                { key: 'bg_2', src: 'assets/sprites/backgrounds/bg_coral_graveyard_strip.png' },
+                { key: 'bg_3', src: 'assets/sprites/backgrounds/bg_coelacanth_lair_strip.png' },
+                { key: 'bg_4', src: 'assets/sprites/backgrounds/bg_nebula_drift_strip.png' },
+                { key: 'bg_5', src: 'assets/sprites/backgrounds/bg_ice_rings_strip.png' },
+                { key: 'bg_6', src: 'assets/sprites/backgrounds/bg_inferno_core_strip.png' },
+                { key: 'bg_7', src: 'assets/sprites/backgrounds/bg_storm_belt_strip.png' },
+                { key: 'bg_8', src: 'assets/sprites/backgrounds/bg_derelict_fleet_strip.png' },
+                { key: 'bg_9', src: 'assets/sprites/backgrounds/bg_xenomorph_hive_strip.png' },
+                { key: 'bg_10', src: 'assets/sprites/backgrounds/bg_core_rift_strip.png' },
                 { key: 'nebula', src: 'assets/sprites/bg_nebula_0.png' },
                 { key: 'city',   src: 'assets/sprites/bg_city_0.png' }
             ];
@@ -4636,6 +4674,13 @@
             getImg() {
                 // Lazy-resolve: bgImages is populated asynchronously by ensureBackgroundImages()
                 return bgImages[this.key] || null;
+            }
+
+            setKey(newKey) {
+                if (this.key !== newKey) {
+                    this.key = newKey;
+                    this.offset = 0; // reset scroll on biome change
+                }
             }
 
             update(dt) {
@@ -6334,6 +6379,9 @@
 
             if (oldBiome !== activeBiomeName) {
                 floatingTexts.push(new FloatingText(canvas.width / 2, canvas.height / 3, `ENTERING BIOME ${activeBiomeName.toUpperCase()}`, '#00ffff'));
+                // Switch ambient MP3 and biome background
+                switchAmbientAudio(biomeLevel);
+                if (bgLayers.length > 0) bgLayers[0].setKey('bg_' + biomeLevel);
                 // GRO-1028: Play biome-specific ambient drone on transition
                 triggerBiomeAmbient();
                 // GRO-1028: Trigger audio-only story beat for this biome
@@ -6421,8 +6469,7 @@
 
         // Parallax background layers (image-based)
         const bgLayers = [
-            new ParallaxLayer('nebula', 12, 0, 0.55, canvas.height / 768),      // Far: nebula cloud
-            new ParallaxLayer('city',   55, 0, 0.45, canvas.height / 450)        // Mid: city silhouette
+            new ParallaxLayer('bg_1', 25, 0, 0.6, canvas.height / 720)  // Biome-specific background strip
         ];
 
         // Environmental particle system (all 10 biomes)
@@ -7817,6 +7864,9 @@
             loadPortraitSprites();
             loadEnemySprites();
             loadVFXSprites();
+            
+            // Start ambient audio on first interaction
+            if (!ambientAudio || !ambientAudio.src) switchAmbientAudio(biomeLevel || 1);
             
             if (currentScreen !== SCREENS.PLAYING) {
                 startMenuMusic();
