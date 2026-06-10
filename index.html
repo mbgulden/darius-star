@@ -3754,7 +3754,10 @@
                         ctx.shadowColor = this.color;
                         ctx.shadowBlur = 12;
                     }
+                    // Additive blending — dark background becomes invisible
+                    ctx.globalCompositeOperation = 'lighter';
                     ctx.drawImage(sprite, -renderSize / 2, -renderSize / 2, renderSize, renderSize);
+                    ctx.globalCompositeOperation = 'source-over';
                     ctx.shadowBlur = 0;
                 } else {
                     // Fallback: colored rectangle
@@ -3974,7 +3977,10 @@
                         ctx.shadowBlur = 12;
                         ctx.shadowColor = this.paradoxColor;
                     }
+                    // Use additive blending so dark sprite backgrounds become invisible
+                    ctx.globalCompositeOperation = 'lighter';
                     ctx.drawImage(sprite, 0, 0, size, size);
+                    ctx.globalCompositeOperation = 'source-over';
                 } else {
                     // Fallback: colored shapes if sprite not loaded
                     ctx.fillStyle = this.isParadox ? this.paradoxColor : this.color;
