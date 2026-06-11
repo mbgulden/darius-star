@@ -1,0 +1,102 @@
+[
+  {
+    "type": "error",
+    "text": "Failed to load resource: the server responded with a status of 404 (File not found)"
+  },
+  {
+    "type": "error",
+    "text": "Failed to load resource: the server responded with a status of 404 (File not found)"
+  },
+  {
+    "type": "log",
+    "text": "[CampaignSave] save_system.js loaded — full implementation (GRO-1090)"
+  },
+  {
+    "type": "log",
+    "text": "[OK] economy.js loaded — Economy loot tables and anti-farming enabled"
+  },
+  {
+    "type": "log",
+    "text": "[Darius Star] multiplayer.js loaded — 1-4 player drop-in and drop-out enabled"
+  },
+  {
+    "type": "log",
+    "text": "[OK] ngplus.js loaded — NG+ loops, paradox enemies, scrap scaling"
+  },
+  {
+    "type": "log",
+    "text": "[OK] leaderboard.js loaded — 3 categories, tiered display, localStorage-backed"
+  },
+  {
+    "type": "error",
+    "text": "Failed to load resource: the server responded with a status of 404 (File not found)"
+  },
+  {
+    "type": "error",
+    "text": "Failed to load resource: the server responded with a status of 404 (File not found)"
+  },
+  {
+    "type": "error",
+    "text": "Failed to load resource: the server responded with a status of 404 (File not found)"
+  },
+  {
+    "type": "error",
+    "text": "Failed to load resource: the server responded with a status of 404 (File not found)"
+  },
+  {
+    "type": "error",
+    "text": "Failed to load resource: the server responded with a status of 404 (File not found)"
+  },
+  {
+    "type": "error",
+    "text": "Failed to load resource: the server responded with a status of 404 (File not found)"
+  },
+  {
+    "type": "error",
+    "text": "Failed to load resource: the server responded with a status of 404 (File not found)"
+  },
+  {
+    "type": "error",
+    "text": "Failed to load resource: the server responded with a status of 404 (File not found)"
+  },
+  {
+    "type": "error",
+    "text": "Failed to load resource: the server responded with a status of 404 (File not found)"
+  },
+  {
+    "type": "error",
+    "text": "Failed to load resource: the server responded with a status of 404 (File not found)"
+  },
+  {
+    "type": "error",
+    "text": "Failed to load resource: the server responded with a status of 404 (File not found)"
+  },
+  {
+    "type": "error",
+    "text": "Failed to load resource: the server responded with a status of 404 (File not found)"
+  },
+  {
+    "type": "error",
+    "text": "Failed to load resource: the server responded with a status of 404 (File not found)"
+  },
+  {
+    "type": "error",
+    "text": "Failed to load resource: the server responded with a status of 404 (File not found)"
+  },
+  {
+    "type": "error",
+    "text": "Failed to load resource: the server responded with a status of 404 (File not found)"
+  },
+  {
+    "type": "error",
+    "text": "Failed to load resource: the server responded with a status of 404 (File not found)"
+  },
+  {
+    "type": "error",
+    "text": "Failed to load resource: the server responded with a status of 404 (File not found)"
+  },
+  {
+    "type": "error",
+    "text": "Failed to load resource: the server responded with a status of 404 (File not found)"
+  }
+]

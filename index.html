@@ -308,6 +308,39 @@
     <div class="studio-credit">A <a href="https://whatanadventure.games" target="_blank">What An Adventure</a> Game</div>
     <div id="game-container">
         <button id="fullscreen-toggle" title="Toggle Fullscreen (F)">⛶</button>
+        <script>
+        // GRO-1161: Fullscreen toggle
+        (function() {
+            var btn = document.getElementById('fullscreen-toggle');
+            if (!btn) return;
+            btn.addEventListener('click', function() {
+                if (document.fullscreenElement) {
+                    document.exitFullscreen();
+                } else {
+                    var el = document.getElementById('game-container');
+                    if (el.requestFullscreen) {
+                        el.requestFullscreen().catch(function(){});
+                    } else if (el.webkitRequestFullscreen) {
+                        el.webkitRequestFullscreen();
+                    }
+                }
+            });
+            // F key shortcut
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'f' || e.key === 'F') {
+                    if (document.activeElement && document.activeElement.tagName === 'INPUT') return;
+                    btn.click();
+                }
+            });
+            // Update button state on fullscreen change
+            document.addEventListener('fullscreenchange', function() {
+                btn.classList.toggle('fs-active', !!document.fullscreenElement);
+            });
+            document.addEventListener('webkitfullscreenchange', function() {
+                btn.classList.toggle('fs-active', !!document.webkitFullscreenElement);
+            });
+        })();
+        </script>
         <canvas id="gameCanvas" width="800" height="450"></canvas>
         <video id="boss-intro-video" class="cinematic-video-overlay" 
                src="assets/cinematics/cinematic_boss_intro.mp4" 
@@ -371,6 +404,7 @@
     <script src="js/sprites.js"></script>
     <script src="js/audio.js"></script>
     <script src="js/ui.js"></script>
+    <script src="js/touch_controls.js"></script>
     <script src="js/level_manager.js"></script>
     <script src="js/game_loop.js"></script>
 </body>
