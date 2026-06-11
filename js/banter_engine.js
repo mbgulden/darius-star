@@ -8,6 +8,7 @@
 
 const BanterEngine = {
     _playerCount: 1,
+    _playerCharacters: {},  // GRO-1039: player ID → speaker code
     _playedLines: new Set(),
     _activeLine: null,
     _activeResponse: null,
@@ -69,7 +70,22 @@ const BanterEngine = {
         {s:'N', l:"They fought well. Now it's on us."},
     ],
 
-    init(playerCount) { this._playerCount = playerCount; this._playedLines.clear(); this.clear(); },
+    init(playerCount) {
+        this._playerCount = playerCount;
+        this._playedLines.clear();
+        this.clear();
+        // GRO-1039: Assign characters to players (P1=always Darius)
+        const chars = ['D', 'L', 'T', 'N']; // Darius, Lyra, Thorne, Naya
+        this._playerCharacters = {};
+        for (let i = 0; i < playerCount; i++) {
+            this._playerCharacters[i + 1] = chars[i] || 'N';
+        }
+    },
+
+    // GRO-1039: Get speaker code for a player
+    getSpeakerForPlayer(playerId) {
+        return this._playerCharacters[playerId] || 'L';
+    },
 
     getLine(trigger, biome, speaker = null) {
         const biomeData = this._data[biome];
