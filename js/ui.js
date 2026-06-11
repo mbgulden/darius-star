@@ -224,6 +224,14 @@
             updateActiveBiome(score);
             if (uiBiome) uiBiome.innerText = activeBiomeName;
             
+            // GRO-1187: Story triggers — biome transition & first biome clear
+            if (typeof StoryTriggers !== 'undefined') {
+                StoryTriggers.onBiomeTransition(oldBiome, biomeLevel);
+                if (oldBiome === 1) {
+                    StoryTriggers.onFirstBiomeClear();
+                }
+            }
+            
             // Re-seed environmental particles for new biome
             envParticles.length = 0;
             envSpawnAccum = 0;

@@ -440,10 +440,21 @@
                     this.hp = 0;
                     bossDefeated = true;
                     
+                    // GRO-1187: Story trigger — boss defeated
+                    if (typeof StoryTriggers !== 'undefined') {
+                        StoryTriggers.onBossKill(biomeLevel, false);
+                    }
+                    
                     // GRO-1009: Determine ending only on final boss (biome 10)
                     if (biomeLevel >= 10) {
                         _winTransition = true; // Victory flag — triggers game won screen
                         determineEnding();
+                        
+                        // GRO-1187: Story trigger — all bosses defeated
+                        if (typeof StoryTriggers !== 'undefined') {
+                            StoryTriggers.onAllBossesDefeated();
+                        }
+                        
                         if (!selectedEnding && endingEligible.length > 0) {
                             selectedEnding = this.architectPhase && endingEligible.includes(this.architectPhase)
                                 ? this.architectPhase : endingEligible[0];
