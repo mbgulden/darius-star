@@ -1,11 +1,5 @@
 // combat.js — Bullet, PowerUp, and SpriteExplosion classes
 // Extracted from index.html by Ned (GRO-1095)
-// Dependencies: ctx (global canvas context), gameTime (global),
-//               vfxSprites (global), explosionFrames (global),
-//               vfxExplosions (global array)
-
-(function() {
-    'use strict';
 
 // --- Bullet Class ---
         class Bullet {
@@ -164,6 +158,3 @@
         }
 
         // --- ScrapDrop Class ---
-
-    console.log('[Combat] combat.js loaded — Bullet, PowerUp, SpriteExplosion (GRO-1095)');
-})();

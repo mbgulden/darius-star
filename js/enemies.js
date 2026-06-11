@@ -1,11 +1,5 @@
 // enemies.js — EnemyBullet, Seeded RNG, Enemy, and Boss classes
 // Extracted from index.html by Ned (GRO-1094)
-// Dependencies: player (global), enemyBullets (global), enemies (global), 
-//               scrapDrops (global), ScrapDrop class (to be extracted),
-//               Economy (global), NGPlus (global), mulberry32 helper included
-
-(function() {
-    'use strict';
 
 // --- Enemy Bullet Class ---
         class EnemyBullet {
@@ -654,6 +648,3 @@
                 ctx.restore();
             }
         }
-
-    console.log('[Enemies] enemies.js loaded — EnemyBullet, Enemy, Boss (GRO-1094)');
-})();
