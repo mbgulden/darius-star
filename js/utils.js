@@ -6,9 +6,11 @@
 // All variable lookups use late binding — resolved at call time.
 
 function resizeCanvas() {
-    const maxW = window.innerWidth;
-    const maxH = window.innerHeight - 120; // space for header + controls
-    const scale = Math.min(maxW / GAME_WIDTH, maxH / GAME_HEIGHT);
+    var maxW = window.innerWidth;
+    // GRO-1172: In fullscreen mode, no header/controls to account for
+    var isFS = !!(document.fullscreenElement || document.webkitFullscreenElement);
+    var maxH = isFS ? window.innerHeight : window.innerHeight - 120;
+    var scale = Math.min(maxW / GAME_WIDTH, maxH / GAME_HEIGHT);
     canvas.style.width = (GAME_WIDTH * scale) + 'px';
     canvas.style.height = (GAME_HEIGHT * scale) + 'px';
 }

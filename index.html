@@ -276,13 +276,28 @@
             function onFullscreenChange() {
                 var isFS = !!(document.fullscreenElement || document.webkitFullscreenElement);
                 btn.classList.toggle('fs-active', isFS);
-                // Resize canvas after layout settles
-                setTimeout(function() {
+                // GRO-1172: Multiple resize attempts for mobile — layout may reflow slowly
+                function tryResize() {
                     if (typeof resizeCanvas === 'function') resizeCanvas();
-                }, 150);
+                }
+                // Try at 50ms, 200ms, 500ms — mobile browsers need staggered attempts
+                setTimeout(tryResize, 50);
+                setTimeout(tryResize, 200);
+                setTimeout(tryResize, 500);
             }
             document.addEventListener('fullscreenchange', onFullscreenChange);
             document.addEventListener('webkitfullscreenchange', onFullscreenChange);
+            
+            // GRO-1172: Also resize on orientation change (mobile rotates slowly)
+            var _orientationTimeout;
+            window.addEventListener('orientationchange', function() {
+                clearTimeout(_orientationTimeout);
+                _orientationTimeout = setTimeout(function() {
+                    if (typeof resizeCanvas === 'function') resizeCanvas();
+                    // Second attempt after reflow
+                    setTimeout(function() { if (typeof resizeCanvas === 'function') resizeCanvas(); }, 300);
+                }, 200);
+            });
         })();
         </script>
         <canvas id="gameCanvas" width="800" height="450"></canvas>
