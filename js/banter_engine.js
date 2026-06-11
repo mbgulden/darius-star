@@ -17,11 +17,11 @@ const BanterEngine = {
     _data: {
         1: { level_start: [
             {s:'D', l:"Deepest place on Earth. Grandpa made it here forty years ago."},
-            {s:'O', l:"The water pressure would crush conventional alloys. The Nyxa is not conventional."},
+            {s:'N', l:"The water pressure would crush conventional alloys. The Nyxa is not conventional."},
             {s:'L', l:"Daddy, I can feel something down there. It's old. It's been waiting."},
         ], unique_enemy: [
             {s:'D', l:"What IS that thing? Some kind of mechanical angler fish?"},
-            {s:'O', l:"A biosynthetic sentinel. The Coelacanth network spawns defenders."},
+            {s:'N', l:"A biosynthetic sentinel. The Coelacanth network spawns defenders."},
         ], boss_entrance: [
             {s:'D', l:"That's no wreckage. That's the Guardian. It's moving."},
             {s:'L', l:"Daddy... it knows you're here. It recognizes something in you."},
@@ -36,22 +36,22 @@ const BanterEngine = {
         ], level_end: [
             {s:'D', l:"The Warden transmitted coordinates. He knew I'd come."},
         ], pull_out: [
-            {s:'D', l:"These anglerfish drones locked onto my heat signature! I'm pulling out!", r:{s:'O', l:"Thrusters to maximum, Darius. The trench pressure is compounding the damage!"}},
+            {s:'D', l:"These anglerfish drones locked onto my heat signature! I'm pulling out!", r:{s:'N', l:"Thrusters to maximum, Darius. The trench pressure is compounding the damage!"}},
             {s:'L', l:"The dark in this trench is... heavy. It's trying to swallow my voice. I have to break contact!", r:{s:'D', l:"Lyra! Hold on, I'm clearing the comm interference. Retreating!"}},
             {s:'N', l:"Cybernetic jellyfish swarm is overloading my shields! I'm pulling back to the reef edge!"},
             {s:'T', l:"Old sensors are blind in this silt. I'm backing out before I scrape the trench walls.", r:{s:'N', l:"Thorne, watch your depth. The current is rising. Regroup!"}},
-            {s:'O', l:"My biosynthetic hull is reacting to the Guardian's radiation. I must disengage!", r:{s:'D', l:"Ophion, retreat to the coordinates. Don't let that thing rewrite your core."}},
+            {s:'N', l:"My biosynthetic hull is reacting to the Guardian's radiation. I must disengage!", r:{s:'D', l:"Ophion, retreat to the coordinates. Don't let that thing rewrite your core."}},
             {s:'S', l:"Comms from Haven-7 are fracturing. The abyssal distortion is too thick, I'm dropping offline!", r:{s:'L', l:"Grandma, I can still hear you in the water... stay safe."}},
-            {s:'A', l:"They come with fire... violating the ancient quiet... we must scatter their light!", r:{s:'O', l:"The Architect's nightmare is reacting. Disengage before the signal corrupts!"}},
-            {s:'D', l:"Sunlight's still filtering down here. Can't lose focus this early in the dive. Pulling back to the ridge!", r:{s:'O', l:"Surface refraction is distorting your sensor array, Darius. Regroup at depth."}},
+            {s:'A', l:"They come with fire... violating the ancient quiet... we must scatter their light!", r:{s:'N', l:"The Architect's nightmare is reacting. Disengage before the signal corrupts!"}},
+            {s:'D', l:"Sunlight's still filtering down here. Can't lose focus this early in the dive. Pulling back to the ridge!", r:{s:'N', l:"Surface refraction is distorting your sensor array, Darius. Regroup at depth."}},
             {s:'L', l:"The earth is cracking open... there's fire underneath the ocean floor! Daddy, the bottom is falling out!", r:{s:'D', l:"Lyra, stay locked on my signal! I'm pulling us up from the fissure!"}},
         ]},
         2: { level_start: [
             {s:'D', l:"Coral graveyard. Whole reef, just dead. The Dreamer's been here."},
-            {s:'O', l:"This was a thriving precursor colony. What happened here was deliberate."},
+            {s:'N', l:"This was a thriving precursor colony. What happened here was deliberate."},
         ], unique_enemy: [
             {s:'D', l:"Is that a GHOST? Coral formations don't just attack."},
-            {s:'O', l:"Memory echoes. The reef remembers what killed it."},
+            {s:'N', l:"Memory echoes. The reef remembers what killed it."},
         ], boss_entrance: [
             {s:'D', l:"The vault's defense system. Made of their deaths."},
         ], player_death: [
@@ -64,20 +64,20 @@ const BanterEngine = {
             {s:'D', l:"Wave clear. The reef is quiet for now."},
         ], level_end: [
             {s:'D', l:"The precursors chose extinction. What kind of courage is that?"},
-            {s:'O', l:"The kind that leaves echoes for ten thousand years."},
+            {s:'N', l:"The kind that leaves echoes for ten thousand years."},
         ], pull_out: [
             {s:'D', l:"The memory vault defenses are firing phantom spikes! I'm pulling out before my hull crystallizes!", r:{s:'N', l:"Darius, watch those white beams! Regroup at the perimeter!"}},
             {s:'L', l:"So many old voices crying in this reef... it hurts! I have to shut them out!", r:{s:'S', l:"Close your eyes, Lyra. Focus on my voice. We're retreating."}},
             {s:'N', l:"Ghost coral spores are clogging my engine intakes! I'm backing off to purge!", r:{s:'T', l:"Purge engines now, Naya. I'll blast the calcified nodes off your hull."}},
-            {s:'T', l:"These memory echoes are mimicking my old squad's signals. It's messing with my heads-up. Pulling back.", r:{s:'O', l:"The reef uses neural ghosts to trap predators, Commander. Retreat is logical."}},
-            {s:'O', l:"This was our home... but the resonance of their deaths is tearing my framework apart. Disengaging!", r:{s:'L', l:"Ophion, it's okay, they're gone now. Come back to the ship."}},
+            {s:'T', l:"These memory echoes are mimicking my old squad's signals. It's messing with my heads-up. Pulling back.", r:{s:'N', l:"The reef uses neural ghosts to trap predators, Commander. Retreat is logical."}},
+            {s:'N', l:"This was our home... but the resonance of their deaths is tearing my framework apart. Disengaging!", r:{s:'L', l:"Ophion, it's okay, they're gone now. Come back to the ship."}},
             {s:'S', l:"My monitors are picking up precursor memory-drains on your energy reserves. Fall back immediately!", r:{s:'D', l:"Acknowledged, Mom. Breaking contact and pulling out."}},
             {s:'A', l:"The graves are empty... yet they sing of the ending... we will not let you disturb the dust!"},
             {s:'N', l:"Some of this reef is still alive! The colors are incredible... but my hull won't take much more. Pulling back!", r:{s:'S', l:"Naya, the living reef will endure without us. Fall back to the perimeter."}},
         ]},
         3: { level_start: [
             {s:'D', l:"Europa. Beneath the ice. Where Coelacanths were born."},
-            {s:'O', l:"The hatchery. I have complicated feelings about this place."},
+            {s:'N', l:"The hatchery. I have complicated feelings about this place."},
         ], unique_enemy: [
             {s:'D', l:"Half-formed Coelacanth. Twisted. Wrong."},
         ], boss_entrance: [
@@ -85,11 +85,11 @@ const BanterEngine = {
         ], level_end: [
             {s:'D', l:"Ophion really thought he could talk to the Dreamer."},
         ], pull_out: [
-            {s:'D', l:"Freezing water is locking up my primary flight surfaces! Pulling back before I freeze solid!", r:{s:'O', l:"Engaging hull heaters, Darius. Retrograde immediately."}},
+            {s:'D', l:"Freezing water is locking up my primary flight surfaces! Pulling back before I freeze solid!", r:{s:'N', l:"Engaging hull heaters, Darius. Retrograde immediately."}},
             {s:'L', l:"The Hatchery Queen... she thinks I'm one of her children! She's pulling my mind down! Help!", r:{s:'D', l:"Lyra, break the link! I'm moving in, pulling out now!"}},
             {s:'N', l:"Half-formed Coelacanths are swarming my cockpit glass! Breaking off to shake them!"},
             {s:'T', l:"Ice shelf collapsing above us! I'm punching the thrusters to get clear!", r:{s:'N', l:"Thorne, watch your radar! There's a second shelf below!"}},
-            {s:'O', l:"This hatchery was my birthplace... but it's corrupted. The cold is piercing my bio-circuits. Retreating!", r:{s:'S', l:"Ophion, head for the heated exhaust conduits. We'll stabilize you."}},
+            {s:'N', l:"This hatchery was my birthplace... but it's corrupted. The cold is piercing my bio-circuits. Retreating!", r:{s:'S', l:"Ophion, head for the heated exhaust conduits. We'll stabilize you."}},
             {s:'S', l:"Temperatures in the Hatchery are dropping to absolute zero. Comms are freezing. Get out of there!", r:{s:'D', l:"Engines firing. We're pulling out of the sub-glacial pocket."}},
             {s:'A', l:"Cold... dark... the cradle is broken... we will freeze the intruders in their steel shells!", r:{s:'L', l:"The cold... it's not anger, it's just fear. Daddy, we have to pull back!"}},
             {s:'T', l:"Point-defense turrets have locked onto my approach vector! I can't penetrate the outer shell. Pulling back!", r:{s:'D', l:"Thorne, mark the turret grid on tac. We'll flank after the cooldown cycle."}},
@@ -108,8 +108,8 @@ const BanterEngine = {
             {s:'D', l:"Reality is warping my hull geometry! My thrusters are firing backward! Pulling out!"},
             {s:'L', l:"The Dreamer is whispering directly to me... the stars are too bright! I can't breathe!", r:{s:'N', l:"Lyra, baby, listen to Mom's voice. I'm pulling your ship out of the nebula."}},
             {s:'N', l:"These shape-shifters are mimicking my sensor targets. I can't tell friend from foe. Backing off!", r:{s:'D', l:"Naya, standard beacon code engaged. Regroup on my signal."}},
-            {s:'T', l:"My instrument panel is showing coordinates that don't exist. I'm flying blind. Pulling back!", r:{s:'O', l:"The Veil nebula bends local space, Commander. Rely on physical feedback."}},
-            {s:'O', l:"The boundary between thought and matter is dissolving here. I am losing physical form! Disengaging!", r:{s:'S', l:"Ophion, lock your molecular stabilizer. Retracting to Haven-7!"}},
+            {s:'T', l:"My instrument panel is showing coordinates that don't exist. I'm flying blind. Pulling back!", r:{s:'N', l:"The Veil nebula bends local space, Commander. Rely on physical feedback."}},
+            {s:'N', l:"The boundary between thought and matter is dissolving here. I am losing physical form! Disengaging!", r:{s:'S', l:"Ophion, lock your molecular stabilizer. Retracting to Haven-7!"}},
             {s:'S', l:"Telemetry from the Veil is pure noise. I'm losing your location on the map. Fall back!", r:{s:'D', l:"Signal lost. We're aborting the run and heading for the edge!"}},
             {s:'A', l:"All thoughts are one... why do you cling to your shapes... dissolve into the chorus!", r:{s:'L', l:"No! I want my own voice! I'm breaking the connection!"}},
             {s:'S', l:"The outer nebula gas is denser than our long-range scans indicated. Radiation is spiking on all monitors. Pull back!", r:{s:'T', l:"Acknowledged, Selene. Squad is adjusting course to the plasma current."}},
@@ -126,10 +126,10 @@ const BanterEngine = {
             {s:'D', l:"Squadron Umbra has me locked with heavy torpedoes! Pulling out of the ring plane!", r:{s:'T', l:"Darius, dive into the ice debris. I'll draw their target locks."}},
             {s:'L', l:"The metal ships... they are so angry, they want to kill us. I'm dropping the sensor link!", r:{s:'S', l:"Good choice, Lyra. Let the fighters handle the Navy. Fall back."}},
             {s:'N', l:"Ice shrapnel is shearing my stabilizer fins! Breaking formation to avoid collision!", r:{s:'D', l:"Naya, watch the drift! Pulling back with you."}},
-            {s:'T', l:"Navy jammer has cut my fire control. Weapons are cold. I'm out of here!", r:{s:'O', l:"Purging jammer frequency now, Thorne. Fall back to my position."}},
-            {s:'O', l:"The kinetic impactors are too dense in this ring sector. My shielding is failing. Disengaging!"},
+            {s:'T', l:"Navy jammer has cut my fire control. Weapons are cold. I'm out of here!", r:{s:'N', l:"Purging jammer frequency now, Thorne. Fall back to my position."}},
+            {s:'N', l:"The kinetic impactors are too dense in this ring sector. My shielding is failing. Disengaging!"},
             {s:'S', l:"Navy cruisers are warping in behind your position. You're about to be flanked. Fall back!", r:{s:'D', l:"Cruisers spotted. Tactical retreat, squad, move!"}},
-            {s:'A', l:"Iron walls... cage of dust... they will grind your small ships to ash...", r:{s:'O', l:"The nightmares are utilizing Navy panic. Break off before the feedback loops!"}},
+            {s:'A', l:"Iron walls... cage of dust... they will grind your small ships to ash...", r:{s:'N', l:"The nightmares are utilizing Navy panic. Break off before the feedback loops!"}},
             {s:'L', l:"The ice crystals are so beautiful... they're singing like wind chimes. But the sound is making my head hurt. I have to pull back!", r:{s:'S', l:"Lyra, the crystals are resonating with Dreamer energy. Close your neural link now."}},
             {s:'T', l:"Absolute zero temperatures are freezing my fuel lines solid. Thrusters are sluggish. Pulling back before I'm a frozen hulk!"},
         ]},
@@ -139,16 +139,16 @@ const BanterEngine = {
             {s:'D', l:"Haven-7 was attacked. Lyra is changing. I need to get back."},
             {s:'L', l:"Daddy, the thing in the dark isn't angry. It's scared."},
         ], pull_out: [
-            {s:'D', l:"Thermal shield is melting! My cockpit is burning up! I'm pulling out!", r:{s:'O', l:"Redirecting coolants to your primary cabin, Darius. Retreat immediately."}},
+            {s:'D', l:"Thermal shield is melting! My cockpit is burning up! I'm pulling out!", r:{s:'N', l:"Redirecting coolants to your primary cabin, Darius. Retreat immediately."}},
             {s:'L', l:"The fire... it's screaming. Haven-7 was attacked... Selene? Mom? I can't hear them!", r:{s:'D', l:"Lyra, I'm here! Comms are down due to the flare, I'm pulling back to you!"}},
             {s:'N', l:"Haven-7 is burning... the Navy found us! I have to break off and defend Lyra!", r:{s:'S', l:"Naya, go! I'm venting the hangar bay to delay them. Get back here!"}},
             {s:'C', l:"Forge-Mind plasma beam has melted my armor plating. Pulling back before my reactor blows!", r:{s:'T', l:"Valera, eject your heatsinks. I'll cover your retreat."}},
             {s:'T', l:"Solar winds are pushing my steering thrusters past their limits. I'm backing out!", r:{s:'N', l:"Thorne, steer with the solar flow. Regroup in the shadow of the asteroid."}},
-            {s:'O', l:"Supernova remnants are disrupting my biosynthetic cellular matrix. I must retreat to cool down!", r:{s:'C', l:"Copy that, Ophion. I've got your six. Get to the safe zone."}},
+            {s:'N', l:"Supernova remnants are disrupting my biosynthetic cellular matrix. I must retreat to cool down!", r:{s:'C', l:"Copy that, Ophion. I've got your six. Get to the safe zone."}},
             {s:'S', l:"The station hangar is breached! Automated systems are failing, I'm dropping offline to seal the bulkheads!", r:{s:'N', l:"Selene! Hold on, I'm pulling out of the nebula to assist!"}},
             {s:'A', l:"Ash to ash... everything burns in the wake of the star... you will fade like the precursors...", r:{s:'L', l:"The fire isn't yours! It's just a dream! Daddy, pulling back!"}},
             {s:'S', l:"The ember field is setting off every heat sensor on Haven-7! You're flying into a furnace. Pull back to the ash belt!", r:{s:'D', l:"Mom, we see it. Cooling thrusters engaged. Pulling out of the embers."}},
-            {s:'O', l:"Volcanic ejecta mass is exceeding my trajectory prediction models. This eruption is geological! Disengaging!", r:{s:'C', l:"Ophion, the magma plume is spreading laterally. Retreat to the obsidian shelf."}},
+            {s:'N', l:"Volcanic ejecta mass is exceeding my trajectory prediction models. This eruption is geological! Disengaging!", r:{s:'C', l:"Ophion, the magma plume is spreading laterally. Retreat to the obsidian shelf."}},
         ]},
         7: { level_start: [
             {s:'D', l:"Eternal hurricane. Five thousand mph winds. A mad god in the eye."},
