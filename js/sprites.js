@@ -72,8 +72,8 @@
             const _loadVFX = (key, src) => {
                 const img = new Image();
                 img.onload = function() { vfxSprites[key] = preCompositeAdditive(img); };
+                img.onerror = function() { vfxSprites[key] = null; };
                 img.src = src;
-                vfxSprites[key] = img;
             };
 
             _loadVFX('laser', 'assets/sprites/laser_0.png');
