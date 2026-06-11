@@ -66,44 +66,22 @@
         canvas {
             display: block;
             background: #000;
-            /* Fill container, maintain aspect ratio */
-            width: 100%;
-            height: auto;
+            /* Responsive scaling: fit viewport, maintain 16:9 */
             max-width: 100vw;
-            max-height: calc(100vh - 120px);
-            aspect-ratio: 16 / 9;
+            max-height: 100vh;
+            width: auto;
+            height: auto;
         }
 
-        /* Mobile landscape: fill screen, hide chrome */
-        @media (max-width: 900px) and (orientation: landscape) {
-            h1 { display: none; }
-            .studio-credit { display: none; }
-            .instructions { display: none; }
-            #game-container {
-                border: none;
-                box-shadow: none;
-                max-height: 100vh;
-                max-width: 100vw;
-            }
-            canvas {
-                max-height: 100vh;
-                max-width: 100vw;
-            }
-            body {
-                overflow: hidden;
-                justify-content: center;
-            }
+        .instructions {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #8a8a9f;
+            text-align: center;
+            max-width: 800px;
+            line-height: 1.4;
         }
 
-        /* Hide instructions on mobile */
-        @media (max-width: 600px) {
-            .instructions {
-                display: none;
-            }
-            h1 {
-                font-size: 16px;
-            }
-        }
         /* Cinematic video overlay — full-size over the canvas */
         .cinematic-video-overlay {
             position: absolute;
@@ -149,10 +127,6 @@
             border: 1px solid #00ffff;
             font-size: 12px;
             pointer-events: none;
-            display: none; /* Hidden by default — Tab to toggle */
-        }
-        #controls-overlay.visible {
-            display: block;
         }
 
         /* On-screen touch controls (hidden on desktop by default) */
@@ -319,46 +293,6 @@
             if (audioCtx.state === 'suspended') {
                 audioCtx.resume();
             }
-        }
-
-        // --- Ambient Audio System ---
-        let ambientAudio = null;
-        const AMBIENT_TRACKS = {
-            1: 'ambient/ambient_b1_atmosphere.wav',
-            2: 'ambient/ambient_b2_atmosphere.wav',
-            3: 'ambient/ambient_b3_atmosphere.wav',
-            4: 'ambient/ambient_b4_atmosphere.wav',
-            5: 'ambient/ambient_b5_atmosphere.wav',
-            6: 'ambient/ambient_b6_atmosphere.wav',
-            7: 'ambient/ambient_b7_atmosphere.wav',
-            8: 'ambient/ambient_b8_atmosphere.wav',
-            9: 'ambient/ambient_b9_atmosphere.wav',
-            10: 'ambient/ambient_b10_atmosphere.wav'
-        };
-        function switchAmbientAudio(level) {
-            const track = AMBIENT_TRACKS[level];
-            if (!track) return;
-            if (!ambientAudio) { 
-                ambientAudio = new Audio(); 
-                ambientAudio.loop = true; 
-                ambientAudio.volume = 0;
-            }
-            const src = 'assets/audio/' + track;
-            // Check if already playing this track to avoid reload
-            if (ambientAudio.src && ambientAudio.src.endsWith(track) && !ambientAudio.paused) return;
-            ambientAudio.src = src;
-            ambientAudio.load();
-            // Fade in from 0 to 0.3 over 2 seconds
-            ambientAudio.volume = 0;
-            const fadeStart = performance.now();
-            const fadeIn = () => {
-                const elapsed = (performance.now() - fadeStart) / 1000;
-                ambientAudio.volume = Math.min(0.3, elapsed * 0.15);
-                if (ambientAudio.volume < 0.3) requestAnimationFrame(fadeIn);
-            };
-            ambientAudio.play().then(() => {
-                requestAnimationFrame(fadeIn);
-            }).catch(() => {}); // Autoplay blocked — will start on first user click
         }
 
         function hexToRgb(hex) {
@@ -1272,6 +1206,10 @@
         
         // Check for redirect from ship select page
         window.addEventListener('DOMContentLoaded', () => {
+            if (window.LevelManager && !LevelManager.initialized) {
+                LevelManager.initialized = true;
+                LevelManager.init();
+            }
             const urlParams = new URLSearchParams(window.location.search);
             if (urlParams.get('launch') === 'true') {
                 const url = new URL(window.location.href);
@@ -1332,6 +1270,8 @@
         let gameTime = 0;
         let bossSpawned = false;
         let sirenTimer = 0;
+        let bossesDefeated = 0; // Track how many bosses killed for per-biome progression
+        const BOSS_SCORE_THRESHOLDS = [290, 590, 890, 1190, 1490, 1790, 2090, 2390, 2690, 2990];
         let biomeLevel = 1;  // Economy segment tracking
         let currentNGLevel = 0; // NG+ level (0 = normal run)
 
@@ -1699,6 +1639,58 @@
             transitionToScreen(SCREENS.CINEMATIC);
         }
 
+        function advanceToNextBiome() {
+            // Called after boss defeat in biomes 1-9
+            // Advances the game to the next biome without resetting player progress
+            
+            bossesDefeated++;
+            const oldBiome = biomeLevel;
+            
+            // Show biome clear message
+            floatingTexts.push(new FloatingText(canvas.width / 2, canvas.height / 3, 
+                `BIOME ${oldBiome} CLEAR!`, '#00ffff'));
+            
+            // Reset boss state for new biome
+            boss = null;
+            bossDefeated = false;
+            bossSpawned = false;
+            bossIntroPlaying = false;
+            sirenTimer = 0;
+            bossAssetsLoaded = false;
+            
+            // Stop any boss intro video still playing
+            if (bossIntroVideo) {
+                bossIntroVideo.pause();
+                bossIntroVideo.classList.remove('active');
+            }
+            if (victoryVideo) {
+                victoryVideo.pause();
+                victoryVideo.classList.remove('active');
+            }
+            skipHint.classList.remove('active');
+            
+            // Clear all enemies and projectiles for clean biome transition
+            enemies.length = 0;
+            enemyBullets.length = 0;
+            powerups.length = 0;
+            
+            // Reset spawn timer — enemies will start fresh
+            enemySpawnTimer = 1.0;
+            
+            // Update biome display and ambient audio
+            updateActiveBiome(score);
+            if (uiBiome) uiBiome.innerText = activeBiomeName;
+            
+            // Re-seed environmental particles for new biome
+            envParticles.length = 0;
+            envSpawnAccum = 0;
+            const newSeedType = biomeLevel <= 2 ? 'mote' : (biomeLevel <= 4 ? 'rust_flake' : 'mote');
+            for (let i = 0; i < 30; i++) envParticles.push(new EnvironmentParticle(newSeedType));
+            envBuffer.markDirty();
+            
+            console.log(`Advanced to Biome ${biomeLevel}: ${activeBiomeName}`);
+        }
+
         function updateTitleBackground(dt) {
             titleBgTimer += dt;
             if (titleBgTimer >= TITLE_FRAME_DURATION) {
@@ -2044,7 +2036,7 @@
                     
                     const spriteKey = i === 0 ? 'scout_0' : (i === 2 ? 'heavy_0' : 'interceptor_0');
                     const sprite = playerSprites[spriteKey];
-                    if (sprite && spritesReady.has(sprite)) {
+                    if (sprite && sprite.complete && sprite.naturalWidth > 0) {
                         ctx.drawImage(sprite, 105, itemY - 20, 40, 40);
                     } else {
                         ctx.fillStyle = i === 0 ? '#00ffff' : (i === 2 ? '#ff9900' : '#00ffaa');
@@ -2626,7 +2618,7 @@
                     // Draw player ship sprite
                     const shipKey = selectedShip === 'scout' ? 'scout_0' : (selectedShip === 'heavy' ? 'heavy_0' : 'interceptor_0');
                     const shipSprite = playerSprites[shipKey];
-                    if (shipSprite && spritesReady.has(shipSprite)) {
+                    if (shipSprite && shipSprite.complete && shipSprite.naturalWidth > 0) {
                         ctx.drawImage(shipSprite, shipX, shipY, size, size);
                     } else {
                         ctx.fillStyle = '#00ffff';
@@ -2804,7 +2796,7 @@
                     paused = !paused;
                     if (paused) { pauseMenuIndex = 0; pauseSubScreen = 'menu'; }
                 }
-                // F3: Toggle debug enemy name labels
+                // F3: Toggle debug enemy name labels (GRO-1068)
                 if (e.key === 'F3') {
                     window.DEBUG_LABELS = !window.DEBUG_LABELS;
                     e.preventDefault();
@@ -2973,9 +2965,17 @@
 
         // --- Player Ship Class ---
         class Player {
-            constructor(shipType = 'interceptor') {
+            constructor(shipType = 'interceptor', playerId = 1) {
                 this.x = 80;
                 this.y = canvas.height / 2;
+                this.playerId = playerId;
+                // Per-player input binding — each player uses their own keys
+                this.inputKeys = {
+                    1: { up:'w', down:'s', left:'a', right:'d', fire:' ', special:'k', dodge:'e', boost:'Shift' },
+                    2: { up:'ArrowUp', down:'ArrowDown', left:'ArrowLeft', right:'ArrowRight', fire:'0', special:'1', dodge:'2', boost:'Enter' },
+                    3: { up:'Gamepad1U', down:'Gamepad1D', left:'Gamepad1L', right:'Gamepad1R', fire:'Gamepad1A', special:'Gamepad1B', dodge:'Gamepad1X', boost:'Gamepad1L' },
+                    4: { up:'Gamepad2U', down:'Gamepad2D', left:'Gamepad2L', right:'Gamepad2R', fire:'Gamepad2A', special:'Gamepad2B', dodge:'Gamepad2X', boost:'Gamepad2L' },
+                }[playerId];
                 this.width = 40;
                 this.height = 20;
                 this.shipType = shipType;
@@ -3114,10 +3114,10 @@
 
                 let dx = 0;
                 let dy = 0;
-                if (keys['w'] || keys['W'] || keys['ArrowUp']) dy -= 1;
-                if (keys['s'] || keys['S'] || keys['ArrowDown']) dy += 1;
-                if (keys['a'] || keys['A'] || keys['ArrowLeft']) dx -= 1;
-                if (keys['d'] || keys['D'] || keys['ArrowRight']) dx += 1;
+                if (keys[this.inputKeys.up]) dy -= 1;
+                if (keys[this.inputKeys.down]) dy += 1;
+                if (keys[this.inputKeys.left]) dx -= 1;
+                if (keys[this.inputKeys.right]) dx += 1;
 
                 if (dx !== 0 && dy !== 0) {
                     dx *= 0.7071;
@@ -3133,7 +3133,7 @@
                     this.shield = Math.min(this.shieldMax, this.shield + mods.shieldRegenRate * dt);
                     
                     // Engine Afterburner Boost
-                    const canBoost = keys['Shift'] && this.boostCooldown <= 0 && this.boostFuel > 0;
+                    const canBoost = keys[this.inputKeys.boost] && this.boostCooldown <= 0 && this.boostFuel > 0;
                     if (canBoost) {
                         this.isBoosting = true;
                         this.boostFuel -= dt;
@@ -3169,7 +3169,7 @@
                     }
                     
                     // Cyber Overload / Guardian Protocol Special Ability
-                    const canSpecial = (keys['k'] || keys['K']) && this.specialCooldown <= 0 && !this.isSpecialActive;
+                    const canSpecial = keys[this.inputKeys.special] && this.specialCooldown <= 0 && !this.isSpecialActive;
                     if (canSpecial) {
                         this.isSpecialActive = true;
                         this.specialActiveTimer = this.specialMaxDuration;
@@ -3235,7 +3235,7 @@
                     this.dodgeCooldown -= dt;
                 }
                 // Execute dodge on E key press
-                const canDodge = (keys['e'] || keys['E']) && this.dodgeCooldown <= 0 && !this.isDodging;
+                const canDodge = keys[this.inputKeys.dodge] && this.dodgeCooldown <= 0 && !this.isDodging;
                 if (canDodge) {
                     this.dodge();
                 }
@@ -3297,7 +3297,7 @@
                     this.shootTimer -= dt;
                 }
 
-                if ((keys[' '] || keys['j'] || keys['J']) && this.shootTimer <= 0) {
+                if (keys[this.inputKeys.fire] && this.shootTimer <= 0) {
                     this.shoot();
                     this.shootTimer = currentShootCooldown;
                 }
@@ -3371,10 +3371,10 @@
             dodge() {
                 // Determine dodge direction based on current movement input
                 let ddx = 0, ddy = 0;
-                if (keys['w'] || keys['W'] || keys['ArrowUp']) ddy -= 1;
-                if (keys['s'] || keys['S'] || keys['ArrowDown']) ddy += 1;
-                if (keys['a'] || keys['A'] || keys['ArrowLeft']) ddx -= 1;
-                if (keys['d'] || keys['D'] || keys['ArrowRight']) ddx += 1;
+                if (keys[this.inputKeys.up]) ddy -= 1;
+                if (keys[this.inputKeys.down]) ddy += 1;
+                if (keys[this.inputKeys.left]) ddx -= 1;
+                if (keys[this.inputKeys.right]) ddx += 1;
                 
                 // If no direction input, dodge backward (left)
                 if (ddx === 0 && ddy === 0) {
@@ -3483,13 +3483,13 @@
                         
                         // Check if ALL players are pulled out (multiplayer check)
                         let allPulledOut = true;
-                        if (window.DS_Multiplayer && DS_Multiplayer.players.length > 1) {
-                            for (const mp of DS_Multiplayer.players) {
-                                if (mp.alive && mp.id !== 'local') allPulledOut = false;
+                        if (window.Multiplayer && Multiplayer.players.length > 1) {
+                            for (const mp of Multiplayer.players) {
+                                if (mp.alive && !mp.isHost) allPulledOut = false;
                             }
                             if (allPulledOut) {
                                 gameOver = true;
-                                if (DS_Multiplayer) DS_Multiplayer.onPlayerPullOut('local');
+                                Multiplayer.onPlayerPullOut(this.id || 1);
                             }
                         }
                         // Single player: no gameOver, auto-repair will handle return
@@ -3523,7 +3523,7 @@
                     else if (this.shipType === 'interceptor') sprite = playerSprites['interceptor_0'];
                     else sprite = playerSprites[`player_${frameIdx}`];
                     
-                    if (sprite && spritesReady.has(sprite)) {
+                    if (sprite && sprite.complete && sprite.naturalWidth > 0) {
                         ctx.drawImage(sprite, 0, 0, 48, 48);
                     } else {
                         ctx.fillStyle = '#ff4400';
@@ -3545,8 +3545,7 @@
                     return; // Skip normal draw
                 }
                 
-                if (this.invulnerable > 0 && Math.floor(this.invulnerable * 8) % 3 === 0) {
-                    // Invulnerability blink: visible 2 of 3 frames at 8Hz → ~5.3Hz perceived flicker
+                if (this.invulnerable > 0 && Math.floor(this.invulnerable * 15) % 2 === 0) {
                     return;
                 }
 
@@ -3589,7 +3588,7 @@
                     sprite = playerSprites[`player_${frameIdx}`];
                 }
 
-                if (sprite && spritesReady.has(sprite)) {
+                if (sprite && sprite.complete && sprite.naturalWidth > 0) {
                     // Render sprite scaled to 48x48 (ship area ~40x20, sprite is 1024x1024)
                     const spriteSize = 48;
                     ctx.drawImage(sprite, 0, 0, spriteSize, spriteSize);
@@ -3660,35 +3659,42 @@
                     }
                 }
 
-                // Weapon level 4+ shield aura (sprite-based with procedural fallback)
+                // Weapon level 4+ shield aura (sprite-based)
                 if (this.weaponLevel >= 4) {
                     const shieldSprite = vfxSprites['shield'];
-                    const pulse = 0.25 + Math.sin(gameTime * 3) * 0.15;
-                    ctx.globalAlpha = pulse;
-                    const shieldSize = 72;
-                    if (shieldSprite && spritesReady.has(shieldSprite)) {
+                    if (shieldSprite && shieldSprite.complete && shieldSprite.naturalWidth > 0) {
+                        // Pulsing alpha based on game time
+                        const pulse = 0.25 + Math.sin(gameTime * 3) * 0.15;
+                        ctx.globalAlpha = pulse;
                         // Render translucent blue forcefield ring (1024x1024 → 72x72)
+                        const shieldSize = 72;
                         ctx.drawImage(shieldSprite,
                             -shieldSize / 2 + 24,  // center x offset
                             -shieldSize / 2 + this.height / 2,  // center y offset
                             shieldSize, shieldSize);
                         ctx.globalAlpha = 1;
                     } else {
-                        // Procedural shield ring — double-ring with glow pulse
-                        const cx = 24, cy = this.height / 2;
-                        const ringR = 28;
-                        // Outer glow
-                        ctx.strokeStyle = `rgba(0, 180, 255, ${0.15 + pulse * 0.2})`;
-                        ctx.lineWidth = 5;
+                        // Fallback: double-ring procedural shield
+                        const pulse = 0.25 + Math.sin(gameTime * 3) * 0.15;
+                        // Outer ring
+                        ctx.strokeStyle = `rgba(0, 200, 255, ${pulse + 0.1})`;
+                        ctx.lineWidth = 3;
                         ctx.beginPath();
-                        ctx.arc(cx, cy, ringR, 0, Math.PI * 2);
+                        ctx.arc(24, this.height / 2, 32, 0, Math.PI * 2);
                         ctx.stroke();
-                        // Inner crisp ring
-                        ctx.strokeStyle = `rgba(0, 255, 255, ${0.35 + pulse * 0.3})`;
-                        ctx.lineWidth = 2;
+                        // Inner ring
+                        ctx.strokeStyle = `rgba(0, 255, 255, ${pulse + 0.2})`;
+                        ctx.lineWidth = 1.5;
                         ctx.beginPath();
-                        ctx.arc(cx, cy, ringR - 3, 0, Math.PI * 2);
+                        ctx.arc(24, this.height / 2, 26, 0, Math.PI * 2);
                         ctx.stroke();
+                        // Glow dots at cardinal points
+                        ctx.fillStyle = `rgba(0, 255, 255, ${pulse + 0.3})`;
+                        for (let a = 0; a < Math.PI * 2; a += Math.PI / 3) {
+                            ctx.beginPath();
+                            ctx.arc(24 + Math.cos(a) * 29, this.height / 2 + Math.sin(a) * 29, 2, 0, Math.PI * 2);
+                            ctx.fill();
+                        }
                     }
                 }
 
@@ -3740,7 +3746,7 @@
                 ctx.rotate(angle);
 
                 const sprite = vfxSprites['laser'];
-                if (sprite && spritesReady.has(sprite)) {
+                if (sprite && sprite.complete && sprite.naturalWidth > 0) {
                     // Render laser sprite scaled to bullet size (sprite is 1024x1024)
                     const renderSize = this.size * 3.5;
                     ctx.globalAlpha = 0.9;
@@ -3748,6 +3754,7 @@
                         ctx.shadowColor = this.color;
                         ctx.shadowBlur = 12;
                     }
+                    // Additive blending — dark background becomes invisible
                     ctx.globalCompositeOperation = 'lighter';
                     ctx.drawImage(sprite, -renderSize / 2, -renderSize / 2, renderSize, renderSize);
                     ctx.globalCompositeOperation = 'source-over';
@@ -3810,7 +3817,7 @@
 
                 // Enemy laser bolt sprite on top
                 const sprite = vfxSprites['laser_enemy'];
-                if (sprite && spritesReady.has(sprite)) {
+                if (sprite && sprite.complete && sprite.naturalWidth > 0) {
                     ctx.globalAlpha = 0.9;
                     // Center the 1024×1024 sprite, scale to renderSize
                     const sw = sprite.naturalWidth;
@@ -3849,21 +3856,30 @@
                 this.height = 30;
                 this.age = 0;
 
-                // Map game enemy type to Economy scrapDropTable key
-                if (type === 'scout') {
+                // Determine behavior pattern and map attributes
+                this.behaviorPattern = 'scout'; // default fallback
+                
+                const isScout = type === 'scout' || type.includes('crawler') || type.includes('drone') || type.includes('sprite') || type.includes('wisp') || type.includes('spark') || type.includes('fragment');
+                const isInterceptor = type === 'interceptor' || type.includes('spitter') || type.includes('wraith') || type.includes('fighter') || type.includes('hawk') || type.includes('aberration');
+                const isHeavy = type === 'heavy' || type.includes('brute') || type.includes('turret') || type.includes('battery') || type.includes('sentinel') || type.includes('golem') || type.includes('giant') || type.includes('node') || type.includes('glacier') || type.includes('thunderhead') || type.includes('shard') || type.includes('swarm');
+                
+                if (isScout) {
+                    this.behaviorPattern = 'scout';
                     this.enemyType = 'grunt';
                     this.speed = 150;
                     this.hp = 1;
                     this.scoreValue = 100;
                     this.color = '#ff5500';
                     this.startY = this.y;
-                } else if (type === 'interceptor') {
+                } else if (isInterceptor) {
+                    this.behaviorPattern = 'interceptor';
                     this.enemyType = 'elite';
                     this.speed = 280;
                     this.hp = 1;
                     this.scoreValue = 150;
                     this.color = '#ff0055';
-                } else if (type === 'heavy') {
+                } else if (isHeavy) {
+                    this.behaviorPattern = 'heavy';
                     this.enemyType = 'elite';
                     this.speed = 80;
                     this.hp = 4;
@@ -3871,12 +3887,21 @@
                     this.color = '#9a33cc';
                     this.shootCooldown = 1.2 + Math.random() * 0.8;
                     this.shootTimer = this.shootCooldown;
-                } else {
+                } else if (type === 'boss_minion') {
+                    this.behaviorPattern = 'boss_minion';
                     this.enemyType = 'grunt';
                     this.speed = 180;
                     this.hp = 2;
                     this.scoreValue = 50;
                     this.color = '#33cc55';
+                } else {
+                    this.behaviorPattern = 'scout';
+                    this.enemyType = 'grunt';
+                    this.speed = 180;
+                    this.hp = 2;
+                    this.scoreValue = 50;
+                    this.color = '#33cc55';
+                    this.startY = this.y;
                 }
 
                 // NG+ Paradox roll: chance to upgrade spawned enemy
@@ -3899,26 +3924,26 @@
             update(dt) {
                 this.age += dt;
 
-                if (this.type === 'scout') {
+                if (this.behaviorPattern === 'scout') {
                     this.x -= this.speed * dt;
                     // GRO-1006: path variant — 3 different sine patterns
                     const _freq = [4.5, 5.0, 6.0][this._moveVariant];
                     const _amp = [55, 60, 70][this._moveVariant];
                     this.y = this.startY + Math.sin(this.age * _freq) * _amp;
-                } else if (this.type === 'interceptor') {
+                } else if (this.behaviorPattern === 'interceptor') {
                     this.x -= this.speed * dt;
                     // GRO-1006: interceptor gets subtle y-drift on variants 1-2
                     if (this._moveVariant > 0) {
                         this.y += Math.sin(this.age * (3 + this._moveVariant)) * 25 * dt;
                     }
-                } else if (this.type === 'heavy') {
+                } else if (this.behaviorPattern === 'heavy') {
                     this.x -= this.speed * dt;
                     this.shootTimer -= dt;
                     if (this.shootTimer <= 0) {
                         this.shoot();
                         this.shootTimer = this.shootCooldown;
                     }
-                } else if (this.type === 'boss_minion') {
+                } else if (this.behaviorPattern === 'boss_minion') {
                     this.x -= this.speed * dt;
                     this.y += Math.sin(this.age * 8) * 80 * dt;
                 }
@@ -3941,18 +3966,18 @@
                 ctx.translate(this.x, this.y);
 
                 const sprite = enemySprites[this.type];
-                const hasSprite = sprite && spritesReady.has(sprite);
+                const hasSprite = sprite && sprite.complete && sprite.naturalWidth > 0;
 
                 if (hasSprite) {
-                    // Dynamic size: heavies/bosses get larger, everything else 36px
-                    const isHeavy = this.type.includes('heavy') || this.type.includes('brute') || this.type.includes('boss');
-                    const isLarge = this.type.includes('golem') || this.type.includes('giant') || this.type.includes('glacier');
-                    const size = isHeavy ? 44 : (isLarge ? 48 : 36);
+                    // Map each type to appropriate render size (sprites are 1024x1024)
+                    const sizes = { scout: 36, interceptor: 36, heavy: 44, boss_minion: 32 };
+                    const size = sizes[this.type] || 36;
                     
                     if (this.isParadox) {
                         ctx.shadowBlur = 12;
                         ctx.shadowColor = this.paradoxColor;
                     }
+                    // Use additive blending so dark sprite backgrounds become invisible
                     ctx.globalCompositeOperation = 'lighter';
                     ctx.drawImage(sprite, 0, 0, size, size);
                     ctx.globalCompositeOperation = 'source-over';
@@ -3975,11 +4000,6 @@
                     } else if (this.type === 'boss_minion') {
                         ctx.beginPath();
                         ctx.arc(15, 15, 14, 0, Math.PI * 2); ctx.fill();
-                    } else {
-                        // Generic fallback for all 34 biome-specific enemy types
-                        ctx.beginPath();
-                        ctx.moveTo(28, 15); ctx.lineTo(8, 2); ctx.lineTo(2, 15); ctx.lineTo(8, 28);
-                        ctx.closePath(); ctx.fill();
                     }
                 }
 
@@ -3991,12 +4011,13 @@
                     ctx.fillText(this.paradoxName, 15, -6);
                 }
                 
-                // Debug labels — F3 toggles enemy type/class labels for playtesting
+                // GRO-1068: Debug labels — show enemy type for playtesting identification
                 if (window.DEBUG_LABELS) {
                     ctx.fillStyle = 'rgba(255,255,255,0.75)';
                     ctx.font = '8px monospace';
                     ctx.textAlign = 'center';
                     const label = this.type + (this.enemyType ? '/' + this.enemyType : '');
+                    // Draw text with dark outline for readability on any background
                     ctx.strokeStyle = 'rgba(0,0,0,0.8)';
                     ctx.lineWidth = 2;
                     ctx.strokeText(label, 15, -6);
@@ -4166,30 +4187,30 @@
                 if (this.hp <= 0) {
                     this.hp = 0;
                     bossDefeated = true;
-                    _winTransition = true; // Flag for transition handler
                     
-                    // GRO-1009: Determine ending based on narrative flags
-                    determineEnding();
-                    // If multiple endings eligible but none selected yet (architect phase set one),
-                    // use the architect phase as the default
-                    if (!selectedEnding && endingEligible.length > 0) {
-                        selectedEnding = this.architectPhase && endingEligible.includes(this.architectPhase)
-                            ? this.architectPhase : endingEligible[0];
+                    // GRO-1009: Determine ending only on final boss (biome 10)
+                    if (biomeLevel >= 10) {
+                        _winTransition = true; // Victory flag — triggers game won screen
+                        determineEnding();
+                        if (!selectedEnding && endingEligible.length > 0) {
+                            selectedEnding = this.architectPhase && endingEligible.includes(this.architectPhase)
+                                ? this.architectPhase : endingEligible[0];
+                        }
+                        if (!selectedEnding) selectedEnding = 'transcendence';
+                        
+                        // Save NG+ eligibility
+                        try {
+                            const ngKey = 'darius_star_ngplus_eligible';
+                            const eligible = JSON.parse(localStorage.getItem(ngKey) || '{}');
+                            eligible[selectedShip] = { biome: biomeLevel, score: score, scrap: runScrap, date: new Date().toISOString() };
+                            localStorage.setItem(ngKey, JSON.stringify(eligible));
+                        } catch(e) {}
                     }
-                    if (!selectedEnding) selectedEnding = 'transcendence'; // ultimate fallback
                     
-                    // Save NG+ eligibility for this completed run
-                    try {
-                        const ngKey = 'darius_star_ngplus_eligible';
-                        const eligible = JSON.parse(localStorage.getItem(ngKey) || '{}');
-                        eligible[selectedShip] = { biome: biomeLevel, score: score, scrap: runScrap, date: new Date().toISOString() };
-                        localStorage.setItem(ngKey, JSON.stringify(eligible));
-                    } catch(e) {}
                     playSound('explosion');
                     
                     // Spawn Economy-based Data Fragments on Boss defeat!
                     if (typeof scrapDrops !== 'undefined' && window.Economy) {
-                        // Boss always drops (already checked in state transition, but one more guaranteed drop)
                         for (let k = 0; k < 5; k++) {
                             const drop = Economy.rollDrop(this.enemyType, biomeLevel);
                             const ecoDrop = Economy.createDrop(
@@ -4208,9 +4229,13 @@
                         }, i * 100);
                     }
                     
-                    setTimeout(() => {
-                        playVictoryCinematic();
-                    }, 3500);
+                    if (biomeLevel >= 10) {
+                        // Final boss — victory cinematic
+                        setTimeout(() => { playVictoryCinematic(); }, 3500);
+                    } else {
+                        // Biome clear — advance to next biome after explosions
+                        setTimeout(() => { advanceToNextBiome(); }, 3000);
+                    }
                 }
             }
 
@@ -4221,7 +4246,7 @@
                 // --- Sprite-based boss rendering ---
                 // boss_0.png is 1280x896; render scaled to 190x133 (matching original boss footprint)
                 const sprite = bossSprites['boss'];
-                const hasSprite = sprite && spritesReady.has(sprite);
+                const hasSprite = sprite && sprite.complete && sprite.naturalWidth > 0;
                 const renderW = 190;
                 const renderH = 133;
 
@@ -4493,8 +4518,10 @@
 
             draw() {
                 if (!this.alive) return;
-                const sprite = vfxSprites['explosion_0'];  // Single 2x2 sprite sheet
-                if (sprite && spritesReady.has(sprite)) {
+                const key = 'explosion_0';  // Single sprite sheet with 4 frames in 2x2 grid
+                const sprite = vfxSprites[key];
+                if (sprite && sprite.complete && sprite.naturalWidth > 0) {
+                    // Sprite sheet: 2x2 grid, 4 frames (each frame = half width, half height)
                     const fw = sprite.naturalWidth / 2;
                     const fh = sprite.naturalHeight / 2;
                     const col = this.frame % 2;
@@ -4502,8 +4529,8 @@
                     ctx.save();
                     ctx.globalAlpha = 0.9;
                     ctx.drawImage(sprite,
-                        col * fw, row * fh, fw, fh,
-                        this.x - this.size / 2,
+                        col * fw, row * fh, fw, fh,           // Source rect (single frame)
+                        this.x - this.size / 2,               // Dest
                         this.y - this.size / 2,
                         this.size, this.size);
                     ctx.restore();
@@ -4688,16 +4715,6 @@
         const bgImages = {};
         function loadBackgroundImages() {
             const toLoad = [
-                { key: 'bg_1', src: 'assets/sprites/backgrounds/bg_abyssal_trench_strip.png' },
-                { key: 'bg_2', src: 'assets/sprites/backgrounds/bg_coral_graveyard_strip.png' },
-                { key: 'bg_3', src: 'assets/sprites/backgrounds/bg_coelacanth_lair_strip.png' },
-                { key: 'bg_4', src: 'assets/sprites/backgrounds/bg_nebula_drift_strip.png' },
-                { key: 'bg_5', src: 'assets/sprites/backgrounds/bg_ice_rings_strip.png' },
-                { key: 'bg_6', src: 'assets/sprites/backgrounds/bg_inferno_core_strip.png' },
-                { key: 'bg_7', src: 'assets/sprites/backgrounds/bg_storm_belt_strip.png' },
-                { key: 'bg_8', src: 'assets/sprites/backgrounds/bg_derelict_fleet_strip.png' },
-                { key: 'bg_9', src: 'assets/sprites/backgrounds/bg_xenomorph_hive_strip.png' },
-                { key: 'bg_10', src: 'assets/sprites/backgrounds/bg_core_rift_strip.png' },
                 { key: 'nebula', src: 'assets/sprites/bg_nebula_0.png' },
                 { key: 'city',   src: 'assets/sprites/bg_city_0.png' }
             ];
@@ -4723,28 +4740,35 @@
             if (biomeBgCanvases[biomeNum]) return biomeBgCanvases[biomeNum];
             const c = document.createElement('canvas');
             const baseW = canvas.width || 800;
-            c.width = baseW * 2;  // 2× width for seamless parallax tiling
+            // 2× width for seamless tiling — eliminates visible seam at viewport edge
+            c.width = baseW * 2;
             c.height = canvas.height || 450;
             const bctx = c.getContext('2d');
+            
+            // Biome color palettes — deep space + environmental tint
             const themes = {
-                1: { sky: ['#020418','#06102a','#0a1a3a'], particles: ['#004466','#006688'], accent: '#00aacc' },
-                2: { sky: ['#1a0020','#2a0030','#1a1030'], particles: ['#661144','#883366'], accent: '#cc4488' },
-                3: { sky: ['#001a10','#002a18','#0a2018'], particles: ['#006644','#008866'], accent: '#00cc66' },
-                4: { sky: ['#100020','#1a0030','#200840'], particles: ['#442288','#6644aa'], accent: '#8844cc' },
-                5: { sky: ['#081020','#0a1830','#102040'], particles: ['#4488aa','#66aacc'], accent: '#88ccff' },
-                6: { sky: ['#200802','#300c04','#1a0802'], particles: ['#883300','#aa4400'], accent: '#ff6600' },
-                7: { sky: ['#101018','#181828','#202038'], particles: ['#666688','#8888aa'], accent: '#aaaacc' },
-                8: { sky: ['#181008','#201410','#281810'], particles: ['#664422','#886633'], accent: '#cc8844' },
-                9: { sky: ['#050508','#0a0a10','#100818'], particles: ['#224422','#336633'], accent: '#44ff44' },
-                10:{ sky: ['#050508','#0a0a10','#100818'], particles: ['#442244','#663366'], accent: '#ff44ff' },
+                1: { sky: ['#020418','#06102a','#0a1a3a'], particles: ['#004466','#006688'], accent: '#00aacc', name: 'Abyssal Trench' },
+                2: { sky: ['#1a0020','#2a0030','#1a1030'], particles: ['#661144','#883366'], accent: '#cc4488', name: 'Coral Graveyard' },
+                3: { sky: ['#001a10','#002a18','#0a2018'], particles: ['#006644','#008866'], accent: '#00cc66', name: 'Coelacanth Lair' },
+                4: { sky: ['#100020','#1a0030','#200840'], particles: ['#442288','#6644aa'], accent: '#8844cc', name: 'Nebula Drift' },
+                5: { sky: ['#081020','#0a1830','#102040'], particles: ['#4488aa','#66aacc'], accent: '#88ccff', name: 'Ice Rings' },
+                6: { sky: ['#200802','#300c04','#1a0802'], particles: ['#883300','#aa4400'], accent: '#ff6600', name: 'Inferno Core' },
+                7: { sky: ['#101018','#181828','#202038'], particles: ['#666688','#8888aa'], accent: '#aaaacc', name: 'Storm Belt' },
+                8: { sky: ['#181008','#201410','#281810'], particles: ['#664422','#886633'], accent: '#cc8844', name: 'Derelict Fleet' },
+                9: { sky: ['#050508','#0a0a10','#100818'], particles: ['#224422','#336633'], accent: '#44ff44', name: 'Core Rift' },
+                10:{ sky: ['#050508','#0a0a10','#100818'], particles: ['#442244','#663366'], accent: '#ff44ff', name: 'Core Rift' },
             };
             const theme = themes[biomeNum] || themes[1];
+            
+            // Sky gradient
             const grad = bctx.createLinearGradient(0, 0, 0, c.height);
             grad.addColorStop(0, theme.sky[0]);
             grad.addColorStop(0.5, theme.sky[1]);
             grad.addColorStop(1, theme.sky[2]);
             bctx.fillStyle = grad;
             bctx.fillRect(0, 0, c.width, c.height);
+            
+            // Distant nebula blobs
             const seed = biomeNum * 137.5;
             for (let i = 0; i < 5; i++) {
                 const nx = ((Math.sin(seed + i * 2.1) * 0.5 + 0.5) * c.width);
@@ -4757,20 +4781,29 @@
                 bctx.fillStyle = ng;
                 bctx.fillRect(nx - nr, ny - nr, nr * 2, nr * 2);
             }
+            
+            // Star field (dense, varied sizes)
             for (let i = 0; i < 200; i++) {
                 const sx = ((Math.sin(seed * 7 + i * 13.7) * 0.5 + 0.5) * c.width);
                 const sy = ((Math.cos(seed * 11 + i * 17.3) * 0.5 + 0.5) * c.height);
                 const sr = 0.3 + Math.abs(Math.sin(i * 3.1)) * 1.8;
                 const sa = 0.3 + Math.abs(Math.sin(i * 5.7)) * 0.7;
                 bctx.fillStyle = `rgba(255,255,255,${sa.toFixed(2)})`;
-                bctx.beginPath(); bctx.arc(sx, sy, sr, 0, Math.PI * 2); bctx.fill();
+                bctx.beginPath();
+                bctx.arc(sx, sy, sr, 0, Math.PI * 2);
+                bctx.fill();
             }
+            
+            // Occasional colored accent stars
             for (let i = 0; i < 15; i++) {
                 const ax = ((Math.sin(seed * 3 + i * 19.1) * 0.5 + 0.5) * c.width);
                 const ay = ((Math.cos(seed * 5 + i * 23.7) * 0.5 + 0.5) * c.height);
                 bctx.fillStyle = theme.accent + 'cc';
-                bctx.beginPath(); bctx.arc(ax, ay, 1.2, 0, Math.PI * 2); bctx.fill();
+                bctx.beginPath();
+                bctx.arc(ax, ay, 1.2, 0, Math.PI * 2);
+                bctx.fill();
             }
+            
             biomeBgCanvases[biomeNum] = c;
             return c;
         }
@@ -4791,14 +4824,28 @@
             }
 
             setKey(newKey) {
-                if (this.key !== newKey) {
-                    this.key = newKey;
-                    this.offset = 0; // reset scroll on biome change
+                // Switch to a different background image (biome transition)
+                // Map biome number keys to named strip files
+                const BIOME_STRIP_MAP = {
+                    'bg_1': 'abyssal_trench', 'bg_2': 'coral_graveyard',
+                    'bg_3': 'coelacanth_lair', 'bg_4': 'nebula_drift',
+                    'bg_5': 'ice_rings', 'bg_6': 'inferno_core',
+                    'bg_7': 'storm_belt', 'bg_8': 'derelict_fleet',
+                    'bg_9': 'core_rift', 'bg_10': 'core_rift'
+                };
+                const stripName = BIOME_STRIP_MAP[newKey] || 'abyssal_trench';
+                if (!bgImages[newKey]) {
+                    const img = new Image();
+                    img.src = `assets/sprites/backgrounds/bg_${stripName}_strip.png`;
+                    bgImages[newKey] = img;
                 }
+                this.key = newKey;
+                this.offset = 0; // Reset scroll position for new background
             }
 
             update(dt) {
                 const img = this.getImg();
+                // Use procedural canvas width as fallback (2× viewport for seamless tiling)
                 let w;
                 if (img && img.complete && img.naturalWidth > 0) {
                     w = img.width;
@@ -4813,10 +4860,12 @@
 
             draw() {
                 const img = this.getImg();
+                // Fall back to procedural background if image not loaded
                 if (!img || !img.complete || img.naturalWidth === 0) {
-                    // Procedural fallback
+                    // Try procedural: extract biome number from key (bg_1 → 1)
+                    let biomeNum = 1;
                     const match = this.key.match(/bg_(\d+)/);
-                    const biomeNum = match ? parseInt(match[1]) : 1;
+                    if (match) biomeNum = parseInt(match[1]);
                     const procBg = generateBiomeBackground(biomeNum);
                     if (procBg) {
                         ctx.save();
@@ -4836,6 +4885,7 @@
                 ctx.globalAlpha = this.alpha;
                 const w = img.width * this.scale;
                 const h = img.height * this.scale;
+                // Tile horizontally for seamless scroll
                 const drawX = -this.offset;
                 const count = Math.ceil(canvas.width / w) + 1;
                 for (let i = 0; i < count; i++) {
@@ -4848,7 +4898,6 @@
         // --- Player Sprite Preloading ---
         const playerSprites = {};
         let playerSpritesLoaded = false;
-        const spritesReady = new Set(); // Track fully-loaded sprites
 
         function loadPlayerSprites() {
             if (playerSpritesLoaded) return;
@@ -4863,11 +4912,8 @@
                 'scout_0', 'interceptor_0', 'heavy_0'
             ];
             frames.forEach(key => {
-                const img = new Image();
-                img.onload = () => spritesReady.add(img);
-                img.onerror = () => console.warn('Failed to load player sprite:', key);
-                img.src = `assets/sprites/${key}.png`;
-                playerSprites[key] = img;
+                playerSprites[key] = new Image();
+                playerSprites[key].src = `assets/sprites/${key}.png`;
             });
         }
 
@@ -4916,11 +4962,8 @@
                 'enemy_turret_battery'
             ];
             types.forEach(key => {
-                const img = new Image();
-                img.onload = () => spritesReady.add(img);
-                img.onerror = () => console.warn('Failed to load enemy sprite:', key);
-                img.src = `assets/sprites/${key}_0.png`;
-                enemySprites[key] = img;
+                enemySprites[key] = new Image();
+                enemySprites[key].src = `assets/sprites/${key}_0.png`;
             });
             // Legacy aliases — map old type names to new sprites
             enemySprites['scout'] = enemySprites['enemy_crawler'];
@@ -4936,20 +4979,22 @@
         function loadVFXSprites() {
             if (vfxSpritesLoaded) return;
             vfxSpritesLoaded = true;
-            const loadVFX = (key, path) => {
-                const img = new Image();
-                img.onload = () => spritesReady.add(img);
-                img.onerror = () => console.warn('Failed to load VFX sprite:', key);
-                img.src = path;
-                vfxSprites[key] = img;
-            };
-            loadVFX('laser', 'assets/sprites/laser_0.png');
-            loadVFX('laser_enemy', 'assets/sprites/laser_enemy.png');
-            loadVFX('laser_glow', 'assets/sprites/laser_0_glow.png');
+            // Laser (player bullets)
+            vfxSprites['laser'] = new Image();
+            vfxSprites['laser'].src = 'assets/sprites/laser_0.png';
+            // Enemy laser + glow
+            vfxSprites['laser_enemy'] = new Image();
+            vfxSprites['laser_enemy'].src = 'assets/sprites/laser_enemy.png';
+            vfxSprites['laser_glow'] = new Image();
+            vfxSprites['laser_glow'].src = 'assets/sprites/laser_0_glow.png';
+            // Multi-frame explosion (4 frames)
             for (let f = 0; f < 4; f++) {
-                loadVFX('explosion_' + f, `assets/sprites/explosion_${f}.png`);
+                vfxSprites['explosion_' + f] = new Image();
+                vfxSprites['explosion_' + f].src = `assets/sprites/explosion_${f}.png`;
             }
-            loadVFX('shield', 'assets/sprites/shield_0.png');
+            // Shield forcefield ring
+            vfxSprites['shield'] = new Image();
+            vfxSprites['shield'].src = 'assets/sprites/shield_0.png';
         }
 
         // --- Boss Asset Lazy-Loading ---
@@ -5488,122 +5533,53 @@
 
         // Spawning helper: creates biome-appropriate particles each frame
         function spawnBiomeParticles(dt) {
-            const b = biomeLevel;
+            if (!window.LevelManager || !LevelManager.currentLevelConfig) return;
+            const settings = LevelManager.currentLevelConfig.particleSettings;
+            if (!settings) return;
+
             // Accumulator-based spawning to avoid frame-rate dependency
             envSpawnAccum += dt;
 
-            switch (b) {
-                case 1: // Abyssal Trench — bioluminescent motes + vent smoke
-                    while (envSpawnAccum >= 0.03) {
-                        envSpawnAccum -= 0.03;
-                        envParticles.push(new EnvironmentParticle('mote'));
-                    }
-                    if (Math.random() < dt * 0.3) {
-                        envParticles.push(new EnvironmentParticle('vent_smoke'));
-                    }
-                    break;
-                case 2: // Coral Graveyard — rust flakes + neon flicker
-                    while (envSpawnAccum >= 0.05) {
-                        envSpawnAccum -= 0.05;
-                        envParticles.push(new EnvironmentParticle('rust_flake'));
-                    }
-                    if (Math.random() < dt * 0.15) {
-                        envParticles.push(new EnvironmentParticle('neon_glow'));
-                    }
-                    break;
-                case 3: // Coelacanth Lair — tesla arcs + coolant drips
-                    while (envSpawnAccum >= 0.4) {
-                        envSpawnAccum -= 0.4;
-                        envParticles.push(new EnvironmentParticle('tesla_bolt'));
-                    }
-                    while (envSpawnAccum >= 0.06) {
-                        envSpawnAccum -= 0.06;
-                        envParticles.push(new EnvironmentParticle('coolant_drip'));
-                    }
-                    break;
-                case 4: // Nebula Drift — plasma ribbons + storm flashes
-                    while (envSpawnAccum >= 0.5) {
-                        envSpawnAccum -= 0.5;
-                        envParticles.push(new EnvironmentParticle('plasma_ribbon'));
-                    }
-                    if (Math.random() < dt * 0.2) {
-                        envParticles.push(new EnvironmentParticle('storm_flash'));
-                    }
-                    break;
-                case 5: // Ice Ring — diamond dust + prismatic beams
-                    while (envSpawnAccum >= 0.03) {
-                        envSpawnAccum -= 0.03;
-                        envParticles.push(new EnvironmentParticle('ice_crystal'));
-                    }
-                    if (Math.random() < dt * 0.1) {
-                        envParticles.push(new EnvironmentParticle('prism_beam'));
-                    }
-                    break;
-                case 6: // Fire Nebula — embers + ash clouds
-                    while (envSpawnAccum >= 0.02) {
-                        envSpawnAccum -= 0.02;
-                        envParticles.push(new EnvironmentParticle('ember'));
-                    }
-                    if (Math.random() < dt * 0.08) {
-                        envParticles.push(new EnvironmentParticle('ash_cloud'));
-                    }
-                    break;
-                case 7: // Storm Belt — lightning + static bands + rain
-                    while (envSpawnAccum >= 0.35) {
-                        envSpawnAccum -= 0.35;
-                        envParticles.push(new EnvironmentParticle('lightning_strike'));
-                    }
-                    while (envSpawnAccum >= 0.08) {
-                        envSpawnAccum -= 0.08;
-                        envParticles.push(new EnvironmentParticle('static_band'));
-                    }
-                    if (Math.random() < dt * 0.5) {
-                        envParticles.push(new EnvironmentParticle('rain_drop'));
-                    }
-                    // Also spawn rain drops more frequently
-                    while (envSpawnAccum >= 0.01) {
-                        envSpawnAccum -= 0.01;
-                        break;
-                    }
-                    break;
-                case 8: // Derelict Fleet — debris + beacon + coolant gas
-                    while (envSpawnAccum >= 0.15) {
-                        envSpawnAccum -= 0.15;
-                        envParticles.push(new EnvironmentParticle('debris'));
-                    }
-                    if (Math.random() < dt * 0.12) {
-                        envParticles.push(new EnvironmentParticle('beacon_flash'));
-                    }
-                    if (Math.random() < dt * 0.1) {
-                        envParticles.push(new EnvironmentParticle('coolant_gas'));
-                    }
-                    break;
-                case 9: // Xenomorph Hive — acid drips + vein pulses + spores
-                    while (envSpawnAccum >= 0.07) {
-                        envSpawnAccum -= 0.07;
-                        envParticles.push(new EnvironmentParticle('acid_drip'));
-                    }
-                    while (envSpawnAccum >= 0.04) {
-                        envSpawnAccum -= 0.04;
-                        envParticles.push(new EnvironmentParticle('vein_pulse'));
-                    }
-                    if (Math.random() < dt * 0.15) {
-                        envParticles.push(new EnvironmentParticle('spore'));
-                    }
-                    break;
-                case 10: // Core Rift — code streams + rift tears + echo shards
-                    while (envSpawnAccum >= 0.04) {
-                        envSpawnAccum -= 0.04;
-                        envParticles.push(new EnvironmentParticle('code_stream'));
-                    }
-                    if (Math.random() < dt * 0.08) {
-                        envParticles.push(new EnvironmentParticle('rift_tear'));
-                    }
-                    if (Math.random() < dt * 0.05) {
-                        envParticles.push(new EnvironmentParticle('echo_shard'));
-                    }
-                    break;
+            // 1. Primary particle (accumulated spawning)
+            if (settings.primary) {
+                const rate = settings.primary.rate;
+                const type = settings.primary.type;
+                while (envSpawnAccum >= rate) {
+                    envSpawnAccum -= rate;
+                    envParticles.push(new EnvironmentParticle(type));
+                }
             }
+
+            // 2. Secondary particle (chance or rate)
+            if (settings.secondary) {
+                const sec = settings.secondary;
+                if (sec.rate) {
+                    while (envSpawnAccum >= sec.rate) {
+                        envSpawnAccum -= sec.rate;
+                        envParticles.push(new EnvironmentParticle(sec.type));
+                    }
+                } else if (sec.chance) {
+                    if (Math.random() < dt * sec.chance) {
+                        envParticles.push(new EnvironmentParticle(sec.type));
+                    }
+                }
+            }
+
+            // 3. Tertiary particle (chance or rate)
+            if (settings.tertiary) {
+                const tert = settings.tertiary;
+                if (tert.rate) {
+                    while (envSpawnAccum >= tert.rate) {
+                        envSpawnAccum -= tert.rate;
+                        envParticles.push(new EnvironmentParticle(tert.type));
+                    }
+                } else if (tert.chance) {
+                    if (Math.random() < dt * tert.chance) {
+                        envParticles.push(new EnvironmentParticle(tert.type));
+                    }
+                }
+            }
+
             // Cap accumulator
             envSpawnAccum = Math.min(envSpawnAccum, 1.0);
         }
@@ -6497,36 +6473,67 @@
             }
         };
 
-        function updateActiveBiome(score) {
+        function updateActiveBiome(dt, score) {
             let oldBiome = activeBiomeName;
             let oldBiomeLevel = biomeLevel;
-            if (score < 300) {
-                activeBiomeName = '1: Abyssal Trench'; biomeLevel = 1;
-            } else if (score < 600) {
-                activeBiomeName = '2: Coral Graveyard'; biomeLevel = 2;
-            } else if (score < 900) {
-                activeBiomeName = '3: Coelacanth Lair'; biomeLevel = 3;
-            } else if (score < 1200) {
-                activeBiomeName = '4: Nebula Drift'; biomeLevel = 4;
-            } else if (score < 1500) {
-                activeBiomeName = '5: Ice Ring'; biomeLevel = 5;
-            } else if (score < 1800) {
-                activeBiomeName = '6: Fire Nebula'; biomeLevel = 6;
-            } else if (score < 2100) {
-                activeBiomeName = '7: Storm Belt'; biomeLevel = 7;
-            } else if (score < 2400) {
-                activeBiomeName = '8: Derelict Fleet'; biomeLevel = 8;
-            } else if (score < 2700) {
-                activeBiomeName = '9: Xenomorph Hive'; biomeLevel = 9;
+
+            if (window.LevelManager) {
+                LevelManager.update(dt, score);
+                biomeLevel = LevelManager.currentBiome;
             } else {
-                activeBiomeName = '10: Core Rift'; biomeLevel = 10;
+                if (score < 300) {
+                    activeBiomeName = '1: Abyssal Trench'; biomeLevel = 1;
+                } else if (score < 600) {
+                    activeBiomeName = '2: Coral Graveyard'; biomeLevel = 2;
+                } else if (score < 900) {
+                    activeBiomeName = '3: Coelacanth Lair'; biomeLevel = 3;
+                } else if (score < 1200) {
+                    activeBiomeName = '4: Nebula Drift'; biomeLevel = 4;
+                } else if (score < 1500) {
+                    activeBiomeName = '5: Ice Ring'; biomeLevel = 5;
+                } else if (score < 1800) {
+                    activeBiomeName = '6: Fire Nebula'; biomeLevel = 6;
+                } else if (score < 2100) {
+                    activeBiomeName = '7: Storm Belt'; biomeLevel = 7;
+                } else if (score < 2400) {
+                    activeBiomeName = '8: Derelict Fleet'; biomeLevel = 8;
+                } else if (score < 2700) {
+                    activeBiomeName = '9: Xenomorph Hive'; biomeLevel = 9;
+                } else {
+                    activeBiomeName = '10: Core Rift'; biomeLevel = 10;
+                }
+            }
+
+            const biomeNames = {
+                1: '1: Abyssal Trench',
+                2: '2: Coral Graveyard',
+                3: '3: Coelacanth Lair',
+                4: '4: Nebula Drift',
+                5: '5: Ice Ring',
+                6: '6: Fire Nebula',
+                7: '7: Storm Belt',
+                8: '8: Derelict Fleet',
+                9: '9: Xenomorph Hive',
+                10: '10: Core Rift'
+            };
+            activeBiomeName = biomeNames[biomeLevel] || '1: Abyssal Trench';
+
+            if (window.LevelManager && uiBiome) {
+                uiBiome.innerText = `BIOME: ${activeBiomeName} — LEVEL: ${LevelManager.currentLevel}`;
+            } else if (uiBiome) {
+                uiBiome.innerText = `BIOME: ${activeBiomeName}`;
             }
 
             if (oldBiome !== activeBiomeName) {
                 floatingTexts.push(new FloatingText(canvas.width / 2, canvas.height / 3, `ENTERING BIOME ${activeBiomeName.toUpperCase()}`, '#00ffff'));
-                // Switch ambient MP3 and biome background
-                switchAmbientAudio(biomeLevel);
-                if (bgLayers.length > 0) bgLayers[0].setKey('bg_' + biomeLevel);
+                
+                // Set the biome background dynamically using LevelManager settings
+                if (bgLayers.length > 0 && window.LevelManager && LevelManager.currentLevelConfig) {
+                    bgLayers[0].setKey(LevelManager.currentLevelConfig.background);
+                } else if (bgLayers.length > 0) {
+                    bgLayers[0].setKey('bg_' + biomeLevel);
+                }
+
                 // GRO-1028: Play biome-specific ambient drone on transition
                 triggerBiomeAmbient();
                 // GRO-1028: Trigger audio-only story beat for this biome
@@ -6551,7 +6558,7 @@
                     const currentLives = save ? save.lives : 3;
                     CampaignSave.checkpoint(activeSaveSlot, {
                         biome: biomeLevel,
-                        wave: 1,
+                        wave: window.LevelManager ? LevelManager.currentLevel : 1,
                         score: score,
                         runScrap: runScrap,
                         ship: player.shipType,
@@ -6598,6 +6605,7 @@
             }
         } catch(e) {}
         let player = new Player(initialShip);
+        let remotePlayers = [];  // P2-P4 ship instances (GRO-958 multiplayer)
         const bullets = [];
         const enemyBullets = [];
         const enemies = [];
@@ -6614,7 +6622,8 @@
 
         // Parallax background layers (image-based)
         const bgLayers = [
-            new ParallaxLayer('bg_1', 25, 0, 0.6, canvas.height / 720)  // Biome-specific background strip
+            new ParallaxLayer('bg_1', 12, 0, 0.55, canvas.height / 768),      // Far: nebula cloud
+            new ParallaxLayer('bg_1', 55, 0, 0.45, canvas.height / 450)        // Mid: city silhouette
         ];
 
         // Environmental particle system (all 10 biomes)
@@ -6741,6 +6750,7 @@
             loadPortraitSprites();
             bossDefeated = false;
             bossIntroPlaying = false;
+            bossesDefeated = 0;
             victoryVideoPlaying = false;
             if (bossIntroVideo) { bossIntroVideo.pause(); bossIntroVideo.classList.remove('active'); bossIntroVideo.muted = true; }
             if (victoryVideo) { victoryVideo.pause(); victoryVideo.classList.remove('active'); victoryVideo.muted = true; }
@@ -6779,6 +6789,21 @@
                 }
             }
             player = new Player(activeShip);
+            
+            // GRO-958: Multiplayer — sync Player instances with Multiplayer module
+            remotePlayers = [];
+            if (window.Multiplayer && Multiplayer.players.length > 1) {
+                for (let i = 1; i < Multiplayer.players.length; i++) {
+                    const mp = Multiplayer.players[i];
+                    if (!mp.alive) continue;
+                    const shipType = mp.ship || 'interceptor';
+                    const rp = new Player(shipType, mp.id);
+                    rp.x = mp.x || (80 + i * 40);
+                    rp.y = mp.y || (180 + i * 30);
+                    rp.isRemote = true;
+                    remotePlayers.push(rp);
+                }
+            }
 
             // Restore other campaign progress
             if (campaignSave) {
@@ -6794,8 +6819,17 @@
                 currentNGLevel = 0;
             }
 
+            // Set LevelManager state
+            if (window.LevelManager) {
+                if (campaignSave) {
+                    LevelManager.setBiomeAndLevel(campaignSave.biome || 1, campaignSave.wave || 1);
+                } else {
+                    LevelManager.setBiomeAndLevel(1, 1);
+                }
+            }
+
             // Re-apply score to get correct biome level
-            updateActiveBiome(score);
+            updateActiveBiome(0.016, score);
             
             bullets.length = 0;
             enemyBullets.length = 0;
@@ -6966,7 +7000,7 @@
                 return;
             }
 
-            updateActiveBiome(score);
+            updateActiveBiome(dt, score);
             
             // GRO-1028: Audio drama systems — biome ambient loop & story beats
             updateBiomeAmbientLoop(dt);
@@ -7056,9 +7090,12 @@
             }
 
             player.update(dt);
+            for (const rp of remotePlayers) {
+                if (!rp.isPulledOut || rp.pullOutTimer > 0) rp.update(dt);
+            }
 
             // --- Overheat detection (§6.3) — Supreme Nova (weapon 5) held fire tracking ---
-            const playerFiring = (keys[' '] || keys['j'] || keys['J']) && player.weaponLevel === 5;
+            const playerFiring = keys[player.inputKeys.fire] && player.weaponLevel === 5;
             if (playerFiring && !player.isSpecialActive) {
                 overheatTimer += dt;
                 overheatWarning = overheatTimer >= 3.0;
@@ -7087,6 +7124,48 @@
 
             // --- Low-health pulse & glitch timers (§6.4) ---
             const hpPct = player.shield / player.shieldMax;
+
+            // GRO-958: Multiplayer — process joins/leaves, sync remote player state
+            if (window.Multiplayer) {
+                Multiplayer.update(dt);
+                // P2 joins by pressing Enter/NumpadEnter during gameplay
+                if (keys['Enter'] && Multiplayer.count < Multiplayer.maxPlayers && !remotePlayers.find(rp => rp.playerId === 2)) {
+                    Multiplayer.requestJoin('interceptor');
+                    Multiplayer.processJoins(biomeLevel);
+                    const rp2 = new Player('interceptor', 2);
+                    rp2.x = 120; rp2.y = 200;
+                    rp2.isRemote = true;
+                    remotePlayers.push(rp2);
+                }
+                // P3 joins by pressing Numpad3  (key '3')
+                if (keys['3'] && Multiplayer.count < Multiplayer.maxPlayers && !remotePlayers.find(rp => rp.playerId === 3)) {
+                    Multiplayer.requestJoin('interceptor');
+                    Multiplayer.processJoins(biomeLevel);
+                    const rp3 = new Player('interceptor', 3);
+                    rp3.x = 140; rp3.y = 240;
+                    rp3.isRemote = true;
+                    remotePlayers.push(rp3);
+                }
+                // Sync remote player shield/state back to Multiplayer module
+                for (const rp of remotePlayers) {
+                    const mp = Multiplayer.players.find(p => p.id === rp.playerId);
+                    if (mp && mp.alive) {
+                        mp.shield = rp.shield;
+                        mp.x = rp.x;
+                        mp.y = rp.y;
+                        if (rp.isPulledOut && !mp._wasPulledOut) {
+                            mp._wasPulledOut = true;
+                            Multiplayer.requestLeave(rp.playerId);
+                        }
+                        if (!rp.isPulledOut) mp._wasPulledOut = false;
+                    }
+                }
+                // Process any queued leaves
+                const leaveLine = Multiplayer.processLeaves();
+                if (leaveLine) {
+                    floatingTexts.push({ text: leaveLine, x: canvas.width/2, y: 60, life: 3.0, color: '#ff6600' });
+                }
+            }
             if (hpPct < 0.25) {
                 lowHealthPulseTimer += dt;
                 // Glitch lines at <10% HP: cycle 100ms glitch, then 1-2s cooldown
@@ -7108,32 +7187,18 @@
             }
 
             if (!bossSpawned && !bossIntroPlaying) {
-                enemySpawnTimer -= dt;
-                if (enemySpawnTimer <= 0) {
-                    const r = Math.random();
-                    if (r < 0.45) {
-                        enemies.push(new Enemy('scout'));
-                    } else if (r < 0.8) {
-                        enemies.push(new Enemy('interceptor'));
-                    } else {
-                        enemies.push(new Enemy('heavy'));
-                    }
-                    
-                    let spawnModifier = 1.0;
-                    if (difficulty === 'easy') spawnModifier = 1.3;
-                    else if (difficulty === 'hard') spawnModifier = 0.8;
-                    
-                    enemySpawnTimer = Math.max(0.5, (1.5 - (score / 15000)) * spawnModifier);
-                    // GRO-1006: apply seeded procedural spawn timing ±20%
-                    const _spawnRng = mulberry32(runSeed + Math.floor(gameTime * 100));
-                    enemySpawnTimer *= 0.8 + _spawnRng() * 0.4;
-                }
+                // Feeds wave spawner: LevelManager handles queuing and spawning of enemies
+                // (no direct spawning code needed here, LevelManager.update does it)
 
-                if (score >= 1500 && !bossAssetsLoaded) {
+                // Preload boss assets when approaching the current biome's boss threshold
+                const nextBossIdx = bossesDefeated;
+                const preloadThreshold = nextBossIdx < 10 ? BOSS_SCORE_THRESHOLDS[nextBossIdx] - 100 : 2900;
+                if (score >= preloadThreshold && !bossAssetsLoaded) {
                     preloadBossAssets();
                 }
 
-                if (score >= 2000) {
+                // Check if current level has a boss trigger condition
+                if (window.LevelManager && LevelManager.currentLevelConfig && LevelManager.currentLevelConfig.bossTrigger) {
                     if (!bossSpawned) {
                         playBossIntro();
                     }
@@ -7170,6 +7235,19 @@
                     enemyBullets.splice(i, 1);
                     continue;
                 }
+                // GRO-958: Check remote players too
+                let ebHitRemote = false;
+                for (const rp of remotePlayers) {
+                    if (checkCollision(ebBox, rp)) {
+                        rp.takeDamage(12);
+                        ebHitRemote = true;
+                        break;
+                    }
+                }
+                if (ebHitRemote) {
+                    enemyBullets.splice(i, 1);
+                    continue;
+                }
 
                 if (eb.x < -20) {
                     enemyBullets.splice(i, 1);
@@ -7183,6 +7261,20 @@
                 if (checkCollision(e, player)) {
                     player.takeDamage(20);
                     createExplosion(e.x + e.width/2, e.y + e.height/2, e.color, 10);
+                    enemies.splice(i, 1);
+                    continue;
+                }
+                // GRO-958: Check remote players
+                let enemyHitRemote = false;
+                for (const rp of remotePlayers) {
+                    if (checkCollision(e, rp)) {
+                        rp.takeDamage(20);
+                        createExplosion(e.x + e.width/2, e.y + e.height/2, e.color, 10);
+                        enemyHitRemote = true;
+                        break;
+                    }
+                }
+                if (enemyHitRemote) {
                     enemies.splice(i, 1);
                     continue;
                 }
@@ -7531,6 +7623,7 @@
             enemies.forEach(e => e.draw());
             if (boss) boss.draw();
             player.draw();
+            for (const rp of remotePlayers) rp.draw();
             vfxExplosions.forEach(ex => ex.draw());
             
             // Combo counter HUD overlay
@@ -8009,9 +8102,10 @@
             loadPortraitSprites();
             loadEnemySprites();
             loadVFXSprites();
-            
-            // Start ambient audio on first interaction
-            if (!ambientAudio || !ambientAudio.src) switchAmbientAudio(biomeLevel || 1);
+            if (window.LevelManager && !LevelManager.initialized) {
+                LevelManager.initialized = true;
+                LevelManager.init();
+            }
             
             if (currentScreen !== SCREENS.PLAYING) {
                 startMenuMusic();
