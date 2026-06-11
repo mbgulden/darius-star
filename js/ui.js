@@ -2345,6 +2345,8 @@
 
                 // Narrative flags: entering biome 3 (Coelacanth Lair) — dreamer connection deepens
                 if (biomeLevel === 3) setNarrativeFlag('dreamer_connection', 1);
+                // GRO-1045: Cross defects at B5 level_end — set flag on B6 entry
+                if (biomeLevel === 6) setNarrativeFlag('cross_defected', 1);
                 // Biome 10 (Core Rift) — final confrontation, all flags intensify
                 if (biomeLevel === 10) {
                     setNarrativeFlag('coelacanth_mercy', 1);
