@@ -37,10 +37,10 @@ in dependency order, with `game_loop.js` last.
 ## Key Architecture Notes
 - **No IIFE wrappers** — modules use top-level scope. Classes defined in one module
   are visible to all subsequent modules via global scope.
-- **Duplicate functions exist** — some functions (`createExplosion`, `spawnHitFlash`,
-  `startNGPlus`, `determineEnding`) appear in both extracted modules AND `game_loop.js`.
-  The `game_loop.js` versions overwrite module versions on load. This is a known
-  cleanup debt — the duplicates are functionally identical.
+- **Shared utility functions** — `createExplosion`, `spawnHitFlash`, `checkCollision`,
+  `setNarrativeFlag`, `getNarrativeFlag`, `determineEnding`, `startNGPlus`,
+  `resetGame`, `handleDeathOrVictoryRestart`, `resizeCanvas` are defined in
+  `game_loop.js` and called from multiple modules. No duplicates exist.
 - **Syntax verification** — use `scripts/verify_syntax.py` for all files.
   `node --check` works for class/function-only modules but fails on `game_loop.js`
   (top-level `const` in CJS mode).
