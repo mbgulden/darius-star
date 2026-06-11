@@ -299,6 +299,14 @@ const BanterEngine = {
         return line;
     },
 
+    triggerDirect(line, duration = this._lineDuration) {
+        if (!line) return null;
+        this.clear();
+        this._activeLine = line;
+        this._displayTimer = duration;
+        return line;
+    },
+
     update(dt) {
         if (this._displayTimer > 0) {
             this._displayTimer -= dt;

@@ -15,6 +15,21 @@
             }
 
             update(dt) {
+                if (this.homingTarget && this.homingTarget.hp !== undefined && this.homingTarget.hp > 0) {
+                    const tx = this.homingTarget.x + (this.homingTarget.width || 0) / 2;
+                    const ty = this.homingTarget.y + (this.homingTarget.height || 0) / 2;
+                    const desired = Math.atan2(ty - this.y, tx - this.x);
+                    const speed = Math.hypot(this.vx, this.vy) || 430;
+                    const current = Math.atan2(this.vy, this.vx);
+                    let delta = desired - current;
+                    while (delta > Math.PI) delta -= Math.PI * 2;
+                    while (delta < -Math.PI) delta += Math.PI * 2;
+                    const turn = Math.max(-1, Math.min(1, delta)) * (this.homingStrength || 4) * dt;
+                    const next = current + turn;
+                    this.vx = Math.cos(next) * speed;
+                    this.vy = Math.sin(next) * speed;
+                }
+
                 this.x += this.vx * dt;
                 this.y += this.vy * dt;
                 this.age += dt;
@@ -31,6 +46,23 @@
                 // Rotate to face bullet direction
                 const angle = Math.atan2(this.vy, this.vx);
                 ctx.rotate(angle);
+
+                if (this.secondaryType === 'missile') {
+                    ctx.shadowColor = this.color;
+                    ctx.shadowBlur = 10;
+                    ctx.fillStyle = this.color;
+                    ctx.beginPath();
+                    ctx.moveTo(10, 0);
+                    ctx.lineTo(-8, -4);
+                    ctx.lineTo(-4, 0);
+                    ctx.lineTo(-8, 4);
+                    ctx.closePath();
+                    ctx.fill();
+                    ctx.fillStyle = '#ff3300';
+                    ctx.fillRect(-12, -2, 5, 4);
+                    ctx.restore();
+                    return;
+                }
 
                 const sprite = vfxSprites['laser'];
                 if (sprite && sprite.complete && sprite.naturalWidth > 0) {

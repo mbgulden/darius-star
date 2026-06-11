@@ -67,7 +67,7 @@
         let masterVolume = 0.8;
         let sfxVolume = 0.8;
         let musicVolume = 0.6;
-        let difficulty = 'normal'; // 'easy', 'normal', 'hard'
+        let difficulty = 'normal'; // 'easy', 'normal', 'hard', 'insane'
         
         // Content channel toggles — "Go Big or Go Home" immersion settings
         let banterEnabled = true;       // Banter System — character dialogue during gameplay
@@ -410,9 +410,10 @@
             } else if (index === 2) { // Music Volume
                 musicVolume = Math.max(0, Math.min(1.0, musicVolume + dir * step));
             } else if (index === 3) { // Difficulty
-                const diffs = ['easy', 'normal', 'hard'];
+                const diffs = ['easy', 'normal', 'hard', 'insane'].filter(d => d !== 'insane' || isInsaneDifficultyUnlocked());
                 let currentIdx = diffs.indexOf(difficulty);
-                currentIdx = (currentIdx + dir + 3) % 3;
+                if (currentIdx < 0) currentIdx = 1;
+                currentIdx = (currentIdx + dir + diffs.length) % diffs.length;
                 difficulty = diffs[currentIdx];
             } else if (index === 4) { // Audio Tunnels — toggle
                 audioTunnelsEnabled = !audioTunnelsEnabled;
@@ -758,8 +759,9 @@
                         ctx.fillText(Math.round(volVal * 100) + '%', 595, itemY + 5);
                     } else if (i === 3) {
                         ctx.fillText(SETTINGS_OPTIONS[i], 220, itemY + 5);
+                        const cfg = getCurrentDifficultyConfig();
                         ctx.fillStyle = isSelected ? '#ffffff' : '#6a6a7f';
-                        ctx.fillText(difficulty.toUpperCase(), 450, itemY + 5);
+                        ctx.fillText(`${cfg.label} (${cfg.id.toUpperCase()})`, 450, itemY + 5);
                     } else if (i >= 4 && i <= 6) {
                         // Toggle settings: AUDIO TUNNELS, BANTER SYSTEM, STREAMER MODE
                         ctx.fillText(SETTINGS_OPTIONS[i], 220, itemY + 5);

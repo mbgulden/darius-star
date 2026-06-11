@@ -846,6 +846,7 @@
     <!-- Launch Bar -->
     <div class="launch-bar">
         <button class="btn-launch" id="btn-launch">▸  LAUNCH SOLO  ◂</button>
+        <div class="difficulty-selector" id="difficulty-selector" aria-label="Difficulty selection"></div>
         <div class="launch-info">
             Press <span class="key">ENTER</span> or click <span class="key">LAUNCH</span> to launch.<br>
             Keyboard navigation: <span class="key">W</span><span class="key">A</span><span class="key">S</span><span class="key">D</span> (P1) · <span class="key">▲</span><span class="key">◀</span><span class="key">▼</span><span class="key">▶</span> (P2)
@@ -918,6 +919,42 @@
                 special: { name: 'Guardian Protocol (90s)', desc: 'Deploy 500 HP shield dome. +15% ally shield regen.' }
             }
         ];
+
+        const DIFFICULTIES = [
+            { id: 'easy', label: 'CADET', lives: 3, hint: 'Enemy HP ×0.7 · speed ×0.8 · more drops' },
+            { id: 'normal', label: 'PILOT', lives: 2, hint: 'Standard balance' },
+            { id: 'hard', label: 'ACE', lives: 1, hint: 'Enemy HP ×1.3 · speed ×1.2 · fewer drops' },
+            { id: 'insane', label: 'CYBER', lives: 1, hint: 'Unlockable · HP ×1.6 · no drops' }
+        ];
+
+        function insaneUnlocked() {
+            return localStorage.getItem('dariusStar_insaneUnlocked') === 'true' ||
+                localStorage.getItem('darius_star_ngplus_eligible') !== null;
+        }
+
+        let selectedDifficulty = localStorage.getItem('dariusStar_difficulty') || 'normal';
+        if (selectedDifficulty === 'insane' && !insaneUnlocked()) selectedDifficulty = 'hard';
+
+        function renderDifficultySelector() {
+            const wrap = document.getElementById('difficulty-selector');
+            if (!wrap) return;
+            wrap.innerHTML = '<span class="difficulty-label">DIFFICULTY</span>';
+            DIFFICULTIES.forEach(diff => {
+                const locked = diff.id === 'insane' && !insaneUnlocked();
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'difficulty-btn' + (selectedDifficulty === diff.id ? ' active' : '') + (locked ? ' locked' : '');
+                btn.textContent = diff.label;
+                btn.title = locked ? 'Unlock CYBER by clearing a run / NG+ eligibility.' : diff.hint;
+                btn.addEventListener('click', () => {
+                    if (locked) return;
+                    selectedDifficulty = diff.id;
+                    localStorage.setItem('dariusStar_difficulty', selectedDifficulty);
+                    renderDifficultySelector();
+                });
+                wrap.appendChild(btn);
+            });
+        }
 
         const STAT_MAX = 200;
         const CUSTOM_COLORS = [
@@ -1388,9 +1425,11 @@
                     shipName: p2Active ? p2Ship.name : null,
                     color: p2Active ? p2Color : null
                 },
+                difficulty: selectedDifficulty,
                 timestamp: Date.now()
             };
             localStorage.setItem('dariusStar_shipSelection', JSON.stringify(selectionData));
+            localStorage.setItem('dariusStar_difficulty', selectedDifficulty);
 
             // Small delay to let game start sound effect play
             setTimeout(() => {
@@ -1502,6 +1541,7 @@
 
         // --- Initialize UI State ---
         renderCards();
+        renderDifficultySelector();
         updatePlayerPanel(1);
         updateLaunchButton();
 

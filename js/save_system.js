@@ -24,7 +24,7 @@
             score: 0,
             playTime: 0,
             deaths: 0,
-            lives: 3,
+            lives: 2,
             difficulty: 'normal',
             lastCheckpoint: null,
             upgrades: {},

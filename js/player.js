@@ -1,3 +1,55 @@
+// --- Difficulty Scaling System (GRO-928) ---
+const DIFFICULTY_CONFIG = {
+    easy: {
+        id: 'easy', label: 'CADET', description: 'Forgiving enemy pressure and more supplies.',
+        enemyHpMultiplier: 0.7, enemySpeedMultiplier: 0.8, enemyFireRateMultiplier: 0.6,
+        bossHpMultiplier: 0.7, powerupDropMultiplier: 1.5, playerDamageMultiplier: 0.7,
+        startingLives: 3, unlockable: false
+    },
+    normal: {
+        id: 'normal', label: 'PILOT', description: 'Standard Darius Star balance.',
+        enemyHpMultiplier: 1.0, enemySpeedMultiplier: 1.0, enemyFireRateMultiplier: 1.0,
+        bossHpMultiplier: 1.0, powerupDropMultiplier: 1.0, playerDamageMultiplier: 1.0,
+        startingLives: 2, unlockable: false
+    },
+    hard: {
+        id: 'hard', label: 'ACE', description: 'Faster enemies, tougher bosses, fewer drops.',
+        enemyHpMultiplier: 1.3, enemySpeedMultiplier: 1.2, enemyFireRateMultiplier: 1.5,
+        bossHpMultiplier: 1.3, powerupDropMultiplier: 0.7, playerDamageMultiplier: 1.3,
+        startingLives: 1, unlockable: false
+    },
+    insane: {
+        id: 'insane', label: 'CYBER', description: 'One life. No continues. No mercy.',
+        enemyHpMultiplier: 1.6, enemySpeedMultiplier: 1.4, enemyFireRateMultiplier: 1.8,
+        bossHpMultiplier: 1.6, powerupDropMultiplier: 0.0, playerDamageMultiplier: 1.5,
+        startingLives: 1, unlockable: true
+    }
+};
+
+function isInsaneDifficultyUnlocked() {
+    try {
+        return localStorage.getItem('dariusStar_insaneUnlocked') === 'true' ||
+            localStorage.getItem('darius_star_ngplus_eligible') !== null;
+    } catch (e) {
+        return false;
+    }
+}
+
+function getDifficultyConfig(id) {
+    let key = DIFFICULTY_CONFIG[id] ? id : 'normal';
+    if (key === 'insane' && !isInsaneDifficultyUnlocked()) key = 'hard';
+    return DIFFICULTY_CONFIG[key];
+}
+
+function getCurrentDifficultyConfig() {
+    return getDifficultyConfig(typeof difficulty !== 'undefined' ? difficulty : 'normal');
+}
+
+window.DIFFICULTY_CONFIG = DIFFICULTY_CONFIG;
+window.getDifficultyConfig = getDifficultyConfig;
+window.getCurrentDifficultyConfig = getCurrentDifficultyConfig;
+window.isInsaneDifficultyUnlocked = isInsaneDifficultyUnlocked;
+
 // --- Player Ship Class ---
 class Player {
     constructor(shipType = 'interceptor', playerId = 1) {
@@ -49,12 +101,16 @@ class Player {
             this.shootCooldown = 0.15;
         }
         
-        // Adjust base stats based on difficulty level
-        if (difficulty === 'easy') {
+        // Adjust base stats based on selected difficulty.
+        const difficultyConfig = getCurrentDifficultyConfig();
+        if (difficultyConfig.id === 'easy') {
             this.shieldMax += 30;
             this.weaponLevel = 2;
-        } else if (difficulty === 'hard') {
+        } else if (difficultyConfig.id === 'hard') {
             this.shieldMax = Math.round(this.shieldMax * 0.8);
+            this.weaponLevel = 1;
+        } else if (difficultyConfig.id === 'insane') {
+            this.shieldMax = Math.round(this.shieldMax * 0.65);
             this.weaponLevel = 1;
         } else {
             this.weaponLevel = 1;
@@ -115,6 +171,16 @@ class Player {
         this.shield = this.shieldMax;
         this.shootTimer = 0;
         this.invulnerable = 0;
+
+        // Secondary weapon system (GRO-929)
+        this.secondaryMeter = 0;
+        this.secondaryMeterMax = 100;
+        this.secondaryFlashTimer = 0;
+        this.secondarySpecialType = null;
+        this.secondarySpecialPulse = 0;
+        this.secondaryShieldWallTimer = 0;
+        this.secondaryDecoys = [];
+        this.secondaryKeyLatch = { bomb: false, missile: false, special: false };
         
         // GRO-1003: Pull-out system — replaces death
         this.isPulledOut = false;       // Ship disabled, auto-repairing
@@ -203,30 +269,6 @@ class Player {
                 }
             }
             
-            // Cyber Overload / Guardian Protocol Special Ability
-            const canSpecial = keys[this.inputKeys.special] && this.specialCooldown <= 0 && !this.isSpecialActive;
-            if (canSpecial) {
-                this.isSpecialActive = true;
-                this.specialActiveTimer = this.specialMaxDuration;
-                playSound('powerup');
-                createExplosion(this.x + this.width/2, this.y + this.height/2, this.color, 15);
-                
-                if (this.shipType === 'warden') {
-                    const spRank = window.DS_UpgradeSystem ? (window.DS_UpgradeSystem.state.upgrades.specials || 0) : 0;
-                    this.wardenShieldDomeHP = 500 + (spRank >= 5 ? 300 : 0); // 800 if upgraded
-                }
-            }
-            
-            if (this.isSpecialActive) {
-                this.specialActiveTimer -= dt;
-                if (this.specialActiveTimer <= 0) {
-                    this.isSpecialActive = false;
-                    this.specialCooldown = this.specialMaxCooldown;
-                }
-            } else if (this.specialCooldown > 0) {
-                this.specialCooldown -= dt;
-            }
-
             // Add normal thruster trail
             if (!this.isBoosting && Math.random() < 0.15) {
                 let trailColor;
@@ -251,6 +293,9 @@ class Player {
                 ));
             }
         }
+
+        // Secondary weapons are always active, even before permanent upgrades exist.
+        this.updateSecondaryWeapons(dt);
 
         this.x += dx * currentSpeed * dt;
         this.y += dy * currentSpeed * dt;
@@ -325,7 +370,11 @@ class Player {
 
         let currentShootCooldown = this.shootCooldown;
         if (this.isSpecialActive) {
-            currentShootCooldown *= 0.5; // fire twice as fast!
+            if (this.secondarySpecialType === 'striker') {
+                currentShootCooldown = Math.min(currentShootCooldown, 0.025);
+            } else {
+                currentShootCooldown *= 0.5; // fire twice as fast!
+            }
         }
 
         if (this.shootTimer > 0) {
@@ -403,6 +452,196 @@ class Player {
         }
     }
 
+    addSecondaryCharge(amount, label = '') {
+        if (!Number.isFinite(amount) || amount <= 0) return;
+        const before = this.secondaryMeter;
+        this.secondaryMeter = Math.min(this.secondaryMeterMax, this.secondaryMeter + amount);
+        if (this.secondaryMeter >= this.secondaryMeterMax && before < this.secondaryMeterMax) {
+            this.secondaryFlashTimer = 1.2;
+            playSound('powerup');
+            floatingTexts.push({
+                text: 'SPECIAL READY',
+                x: this.x + this.width / 2,
+                y: this.y - 28,
+                life: 1.5,
+                color: '#b026ff',
+                update(dt) { this.y -= 18 * dt; this.life -= dt; },
+                draw() {
+                    ctx.save();
+                    ctx.globalAlpha = Math.max(0, this.life / 1.5);
+                    ctx.fillStyle = this.color;
+                    ctx.font = 'bold 12px monospace';
+                    ctx.textAlign = 'center';
+                    ctx.fillText(this.text, this.x, this.y);
+                    ctx.restore();
+                }
+            });
+        } else if (label) {
+            floatingTexts.push(new FloatingText(this.x + this.width / 2, this.y - 18, `+${amount} ${label}`, '#b026ff'));
+        }
+    }
+
+    consumeSecondaryCharge(cost) {
+        if (this.secondaryMeter < cost) {
+            floatingTexts.push(new FloatingText(this.x + this.width / 2, this.y - 18, 'METER LOW', '#ff0033'));
+            playSound('hit');
+            return false;
+        }
+        this.secondaryMeter -= cost;
+        return true;
+    }
+
+    updateSecondaryWeapons(dt) {
+        if (this.secondaryFlashTimer > 0) this.secondaryFlashTimer -= dt;
+        if (this.specialCooldown > 0) this.specialCooldown -= dt;
+
+        const bombPressed = !!(keys['b'] || keys['B']);
+        const missilePressed = !!(keys['m'] || keys['M']);
+        const specialPressed = !!keys[this.inputKeys.special];
+
+        if (bombPressed && !this.secondaryKeyLatch.bomb) this.fireSmartBomb();
+        if (missilePressed && !this.secondaryKeyLatch.missile) this.fireHomingMissiles();
+        if (specialPressed && !this.secondaryKeyLatch.special) this.activateShipSpecial();
+
+        this.secondaryKeyLatch.bomb = bombPressed;
+        this.secondaryKeyLatch.missile = missilePressed;
+        this.secondaryKeyLatch.special = specialPressed;
+
+        if (this.isSpecialActive) {
+            this.specialActiveTimer -= dt;
+            this.secondarySpecialPulse -= dt;
+
+            if (this.secondarySpecialType === 'tempest' && this.secondarySpecialPulse <= 0) {
+                this.secondarySpecialPulse = 0.12;
+                this.spawnHellstormBurst();
+            }
+
+            if (this.secondarySpecialType === 'bastion') {
+                this.invulnerable = Math.max(this.invulnerable, 0.15);
+            }
+
+            if (this.specialActiveTimer <= 0) {
+                this.isSpecialActive = false;
+                this.secondarySpecialType = null;
+                this.wardenShieldDomeHP = 0;
+                this.specialCooldown = Math.max(this.specialCooldown, 2.0);
+            }
+        }
+
+        for (let i = this.secondaryDecoys.length - 1; i >= 0; i--) {
+            const d = this.secondaryDecoys[i];
+            d.life -= dt;
+            d.x += d.vx * dt;
+            d.y += Math.sin(gameTime * 6 + d.phase) * 18 * dt;
+            if (d.life <= 0) this.secondaryDecoys.splice(i, 1);
+        }
+    }
+
+    fireSmartBomb() {
+        if (!this.consumeSecondaryCharge(50)) return;
+        playSound('explosion');
+        createExplosion(canvas.width / 2, canvas.height / 2, '#ff00aa', 60);
+
+        let destroyed = 0;
+        for (let i = enemies.length - 1; i >= 0; i--) {
+            const e = enemies[i];
+            const damage = 8;
+            e.hp -= damage;
+            createExplosion(e.x + e.width / 2, e.y + e.height / 2, '#ff00aa', 8);
+            if (e.hp <= 0) {
+                destroyed++;
+                const comboMult = Combo.onKill();
+                score += Math.floor(e.scoreValue * comboMult);
+                if (window.Economy && Economy.shouldDrop(e.id)) {
+                    const drop = Economy.rollDrop(e.enemyType, biomeLevel);
+                    const ecoDrop = Economy.createDrop(e.x + e.width / 2, e.y + e.height / 2, drop.type, drop.amount);
+                    scrapDrops.push(new ScrapDrop(ecoDrop.x, ecoDrop.y, ecoDrop.type, drop.amount));
+                }
+                enemies.splice(i, 1);
+            }
+        }
+
+        enemyBullets.length = 0;
+        if (boss) boss.takeDamage(40);
+        floatingTexts.push(new FloatingText(this.x + this.width / 2, this.y - 24, `SMART BOMB ${destroyed ? 'x' + destroyed : ''}`, '#ff00aa'));
+    }
+
+    fireHomingMissiles() {
+        if (!this.consumeSecondaryCharge(30)) return;
+        playSound('shoot');
+        const candidates = enemies.slice().sort((a, b) => Math.hypot(a.x - this.x, a.y - this.y) - Math.hypot(b.x - this.x, b.y - this.y));
+        for (let i = 0; i < 3; i++) {
+            const target = candidates[i] || boss || null;
+            const missile = new Bullet(this.x + this.width, this.y + 4 + i * 6, 430, (i - 1) * 80, '#ffaa00', 7, true);
+            missile.homingTarget = target;
+            missile.homingStrength = 5.5;
+            missile.damage = 6;
+            missile.secondaryType = 'missile';
+            bullets.push(missile);
+        }
+        floatingTexts.push(new FloatingText(this.x + this.width / 2, this.y - 24, 'MISSILES AWAY', '#ffaa00'));
+    }
+
+    activateShipSpecial() {
+        if (this.specialCooldown > 0 || this.isSpecialActive) return;
+        if (!this.consumeSecondaryCharge(100)) return;
+
+        const type = this.shipType === 'interceptor' || this.shipType === 'scout' ? 'striker' : this.shipType;
+        this.secondarySpecialType = type;
+        this.isSpecialActive = true;
+        this.specialActiveTimer = 3.0;
+        this.secondarySpecialPulse = 0;
+        playSound('powerup');
+        createExplosion(this.x + this.width / 2, this.y + this.height / 2, this.color, 22);
+
+        if (type === 'phantom') {
+            this.x = Math.min(canvas.width - this.width - 10, this.x + 200);
+            this.invulnerable = Math.max(this.invulnerable, 1.2);
+            this.specialActiveTimer = 0.8;
+        } else if (type === 'bastion') {
+            this.shield = Math.min(this.shieldMax, this.shield + 60);
+            this.invulnerable = Math.max(this.invulnerable, 3.0);
+        } else if (type === 'tempest') {
+            this.spawnHellstormBurst();
+        } else if (type === 'specter') {
+            this.spawnGhostDecoys();
+        } else if (type === 'warden') {
+            const spRank = window.DS_UpgradeSystem ? (window.DS_UpgradeSystem.state.upgrades.specials || 0) : 0;
+            this.wardenShieldDomeHP = 500 + (spRank >= 5 ? 300 : 0);
+            this.specialActiveTimer = 4.0;
+        }
+
+        const names = { striker: 'OVERCHARGE', phantom: 'PHASE BLINK', bastion: 'FORTRESS', tempest: 'HELLSTORM', specter: 'GHOST SWARM', warden: 'GUARDIAN DOME' };
+        floatingTexts.push(new FloatingText(this.x + this.width / 2, this.y - 30, names[type] || 'SPECIAL', '#b026ff'));
+    }
+
+    spawnHellstormBurst() {
+        const cx = this.x + this.width / 2;
+        const cy = this.y + this.height / 2;
+        for (let i = 0; i < 16; i++) {
+            const angle = (Math.PI * 2 * i) / 16;
+            const speed = 420;
+            const round = new Bullet(cx, cy, Math.cos(angle) * speed, Math.sin(angle) * speed, '#ff0055', 5, true);
+            round.damage = 2;
+            round.secondaryType = 'hellstorm';
+            bullets.push(round);
+        }
+    }
+
+    spawnGhostDecoys() {
+        this.secondaryDecoys.length = 0;
+        for (let i = 0; i < 3; i++) {
+            this.secondaryDecoys.push({
+                x: this.x - 18 - i * 18,
+                y: this.y + (i - 1) * 24,
+                vx: -15,
+                life: 5.0,
+                phase: i * 1.7
+            });
+        }
+        this.invulnerable = Math.max(this.invulnerable, 1.5);
+    }
+
     dodge() {
         // Determine dodge direction based on current movement input
         let ddx = 0, ddy = 0;
@@ -461,14 +700,17 @@ class Player {
     }
 
     takeDamage(amt) {
+        if (this.secondaryDecoys && this.secondaryDecoys.length > 0) {
+            const decoy = this.secondaryDecoys.pop();
+            createExplosion(decoy.x + this.width / 2, decoy.y + this.height / 2, '#b026ff', 14);
+            playSound('hit');
+            return;
+        }
         if (this.invulnerable > 0) return;
         if (this.isPulledOut) return; // GRO-1003: No damage while repairing
         
-        let damageMultiplier = 1.0;
-        if (difficulty === 'easy') damageMultiplier = 0.7;
-        else if (difficulty === 'hard') damageMultiplier = 1.3;
-        
-        const finalDmg = amt * damageMultiplier;
+        const difficultyConfig = getCurrentDifficultyConfig();
+        const finalDmg = amt * difficultyConfig.playerDamageMultiplier;
         
         // Warden Guardian Protocol dome shield absorption
         if (this.shipType === 'warden' && this.isSpecialActive && this.wardenShieldDomeHP > 0) {
@@ -731,6 +973,37 @@ class Player {
                     ctx.fill();
                 }
             }
+        }
+
+        // Specter ghost swarm decoys
+        if (this.secondaryDecoys && this.secondaryDecoys.length > 0) {
+            for (const decoy of this.secondaryDecoys) {
+                ctx.save();
+                ctx.globalAlpha = Math.max(0.2, decoy.life / 5) * 0.45;
+                ctx.translate(decoy.x - this.x, decoy.y - this.y);
+                ctx.strokeStyle = '#b026ff';
+                ctx.shadowColor = '#b026ff';
+                ctx.shadowBlur = 12;
+                ctx.beginPath();
+                ctx.moveTo(0, 4);
+                ctx.lineTo(25, 4);
+                ctx.lineTo(40, this.height / 2);
+                ctx.lineTo(25, this.height - 4);
+                ctx.lineTo(0, this.height - 4);
+                ctx.closePath();
+                ctx.stroke();
+                ctx.restore();
+            }
+        }
+
+        // Secondary meter ready flash
+        if (this.secondaryMeter >= this.secondaryMeterMax || this.secondaryFlashTimer > 0) {
+            const pulse = 0.35 + Math.sin(gameTime * 12) * 0.25;
+            ctx.strokeStyle = `rgba(176, 38, 255, ${pulse})`;
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(20, this.height / 2, 34, 0, Math.PI * 2);
+            ctx.stroke();
         }
 
         // Dodge-ready glow ring

@@ -139,7 +139,13 @@
                 // Uses mulberry32 seeded RNG: (runSeed * prime + enemyId) for deterministic uniqueness
                 const _varRng = mulberry32(runSeed * 31 + this.id);
                 this._speedVar = 0.88 + _varRng() * 0.24;       // ±12% speed variance
-                this.speed = Math.round(this.speed * this._speedVar);
+                const difficultyConfig = getCurrentDifficultyConfig();
+                this.hp = Math.max(1, Math.ceil(this.hp * difficultyConfig.enemyHpMultiplier));
+                this.speed = Math.round(this.speed * this._speedVar * difficultyConfig.enemySpeedMultiplier);
+                if (this.shootCooldown) {
+                    this.shootCooldown = this.shootCooldown / difficultyConfig.enemyFireRateMultiplier;
+                    this.shootTimer = Math.min(this.shootTimer || this.shootCooldown, this.shootCooldown);
+                }
                 this._moveVariant = Math.floor(_varRng() * 3);   // 0-2 movement pattern
                 this._bulletAngleShift = (_varRng() - 0.5) * 0.10; // ±5% bullet angle shift (radians)
             }
@@ -260,12 +266,13 @@
                 this.y = canvas.height / 2 - 80;
                 this.width = 180;
                 this.height = 140;
-                this.hpMax = 120;
-                this.hp = 120;
+                const difficultyConfig = getCurrentDifficultyConfig();
+                this.hpMax = Math.round(120 * difficultyConfig.bossHpMultiplier);
+                this.hp = this.hpMax;
                 this.state = 'intro';
                 this.stateTimer = 2;
                 this.bobTimer = 0;
-                this.shootTimer = 1.0;
+                this.shootTimer = 1.0 / difficultyConfig.enemyFireRateMultiplier;
                 this.laserWarningTimer = 0;
                 this.color = '#305080';
                 this.shieldColor = '#ff00aa';
@@ -383,13 +390,27 @@
                     enemyBullets.push(new EnemyBullet(this.x + 10, this.y + 50, -260, -80));
                     enemyBullets.push(new EnemyBullet(this.x + 10, this.y + 70, -280, 0));
                     enemyBullets.push(new EnemyBullet(this.x + 10, this.y + 90, -260, 80));
+                    const difficultyConfig = getCurrentDifficultyConfig();
+                    if (difficultyConfig.id === 'hard' || difficultyConfig.id === 'insane') {
+                        enemyBullets.push(new EnemyBullet(this.x + 30, this.y + 40, -300, -130));
+                        enemyBullets.push(new EnemyBullet(this.x + 30, this.y + 100, -300, 130));
+                    }
+                    if (difficultyConfig.id === 'insane') {
+                        const dy = player.y - (this.y + 70);
+                        const dx = player.x - (this.x + 20);
+                        const dist = Math.sqrt(dx*dx + dy*dy) || 1;
+                        enemyBullets.push(new EnemyBullet(this.x + 20, this.y + 70, (dx/dist) * 360, (dy/dist) * 360));
+                    }
                 } else if (this.state === 'rage') {
                     const dy = player.y - (this.y + 70);
                     const dx = player.x - (this.x + 10);
                     const dist = Math.sqrt(dx*dx + dy*dy);
                     enemyBullets.push(new EnemyBullet(this.x + 10, this.y + 70, (dx/dist) * 320, (dy/dist) * 320));
 
-                    if (Math.random() < 0.25 && enemies.length < 5) {
+                    const difficultyConfig = getCurrentDifficultyConfig();
+                    const minionChance = difficultyConfig.id === 'insane' ? 0.45 : (difficultyConfig.id === 'hard' ? 0.35 : 0.25);
+                    const minionCap = difficultyConfig.id === 'insane' ? 8 : (difficultyConfig.id === 'hard' ? 6 : 5);
+                    if (Math.random() < minionChance && enemies.length < minionCap) {
                         enemies.push(new Enemy('boss_minion'));
                     }
                 } else if (this.state === 'laser_fire') {
@@ -434,7 +455,8 @@
                     
                     // Spawn Economy-based Data Fragments on Boss defeat!
                     if (typeof scrapDrops !== 'undefined' && window.Economy) {
-                        for (let k = 0; k < 5; k++) {
+                        const bossDropCount = getCurrentDifficultyConfig().id === 'insane' ? 0 : 5;
+                        for (let k = 0; k < bossDropCount; k++) {
                             const drop = Economy.rollDrop(this.enemyType, biomeLevel);
                             const ecoDrop = Economy.createDrop(
                                 this.x + 50 + (Math.random()-0.5)*50,
