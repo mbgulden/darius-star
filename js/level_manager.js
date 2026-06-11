@@ -125,23 +125,23 @@ const LevelManager = {
     // --- Enemy count per wave (from wave designer §2) ---
     _waveEnemyCount() {
         const baseWaveSize = 4;
-        const playerCount = (typeof Multiplayer !== 'undefined' && Multiplayer.activePlayers)
-            ? Multiplayer.activePlayers : 1;
+        const playerCount = (typeof Multiplayer !== 'undefined' && Multiplayer.count)
+            ? Multiplayer.count : 1;
         return Math.floor(baseWaveSize + (this.level * 1.5) + (playerCount * 2));
     },
 
     // --- Multiplayer HP multiplier (from wave designer §5) ---
     _multiplayerHPMultiplier() {
-        const p = (typeof Multiplayer !== 'undefined' && Multiplayer.activePlayers)
-            ? Multiplayer.activePlayers : 1;
+        const p = (typeof Multiplayer !== 'undefined' && Multiplayer.count)
+            ? Multiplayer.count : 1;
         const table = { 1: 1.0, 2: 1.6, 3: 2.2, 4: 3.0 };
         return table[p] || 1.0;
     },
 
     // --- Multiplayer count multiplier ---
     _multiplayerCountMultiplier() {
-        const p = (typeof Multiplayer !== 'undefined' && Multiplayer.activePlayers)
-            ? Multiplayer.activePlayers : 1;
+        const p = (typeof Multiplayer !== 'undefined' && Multiplayer.count)
+            ? Multiplayer.count : 1;
         const table = { 1: 1.0, 2: 1.4, 3: 1.8, 4: 2.2 };
         return table[p] || 1.0;
     },
