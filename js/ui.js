@@ -2422,3 +2422,45 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+// GRO-1160: Touch/click handler for LOAD_GAME screen
+canvas.addEventListener('click', function(e) {
+    if (typeof currentScreen === 'undefined' || currentScreen !== SCREENS.LOAD_GAME) return;
+    var rect = canvas.getBoundingClientRect();
+    var scaleX = canvas.width / rect.width;
+    var scaleY = canvas.height / rect.height;
+    var cx = (e.clientX - rect.left) * scaleX;
+    var cy = (e.clientY - rect.top) * scaleY;
+    var regions = window._loadHitRegions || [];
+    var saves = window._loadSaves || [];
+    for (var i = 0; i < regions.length; i++) {
+        var r = regions[i];
+        // Check slot selection area
+        if (cx >= r.x && cx <= r.x + r.w && cy >= r.y && cy <= r.y + r.h) {
+            window._loadSelectedSlot = i;
+            // Double-tap to load
+            if (window._lastSlotTap === i && Date.now() - (window._lastSlotTapTime || 0) < 400) {
+                confirmLoadGame();
+                window._lastSlotTap = -1;
+            } else {
+                window._lastSlotTap = i;
+                window._lastSlotTapTime = Date.now();
+            }
+            return;
+        }
+        // Check LOAD button
+        if (r.btnLoad && cx >= r.btnLoad.x && cx <= r.btnLoad.x + r.btnLoad.w && cy >= r.btnLoad.y && cy <= r.btnLoad.y + r.btnLoad.h) {
+            window._loadSelectedSlot = i;
+            confirmLoadGame();
+            return;
+        }
+        // Check DELETE button
+        if (r.btnDelete && cx >= r.btnDelete.x && cx <= r.btnDelete.x + r.btnDelete.w && cy >= r.btnDelete.y && cy <= r.btnDelete.y + r.btnDelete.h) {
+            if (confirm('Delete save in Slot ' + (i+1) + '?')) {
+                CampaignSave.delete(i);
+                loadGameScreen();
+            }
+            return;
+        }
+    }
+});
