@@ -85,12 +85,12 @@
             6: 'inferno_core',      // also known as fire_nebula
             7: 'storm_belt',
             8: 'derelict_fleet',
-            9: 'xenomorph_hive',    // no asset files yet — procedural fallback
+            9: 'xenomorph_hive',    // has asset files
             10: 'core_rift'         // no asset files yet — procedural fallback
         };
 
         // Known-missing biomes that have zero background image files
-        const BIOMES_WITHOUT_ASSETS = new Set([9, 10]);
+        const BIOMES_WITHOUT_ASSETS = new Set([10]);
 
         // Preloads far + near (or strip fallback) images for a single biome.
         // Returns immediately; images load asynchronously.
@@ -230,7 +230,7 @@
                     'bg_3': 'coelacanth_lair', 'bg_4': 'nebula_drift',
                     'bg_5': 'ice_rings', 'bg_6': 'inferno_core',
                     'bg_7': 'storm_belt', 'bg_8': 'derelict_fleet',
-                    'bg_9': 'core_rift', 'bg_10': 'core_rift'
+                    'bg_9': 'xenomorph_hive', 'bg_10': 'core_rift'
                 };
                 const stripName = BIOME_STRIP_MAP[baseKey] || 'abyssal_trench';
                 if (!bgImages[newKey]) {
@@ -244,16 +244,18 @@
 
             update(dt) {
                 const img = this.getImg();
-                // Use procedural canvas width as fallback (2× viewport for seamless tiling)
+                // Use scaled width so offset wrap aligns with draw() tiling
                 let w;
                 if (img && img.complete && img.naturalWidth > 0) {
-                    w = img.width;
+                    w = img.width * this.scale;
                 } else {
                     const match = this.key.match(/bg_(\d+)/);
                     const biomeNum = match ? parseInt(match[1]) : 1;
                     const procBg = biomeBgCanvases[biomeNum] || generateBiomeBackground(biomeNum);
-                    w = procBg ? procBg.width : (canvas.width || 800);
+                    w = procBg ? procBg.width * this.scale : (canvas.width || 800);
                 }
+                // Guard against zero-width (uninitialized canvas or broken image)
+                if (w <= 0) w = canvas.width || 800;
                 this.offset = (this.offset + this.speed * dt) % w;
             }
 
