@@ -8,6 +8,7 @@
 
 const LevelManager = {
     // Current state
+    initialized: false,
     biome: 1,
     level: 1,
     wave: 1,
@@ -63,6 +64,21 @@ const LevelManager = {
         10: { midBoss: 240, biomeBoss: 400 }
     },
 
+    get currentBiome() {
+        return this.biome;
+    },
+
+    get currentLevel() {
+        return this.level;
+    },
+
+    init() {
+        this.initialized = true;
+        if (!this.currentLevelConfig) {
+            this.setBiomeAndLevel(this.biome, this.level);
+        }
+    },
+
     // --- Initialization ---
     setBiomeAndLevel(biome, level) {
         this.biome = Math.max(1, Math.min(10, biome));
@@ -76,19 +92,7 @@ const LevelManager = {
         this.totalEnemiesSpawned = 0;
         this.lastSpawnTime = 0;
 
-        // Build level config
-        const wavesInLevel = this._wavesForLevel(this.level);
-        const isBossLevel = this.level === 5 || this.level === 10;
-        this.currentLevelConfig = {
-            biome: this.biome,
-            level: this.level,
-            totalWaves: wavesInLevel,
-            midBoss: this.level === 5,
-            biomeBoss: this.level === 10,
-            bossTrigger: isBossLevel, // game_loop.js checks this
-            biomeName: this._biomeNames[this.biome] || 'Unknown',
-            enemyPool: this._biomeEnemies[this.biome] || this._biomeEnemies[1]
-        };
+        this._refreshLevelConfig(false);
 
         // Set initial wave
         this._queueWave();
@@ -151,7 +155,8 @@ const LevelManager = {
         const count = Math.floor(this._waveEnemyCount() * this._multiplayerCountMultiplier());
         const dist = this._typeDistribution(this.level);
         const pool = this.currentLevelConfig.enemyPool;
-        const rng = mulberry32 ? mulberry32(runSeed * 13 + this.biome * 100 + this.level * 10 + this.wave) : Math.random;
+        const seed = (typeof runSeed === 'number' ? runSeed : 1) * 13 + this.biome * 100 + this.level * 10 + this.wave;
+        const rng = (typeof mulberry32 === 'function') ? mulberry32(seed) : Math.random;
 
         // Build enemy type list for this wave
         const enemyTypes = [];
@@ -301,6 +306,8 @@ const LevelManager = {
                     // Wave interval (decreases 5% per biome from base 2.0s)
                     const interval = Math.max(1.0, 2.0 - (this.biome - 1) * 0.1);
                     this.waveTimer = -interval; // offset so first enemy appears after interval
+                } else {
+                    this.advanceLevel();
                 }
             }
         }
@@ -368,7 +375,12 @@ const LevelManager = {
         this.spawnQueue = [];
         this.enemiesSpawnedThisWave = 0;
 
-        // Update level config
+        this._refreshLevelConfig(false);
+
+        this._queueWave();
+    },
+
+    _refreshLevelConfig(bossTrigger) {
         const wavesInLevel = this._wavesForLevel(this.level);
         this.currentLevelConfig = {
             biome: this.biome,
@@ -376,12 +388,28 @@ const LevelManager = {
             totalWaves: wavesInLevel,
             midBoss: this.level === 5,
             biomeBoss: this.level === 10,
-            bossTrigger: false,
+            bossTrigger: Boolean(bossTrigger),
+            background: 'bg_' + this.biome,
+            particleSettings: this._particleSettingsForBiome(this.biome),
             biomeName: this._biomeNames[this.biome] || 'Unknown',
             enemyPool: this._biomeEnemies[this.biome] || this._biomeEnemies[1]
         };
+    },
 
-        this._queueWave();
+    _particleSettingsForBiome(biome) {
+        const settings = {
+            1: { type: 'mote', rate: 12, color: '#00ffff' },
+            2: { type: 'rust_flake', rate: 10, color: '#ff9b45' },
+            3: { type: 'mote', rate: 14, color: '#7cffb2' },
+            4: { type: 'nebula', rate: 10, color: '#b06cff' },
+            5: { type: 'ice', rate: 12, color: '#b8f4ff' },
+            6: { type: 'ember', rate: 13, color: '#ff6b2b' },
+            7: { type: 'spark', rate: 14, color: '#d6f7ff' },
+            8: { type: 'debris', rate: 9, color: '#9aa6b2' },
+            9: { type: 'spore', rate: 11, color: '#b8ff4d' },
+            10: { type: 'rift', rate: 15, color: '#ff4dff' }
+        };
+        return settings[biome] || settings[1];
     },
 
     // --- Reset to defaults ---
