@@ -18,6 +18,10 @@
     },
     {
       "type": "log",
+      "text": "[OK] scrap_events.js loaded — economy ↔ banter bridge active"
+    },
+    {
+      "type": "log",
       "text": "[Darius Star] multiplayer.js loaded — 1-4 player drop-in and drop-out enabled"
     },
     {
@@ -27,62 +31,6 @@
     {
       "type": "log",
       "text": "[OK] leaderboard.js loaded — 3 categories, tiered display, localStorage-backed"
-    },
-    {
-      "type": "error",
-      "text": "Failed to load resource: the server responded with a status of 404 (File not found)"
-    },
-    {
-      "type": "error",
-      "text": "Failed to load resource: the server responded with a status of 404 (File not found)"
-    },
-    {
-      "type": "error",
-      "text": "Failed to load resource: the server responded with a status of 404 (File not found)"
-    },
-    {
-      "type": "error",
-      "text": "Failed to load resource: the server responded with a status of 404 (File not found)"
-    },
-    {
-      "type": "error",
-      "text": "Failed to load resource: the server responded with a status of 404 (File not found)"
-    },
-    {
-      "type": "error",
-      "text": "Failed to load resource: the server responded with a status of 404 (File not found)"
-    },
-    {
-      "type": "error",
-      "text": "Failed to load resource: the server responded with a status of 404 (File not found)"
-    },
-    {
-      "type": "error",
-      "text": "Failed to load resource: the server responded with a status of 404 (File not found)"
-    },
-    {
-      "type": "error",
-      "text": "Failed to load resource: the server responded with a status of 404 (File not found)"
-    },
-    {
-      "type": "error",
-      "text": "Failed to load resource: the server responded with a status of 404 (File not found)"
-    },
-    {
-      "type": "error",
-      "text": "Failed to load resource: the server responded with a status of 404 (File not found)"
-    },
-    {
-      "type": "error",
-      "text": "Failed to load resource: the server responded with a status of 404 (File not found)"
-    },
-    {
-      "type": "error",
-      "text": "Failed to load resource: the server responded with a status of 404 (File not found)"
-    },
-    {
-      "type": "error",
-      "text": "Failed to load resource: the server responded with a status of 404 (File not found)"
     },
     {
       "type": "error",
@@ -111,14 +59,6 @@
       "status": 404
     },
     {
-      "url": "http://127.0.0.1:8088/assets/sprites/studio_logo.png",
-      "status": 404
-    },
-    {
-      "url": "http://127.0.0.1:8088/assets/sprites/title_0.png",
-      "status": 404
-    },
-    {
       "url": "http://127.0.0.1:8088/assets/cinematics/ending_sunrise.png",
       "status": 404
     },
@@ -127,59 +67,11 @@
       "status": 404
     },
     {
-      "url": "http://127.0.0.1:8088/assets/sprites/bg_city_0.png",
+      "url": "http://127.0.0.1:8088/assets/sprites/studio_logo.png",
       "status": 404
     },
     {
-      "url": "http://127.0.0.1:8088/assets/sprites/bg_nebula_0.png",
-      "status": 404
-    },
-    {
-      "url": "http://127.0.0.1:8088/assets/sprites/portraits/lyra_neutral.png",
-      "status": 404
-    },
-    {
-      "url": "http://127.0.0.1:8088/assets/sprites/portraits/lyra_reactive.png",
-      "status": 404
-    },
-    {
-      "url": "http://127.0.0.1:8088/assets/sprites/portraits/darius_neutral.png",
-      "status": 404
-    },
-    {
-      "url": "http://127.0.0.1:8088/assets/sprites/portraits/darius_reactive.png",
-      "status": 404
-    },
-    {
-      "url": "http://127.0.0.1:8088/assets/sprites/portraits/naya_neutral.png",
-      "status": 404
-    },
-    {
-      "url": "http://127.0.0.1:8088/assets/sprites/portraits/naya_reactive.png",
-      "status": 404
-    },
-    {
-      "url": "http://127.0.0.1:8088/assets/sprites/portraits/thorne_neutral.png",
-      "status": 404
-    },
-    {
-      "url": "http://127.0.0.1:8088/assets/sprites/portraits/thorne_reactive.png",
-      "status": 404
-    },
-    {
-      "url": "http://127.0.0.1:8088/assets/sprites/portraits/cross_neutral.png",
-      "status": 404
-    },
-    {
-      "url": "http://127.0.0.1:8088/assets/sprites/portraits/cross_reactive.png",
-      "status": 404
-    },
-    {
-      "url": "http://127.0.0.1:8088/assets/sprites/portraits/comms_overlay.png",
-      "status": 404
-    },
-    {
-      "url": "http://127.0.0.1:8088/assets/sprites/boss_minion_0.png",
+      "url": "http://127.0.0.1:8088/assets/sprites/title_0.png",
       "status": 404
     }
   ]

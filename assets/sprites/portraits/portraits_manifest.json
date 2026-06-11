@@ -1,0 +1,43 @@
+{
+  "manifest_version": "1.0",
+  "game": "Darius Star: Cyber Coelacanth",
+  "asset_type": "Character Portraits & Comms Overlay",
+  "description": "Portraits and dialogue HUD overlay for the comms system",
+  "resolution": {
+    "portraits": "256x256",
+    "overlay": "400x300"
+  },
+  "overlay": "assets/sprites/portraits/comms_overlay.png",
+  "portraits": {
+    "lyra": {
+      "name": "Lyra Star",
+      "role": "Navigator",
+      "neutral": "assets/sprites/portraits/lyra_neutral.png",
+      "reactive": "assets/sprites/portraits/lyra_reactive.png"
+    },
+    "darius": {
+      "name": "Darius Star",
+      "role": "Scrapper / Former Diver",
+      "neutral": "assets/sprites/portraits/darius_neutral.png",
+      "reactive": "assets/sprites/portraits/darius_reactive.png"
+    },
+    "naya": {
+      "name": "Naya Star",
+      "role": "Heavy Fighter Pilot / Mother",
+      "neutral": "assets/sprites/portraits/naya_neutral.png",
+      "reactive": "assets/sprites/portraits/naya_reactive.png"
+    },
+    "thorne": {
+      "name": "Commander Jack Thorne",
+      "role": "Mission Controller / Uncle",
+      "neutral": "assets/sprites/portraits/thorne_neutral.png",
+      "reactive": "assets/sprites/portraits/thorne_reactive.png"
+    },
+    "cross": {
+      "name": "Captain Valera Cross",
+      "role": "Navy Special Operations Captain / Defector",
+      "neutral": "assets/sprites/portraits/cross_neutral.png",
+      "reactive": "assets/sprites/portraits/cross_reactive.png"
+    }
+  }
+}
