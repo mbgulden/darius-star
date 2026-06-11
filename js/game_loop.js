@@ -1784,6 +1784,26 @@ canvas.addEventListener('mousemove', e => {
                 hoveredSettingsIndex = i;
             }
         }
+    } else if (currentScreen === SCREENS.LOAD_GAME) {
+        // GRO-1160: Touch/mouse hover tracking for load game screen
+        const regions = window._loadHitRegions || [];
+        window._loadHoveredSlot = -1;
+        window._loadHoveredBtn = null;  // 'load' or 'delete' or null
+        for (let i = 0; i < regions.length; i++) {
+            const r = regions[i];
+            if (r && x >= r.x && x <= r.x + r.w && y >= r.y && y <= r.y + r.h) {
+                window._loadHoveredSlot = i;
+                // Check button hit regions
+                if (r.btnLoad && x >= r.btnLoad.x && x <= r.btnLoad.x + r.btnLoad.w &&
+                    y >= r.btnLoad.y && y <= r.btnLoad.y + r.btnLoad.h) {
+                    window._loadHoveredBtn = 'load';
+                } else if (r.btnDelete && x >= r.btnDelete.x && x <= r.btnDelete.x + r.btnDelete.w &&
+                    y >= r.btnDelete.y && y <= r.btnDelete.y + r.btnDelete.h) {
+                    window._loadHoveredBtn = 'delete';
+                }
+                break;
+            }
+        }
     }
 });
 
@@ -1794,7 +1814,7 @@ canvas.addEventListener('mouseleave', () => {
 });
 
 canvas.addEventListener('click', e => {
-    ensureBackgroundImages();
+    setBiomeBackgrounds(biomeLevel);
     initAudio();
     loadPlayerSprites();
     loadPortraitSprites();
@@ -1869,7 +1889,64 @@ canvas.addEventListener('click', e => {
     } else if (currentScreen === SCREENS.CINEMATIC) {
         playSound('menu_click');
         transitionToScreen(SCREENS.CREDITS);
+    } else if (currentScreen === SCREENS.LOAD_GAME) {
+        // GRO-1160: Touch/click handling for load game screen
+        const hoveredSlot = window._loadHoveredSlot;
+        const hoveredBtn = window._loadHoveredBtn;
+        if (hoveredBtn === 'load' && hoveredSlot >= 0) {
+            playSound('menu_click');
+            window._loadSelectedSlot = hoveredSlot;
+            confirmLoadGame();
+        } else if (hoveredBtn === 'delete' && hoveredSlot >= 0) {
+            const slot = hoveredSlot;
+            if (confirm('Delete save in Slot ' + (slot+1) + '?')) {
+                playSound('menu_click');
+                deleteSaveSlot(slot);
+            }
+        } else if (hoveredSlot >= 0) {
+            // Tap slot to select it
+            playSound('menu_select');
+            window._loadSelectedSlot = hoveredSlot;
+        }
     }
+});
+
+// GRO-1160: Long-press handler for save slot delete on mobile
+let _longPressTimer = null;
+let _longPressSlot = -1;
+canvas.addEventListener('touchstart', e => {
+    if (currentScreen !== SCREENS.LOAD_GAME || targetScreen) return;
+    const touch = e.touches[0];
+    const { x, y } = getCanvasMouseCoords(touch);
+    const regions = window._loadHitRegions || [];
+    for (let i = 0; i < regions.length; i++) {
+        const r = regions[i];
+        if (r && x >= r.x && x <= r.x + r.w && y >= r.y && y <= r.y + r.h) {
+            const save = (window._loadSaves || [])[i];
+            if (save) {
+                _longPressSlot = i;
+                _longPressTimer = setTimeout(() => {
+                    if (currentScreen === SCREENS.LOAD_GAME && (window._loadSelectedSlot || 0) === _longPressSlot) {
+                        if (confirm('Delete save in Slot ' + (_longPressSlot + 1) + '?')) {
+                            playSound('menu_click');
+                            deleteSaveSlot(_longPressSlot);
+                        }
+                    }
+                    _longPressTimer = null;
+                    _longPressSlot = -1;
+                }, 600);
+            }
+            break;
+        }
+    }
+}, { passive: true });
+canvas.addEventListener('touchend', () => {
+    if (_longPressTimer) { clearTimeout(_longPressTimer); _longPressTimer = null; }
+    _longPressSlot = -1;
+});
+canvas.addEventListener('touchmove', () => {
+    if (_longPressTimer) { clearTimeout(_longPressTimer); _longPressTimer = null; }
+    _longPressSlot = -1;
 });
 
 requestAnimationFrame(loop);

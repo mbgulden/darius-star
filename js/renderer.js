@@ -193,25 +193,63 @@
         // Image-based parallax layers (bg_nebula, bg_city) + procedural starfield
 
         const bgImages = {};
-        function loadBackgroundImages() {
-            const toLoad = [
-                { key: 'nebula', src: 'assets/sprites/bg_nebula_0.png' },
-                { key: 'city',   src: 'assets/sprites/bg_city_0.png' }
-            ];
-            let loaded = 0;
-            toLoad.forEach(({key, src}) => {
-                bgImages[key] = new Image();
-                bgImages[key].onload = () => { loaded++; };
-                bgImages[key].src = src;
-            });
-        }
-        // Background images lazy-loaded on first user interaction
-        let bgImagesLoaded = false;
-        function ensureBackgroundImages() {
-            if (!bgImagesLoaded) {
-                bgImagesLoaded = true;
-                loadBackgroundImages();
+
+        // === Biome background file mapping ===
+        // Maps biome number → canonical directory name for asset paths.
+        // Uses far/near layer files when available; falls back to strip or procedural.
+        const BIOME_BG_MAP = {
+            1: 'abyssal_trench',
+            2: 'coral_graveyard',
+            3: 'coelacanth_lair',
+            4: 'nebula_drift',
+            5: 'ice_rings',         // also has ice_ring duplicates on disk
+            6: 'inferno_core',      // also known as fire_nebula
+            7: 'storm_belt',
+            8: 'derelict_fleet',
+            9: 'xenomorph_hive',    // no asset files yet — procedural fallback
+            10: 'core_rift'         // no asset files yet — procedural fallback
+        };
+
+        // Known-missing biomes that have zero background image files
+        const BIOMES_WITHOUT_ASSETS = new Set([9, 10]);
+
+        // Preloads far + near (or strip fallback) images for a single biome.
+        // Returns immediately; images load asynchronously.
+        // Keys: 'bg_B_far', 'bg_B_near' (or 'bg_B_strip' when layer not on disk).
+        function preloadBiomeBackground(biomeNum) {
+            const dirName = BIOME_BG_MAP[biomeNum];
+            if (!dirName) return;
+            const base = `assets/sprites/backgrounds/bg_${dirName}`;
+
+            const farKey  = `bg_${biomeNum}_far`;
+            const nearKey = `bg_${biomeNum}_near`;
+
+            // Only preload if we don't already have the images
+            if (!bgImages[farKey]) {
+                bgImages[farKey] = new Image();
+                bgImages[farKey].src = `${base}_far.png`;
             }
+            if (!bgImages[nearKey]) {
+                bgImages[nearKey] = new Image();
+                bgImages[nearKey].src = `${base}_near.png`;
+            }
+        }
+
+        // Sets both parallax layers to the correct far/near backgrounds for a biome.
+        // Falls back to strip image or procedural generation when assets are missing.
+        function setBiomeBackgrounds(biomeNum) {
+            if (typeof biomeNum !== 'number' || biomeNum < 1) biomeNum = 1;
+
+            // Preload images for this biome (no-op if already loaded)
+            if (!BIOMES_WITHOUT_ASSETS.has(biomeNum)) {
+                preloadBiomeBackground(biomeNum);
+            }
+
+            const farKey  = `bg_${biomeNum}_far`;
+            const nearKey = `bg_${biomeNum}_near`;
+
+            if (bgLayers.length > 0) bgLayers[0].setKey(farKey);
+            if (bgLayers.length > 1) bgLayers[1].setKey(nearKey);
         }
 
         // === Procedural Biome Backgrounds (fallback when strip images missing) ===
@@ -299,7 +337,7 @@
             }
 
             getImg() {
-                // Lazy-resolve: bgImages is populated asynchronously by ensureBackgroundImages()
+                // Lazy-resolve: bgImages is populated asynchronously by preloadBiomeBackground()
                 return bgImages[this.key] || null;
             }
 

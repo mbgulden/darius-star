@@ -956,24 +956,43 @@
                 ctx.font = 'bold 22px monospace';
                 ctx.shadowColor = '#00ffff';
                 ctx.shadowBlur = 10;
-                ctx.fillText('💾 LOAD GAME', canvas.width / 2, 55);
+                ctx.fillText('💾 LOAD GAME', canvas.width / 2, 48);
                 ctx.shadowBlur = 0;
 
                 const saves = window._loadSaves || [];
                 const selected = window._loadSelectedSlot || 0;
 
+                // GRO-1160: Responsive sizing for mobile touch targets (min 44px on 375px viewport)
+                const slotW = Math.min(canvas.width - 60, 640);
+                const slotH = 76;  // Taller for touch targets
+                const slotX = (canvas.width - slotW) / 2;
+                const slotStartY = 110;
+                const slotSpacing = slotH + 10;
+                const btnW = 80;
+                const btnH = 32;
+
+                // Store hit regions for touch/mouse handling
+                window._loadHitRegions = [];
+
                 for (let i = 0; i < 3; i++) {
-                    const y = 120 + i * 80;
+                    const y = slotStartY + i * slotSpacing;
                     const isSelected = i === selected;
                     const save = saves[i];
 
+                    // Store hit region for this slot
+                    window._loadHitRegions[i] = { x: slotX, y: y, w: slotW, h: slotH,
+                        btnLoad: null, btnDelete: null, isSelected: isSelected };
+
                     // Slot background
                     ctx.fillStyle = isSelected ? 'rgba(0,255,255,0.12)' : 'rgba(255,255,255,0.04)';
-                    ctx.fillRect(100, y - 5, 600, 65);
+                    if (isSelected) {
+                        ctx.fillStyle = 'rgba(0,255,255,0.18)';
+                    }
+                    ctx.fillRect(slotX, y, slotW, slotH);
                     if (isSelected) {
                         ctx.strokeStyle = '#00ffff';
                         ctx.lineWidth = 2;
-                        ctx.strokeRect(100, y - 5, 600, 65);
+                        ctx.strokeRect(slotX, y, slotW, slotH);
                     }
 
                     ctx.textAlign = 'left';
@@ -982,8 +1001,8 @@
                         ctx.fillStyle = isSelected ? '#00ffff' : '#ffffff';
                         ctx.font = 'bold 14px monospace';
                         const ngText = (save.ngLevel && save.ngLevel > 0) ? ` [NG+${save.ngLevel}]` : '';
-                        ctx.fillText(`SLOT ${i+1}: Biome ${s.biome} — Wave ${s.wave} — ${s.ship.toUpperCase()}${ngText}`, 120, y + 10);
-                        
+                        ctx.fillText(`SLOT ${i+1}: Biome ${s.biome} — Wave ${s.wave} — ${s.ship.toUpperCase()}${ngText}`, slotX + 16, y + 18);
+
                         let ngMeta = '';
                         if (save.ngLevel && save.ngLevel > 0 && window.NGPlus) {
                             const ngSummary = NGPlus.summarize(save);
@@ -991,26 +1010,57 @@
                                 ngMeta = `  |  NG+${ngSummary.level} (Scrap x${ngSummary.scrapMult})`;
                             }
                         }
-                        
+
                         ctx.fillStyle = '#aaa';
                         ctx.font = '11px monospace';
-                        ctx.fillText(`Scrap: ${s.scrap}  |  Score: ${s.score.toLocaleString()}  |  ${s.date} ${s.time}  |  ${s.playTime}  |  ${s.deaths} deaths${ngMeta}`, 120, y + 30);
+                        ctx.fillText(`Scrap: ${s.scrap}  |  Score: ${s.score.toLocaleString()}  |  ${s.date} ${s.time}  |  ${s.playTime}  |  ${s.deaths} deaths${ngMeta}`, slotX + 16, y + 38);
                         ctx.fillStyle = '#888';
-                        ctx.fillText(`${s.shipsUnlocked} ships unlocked  |  Difficulty: ${s.difficulty}`, 120, y + 46);
+                        ctx.fillText(`${s.shipsUnlocked} ships unlocked  |  Difficulty: ${s.difficulty}`, slotX + 16, y + 54);
+
+                        // GRO-1160: Load/Delete buttons for selected slot
+                        if (isSelected) {
+                            const btnLoadX = slotX + slotW - btnW * 2 - 20;
+                            const btnDeleteX = slotX + slotW - btnW - 10;
+                            const btnY = y + (slotH - btnH) / 2;
+
+                            // Load button
+                            ctx.fillStyle = '#00aa44';
+                            ctx.fillRect(btnLoadX, btnY, btnW, btnH);
+                            ctx.strokeStyle = '#00ff66';
+                            ctx.lineWidth = 1;
+                            ctx.strokeRect(btnLoadX, btnY, btnW, btnH);
+                            ctx.fillStyle = '#ffffff';
+                            ctx.font = 'bold 12px monospace';
+                            ctx.textAlign = 'center';
+                            ctx.fillText('LOAD', btnLoadX + btnW / 2, btnY + 21);
+
+                            // Delete button
+                            ctx.fillStyle = '#aa0033';
+                            ctx.fillRect(btnDeleteX, btnY, btnW, btnH);
+                            ctx.strokeStyle = '#ff3355';
+                            ctx.strokeRect(btnDeleteX, btnY, btnW, btnH);
+                            ctx.fillStyle = '#ffffff';
+                            ctx.fillText('DELETE', btnDeleteX + btnW / 2, btnY + 21);
+
+                            // Store button hit regions
+                            window._loadHitRegions[i].btnLoad = { x: btnLoadX, y: btnY, w: btnW, h: btnH };
+                            window._loadHitRegions[i].btnDelete = { x: btnDeleteX, y: btnY, w: btnW, h: btnH };
+                        }
                     } else {
                         ctx.fillStyle = isSelected ? '#00ffff' : '#555';
                         ctx.font = 'bold 14px monospace';
-                        ctx.fillText(`SLOT ${i+1}: EMPTY`, 120, y + 10);
+                        ctx.fillText(`SLOT ${i+1}: EMPTY`, slotX + 16, y + 18);
                         ctx.fillStyle = '#444';
                         ctx.font = '11px monospace';
-                        ctx.fillText('Start a new game to create a save.', 120, y + 28);
+                        ctx.fillText('Start a new game to create a save.', slotX + 16, y + 38);
                     }
                 }
 
                 ctx.textAlign = 'center';
                 ctx.fillStyle = '#8a8a9f';
                 ctx.font = '11px monospace';
-                ctx.fillText('ENTER to LOAD  |  DEL to DELETE  |  ESC to BACK', canvas.width / 2, 400);
+                ctx.fillText('ENTER to LOAD  |  DEL to DELETE  |  ESC to BACK  |  TAP slot to select', canvas.width / 2, slotStartY + 3 * slotSpacing + 6);
+                ctx.fillText('Long-press slot to delete', canvas.width / 2, slotStartY + 3 * slotSpacing + 22);
 
                 ctx.restore();
             } else if (currentScreen === SCREENS.CREDITS) {
@@ -1345,7 +1395,7 @@
         // Keys pressed
         const keys = {};
         window.addEventListener('keydown', e => {
-            ensureBackgroundImages();
+            setBiomeBackgrounds(biomeLevel);
             initAudio();
             loadPlayerSprites();
             loadPortraitSprites();
@@ -1584,7 +1634,7 @@
             el.addEventListener('pointerdown', (e) => {
                 e.preventDefault();
                 initAudio();
-                ensureBackgroundImages();
+                setBiomeBackgrounds(biomeLevel);
                 loadPlayerSprites();
                 loadPortraitSprites();
                 loadEnemySprites();
@@ -2271,17 +2321,14 @@
             if (oldBiome !== activeBiomeName) {
                 floatingTexts.push(new FloatingText(canvas.width / 2, canvas.height / 3, `ENTERING BIOME ${activeBiomeName.toUpperCase()}`, '#00ffff'));
                 
-                // Set the biome background dynamically using LevelManager settings
-                if (bgLayers.length > 0 && window.LevelManager && LevelManager.currentLevelConfig) {
-                    bgLayers[0].setKey(LevelManager.currentLevelConfig.background);
-                } else if (bgLayers.length > 0) {
-                    bgLayers[0].setKey('bg_' + biomeLevel);
-                }
+                // Update both parallax layers with biome-specific far/near backgrounds
+                setBiomeBackgrounds(biomeLevel);
 
                 // GRO-1028: Play biome-specific ambient drone on transition
-                triggerBiomeAmbient();
+                // GRO-1040: Respect audioTunnelsEnabled toggle
+                if (audioTunnelsEnabled) triggerBiomeAmbient();
                 // GRO-1028: Trigger audio-only story beat for this biome
-                playAudioStoryBeat(biomeLevel);
+                if (audioTunnelsEnabled) playAudioStoryBeat(biomeLevel);
                 // Notify Economy of new segment for loot tracking
                 if (window.Economy && oldBiomeLevel !== biomeLevel) {
                     Economy.newSegment();
