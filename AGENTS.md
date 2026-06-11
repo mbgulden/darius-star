@@ -1,4 +1,4 @@
-# darius-star — Jules AGENTS.md
+# darius-star — AGENTS.md
 
 ## Project: Darius Star: Cyber Coelacanth
 Horizontal retro shoot-'em-up space arcade game. 10 biomes × 10 levels. 
@@ -9,47 +9,45 @@ Canvas-based browser game. Deployed via Cloudflare Pages from this repo.
 - `*.py` — build/deploy scripts
 - `*.md` — documentation (except this file with approval)
 
-## Architecture (8000-line index.html)
-The game is a single `index.html` containing all game logic. Several modules are already extracted:
-- `multiplayer.js` — 1-4 player drop-in/out
-- `banter_engine.js` — dialogue/banter system
-- `economy.js` — scrap drops/economy
-- `save_system.js` — campaign save/load
-- `combo.js` — combo scoring
-- `upgrade_system.js` — ship upgrades
-- `ngplus.js` — New Game+
-- `leaderboard.js` — high scores
+## Architecture (fully modular)
+`index.html` is now a **295-line HTML/CSS shell** with 16 external `<script>` tags.
+All game logic lives in `js/`. Load order is critical — modules are loaded
+in dependency order, with `game_loop.js` last.
 
-### What's still in index.html (~8000 lines)
-Major sections (in order):
-1. HTML/CSS shell (lines 1-286)
-2. Web Audio synth + ambient audio (lines 287-500)
-3. Game constants, settings, screens (lines 500-1300)
-4. Menu/dialogue/ending systems (lines 1300-2960)
-5. **Player class** (~600 lines, ~line 2962)
-6. **Bullet, EnemyBullet classes** (~lines 3718-3824)
-7. **Enemy class** (~250 lines, ~line 3826)
-8. **Boss class** (~400 lines, ~line 4011)
-9. SpriteExplosion, ScrapDrop, EnvironmentParticle, PowerUp (lines 4476-4669)
-10. Backgrounds + ParallaxLayer (lines 4640-4820)
-11. Sprite loading (player/enemy/VFX/boss/portrait, lines 4740-5050)
-12. **Game loop** — update(), draw(), collision detection (lines 6700-8000)
-13. Menu rendering, pause, settings, HUD
+### js/ module map (loaded in this order)
+| # | Module | What it contains |
+|---|--------|-----------------|
+| 1 | `upgrade_system.js` | Ship upgrade tree |
+| 2 | `save_system.js` | CampaignSave — 3-slot save/load |
+| 3 | `combo.js` | Kill streak scoring |
+| 4 | `economy.js` | Scrap drop tracking |
+| 5 | `banter_engine.js` | Contextual character banter |
+| 6 | `multiplayer.js` | 1-4 player drop-in/out |
+| 7 | `ngplus.js` | New Game+ with paradox enemies |
+| 8 | `leaderboard.js` | High scores |
+| 9 | `player.js` | Player ship class (753 lines) |
+| 10 | `enemies.js` | EnemyBullet, Enemy, Boss classes (650 lines) |
+| 11 | `combat.js` | Bullet, PowerUp, SpriteExplosion (160 lines) |
+| 12 | `renderer.js` | Particle, Parallax, backgrounds (1352 lines) |
+| 13 | `sprites.js` | Sprite loading functions (132 lines) |
+| 14 | `audio.js` | Web Audio synth + environmental cues (900 lines) |
+| 15 | `ui.js` | Menus, HUD, pause, settings, dialogue (2336 lines) |
+| 16 | `game_loop.js` | Game state, entity pools, update(), draw(), loop(), collision, input, narrative flags (1752 lines) |
 
-## Refactoring Goal
-Extract these from index.html into separate .js files:
-1. `js/player.js` — Player class
-2. `js/enemies.js` — Enemy + Boss classes + EnemyBullet
-3. `js/combat.js` — Bullet, collision detection, SpriteExplosion
-4. `js/renderer.js` — ParallaxLayer, EnvironmentParticle, background generation
-5. `js/sprites.js` — All sprite loading functions
-6. `js/audio.js` — Web Audio synth + ambient
-7. `js/ui.js` — Menu screens, HUD overlay, pause menu, settings
+## Key Architecture Notes
+- **No IIFE wrappers** — modules use top-level scope. Classes defined in one module
+  are visible to all subsequent modules via global scope.
+- **Duplicate functions exist** — some functions (`createExplosion`, `spawnHitFlash`,
+  `startNGPlus`, `determineEnding`) appear in both extracted modules AND `game_loop.js`.
+  The `game_loop.js` versions overwrite module versions on load. This is a known
+  cleanup debt — the duplicates are functionally identical.
+- **Syntax verification** — use `scripts/verify_syntax.py` for all files.
+  `node --check` works for class/function-only modules but fails on `game_loop.js`
+  (top-level `const` in CJS mode).
 
 ## Rules
 - Keep exact same functionality — no behavior changes
 - Add `<script src="js/xxx.js"></script>` tags in index.html for new modules
 - Remove extracted code from index.html
-- Test that the game still loads (check for missing global references)
-- PR-only, do not merge
-- Use `spritesReady` Set pattern for sprite loading (already in code)
+- `git push` can take 3-10 minutes (repo is ~11GB). Run in background.
+- Use `spritesReady` Set pattern for sprite loading
