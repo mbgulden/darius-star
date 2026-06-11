@@ -189,6 +189,7 @@ function resetGame() {
     gameOver = false;
     gameWon = false;
     bossSpawned = false;
+    if (boss && boss.cleanup) boss.cleanup();
     boss = null;
 
     // Load campaign save state before any restore logic reads it.

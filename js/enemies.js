@@ -285,6 +285,15 @@
                 this.architectPhase = null; // GRO-1009: 'sacrifice'|'transcendence'|'dominion' — set at low HP
                 this._victoryTimeout = null;
                 this._advanceTimeout = null;
+                this._explosionTimers = [];
+            }
+
+            cleanup() {
+                // Clear all pending timeouts to prevent ghost callbacks after boss destruction
+                if (this._victoryTimeout) { clearTimeout(this._victoryTimeout); this._victoryTimeout = null; }
+                if (this._advanceTimeout) { clearTimeout(this._advanceTimeout); this._advanceTimeout = null; }
+                this._explosionTimers.forEach(t => clearTimeout(t));
+                this._explosionTimers = [];
             }
 
             update(dt) {
@@ -487,10 +496,10 @@
                     }
 
                     for (let i = 0; i < 35; i++) {
-                        setTimeout(() => {
+                        this._explosionTimers.push(setTimeout(() => {
                             createExplosion(this.x + Math.random()*150, this.y + Math.random()*120, '#ff3300', 15);
                             playSound('explosion');
-                        }, i * 100);
+                        }, i * 100));
                     }
                     
                     if (biomeLevel >= 10) {
