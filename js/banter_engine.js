@@ -329,3 +329,5 @@ const BanterEngine = {
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = BanterEngine;
 }
+// Attach to window for browser access (required by game_loop.js)
+window.BanterEngine = BanterEngine;
