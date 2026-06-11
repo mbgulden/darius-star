@@ -396,18 +396,54 @@ const LevelManager = {
         };
     },
 
+    // Returns nested { primary, secondary?, tertiary? } structure consumed by renderer.js
+    // Each sub-object has { type, rate } or { type, chance }. Types must match
+    // the EnvironmentParticle constructor cases in renderer.js.
     _particleSettingsForBiome(biome) {
         const settings = {
-            1: { type: 'mote', rate: 12, color: '#00ffff' },
-            2: { type: 'rust_flake', rate: 10, color: '#ff9b45' },
-            3: { type: 'mote', rate: 14, color: '#7cffb2' },
-            4: { type: 'nebula', rate: 10, color: '#b06cff' },
-            5: { type: 'ice', rate: 12, color: '#b8f4ff' },
-            6: { type: 'ember', rate: 13, color: '#ff6b2b' },
-            7: { type: 'spark', rate: 14, color: '#d6f7ff' },
-            8: { type: 'debris', rate: 9, color: '#9aa6b2' },
-            9: { type: 'spore', rate: 11, color: '#b8ff4d' },
-            10: { type: 'rift', rate: 15, color: '#ff4dff' }
+            1: { // Abyssal Trench — Bioluminescent Drift
+                primary:   { type: 'mote',       rate: 12 },
+                secondary: { type: 'vent_smoke', chance: 0.35 }
+            },
+            2: { // Coral Graveyard — Rust Storm
+                primary:   { type: 'rust_flake', rate: 10 },
+                secondary: { type: 'neon_glow',  chance: 0.25 }
+            },
+            3: { // Coelacanth Lair — Tesla Arcs
+                primary:   { type: 'tesla_bolt',  rate: 14 },
+                secondary: { type: 'coolant_drip', chance: 0.30 }
+            },
+            4: { // Nebula Drift — Plasma Currents
+                primary:   { type: 'plasma_ribbon', rate: 10 },
+                secondary: { type: 'storm_flash',   chance: 0.20 }
+            },
+            5: { // Ice Ring — Diamond Dust
+                primary:   { type: 'ice_crystal', rate: 12 },
+                secondary: { type: 'prism_beam',  chance: 0.18 }
+            },
+            6: { // Fire Nebula — Ember Storm
+                primary:   { type: 'ember',     rate: 13 },
+                secondary: { type: 'ash_cloud', chance: 0.22 }
+            },
+            7: { // Storm Belt — Lightning Cage
+                primary:   { type: 'lightning_strike', rate: 14 },
+                secondary: { type: 'rain_drop',        rate: 8 },
+                tertiary:  { type: 'static_band',      chance: 0.15 }
+            },
+            8: { // Derelict Fleet — Drifting Debris
+                primary:   { type: 'debris',       rate: 9 },
+                secondary: { type: 'beacon_flash', chance: 0.12 },
+                tertiary:  { type: 'coolant_gas',  chance: 0.20 }
+            },
+            9: { // Xenomorph Hive — Organic Seepage
+                primary:   { type: 'spore',     rate: 11 },
+                secondary: { type: 'acid_drip', chance: 0.25 },
+                tertiary:  { type: 'vein_pulse', chance: 0.30 }
+            },
+            10: { // Core Rift — Reality Tears
+                primary:   { type: 'code_stream', rate: 15 },
+                secondary: { type: 'rift_tear',   chance: 0.18 }
+            }
         };
         return settings[biome] || settings[1];
     },
