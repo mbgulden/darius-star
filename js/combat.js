@@ -65,7 +65,10 @@
                 }
 
                 const sprite = vfxSprites['laser'];
-                if (sprite && sprite.complete && sprite.naturalWidth > 0) {
+                // Check for both Image (not yet pre-composited) and Canvas (pre-composited)
+                const isImage = sprite && sprite.tagName !== 'CANVAS' && sprite.complete && sprite.naturalWidth > 0;
+                const isCanvas = sprite && sprite.tagName === 'CANVAS' && sprite.width > 0;
+                if (isImage || isCanvas) {
                     // Render laser sprite scaled to bullet size (sprite is 1024x1024)
                     const renderSize = this.size * 3.5;
                     ctx.globalAlpha = 0.9;
@@ -73,10 +76,14 @@
                         ctx.shadowColor = this.color;
                         ctx.shadowBlur = 12;
                     }
-                    // Additive blending — dark background becomes invisible
-                    ctx.globalCompositeOperation = 'lighter';
+                    // Use additive only for non-pre-composited images (fallback)
+                    if (isImage) {
+                        ctx.globalCompositeOperation = 'lighter';
+                    }
                     ctx.drawImage(sprite, -renderSize / 2, -renderSize / 2, renderSize, renderSize);
-                    ctx.globalCompositeOperation = 'source-over';
+                    if (isImage) {
+                        ctx.globalCompositeOperation = 'source-over';
+                    }
                     ctx.shadowBlur = 0;
                 } else {
                     // Fallback: colored rectangle

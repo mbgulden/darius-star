@@ -54,8 +54,10 @@
             enemySpritesLoaded = true;
             const types = ['scout', 'interceptor', 'heavy', 'boss_minion'];
             types.forEach(key => {
-                enemySprites[key] = new Image();
-                enemySprites[key].src = `assets/sprites/${key}_0.png`;
+                const img = new Image();
+                img.onload = function() { enemySprites[key] = preCompositeAdditive(img); };
+                img.src = `assets/sprites/${key}_0.png`;
+                enemySprites[key] = img;
             });
         }
 
@@ -66,23 +68,54 @@
         function loadVFXSprites() {
             if (vfxSpritesLoaded) return;
             vfxSpritesLoaded = true;
-            // Laser (player bullets)
-            vfxSprites['laser'] = new Image();
-            vfxSprites['laser'].src = 'assets/sprites/laser_0.png';
-            // Enemy laser + glow
-            vfxSprites['laser_enemy'] = new Image();
-            vfxSprites['laser_enemy'].src = 'assets/sprites/laser_enemy.png';
-            vfxSprites['laser_glow'] = new Image();
-            vfxSprites['laser_glow'].src = 'assets/sprites/laser_0_glow.png';
-            // Multi-frame explosion (4 frames)
+
+            const _loadVFX = (key, src) => {
+                const img = new Image();
+                img.onload = function() { vfxSprites[key] = preCompositeAdditive(img); };
+                img.src = src;
+                vfxSprites[key] = img;
+            };
+
+            _loadVFX('laser', 'assets/sprites/laser_0.png');
+            _loadVFX('laser_enemy', 'assets/sprites/laser_enemy.png');
+            _loadVFX('laser_glow', 'assets/sprites/laser_0_glow.png');
             for (let f = 0; f < 4; f++) {
-                vfxSprites['explosion_' + f] = new Image();
-                vfxSprites['explosion_' + f].src = `assets/sprites/explosion_${f}.png`;
+                _loadVFX('explosion_' + f, `assets/sprites/explosion_${f}.png`);
             }
-            // Shield forcefield ring
-            vfxSprites['shield'] = new Image();
-            vfxSprites['shield'].src = 'assets/sprites/shield_0.png';
+            _loadVFX('shield', 'assets/sprites/shield_0.png');
         }
+
+        // --- GRO-1141: Pre-composite additive sprites ---
+        // Strips near-black pixels from VFX/enemy sprites so the main loop
+        // can use source-over (fast) instead of 'lighter' (slow GPU readback).
+        // Returns an offscreen canvas with transparent background.
+        function preCompositeAdditive(image) {
+            try {
+                const w = image.naturalWidth || image.width || 0;
+                const h = image.naturalHeight || image.height || 0;
+                if (w === 0 || h === 0) return image;
+                const canvas = document.createElement('canvas');
+                canvas.width = w;
+                canvas.height = h;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(image, 0, 0);
+                const imageData = ctx.getImageData(0, 0, w, h);
+                const pixels = imageData.data;
+                // Make near-black pixels transparent (< 15 on all channels)
+                for (let i = 0; i < pixels.length; i += 4) {
+                    if (pixels[i] < 15 && pixels[i+1] < 15 && pixels[i+2] < 15) {
+                        pixels[i+3] = 0;
+                    }
+                }
+                ctx.putImageData(imageData, 0, 0);
+                return canvas;
+            } catch (_) {
+                return image; // fallback on cross-origin or other errors
+            }
+        }
+
+        // Track which sprites have been pre-composited
+        const _preCompositeCache = new Set();
 
         // --- Boss Asset Lazy-Loading ---
         // Boss sprites are preloaded when score nears 2,000-point trigger
@@ -106,6 +139,8 @@
             toLoad.forEach(({key, src}) => {
                 const img = new Image();
                 img.onload = () => {
+                    // Pre-composite on load for faster main-loop draws
+                    bossSprites[key] = preCompositeAdditive(img);
                     loadedCount++;
                     bossLoadProgress = Math.round((loadedCount / total) * 100);
                     if (loadedCount >= total) {

@@ -195,7 +195,9 @@
                 ctx.translate(this.x, this.y);
 
                 const sprite = enemySprites[this.type];
-                const hasSprite = sprite && sprite.complete && sprite.naturalWidth > 0;
+                const isImage = sprite && sprite.tagName !== 'CANVAS' && sprite.complete && sprite.naturalWidth > 0;
+                const isCanvas = sprite && sprite.tagName === 'CANVAS' && sprite.width > 0;
+                const hasSprite = isImage || isCanvas;
 
                 if (hasSprite) {
                     // Map each type to appropriate render size (sprites are 1024x1024)
@@ -206,10 +208,14 @@
                         ctx.shadowBlur = 12;
                         ctx.shadowColor = this.paradoxColor;
                     }
-                    // Use additive blending so dark sprite backgrounds become invisible
-                    ctx.globalCompositeOperation = 'lighter';
+                    // Use additive only for non-pre-composited images (fallback)
+                    if (isImage) {
+                        ctx.globalCompositeOperation = 'lighter';
+                    }
                     ctx.drawImage(sprite, 0, 0, size, size);
-                    ctx.globalCompositeOperation = 'source-over';
+                    if (isImage) {
+                        ctx.globalCompositeOperation = 'source-over';
+                    }
                 } else {
                     // Fallback: colored shapes if sprite not loaded
                     ctx.fillStyle = this.isParadox ? this.paradoxColor : this.color;
