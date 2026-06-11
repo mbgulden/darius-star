@@ -162,6 +162,35 @@
             background: rgba(0, 255, 255, 0.3);
         }
 
+        /* GRO-1161: Fullscreen toggle button */
+        #fullscreen-toggle {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(10, 10, 30, 0.5);
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            color: #00ffff;
+            cursor: pointer;
+            font-size: 16px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            z-index: 5;
+            font-family: 'Courier New', monospace;
+            line-height: 1;
+            transition: all 0.2s;
+        }
+        #fullscreen-toggle:hover {
+            background: rgba(0, 255, 255, 0.15);
+            border-color: #00ffff;
+        }
+        #fullscreen-toggle:active {
+            background: rgba(0, 255, 255, 0.3);
+        }
+        /* Hide on small screens when fullscreen is active */
+        #fullscreen-toggle.fs-active {
+            opacity: 0.3;
+        }
+
         /* On-screen touch controls (hidden on desktop by default) */
         #touch-controls {
             display: none;
@@ -278,6 +307,7 @@
     <h1>DARIUS STAR: CYBER COELACANTH</h1>
     <div class="studio-credit">A <a href="https://whatanadventure.games" target="_blank">What An Adventure</a> Game</div>
     <div id="game-container">
+        <button id="fullscreen-toggle" title="Toggle Fullscreen (F)">⛶</button>
         <canvas id="gameCanvas" width="800" height="450"></canvas>
         <video id="boss-intro-video" class="cinematic-video-overlay" 
                src="assets/cinematics/cinematic_boss_intro.mp4" 
@@ -300,6 +330,7 @@
             <div>SECONDARY: <span id="ui-special" style="color: #b026ff;">METER 0%</span></div>
             <div>DODGE: <span id="ui-dodge" style="color: #00ffff;">READY (E)</span></div>
             <div id="ui-banter" style="color: #ffffff; font-style: italic; margin-top: 4px; opacity: 0; transition: opacity 0.3s; max-width: 400px; font-size: 12px; line-height: 1.3;"></div>
+            <div id="ui-streamer" style="color: #ff0055; font-weight: bold; margin-top: 6px; display: none; font-size: 11px; letter-spacing: 1px;">🔴 STREAMER MODE — Voice Muted</div>
             </div>
         </div>
     </div>

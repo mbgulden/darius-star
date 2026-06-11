@@ -422,8 +422,17 @@
             } else if (index === 6) { // Streamer Mode — toggle (disables both voice channels)
                 streamerMode = !streamerMode;
                 if (streamerMode) {
+                    // Save previous states for restoration when streamer mode is turned off
+                    window._preStreamerBanter = banterEnabled;
+                    window._preStreamerAudioTunnels = audioTunnelsEnabled;
                     banterEnabled = false;
                     audioTunnelsEnabled = false;
+                } else {
+                    // Restore previous toggle states
+                    if (typeof window._preStreamerBanter !== 'undefined') {
+                        banterEnabled = window._preStreamerBanter;
+                        audioTunnelsEnabled = window._preStreamerAudioTunnels;
+                    }
                 }
             }
         }

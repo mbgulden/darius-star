@@ -100,6 +100,7 @@ const uiSpecial = document.getElementById('ui-special');
 const uiDodge = document.getElementById('ui-dodge');
 const uiBiome = document.getElementById('ui-biome');
 const uiNavigator = document.getElementById('ui-navigator');
+const uiStreamer = document.getElementById('ui-streamer');
 
 // Game state variables
 let score = 0;
@@ -674,7 +675,8 @@ function update(dt) {
     
     // GRO-1028: Audio drama systems — biome ambient loop & story beats
     // GRO-1040: Respect audioTunnelsEnabled toggle
-    if (typeof audioTunnelsEnabled === 'undefined' || audioTunnelsEnabled) {
+    // GRO-1042: Streamer Mode — also gate audio tunnels
+    if ((typeof audioTunnelsEnabled === 'undefined' || audioTunnelsEnabled) && !streamerMode) {
         updateBiomeAmbientLoop(dt);
         updateAudioStoryBeat(dt);
     }
@@ -1208,6 +1210,15 @@ function update(dt) {
     uiWeapon.innerText = 'LVL ' + player.weaponLevel + (player.weaponLevel === 5 ? ' (MAX)' : '');
     uiScore.innerText = score;
     if (uiScrap) uiScrap.innerText = '⚙️' + runScrap;
+
+    // Streamer Mode HUD indicator (GRO-1042)
+    if (uiStreamer) {
+        if (streamerMode) {
+            uiStreamer.style.display = 'block';
+        } else {
+            uiStreamer.style.display = 'none';
+        }
+    }
 
     // Banter display
     if (window.BanterEngine) {
