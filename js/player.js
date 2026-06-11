@@ -146,12 +146,15 @@ class Player {
             this.dodgeMaxCooldown = 3.5 * (mods.engineBoostCooldownMultiplier || 1.0);
             this.dodgeDistance = 90;
             this.isDodging = false;
+            this.dodgeTimeout = null;
             this.dodgeInvulnTimer = 0;
             this.dodgeMaxInvuln = 0.25;
         } else {
             this.boostFuel = 3.0;
             this.boostMaxFuel = 3.0;
             this.boostCooldown = 0;
+            this.boostMaxCooldown = 5.0;
+            this.boostDistance = 90;
             this.isBoosting = false;
             this.specialCooldown = 0;
             this.specialMaxCooldown = 15.0;
@@ -164,6 +167,7 @@ class Player {
             this.dodgeMaxCooldown = 3.5;
             this.dodgeDistance = 90;
             this.isDodging = false;
+            this.dodgeTimeout = null;
             this.dodgeInvulnTimer = 0;
             this.dodgeMaxInvuln = 0.25;
         }
@@ -694,7 +698,8 @@ class Player {
         this.isDodging = true;
         
         // Reset dodging flag after brief delay (for visual feedback)
-        setTimeout(() => { this.isDodging = false; }, 100);
+        if (this.dodgeTimeout) clearTimeout(this.dodgeTimeout);
+        this.dodgeTimeout = setTimeout(() => { this.isDodging = false; }, 100);
         
         playSound('powerup');
     }

@@ -329,6 +329,12 @@
             // Reset spawn timer — enemies will start fresh
             enemySpawnTimer = 1.0;
             
+            // Advance LevelManager's internal biome/level state so bossTrigger
+            // is cleared and enemies spawn for the next level/biome
+            if (window.LevelManager) {
+                LevelManager.advanceLevel();
+            }
+            
             // Update biome display and ambient audio
             updateActiveBiome(score);
             if (uiBiome) uiBiome.innerText = activeBiomeName;

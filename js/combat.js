@@ -196,4 +196,131 @@
             }
         }
 
-        // --- ScrapDrop Class ---
+        // --- ScrapDrop Class --- (moved from renderer.js by Ned, GRO-1163)
+        class ScrapDrop {
+            constructor(x, y, type, value = null) {
+                this.x = x;
+                this.y = y;
+                this.type = type; // 'metal', 'alloy', 'cell', 'core', 'essence', 'fragment'
+                this.width = 12;
+                this.height = 12;
+                this.vx = (Math.random() - 0.5) * 60 - 50; // drifting left
+                this.vy = (Math.random() - 0.5) * 80;
+                this.spin = Math.random() * Math.PI;
+                this.spinSpeed = 2 + Math.random() * 4;
+                
+                if (value !== null && value !== undefined) {
+                    this.value = value;
+                } else if (type === 'metal') {
+                    this.value = Math.floor(10 + Math.random() * 41); // 10-50
+                } else if (type === 'alloy') {
+                    this.value = 50 + Math.floor(Math.random() * 51); // 50-100
+                } else if (type === 'cell') {
+                    this.value = Math.floor(100 + Math.random() * 151); // 100-250
+                } else if (type === 'core') {
+                    this.value = 250 + Math.floor(Math.random() * 251); // 250-500
+                } else if (type === 'essence') {
+                    this.value = 500 + Math.floor(Math.random() * 501); // 500-1000
+                } else if (type === 'fragment') {
+                    this.value = Math.floor(500 + Math.random() * 501); // 500-1000
+                }
+                
+                if (type === 'metal') {
+                    this.color = '#c0c0c0'; // silver/grey
+                } else if (type === 'alloy') {
+                    this.color = '#4A90D9'; // blue alloy
+                } else if (type === 'cell') {
+                    this.color = '#00ffff'; // neon cyan
+                } else if (type === 'core') {
+                    this.color = '#FFD700'; // gold
+                } else if (type === 'essence') {
+                    this.color = '#FF44CC'; // pink/purple
+                } else if (type === 'fragment') {
+                    this.color = '#ff00ff'; // neon purple
+                }
+            }
+            update(dt) {
+                // Apply magnetic pull toward player
+                const dx = player.x + player.width/2 - this.x;
+                const dy = player.y + player.height/2 - this.y;
+                const dist = Math.sqrt(dx*dx + dy*dy);
+                
+                const magnetRadius = 100;
+                if (dist < magnetRadius) {
+                    const pullForce = 350 * (1 - dist / magnetRadius);
+                    this.vx += (dx / dist) * pullForce * dt;
+                    this.vy += (dy / dist) * pullForce * dt;
+                } else {
+                    this.vx = this.vx * 0.98;
+                    this.vy = this.vy * 0.98;
+                    this.x -= 40 * dt;
+                }
+                
+                this.x += this.vx * dt;
+                this.y += this.vy * dt;
+                this.spin += this.spinSpeed * dt;
+            }
+            draw() {
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.spin);
+                
+                ctx.shadowColor = this.color;
+                ctx.shadowBlur = 8;
+                ctx.fillStyle = this.color;
+                
+                if (this.type === 'metal') {
+                    ctx.beginPath();
+                    for(let i=0; i<6; i++) {
+                        const angle = i * Math.PI / 3;
+                        ctx.lineTo(Math.cos(angle)*6, Math.sin(angle)*6);
+                    }
+                    ctx.closePath();
+                    ctx.fill();
+                } else if (this.type === 'alloy') {
+                    // Blue alloy plate with circuit traces
+                    ctx.fillRect(-7, -5, 14, 10);
+                    ctx.fillStyle = '#2266AA';
+                    ctx.fillRect(-3, -3, 6, 6);
+                } else if (this.type === 'cell') {
+                    ctx.fillRect(-3, -6, 6, 12);
+                    ctx.fillStyle = '#ffffff';
+                    ctx.fillRect(-1, -4, 2, 8);
+                } else if (this.type === 'core') {
+                    // Gold precursor core with pulsing glow
+                    ctx.shadowBlur = 14;
+                    ctx.beginPath();
+                    ctx.arc(0, 0, 8, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.fillStyle = '#ffffff';
+                    ctx.shadowBlur = 0;
+                    ctx.beginPath();
+                    ctx.arc(0, 0, 3, 0, Math.PI * 2);
+                    ctx.fill();
+                } else if (this.type === 'essence') {
+                    // Pink/purple Dreamer essence orb
+                    ctx.shadowBlur = 16;
+                    ctx.beginPath();
+                    ctx.arc(0, 0, 9, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.fillStyle = '#ffffff';
+                    ctx.shadowBlur = 0;
+                    ctx.beginPath();
+                    ctx.arc(0, 0, 4, 0, Math.PI * 2);
+                    ctx.fill();
+                } else if (this.type === 'fragment') {
+                    ctx.fillRect(-5, -5, 10, 10);
+                    ctx.strokeStyle = '#ffffff';
+                    ctx.lineWidth = 1;
+                    ctx.strokeRect(-5, -5, 10, 10);
+                }
+                
+                ctx.restore();
+            }
+        }
+
+// --- Window bindings for explicit global scope ---
+window.Bullet = Bullet;
+window.PowerUp = PowerUp;
+window.SpriteExplosion = SpriteExplosion;
+window.ScrapDrop = ScrapDrop;

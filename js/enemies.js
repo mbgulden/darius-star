@@ -283,6 +283,8 @@
                 this.color = '#305080';
                 this.shieldColor = '#ff00aa';
                 this.architectPhase = null; // GRO-1009: 'sacrifice'|'transcendence'|'dominion' — set at low HP
+                this._victoryTimeout = null;
+                this._advanceTimeout = null;
             }
 
             update(dt) {
@@ -482,10 +484,12 @@
                     
                     if (biomeLevel >= 10) {
                         // Final boss — victory cinematic
-                        setTimeout(() => { playVictoryCinematic(); }, 3500);
+                        if (this._victoryTimeout) clearTimeout(this._victoryTimeout);
+                        this._victoryTimeout = setTimeout(() => { playVictoryCinematic(); }, 3500);
                     } else {
                         // Biome clear — advance to next biome after explosions
-                        setTimeout(() => { advanceToNextBiome(); }, 3000);
+                        if (this._advanceTimeout) clearTimeout(this._advanceTimeout);
+                        this._advanceTimeout = setTimeout(() => { advanceToNextBiome(); }, 3000);
                     }
                 }
             }
@@ -676,3 +680,8 @@
                 ctx.restore();
             }
         }
+
+// --- Window bindings for explicit global scope ---
+window.EnemyBullet = EnemyBullet;
+window.Enemy = Enemy;
+window.Boss = Boss;

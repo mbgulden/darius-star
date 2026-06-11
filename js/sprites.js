@@ -56,8 +56,8 @@
             types.forEach(key => {
                 const img = new Image();
                 img.onload = function() { enemySprites[key] = preCompositeAdditive(img); };
+                img.onerror = function() { enemySprites[key] = null; };
                 img.src = `assets/sprites/${key}_0.png`;
-                enemySprites[key] = img;
             });
         }
 
@@ -130,7 +130,7 @@
             bossLoadProgress = 0;
 
             const toLoad = [
-                { key: 'boss',       src: 'assets/sprites/boss_0.png' },
+                { key: 'boss',       src: 'assets/boss_0.png' },
                 { key: 'bossMinion', src: 'assets/sprites/boss_minion_0.png' }
             ];
             let loadedCount = 0;
