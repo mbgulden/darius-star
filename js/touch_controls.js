@@ -174,53 +174,81 @@
         buttonContainer.id = 'touch-action-buttons';
         buttonContainer.style.cssText =
             'display:block; position:absolute; bottom:8px; right:8px; ' +
-            'width:175px; height:135px; z-index:100; pointer-events:none;';
+            'width:150px; height:112px; z-index:100; pointer-events:none;';
         container.appendChild(buttonContainer);
 
-        // FIRE button — large circle, bottom-right
+        // FIRE button — compact circle, bottom-right
         buttonContainer.appendChild(createActionButton('FIRE', ' ', {
             bottom: '2px', right: '2px',
-            width: '68px', height: '68px',
+            width: '54px', height: '54px',
             borderRadius: '50%',
-            background: 'rgba(255, 0, 85, 0.18)',
-            border: '3px solid rgba(255, 0, 85, 0.45)',
-            borderColor: 'rgba(255, 0, 85, 0.45)',
-            color: 'rgba(255, 0, 85, 0.75)',
-            fontSize: '12px',
+            background: 'rgba(255, 0, 85, 0.15)',
+            border: '2px solid rgba(255, 0, 85, 0.40)',
+            borderColor: 'rgba(255, 0, 85, 0.40)',
+            color: 'rgba(255, 0, 85, 0.70)',
+            fontSize: '11px',
             activeBg: 'rgba(255, 0, 85, 0.45)',
             activeBorder: '#ff0055',
             activeShadow: '0 0 20px rgba(255, 0, 85, 0.6)'
         }));
 
-        // SPECIAL weapon button — medium, above-left of fire
+        // SPECIAL weapon button — compact, above-left of fire
         buttonContainer.appendChild(createActionButton('SPEC', 'k', {
-            bottom: '45px', right: '78px',
-            width: '46px', height: '46px',
-            borderRadius: '10px',
-            background: 'rgba(176, 38, 255, 0.18)',
-            border: '2px solid rgba(176, 38, 255, 0.45)',
-            borderColor: 'rgba(176, 38, 255, 0.45)',
-            color: 'rgba(176, 38, 255, 0.75)',
-            fontSize: '9px',
+            bottom: '38px', right: '64px',
+            width: '38px', height: '38px',
+            borderRadius: '8px',
+            background: 'rgba(176, 38, 255, 0.15)',
+            border: '2px solid rgba(176, 38, 255, 0.40)',
+            borderColor: 'rgba(176, 38, 255, 0.40)',
+            color: 'rgba(176, 38, 255, 0.70)',
+            fontSize: '8px',
             activeBg: 'rgba(176, 38, 255, 0.45)',
             activeBorder: '#b026ff',
             activeShadow: '0 0 14px rgba(176, 38, 255, 0.5)'
         }));
 
-        // SHIELD/DODGE button — medium, above-right of fire
+        // SHIELD/DODGE button — compact, above-right of fire
         buttonContainer.appendChild(createActionButton('DODGE', 'e', {
-            bottom: '45px', right: '2px',
-            width: '46px', height: '46px',
-            borderRadius: '10px',
-            background: 'rgba(0, 255, 170, 0.18)',
-            border: '2px solid rgba(0, 255, 170, 0.45)',
-            borderColor: 'rgba(0, 255, 170, 0.45)',
-            color: 'rgba(0, 255, 170, 0.75)',
-            fontSize: '9px',
+            bottom: '38px', right: '2px',
+            width: '38px', height: '38px',
+            borderRadius: '8px',
+            background: 'rgba(0, 255, 170, 0.15)',
+            border: '2px solid rgba(0, 255, 170, 0.40)',
+            borderColor: 'rgba(0, 255, 170, 0.40)',
+            color: 'rgba(0, 255, 170, 0.70)',
+            fontSize: '8px',
             activeBg: 'rgba(0, 255, 170, 0.45)',
             activeBorder: '#00ffaa',
             activeShadow: '0 0 14px rgba(0, 255, 170, 0.5)'
         }));
+
+        // Toggle button — small handle to collapse/expand action buttons
+        var toggleBtn = document.createElement('div');
+        toggleBtn.id = 'touch-toggle';
+        toggleBtn.textContent = '▼';
+        toggleBtn.style.cssText =
+            'position:absolute; top:0px; right:0px; ' +
+            'width:22px; height:18px; z-index:102; pointer-events:auto; ' +
+            'background:rgba(255,255,255,0.10); border:1px solid rgba(255,255,255,0.25); ' +
+            'border-radius:3px; color:rgba(255,255,255,0.5); font-size:10px; ' +
+            'display:flex; alignItems:center; justifyContent:center; ' +
+            'cursor:pointer; userSelect:none; touchAction:manipulation;';
+        var buttonsVisible = true;
+        toggleBtn.addEventListener('pointerdown', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            buttonsVisible = !buttonsVisible;
+            toggleBtn.textContent = buttonsVisible ? '▼' : '▲';
+            // Toggle visibility of all action buttons (not the toggle itself)
+            var btns = buttonContainer.querySelectorAll('.touch-action-btn');
+            for (var i = 0; i < btns.length; i++) {
+                btns[i].style.display = buttonsVisible ? 'flex' : 'none';
+            }
+            // Adjust container size when collapsed
+            buttonContainer.style.height = buttonsVisible ? '112px' : '24px';
+        });
+        toggleBtn.addEventListener('touchstart', function(e) { e.preventDefault(); e.stopPropagation(); });
+        buttonContainer.appendChild(toggleBtn);
 
         console.log('[Darius Star] Touch action buttons created');
     }
