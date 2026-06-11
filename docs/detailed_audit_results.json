@@ -13,8 +13,16 @@
       "text": "[CampaignSave] save_system.js loaded — full implementation (GRO-1090)"
     },
     {
+      "type": "error",
+      "text": "Failed to load resource: the server responded with a status of 404 (File not found)"
+    },
+    {
       "type": "log",
       "text": "[OK] economy.js loaded — Economy loot tables and anti-farming enabled"
+    },
+    {
+      "type": "log",
+      "text": "[OK] scrap_events.js loaded — economy ↔ banter bridge active"
     },
     {
       "type": "log",
@@ -30,7 +38,7 @@
     },
     {
       "type": "error",
-      "text": "Failed to load resource: the server responded with a status of 404 (File not found)"
+      "text": "Page Error: canvas is not defined"
     },
     {
       "type": "error",
@@ -50,11 +58,7 @@
     },
     {
       "type": "error",
-      "text": "Failed to load resource: the server responded with a status of 404 (File not found)"
-    },
-    {
-      "type": "error",
-      "text": "Failed to load resource: the server responded with a status of 404 (File not found)"
+      "text": "Page Error: Identifier 'activeDialogue' has already been declared"
     },
     {
       "type": "error",
@@ -103,6 +107,10 @@
   ],
   "failedNetworkRequests": [
     {
+      "url": "http://127.0.0.1:8088/js/audio_chip.js",
+      "status": 404
+    },
+    {
       "url": "http://127.0.0.1:8088/assets/cinematics/cinematic_boss_intro.mp4",
       "status": 404
     },
@@ -111,7 +119,7 @@
       "status": 404
     },
     {
-      "url": "http://127.0.0.1:8088/assets/sprites/studio_logo.png",
+      "url": "http://127.0.0.1:8088/assets/cinematics/ending_sunrise.png",
       "status": 404
     },
     {
@@ -119,19 +127,11 @@
       "status": 404
     },
     {
-      "url": "http://127.0.0.1:8088/assets/cinematics/ending_sunrise.png",
-      "status": 404
-    },
-    {
       "url": "http://127.0.0.1:8088/assets/sprites/backgrounds/bg_title_strip.png",
       "status": 404
     },
     {
-      "url": "http://127.0.0.1:8088/assets/sprites/bg_city_0.png",
-      "status": 404
-    },
-    {
-      "url": "http://127.0.0.1:8088/assets/sprites/bg_nebula_0.png",
+      "url": "http://127.0.0.1:8088/assets/sprites/studio_logo.png",
       "status": 404
     },
     {
@@ -143,11 +143,11 @@
       "status": 404
     },
     {
-      "url": "http://127.0.0.1:8088/assets/sprites/portraits/darius_neutral.png",
+      "url": "http://127.0.0.1:8088/assets/sprites/portraits/darius_reactive.png",
       "status": 404
     },
     {
-      "url": "http://127.0.0.1:8088/assets/sprites/portraits/darius_reactive.png",
+      "url": "http://127.0.0.1:8088/assets/sprites/portraits/darius_neutral.png",
       "status": 404
     },
     {
@@ -176,10 +176,6 @@
     },
     {
       "url": "http://127.0.0.1:8088/assets/sprites/portraits/comms_overlay.png",
-      "status": 404
-    },
-    {
-      "url": "http://127.0.0.1:8088/assets/sprites/boss_minion_0.png",
       "status": 404
     }
   ]

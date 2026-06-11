@@ -15,39 +15,58 @@ the pre-modularization monolith. The module list below is the current ground tru
 - `*.md` — documentation (except this file with approval)
 
 ## Architecture (fully modular)
-`index.html` is now a **296-line HTML/CSS shell** with 17 external `<script>` tags.
+`index.html` is now a **376-line HTML/CSS shell** with 34 active external `<script>` tags.
 All game logic lives in `js/`. Load order is critical — modules are loaded
-in dependency order, with `game_loop.js` last.
+in dependency order, with `game_loop.js` and story modules last.
 
 ### js/ module map (loaded in this order)
 | # | Module | What it contains |
 |---|--------|-----------------|
-| 1 | `upgrade_system.js` | Ship upgrade tree |
-| 2 | `save_system.js` | CampaignSave — 3-slot save/load |
-| 3 | `combo.js` | Kill streak scoring |
-| 4 | `economy.js` | Scrap drop tracking |
-| 5 | `banter_engine.js` | Contextual character banter |
-| 6 | `multiplayer.js` | 1-4 player drop-in/out |
-| 7 | `ngplus.js` | New Game+ with paradox enemies |
-| 8 | `leaderboard.js` | High scores |
-| 9 | `player.js` | Player ship class (753 lines) |
-| 10 | `enemies.js` | EnemyBullet, Enemy, Boss classes (672 lines) |
-| 11 | `combat.js` | Bullet, PowerUp, SpriteExplosion (160 lines) |
-| 12 | `renderer.js` | Particle, Parallax, backgrounds (1352 lines) |
-| 13 | `sprites.js` | Sprite loading functions (132 lines) |
-| 14 | `audio.js` | Web Audio synth + environmental cues (900 lines) |
-| 15 | `ui.js` | Menus, HUD, pause, settings, dialogue (2336 lines) |
-| 16 | `level_manager.js` | Wave system, formation spawning, difficulty scaling (GRO-1140) |
-| 17 | `game_loop.js` | Game state, entity pools, update(), draw(), loop(), collision, input, narrative flags (1752 lines) |
+| 1 | `js/utils.js` | Shared utility functions (extracted from game_loop.js) |
+| 2 | `js/canvas_setup.js` | Canvas initialization and DOM HUD references |
+| 3 | `js/upgrade_system.js` | DS_UpgradeSystem — Ship upgrade tree and purchase logic |
+| 4 | `js/save_system.js` | CampaignSave — 3-slot save/load JSON localStorage system |
+| 5 | `js/player_state.js` | PlayerState — tracks progress, checkpoints, and playthrough stats |
+| 6 | `js/combo.js` | Combo scoring and floating multiplier text |
+| 7 | `js/economy.js` | Scrap drop rules and anti-farming thresholds |
+| 8 | `js/scrap_events.js` | Economy ↔ banter bridge (triggers voice comments on scrap pickup) |
+| 9 | `js/banter_db.js` | Database of character dialogue lines and arc conditions |
+| 10 | `js/banter_engine.js` | BanterEngine — evaluates dialogue rules and speaks voice/text |
+| 11 | `js/multiplayer.js` | 1-4 player local co-op drop-in/out and keyboard/gamepad config |
+| 12 | `js/ngplus.js` | NGPlus — New Game+ paradox loops and difficulty multipliers |
+| 13 | `js/leaderboard.js` | High scores local storage and filter categories |
+| 14 | `js/player.js` | Player ship class, movement, weapon configurations |
+| 15 | `js/enemies.js` | Enemy, EnemyBullet, and Boss classes |
+| 16 | `js/combat.js` | Bullet, PowerUp, and SpriteExplosion classes |
+| 17 | `js/renderer/parallax.js` | ParallaxLayer, Star, OffscreenBuffer, background loading |
+| 18 | `js/renderer/particles.js` | Particle, FloatingText, EnvironmentParticle + 10 biome systems |
+| 19 | `js/renderer.js` | Orchestrator, screen shake, text wrap helpers |
+| 20 | `js/sprites.js` | Sprite loading functions and ready state check |
+| 21 | `js/audio.js` | Web Audio synthesizer, sound effects player, and ambient soundtrack |
+| 22 | `js/ui/menus.js` | Main menu canvas rendering |
+| 23 | `js/ui/ship-select.js` | Ship selection screen canvas rendering |
+| 24 | `js/ui/settings.js` | Audio sliders and difficulty selectors canvas rendering |
+| 25 | `js/ui.js` | Pause menu input handling, Credits screen, video playback transitions |
+| 26 | `js/audio_chip.js` | Chiptune music loop generator for menu and credits |
+| 27 | `js/ui/dialogue.js` | DialogueSequence, PortraitRenderer, CommsOverlay |
+| 28 | `js/levels/biome_data.js` | Biome level layouts, backgrounds, wave definitions |
+| 29 | `js/level_manager.js` | Wave spawning, difficulty scaling, boss triggering |
+| 30 | `js/game_loop.js` | Main game loop, update/draw cycles, collision checks, key bindings |
+| 31 | `js/story/branching.js` | StoryBranching — tracks branch gates and registers choices |
+| 32 | `js/story/audio-tunnels.js` | AudioTunnel narrator audio player |
+| 33 | `js/story/triggers.js` | StoryTriggers — gameplay event hooks (dormant/unintegrated) |
+| 34 | `js/touch_controls.js` | Mobile touch overlays and virtual joysticks |
+| 35 | `js/ui/hud.js` | DOM HUD and pause input separation (placeholder stub; not loaded) |
+| 36 | `js/ui/game-over.js` | Game over / victory screens separation (placeholder stub; not loaded) |
 
 ## Key Architecture Notes
 - **No IIFE wrappers** — modules use top-level scope. Classes defined in one module
   are visible to all subsequent modules via global scope.
-- **Shared utility functions** — `createExplosion`, `spawnHitFlash`, `checkCollision`,
-  `setNarrativeFlag`, `getNarrativeFlag`, `determineEnding`, `startNGPlus`,
-  `resetGame`, `handleDeathOrVictoryRestart`, `resizeCanvas` are defined in
-  `game_loop.js` and called from multiple modules. No duplicates exist.
-- **LevelManager** — global singleton loaded at #16. game_loop.js calls
+- **Shared utility functions** — `resizeCanvas`, `setNarrativeFlag`, `getNarrativeFlag`,
+  `determineEnding`, `createExplosion`, `spawnHitFlash`, `checkCollision`,
+  `triggerScrapNarrativeBeat`, `startNGPlus`, `resetGame`, and
+  `handleDeathOrVictoryRestart` are defined in `js/utils.js` and loaded first.
+- **LevelManager** — global singleton loaded at #29. game_loop.js calls
   `LevelManager.setBiomeAndLevel()`, `LevelManager.update(dt)`, and reads
   `LevelManager.currentLevelConfig.bossTrigger`. Enemy spawning is fully
   delegated to LevelManager.
