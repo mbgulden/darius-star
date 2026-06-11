@@ -1,0 +1,25 @@
+{
+  "name": "darius-star",
+  "version": "1.0.0",
+  "description": "Darius Star: Cyber Coelacanth — retro arcade shoot-em-up",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "echo 'Dev mode: serve files directly (no build step). Use python3 -m http.server or wrangler pages dev.'",
+    "build": "node build.js",
+    "build:prod": "node build.js --minify",
+    "watch": "node build.js --watch"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/whatanadventuregames/darius-star"
+  },
+  "keywords": ["game", "shoot-em-up", "canvas", "retro", "arcade"],
+  "license": "UNLICENSED"
+}
