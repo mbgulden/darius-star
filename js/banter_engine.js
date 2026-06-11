@@ -224,6 +224,35 @@ const BanterEngine = {
             {s:'C', l:"Geometry is folding in on itself! Up is sideways, forward loops backward. I can't navigate this! Breaking off!", r:{s:'L', l:"Captain Cross, close your eyes and listen to my voice. The Dreamer can't bend sound. I'll guide you out."}},
         ]},
     },
+    
+    // GRO-1054: Scrap-to-story dialogue — global banter for scrap/upgrade events.
+    // Delivered via ScrapEvents listeners rather than the standard getLine/biome path.
+    _scrapData: {
+        scrap_collected: [
+            {s:'D', l:"Another plate. The Nyxa appreciates it."},
+            {s:'N', l:"Salvage logged. Every credit counts toward the next push."},
+        ],
+        scrap_milestone: [
+            {s:'D', l:"That's a decent haul. Keep the momentum."},
+            {s:'N', l:"Milestone hit. We are not broke yet."},
+            {s:'O', l:"Sufficient energy-credits have been banked. Proceed."},
+        ],
+        legendary_drop: [
+            {s:'D', l:"Essence plate! Pre-war alloy. Worth more than a fleet destroyer."},
+            {s:'N', l:"LEGENDARY drop! That piece alone would buy a week of station time."},
+            {s:'O', l:"An essence fragment. The Dreamer's signature is embedded in the alloy."},
+        ],
+        upgrade_purchased: [
+            {s:'N', l:"Upgrade installed. Should help with what is ahead."},
+            {s:'D', l:"Better gear. The deep doesn't get easier."},
+            {s:'T', l:"Good investment. That system will earn its keep."},
+        ],
+        upgrade_max_tier: [
+            {s:'N', l:"MAX rank upgrade! That system is fully tuned now."},
+            {s:'D', l:"Top of the line. Nothing in the trench can match this."},
+            {s:'O', l:"Maximum calibration achieved. The upgrade tree for this branch is complete."},
+        ],
+    },
 
     _joinBanter: {
         early: [
@@ -324,6 +353,54 @@ const BanterEngine = {
 
     getActive() { return this._activeResponse || this._activeLine; },
     clear() { this._activeLine = null; this._activeResponse = null; this._displayTimer = 0; },
+
+    // GRO-1054: Trigger a scrap/upgrade event line from _scrapData.
+    // Falls back to event-system banter (SCRAP_NARRATIVE_BEATS) if no specific data.
+    triggerScrapEvent(trigger, line) {
+        if (line) {
+            // Direct line provided (from legacy SCRAP_NARRATIVE_BEATS)
+            return this.triggerDirect(line, 5.0);
+        }
+        const lines = this._scrapData[trigger];
+        if (lines && lines.length > 0) {
+            const pick = lines[Math.floor(Math.random() * lines.length)];
+            return this.triggerDirect(pick, 4.0);
+        }
+        return null;
+    },
+
+    /**
+     * GRO-1054: Wire ScrapEvents into the banter system.
+     * Call once after both modules are loaded (e.g. from game_loop.js init).
+     */
+    initScrapEvents() {
+        if (!window.ScrapEvents) return;
+
+        ScrapEvents.on('scrap:collected', () => {
+            if (this.getActive()) return; // don't stomp active dialogue
+            this.triggerScrapEvent('scrap_collected');
+        });
+
+        ScrapEvents.on('scrap:milestone', () => {
+            if (this.getActive()) return;
+            this.triggerScrapEvent('scrap_milestone');
+        });
+
+        ScrapEvents.on('scrap:legendary', () => {
+            // Legendary drops are rare — override active dialogue if needed
+            this.triggerScrapEvent('legendary_drop');
+        });
+
+        ScrapEvents.on('upgrade:purchased', () => {
+            if (this.getActive()) return;
+            this.triggerScrapEvent('upgrade_purchased');
+        });
+
+        ScrapEvents.on('upgrade:max_tier', () => {
+            // Max tier upgrades are significant — override active dialogue
+            this.triggerScrapEvent('upgrade_max_tier');
+        });
+    },
 };
 
 if (typeof module !== 'undefined' && module.exports) {

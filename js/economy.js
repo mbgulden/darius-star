@@ -125,7 +125,14 @@ window.Economy = {
         const table = economyGetTable(enemyType);
         const type = economyWeightedChoice(table.typeWeights);
         const amount = economyRollAmount(type, biomeLevel, table);
-        return { type, amount };
+        const drop = { type, amount };
+
+        // GRO-1054: Bridge to scrap_events for story dialogue hooks
+        if (window.ScrapEvents && ScrapEvents.onDropGenerated) {
+            ScrapEvents.onDropGenerated(drop, enemyType, biomeLevel);
+        }
+
+        return drop;
     },
 
     createDrop(x, y, type, amount) {

@@ -36,6 +36,20 @@ window.addEventListener('DOMContentLoaded', () => {
         url.searchParams.delete('launch');
         window.history.replaceState({}, '', url.toString());
         
+        // GRO-1154: Initialize audio for auto-launch (fix silent gameplay)
+        initAudio();
+        // Fallback: ensure AudioContext is resumed on first user interaction
+        // (browsers may keep context suspended until user gesture)
+        const resumeOnGesture = () => {
+            initAudio();
+            document.removeEventListener('click', resumeOnGesture);
+            document.removeEventListener('keydown', resumeOnGesture);
+            document.removeEventListener('touchstart', resumeOnGesture);
+        };
+        document.addEventListener('click', resumeOnGesture);
+        document.addEventListener('keydown', resumeOnGesture);
+        document.addEventListener('touchstart', resumeOnGesture);
+        
         // Immediately start playing
         setTimeout(() => {
             currentScreen = SCREENS.PLAYING;
@@ -69,6 +83,8 @@ window.addEventListener('DOMContentLoaded', () => {
             if (window.BanterEngine) {
                 BanterEngine.init(window.Multiplayer ? Multiplayer.count : 1);
                 BanterEngine.trigger('level_start', 1);
+                // GRO-1054: Wire scrap/upgrade events into banter system
+                BanterEngine.initScrapEvents();
             }
         }, 100);
     }
@@ -401,6 +417,8 @@ function resetGame() {
     runScrap = 0;
     runScrapSaved = false;
     scrapNarrativeMilestonesPlayed.clear();
+    // GRO-1054: Reset scrap event state for new run
+    if (window.ScrapEvents && ScrapEvents.reset) ScrapEvents.reset();
     newHighScoreCelebrated = false;
     highScoreBannerTimer = 0;
     highScoreParticles = [];
@@ -513,6 +531,8 @@ function resetGame() {
     if (window.BanterEngine) {
         BanterEngine.init(window.Multiplayer ? Multiplayer.count : 1);
         BanterEngine.trigger('level_start', 1);
+        // GRO-1054: Wire scrap/upgrade events (save-load path)
+        BanterEngine.initScrapEvents();
     }
 }
 
@@ -653,8 +673,11 @@ function update(dt) {
     updateActiveBiome(dt, score);
     
     // GRO-1028: Audio drama systems — biome ambient loop & story beats
-    updateBiomeAmbientLoop(dt);
-    updateAudioStoryBeat(dt);
+    // GRO-1040: Respect audioTunnelsEnabled toggle
+    if (typeof audioTunnelsEnabled === 'undefined' || audioTunnelsEnabled) {
+        updateBiomeAmbientLoop(dt);
+        updateAudioStoryBeat(dt);
+    }
 
     if (activeDialogue) {
         activeDialogue.update(dt);
@@ -1046,6 +1069,10 @@ function update(dt) {
                 collectedVal += Math.round(bonus);
             }
             floatingTexts.push(new FloatingText(sd.x, sd.y, `+⚙️${collectedVal}`, '#00ff55'));
+            // GRO-1054: Bridge scrap collection to story events
+            if (window.ScrapEvents && ScrapEvents.onScrapCollected) {
+                ScrapEvents.onScrapCollected(collectedVal, sd.type);
+            }
             triggerScrapNarrativeBeat();
             scrapDrops.splice(i, 1);
             continue;
