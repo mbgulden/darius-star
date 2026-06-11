@@ -2,10 +2,19 @@
         let audioCtx = null;
         function initAudio() {
             if (!audioCtx) {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                try {
+                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                } catch(e) {
+                    console.warn('[Darius Star] AudioContext creation failed:', e.message);
+                    return;
+                }
             }
             if (audioCtx.state === 'suspended') {
-                audioCtx.resume();
+                try {
+                    audioCtx.resume();
+                } catch(e) {
+                    console.warn('[Darius Star] AudioContext resume failed:', e.message);
+                }
             }
         }
 
