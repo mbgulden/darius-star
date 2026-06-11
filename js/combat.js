@@ -166,12 +166,16 @@
 
             draw() {
                 if (!this.alive) return;
-                const key = 'explosion_0';  // Single sprite sheet with 4 frames in 2x2 grid
+                const key = 'explosion_0';  // Sprite sheet with 4 frames in 2x2 grid
                 const sprite = vfxSprites[key];
-                if (sprite && sprite.complete && sprite.naturalWidth > 0) {
+                // preCompositeAdditive() returns a canvas (no .complete/.naturalWidth)
+                const hasSprite = sprite && (sprite.width > 0 || (sprite.complete && sprite.naturalWidth > 0));
+                if (hasSprite) {
                     // Sprite sheet: 2x2 grid, 4 frames (each frame = half width, half height)
-                    const fw = sprite.naturalWidth / 2;
-                    const fh = sprite.naturalHeight / 2;
+                    const sw = sprite.naturalWidth || sprite.width;
+                    const sh = sprite.naturalHeight || sprite.height;
+                    const fw = sw / 2;
+                    const fh = sh / 2;
                     const col = this.frame % 2;
                     const row = Math.floor(this.frame / 2);
                     ctx.save();
