@@ -4739,7 +4739,9 @@
         function generateBiomeBackground(biomeNum) {
             if (biomeBgCanvases[biomeNum]) return biomeBgCanvases[biomeNum];
             const c = document.createElement('canvas');
-            c.width = canvas.width || 800;
+            const baseW = canvas.width || 800;
+            // 2× width for seamless tiling — eliminates visible seam at viewport edge
+            c.width = baseW * 2;
             c.height = canvas.height || 450;
             const bctx = c.getContext('2d');
             
@@ -4843,8 +4845,16 @@
 
             update(dt) {
                 const img = this.getImg();
-                // Use procedural canvas width as fallback
-                const w = (img && img.complete && img.naturalWidth > 0) ? img.width : (canvas.width || 800);
+                // Use procedural canvas width as fallback (2× viewport for seamless tiling)
+                let w;
+                if (img && img.complete && img.naturalWidth > 0) {
+                    w = img.width;
+                } else {
+                    const match = this.key.match(/bg_(\d+)/);
+                    const biomeNum = match ? parseInt(match[1]) : 1;
+                    const procBg = biomeBgCanvases[biomeNum] || generateBiomeBackground(biomeNum);
+                    w = procBg ? procBg.width : (canvas.width || 800);
+                }
                 this.offset = (this.offset + this.speed * dt) % w;
             }
 
