@@ -1449,9 +1449,10 @@
                     paused = !paused;
                     if (paused) { pauseMenuIndex = 0; pauseSubScreen = 'menu'; }
                 }
-                // F3: Toggle debug enemy name labels (GRO-1068)
+                // F3: Toggle system status panel + debug enemy name labels (GRO-1068, GRO-1156)
                 if (e.key === 'F3') {
                     window.DEBUG_LABELS = !window.DEBUG_LABELS;
+                    toggleStatusPanel();
                     e.preventDefault();
                 }
                 keys[e.key] = true;
@@ -2333,6 +2334,33 @@
                     }
                     if (typeof envBuffer !== 'undefined') envBuffer.markDirty();
                 }
-            }
         }
+    }
 
+// --- System Status Panel Toggle (GRO-1156) ---
+window.STATUS_EXPANDED = false;
+
+function toggleStatusPanel() {
+    window.STATUS_EXPANDED = !window.STATUS_EXPANDED;
+    const overlay = document.getElementById('controls-overlay');
+    const btn = document.getElementById('controls-toggle');
+    if (!overlay) return;
+    if (window.STATUS_EXPANDED) {
+        overlay.classList.add('expanded');
+        if (btn) btn.textContent = '✕';
+    } else {
+        overlay.classList.remove('expanded');
+        if (btn) btn.textContent = '⚙';
+    }
+}
+
+// Click handler for the toggle button
+document.addEventListener('DOMContentLoaded', function() {
+    const btn = document.getElementById('controls-toggle');
+    if (btn) {
+        btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            toggleStatusPanel();
+        });
+    }
+});

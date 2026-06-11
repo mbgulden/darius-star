@@ -121,12 +121,45 @@
             position: absolute;
             top: 10px;
             right: 10px;
-            background: rgba(10, 10, 30, 0.7);
-            padding: 8px;
+            background: rgba(10, 10, 30, 0.5);
+            padding: 2px;
             border-radius: 4px;
-            border: 1px solid #00ffff;
-            font-size: 12px;
-            pointer-events: none;
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            font-size: 11px;
+            pointer-events: auto;
+            z-index: 5;
+            transition: all 0.2s;
+        }
+        #controls-overlay.expanded {
+            background: rgba(10, 10, 30, 0.7);
+            border-color: #00ffff;
+            padding: 6px;
+        }
+        #controls-details {
+            display: none;
+            padding-top: 4px;
+        }
+        #controls-overlay.expanded #controls-details {
+            display: block;
+        }
+        #controls-toggle {
+            background: none;
+            border: 1px solid rgba(0, 255, 255, 0.4);
+            color: #00ffff;
+            cursor: pointer;
+            font-size: 14px;
+            padding: 2px 6px;
+            border-radius: 3px;
+            display: block;
+            width: 100%;
+            text-align: center;
+            font-family: 'Courier New', monospace;
+        }
+        #controls-toggle:hover {
+            background: rgba(0, 255, 255, 0.15);
+        }
+        #controls-toggle:active {
+            background: rgba(0, 255, 255, 0.3);
         }
 
         /* On-screen touch controls (hidden on desktop by default) */
@@ -224,6 +257,19 @@
             h1 {
                 font-size: 16px;
             }
+            #controls-overlay {
+                font-size: 10px;
+                top: 4px;
+                right: 4px;
+                padding: 1px;
+            }
+            #controls-overlay.expanded {
+                padding: 4px;
+            }
+            #controls-toggle {
+                font-size: 11px;
+                padding: 1px 4px;
+            }
         }
     </style>
 </head>
@@ -241,6 +287,8 @@
                playsinline preload="auto" muted></video>
         <div id="skip-cinematic-hint" class="skip-cinematic-hint">Press SPACE / ESC to skip</div>
         <div id="controls-overlay">
+            <button id="controls-toggle" title="System Status (F3)">⚙</button>
+            <div id="controls-details">
             <div style="color: #ff0055; font-weight: bold; margin-bottom: 4px;">SYSTEM STATUS</div>
             <div>BIOME: <span id="ui-biome" style="color: #00ffff; font-weight: bold;">1: Abyssal Trench</span></div>
             <div>NAVIGATOR: <span id="ui-navigator" style="color: #00ff55; font-weight: bold;">LYRA (ONLINE)</span></div>
@@ -252,6 +300,7 @@
             <div>SECONDARY: <span id="ui-special" style="color: #b026ff;">METER 0%</span></div>
             <div>DODGE: <span id="ui-dodge" style="color: #00ffff;">READY (E)</span></div>
             <div id="ui-banter" style="color: #ffffff; font-style: italic; margin-top: 4px; opacity: 0; transition: opacity 0.3s; max-width: 400px; font-size: 12px; line-height: 1.3;"></div>
+            </div>
         </div>
     </div>
 
