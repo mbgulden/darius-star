@@ -1,3 +1,7 @@
+// renderer.js — Particle, ScrapDrop, FloatingText, ParallaxLayer,
+// OffscreenBuffer, Star, EnvironmentParticle, star fields, and biome particles
+// Extracted from index.html by Ned (GRO-1096)
+
         // --- Particle Class ---
         class Particle {
             constructor(x, y, color) {
