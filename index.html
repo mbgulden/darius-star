@@ -192,87 +192,14 @@
         }
 
         /* On-screen touch controls (hidden on desktop by default) */
-        #touch-controls {
-            display: none;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 140px;
-            z-index: 100;
-            pointer-events: none;
-        }
-        #touch-controls.active {
-            display: block;
-        }
-        #dpad {
-            position: absolute;
-            left: 15px;
-            bottom: 15px;
-            width: 130px;
-            height: 130px;
-            pointer-events: auto;
-        }
-        .dpad-btn {
-            position: absolute;
-            width: 42px;
-            height: 42px;
-            background: rgba(0, 255, 255, 0.15);
-            border: 2px solid rgba(0, 255, 255, 0.4);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            color: rgba(0, 255, 255, 0.7);
-            user-select: none;
-            -webkit-user-select: none;
-            touch-action: manipulation;
-        }
-        .dpad-btn:active, .dpad-btn.pressed {
-            background: rgba(0, 255, 255, 0.35);
-            border-color: #00ffff;
-            color: #00ffff;
-        }
-        #dpad-up    { top: 0; left: 44px; }
-        #dpad-down  { bottom: 0; left: 44px; }
-        #dpad-left  { top: 44px; left: 0; }
-        #dpad-right { top: 44px; right: 0; }
-        #dpad-center { top: 44px; left: 44px; background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.15); }
-
-        #fire-btn {
-            position: absolute;
-            right: 20px;
-            bottom: 25px;
-            width: 70px;
-            height: 70px;
-            background: rgba(255, 0, 85, 0.2);
-            border: 3px solid rgba(255, 0, 85, 0.5);
-            border-radius: 50%;
-            font-size: 13px;
-            font-weight: bold;
-            color: rgba(255, 0, 85, 0.8);
-            pointer-events: auto;
-            user-select: none;
-            -webkit-user-select: none;
-            touch-action: manipulation;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            letter-spacing: 1px;
-        }
-        #fire-btn:active, #fire-btn.pressed {
-            background: rgba(255, 0, 85, 0.5);
-            border-color: #ff0055;
-            color: #ffffff;
-            box-shadow: 0 0 20px rgba(255, 0, 85, 0.6);
+        /* Mobile touch action buttons — created dynamically by touch_controls.js */
+        .touch-action-btn {
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
         }
 
         /* Show touch controls on touch-enabled devices */
         @media (hover: none) and (pointer: coarse) {
-            #touch-controls {
-                display: block;
-            }
             #game-container {
                 max-height: calc(100vh - 200px);
             }
@@ -368,17 +295,7 @@
         </div>
     </div>
 
-    <!-- On-Screen Touch Controls -->
-    <div id="touch-controls">
-        <div id="dpad">
-            <div class="dpad-btn" id="dpad-up">▲</div>
-            <div class="dpad-btn" id="dpad-down">▼</div>
-            <div class="dpad-btn" id="dpad-left">◀</div>
-            <div class="dpad-btn" id="dpad-right">▶</div>
-            <div class="dpad-btn" id="dpad-center"></div>
-        </div>
-        <div id="fire-btn">FIRE</div>
-    </div>
+    <!-- On-Screen Touch Controls — created dynamically by touch_controls.js -->
 
     <div class="instructions">
         <span class="keys">W, A, S, D</span> or <span class="keys">ARROW KEYS</span> to Move | 
@@ -404,8 +321,8 @@
     <script src="js/sprites.js"></script>
     <script src="js/audio.js"></script>
     <script src="js/ui.js"></script>
-    <script src="js/touch_controls.js"></script>
     <script src="js/level_manager.js"></script>
     <script src="js/game_loop.js"></script>
+    <script src="js/touch_controls.js"></script>
 </body>
 </html>
