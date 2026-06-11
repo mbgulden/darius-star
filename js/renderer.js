@@ -376,150 +376,6 @@
         }
 
         // --- Player Sprite Preloading ---
-        const playerSprites = {};
-        let playerSpritesLoaded = false;
-
-        function loadPlayerSprites() {
-            if (playerSpritesLoaded) return;
-            playerSpritesLoaded = true;
-            const frames = [
-                'player_0', 'player_1',
-                'player_phantom_0', 'player_phantom_1',
-                'player_bastion_0', 'player_bastion_1',
-                'player_tempest_0', 'player_tempest_1',
-                'player_specter_0', 'player_specter_1',
-                'player_warden_0', 'player_warden_1',
-                'scout_0', 'interceptor_0', 'heavy_0'
-            ];
-            frames.forEach(key => {
-                playerSprites[key] = new Image();
-                playerSprites[key].src = `assets/sprites/${key}.png`;
-            });
-        }
-
-        // --- Character Portrait Preloading ---
-        const portraitSprites = {};
-        let portraitSpritesLoaded = false;
-
-        function loadPortraitSprites() {
-            if (portraitSpritesLoaded) return;
-            portraitSpritesLoaded = true;
-            const characters = [
-                'lyra_neutral', 'lyra_reactive',
-                'darius_neutral', 'darius_reactive',
-                'naya_neutral', 'naya_reactive',
-                'thorne_neutral', 'thorne_reactive',
-                'cross_neutral', 'cross_reactive'
-            ];
-            characters.forEach(char => {
-                portraitSprites[char] = new Image();
-                portraitSprites[char].src = `assets/sprites/portraits/${char}.png`;
-            });
-            portraitSprites['comms_overlay'] = new Image();
-            portraitSprites['comms_overlay'].src = 'assets/sprites/portraits/comms_overlay.png';
-        }
-
-        // --- Enemy Sprite Preloading ---
-        const enemySprites = {};
-        let enemySpritesLoaded = false;
-
-        function loadEnemySprites() {
-            if (enemySpritesLoaded) return;
-            enemySpritesLoaded = true;
-            // Load all actual enemy sprite files
-            const types = [
-                'enemy_crawler', 'enemy_brute', 'enemy_spitter',
-                'enemy_b1_crawler', 'enemy_b2_wraith', 'enemy_b3_spider',
-                'enemy_b4_rider', 'enemy_b4_serpent', 'enemy_b4_wisp',
-                'enemy_ember_sprite', 'enemy_fleet_turret', 'enemy_frost_drone',
-                'enemy_gas_giant', 'enemy_ghost_fighter', 'enemy_glacier',
-                'enemy_glitch_fragment', 'enemy_hive_node', 'enemy_ice_shard',
-                'enemy_ice_swarm', 'enemy_inferno_node', 'enemy_lava_golem',
-                'enemy_magma_wasp', 'enemy_nebula_wraith', 'enemy_null_entity',
-                'enemy_paradox_wisp', 'enemy_plasma_wisp', 'enemy_rift_aberration',
-                'enemy_salvage_drone', 'enemy_static_spark', 'enemy_storm_hawk',
-                'enemy_storm_sentinel', 'enemy_storm_sprite', 'enemy_thunderhead',
-                'enemy_turret_battery'
-            ];
-            types.forEach(key => {
-                enemySprites[key] = new Image();
-                enemySprites[key].src = `assets/sprites/${key}_0.png`;
-            });
-            // Legacy aliases — map old type names to new sprites
-            enemySprites['scout'] = enemySprites['enemy_crawler'];
-            enemySprites['interceptor'] = enemySprites['enemy_spitter'];
-            enemySprites['heavy'] = enemySprites['enemy_brute'];
-            enemySprites['boss_minion'] = enemySprites['enemy_b1_crawler'];
-        }
-
-        // --- VFX Sprite Preloading ---
-        const vfxSprites = {};
-        let vfxSpritesLoaded = false;
-
-        function loadVFXSprites() {
-            if (vfxSpritesLoaded) return;
-            vfxSpritesLoaded = true;
-            // Laser (player bullets)
-            vfxSprites['laser'] = new Image();
-            vfxSprites['laser'].src = 'assets/sprites/laser_0.png';
-            // Enemy laser + glow
-            vfxSprites['laser_enemy'] = new Image();
-            vfxSprites['laser_enemy'].src = 'assets/sprites/laser_enemy.png';
-            vfxSprites['laser_glow'] = new Image();
-            vfxSprites['laser_glow'].src = 'assets/sprites/laser_0_glow.png';
-            // Multi-frame explosion (4 frames)
-            for (let f = 0; f < 4; f++) {
-                vfxSprites['explosion_' + f] = new Image();
-                vfxSprites['explosion_' + f].src = `assets/sprites/explosion_${f}.png`;
-            }
-            // Shield forcefield ring
-            vfxSprites['shield'] = new Image();
-            vfxSprites['shield'].src = 'assets/sprites/shield_0.png';
-        }
-
-        // --- Boss Asset Lazy-Loading ---
-        // Boss sprites are preloaded when score nears 2,000-point trigger
-        const bossSprites = {};
-        let bossAssetsLoading = false;
-        let bossAssetsLoaded = false;
-        let bossLoadProgress = 0;  // 0-100
-
-        function preloadBossAssets() {
-            if (bossAssetsLoading || bossAssetsLoaded) return;
-            bossAssetsLoading = true;
-            bossLoadProgress = 0;
-
-            const toLoad = [
-                { key: 'boss',       src: 'assets/sprites/boss_0.png' },
-                { key: 'bossMinion', src: 'assets/sprites/boss_minion_0.png' }
-            ];
-            let loadedCount = 0;
-            const total = toLoad.length;
-
-            toLoad.forEach(({key, src}) => {
-                const img = new Image();
-                img.onload = () => {
-                    loadedCount++;
-                    bossLoadProgress = Math.round((loadedCount / total) * 100);
-                    if (loadedCount >= total) {
-                        bossAssetsLoaded = true;
-                        bossAssetsLoading = false;
-                    }
-                };
-                img.onerror = () => {
-                    // Graceful fallback: mark done even on error
-                    loadedCount++;
-                    bossLoadProgress = Math.round((loadedCount / total) * 100);
-                    if (loadedCount >= total) {
-                        bossAssetsLoaded = true;
-                        bossAssetsLoading = false;
-                    }
-                };
-                img.src = src;
-                bossSprites[key] = img;
-            });
-        }
-
         // --- Offscreen Canvas Pre-Rendering ---
         // Static/procedural assets are rendered to offscreen canvases
         // and blitted in a single drawImage call instead of 100+ individual draws.
@@ -568,12 +424,26 @@
         }
 
         // Offscreen buffer for star field (rendered lazily every 250ms)
-        const starBuffer = new OffscreenBuffer(canvas.width, canvas.height);
-        starBuffer.renderInterval = 0.25; // seconds
+        let starBuffer = null;
         const stars = [];
-        for (let i = 0; i < 35; i++) stars.push(new Star(1));   // far
-        for (let i = 0; i < 22; i++) stars.push(new Star(2));   // mid
-        for (let i = 0; i < 10; i++) stars.push(new Star(3));   // near
+
+        function initializeRendererBuffers() {
+            // renderer.js loads before the inline game setup script. Build canvas-sized
+            // buffers only after index.html has created `canvas`/`ctx`.
+            if (!starBuffer) {
+                starBuffer = new OffscreenBuffer(canvas.width, canvas.height);
+                starBuffer.renderInterval = 0.25; // seconds
+            }
+            if (stars.length === 0) {
+                for (let i = 0; i < 35; i++) stars.push(new Star(1));   // far
+                for (let i = 0; i < 22; i++) stars.push(new Star(2));   // mid
+                for (let i = 0; i < 10; i++) stars.push(new Star(3));   // near
+            }
+            if (!envBuffer) {
+                envBuffer = new OffscreenBuffer(canvas.width, canvas.height);
+                envBuffer.renderInterval = 0.15;
+            }
+        }
 
         function rebuildStarBuffer(offCtx) {
             stars.forEach(star => {
@@ -1065,8 +935,7 @@
         }
 
         // Offscreen buffer for environmental particles (redrawn every 150ms)
-        const envBuffer = new OffscreenBuffer(canvas.width, canvas.height);
-        envBuffer.renderInterval = 0.15;
+        let envBuffer = null;
 
         function rebuildEnvBuffer(offCtx) {
             envParticles.forEach(p => {
@@ -1352,4 +1221,5 @@
             }
             context.fillText(line, x, y);
         }
+
 

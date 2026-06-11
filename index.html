@@ -275,14 +275,14 @@
         <span style="color: #ff0055;">Red Orbs</span> upgrade primary weapons. <span style="color: #00ff55;">Green Orbs</span> restore Shields. Reaching 2,000 points triggers the Boss Battle!
     </div>
 
-    <script src="upgrade_system.js"></script>
-    <script src="save_system.js"></script>
-    <script src="combo.js"></script>
-    <script src="economy.js"></script>
-    <script src="banter_engine.js"></script>
-    <script src="multiplayer.js"></script>
-    <script src="ngplus.js"></script>
-    <script src="leaderboard.js"></script>
+    <script src="js/upgrade_system.js"></script>
+    <script src="js/save_system.js"></script>
+    <script src="js/combo.js"></script>
+    <script src="js/economy.js"></script>
+    <script src="js/banter_engine.js"></script>
+    <script src="js/multiplayer.js"></script>
+    <script src="js/ngplus.js"></script>
+    <script src="js/leaderboard.js"></script>
     <script src="js/player.js"></script>
     <script src="js/enemies.js"></script>
     <script src="js/combat.js"></script>
@@ -300,6 +300,7 @@
         const GAME_HEIGHT = 450;
         canvas.width = GAME_WIDTH;
         canvas.height = GAME_HEIGHT;
+        initializeRendererBuffers();
 
         function resizeCanvas() {
             const maxW = window.innerWidth;
