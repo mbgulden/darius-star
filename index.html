@@ -2804,6 +2804,11 @@
                     paused = !paused;
                     if (paused) { pauseMenuIndex = 0; pauseSubScreen = 'menu'; }
                 }
+                // F3: Toggle debug enemy name labels
+                if (e.key === 'F3') {
+                    window.DEBUG_LABELS = !window.DEBUG_LABELS;
+                    e.preventDefault();
+                }
                 keys[e.key] = true;
                 if (['Space', ' ', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'e', 'E'].indexOf(e.key) > -1) {
                     e.preventDefault();
@@ -3743,7 +3748,9 @@
                         ctx.shadowColor = this.color;
                         ctx.shadowBlur = 12;
                     }
+                    ctx.globalCompositeOperation = 'lighter';
                     ctx.drawImage(sprite, -renderSize / 2, -renderSize / 2, renderSize, renderSize);
+                    ctx.globalCompositeOperation = 'source-over';
                     ctx.shadowBlur = 0;
                 } else {
                     // Fallback: colored rectangle
@@ -3946,7 +3953,9 @@
                         ctx.shadowBlur = 12;
                         ctx.shadowColor = this.paradoxColor;
                     }
+                    ctx.globalCompositeOperation = 'lighter';
                     ctx.drawImage(sprite, 0, 0, size, size);
+                    ctx.globalCompositeOperation = 'source-over';
                 } else {
                     // Fallback: colored shapes if sprite not loaded
                     ctx.fillStyle = this.isParadox ? this.paradoxColor : this.color;
@@ -3980,6 +3989,18 @@
                     ctx.font = 'bold 9px monospace';
                     ctx.textAlign = 'center';
                     ctx.fillText(this.paradoxName, 15, -6);
+                }
+                
+                // Debug labels — F3 toggles enemy type/class labels for playtesting
+                if (window.DEBUG_LABELS) {
+                    ctx.fillStyle = 'rgba(255,255,255,0.75)';
+                    ctx.font = '8px monospace';
+                    ctx.textAlign = 'center';
+                    const label = this.type + (this.enemyType ? '/' + this.enemyType : '');
+                    ctx.strokeStyle = 'rgba(0,0,0,0.8)';
+                    ctx.lineWidth = 2;
+                    ctx.strokeText(label, 15, -6);
+                    ctx.fillText(label, 15, -6);
                 }
 
                 ctx.restore();
@@ -4472,12 +4493,16 @@
 
             draw() {
                 if (!this.alive) return;
-                const key = 'explosion_' + this.frame;
-                const sprite = vfxSprites[key];
+                const sprite = vfxSprites['explosion_0'];  // Single 2x2 sprite sheet
                 if (sprite && spritesReady.has(sprite)) {
+                    const fw = sprite.naturalWidth / 2;
+                    const fh = sprite.naturalHeight / 2;
+                    const col = this.frame % 2;
+                    const row = Math.floor(this.frame / 2);
                     ctx.save();
                     ctx.globalAlpha = 0.9;
                     ctx.drawImage(sprite,
+                        col * fw, row * fh, fw, fh,
                         this.x - this.size / 2,
                         this.y - this.size / 2,
                         this.size, this.size);
@@ -4692,6 +4717,64 @@
             }
         }
 
+        // === Procedural Biome Backgrounds (fallback when strip images missing) ===
+        const biomeBgCanvases = {};
+        function generateBiomeBackground(biomeNum) {
+            if (biomeBgCanvases[biomeNum]) return biomeBgCanvases[biomeNum];
+            const c = document.createElement('canvas');
+            const baseW = canvas.width || 800;
+            c.width = baseW * 2;  // 2× width for seamless parallax tiling
+            c.height = canvas.height || 450;
+            const bctx = c.getContext('2d');
+            const themes = {
+                1: { sky: ['#020418','#06102a','#0a1a3a'], particles: ['#004466','#006688'], accent: '#00aacc' },
+                2: { sky: ['#1a0020','#2a0030','#1a1030'], particles: ['#661144','#883366'], accent: '#cc4488' },
+                3: { sky: ['#001a10','#002a18','#0a2018'], particles: ['#006644','#008866'], accent: '#00cc66' },
+                4: { sky: ['#100020','#1a0030','#200840'], particles: ['#442288','#6644aa'], accent: '#8844cc' },
+                5: { sky: ['#081020','#0a1830','#102040'], particles: ['#4488aa','#66aacc'], accent: '#88ccff' },
+                6: { sky: ['#200802','#300c04','#1a0802'], particles: ['#883300','#aa4400'], accent: '#ff6600' },
+                7: { sky: ['#101018','#181828','#202038'], particles: ['#666688','#8888aa'], accent: '#aaaacc' },
+                8: { sky: ['#181008','#201410','#281810'], particles: ['#664422','#886633'], accent: '#cc8844' },
+                9: { sky: ['#050508','#0a0a10','#100818'], particles: ['#224422','#336633'], accent: '#44ff44' },
+                10:{ sky: ['#050508','#0a0a10','#100818'], particles: ['#442244','#663366'], accent: '#ff44ff' },
+            };
+            const theme = themes[biomeNum] || themes[1];
+            const grad = bctx.createLinearGradient(0, 0, 0, c.height);
+            grad.addColorStop(0, theme.sky[0]);
+            grad.addColorStop(0.5, theme.sky[1]);
+            grad.addColorStop(1, theme.sky[2]);
+            bctx.fillStyle = grad;
+            bctx.fillRect(0, 0, c.width, c.height);
+            const seed = biomeNum * 137.5;
+            for (let i = 0; i < 5; i++) {
+                const nx = ((Math.sin(seed + i * 2.1) * 0.5 + 0.5) * c.width);
+                const ny = ((Math.cos(seed + i * 3.7) * 0.5 + 0.5) * c.height);
+                const nr = 60 + (Math.sin(seed + i) * 0.5 + 0.5) * 80;
+                const ng = bctx.createRadialGradient(nx, ny, 0, nx, ny, nr);
+                ng.addColorStop(0, theme.particles[0] + '44');
+                ng.addColorStop(0.5, theme.particles[1] + '22');
+                ng.addColorStop(1, 'transparent');
+                bctx.fillStyle = ng;
+                bctx.fillRect(nx - nr, ny - nr, nr * 2, nr * 2);
+            }
+            for (let i = 0; i < 200; i++) {
+                const sx = ((Math.sin(seed * 7 + i * 13.7) * 0.5 + 0.5) * c.width);
+                const sy = ((Math.cos(seed * 11 + i * 17.3) * 0.5 + 0.5) * c.height);
+                const sr = 0.3 + Math.abs(Math.sin(i * 3.1)) * 1.8;
+                const sa = 0.3 + Math.abs(Math.sin(i * 5.7)) * 0.7;
+                bctx.fillStyle = `rgba(255,255,255,${sa.toFixed(2)})`;
+                bctx.beginPath(); bctx.arc(sx, sy, sr, 0, Math.PI * 2); bctx.fill();
+            }
+            for (let i = 0; i < 15; i++) {
+                const ax = ((Math.sin(seed * 3 + i * 19.1) * 0.5 + 0.5) * c.width);
+                const ay = ((Math.cos(seed * 5 + i * 23.7) * 0.5 + 0.5) * c.height);
+                bctx.fillStyle = theme.accent + 'cc';
+                bctx.beginPath(); bctx.arc(ax, ay, 1.2, 0, Math.PI * 2); bctx.fill();
+            }
+            biomeBgCanvases[biomeNum] = c;
+            return c;
+        }
+
         class ParallaxLayer {
             constructor(key, speed, yOffset = 0, alpha = 1.0, scale = 1.0) {
                 this.key = key;          // Image key in bgImages — lazy-resolved at draw time
@@ -4716,17 +4799,43 @@
 
             update(dt) {
                 const img = this.getImg();
-                this.offset = (this.offset + this.speed * dt) % (img ? img.width : canvas.width);
+                let w;
+                if (img && img.complete && img.naturalWidth > 0) {
+                    w = img.width;
+                } else {
+                    const match = this.key.match(/bg_(\d+)/);
+                    const biomeNum = match ? parseInt(match[1]) : 1;
+                    const procBg = biomeBgCanvases[biomeNum] || generateBiomeBackground(biomeNum);
+                    w = procBg ? procBg.width : (canvas.width || 800);
+                }
+                this.offset = (this.offset + this.speed * dt) % w;
             }
 
             draw() {
                 const img = this.getImg();
-                if (!img || !img.complete || img.naturalWidth === 0) return;
+                if (!img || !img.complete || img.naturalWidth === 0) {
+                    // Procedural fallback
+                    const match = this.key.match(/bg_(\d+)/);
+                    const biomeNum = match ? parseInt(match[1]) : 1;
+                    const procBg = generateBiomeBackground(biomeNum);
+                    if (procBg) {
+                        ctx.save();
+                        ctx.globalAlpha = this.alpha;
+                        const w = procBg.width * this.scale;
+                        const h = procBg.height * this.scale;
+                        const drawX = -this.offset % w;
+                        const count = Math.ceil(canvas.width / w) + 1;
+                        for (let i = 0; i < count; i++) {
+                            ctx.drawImage(procBg, drawX + i * w, this.yOffset, w, h);
+                        }
+                        ctx.restore();
+                    }
+                    return;
+                }
                 ctx.save();
                 ctx.globalAlpha = this.alpha;
                 const w = img.width * this.scale;
                 const h = img.height * this.scale;
-                // Tile horizontally for seamless scroll
                 const drawX = -this.offset;
                 const count = Math.ceil(canvas.width / w) + 1;
                 for (let i = 0; i < count; i++) {
