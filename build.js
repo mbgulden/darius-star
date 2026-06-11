@@ -10,7 +10,6 @@
  * `npm run build:prod` for minified production bundle.
  */
 
-import * as esbuild from 'esbuild';
 import { readFileSync, existsSync } from 'fs';
 
 const isProduction = process.argv.includes('--minify');
@@ -24,6 +23,9 @@ if (!existsSync(entryPoint)) {
   console.log('   python3 -m http.server 8080');
   process.exit(0);
 }
+
+// Only load esbuild after confirming we're in the post-conversion state
+const esbuild = await import('esbuild');
 
 const opts = {
   entryPoints: [entryPoint],
