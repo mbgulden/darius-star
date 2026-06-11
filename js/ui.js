@@ -7,7 +7,8 @@
             LEADERBOARD: 'leaderboard',
             PLAYING: 'playing',
             CINEMATIC: 'cinematic',
-            LOAD_GAME: 'load_game'
+            LOAD_GAME: 'load_game',
+            UPGRADE_SHOP: 'upgrade_shop'  // GRO-1056: In-canvas upgrade flow
         };
         let currentScreen = SCREENS.MENU;
         let selectedMenuIndex = 0;
@@ -549,7 +550,7 @@
                 } else if (selectedMenuIndex === 1) { // START GAME
                     window.location.href = 'ship_select.html';
                 } else if (selectedMenuIndex === 2) { // UPGRADE SHOP
-                    window.location.href = 'upgrade_shop.html';
+                    transitionToScreen(SCREENS.UPGRADE_SHOP);
                 } else if (selectedMenuIndex === 3) { // SHIP SELECT
                     window.location.href = 'ship_select.html';
                 } else if (selectedMenuIndex === 4) { // SETTINGS
@@ -1072,6 +1073,107 @@
                 ctx.fillText('Long-press slot to delete', canvas.width / 2, slotStartY + 3 * slotSpacing + 22);
 
                 ctx.restore();
+            } else if (currentScreen === SCREENS.UPGRADE_SHOP) {
+                // GRO-1056: In-canvas upgrade flow
+                ctx.fillStyle = 'rgba(5, 5, 12, 0.85)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.save();
+
+                const us = window.DS_UpgradeSystem;
+                const upgradeLabels = ['weapons', 'shields', 'engines', 'specials', 'cosmetics'];
+                const upgradeNames = ['Weapon Systems', 'Shield Generators', 'Engines & Thrusters', 'Cyber Overload', 'Ship Customization'];
+                const maxRanks = [10, 10, 10, 10, 10];
+                const selected = window._upgradeSelected || 0;
+                const startY = 80, spacing = 75;
+
+                // Title
+                ctx.textAlign = 'center';
+                ctx.fillStyle = '#00ffff';
+                ctx.font = 'bold 22px monospace';
+                ctx.fillText('UPGRADE TERMINAL', canvas.width / 2, 45);
+
+                // Scrap balance
+                const scrap = us && us.state ? us.state.scrap : 0;
+                ctx.fillStyle = '#ffcc00';
+                ctx.font = '14px monospace';
+                ctx.fillText('SCRAP: ' + scrap, canvas.width / 2, 65);
+
+                for (let i = 0; i < upgradeLabels.length; i++) {
+                    const label = upgradeLabels[i];
+                    const rank = us && us.state ? (us.state.upgrades[label] || 0) : 0;
+                    const maxRank = maxRanks[i];
+                    let cost = 0;
+                    try { cost = us ? us.getCost(label) : 999; } catch(e) {}
+                    const isMaxed = rank >= maxRank;
+                    const canAfford = !isMaxed && scrap >= cost;
+                    const isSelected = i === selected;
+
+                    const y = startY + i * spacing;
+                    const barY = y + 12;
+
+                    // Selection highlight
+                    if (isSelected) {
+                        ctx.fillStyle = 'rgba(0, 255, 255, 0.08)';
+                        ctx.fillRect(20, y - 5, canvas.width - 40, spacing - 4);
+                        ctx.strokeStyle = '#00ffff';
+                        ctx.strokeRect(20, y - 5, canvas.width - 40, spacing - 4);
+                    }
+
+                    // Category name
+                    ctx.textAlign = 'left';
+                    ctx.fillStyle = isSelected ? '#00ffff' : '#ccc';
+                    ctx.font = 'bold 14px monospace';
+                    ctx.fillText(upgradeNames[i], 35, y + 5);
+
+                    // Rank bar
+                    const barW = Math.min(180, canvas.width - 300);
+                    const rankPct = isMaxed ? 1 : rank / maxRank;
+                    ctx.fillStyle = '#1a1a3a';
+                    ctx.fillRect(35, barY, barW, 8);
+                    ctx.fillStyle = isMaxed ? '#00ff55' : '#00aaff';
+                    ctx.fillRect(35, barY, barW * rankPct, 8);
+                    ctx.strokeStyle = '#333';
+                    ctx.strokeRect(35, barY, barW, 8);
+
+                    // Rank text
+                    ctx.fillStyle = '#8af';
+                    ctx.font = '11px monospace';
+                    ctx.fillText('RANK ' + rank + '/' + maxRank, 35 + barW + 10, barY + 8);
+
+                    // Cost / MAX
+                    const costX = canvas.width - 200;
+                    if (isMaxed) {
+                        ctx.fillStyle = '#00ff55';
+                        ctx.fillText('MAXED', costX, y + 20);
+                    } else {
+                        ctx.fillStyle = canAfford ? '#ffcc00' : '#ff3355';
+                        ctx.fillText(cost + ' SCRAP', costX, y + 15);
+                        if (isSelected) {
+                            ctx.fillStyle = '#8af';
+                            ctx.font = '10px monospace';
+                            ctx.fillText('[ENTER] to purchase', costX, y + 32);
+                        }
+                    }
+
+                    // Description
+                    if (isSelected) {
+                        ctx.fillStyle = '#889';
+                        ctx.font = '10px monospace';
+                        const desc = label === 'weapons' ? 'Damage +5%, fire rate +3%, projectile speed +5% per rank' :
+                                     label === 'shields' ? 'Max HP +10, regen +0.1/s, invuln +0.05s per rank' :
+                                     label === 'engines' ? 'Speed +3%, boost duration & recharge per rank' :
+                                     label === 'specials' ? 'Ability duration +0.3s, cooldown -5% per rank' :
+                                     'Ship color, thruster trail, explosion style';
+                        ctx.fillText(desc, 35, barY + 28);
+                    }
+                }
+
+                ctx.textAlign = 'center';
+                ctx.fillStyle = '#8a8a9f';
+                ctx.font = '11px monospace';
+                ctx.fillText('\u2191\u2193 SELECT  |  ENTER BUY  |  ESC BACK', canvas.width / 2, startY + upgradeLabels.length * spacing + 10);
+
+                ctx.restore();
             } else if (currentScreen === SCREENS.CREDITS) {
                 // Dim the title loop background for legibility
                 ctx.fillStyle = 'rgba(5, 5, 12, 0.75)';
@@ -1551,6 +1653,9 @@
                         if (leaderboardScrollOffset > 0) leaderboardScrollOffset--;
                     } else if (currentScreen === SCREENS.LOAD_GAME) {
                         window._loadSelectedSlot = Math.max(0, (window._loadSelectedSlot || 0) - 1);
+                    } else if (currentScreen === SCREENS.UPGRADE_SHOP) {
+                        const labels = ['weapons','shields','engines','specials','cosmetics'];
+                        window._upgradeSelected = Math.max(0, ((window._upgradeSelected || 0) - 1 + labels.length) % labels.length);
                     }
                     e.preventDefault();
                 } else if (e.key === 'ArrowDown' || e.key === 's' || e.key === 'S') {
@@ -1567,6 +1672,9 @@
                     } else if (currentScreen === SCREENS.LOAD_GAME) {
                         const saves = window._loadSaves || [];
                         window._loadSelectedSlot = Math.min(2, (window._loadSelectedSlot || 0) + 1);
+                    } else if (currentScreen === SCREENS.UPGRADE_SHOP) {
+                        const labels = ['weapons','shields','engines','specials','cosmetics'];
+                        window._upgradeSelected = ((window._upgradeSelected || 0) + 1) % labels.length;
                     }
                     e.preventDefault();
                 } else if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') {
@@ -1599,6 +1707,14 @@
                         transitionToScreen(SCREENS.CREDITS);
                     } else if (currentScreen === SCREENS.LOAD_GAME) {
                         confirmLoadGame();
+                    } else if (currentScreen === SCREENS.UPGRADE_SHOP) {
+                        const labels = ['weapons','shields','engines','specials','cosmetics'];
+                        const i = window._upgradeSelected || 0;
+                        const us = window.DS_UpgradeSystem;
+                        if (us && us.canAfford && us.canAfford(labels[i])) {
+                            us.purchase(labels[i]);
+                            playSound('menu_click');
+                        }
                     } else {
                         handleMenuConfirm();
                     }
@@ -1608,6 +1724,8 @@
                     if (currentScreen === SCREENS.CINEMATIC) {
                         transitionToScreen(SCREENS.CREDITS);
                     } else if (currentScreen === SCREENS.LOAD_GAME) {
+                        transitionToScreen(SCREENS.MENU);
+                    } else if (currentScreen === SCREENS.UPGRADE_SHOP) {
                         transitionToScreen(SCREENS.MENU);
                     } else if (currentScreen === SCREENS.SHIP_SELECT || currentScreen === SCREENS.SETTINGS || currentScreen === SCREENS.CREDITS || currentScreen === SCREENS.LEADERBOARD) {
                         if (currentScreen === SCREENS.LEADERBOARD) {
@@ -1624,7 +1742,7 @@
                     }
                     e.preventDefault();
                 } else if ((e.key === 'u' || e.key === 'U') && (gameOver || gameWon || currentScreen === SCREENS.MENU)) {
-                    window.location.href = 'upgrade_shop.html';
+                    transitionToScreen(SCREENS.UPGRADE_SHOP);
                 } else if ((e.key === 'c' || e.key === 'C') && currentScreen === SCREENS.LEADERBOARD) {
                     if (confirm('Clear all leaderboard entries? This cannot be undone.')) {
                         if (window.Leaderboard) localStorage.removeItem(Leaderboard.KEY);
