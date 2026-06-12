@@ -1,5 +1,33 @@
 // --- Web Audio Synthesizer ---
 let audioCtx = null;
+let masterCompressor = null;
+
+// Intercept AudioNode.prototype.connect to route all output through a safety compressor
+if (typeof AudioNode !== 'undefined') {
+    const originalConnect = AudioNode.prototype.connect;
+    AudioNode.prototype.connect = function(destination, output, input) {
+        if (audioCtx && destination === audioCtx.destination) {
+            if (!masterCompressor) {
+                try {
+                    masterCompressor = audioCtx.createDynamicsCompressor();
+                    masterCompressor.threshold.setValueAtTime(-1, audioCtx.currentTime); // threshold: -1dB
+                    masterCompressor.knee.setValueAtTime(12, audioCtx.currentTime);       // knee: 12dB
+                    masterCompressor.ratio.setValueAtTime(20, audioCtx.currentTime);      // ratio: 20:1 (limiter behavior)
+                    masterCompressor.attack.setValueAtTime(0.003, audioCtx.currentTime);  // attack: 3ms
+                    masterCompressor.release.setValueAtTime(0.25, audioCtx.currentTime);  // release: 250ms
+                    originalConnect.call(masterCompressor, audioCtx.destination);
+                } catch (e) {
+                    console.warn('[Darius Star] Failed to initialize safety compressor:', e.message);
+                }
+            }
+            if (masterCompressor) {
+                return originalConnect.call(this, masterCompressor, output, input);
+            }
+        }
+        return originalConnect.call(this, destination, output, input);
+    };
+}
+
 
 // ====================================================================
 // GRO-1270: Sample-Based SFX System (prep infrastructure)
@@ -81,6 +109,31 @@ function initAudio() {
             console.warn('[Darius Star] AudioContext resume failed:', e.message);
         }
     }
+
+    // Set user interaction flag
+    if (typeof window !== 'undefined') {
+        window._userInteractedWithAudio = true;
+    }
+
+    // Add visibilitychange listener to suspend/resume AudioContext on tab switch
+    if (typeof document !== 'undefined') {
+        if (!window._audioVisibilityListenerAdded) {
+            window._audioVisibilityListenerAdded = true;
+            document.addEventListener('visibilitychange', () => {
+                if (!audioCtx) return;
+                if (document.hidden) {
+                    if (audioCtx.state === 'running') {
+                        audioCtx.suspend().catch(e => console.warn('[Darius Star] AudioContext suspend failed:', e.message));
+                    }
+                } else {
+                    if (audioCtx.state === 'suspended' && window._userInteractedWithAudio) {
+                        audioCtx.resume().catch(e => console.warn('[Darius Star] AudioContext resume failed:', e.message));
+                    }
+                }
+            });
+        }
+    }
+
     // Kick off async sample preload (non-blocking — synth fallback covers gaps)
     loadSfxSamples();
 }
