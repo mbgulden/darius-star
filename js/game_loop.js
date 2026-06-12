@@ -291,6 +291,9 @@ function update(dt) {
                     transitionToScreen(SCREENS.CREDITS);
                 }
             }
+        } else if (currentScreen === SCREENS.BRIEFING) {
+            // GRO-936: Update briefing typewriter animation
+            updateBriefing(dt);
         }
         updateTitleBackground(dt);
         return;
@@ -1534,6 +1537,9 @@ canvas.addEventListener('click', e => {
     } else if (currentScreen === SCREENS.CINEMATIC) {
         playSound('menu_click');
         transitionToScreen(SCREENS.CREDITS);
+    } else if (currentScreen === SCREENS.BRIEFING) {
+        // GRO-936: Click to advance/skip briefing
+        handleBriefingClick();
     } else if (currentScreen === SCREENS.LOAD_GAME) {
         // GRO-1160: Touch/click handling for load game screen
         const hoveredSlot = window._loadHoveredSlot;

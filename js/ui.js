@@ -7,6 +7,7 @@ const SCREENS = {
     LEADERBOARD: 'leaderboard',
     PLAYING: 'playing',
     CINEMATIC: 'cinematic',
+    BRIEFING: 'briefing',       // GRO-936: Pre-mission story briefing screen
     LOAD_GAME: 'load_game',
     UPGRADE_SHOP: 'upgrade_shop'  // GRO-1056: In-canvas upgrade flow
 };
@@ -463,7 +464,11 @@ function handleMenuConfirm() {
     } else if (currentScreen === SCREENS.SHIP_SELECT) {
         selectedShip = SHIP_OPTIONS[selectedShipIndex];
         if (shipSelectSource === 'start') {
-            transitionToScreen(SCREENS.PLAYING);
+            // GRO-936: Route through briefing screen before gameplay
+            transitionToScreen(SCREENS.BRIEFING);
+            startBriefing(biomeLevel, () => {
+                transitionToScreen(SCREENS.PLAYING);
+            });
         } else {
             transitionToScreen(SCREENS.MENU);
         }
@@ -1193,6 +1198,9 @@ function drawMenuScreens() {
         ctx.fillText('PRESS ENTER / ESC / CLICK to SKIP CUTSCENE', canvas.width / 2, canvas.height - 12);
 
         ctx.restore();
+    } else if (currentScreen === SCREENS.BRIEFING) {
+        // GRO-936: Mission Briefing Screen — delegate to briefing.js
+        drawBriefing();
     }
 }
 
@@ -1374,6 +1382,9 @@ window.addEventListener('keydown', e => {
             if (currentScreen === SCREENS.SETTINGS) {
                 playSound('menu_select');
                 adjustSetting(selectedSettingsIndex, -1);
+            } else if (currentScreen === SCREENS.BRIEFING) {
+                // GRO-936: Choice navigation in briefing
+                handleBriefingKey(e.key);
             } else if (currentScreen === SCREENS.LEADERBOARD) {
                 playSound('menu_select');
                 const categories = ['speedrun', 'scrapLord', 'survivor'];
@@ -1386,6 +1397,9 @@ window.addEventListener('keydown', e => {
             if (currentScreen === SCREENS.SETTINGS) {
                 playSound('menu_select');
                 adjustSetting(selectedSettingsIndex, 1);
+            } else if (currentScreen === SCREENS.BRIEFING) {
+                // GRO-936: Choice navigation in briefing
+                handleBriefingKey(e.key);
             } else if (currentScreen === SCREENS.LEADERBOARD) {
                 playSound('menu_select');
                 const categories = ['speedrun', 'scrapLord', 'survivor'];
@@ -1398,6 +1412,9 @@ window.addEventListener('keydown', e => {
             playSound('menu_click');
             if (currentScreen === SCREENS.CINEMATIC) {
                 transitionToScreen(SCREENS.CREDITS);
+            } else if (currentScreen === SCREENS.BRIEFING) {
+                // GRO-936: Advance/skip briefing on Enter/Space
+                handleBriefingKey(e.key);
             } else if (currentScreen === SCREENS.LOAD_GAME) {
                 confirmLoadGame();
             } else if (currentScreen === SCREENS.UPGRADE_SHOP) {
@@ -1416,6 +1433,9 @@ window.addEventListener('keydown', e => {
             playSound('menu_click');
             if (currentScreen === SCREENS.CINEMATIC) {
                 transitionToScreen(SCREENS.CREDITS);
+            } else if (currentScreen === SCREENS.BRIEFING) {
+                // GRO-936: Skip briefing on Escape
+                handleBriefingKey(e.key);
             } else if (currentScreen === SCREENS.LOAD_GAME) {
                 transitionToScreen(SCREENS.MENU);
             } else if (currentScreen === SCREENS.UPGRADE_SHOP) {
