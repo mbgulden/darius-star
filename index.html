@@ -3775,10 +3775,20 @@
                 const angle = Math.atan2(this.vy, this.vx);
                 ctx.rotate(angle);
 
+                // GRO-882: Render glow sprite behind main laser for weapon glow effect
+                const glowSprite = vfxSprites['laser_glow'];
+                const renderSize = this.size * 3.5;
+                if (glowSprite && glowSprite.complete && glowSprite.naturalWidth > 0) {
+                    const glowSize = renderSize * 2.2;  // Glow is larger and softer
+                    ctx.globalAlpha = 0.35;
+                    ctx.globalCompositeOperation = 'lighter';
+                    ctx.drawImage(glowSprite, -glowSize / 2, -glowSize / 2, glowSize, glowSize);
+                    ctx.globalCompositeOperation = 'source-over';
+                }
+
                 const sprite = vfxSprites['laser'];
                 if (sprite && sprite.complete && sprite.naturalWidth > 0) {
                     // Render laser sprite scaled to bullet size (sprite is 1024x1024)
-                    const renderSize = this.size * 3.5;
                     ctx.globalAlpha = 0.9;
                     if (this.isWave) {
                         ctx.shadowColor = this.color;
