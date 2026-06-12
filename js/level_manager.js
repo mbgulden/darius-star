@@ -186,21 +186,26 @@ const LevelManager = {
 
         // Build enemy type list for this wave
         const enemyTypes = [];
+        const enemyRoles = [];
         for (let i = 0; i < count; i++) {
             const roll = typeof rng === 'function' ? rng() : Math.random();
             if (roll < dist.scout) {
                 enemyTypes.push(pool.scout);
+                enemyRoles.push('scout');
             } else if (roll < dist.scout + dist.interceptor) {
                 enemyTypes.push(pool.interceptor);
+                enemyRoles.push('interceptor');
             } else if (roll < dist.scout + dist.interceptor + dist.heavy) {
                 enemyTypes.push(pool.heavy);
+                enemyRoles.push('heavy');
             } else {
                 enemyTypes.push(pool.alt);
+                enemyRoles.push('scout');
             }
         }
 
         // Pick a formation based on enemy distribution and wave number
-        const formation = this._pickFormation(enemyTypes, count);
+        const formation = this._pickFormation(enemyRoles, count);
 
         // Build spawn queue with formation offsets
         const spawnInterval = Math.max(0.12, 0.2 - (this.biome - 1) * 0.01); // decreases 5% per biome
@@ -208,6 +213,7 @@ const LevelManager = {
             const pos = this._formationPosition(formation, i, count);
             this.spawnQueue.push({
                 type: enemyTypes[i],
+                role: enemyRoles[i],
                 x: canvas.width + pos.x,
                 y: pos.y,
                 delay: i * spawnInterval
@@ -218,11 +224,8 @@ const LevelManager = {
     },
 
     // --- Pick a formation based on wave composition ---
-    _pickFormation(enemyTypes, count) {
-        const heavyCount = enemyTypes.filter(t => t.includes('heavy') || t.includes('brute') ||
-            t.includes('turret') || t.includes('golem') || t.includes('glacier') ||
-            t.includes('thunderhead') || t.includes('giant') || t.includes('node') ||
-            t.includes('battery')).length;
+    _pickFormation(roles, count) {
+        const heavyCount = roles.filter(r => r === 'heavy').length;
 
         // Wave 1: always V-formation (gentle start)
         if (this.wave === 1) return 'v';
@@ -307,7 +310,7 @@ const LevelManager = {
             this.spawnDelay += dt;
             while (this.spawnQueue.length > 0 && this.spawnDelay >= this.spawnQueue[0].delay) {
                 const entry = this.spawnQueue.shift();
-                this._spawnEnemy(entry.type, entry.x, entry.y);
+                this._spawnEnemy(entry.type, entry.x, entry.y, entry.role);
             }
         }
 
@@ -340,9 +343,30 @@ const LevelManager = {
     },
 
     // --- Spawn a single enemy ---
-    _spawnEnemy(type, x, y) {
+    _spawnEnemy(type, x, y, role) {
         // Apply difficulty scaling to enemy
         const enemy = new Enemy(type);
+
+        // Override behavior from role if provided (fixes type recognition for named pool types)
+        if (role) {
+            if (role === 'interceptor' && enemy.behaviorPattern !== 'interceptor') {
+                enemy.behaviorPattern = 'interceptor';
+                enemy.enemyType = 'elite';
+                enemy.speed = 280;
+                enemy.hp = 1;
+                enemy.scoreValue = 150;
+                enemy.color = '#ff0055';
+            } else if (role === 'heavy' && enemy.behaviorPattern !== 'heavy') {
+                enemy.behaviorPattern = 'heavy';
+                enemy.enemyType = 'elite';
+                enemy.speed = 80;
+                enemy.hp = 4;
+                enemy.scoreValue = 300;
+                enemy.color = '#9a33cc';
+                enemy.shootCooldown = 1.2 + Math.random() * 0.8;
+                enemy.shootTimer = enemy.shootCooldown;
+            }
+        }
         enemy.x = x;
         enemy.y = y;
 
