@@ -5,6 +5,31 @@
 // (narrativeFlags, vfxExplosions, particles, hitFlashes, etc.)
 // All variable lookups use late binding — resolved at call time.
 
+// --- Sprite Sheet Slicing Constants ---
+// Most sprites are 1024x1024 sheets with frames in a grid.
+const SPRITE_FRAME = 48;   // default frame cell size (21x21 grid)
+const BOSS_FRAME = 256;    // boss sprite frame cell size (4x4 grid)
+const SHIELD_FRAME = 512;  // shield ring frame cell size (2x2 grid)
+
+// --- Sprite Sheet Slicing Utility ---
+// Extracts a single frame from a 1024x1024 sprite sheet using the 9-param drawImage.
+// frameW/frameH = dimensions of one frame cell.
+// frameX/frameY = column/row index in the sheet grid (0-indexed).
+// dx/dy/dW/dH = destination position and size on canvas.
+function drawSpriteFrame(ctx, sprite, frameX, frameY, frameW, frameH, dx, dy, dW, dH) {
+    const sheetW = (sprite.tagName === 'CANVAS') ? sprite.width : (sprite.naturalWidth || sprite.width || 0);
+    const sheetH = (sprite.tagName === 'CANVAS') ? sprite.height : (sprite.naturalHeight || sprite.height || 0);
+    if (sheetW === 0 || sheetH === 0) return;
+    // If sheet is smaller than one frame cell, it's not a sprite sheet — draw it directly
+    if (sheetW <= frameW && sheetH <= frameH) {
+        ctx.drawImage(sprite, dx, dy, dW, dH);
+        return;
+    }
+    const sx = frameX * frameW;
+    const sy = frameY * frameH;
+    ctx.drawImage(sprite, sx, sy, frameW, frameH, dx, dy, dW, dH);
+}
+
 function resizeCanvas() {
     var maxW = window.innerWidth;
     // GRO-1172: In fullscreen mode, no header/controls to account for

@@ -90,7 +90,7 @@
                     const glowSize = renderSize * 2.2;  // Glow is larger and softer
                     ctx.globalAlpha = 0.35;
                     ctx.globalCompositeOperation = 'lighter';
-                    ctx.drawImage(glowSprite, -glowSize / 2, -glowSize / 2, glowSize, glowSize);
+                    drawSpriteFrame(ctx, glowSprite, 0, 0, SPRITE_FRAME, SPRITE_FRAME, -glowSize / 2, -glowSize / 2, glowSize, glowSize);
                     ctx.globalCompositeOperation = 'source-over';
                 }
 

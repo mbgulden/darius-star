@@ -813,7 +813,7 @@ class Player {
             else sprite = playerSprites[`player_${frameIdx}`];
             
             if (sprite && sprite.complete && sprite.naturalWidth > 0) {
-                ctx.drawImage(sprite, 0, 0, 48, 48);
+                drawSpriteFrame(ctx, sprite, 0, 0, SPRITE_FRAME, SPRITE_FRAME, 0, 0, 48, 48);
             } else {
                 ctx.fillStyle = '#ff4400';
                 ctx.beginPath();
@@ -895,7 +895,7 @@ class Player {
         if (sprite && sprite.complete && sprite.naturalWidth > 0) {
             // Render sprite scaled to 48x48 (ship area ~40x20, sprite is 1024x1024)
             const spriteSize = 48;
-            ctx.drawImage(sprite, 0, 0, spriteSize, spriteSize);
+            drawSpriteFrame(ctx, sprite, 0, 0, SPRITE_FRAME, SPRITE_FRAME, 0, 0, spriteSize, spriteSize);
 
             // Tint plating with chosen cosmetic color
             if (cosmeticColor !== 'default') {
@@ -972,7 +972,7 @@ class Player {
                 ctx.globalAlpha = pulse;
                 // Render translucent blue forcefield ring (1024x1024 → 72x72)
                 const shieldSize = 72;
-                ctx.drawImage(shieldSprite,
+                drawSpriteFrame(ctx, shieldSprite, 0, 0, SHIELD_FRAME, SHIELD_FRAME,
                     -shieldSize / 2 + 24,  // center x offset
                     -shieldSize / 2 + this.height / 2,  // center y offset
                     shieldSize, shieldSize);

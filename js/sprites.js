@@ -116,8 +116,8 @@
             }
         }
 
-        // Track which sprites have been pre-composited
-        const _preCompositeCache = new Set();
+// Track which sprites have been pre-composited
+const _preCompositeCache = new Set();
 
         // --- Boss Asset Lazy-Loading ---
         // Boss sprites are preloaded when score nears 2,000-point trigger

@@ -110,12 +110,9 @@
                 const isCanvas = sprite && sprite.tagName === 'CANVAS' && sprite.width > 0;
                 if (isImage || isCanvas) {
                     ctx.globalAlpha = 0.9;
-                    const sw = isCanvas ? sprite.width : sprite.naturalWidth;
-                    const sh = isCanvas ? sprite.height : sprite.naturalHeight;
-                    ctx.drawImage(sprite,
-                        0, 0, sw, sh,                           // source rect (full sprite)
-                        -renderSize / 2, -renderSize / 2,       // dest x, y
-                        renderSize, renderSize);                 // dest w, h
+                    drawSpriteFrame(ctx, sprite, 0, 0, SPRITE_FRAME, SPRITE_FRAME,
+                        -renderSize / 2, -renderSize / 2,
+                        renderSize, renderSize);
                 }
 
                 ctx.globalAlpha = 1;
@@ -280,7 +277,8 @@
                     if (isImage) {
                         ctx.globalCompositeOperation = 'lighter';
                     }
-                    ctx.drawImage(sprite, 0, 0, size, size);
+                    // Use drawSpriteFrame to properly slice from 1024x1024 sheet
+                    drawSpriteFrame(ctx, sprite, 0, 0, SPRITE_FRAME, SPRITE_FRAME, 0, 0, size, size);
                     if (isImage) {
                         ctx.globalCompositeOperation = 'source-over';
                     }
@@ -625,14 +623,14 @@
                     }
                     if (this.state === 'rage') {
                         // Red rage tint overlay via global composite
-                        ctx.drawImage(sprite, 0, 0, renderW, renderH);
+                        drawSpriteFrame(ctx, sprite, 0, 0, BOSS_FRAME, BOSS_FRAME, 0, 0, renderW, renderH);
                         ctx.globalCompositeOperation = 'source-atop';
                         ctx.fillStyle = 'rgba(255, 0, 30, 0.25)';
                         ctx.fillRect(0, 0, renderW, renderH);
                         ctx.globalCompositeOperation = 'source-over';
                     } else if (this.state === 'architect_final') {
                         // GRO-1009: Architect final phase — ending-specific boss aura
-                        ctx.drawImage(sprite, 0, 0, renderW, renderH);
+                        drawSpriteFrame(ctx, sprite, 0, 0, BOSS_FRAME, BOSS_FRAME, 0, 0, renderW, renderH);
                         const phase = this.architectPhase;
                         const pulse = Math.sin(this.bobTimer * 6) * 0.5 + 0.5;
                         if (phase === 'sacrifice') {
@@ -661,10 +659,10 @@
                         // Intro: fade in from the right edge
                         const introProgress = Math.min(1, (canvas.width - 210 - this.x) / 100 + 1);
                         ctx.globalAlpha = Math.min(1, introProgress);
-                        ctx.drawImage(sprite, 0, 0, renderW, renderH);
+                        drawSpriteFrame(ctx, sprite, 0, 0, BOSS_FRAME, BOSS_FRAME, 0, 0, renderW, renderH);
                         ctx.globalAlpha = 1;
                     } else {
-                        ctx.drawImage(sprite, 0, 0, renderW, renderH);
+                        drawSpriteFrame(ctx, sprite, 0, 0, BOSS_FRAME, BOSS_FRAME, 0, 0, renderW, renderH);
                     }
                     ctx.shadowBlur = 0;
                 } else {

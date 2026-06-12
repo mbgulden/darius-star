@@ -1140,7 +1140,7 @@ function drawMenuScreens() {
             const shipKey = selectedShip === 'scout' ? 'scout_0' : (selectedShip === 'heavy' ? 'heavy_0' : 'interceptor_0');
             const shipSprite = playerSprites[shipKey];
             if (shipSprite && shipSprite.complete && shipSprite.naturalWidth > 0) {
-                ctx.drawImage(shipSprite, shipX, shipY, size, size);
+                drawSpriteFrame(ctx, shipSprite, 0, 0, SPRITE_FRAME, SPRITE_FRAME, shipX, shipY, size, size);
             } else {
                 ctx.fillStyle = '#00ffff';
                 ctx.fillRect(shipX, shipY, size, size);
