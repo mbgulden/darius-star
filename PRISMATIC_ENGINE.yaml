@@ -1,0 +1,93 @@
+# ============================================================
+# PRISMATIC ENGINE — Lane Governance Configuration
+# ============================================================
+# Generated: 2026-06-12
+# Repo: darius-star
+# 
+# Defines which agent lanes can write to which directories.
+# Enforced by the Git pre-push hook (GRO-1315) and swarm.js
+# file locking CLI (GRO-1314).
+# ============================================================
+
+version: "1.0.0"
+staging_governor: fred
+
+# ── Agent Lanes ────────────────────────────────────────
+lanes:
+  fred:
+    role: Orchestrator & Staging Governor
+    write:
+      - "*"  # Fred owns everything — review gate
+    read_only: []
+    branch_prefix: feature/
+    commit_prefix: "[Fred]"
+
+  ned:
+    role: Code Execution & Game Logic
+    write:
+      - js/
+      - css/
+      - scripts/
+      - tools/
+      - prismatic/
+      - plugins/
+    read_only:
+      - assets/
+      - docs/
+    branch_prefix: ned/
+    commit_prefix: "[Ned]"
+
+  agy:
+    role: Asset Designer & Auditor
+    write:
+      - assets/
+      - designs/
+      - docs/
+    read_only:
+      - js/
+      - css/
+    branch_prefix: agy/
+    commit_prefix: "[AGY]"
+
+  jules:
+    role: PR Auditor & Documentation
+    write:
+      - docs/
+      - README.md
+    read_only:
+      - js/
+      - assets/
+      - css/
+    branch_prefix: jules/
+    commit_prefix: "[Jules]"
+
+  codex:
+    role: Code Review & Refactoring
+    write:
+      - js/
+      - css/
+    read_only:
+      - assets/
+      - docs/
+    branch_prefix: codex/
+    commit_prefix: "[Codex]"
+
+# ── Branch Protection ──────────────────────────────────
+branches:
+  protected:
+    - main
+  staging: deploy-fresh
+  production: main
+
+# ── File Locking ───────────────────────────────────────
+locking:
+  lockfile: .antigravity/swarm_locks.json
+  heartbeat_interval: 60
+  stale_ttl: 300
+  cli: .antigravity/swarm.js
+
+# ── Commit Convention ──────────────────────────────────
+commits:
+  require_prefix: true
+  require_issue_ref: true
+  format: "[Agent] description (#ISSUE)"
