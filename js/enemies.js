@@ -83,8 +83,8 @@
                 this.behaviorPattern = 'scout'; // default fallback
                 
                 const isScout = type === 'scout' || type.includes('crawler') || type.includes('drone') || type.includes('sprite') || type.includes('wisp') || type.includes('spark') || type.includes('fragment');
-                const isInterceptor = type === 'interceptor' || type.includes('spitter') || type.includes('wraith') || type.includes('fighter') || type.includes('hawk') || type.includes('aberration');
-                const isHeavy = type === 'heavy' || type.includes('brute') || type.includes('turret') || type.includes('battery') || type.includes('sentinel') || type.includes('golem') || type.includes('giant') || type.includes('node') || type.includes('glacier') || type.includes('thunderhead') || type.includes('shard') || type.includes('swarm');
+                const isInterceptor = type === 'interceptor' || type.includes('interceptor') || type.includes('spitter') || type.includes('wraith') || type.includes('fighter') || type.includes('hawk') || type.includes('aberration');
+                const isHeavy = type === 'heavy' || type.includes('heavy') || type.includes('brute') || type.includes('turret') || type.includes('battery') || type.includes('sentinel') || type.includes('golem') || type.includes('giant') || type.includes('node') || type.includes('glacier') || type.includes('thunderhead') || type.includes('shard') || type.includes('swarm');
                 
                 if (isScout) {
                     this.behaviorPattern = 'scout';
