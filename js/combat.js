@@ -64,6 +64,19 @@
                     return;
                 }
 
+                // GRO-882: Render glow sprite behind main laser for weapon glow effect
+                const glowSprite = vfxSprites['laser_glow'];
+                const isGlowImage = glowSprite && glowSprite.tagName !== 'CANVAS' && glowSprite.complete && glowSprite.naturalWidth > 0;
+                const isGlowCanvas = glowSprite && glowSprite.tagName === 'CANVAS' && glowSprite.width > 0;
+                if (isGlowImage || isGlowCanvas) {
+                    const renderSize = this.size * 3.5;
+                    const glowSize = renderSize * 2.2;  // Glow is larger and softer
+                    ctx.globalAlpha = 0.35;
+                    ctx.globalCompositeOperation = 'lighter';
+                    ctx.drawImage(glowSprite, -glowSize / 2, -glowSize / 2, glowSize, glowSize);
+                    ctx.globalCompositeOperation = 'source-over';
+                }
+
                 const sprite = vfxSprites['laser'];
                 // Check for both Image (not yet pre-composited) and Canvas (pre-composited)
                 const isImage = sprite && sprite.tagName !== 'CANVAS' && sprite.complete && sprite.naturalWidth > 0;

@@ -44,6 +44,7 @@ function loadLevelManager() {
       this.y = 0;
     }
   };
+  global.playSound = function() {};
   require(modulePath);
   return global.LevelManager;
 }
