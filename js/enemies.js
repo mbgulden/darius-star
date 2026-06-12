@@ -151,7 +151,7 @@
                 
                 const isScout = type === 'scout' || type.includes('crawler') || type.includes('drone') || type.includes('sprite') || type.includes('wisp') || type.includes('spark') || type.includes('fragment');
                 const isInterceptor = type === 'interceptor' || type.includes('interceptor') || type.includes('spitter') || type.includes('wraith') || type.includes('fighter') || type.includes('hawk') || type.includes('aberration');
-                const isHeavy = type === 'heavy' || type.includes('heavy') || type.includes('brute') || type.includes('turret') || type.includes('battery') || type.includes('sentinel') || type.includes('golem') || type.includes('giant') || type.includes('node') || type.includes('glacier') || type.includes('thunderhead') || type.includes('shard') || type.includes('swarm');
+                const isHeavy = type === 'heavy' || type.includes('heavy') || type.includes('brute') || type.includes('turret') || type.includes('battery') || type.includes('sentinel') || type.includes('golem') || type.includes('giant') || type.includes('node') || type.includes('glacier') || type.includes('thunderhead') || type.includes('shard') || type.includes('swarm') || type.includes('eel');
                 
                 if (isScout) {
                     this.behaviorPattern = 'scout';
@@ -262,7 +262,7 @@
                 ctx.save();
                 ctx.translate(this.x, this.y);
 
-                const sprite = enemySprites[this.type];
+                const sprite = enemySprites[this.type] || enemySprites[this.behaviorPattern];
                 const isImage = sprite && sprite.tagName !== 'CANVAS' && sprite.complete && sprite.naturalWidth > 0;
                 const isCanvas = sprite && sprite.tagName === 'CANVAS' && sprite.width > 0;
                 const hasSprite = isImage || isCanvas;
@@ -270,7 +270,7 @@
                 if (hasSprite) {
                     // Map each type to appropriate render size (sprites are 1024x1024)
                     const sizes = { scout: 36, interceptor: 36, heavy: 44, boss_minion: 32 };
-                    const size = sizes[this.type] || 36;
+                    const size = sizes[this.behaviorPattern] || 36;
                     
                     if (this.isParadox) {
                         ctx.shadowBlur = 12;
@@ -287,20 +287,20 @@
                 } else {
                     // Fallback: colored shapes if sprite not loaded
                     ctx.fillStyle = this.isParadox ? this.paradoxColor : this.color;
-                    if (this.type === 'scout') {
+                    if (this.behaviorPattern === 'scout') {
                         ctx.beginPath();
                         ctx.moveTo(30, 15); ctx.lineTo(10, 0); ctx.lineTo(0, 15); ctx.lineTo(10, 30);
                         ctx.closePath(); ctx.fill();
-                    } else if (this.type === 'interceptor') {
+                    } else if (this.behaviorPattern === 'interceptor') {
                         ctx.beginPath();
                         ctx.moveTo(30, 15); ctx.lineTo(0, 5); ctx.lineTo(10, 15); ctx.lineTo(0, 25);
                         ctx.closePath(); ctx.fill();
-                    } else if (this.type === 'heavy') {
+                    } else if (this.behaviorPattern === 'heavy') {
                         ctx.beginPath();
                         ctx.moveTo(30, 5); ctx.lineTo(10, 0); ctx.lineTo(0, 15); ctx.lineTo(10, 30);
                         ctx.lineTo(30, 25); ctx.lineTo(20, 15);
                         ctx.closePath(); ctx.fill();
-                    } else if (this.type === 'boss_minion') {
+                    } else if (this.behaviorPattern === 'boss_minion') {
                         ctx.beginPath();
                         ctx.arc(15, 15, 14, 0, Math.PI * 2); ctx.fill();
                     }
@@ -603,10 +603,15 @@
                 }
 
                 let sprite = bossSprites[spriteKey] || bossSprites['boss'];
-                let hasSprite = sprite && sprite.complete && sprite.naturalWidth > 0;
+                const checkSprite = (s) => {
+                    if (!s) return false;
+                    if (s.tagName === 'CANVAS') return s.width > 0;
+                    return s.complete && s.naturalWidth > 0;
+                };
+                let hasSprite = checkSprite(sprite);
                 if (!hasSprite) {
                     sprite = bossSprites['boss'];
-                    hasSprite = sprite && sprite.complete && sprite.naturalWidth > 0;
+                    hasSprite = checkSprite(sprite);
                 }
                 const renderW = 190;
                 const renderH = 133;
