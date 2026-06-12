@@ -638,6 +638,7 @@ const AudioManager = (function() {
         getPreloadedCount: getPreloadedCount,
         getCurrentTrack: function() { return _currentTrack; },
         getManifest: function() { return _manifest; },
-        getCurrentBiome: _getCurrentBiome
+        getCurrentBiome: _getCurrentBiome,
+        isInitialized: function() { return _initialized; }
     };
 })();

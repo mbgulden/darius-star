@@ -1569,6 +1569,15 @@ canvas.addEventListener('mouseleave', () => {
 canvas.addEventListener('click', e => {
     setBiomeBackgrounds(biomeLevel);
     initAudio();
+    // GRO-1470: Initialize AudioManager on first click to load cinematic MP3 music tracks.
+    // AudioManager handles biome music, game over, victory, and ending themes.
+    // Chiptune synth (audio_chip.js) is the fallback — startMenuMusic() skips when
+    // AudioManager is initialized.
+    if (typeof AudioManager !== 'undefined') {
+        AudioManager.init().then(function() {
+            AudioManager.preloadAll();
+        });
+    }
     loadPlayerSprites();
     loadPortraitSprites();
     loadEnemySprites();

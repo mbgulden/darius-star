@@ -46,6 +46,9 @@ function playMenuMusicStep() {
 
 function startMenuMusic() {
     if (musicInterval) return;
+    // GRO-1470: If AudioManager is initialized, let it handle music via MP3 tracks.
+    // The chiptune synth is a fallback only — prefer cinematic audio.
+    if (typeof AudioManager !== 'undefined' && AudioManager.isInitialized && AudioManager.isInitialized()) return;
     musicStep = 0;
     musicInterval = setInterval(playMenuMusicStep, 200); // 120 bpm, 8th notes
 }
