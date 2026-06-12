@@ -400,7 +400,7 @@ class Player {
         const bulletSize = 4;
 
         const isSpecial = this.isSpecialActive;
-        const color = isSpecial ? '#ff00aa' : (this.weaponLevel === 1 ? '#00ffff' : (this.weaponLevel === 2 ? '#00ffaa' : (this.weaponLevel === 3 ? '#ffff00' : (this.weaponLevel === 4 ? '#ff00ff' : '#ffffff'))));
+        const color = isSpecial ? '#ff00aa' : (this.weaponLevel === 1 ? '#00ffff' : (this.weaponLevel === 2 ? '#00ffaa' : (this.weaponLevel === 3 ? '#00ff88' : (this.weaponLevel === 4 ? '#ff00ff' : '#ffffff'))));
 
         if (isSpecial) {
             // Supreme Purple waves
@@ -732,13 +732,19 @@ class Player {
             return;
         }
         
+        const shieldBefore = this.shield;
         this.shield -= finalDmg;
         
         const mods = window.DS_UpgradeSystem ? window.DS_UpgradeSystem.getGameplayModifiers() : null;
         this.invulnerable = 0.8 + (mods ? mods.shieldInvulnBonus : 0);
         
         playSound('hit');
-        createExplosion(this.x + this.width/2, this.y + this.height/2, '#ffaa00', 8);
+        if (shieldBefore > 0) {
+            // Shield hit: blue (#0088FF) spark burst
+            createExplosion(this.x + this.width/2, this.y + this.height/2, '#0088FF', 10, 'shield_hit');
+        } else {
+            createExplosion(this.x + this.width/2, this.y + this.height/2, '#ffaa00', 8);
+        }
 
         if (this.shield <= 0) {
             // GRO-1003: Pull-out system replaces death
@@ -841,6 +847,21 @@ class Player {
             const outlineOpacity = hpPct < 0.10 ? 0.60 : 0.30;
             ctx.shadowColor = `rgba(255, 0, 0, ${outlineOpacity})`;
             ctx.shadowBlur = 6;
+        }
+
+        // Draw thruster flame animation behind ship (GRO-879)
+        const thrusterFrame = (Math.floor(gameTime * 12) % 2 === 0) ? 'thruster_0' : 'thruster_1';
+        const thrusterSprite = vfxSprites[thrusterFrame];
+        if (thrusterSprite) {
+            const isThrusterImage = thrusterSprite.tagName !== 'CANVAS' && thrusterSprite.complete && thrusterSprite.naturalWidth > 0;
+            const isThrusterCanvas = thrusterSprite.tagName === 'CANVAS' && thrusterSprite.width > 0;
+            if (isThrusterImage || isThrusterCanvas) {
+                ctx.save();
+                const flameWidth = this.isBoosting ? 72 : 48;
+                const flameHeight = 48;
+                ctx.drawImage(thrusterSprite, -flameWidth, 0, flameWidth, flameHeight);
+                ctx.restore();
+            }
         }
 
         // --- Apply Ship Color Cosmetic plating tint ---

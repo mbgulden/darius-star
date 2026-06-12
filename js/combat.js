@@ -12,6 +12,8 @@
                 this.size = size;
                 this.isWave = isWave;
                 this.age = 0;
+                this.isPlayer = true;
+                this.weaponLevel = typeof player !== 'undefined' ? player.weaponLevel : 1;
             }
 
             update(dt) {
@@ -36,6 +38,21 @@
 
                 if (this.isWave) {
                     this.y += Math.sin(this.age * 22) * 4;
+                }
+
+                // Smoke trail for player missiles
+                if (this.secondaryType === 'missile') {
+                    if (Math.random() < 0.45) {
+                        const angle = Math.atan2(this.vy, this.vx);
+                        const rx = this.x - Math.cos(angle) * 8;
+                        const ry = this.y - Math.sin(angle) * 8;
+                        const p = new Particle(rx, ry, Math.random() < 0.25 ? '#FF8800' : '#888888');
+                        p.vx = -this.vx * 0.12 + (Math.random() - 0.5) * 35;
+                        p.vy = -this.vy * 0.12 + (Math.random() - 0.5) * 35;
+                        p.size = Math.random() * 4.5 + 2.5;
+                        p.decay = Math.random() * 2.2 + 1.2;
+                        particles.push(p);
+                    }
                 }
             }
 
@@ -156,14 +173,47 @@
         }
 // --- Sprite-Based Explosion Class ---
         class SpriteExplosion {
-            constructor(x, y, size = 48) {
+            constructor(x, y, size = 48, style = 'blue_laser') {
                 this.x = x;
                 this.y = y;
                 this.size = size;
+                this.style = style;
                 this.frame = 0;
                 this.frameTimer = 0;
-                this.frameDuration = 0.08; // 80ms per frame = ~12.5fps for 4 frames = ~320ms total
+                this.frameDuration = 0.08; // default 80ms per frame
                 this.alive = true;
+                this.maxFrames = 4;
+
+                // Configure properties per explosion style
+                if (style === 'blue_laser') {
+                    this.maxFrames = 4;
+                    this.frameDuration = 0.06;
+                    this.color = '#00FFFF';
+                } else if (style === 'green_laser') {
+                    this.maxFrames = 5;
+                    this.frameDuration = 0.07;
+                    this.color = '#00FF88';
+                } else if (style === 'purple_laser') {
+                    this.maxFrames = 6;
+                    this.frameDuration = 0.08;
+                    this.color = '#FF00FF';
+                } else if (style === 'white_laser') {
+                    this.maxFrames = 8;
+                    this.frameDuration = 0.07;
+                    this.color = '#FFFFFF';
+                } else if (style === 'red_projectile') {
+                    this.maxFrames = 5;
+                    this.frameDuration = 0.08;
+                    this.color = '#FF3333';
+                } else if (style === 'missile') {
+                    this.maxFrames = 10;
+                    this.frameDuration = 0.07;
+                    this.color = '#FF8800';
+                } else if (style === 'shield_hit') {
+                    this.maxFrames = 4;
+                    this.frameDuration = 0.05;
+                    this.color = '#0088FF';
+                }
             }
 
             update(dt) {
@@ -171,7 +221,7 @@
                 if (this.frameTimer >= this.frameDuration) {
                     this.frameTimer -= this.frameDuration;
                     this.frame++;
-                    if (this.frame >= 4) {
+                    if (this.frame >= this.maxFrames) {
                         this.alive = false;
                     }
                 }
@@ -179,36 +229,199 @@
 
             draw() {
                 if (!this.alive) return;
-                const key = 'explosion_0';  // Sprite sheet with 4 frames in 2x2 grid
-                const sprite = vfxSprites[key];
-                // preCompositeAdditive() returns a canvas (no .complete/.naturalWidth)
-                const hasSprite = sprite && (sprite.width > 0 || (sprite.complete && sprite.naturalWidth > 0));
-                if (hasSprite) {
-                    // Sprite sheet: 2x2 grid, 4 frames (each frame = half width, half height)
-                    const sw = sprite.naturalWidth || sprite.width;
-                    const sh = sprite.naturalHeight || sprite.height;
-                    const fw = sw / 2;
-                    const fh = sh / 2;
-                    const col = this.frame % 2;
-                    const row = Math.floor(this.frame / 2);
+
+                const customStyles = ['blue_laser', 'green_laser', 'purple_laser', 'white_laser', 'red_projectile', 'missile', 'shield_hit'];
+                if (customStyles.includes(this.style)) {
+                    const progress = this.frame / this.maxFrames;
                     ctx.save();
-                    ctx.globalAlpha = 0.9;
-                    ctx.drawImage(sprite,
-                        col * fw, row * fh, fw, fh,           // Source rect (single frame)
-                        this.x - this.size / 2,               // Dest
-                        this.y - this.size / 2,
-                        this.size, this.size);
+
+                    if (this.style === 'blue_laser') {
+                        // Cyan small flash
+                        ctx.globalAlpha = (1 - progress) * 0.95;
+                        ctx.fillStyle = '#00FFFF';
+                        ctx.shadowColor = '#00FFFF';
+                        ctx.shadowBlur = 10;
+                        ctx.beginPath();
+                        ctx.arc(this.x, this.y, this.size * 0.38 * (1 - progress * 0.25), 0, Math.PI * 2);
+                        ctx.fill();
+                    } 
+                    else if (this.style === 'green_laser') {
+                        // Green medium flash + expanding ring
+                        ctx.globalAlpha = (1 - progress) * 0.85;
+                        ctx.fillStyle = '#00FF88';
+                        ctx.shadowColor = '#00FF88';
+                        ctx.shadowBlur = 12;
+                        ctx.beginPath();
+                        ctx.arc(this.x, this.y, this.size * 0.48 * (1 - progress * 0.2), 0, Math.PI * 2);
+                        ctx.fill();
+
+                        ctx.globalAlpha = (1 - progress) * 0.9;
+                        ctx.strokeStyle = '#00FF88';
+                        ctx.lineWidth = 2;
+                        ctx.beginPath();
+                        ctx.arc(this.x, this.y, this.size * 0.8 * progress, 0, Math.PI * 2);
+                        ctx.stroke();
+                    } 
+                    else if (this.style === 'purple_laser') {
+                        // Purple large flash + expanding shockwave ring
+                        ctx.globalAlpha = (1 - progress) * 0.8;
+                        ctx.fillStyle = '#FF00FF';
+                        ctx.shadowColor = '#FF00FF';
+                        ctx.shadowBlur = 15;
+                        ctx.beginPath();
+                        ctx.arc(this.x, this.y, this.size * 0.58 * (1 - progress * 0.15), 0, Math.PI * 2);
+                        ctx.fill();
+
+                        ctx.globalAlpha = (1 - progress) * 0.9;
+                        ctx.strokeStyle = '#FF00FF';
+                        ctx.lineWidth = 4 * (1 - progress);
+                        ctx.beginPath();
+                        ctx.arc(this.x, this.y, this.size * 1.15 * progress, 0, Math.PI * 2);
+                        ctx.stroke();
+                    } 
+                    else if (this.style === 'white_laser') {
+                        // White huge flash + double expanding ring
+                        ctx.globalAlpha = (1 - progress) * 0.9;
+                        ctx.fillStyle = '#FFFFFF';
+                        ctx.shadowColor = '#FFFFFF';
+                        ctx.shadowBlur = 20;
+                        ctx.beginPath();
+                        ctx.arc(this.x, this.y, this.size * 0.78 * (1 - progress * 0.1), 0, Math.PI * 2);
+                        ctx.fill();
+
+                        ctx.strokeStyle = '#FFFFFF';
+                        // Outer ring (expanding faster)
+                        ctx.globalAlpha = (1 - progress) * 0.8;
+                        ctx.lineWidth = 3.5 * (1 - progress);
+                        ctx.beginPath();
+                        ctx.arc(this.x, this.y, this.size * 1.45 * progress, 0, Math.PI * 2);
+                        ctx.stroke();
+
+                        // Inner ring (expanding slower)
+                        ctx.globalAlpha = (1 - progress) * 0.6;
+                        ctx.lineWidth = 2 * (1 - progress);
+                        ctx.beginPath();
+                        ctx.arc(this.x, this.y, this.size * 0.9 * progress, 0, Math.PI * 2);
+                        ctx.stroke();
+                    } 
+                    else if (this.style === 'red_projectile') {
+                        // Red spiky explosion
+                        ctx.globalAlpha = (1 - progress) * 0.9;
+                        ctx.fillStyle = '#FF3333';
+                        ctx.strokeStyle = '#FF3333';
+                        ctx.lineWidth = 1.5;
+                        ctx.shadowColor = '#FF3333';
+                        ctx.shadowBlur = 12;
+
+                        const spikes = 8;
+                        const outerRadius = this.size * 0.8 * (0.35 + progress * 0.65);
+                        const innerRadius = this.size * 0.3 * (0.35 + progress * 0.65);
+                        let rot = (Math.PI / 2) * 3 + progress * 0.4;
+                        let step = Math.PI / spikes;
+
+                        ctx.beginPath();
+                        ctx.moveTo(this.x, this.y - outerRadius);
+                        for (let i = 0; i < spikes; i++) {
+                            let sx = this.x + Math.cos(rot) * outerRadius;
+                            let sy = this.y + Math.sin(rot) * outerRadius;
+                            ctx.lineTo(sx, sy);
+                            rot += step;
+
+                            sx = this.x + Math.cos(rot) * innerRadius;
+                            sy = this.y + Math.sin(rot) * innerRadius;
+                            ctx.lineTo(sx, sy);
+                            rot += step;
+                        }
+                        ctx.closePath();
+                        ctx.fill();
+                        ctx.stroke();
+                    } 
+                    else if (this.style === 'missile') {
+                        // Orange large fireball: bubbling, roiling heat spheres
+                        ctx.globalAlpha = (1 - progress) * 0.9;
+                        const bubbleCount = 4;
+                        const maxRadius = this.size * 1.15;
+                        const currentRadius = maxRadius * (0.4 + progress * 0.6);
+
+                        ctx.shadowColor = '#FF3300';
+                        ctx.shadowBlur = 16;
+
+                        for (let i = 0; i < bubbleCount; i++) {
+                            const angle = (i / bubbleCount) * Math.PI * 2 + progress * 2.2;
+                            const dist = currentRadius * 0.22 * (1 - progress);
+                            const bx = this.x + Math.cos(angle) * dist;
+                            const by = this.y + Math.sin(angle) * dist;
+                            const r = currentRadius * (0.55 - i * 0.05);
+
+                            if (i === 0) ctx.fillStyle = '#FF3300';
+                            else if (i === 1) ctx.fillStyle = '#FF8800';
+                            else if (i === 2) ctx.fillStyle = '#FFCC00';
+                            else ctx.fillStyle = '#FFFF88';
+
+                            ctx.beginPath();
+                            ctx.arc(bx, by, r, 0, Math.PI * 2);
+                            ctx.fill();
+                        }
+                    } 
+                    else if (this.style === 'shield_hit') {
+                        // Blue spark burst
+                        ctx.globalAlpha = (1 - progress) * 0.9;
+                        ctx.fillStyle = '#0088FF';
+                        ctx.shadowColor = '#0088FF';
+                        ctx.shadowBlur = 10;
+                        ctx.beginPath();
+                        ctx.arc(this.x, this.y, this.size * 0.22 * (1 - progress), 0, Math.PI * 2);
+                        ctx.fill();
+
+                        ctx.strokeStyle = '#0088FF';
+                        ctx.lineWidth = 1.8;
+                        const numSparks = 8;
+                        const startDist = this.size * 0.25 * progress;
+                        const endDist = this.size * 0.85 * progress;
+                        for (let i = 0; i < numSparks; i++) {
+                            const angle = (i / numSparks) * Math.PI * 2 + (i % 2 === 0 ? 0.15 : -0.15);
+                            const sx = this.x + Math.cos(angle) * startDist;
+                            const sy = this.y + Math.sin(angle) * startDist;
+                            const ex = this.x + Math.cos(angle) * endDist;
+                            const ey = this.y + Math.sin(angle) * endDist;
+                            ctx.beginPath();
+                            ctx.moveTo(sx, sy);
+                            ctx.lineTo(ex, ey);
+                            ctx.stroke();
+                        }
+                    }
+
                     ctx.restore();
                 } else {
-                    // Fallback: orange flash circle
-                    const progress = this.frame / 4;
-                    ctx.save();
-                    ctx.globalAlpha = 1 - progress;
-                    ctx.fillStyle = '#ff6600';
-                    ctx.beginPath();
-                    ctx.arc(this.x, this.y, this.size * (0.5 + progress * 0.5), 0, Math.PI * 2);
-                    ctx.fill();
-                    ctx.restore();
+                    // Fallback to sprite-based animation
+                    const key = 'explosion_0';
+                    const sprite = vfxSprites[key];
+                    const hasSprite = sprite && (sprite.width > 0 || (sprite.complete && sprite.naturalWidth > 0));
+                    if (hasSprite) {
+                        const sw = sprite.naturalWidth || sprite.width;
+                        const sh = sprite.naturalHeight || sprite.height;
+                        const fw = sw / 2;
+                        const fh = sh / 2;
+                        const col = this.frame % 2;
+                        const row = Math.floor(this.frame / 2);
+                        ctx.save();
+                        ctx.globalAlpha = 0.9;
+                        ctx.drawImage(sprite,
+                            col * fw, row * fh, fw, fh,
+                            this.x - this.size / 2,
+                            this.y - this.size / 2,
+                            this.size, this.size);
+                        ctx.restore();
+                    } else {
+                        const progress = this.frame / 4;
+                        ctx.save();
+                        ctx.globalAlpha = 1 - progress;
+                        ctx.fillStyle = '#ff6600';
+                        ctx.beginPath();
+                        ctx.arc(this.x, this.y, this.size * (0.5 + progress * 0.5), 0, Math.PI * 2);
+                        ctx.fill();
+                        ctx.restore();
+                    }
                 }
             }
         }

@@ -3,28 +3,94 @@
 
 // --- Enemy Bullet Class ---
         class EnemyBullet {
-            constructor(x, y, vx, vy) {
+            constructor(x, y, vx, vy, type = 'bullet') {
                 this.x = x;
                 this.y = y;
                 this.vx = vx;
                 this.vy = vy;
-                this.color = '#ff3300';
-                this.size = 5;
+                this.type = type; // 'bullet' or 'missile'
+                this.color = type === 'missile' ? '#FF8800' : '#FF3333';
+                this.size = type === 'missile' ? 7 : 5;
             }
 
             update(dt) {
                 this.x += this.vx * dt;
                 this.y += this.vy * dt;
+
+                // Smoke trail for boss/enemy missiles
+                if (this.type === 'missile') {
+                    if (Math.random() < 0.45) {
+                        const angle = Math.atan2(this.vy, this.vx);
+                        const rx = this.x - Math.cos(angle) * 8;
+                        const ry = this.y - Math.sin(angle) * 8;
+                        const p = new Particle(rx, ry, Math.random() < 0.25 ? '#FF8800' : '#777777');
+                        p.vx = -this.vx * 0.15 + (Math.random() - 0.5) * 35;
+                        p.vy = -this.vy * 0.15 + (Math.random() - 0.5) * 35;
+                        p.size = Math.random() * 4 + 2;
+                        p.decay = Math.random() * 2.2 + 1.2;
+                        particles.push(p);
+                    }
+                }
             }
 
             draw() {
                 ctx.save();
                 ctx.translate(this.x, this.y);
 
-                // Rotate: enemy bullets move left-to-right (vx is negative)
+                // Rotate: enemy bullets face direction of movement
                 const angle = Math.atan2(this.vy, this.vx);
                 ctx.rotate(angle);
 
+                if (this.type === 'missile') {
+                    // Custom Boss Missile: Orange body, white tip, red fins, flame exhaust
+                    ctx.shadowColor = '#FF5500';
+                    ctx.shadowBlur = 10;
+
+                    // Flame flare at engine
+                    ctx.fillStyle = '#FF3300';
+                    ctx.beginPath();
+                    ctx.moveTo(-8, -1.5);
+                    ctx.lineTo(-15 - Math.random() * 6, 0);
+                    ctx.lineTo(-8, 1.5);
+                    ctx.closePath();
+                    ctx.fill();
+
+                    ctx.fillStyle = '#FFAA00';
+                    ctx.beginPath();
+                    ctx.moveTo(-8, -1.0);
+                    ctx.lineTo(-12 - Math.random() * 4, 0);
+                    ctx.lineTo(-8, 1.0);
+                    ctx.closePath();
+                    ctx.fill();
+
+                    // Main body
+                    ctx.fillStyle = '#FF8800';
+                    ctx.beginPath();
+                    ctx.moveTo(10, 0);
+                    ctx.lineTo(-6, -4.5);
+                    ctx.lineTo(-3, 0);
+                    ctx.lineTo(-6, 4.5);
+                    ctx.closePath();
+                    ctx.fill();
+
+                    // White nose tip
+                    ctx.fillStyle = '#FFFFFF';
+                    ctx.beginPath();
+                    ctx.moveTo(10, 0);
+                    ctx.lineTo(3, -2.5);
+                    ctx.lineTo(3, 2.5);
+                    ctx.closePath();
+                    ctx.fill();
+
+                    // Fins
+                    ctx.fillStyle = '#FF3333';
+                    ctx.fillRect(-7, -3.5, 3.5, 7);
+
+                    ctx.restore();
+                    return;
+                }
+
+                // Default enemy laser bolt
                 const renderSize = this.size * 4;
                 const pulse = 0.7 + Math.sin(gameTime * 8 + this.x * 0.05) * 0.3;
 
@@ -40,11 +106,12 @@
 
                 // Enemy laser bolt sprite on top
                 const sprite = vfxSprites['laser_enemy'];
-                if (sprite && sprite.complete && sprite.naturalWidth > 0) {
+                const isImage = sprite && sprite.tagName !== 'CANVAS' && sprite.complete && sprite.naturalWidth > 0;
+                const isCanvas = sprite && sprite.tagName === 'CANVAS' && sprite.width > 0;
+                if (isImage || isCanvas) {
                     ctx.globalAlpha = 0.9;
-                    // Center the 1024×1024 sprite, scale to renderSize
-                    const sw = sprite.naturalWidth;
-                    const sh = sprite.naturalHeight;
+                    const sw = isCanvas ? sprite.width : sprite.naturalWidth;
+                    const sh = isCanvas ? sprite.height : sprite.naturalHeight;
                     ctx.drawImage(sprite,
                         0, 0, sw, sh,                           // source rect (full sprite)
                         -renderSize / 2, -renderSize / 2,       // dest x, y
@@ -405,7 +472,7 @@
                     }
                 } else if (this.state === 'idle') {
                     enemyBullets.push(new EnemyBullet(this.x + 10, this.y + 50, -260, -80));
-                    enemyBullets.push(new EnemyBullet(this.x + 10, this.y + 70, -280, 0));
+                    enemyBullets.push(new EnemyBullet(this.x + 10, this.y + 70, -280, 0, 'missile'));
                     enemyBullets.push(new EnemyBullet(this.x + 10, this.y + 90, -260, 80));
                     const difficultyConfig = getCurrentDifficultyConfig();
                     if (difficultyConfig.id === 'hard' || difficultyConfig.id === 'insane') {
@@ -421,8 +488,8 @@
                 } else if (this.state === 'rage') {
                     const dy = player.y - (this.y + 70);
                     const dx = player.x - (this.x + 10);
-                    const dist = Math.sqrt(dx*dx + dy*dy);
-                    enemyBullets.push(new EnemyBullet(this.x + 10, this.y + 70, (dx/dist) * 320, (dy/dist) * 320));
+                    const dist = Math.sqrt(dx*dx + dy*dy) || 1;
+                    enemyBullets.push(new EnemyBullet(this.x + 10, this.y + 70, (dx/dist) * 320, (dy/dist) * 320, 'missile'));
 
                     const difficultyConfig = getCurrentDifficultyConfig();
                     const minionChance = difficultyConfig.id === 'insane' ? 0.45 : (difficultyConfig.id === 'hard' ? 0.35 : 0.25);

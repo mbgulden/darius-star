@@ -542,6 +542,8 @@ function update(dt) {
         
         const ebBox = { x: eb.x - eb.size, y: eb.y - eb.size, width: eb.size*2, height: eb.size*2 };
         if (checkCollision(ebBox, player)) {
+            const style = eb.type === 'missile' ? 'missile' : 'red_projectile';
+            createExplosion(eb.x, eb.y, eb.color, 10, style);
             player.takeDamage(12);
             enemyBullets.splice(i, 1);
             continue;
@@ -597,6 +599,25 @@ function update(dt) {
                 const mods = window.DS_UpgradeSystem ? window.DS_UpgradeSystem.getGameplayModifiers() : null;
                 const dmg = b.damage || ((player.weaponLevel >= 4 ? 2 : 1) * (mods ? mods.weaponDamageMultiplier : 1.0));
                 e.hp -= dmg;
+
+                // Map projectile type to varied explosion/impact VFX
+                let style = 'blue_laser';
+                if (b.secondaryType === 'missile') {
+                    style = 'missile';
+                } else {
+                    const wl = b.weaponLevel || player.weaponLevel;
+                    if (wl === 1 || wl === 2) {
+                        style = 'blue_laser';
+                    } else if (wl === 3) {
+                        style = 'green_laser';
+                    } else if (wl === 4) {
+                        style = 'purple_laser';
+                    } else if (wl >= 5) {
+                        style = 'white_laser';
+                    }
+                }
+                createExplosion(b.x, b.y, b.color, 8, style);
+
                 bullets.splice(j, 1);
                 playSound('hit');
                 // Spawn hit-flash (§6.2) at impact point
@@ -648,6 +669,25 @@ function update(dt) {
                 const mods = window.DS_UpgradeSystem ? window.DS_UpgradeSystem.getGameplayModifiers() : null;
                 const dmg = b.damage || ((player.weaponLevel >= 4 ? 2 : 1) * (mods ? mods.weaponDamageMultiplier : 1.0));
                 boss.takeDamage(dmg);
+
+                // Map projectile type to varied explosion/impact VFX
+                let style = 'blue_laser';
+                if (b.secondaryType === 'missile') {
+                    style = 'missile';
+                } else {
+                    const wl = b.weaponLevel || player.weaponLevel;
+                    if (wl === 1 || wl === 2) {
+                        style = 'blue_laser';
+                    } else if (wl === 3) {
+                        style = 'green_laser';
+                    } else if (wl === 4) {
+                        style = 'purple_laser';
+                    } else if (wl >= 5) {
+                        style = 'white_laser';
+                    }
+                }
+                createExplosion(b.x, b.y, b.color, 8, style);
+
                 if (player.addSecondaryCharge) player.addSecondaryCharge(10);
                 bullets.splice(j, 1);
             }

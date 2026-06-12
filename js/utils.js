@@ -60,14 +60,75 @@ function determineEnding() {
     return eligible;
 }
 
-function createExplosion(x, y, color, count = 12) {
+function createExplosion(x, y, color, count = 12, style = null) {
+    // Map color/attributes to a default style if none specified
+    if (!style) {
+        const cLower = color ? color.toLowerCase() : '';
+        if (cLower === '#00ffff' || cLower === '#00ffaa' || cLower === 'cyan') {
+            style = 'blue_laser';
+        } else if (cLower === '#00ff88' || cLower === 'green' || cLower === '#00ff55') {
+            style = 'green_laser';
+        } else if (cLower === '#ff00ff' || cLower === 'purple' || cLower === '#ff00aa' || cLower === '#b026ff') {
+            style = 'purple_laser';
+        } else if (cLower === '#ffffff' || cLower === 'white') {
+            style = 'white_laser';
+        } else if (cLower === '#ff3333' || cLower === '#ff3300' || cLower === 'red') {
+            style = 'red_projectile';
+        } else if (cLower === '#ff8800' || cLower === '#ffaa00' || cLower === 'orange' || cLower === '#ff6600') {
+            style = 'missile';
+        } else if (cLower === '#0088ff' || cLower === 'blue') {
+            style = 'shield_hit';
+        } else {
+            style = 'blue_laser'; // fallback
+        }
+    }
+
     // Sprite-based explosion for the main visual
     const explosionSize = Math.max(40, count * 3.5);
-    vfxExplosions.push(new SpriteExplosion(x, y, explosionSize));
-    // Keep particles for debris/sparks (reduced count)
-    const particleCount = Math.min(count, 6);
+    vfxExplosions.push(new SpriteExplosion(x, y, explosionSize, style));
+    
+    // Keep particles for debris/sparks (tailored count and color per style)
+    let particleCount = Math.min(count, 6);
+    let particleColor = color;
+
+    if (style === 'blue_laser') {
+        particleCount = 8;
+        particleColor = '#00FFFF';
+    } else if (style === 'green_laser') {
+        particleCount = 6;
+        particleColor = '#00FF88';
+    } else if (style === 'purple_laser') {
+        particleCount = 10;
+        particleColor = '#FF00FF';
+    } else if (style === 'white_laser') {
+        particleCount = 12;
+        particleColor = '#FFFFFF';
+    } else if (style === 'red_projectile') {
+        particleCount = 8;
+        particleColor = '#FF3333';
+    } else if (style === 'missile') {
+        particleCount = 15;
+        particleColor = '#FF8800';
+    } else if (style === 'shield_hit') {
+        particleCount = 12;
+        particleColor = '#0088FF';
+    }
+
     for (let i = 0; i < particleCount; i++) {
-        particles.push(new Particle(x, y, color));
+        const p = new Particle(x, y, particleColor);
+        if (style === 'shield_hit') {
+            // Shield sparks: faster velocity, quicker decay
+            p.vx = (Math.random() - 0.5) * 350;
+            p.vy = (Math.random() - 0.5) * 350;
+            p.decay = Math.random() * 3.0 + 2.0;
+        } else if (style === 'missile') {
+            // Fireball debris: drifting up, slower decay, slightly larger size
+            p.vx = (Math.random() - 0.5) * 150;
+            p.vy = (Math.random() - 0.5) * 150 - 50;
+            p.size = Math.random() * 5 + 2;
+            p.decay = Math.random() * 1.2 + 0.6;
+        }
+        particles.push(p);
     }
 }
 
