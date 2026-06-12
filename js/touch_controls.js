@@ -176,7 +176,7 @@
         // FIRE (72x56), DODGE (48x48), SPEC (48x48) stacked vertically
         buttonContainer.style.cssText =
             'display:grid; grid-template-columns:72px; grid-template-rows:48px 48px 56px; ' +
-            'gap:8px; position:fixed; bottom:16px; right:16px; ' +
+            'gap:8px; position:absolute; bottom:16px; right:16px; ' +
             'z-index:100; pointer-events:none;';
         container.appendChild(buttonContainer);
 
@@ -227,7 +227,7 @@
         toggleBtn.id = 'touch-toggle';
         toggleBtn.textContent = '▼';
         toggleBtn.style.cssText =
-            'position:fixed; bottom:168px; right:16px; ' +
+            'position:absolute; bottom:168px; right:16px; ' +
             'width:72px; height:20px; z-index:102; pointer-events:auto; ' +
             'background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.20); ' +
             'border-radius:4px 4px 0 0; color:rgba(255,255,255,0.45); font-size:10px; ' +
