@@ -1,0 +1,30 @@
+// js/i18n/de.js — German dictionary for Darius Star
+// GRO-942: German localization (machine-translated — needs native review)
+var I18N_DICTS = I18N_DICTS || {};
+I18N_DICTS['de'] = {
+    'CONTINUE': 'FORTSETZEN',
+    'START_GAME': 'START',
+    'UPGRADE_SHOP': 'UPGRADES',
+    'SHIP_SELECT': 'SCHIFF',
+    'SETTINGS': 'EINSTELLUNGEN',
+    'LEADERBOARD': 'RANGLISTE',
+    'CREDITS': 'CREDITS',
+    'RESUME': 'FORTSETZEN',
+    'QUIT_TO_MENU': 'ZUM MENÜ',
+    'BACK': 'ZURÜCK',
+    'MASTER_VOLUME': 'GESAMTLAUTSTÄRKE',
+    'MUSIC_VOLUME': 'MUSIKLAUTSTÄRKE',
+    'SFX_VOLUME': 'EFFEKTLAUTSTÄRKE',
+    'DIFFICULTY': 'SCHWIERIGKEIT',
+    'STREAMER_MODE': 'STREAMER-MODUS',
+    'SCORE': 'PUNKTE',
+    'WAVE': 'WELLE',
+    'GAME_OVER': 'SPIELENDE',
+    'VICTORY': 'SIEG',
+    'PAUSED': 'PAUSE',
+    'YES': 'JA',
+    'NO': 'NEIN',
+    'OK': 'OK',
+    'CANCEL': 'ABBRECHEN',
+    'LOADING': 'LADE...',
+};

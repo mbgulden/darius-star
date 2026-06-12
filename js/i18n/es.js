@@ -1,0 +1,30 @@
+// js/i18n/es.js — Spanish dictionary for Darius Star
+// GRO-942: Spanish localization (machine-translated — needs native review)
+var I18N_DICTS = I18N_DICTS || {};
+I18N_DICTS['es'] = {
+    'CONTINUE': 'CONTINUAR',
+    'START_GAME': 'INICIAR',
+    'UPGRADE_SHOP': 'MEJORAS',
+    'SHIP_SELECT': 'NAVE',
+    'SETTINGS': 'AJUSTES',
+    'LEADERBOARD': 'CLASIFICACIÓN',
+    'CREDITS': 'CRÉDITOS',
+    'RESUME': 'REANUDAR',
+    'QUIT_TO_MENU': 'SALIR AL MENÚ',
+    'BACK': 'VOLVER',
+    'MASTER_VOLUME': 'VOLUMEN GENERAL',
+    'MUSIC_VOLUME': 'VOLUMEN MÚSICA',
+    'SFX_VOLUME': 'VOLUMEN EFECTOS',
+    'DIFFICULTY': 'DIFICULTAD',
+    'STREAMER_MODE': 'MODO STREAMER',
+    'SCORE': 'PUNTUACIÓN',
+    'WAVE': 'OLEADA',
+    'GAME_OVER': 'FIN DEL JUEGO',
+    'VICTORY': 'VICTORIA',
+    'PAUSED': 'PAUSA',
+    'YES': 'SÍ',
+    'NO': 'NO',
+    'OK': 'OK',
+    'CANCEL': 'CANCELAR',
+    'LOADING': 'CARGANDO...',
+};
