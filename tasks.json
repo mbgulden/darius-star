@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "updated": "2026-06-12T00:00:00Z",
+  "description": "Darius Star project automation tasks — zero dependencies, Python stdlib only",
+  "tasks": {
+    "generate-audio": {
+      "description": "Generate all audio tracks via Lyria 2 (Vertex AI)",
+      "command": "python3 tools/generate_audio.py",
+      "flags": {
+        "--all": "Generate all tracks in catalog",
+        "--check": "Verify Lyria/Vertex AI connectivity",
+        "--track <id>": "Generate a single track by ID",
+        "--list": "List all tracks + estimated cost"
+      },
+      "script": "tools/generate_audio.py",
+      "requires": ["google-cloud-aiplatform", "python3", "ffmpeg"]
+    },
+    "lint-audio": {
+      "description": "Cross-reference audio_manifest.json against files on disk; validate all MP3/WAV files",
+      "command": "python3 tasks/lint_audio.py",
+      "flags": {
+        "--fix": "Update manifest to match disk state",
+        "--verbose": "Show per-file validation details"
+      },
+      "script": "tasks/lint_audio.py"
+    },
+    "lint-js": {
+      "description": "Syntax-check all JS modules",
+      "command": "python3 scripts/verify_syntax.py",
+      "script": "scripts/verify_syntax.py"
+    },
+    "deploy": {
+      "description": "Push to master → Cloudflare Pages auto-deploys",
+      "command": "git push origin master",
+      "note": "Push can take 3-10 min (repo ~11GB). Run in background."
+    }
+  }
+}
