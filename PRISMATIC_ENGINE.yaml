@@ -91,3 +91,32 @@ commits:
   require_prefix: true
   require_issue_ref: true
   format: "[Agent] description (#ISSUE)"
+
+# ── Providers & Fallback ──────────────────────────────
+# GRO-1476: Provider-agnostic validation pipeline config
+providers:
+  default: google-antigravity
+  fallback_chain: [claude-code]
+
+# ── Validation Pipeline ───────────────────────────────
+pipeline:
+  phase1_development:
+    stages:
+      - worker_implementation
+      - self_validation_loop
+      - peer_review
+      - fix_application
+      - orchestrator_approval
+  phase2_post_publish:
+    trigger: github_push_detected
+    stages:
+      - active_review
+      - read_only_review
+      - apply_suggestions
+      - publish_and_validate
+
+# ── Credit & Budget Policies ──────────────────────────
+policies:
+  global:
+    monthly_budget: 10000
+    hard_stop_at: 9000
