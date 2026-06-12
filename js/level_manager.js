@@ -1,6 +1,7 @@
 // level_manager.js — Wave system, formation spawning, difficulty scaling
 // Built by Ned (GRO-1140) from Jules' docs/enemy-wave-designer.md
-// Loaded between enemies.js and game_loop.js
+// Updated GRO-938: Campaign Wave Schema integration (loads from WAVE_CAMPAIGN if present)
+// Loaded between wave_campaign.js / biome_data.js and game_loop.js
 
 // --- Level Manager ---
 // Global singleton: LevelManager
@@ -27,6 +28,12 @@ const LevelManager = {
     // Each level has: waves (number), midBoss, biomeBoss, bossTrigger
     _levelSpecs: {},
 
+    // Campaign schema reference (GRO-938)
+    // If WAVE_CAMPAIGN is loaded, LevelManager reads from it for bossHP, enemy pools,
+    // level config, and wave validation. Falls back to BIOME_DATA when absent.
+    _campaign: null,
+    _campaignAvailable: false,
+
     // Enemy type pools per biome
     // Maps to the type strings that Enemy() constructor recognizes
     _biomeEnemies: BIOME_DATA.enemies,
@@ -44,9 +51,57 @@ const LevelManager = {
     },
 
     init() {
+        this._detectCampaign();
         this.initialized = true;
         if (!this.currentLevelConfig) {
             this.setBiomeAndLevel(this.biome, this.level);
+        }
+    },
+
+    // --- Campaign schema detection (GRO-938) ---
+    _detectCampaign() {
+        if (typeof WAVE_CAMPAIGN !== 'undefined' && WAVE_CAMPAIGN) {
+            this._campaign = WAVE_CAMPAIGN;
+            this._campaignAvailable = true;
+            // Override bossHP from campaign if available (still fall back to BIOME_DATA)
+            if (WAVE_CAMPAIGN.biome1 && WAVE_CAMPAIGN.biome1.bossHP) {
+                const campaignBossHP = {};
+                for (let b = 1; b <= 10; b++) {
+                    const bkey = 'biome' + b;
+                    if (WAVE_CAMPAIGN[bkey] && WAVE_CAMPAIGN[bkey].bossHP) {
+                        campaignBossHP[b] = WAVE_CAMPAIGN[bkey].bossHP;
+                    }
+                }
+                if (Object.keys(campaignBossHP).length === 10) {
+                    this._bossHP = campaignBossHP;
+                }
+            }
+            // Override enemy pools from campaign
+            if (WAVE_CAMPAIGN.biome1 && WAVE_CAMPAIGN.biome1.enemyPool) {
+                const campaignEnemies = {};
+                for (let b = 1; b <= 10; b++) {
+                    const bkey = 'biome' + b;
+                    if (WAVE_CAMPAIGN[bkey] && WAVE_CAMPAIGN[bkey].enemyPool) {
+                        campaignEnemies[b] = WAVE_CAMPAIGN[bkey].enemyPool;
+                    }
+                }
+                if (Object.keys(campaignEnemies).length === 10) {
+                    this._biomeEnemies = campaignEnemies;
+                }
+            }
+            // Override biome names
+            if (WAVE_CAMPAIGN.biome1 && WAVE_CAMPAIGN.biome1.name) {
+                const campaignNames = {};
+                for (let b = 1; b <= 10; b++) {
+                    const bkey = 'biome' + b;
+                    if (WAVE_CAMPAIGN[bkey] && WAVE_CAMPAIGN[bkey].name) {
+                        campaignNames[b] = WAVE_CAMPAIGN[bkey].name;
+                    }
+                }
+                if (Object.keys(campaignNames).length === 10) {
+                    this._biomeNames = campaignNames;
+                }
+            }
         }
     },
 
