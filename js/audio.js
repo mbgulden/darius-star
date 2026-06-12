@@ -1,5 +1,68 @@
 // --- Web Audio Synthesizer ---
 let audioCtx = null;
+
+// ====================================================================
+// GRO-1270: Sample-Based SFX System (prep infrastructure)
+// Preloads high-quality audio samples for core gameplay SFX.
+// Falls back gracefully to synth if samples aren't available.
+// ====================================================================
+
+// Map SFX type → sample file path (relative to assets/audio/sfx/)
+const SFX_SAMPLE_MAP = {
+    'shoot':           'player_laser.mp3',
+    'hit':             'impact_hit.mp3',
+    'explosion':       'explosion_large.mp3',
+    'powerup':         'powerup_pickup.mp3',
+    'menu_click':      'ui_click.mp3',
+    'menu_select':     'ui_select.mp3',
+    'laser_charge':    'laser_charge.mp3',
+    'laser_fire':      'laser_fire.mp3',
+    'siren':           'alarm_siren.mp3',
+    'victory_fanfare': 'victory_jingle.mp3',
+};
+
+let sfxSampleBuffers = {};      // type → AudioBuffer
+let sfxSamplesLoaded = false;   // true after all fetches settle
+
+// Play a preloaded sample buffer. No-op if buffer missing.
+function playSample(type, volMultiplier) {
+    const buffer = sfxSampleBuffers[type];
+    if (!buffer || !audioCtx) return;
+    try {
+        const source = audioCtx.createBufferSource();
+        source.buffer = buffer;
+        const gain = audioCtx.createGain();
+        gain.gain.setValueAtTime(0.5 * (volMultiplier || 1), audioCtx.currentTime);
+        source.connect(gain);
+        gain.connect(audioCtx.destination);
+        source.start();
+    } catch(e) {
+        // Silently fall through — synth fallback handles it
+    }
+}
+
+// Async preload of all SFX samples. Called from initAudio().
+// Non-blocking — samples trickle in; synth fallback covers gaps.
+async function loadSfxSamples() {
+    if (!audioCtx || sfxSamplesLoaded) return;
+    const sfxBase = 'assets/audio/sfx/';
+    const promises = [];
+    for (const [type, filename] of Object.entries(SFX_SAMPLE_MAP)) {
+        promises.push(
+            fetch(sfxBase + filename)
+                .then(r => { if (!r.ok) throw new Error('missing'); return r.arrayBuffer(); })
+                .then(buf => audioCtx.decodeAudioData(buf))
+                .then(audioBuffer => { sfxSampleBuffers[type] = audioBuffer; })
+                .catch(() => { /* sample file missing — synth fallback handles it */ })
+        );
+    }
+    await Promise.allSettled(promises);
+    sfxSamplesLoaded = true;
+    const loaded = Object.keys(sfxSampleBuffers).length;
+    const total = Object.keys(SFX_SAMPLE_MAP).length;
+    if (loaded > 0) console.log(`[Darius Star] SFX samples loaded: ${loaded}/${total}`);
+}
+
 function initAudio() {
     if (!audioCtx) {
         try {
@@ -16,6 +79,8 @@ function initAudio() {
             console.warn('[Darius Star] AudioContext resume failed:', e.message);
         }
     }
+    // Kick off async sample preload (non-blocking — synth fallback covers gaps)
+    loadSfxSamples();
 }
 
 function hexToRgb(hex) {
@@ -90,6 +155,14 @@ function stopEngineHum() {
 
 function playSound(type, params) {
     if (!audioCtx) return;
+    // GRO-1270: Try sample-based playback first (preloaded AudioBuffer).
+    // Falls through to synth if sample not loaded or type not mapped.
+    try {
+        if (sfxSamplesLoaded && sfxSampleBuffers[type]) {
+            playSample(type, masterVolume * sfxVolume);
+            return;
+        }
+    } catch(e) { /* fall through to synth */ }
     try {
         const volMultiplier = masterVolume * sfxVolume;
         const p = params || {};
