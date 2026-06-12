@@ -1361,7 +1361,7 @@ def main():
 
     if args.check:
         print("Testing Lyria 2 connection...")
-        data = generate_lyria("single piano note C major, 2 seconds")
+        data = generate_lyria("cinematic orchestral electronic test tone, deep bass pulse with shimmering synth arpeggio, 30-second seamless loop, instrumental")
         if data:
             print(f"✅ Lyria 2: connected ({len(data)} bytes)")
             return 0
