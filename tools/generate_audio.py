@@ -1079,6 +1079,95 @@ MUSIC_CATALOG = {
         "duration": 30, "output": "assets/audio/suspense_b9_catastrophe2.mp3", "loop": True,
     },
 
+    # ═══════════════════════════════════════════════
+    # Biome Gameplay Music — Cinematic (GRO-864)
+    # cinematic film-score quality — orchestral+electronic
+    # ═══════════════════════════════════════════════
+    "biome_b1_abyssal": {
+        "scene": "Biome 1: Abyssal Trench Gameplay",
+        "prompt": "Deep oceanic cyberpunk gameplay music, cinematic orchestral electronic film-score style, ominous low-frequency whale-song electronic drones, pulsing sub-bass pressure, distant sonar pings as percussion, dark reverberant synth pads, industrial tension, epic orchestral string swells, driving 120 BPM electronic beat, 30-second seamless loop, instrumental, no vocals, the crushing weight of the deep ocean rendered in sound.",
+        "duration": 30, "output": "assets/audio/biome_b1_abyssal.mp3", "loop": True,
+    },
+    "biome_b2_coral": {
+        "scene": "Biome 2: Coral Graveyard Gameplay",
+        "prompt": "Melancholic underwater ruin gameplay music, cinematic orchestral electronic film-score style, decaying beauty in electronic sound, distant echoed piano fragments over deep synth bass, rusted metallic percussion, haunting processed vocal pads, bittersweet minor-key string arrangements, 115 BPM mid-tempo electronic groove, 30-second seamless loop, instrumental, no vocals, beauty that persists in decay.",
+        "duration": 30, "output": "assets/audio/biome_b2_coral.mp3", "loop": True,
+    },
+    "biome_b3_lair": {
+        "scene": "Biome 3: Coelacanth Lair Gameplay",
+        "prompt": "Primal ancient dread gameplay music, cinematic orchestral electronic film-score style, bass-heavy biomechanical tension, deep ritualistic percussion like a monstrous heartbeat, distorted analog synth growls, dark orchestral brass swells, ancient primordial atmosphere, 128 BPM driving electronic rhythm, 30-second seamless loop, instrumental, no vocals, the lair of something older than time itself.",
+        "duration": 30, "output": "assets/audio/biome_b3_lair.mp3", "loop": True,
+    },
+    "biome_b4_nebula": {
+        "scene": "Biome 4: Nebula Drift Gameplay",
+        "prompt": "Ethereal cosmic wonder gameplay music, cinematic orchestral electronic film-score style, floating weightless synthesizer arpeggios, shimmering crystalline high frequencies, vast ambient string pads suggesting infinite space, gentle electronic pulse, sense of mystery and discovery, 110 BPM floating mid-tempo, 30-second seamless loop, instrumental, no vocals, drifting through clouds of starlight.",
+        "duration": 30, "output": "assets/audio/biome_b4_nebula.mp3", "loop": True,
+    },
+    "biome_b5_ice": {
+        "scene": "Biome 5: Ice Ring Gameplay",
+        "prompt": "Crystalline frozen beauty gameplay music, cinematic orchestral electronic film-score style, sharp glass-like percussion, shimmering bell-tones over sub-zero synth drones, fragile delicate piano motifs, cold electronic textures with diamond-hard clarity, 105 BPM measured electronic pulse, 30-second seamless loop, instrumental, no vocals, the terrible beauty of absolute cold.",
+        "duration": 30, "output": "assets/audio/biome_b5_ice.mp3", "loop": True,
+    },
+    "biome_b6_fire": {
+        "scene": "Biome 6: Fire Nebula Gameplay",
+        "prompt": "Aggressive industrial inferno gameplay music, cinematic orchestral electronic film-score style, driving distorted bass synthesizer, heavy industrial percussion like forge hammers, searing electronic leads, dark orchestral brass stabs, relentless energy, 135 BPM intense electronic rhythm, 30-second seamless loop, instrumental, no vocals, the fury of a burning nebula unleashed.",
+        "duration": 30, "output": "assets/audio/biome_b6_fire.mp3", "loop": True,
+    },
+    "biome_b7_storm": {
+        "scene": "Biome 7: Storm Belt Gameplay",
+        "prompt": "Chaotic electric urgency gameplay music, cinematic orchestral electronic film-score style, glitched-out breakbeat percussion, white-noise wind sweeps, thunderous FM synthesis bass drops, lightning-crack synth stabs, rising panic arpeggios, 145 BPM frantic electronic race, 30-second seamless loop, instrumental, no vocals, the fury of an electromagnetic maelstrom.",
+        "duration": 30, "output": "assets/audio/biome_b7_storm.mp3", "loop": True,
+    },
+    "biome_b8_derelict": {
+        "scene": "Biome 8: Derelict Fleet Gameplay",
+        "prompt": "Percussive dangerous wreckage gameplay music, cinematic orchestral electronic film-score style, metal-on-metal industrial percussion, groaning stressed-metal drones, military snare march with ghostly echoes, distressed orchestral brass, danger lurking in every hull breach, 120 BPM measured danger-march tempo, 30-second seamless loop, instrumental, no vocals, navigating a graveyard of dead starships.",
+        "duration": 30, "output": "assets/audio/biome_b8_derelict.mp3", "loop": True,
+    },
+    "biome_b9_hive": {
+        "scene": "Biome 9: Xenomorph Hive Gameplay",
+        "prompt": "Isolation and psychological horror gameplay music, cinematic orchestral electronic film-score style, minimal sparse electronic textures, organic wet pulsating rhythms, distant chittering frequencies, heartbeat sub-bass, creeping dread building slowly, 100 BPM slow-burn tension, 30-second seamless loop, instrumental, no vocals, alone inside a living alien labyrinth.",
+        "duration": 30, "output": "assets/audio/biome_b9_hive.mp3", "loop": True,
+    },
+    "biome_b10_core": {
+        "scene": "Biome 10: Core Rift Gameplay",
+        "prompt": "Climactic orchestral destiny gameplay music, cinematic orchestral electronic film-score style, grand orchestral brass fanfare swelling to epic crescendo, reality-bending pitch-shifted synthesizers, powerful driving percussion, Shepard-tone infinite rise, the weight of the entire journey, 130 BPM heroic electronic-orchestral hybrid, 30-second seamless loop, instrumental, no vocals, the final approach to the heart of everything.",
+        "duration": 30, "output": "assets/audio/biome_b10_core.mp3", "loop": True,
+    },
+
+    # ═══════════════════════════════════════════════
+    # Title, Victory, Endings, Game Over — Cinematic (GRO-864)
+    # ═══════════════════════════════════════════════
+    "title_cinematic": {
+        "scene": "Title Screen — Cinematic Theme",
+        "prompt": "Epic cinematic title screen theme, cinematic orchestral electronic style, memorable heroic introduction, grand orchestral brass opening with electronic bass drop, building crescendo of synthesizers and strings, cyberpunk majesty, the promise of an epic journey, 30-second seamless loop, instrumental, no vocals, the universe awaits.",
+        "duration": 30, "output": "assets/audio/title_cinematic.mp3", "loop": True,
+    },
+    "victory_cinematic": {
+        "scene": "Victory — Cinematic Triumph",
+        "prompt": "Triumphant cinematic victory music, cinematic orchestral electronic style, bright major-key orchestral resolution, soaring string melodies with electronic shimmer, powerful brass fanfare, emotional release after great struggle, 15-second sting, instrumental, no vocals, the universe is saved.",
+        "duration": 15, "output": "assets/audio/victory_cinematic.mp3", "loop": False,
+    },
+    "ending_sacrifice": {
+        "scene": "Ending: Sacrifice Variant",
+        "prompt": "Bittersweet sacrifice ending music, cinematic orchestral electronic film-score style, slow mournful piano over deep cello drones, distant electronic pulses fading like a heartbeat, quiet heroic resignation, beautiful tragedy, 30-second seamless loop, instrumental, no vocals, some lights must go out so others can shine.",
+        "duration": 30, "output": "assets/audio/ending_sacrifice.mp3", "loop": True,
+    },
+    "ending_transcendence": {
+        "scene": "Ending: Transcendence Variant",
+        "prompt": "Transcendent ascension ending music, cinematic orchestral electronic film-score style, rising ethereal synthesizer pads, shimmering high-frequency chimes, slow-building orchestral swells suggesting evolution beyond physical form, peaceful resolution, 30-second seamless loop, instrumental, no vocals, becoming something greater than what you were.",
+        "duration": 30, "output": "assets/audio/ending_transcendence.mp3", "loop": True,
+    },
+    "ending_dominion": {
+        "scene": "Ending: Dominion Variant",
+        "prompt": "Dark triumphant dominion ending music, cinematic orchestral electronic film-score style, powerful military percussion march, distorted industrial bass, ominous brass fanfare suggesting conquest, heavy electronic authority, the weight of absolute power, 30-second seamless loop, instrumental, no vocals, the throne was taken by force.",
+        "duration": 30, "output": "assets/audio/ending_dominion.mp3", "loop": True,
+    },
+    "game_over_cinematic": {
+        "scene": "Game Over — Cinematic Reflection",
+        "prompt": "Somber reflective game over music, cinematic orchestral electronic film-score style, slow descending minor-key piano, distant reverberant synth pads, quiet electronic pulse like a fading signal, respectful melancholy that invites retry, 15-second coda, instrumental, no vocals, the stars will wait for your return.",
+        "duration": 15, "output": "assets/audio/game_over_cinematic.mp3", "loop": False,
+    },
+
 }
 
 REPO_ROOT = Path(__file__).parent
