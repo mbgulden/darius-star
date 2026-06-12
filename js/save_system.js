@@ -154,21 +154,18 @@
             playTimeStr = minutes + 'm';
         }
 
-        // Ships unlocked: check localStorage for upgrade state, default to 3
+        // Ships unlocked: read from DS_UpgradeSystem global, default to 3
         let shipsUnlocked = 3;
         try {
-            const upgradeState = localStorage.getItem('dariusStar_upgradeState');
-            if (upgradeState) {
-                const parsed = JSON.parse(upgradeState);
-                // Count unlocked ships from upgrade system data
-                const shipUpgrades = parsed.ships || parsed.upgrades?.ships || {};
-                const unlockedCount = Object.values(shipUpgrades).filter(Boolean).length;
-                if (unlockedCount > 0) shipsUnlocked = unlockedCount;
+            if (window.DS_UpgradeSystem && window.DS_UpgradeSystem.state) {
+                const cosmeticRank = window.DS_UpgradeSystem.state.upgrades.cosmetics || 0;
+                // Rank 1-5 each unlock a new ship color (+ default = interceptor)
+                shipsUnlocked = 1 + cosmeticRank;
             }
         } catch (e) {
             // Fall back to default
         }
-        // If save itself tracks ships, use that
+        // If save itself tracks ships, use that as override
         if (typeof saveData.shipsUnlocked === 'number') {
             shipsUnlocked = saveData.shipsUnlocked;
         }
