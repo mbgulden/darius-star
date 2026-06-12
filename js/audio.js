@@ -30,9 +30,23 @@ let engineHumActive = false;
 let engineHumGain = null;
 let engineHumOsc = null;
 let engineHumFilter = null;
+let engineHumTimeout = null;
 
 function startEngineHum() {
-    if (!audioCtx || engineHumActive) return;
+    if (!audioCtx) return;
+    if (engineHumTimeout) {
+        clearTimeout(engineHumTimeout);
+        engineHumTimeout = null;
+        engineHumActive = true;
+        // Fade engine hum back in quickly
+        try {
+            const volMultiplier = masterVolume * sfxVolume;
+            const vol = (0.02 + (player ? player.speed / 290 : 0) * 0.08) * volMultiplier;
+            engineHumGain.gain.setTargetAtTime(vol, audioCtx.currentTime, 0.1);
+        } catch(e) {}
+        return;
+    }
+    if (engineHumActive) return;
     try {
         engineHumOsc = audioCtx.createOscillator();
         engineHumGain = audioCtx.createGain();
@@ -72,19 +86,22 @@ function stopEngineHum() {
     if (!engineHumActive) return;
     try {
         engineHumGain.gain.setTargetAtTime(0, audioCtx.currentTime, 0.3);
-        setTimeout(() => {
+        if (engineHumTimeout) clearTimeout(engineHumTimeout);
+        engineHumTimeout = setTimeout(() => {
             try {
                 if (engineHumOsc) { engineHumOsc.stop(); engineHumOsc = null; }
                 engineHumGain = null;
                 engineHumFilter = null;
                 engineHumActive = false;
             } catch(e) {}
+            engineHumTimeout = null;
         }, 400);
     } catch(e) {
         engineHumActive = false;
         engineHumOsc = null;
         engineHumGain = null;
         engineHumFilter = null;
+        if (engineHumTimeout) { clearTimeout(engineHumTimeout); engineHumTimeout = null; }
     }
 }
 

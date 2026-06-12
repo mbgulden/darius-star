@@ -51,11 +51,11 @@
   ],
   "failedNetworkRequests": [
     {
-      "url": "http://127.0.0.1:8088/assets/cinematics/cinematic_boss_intro.mp4",
+      "url": "http://127.0.0.1:8088/assets/cinematics/cinematic_victory.mp4",
       "status": 404
     },
     {
-      "url": "http://127.0.0.1:8088/assets/cinematics/cinematic_victory.mp4",
+      "url": "http://127.0.0.1:8088/assets/cinematics/cinematic_boss_intro.mp4",
       "status": 404
     },
     {
@@ -63,11 +63,11 @@
       "status": 404
     },
     {
-      "url": "http://127.0.0.1:8088/assets/sprites/backgrounds/bg_title_strip.png",
+      "url": "http://127.0.0.1:8088/assets/sprites/studio_logo.png",
       "status": 404
     },
     {
-      "url": "http://127.0.0.1:8088/assets/sprites/studio_logo.png",
+      "url": "http://127.0.0.1:8088/assets/sprites/backgrounds/bg_title_strip.png",
       "status": 404
     },
     {

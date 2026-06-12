@@ -296,11 +296,17 @@ const AudioManager = (function() {
         _activeSources.forEach(function(src) {
             try { src.stop(fadeOutEnd + 0.05); } catch(e) {}
         });
-        _activeGains.forEach(function(gn) {
-            setTimeout(function() {
+
+        // Disconnect old gains after they fade out
+        var oldGains = _activeGains;
+        setTimeout(function() {
+            oldGains.forEach(function(gn) {
                 try { gn.disconnect(); } catch(e) {}
-            }, (crossfade + 0.1) * 1000);
-        });
+            });
+        }, (crossfade + 0.1) * 1000);
+
+        _activeSources = [];
+        _activeGains = [];
 
         // Create new source
         var source = audioCtx.createBufferSource();

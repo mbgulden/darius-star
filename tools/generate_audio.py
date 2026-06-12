@@ -2,20 +2,24 @@
 """
 Lyria 2 Audio Generator — Darius Star: Cyber Coelacanth
 =========================================================
-Generates 30-second instrumental game music loops via Lyria 2 (Vertex AI).
+Generates instrumental game music loops via Lyria 2 (Vertex AI).
 Uses google-cloud-aiplatform PredictionServiceClient — same auth as Imagen 3 + Veo.
+
+MODEL AVAILABILITY (Jun 11, 2026):
+  lyria-002 = ONLY working model. All others (lyria-003, veo-*, imagen-*) = 404.
+  These are likely gated behind allowlists. Do NOT probe blindly — Michael has the catalog.
 
 PREREQUISITES:
   pip install google-cloud-aiplatform
-  gcloud auth login (same as Imagen/Veo)
+  ADC token auto-renews — no manual auth needed on this machine
 
 Usage:
   python3 generate_audio.py --check          # Verify API connection
-  python3 generate_audio.py --list           # Show all 9 music prompts
-  python3 generate_audio.py --all            # Generate all 9 tracks
+  python3 generate_audio.py --list           # Show all music prompts
+  python3 generate_audio.py --all            # Generate everything
   python3 generate_audio.py --track phase1   # Generate specific track
 
-Cost: ~$0.04 per 30s clip → $0.28 total for 9 tracks
+Cost: ~$0.04 per 30s clip. 148 tracks cataloged, 14 currently active.
 """
 
 import os

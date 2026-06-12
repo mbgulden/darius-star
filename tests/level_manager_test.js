@@ -8,6 +8,7 @@ function loadLevelManager() {
   global.canvas = { width: 800, height: 600 };
   global.enemies = [];
   global.runSeed = 12345;
+  global.playSound = () => {};
   global.BIOME_DATA = {
     enemies: {
       1: { scout:'angler_scout', interceptor:'jelly_interceptor', heavy:'vent_crab_heavy', alt:'angler_scout' },
