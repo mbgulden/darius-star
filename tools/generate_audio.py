@@ -36,26 +36,26 @@ MUSIC_CATALOG = {
     # Main Theme Variations (6) — pick the winner
     # ═══════════════════════════════════════════════
     "theme_heroic": {
-        "scene": "Main Theme — Heroic (Daft Punk + Zimmer)",
+        "scene": "Main Theme — Heroic (orchestral electronic hybrid)",
         "prompt": (
             "Epic cinematic orchestral electronic hybrid theme, analog synthesizer "
             "arpeggios driving over full string orchestra, powerful brass crescendos, "
-            "deep sub-bass pulse, Daft Punk Tron Legacy style meets Hans Zimmer "
-            "Interstellar organ swells, triumphant but with underlying melancholy, "
+            "deep sub-bass pulse, retro-futuristic synth style meets cinematic "
+            "organ swells with emotional depth, triumphant but with underlying melancholy, "
             "30-second instrumental loop, builds from sparse synth into massive "
-            "orchestral climax, seamless loop, no vocals, 48kHz"
+            "orchestral climax, seamless loop, no vocals"
         ),
         "duration": 30,
         "output": "assets/audio/main-theme-heroic.mp3",
         "loop": True,
     },
     "theme_mystery": {
-        "scene": "Main Theme — Mystery (Vangelis + Johannsson)",
+        "scene": "Main Theme — Mystery (cinematic ambient)",
         "prompt": (
-            "Deep cinematic ambient orchestral theme, Vangelis Blade Runner style "
+            "Deep cinematic ambient orchestral theme, cinematic sci-fi noir style "
             "lush analog pads, slow-building emotional tension, whale-song electronic "
             "drones, distant pulsating bass, sense of ancient mystery and cosmic scale, "
-            "Johann Johannsson Arrival textures, minimalist but emotionally devastating, "
+            "otherworldly orchestral textures, minimalist but emotionally resonant, "
             "30-second seamless loop, instrumental, no vocals"
         ),
         "duration": 30,
@@ -63,12 +63,12 @@ MUSIC_CATALOG = {
         "loop": True,
     },
     "theme_action": {
-        "scene": "Main Theme — Action (Reznor + Daft Punk propulsion)",
+        "scene": "Main Theme — Action (electronic orchestral fusion)",
         "prompt": (
             "High-energy cinematic electronic orchestral fusion, driving "
             "four-on-the-floor pulse, arpeggiated analog synths over aggressive "
-            "string staccatos, industrial percussion layers, Trent Reznor tension "
-            "meets Daft Punk propulsion, urgency with emotional weight, builds to "
+            "string staccatos, industrial percussion layers, pulsing industrial "
+            "tension meets retro-electronic propulsion, urgency with emotional weight, builds to "
             "a soaring brass resolution, 30-second seamless loop, instrumental, no vocals"
         ),
         "duration": 30,
@@ -76,11 +76,11 @@ MUSIC_CATALOG = {
         "loop": True,
     },
     "theme_lament": {
-        "scene": "Main Theme — Lament (Annihilation + Oblivion)",
+        "scene": "Main Theme — Lament (haunting ambient)",
         "prompt": (
             "Haunting cinematic ambient theme, ethereal vocal-like synthetic pads, "
-            "slow-decaying piano notes, deep sub-bass resonance, Ben Salisbury "
-            "Annihilation alien beauty, M83 Oblivion emotional sweep, sense of "
+            "slow-decaying piano notes, deep sub-bass resonance, alien "
+            "organic-synthetic beauty, sweeping emotional synth-orchestral blend, sense of "
             "profound loss and hope intertwined, space-as-silence aesthetic, "
             "30-second seamless loop, instrumental, no vocals"
         ),
@@ -89,12 +89,12 @@ MUSIC_CATALOG = {
         "loop": True,
     },
     "theme_wonder": {
-        "scene": "Main Theme — Wonder (Disasterpeace + Carpenter drive)",
+        "scene": "Main Theme — Wonder (crystalline synth textures)",
         "prompt": (
             "Wonder-driven cinematic orchestral electronic theme, crystalline synth "
-            "textures unfolding into full string section, Disasterpeace Hyper Light "
-            "Drifter melodic sensibility at cinematic scale, shimmering high frequencies, "
-            "John Carpenter style driving bassline, sense of awakening and cosmic "
+            "textures unfolding into full string section, pixel-cinematic melodic "
+            "sensibility at orchestral scale, shimmering high frequencies, "
+            "synth-driven driving bassline, sense of awakening and cosmic "
             "discovery, triumphant without bombast, 30-second seamless loop, "
             "instrumental, no vocals"
         ),
@@ -103,11 +103,11 @@ MUSIC_CATALOG = {
         "loop": True,
     },
     "theme_dark": {
-        "scene": "Main Theme — Dark (Lorn + Reznor digital decay)",
+        "scene": "Main Theme — Dark (industrial electronic)",
         "prompt": (
-            "Dark cinematic industrial electronic theme, Lorn style heavy distorted "
-            "bass, dissonant brass swells, metallic percussion hits, mechanical "
-            "heartbeat pulse, Trent Reznor digital decay textures, sense of ancient "
+            "Dark cinematic industrial electronic theme, heavy distorted "
+            "bass with deep sub weight, dissonant brass swells, metallic percussion hits, mechanical "
+            "heartbeat pulse, glitch-textured digital decay, sense of ancient "
             "cosmic horror awakening, menacing but awe-inspiring, 30-second seamless "
             "loop, instrumental, no vocals"
         ),
@@ -121,8 +121,8 @@ MUSIC_CATALOG = {
     "title_screen": {
         "scene": "Title Screen — Enter the Coelacanth",
         "prompt": (
-            "Memorable cinematic theme for a sci-fi game title screen, Daft Punk "
-            "Tron Legacy arpeggiated synth intro building into Vangelis Blade Runner "
+            "Memorable cinematic theme for a sci-fi game title screen, retro-futuristic "
+            "arpeggiated synth intro building into cinematic sci-fi noir "
             "style emotional pads, sense of epic adventure about to begin, mysterious "
             "and inviting, warm analog synth lead over orchestral strings, 30-second "
             "seamless loop, instrumental, no vocals"
@@ -135,8 +135,8 @@ MUSIC_CATALOG = {
         "scene": "Victory — Triumph in the Deep",
         "prompt": (
             "Triumphant cinematic orchestral resolution, full string and brass section, "
-            "analog synth arpeggios carrying the melody, Hans Zimmer style emotional "
-            "crescendo, earned victory not bombastic celebration, sense of relief "
+            "analog synth arpeggios carrying the melody, emotional orchestral "
+            "crescendo with organ swells, earned victory not bombastic celebration, sense of relief "
             "and wonder, 30-second sting with sustained final chord, instrumental, "
             "no vocals"
         ),
