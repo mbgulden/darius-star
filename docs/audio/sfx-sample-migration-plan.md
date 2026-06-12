@@ -1,7 +1,7 @@
 # SFX Sample Migration Plan — GRO-1270
 
 **Created:** 2026-06-12 by Ned  
-**Status:** Infrastructure ready — awaiting samples  
+**Status:** ✅ Samples generated — all 10 cinematic SFX MP3s in `assets/audio/sfx/`  
 **Reference:** [GRO-1270] Replace arcade synth SFX with cinematic sample-based sound design
 
 ## Architecture
