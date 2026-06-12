@@ -27,6 +27,12 @@ window.addEventListener('DOMContentLoaded', () => {
         // (browsers may keep context suspended until user gesture)
         const resumeOnGesture = () => {
             initAudio();
+            // GRO-865: Start preloading cinematic music tracks on first interaction
+            if (typeof AudioManager !== 'undefined') {
+                AudioManager.init().then(function() {
+                    AudioManager.preloadAll();
+                });
+            }
             document.removeEventListener('click', resumeOnGesture);
             document.removeEventListener('keydown', resumeOnGesture);
             document.removeEventListener('touchstart', resumeOnGesture);
@@ -203,6 +209,10 @@ function update(dt) {
                 if (currentScreen === SCREENS.PLAYING) {
                     stopMenuMusic();
                     stopCreditsMusic();
+                    // Start cinematic music management (GRO-865)
+                    if (typeof AudioManager !== 'undefined') {
+                        AudioManager.tick();
+                    }
                     if (!_winTransition) {
                         resetGame();
                     } else {
@@ -248,6 +258,10 @@ function update(dt) {
                     playSound('victory_fanfare');
                 } else {
                     stopCreditsMusic();
+                    // Stop cinematic music when leaving gameplay (GRO-865)
+                    if (typeof AudioManager !== 'undefined') {
+                        AudioManager.stop();
+                    }
                     startMenuMusic();
                 }
             }
@@ -279,6 +293,11 @@ function update(dt) {
     }
 
     updateActiveBiome(dt, score);
+    
+    // GRO-865: Cinematic music track switching (score thresholds, boss detection)
+    if (typeof AudioManager !== 'undefined') {
+        AudioManager.tick();
+    }
     
     // GRO-1028: Audio drama systems — biome ambient loop & story beats
     // GRO-1040: Respect audioTunnelsEnabled toggle
