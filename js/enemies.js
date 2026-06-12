@@ -254,6 +254,7 @@
                 // GRO-1006: apply per-enemy bullet angle shift
                 const _shiftedDy = (dy/dist) + this._bulletAngleShift;
 
+                playSound('enemy_shoot', {enemyType: this.type});
                 enemyBullets.push(new EnemyBullet(this.x, this.y + this.height/2, bulletSpeed, _shiftedDy * 100));
             }
 
@@ -442,6 +443,7 @@
             }
 
             shootAttack() {
+                playSound('enemy_shoot', {enemyType: this.enemyType});
                 if (this.state === 'architect_final') {
                     // GRO-1009: Architect final phase — unique attack per ending theme
                     const phase = this.architectPhase;
