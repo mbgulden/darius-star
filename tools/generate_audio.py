@@ -32,113 +32,152 @@ from datetime import datetime, timezone
 # ──────────────────────────────────────────────
 
 MUSIC_CATALOG = {
-    "title": {
-        "scene": "Title Screen Music",
+    # ═══════════════════════════════════════════════
+    # Main Theme Variations (6) — pick the winner
+    # ═══════════════════════════════════════════════
+    "theme_heroic": {
+        "scene": "Main Theme — Heroic (Daft Punk + Zimmer)",
         "prompt": (
-            "Epic retro-arcade title screen theme, 16-bit era inspired, "
-            "pulsing synth bass, dramatic stabs, building crescendo, "
-            "cyberpunk atmosphere, instrumental, loop-compatible ending, "
-            "30 seconds, Sega Genesis style, no vocals."
+            "Epic cinematic orchestral electronic hybrid theme, analog synthesizer "
+            "arpeggios driving over full string orchestra, powerful brass crescendos, "
+            "deep sub-bass pulse, Daft Punk Tron Legacy style meets Hans Zimmer "
+            "Interstellar organ swells, triumphant but with underlying melancholy, "
+            "30-second instrumental loop, builds from sparse synth into massive "
+            "orchestral climax, seamless loop, no vocals, 48kHz"
         ),
         "duration": 30,
-        "output": "assets/audio/title.mp3",
+        "output": "assets/audio/main-theme-heroic.mp3",
         "loop": True,
     },
-    "phase1": {
-        "scene": "Gameplay Phase 1 (Score 0-1000)",
+    "theme_mystery": {
+        "scene": "Main Theme — Mystery (Vangelis + Johannsson)",
         "prompt": (
-            "High-energy retro shoot-em-up background music, driving 140 BPM beat, "
-            "arpeggiated synth leads, deep space exploration vibe, "
-            "30-second seamless loop, 16-bit Sega Genesis style, instrumental, "
-            "energetic but not frantic, good for extended gameplay."
+            "Deep cinematic ambient orchestral theme, Vangelis Blade Runner style "
+            "lush analog pads, slow-building emotional tension, whale-song electronic "
+            "drones, distant pulsating bass, sense of ancient mystery and cosmic scale, "
+            "Johann Johannsson Arrival textures, minimalist but emotionally devastating, "
+            "30-second seamless loop, instrumental, no vocals"
         ),
         "duration": 30,
-        "output": "assets/audio/phase1.mp3",
+        "output": "assets/audio/main-theme-mystery.mp3",
         "loop": True,
     },
-    "phase2": {
-        "scene": "Gameplay Phase 2 (Score 1000-2000)",
+    "theme_action": {
+        "scene": "Main Theme — Action (Reznor + Daft Punk propulsion)",
         "prompt": (
-            "Intensified retro arcade battle music, faster tempo 160 BPM, "
-            "darker synth tones, mechanical percussion, building tension, "
-            "racing feel, 30-second seamless loop, 16-bit Sega Genesis style, "
-            "instrumental, rising intensity but still loopable."
+            "High-energy cinematic electronic orchestral fusion, driving "
+            "four-on-the-floor pulse, arpeggiated analog synths over aggressive "
+            "string staccatos, industrial percussion layers, Trent Reznor tension "
+            "meets Daft Punk propulsion, urgency with emotional weight, builds to "
+            "a soaring brass resolution, 30-second seamless loop, instrumental, no vocals"
         ),
         "duration": 30,
-        "output": "assets/audio/phase2.mp3",
+        "output": "assets/audio/main-theme-action.mp3",
         "loop": True,
     },
-    "boss_intro": {
-        "scene": "Boss Battle Intro Sting",
+    "theme_lament": {
+        "scene": "Main Theme — Lament (Annihilation + Oblivion)",
         "prompt": (
-            "Dramatic boss entrance sting, cybernetic monster awakening, "
-            "deep ominous brass hits, industrial percussion, rising tension, "
-            "15-second cinematic cue, 16-bit era orchestral, instrumental, "
-            "builds to a climax then cuts, designed for one-shot play."
-        ),
-        "duration": 15,
-        "output": "assets/audio/boss_intro.mp3",
-        "loop": False,
-    },
-    "boss_loop": {
-        "scene": "Boss Battle Loop",
-        "prompt": (
-            "Intense boss battle music, rapid 180 BPM, "
-            "aggressive distorted synths, heavy industrial drums, "
-            "cyber-coelacanth dreadnought theme, dark orchestral hits, "
-            "frantic energy, 30-second seamless loop, 16-bit Sega Genesis style, "
-            "instrumental, relentless driving beat."
+            "Haunting cinematic ambient theme, ethereal vocal-like synthetic pads, "
+            "slow-decaying piano notes, deep sub-bass resonance, Ben Salisbury "
+            "Annihilation alien beauty, M83 Oblivion emotional sweep, sense of "
+            "profound loss and hope intertwined, space-as-silence aesthetic, "
+            "30-second seamless loop, instrumental, no vocals"
         ),
         "duration": 30,
-        "output": "assets/audio/boss_loop.mp3",
+        "output": "assets/audio/main-theme-lament.mp3",
+        "loop": True,
+    },
+    "theme_wonder": {
+        "scene": "Main Theme — Wonder (Disasterpeace + Carpenter drive)",
+        "prompt": (
+            "Wonder-driven cinematic orchestral electronic theme, crystalline synth "
+            "textures unfolding into full string section, Disasterpeace Hyper Light "
+            "Drifter melodic sensibility at cinematic scale, shimmering high frequencies, "
+            "John Carpenter style driving bassline, sense of awakening and cosmic "
+            "discovery, triumphant without bombast, 30-second seamless loop, "
+            "instrumental, no vocals"
+        ),
+        "duration": 30,
+        "output": "assets/audio/main-theme-wonder.mp3",
+        "loop": True,
+    },
+    "theme_dark": {
+        "scene": "Main Theme — Dark (Lorn + Reznor digital decay)",
+        "prompt": (
+            "Dark cinematic industrial electronic theme, Lorn style heavy distorted "
+            "bass, dissonant brass swells, metallic percussion hits, mechanical "
+            "heartbeat pulse, Trent Reznor digital decay textures, sense of ancient "
+            "cosmic horror awakening, menacing but awe-inspiring, 30-second seamless "
+            "loop, instrumental, no vocals"
+        ),
+        "duration": 30,
+        "output": "assets/audio/main-theme-dark.mp3",
+        "loop": True,
+    },
+    # ═══════════════════════════════════════════════
+    # Secondary Themes (5)
+    # ═══════════════════════════════════════════════
+    "title_screen": {
+        "scene": "Title Screen — Enter the Coelacanth",
+        "prompt": (
+            "Memorable cinematic theme for a sci-fi game title screen, Daft Punk "
+            "Tron Legacy arpeggiated synth intro building into Vangelis Blade Runner "
+            "style emotional pads, sense of epic adventure about to begin, mysterious "
+            "and inviting, warm analog synth lead over orchestral strings, 30-second "
+            "seamless loop, instrumental, no vocals"
+        ),
+        "duration": 30,
+        "output": "assets/audio/title-screen.mp3",
         "loop": True,
     },
     "victory": {
-        "scene": "Victory Fanfare",
+        "scene": "Victory — Triumph in the Deep",
         "prompt": (
-            "Triumphant victory fanfare, 16-bit arcade celebration, "
-            "bright major key, ascending melody, chiptune brass, "
-            "satisfying resolution, 10-second sting, instrumental, "
-            "pure joy and accomplishment, Sega Genesis sound chip style."
+            "Triumphant cinematic orchestral resolution, full string and brass section, "
+            "analog synth arpeggios carrying the melody, Hans Zimmer style emotional "
+            "crescendo, earned victory not bombastic celebration, sense of relief "
+            "and wonder, 30-second sting with sustained final chord, instrumental, "
+            "no vocals"
         ),
-        "duration": 10,
+        "duration": 30,
         "output": "assets/audio/victory.mp3",
         "loop": False,
     },
-    "game_over": {
-        "scene": "Game Over Theme",
+    "ending_sacrifice": {
+        "scene": "Ending A — Sacrifice (somber resolution)",
         "prompt": (
-            "Melancholic game over theme, slow descending melody, "
-            "minor key, fading synth pads, retro arcade defeat, "
-            "respectful 15-second coda, 16-bit style, instrumental, "
-            "somber but not depressing, motivates retry."
-        ),
-        "duration": 15,
-        "output": "assets/audio/game_over.mp3",
-        "loop": False,
-    },
-    "ambient": {
-        "scene": "Title Screen Ambient (Idle)",
-        "prompt": (
-            "Ethereal deep space ambient, drifting synth pads, "
-            "occasional distant pulses, mysterious cyberpunk atmosphere, "
-            "minimal, meditative, 30-second loop, 16-bit inspired, "
-            "instrumental, calm background for menu screens."
+            "Devastatingly beautiful cinematic ambient piece, lone piano over deep "
+            "sub-bass, Johann Johannsson Arrival emotional minimalism, sense of "
+            "profound sacrifice and peace, slowly fading into silence, M83 Oblivion "
+            "emotional weight, 30-second ending theme, instrumental, no vocals"
         ),
         "duration": 30,
-        "output": "assets/audio/ambient.mp3",
-        "loop": True,
+        "output": "assets/audio/ending-sacrifice.mp3",
+        "loop": False,
     },
-    "level_clear": {
-        "scene": "Level Clear Jingle",
+    "ending_transcendence": {
+        "scene": "Ending B — Transcendence (ethereal ascension)",
         "prompt": (
-            "Short level clear jingle, 16-bit arcade celebration, "
-            "ascending arpeggio, major chord resolution, "
-            "5-second sting, bright chiptune, instrumental, "
-            "concise victory acknowledgment, Sega Genesis style."
+            "Ethereal cinematic ambient theme, ascending vocal-like synthetic tones, "
+            "Vangelis Blade Runner heavenly pads, sense of transcending physical form "
+            "into light, shimmering high-frequency textures, Cliff Martinez Solaris "
+            "crystalline beauty, 30-second ending theme, instrumental, no vocals"
         ),
-        "duration": 5,
-        "output": "assets/audio/level_clear.mp3",
+        "duration": 30,
+        "output": "assets/audio/ending-transcendence.mp3",
+        "loop": False,
+    },
+    "ending_dominion": {
+        "scene": "Ending C — Dominion (dark triumph)",
+        "prompt": (
+            "Powerful dark cinematic orchestral theme, deep sub-bass and industrial "
+            "percussion, Lorn style heavy distorted low-end, triumphant but menacing "
+            "brass swells, sense of seizing power at great cost, Daft Punk Tron "
+            "Legacy dark grandeur, 30-second ending theme, instrumental, no vocals"
+        ),
+        "duration": 30,
+        "output": "assets/audio/ending-dominion.mp3",
         "loop": False,
     },
     # ═══════════════════════════════════════════════
