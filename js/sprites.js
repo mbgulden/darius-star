@@ -76,13 +76,15 @@
                 img.src = src;
             };
 
-            _loadVFX('laser', 'assets/sprites/laser_0.png');
-            _loadVFX('laser_enemy', 'assets/sprites/laser_enemy.png');
+            _loadVFX('laser', 'assets/sprites/player_bullet.png');
+            _loadVFX('laser_enemy', 'assets/sprites/enemy_bullet.png');
             _loadVFX('laser_glow', 'assets/sprites/laser_0_glow.png');
             for (let f = 0; f < 4; f++) {
                 _loadVFX('explosion_' + f, `assets/sprites/explosion_${f}.png`);
             }
             _loadVFX('shield', 'assets/sprites/shield_0.png');
+            _loadVFX('thruster_0', 'assets/sprites/thruster_0.png');
+            _loadVFX('thruster_1', 'assets/sprites/thruster_1.png');
         }
 
         // --- GRO-1141: Pre-composite additive sprites ---
@@ -130,8 +132,13 @@
             bossLoadProgress = 0;
 
             const toLoad = [
-                { key: 'boss',       src: 'assets/boss_0.png' },
-                { key: 'bossMinion', src: 'assets/sprites/boss_minion_0.png' }
+                { key: 'boss',              src: 'assets/boss_0.png' },
+                { key: 'boss_idle',         src: 'assets/sprites/boss_idle.png' },
+                { key: 'boss_rage',         src: 'assets/sprites/boss_rage.png' },
+                { key: 'boss_laser_charge', src: 'assets/sprites/boss_charge.png' },
+                { key: 'boss_laser_fire',   src: 'assets/sprites/boss_fire.png' },
+                { key: 'boss_death',        src: 'assets/sprites/boss_death.png' },
+                { key: 'bossMinion',        src: 'assets/sprites/boss_minion_0.png' }
             ];
             let loadedCount = 0;
             const total = toLoad.length;

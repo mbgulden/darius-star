@@ -587,8 +587,25 @@
 
                 // --- Sprite-based boss rendering ---
                 // boss_0.png is 1280x896; render scaled to 190x133 (matching original boss footprint)
-                const sprite = bossSprites['boss'];
-                const hasSprite = sprite && sprite.complete && sprite.naturalWidth > 0;
+                let spriteKey = 'boss';
+                if (this.hp <= 0) {
+                    spriteKey = 'boss_death';
+                } else if (this.state === 'intro' || this.state === 'idle') {
+                    spriteKey = 'boss_idle';
+                } else if (this.state === 'rage' || this.state === 'architect_final') {
+                    spriteKey = 'boss_rage';
+                } else if (this.state === 'laser_charge') {
+                    spriteKey = 'boss_laser_charge';
+                } else if (this.state === 'laser_fire') {
+                    spriteKey = 'boss_laser_fire';
+                }
+
+                let sprite = bossSprites[spriteKey] || bossSprites['boss'];
+                let hasSprite = sprite && sprite.complete && sprite.naturalWidth > 0;
+                if (!hasSprite) {
+                    sprite = bossSprites['boss'];
+                    hasSprite = sprite && sprite.complete && sprite.naturalWidth > 0;
+                }
                 const renderW = 190;
                 const renderH = 133;
 

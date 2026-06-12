@@ -4714,6 +4714,86 @@
       "height": 896,
       "is_valid_power_of_two": false
     },
+    "boss_idle": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "boss_idle.png",
+          "path": "assets/sprites/boss_idle.png",
+          "width": 1024,
+          "height": 1024,
+          "is_power_of_two": true
+        }
+      ],
+      "frame_count": 1,
+      "width": 1024,
+      "height": 1024,
+      "is_valid_power_of_two": true
+    },
+    "boss_rage": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "boss_rage.png",
+          "path": "assets/sprites/boss_rage.png",
+          "width": 1024,
+          "height": 1024,
+          "is_power_of_two": true
+        }
+      ],
+      "frame_count": 1,
+      "width": 1024,
+      "height": 1024,
+      "is_valid_power_of_two": true
+    },
+    "boss_charge": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "boss_charge.png",
+          "path": "assets/sprites/boss_charge.png",
+          "width": 1024,
+          "height": 1024,
+          "is_power_of_two": true
+        }
+      ],
+      "frame_count": 1,
+      "width": 1024,
+      "height": 1024,
+      "is_valid_power_of_two": true
+    },
+    "boss_fire": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "boss_fire.png",
+          "path": "assets/sprites/boss_fire.png",
+          "width": 1024,
+          "height": 1024,
+          "is_power_of_two": true
+        }
+      ],
+      "frame_count": 1,
+      "width": 1024,
+      "height": 1024,
+      "is_valid_power_of_two": true
+    },
+    "boss_death": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "boss_death.png",
+          "path": "assets/sprites/boss_death.png",
+          "width": 1024,
+          "height": 1024,
+          "is_power_of_two": true
+        }
+      ],
+      "frame_count": 1,
+      "width": 1024,
+      "height": 1024,
+      "is_valid_power_of_two": true
+    },
     "boss_biome_10_game": {
       "frames": [
         {
