@@ -86,6 +86,7 @@ resizeCanvas();
 // Game state variables
 let score = 0;
 let gameOver = false;
+let singlePlayerPullOutTimer = 0; // GRO-1469: 30s gameOver fallback for stuck pull-out
 let gameWon = false;
 let paused = false;
 let lastTime = 0;
@@ -862,6 +863,20 @@ function update(dt) {
                 }
             }
         }
+    }
+
+    // GRO-1469: 30s gameOver fallback for single-player stuck pull-out
+    if (player.isPulledOut) {
+        singlePlayerPullOutTimer += dt;
+        // Check if single-player (no Multiplayer active or only 1 player)
+        const isSinglePlayer = !window.Multiplayer || Multiplayer.players.length <= 1;
+        if (isSinglePlayer && singlePlayerPullOutTimer >= 30.0) {
+            gameOver = true;
+            singlePlayerPullOutTimer = 0;
+        }
+    } else if (singlePlayerPullOutTimer > 0) {
+        // Reset on recovery if timer hasn't tripped
+        singlePlayerPullOutTimer = 0;
     }
 
     if (player.isPulledOut) {

@@ -273,6 +273,7 @@ function startNGPlus(prevRunData) {
 function resetGame() {
     score = 0;
     gameOver = false;
+    singlePlayerPullOutTimer = 0; // GRO-1469: Reset 30s fallback
     gameWon = false;
     bossSpawned = false;
     if (boss && boss.cleanup) boss.cleanup();
