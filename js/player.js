@@ -720,7 +720,7 @@ class Player {
         // Warden Guardian Protocol dome shield absorption
         if (this.shipType === 'warden' && this.isSpecialActive && this.wardenShieldDomeHP > 0) {
             this.wardenShieldDomeHP -= finalDmg;
-            playSound('hit');
+            playSound('shield_hit');
             createExplosion(this.x + this.width/2, this.y + this.height/2, '#ff6600', 4);
             if (this.wardenShieldDomeHP <= 0) {
                 this.wardenShieldDomeHP = 0;
@@ -738,7 +738,7 @@ class Player {
         const mods = window.DS_UpgradeSystem ? window.DS_UpgradeSystem.getGameplayModifiers() : null;
         this.invulnerable = 0.8 + (mods ? mods.shieldInvulnBonus : 0);
         
-        playSound('hit');
+        playSound(shieldBefore > 0 ? 'shield_hit' : 'hit');
         if (shieldBefore > 0) {
             // Shield hit: blue (#0088FF) spark burst
             createExplosion(this.x + this.width/2, this.y + this.height/2, '#0088FF', 10, 'shield_hit');

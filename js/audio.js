@@ -20,6 +20,7 @@ const SFX_SAMPLE_MAP = {
     'siren':           'alarm_siren.mp3',
     'victory_fanfare': 'victory_jingle.mp3',
     'ui_hover':        'ui_hover.mp3',
+    'shield_hit':      'shield_hit.mp3',
 };
 
 let sfxSampleBuffers = {};      // type → AudioBuffer
@@ -255,6 +256,31 @@ function playSound(type, params) {
             gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
             osc.start();
             osc.stop(audioCtx.currentTime + 0.1);
+        } else if (type === 'shield_hit') {
+            // GRO-1295: Distinct metallic ping for shield absorption vs hull damage
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.type = 'square';
+            osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(200, audioCtx.currentTime + 0.06);
+            gain.gain.setValueAtTime(0.08 * volMultiplier, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.06);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.06);
+            // High ping overlay for shield character
+            const pingOsc = audioCtx.createOscillator();
+            const pingGain = audioCtx.createGain();
+            pingOsc.connect(pingGain);
+            pingGain.connect(audioCtx.destination);
+            pingOsc.type = 'sine';
+            pingOsc.frequency.setValueAtTime(1800, audioCtx.currentTime);
+            pingOsc.frequency.exponentialRampToValueAtTime(800, audioCtx.currentTime + 0.04);
+            pingGain.gain.setValueAtTime(0.04 * volMultiplier, audioCtx.currentTime);
+            pingGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.04);
+            pingOsc.start();
+            pingOsc.stop(audioCtx.currentTime + 0.04);
         } else if (type === 'explosion') {
             // Crack layer: sharp sawtooth attack
             const crackOsc = audioCtx.createOscillator();
