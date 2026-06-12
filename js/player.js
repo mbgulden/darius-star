@@ -392,7 +392,7 @@ class Player {
     }
 
     shoot() {
-        playSound('shoot');
+        playSound('shoot', {weaponLevel: this.weaponLevel});
         const mods = window.DS_UpgradeSystem ? window.DS_UpgradeSystem.getGameplayModifiers() : null;
         const speedMultiplier = mods ? mods.weaponProjSpeedMultiplier : 1.0;
         
@@ -572,7 +572,7 @@ class Player {
 
     fireHomingMissiles() {
         if (!this.consumeSecondaryCharge(30)) return;
-        playSound('shoot');
+        playSound('shoot', {weaponLevel: this.weaponLevel});
         const candidates = enemies.slice().sort((a, b) => Math.hypot(a.x - this.x, a.y - this.y) - Math.hypot(b.x - this.x, b.y - this.y));
         for (let i = 0; i < 3; i++) {
             const target = candidates[i] || boss || null;
@@ -745,6 +745,7 @@ class Player {
             // Capture overkill before zeroing shield
             const overkill = Math.abs(this.shield);
             this.shield = 0;
+            playSound('shield_break');
             
             if (!this.isPulledOut) {
                 this.isPulledOut = true;

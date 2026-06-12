@@ -213,6 +213,8 @@ function update(dt) {
                     if (typeof AudioManager !== 'undefined') {
                         AudioManager.tick();
                     }
+                    // Start engine hum (GRO-866)
+                    startEngineHum();
                     if (!_winTransition) {
                         resetGame();
                     } else {
@@ -262,6 +264,8 @@ function update(dt) {
                     if (typeof AudioManager !== 'undefined') {
                         AudioManager.stop();
                     }
+                    // Stop engine hum (GRO-866)
+                    stopEngineHum();
                     startMenuMusic();
                 }
             }
@@ -391,6 +395,9 @@ function update(dt) {
     }
 
     player.update(dt);
+    // Update engine hum based on player speed (GRO-866)
+    const engineSpeedPct = player.speed / 290; // max speed is 290 (scout ship)
+    updateEngineHum(engineSpeedPct);
     for (const rp of remotePlayers) {
         if (!rp.isPulledOut || rp.pullOutTimer > 0) rp.update(dt);
     }
@@ -666,6 +673,7 @@ function update(dt) {
             playSound('powerup');
             if (pu.kind === 'W') {
                 player.weaponLevel = Math.min(5, player.weaponLevel + 1);
+                playSound('weapon_upgrade', {newLevel: player.weaponLevel});
             } else if (pu.kind === 'S') {
                 player.shield = Math.min(player.shieldMax, player.shield + 30);
             }

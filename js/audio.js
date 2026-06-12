@@ -25,10 +25,74 @@ function hexToRgb(hex) {
     return `${r}, ${g}, ${b}`;
 }
 
-function playSound(type) {
+// --- Engine Hum State ---
+let engineHumActive = false;
+let engineHumGain = null;
+let engineHumOsc = null;
+let engineHumFilter = null;
+
+function startEngineHum() {
+    if (!audioCtx || engineHumActive) return;
+    try {
+        engineHumOsc = audioCtx.createOscillator();
+        engineHumGain = audioCtx.createGain();
+        engineHumFilter = audioCtx.createBiquadFilter();
+        engineHumOsc.type = 'sawtooth';
+        engineHumOsc.frequency.value = 55;
+        engineHumFilter.type = 'lowpass';
+        engineHumFilter.frequency.value = 90;
+        engineHumGain.gain.value = 0;
+        engineHumOsc.connect(engineHumFilter);
+        engineHumFilter.connect(engineHumGain);
+        engineHumGain.connect(audioCtx.destination);
+        engineHumOsc.start();
+        engineHumActive = true;
+    } catch(e) {
+        console.warn('[Darius Star] Engine hum start failed:', e.message);
+    }
+}
+
+function updateEngineHum(speedPct) {
+    if (!engineHumActive || !engineHumOsc || !engineHumGain || !engineHumFilter) return;
+    try {
+        const volMultiplier = masterVolume * sfxVolume;
+        // Pitch rises with speed: 55Hz idle → 110Hz at max speed
+        const pitch = 55 + (speedPct * 55);
+        engineHumOsc.frequency.setTargetAtTime(pitch, audioCtx.currentTime, 0.1);
+        // Volume rises with speed: subtle at idle, present at speed
+        const vol = (0.02 + speedPct * 0.08) * volMultiplier;
+        engineHumGain.gain.setTargetAtTime(vol, audioCtx.currentTime, 0.1);
+        // Filter opens up at higher speeds
+        const cutoff = 90 + (speedPct * 160);
+        engineHumFilter.frequency.setTargetAtTime(cutoff, audioCtx.currentTime, 0.1);
+    } catch(e) {}
+}
+
+function stopEngineHum() {
+    if (!engineHumActive) return;
+    try {
+        engineHumGain.gain.setTargetAtTime(0, audioCtx.currentTime, 0.3);
+        setTimeout(() => {
+            try {
+                if (engineHumOsc) { engineHumOsc.stop(); engineHumOsc = null; }
+                engineHumGain = null;
+                engineHumFilter = null;
+                engineHumActive = false;
+            } catch(e) {}
+        }, 400);
+    } catch(e) {
+        engineHumActive = false;
+        engineHumOsc = null;
+        engineHumGain = null;
+        engineHumFilter = null;
+    }
+}
+
+function playSound(type, params) {
     if (!audioCtx) return;
     try {
         const volMultiplier = masterVolume * sfxVolume;
+        const p = params || {};
         
         // Helper to create white noise buffer
         const createNoiseNode = (duration) => {
@@ -45,17 +109,66 @@ function playSound(type) {
 
         // Standard Web Audio Synth for gameplay sounds and the 30 audio drama cues
         if (type === 'shoot') {
+            const wl = p.weaponLevel || 1;
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
             osc.connect(gain);
             gain.connect(audioCtx.destination);
-            osc.type = 'sawtooth';
-            osc.frequency.setValueAtTime(500, audioCtx.currentTime);
-            osc.frequency.exponentialRampToValueAtTime(120, audioCtx.currentTime + 0.12);
-            gain.gain.setValueAtTime(0.08 * volMultiplier, audioCtx.currentTime);
+            
+            // Base laser: sawtooth with descending pitch
+            osc.type = wl >= 4 ? 'square' : (wl >= 3 ? 'sawtooth' : 'sawtooth');
+            const baseFreq = 440 + (wl - 1) * 60; // 440 L1 → 680 L5
+            osc.frequency.setValueAtTime(baseFreq, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(80, audioCtx.currentTime + 0.12);
+            gain.gain.setValueAtTime(0.06 * volMultiplier, audioCtx.currentTime);
             gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.12);
             osc.start();
             osc.stop(audioCtx.currentTime + 0.12);
+            
+            // Level 3+: sub-bass layer for weight
+            if (wl >= 3) {
+                const subOsc = audioCtx.createOscillator();
+                const subGain = audioCtx.createGain();
+                subOsc.type = 'sine';
+                subOsc.frequency.setValueAtTime(55, audioCtx.currentTime);
+                subOsc.frequency.exponentialRampToValueAtTime(30, audioCtx.currentTime + 0.15);
+                subGain.gain.setValueAtTime(0.05 * volMultiplier, audioCtx.currentTime);
+                subGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
+                subOsc.connect(subGain);
+                subGain.connect(audioCtx.destination);
+                subOsc.start();
+                subOsc.stop(audioCtx.currentTime + 0.15);
+            }
+            
+            // Level 4+: harmonic overtone layer
+            if (wl >= 4) {
+                const harmOsc = audioCtx.createOscillator();
+                const harmGain = audioCtx.createGain();
+                harmOsc.type = 'sine';
+                harmOsc.frequency.setValueAtTime(baseFreq * 1.5, audioCtx.currentTime);
+                harmOsc.frequency.exponentialRampToValueAtTime(baseFreq * 0.5, audioCtx.currentTime + 0.08);
+                harmGain.gain.setValueAtTime(0.03 * volMultiplier, audioCtx.currentTime);
+                harmGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.08);
+                harmOsc.connect(harmGain);
+                harmGain.connect(audioCtx.destination);
+                harmOsc.start();
+                harmOsc.stop(audioCtx.currentTime + 0.08);
+            }
+            
+            // Level 5: sparkle chirp
+            if (wl >= 5) {
+                const chirpOsc = audioCtx.createOscillator();
+                const chirpGain = audioCtx.createGain();
+                chirpOsc.type = 'sine';
+                chirpOsc.frequency.setValueAtTime(1200, audioCtx.currentTime);
+                chirpOsc.frequency.exponentialRampToValueAtTime(2400, audioCtx.currentTime + 0.04);
+                chirpGain.gain.setValueAtTime(0.02 * volMultiplier, audioCtx.currentTime);
+                chirpGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.04);
+                chirpOsc.connect(chirpGain);
+                chirpGain.connect(audioCtx.destination);
+                chirpOsc.start();
+                chirpOsc.stop(audioCtx.currentTime + 0.04);
+            }
         } else if (type === 'hit') {
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
@@ -69,17 +182,49 @@ function playSound(type) {
             osc.start();
             osc.stop(audioCtx.currentTime + 0.1);
         } else if (type === 'explosion') {
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            osc.type = 'sawtooth';
-            osc.frequency.setValueAtTime(80, audioCtx.currentTime);
-            osc.frequency.exponentialRampToValueAtTime(10, audioCtx.currentTime + 0.45);
-            gain.gain.setValueAtTime(0.25 * volMultiplier, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.45);
-            osc.start();
-            osc.stop(audioCtx.currentTime + 0.45);
+            // Crack layer: sharp sawtooth attack
+            const crackOsc = audioCtx.createOscillator();
+            const crackGain = audioCtx.createGain();
+            crackOsc.connect(crackGain);
+            crackGain.connect(audioCtx.destination);
+            crackOsc.type = 'sawtooth';
+            crackOsc.frequency.setValueAtTime(180, audioCtx.currentTime);
+            crackOsc.frequency.exponentialRampToValueAtTime(20, audioCtx.currentTime + 0.25);
+            crackGain.gain.setValueAtTime(0.20 * volMultiplier, audioCtx.currentTime);
+            crackGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.25);
+            crackOsc.start();
+            crackOsc.stop(audioCtx.currentTime + 0.25);
+            
+            // Rumble tail: noise + sub oscillator, slightly delayed
+            const rumbleDelay = 0.05;
+            const rumbleNoise = createNoiseNode(0.5);
+            const rumbleOsc = audioCtx.createOscillator();
+            const rumbleNoiseGain = audioCtx.createGain();
+            const rumbleOscGain = audioCtx.createGain();
+            const rumbleFilter = audioCtx.createBiquadFilter();
+            
+            rumbleOsc.type = 'triangle';
+            rumbleOsc.frequency.setValueAtTime(55, audioCtx.currentTime + rumbleDelay);
+            rumbleOsc.frequency.exponentialRampToValueAtTime(15, audioCtx.currentTime + rumbleDelay + 0.45);
+            rumbleOscGain.gain.setValueAtTime(0.12 * volMultiplier, audioCtx.currentTime + rumbleDelay);
+            rumbleOscGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + rumbleDelay + 0.45);
+            
+            rumbleFilter.type = 'lowpass';
+            rumbleFilter.frequency.setValueAtTime(120, audioCtx.currentTime + rumbleDelay);
+            rumbleFilter.frequency.exponentialRampToValueAtTime(30, audioCtx.currentTime + rumbleDelay + 0.45);
+            rumbleNoiseGain.gain.setValueAtTime(0.10 * volMultiplier, audioCtx.currentTime + rumbleDelay);
+            rumbleNoiseGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + rumbleDelay + 0.45);
+            
+            rumbleNoise.connect(rumbleFilter);
+            rumbleFilter.connect(rumbleNoiseGain);
+            rumbleNoiseGain.connect(audioCtx.destination);
+            rumbleOsc.connect(rumbleOscGain);
+            rumbleOscGain.connect(audioCtx.destination);
+            
+            rumbleNoise.start(audioCtx.currentTime + rumbleDelay);
+            rumbleOsc.start(audioCtx.currentTime + rumbleDelay);
+            rumbleNoise.stop(audioCtx.currentTime + rumbleDelay + 0.5);
+            rumbleOsc.stop(audioCtx.currentTime + rumbleDelay + 0.5);
         } else if (type === 'powerup') {
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
@@ -172,6 +317,160 @@ function playSound(type) {
                 oscNode.stop(noteTime + durations[idx]);
                 accumTime += durations[idx] * 0.8;
             });
+        }
+        
+        // --- GRO-866: New SFX types ---
+        else if (type === 'enemy_spawn') {
+            // Rising synth sweep — signals new enemy appearance
+            const enemyType = p.enemyType || 'scout';
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.type = 'sine';
+            const startFreq = enemyType === 'boss' ? 120 : (enemyType === 'heavy' ? 200 : 300);
+            const peakFreq = enemyType === 'boss' ? 400 : (enemyType === 'heavy' ? 600 : 800);
+            osc.frequency.setValueAtTime(startFreq, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(peakFreq, audioCtx.currentTime + 0.15);
+            gain.gain.setValueAtTime(0.04 * volMultiplier, audioCtx.currentTime);
+            gain.gain.setValueAtTime(0.08 * volMultiplier, audioCtx.currentTime + 0.08);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.2);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.2);
+        } else if (type === 'weapon_upgrade') {
+            // Power chord sequence: ascending arpeggio + bass thump
+            const newLevel = p.newLevel || 2;
+            // Ascending power notes
+            const rootFreq = 220 * Math.pow(2, (newLevel - 1) / 4); // rises with each level
+            [rootFreq, rootFreq * 1.25, rootFreq * 1.5, rootFreq * 2.0].forEach((freq, idx) => {
+                const noteTime = audioCtx.currentTime + idx * 0.07;
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'square';
+                osc.frequency.setValueAtTime(freq, noteTime);
+                gain.gain.setValueAtTime(0.06 * volMultiplier, noteTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, noteTime + 0.12);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(noteTime);
+                osc.stop(noteTime + 0.12);
+            });
+            // Bass thump on the downbeat
+            const bassOsc = audioCtx.createOscillator();
+            const bassGain = audioCtx.createGain();
+            bassOsc.type = 'triangle';
+            bassOsc.frequency.setValueAtTime(55, audioCtx.currentTime);
+            bassOsc.frequency.exponentialRampToValueAtTime(30, audioCtx.currentTime + 0.3);
+            bassGain.gain.setValueAtTime(0.10 * volMultiplier, audioCtx.currentTime);
+            bassGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
+            bassOsc.connect(bassGain);
+            bassGain.connect(audioCtx.destination);
+            bassOsc.start();
+            bassOsc.stop(audioCtx.currentTime + 0.3);
+        } else if (type === 'shield_break') {
+            // Shattering glass crackle + power-down descending whine
+            // Glass shatter: multiple high-frequency noise bursts
+            for (let i = 0; i < 5; i++) {
+                const shardTime = audioCtx.currentTime + i * 0.02;
+                const noise = createNoiseNode(0.04);
+                const gain = audioCtx.createGain();
+                const filter = audioCtx.createBiquadFilter();
+                filter.type = 'bandpass';
+                filter.frequency.setValueAtTime(3000 + Math.random() * 2000, shardTime);
+                filter.Q.setValueAtTime(8.0, shardTime);
+                gain.gain.setValueAtTime(0.06 * volMultiplier, shardTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, shardTime + 0.04);
+                noise.connect(filter);
+                filter.connect(gain);
+                gain.connect(audioCtx.destination);
+                noise.start(shardTime);
+                noise.stop(shardTime + 0.04);
+            }
+            // Power-down whine: descending tone that cuts out
+            const whineOsc = audioCtx.createOscillator();
+            const whineGain = audioCtx.createGain();
+            whineOsc.type = 'sawtooth';
+            whineOsc.frequency.setValueAtTime(800, audioCtx.currentTime + 0.05);
+            whineOsc.frequency.exponentialRampToValueAtTime(80, audioCtx.currentTime + 0.6);
+            whineGain.gain.setValueAtTime(0.10 * volMultiplier, audioCtx.currentTime + 0.05);
+            whineGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.6);
+            whineOsc.connect(whineGain);
+            whineGain.connect(audioCtx.destination);
+            whineOsc.start(audioCtx.currentTime + 0.05);
+            whineOsc.stop(audioCtx.currentTime + 0.6);
+        } else if (type === 'enemy_shoot') {
+            // Distinct enemy weapon sounds per type
+            const enemyType = p.enemyType || 'scout';
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            
+            if (enemyType === 'scout' || enemyType === 'interceptor') {
+                // Light enemies: quick high pew
+                osc.type = 'square';
+                osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(400, audioCtx.currentTime + 0.06);
+                gain.gain.setValueAtTime(0.04 * volMultiplier, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.06);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.06);
+            } else if (enemyType === 'heavy' || enemyType === 'brute') {
+                // Heavy enemies: low thudding pulse
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(120, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(40, audioCtx.currentTime + 0.15);
+                gain.gain.setValueAtTime(0.08 * volMultiplier, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.15);
+                
+                // Sub layer
+                const subOsc = audioCtx.createOscillator();
+                const subGain = audioCtx.createGain();
+                subOsc.type = 'sine';
+                subOsc.frequency.setValueAtTime(50, audioCtx.currentTime);
+                subOsc.frequency.exponentialRampToValueAtTime(25, audioCtx.currentTime + 0.2);
+                subGain.gain.setValueAtTime(0.06 * volMultiplier, audioCtx.currentTime);
+                subGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.2);
+                subOsc.connect(subGain);
+                subGain.connect(audioCtx.destination);
+                subOsc.start();
+                subOsc.stop(audioCtx.currentTime + 0.2);
+            } else if (enemyType === 'boss' || enemyType === 'boss_minion') {
+                // Boss: menacing growl
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(90, audioCtx.currentTime);
+                osc.frequency.linearRampToValueAtTime(70, audioCtx.currentTime + 0.25);
+                gain.gain.setValueAtTime(0.10 * volMultiplier, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.25);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.25);
+                
+                // Noise rumble layer
+                const noise = createNoiseNode(0.3);
+                const noiseGain = audioCtx.createGain();
+                const noiseFilter = audioCtx.createBiquadFilter();
+                noiseFilter.type = 'lowpass';
+                noiseFilter.frequency.setValueAtTime(100, audioCtx.currentTime);
+                noiseFilter.frequency.exponentialRampToValueAtTime(30, audioCtx.currentTime + 0.3);
+                noiseGain.gain.setValueAtTime(0.08 * volMultiplier, audioCtx.currentTime);
+                noiseGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
+                noise.connect(noiseFilter);
+                noiseFilter.connect(noiseGain);
+                noiseGain.connect(audioCtx.destination);
+                noise.start();
+                noise.stop(audioCtx.currentTime + 0.3);
+            } else {
+                // Default: generic enemy pew
+                osc.type = 'square';
+                osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(300, audioCtx.currentTime + 0.08);
+                gain.gain.setValueAtTime(0.03 * volMultiplier, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.08);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.08);
+            }
         }
         
         // --- GRO-1028: Environmental & Audio-Drama Cues ---

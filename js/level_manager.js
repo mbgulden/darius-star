@@ -369,6 +369,9 @@ const LevelManager = {
         this.enemiesSpawnedThisWave++;
         this.totalEnemiesSpawned++;
 
+        // GRO-866: Rising synth sweep on enemy spawn
+        playSound('enemy_spawn', {enemyType: type});
+
         return enemy;
     },
 
