@@ -19,6 +19,7 @@ const SFX_SAMPLE_MAP = {
     'laser_fire':      'laser_fire.mp3',
     'siren':           'alarm_siren.mp3',
     'victory_fanfare': 'victory_jingle.mp3',
+    'ui_hover':        'ui_hover.mp3',
 };
 
 let sfxSampleBuffers = {};      // type → AudioBuffer
@@ -372,6 +373,18 @@ function playSound(type, params) {
             gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.08);
             osc.start();
             osc.stop(audioCtx.currentTime + 0.08);
+        } else if (type === 'ui_hover') {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.03);
+            gain.gain.setValueAtTime(0.03 * volMultiplier, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.03);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.03);
         } else if (type === 'victory_fanfare') {
             const notes = [261.63, 329.63, 392.00, 523.25, 392.00, 523.25, 659.25];
             const durations = [0.12, 0.12, 0.12, 0.24, 0.12, 0.12, 0.48];

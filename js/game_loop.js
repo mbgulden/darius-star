@@ -1461,6 +1461,12 @@ canvas.addEventListener('mousemove', e => {
     if (currentScreen === SCREENS.PLAYING || targetScreen) return;
     const { x, y } = getCanvasMouseCoords(e);
     
+    // Save previous hover states for sound debounce
+    const prevMenu = hoveredMenuIndex;
+    const prevShip = hoveredShipIndex;
+    const prevSettings = hoveredSettingsIndex;
+    const prevUpgrade = hoveredUpgradeIndex;
+    
     if (currentScreen === SCREENS.MENU) {
         const startY = 210;
         const spacing = 35;
@@ -1470,6 +1476,9 @@ canvas.addEventListener('mousemove', e => {
             if (x >= 280 && x <= 520 && y >= itemY - 18 && y <= itemY + 8) {
                 hoveredMenuIndex = i;
             }
+        }
+        if (hoveredMenuIndex !== prevMenu && hoveredMenuIndex >= 0) {
+            playSound('ui_hover');
         }
     } else if (currentScreen === SCREENS.SHIP_SELECT) {
         const startY = 140;
@@ -1481,6 +1490,9 @@ canvas.addEventListener('mousemove', e => {
                 hoveredShipIndex = i;
             }
         }
+        if (hoveredShipIndex !== prevShip && hoveredShipIndex >= 0) {
+            playSound('ui_hover');
+        }
     } else if (currentScreen === SCREENS.SETTINGS) {
         const startY = 175;
         const spacing = 36;
@@ -1490,6 +1502,24 @@ canvas.addEventListener('mousemove', e => {
             if (x >= 200 && x <= 600 && y >= itemY - 15 && y <= itemY + 15) {
                 hoveredSettingsIndex = i;
             }
+        }
+        if (hoveredSettingsIndex !== prevSettings && hoveredSettingsIndex >= 0) {
+            playSound('ui_hover');
+        }
+    } else if (currentScreen === SCREENS.UPGRADE_SHOP) {
+        // GRO-1294: Hover detection for upgrade shop items
+        const startY = 80;
+        const spacing = 75;
+        const labels = ['weapons','shields','engines','specials','cosmetics'];
+        hoveredUpgradeIndex = -1;
+        for (let i = 0; i < labels.length; i++) {
+            const itemY = startY + i * spacing;
+            if (x >= 20 && x <= canvas.width - 40 && y >= itemY - 5 && y <= itemY + spacing - 9) {
+                hoveredUpgradeIndex = i;
+            }
+        }
+        if (hoveredUpgradeIndex !== prevUpgrade && hoveredUpgradeIndex >= 0) {
+            playSound('ui_hover');
         }
     } else if (currentScreen === SCREENS.LOAD_GAME) {
         // GRO-1160: Touch/mouse hover tracking for load game screen
@@ -1518,6 +1548,7 @@ canvas.addEventListener('mouseleave', () => {
     hoveredMenuIndex = -1;
     hoveredShipIndex = -1;
     hoveredSettingsIndex = -1;
+    hoveredUpgradeIndex = -1;
 });
 
 canvas.addEventListener('click', e => {

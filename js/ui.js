@@ -14,6 +14,7 @@ const SCREENS = {
 let currentScreen = SCREENS.MENU;
 let selectedMenuIndex = 0;
 let hoveredMenuIndex = -1; // distinct from selected for hover state
+let prevHoveredMenuIndex = -1;   // GRO-1294: track previous for hover-sound debounce
 const menuOptions = ['CONTINUE', 'START GAME', 'UPGRADE SHOP', 'SHIP SELECT', 'SETTINGS', 'LEADERBOARD', 'CREDITS'];
 let shipSelectSource = 'menu'; // 'menu' or 'start'
 
@@ -23,10 +24,14 @@ let pauseSubScreen = 'menu'; // 'menu' or 'settings'
 
 let selectedSettingsIndex = 0;
 let hoveredSettingsIndex = -1;
+let prevHoveredSettingsIndex = -1; // GRO-1294
 const SETTINGS_OPTIONS = ['MASTER VOLUME', 'SFX VOLUME', 'MUSIC VOLUME', 'DIFFICULTY', 'AUDIO TUNNELS', 'BANTER SYSTEM', 'STREAMER MODE', 'SUBTITLES', 'BACK'];
 
 let selectedShipIndex = 1; // 0=scout, 1=interceptor, 2=heavy
 let hoveredShipIndex = -1;
+let prevHoveredShipIndex = -1;   // GRO-1294
+let hoveredUpgradeIndex = -1;     // GRO-1294: upgrade shop hover
+let prevHoveredUpgradeIndex = -1; // GRO-1294
 const SHIP_OPTIONS = ['scout', 'interceptor', 'heavy'];
 let selectedShip = 'interceptor';
 
