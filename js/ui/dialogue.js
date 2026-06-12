@@ -697,6 +697,7 @@
                         banterEnabled: banterEnabled,
                         audioTunnelsEnabled: audioTunnelsEnabled,
                         streamerMode: streamerMode,
+                        subtitlesEnabled: typeof subtitlesEnabled !== 'undefined' ? subtitlesEnabled : true,
                         lives: currentLives,
                         inGameFlags: narrativeFlags,
                     });

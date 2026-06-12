@@ -34,6 +34,7 @@
             banterEnabled: true,
             audioTunnelsEnabled: true,
             streamerMode: false,
+            subtitlesEnabled: true,
             weaponLevel: 1,
             shield: 100,
             shieldMax: 100,
@@ -213,6 +214,7 @@
             banterEnabled: payload.banterEnabled,
             audioTunnelsEnabled: payload.audioTunnelsEnabled,
             streamerMode: payload.streamerMode,
+            subtitlesEnabled: payload.subtitlesEnabled !== undefined ? payload.subtitlesEnabled : true,
             lives: payload.lives,
             inGameFlags: payload.inGameFlags ? { ...payload.inGameFlags } : {}
         };

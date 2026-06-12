@@ -925,6 +925,25 @@ function update(dt) {
             }
         }
     }
+
+    // GRO-940: Accessibility subtitle overlay — high-visibility voice line captions
+    const subtitleOverlay = document.getElementById('ui-subtitles');
+    const subtitleSpeaker = document.getElementById('ui-subtitles-speaker');
+    const subtitleText = document.getElementById('ui-subtitles-text');
+    if (subtitleOverlay && typeof subtitlesEnabled !== 'undefined' && subtitlesEnabled) {
+        if (window.VoicePlayback) {
+            const activeLine = VoicePlayback.getActiveLine();
+            if (activeLine && VoicePlayback.isPlaying()) {
+                subtitleOverlay.style.display = 'block';
+                if (subtitleSpeaker) subtitleSpeaker.innerText = activeLine.speaker || '';
+                if (subtitleText) subtitleText.innerText = activeLine.text || '';
+            } else {
+                subtitleOverlay.style.display = 'none';
+            }
+        }
+    } else if (subtitleOverlay) {
+        subtitleOverlay.style.display = 'none';
+    }
     
     if (uiBoost) {
         if (player.isBoosting) {

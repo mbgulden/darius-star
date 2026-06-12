@@ -44,13 +44,14 @@ function drawSettings(ctx) {
             const cfg = getCurrentDifficultyConfig();
             ctx.fillStyle = isSelected ? '#ffffff' : '#6a6a7f';
             ctx.fillText(`${cfg.label} (${cfg.id.toUpperCase()})`, 450, itemY + 5);
-        } else if (i >= 4 && i <= 6) {
-            // Toggle settings: AUDIO TUNNELS, BANTER SYSTEM, STREAMER MODE
+        } else if (i >= 4 && i <= 7) {
+            // Toggle settings: AUDIO TUNNELS, BANTER SYSTEM, STREAMER MODE, SUBTITLES
             ctx.fillText(SETTINGS_OPTIONS[i], 220, itemY + 5);
             let toggleVal = false;
             if (i === 4) toggleVal = audioTunnelsEnabled;
             else if (i === 5) toggleVal = banterEnabled;
             else if (i === 6) toggleVal = streamerMode;
+            else if (i === 7) toggleVal = subtitlesEnabled;
             ctx.fillStyle = toggleVal ? '#00ff88' : '#ff3355';
             ctx.fillText(toggleVal ? 'ON' : 'OFF', 470, itemY + 5);
             // Draw toggle indicator
@@ -58,7 +59,7 @@ function drawSettings(ctx) {
             ctx.beginPath();
             ctx.arc(445, itemY + 1, 5, 0, Math.PI * 2);
             ctx.fill();
-        } else if (i === 7) {
+        } else if (i === 8) {
             ctx.textAlign = 'center';
             ctx.fillStyle = isSelected ? '#ff0055' : '#8a8a9f';
             ctx.fillText('BACK TO MENU', canvas.width / 2, itemY + 5);

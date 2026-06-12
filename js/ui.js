@@ -23,7 +23,7 @@ let pauseSubScreen = 'menu'; // 'menu' or 'settings'
 
 let selectedSettingsIndex = 0;
 let hoveredSettingsIndex = -1;
-const SETTINGS_OPTIONS = ['MASTER VOLUME', 'SFX VOLUME', 'MUSIC VOLUME', 'DIFFICULTY', 'AUDIO TUNNELS', 'BANTER SYSTEM', 'STREAMER MODE', 'BACK'];
+const SETTINGS_OPTIONS = ['MASTER VOLUME', 'SFX VOLUME', 'MUSIC VOLUME', 'DIFFICULTY', 'AUDIO TUNNELS', 'BANTER SYSTEM', 'STREAMER MODE', 'SUBTITLES', 'BACK'];
 
 let selectedShipIndex = 1; // 0=scout, 1=interceptor, 2=heavy
 let hoveredShipIndex = -1;
@@ -75,6 +75,7 @@ let difficulty = 'normal'; // 'easy', 'normal', 'hard', 'insane'
 let banterEnabled = true;       // Banter System — character dialogue during gameplay
 let audioTunnelsEnabled = true; // Audio Tunnels — between-stage immersive audio
 let streamerMode = false;       // Streamer Mode — disables all voice content
+let subtitlesEnabled = true;    // GRO-940: Accessibility subtitles — high-visibility voice captions
 
 let screenFadeAlpha = 0;
 let targetScreen = null;
@@ -335,6 +336,8 @@ function adjustSetting(index, dir) {
                 audioTunnelsEnabled = window._preStreamerAudioTunnels;
             }
         }
+    } else if (index === 7) { // GRO-940: Accessibility Subtitles — toggle
+        subtitlesEnabled = !subtitlesEnabled;
     }
 }
 
@@ -390,6 +393,7 @@ function confirmLoadGame() {
     banterEnabled = save.banterEnabled !== undefined ? save.banterEnabled : true;
     audioTunnelsEnabled = save.audioTunnelsEnabled !== undefined ? save.audioTunnelsEnabled : true;
     streamerMode = save.streamerMode || false;
+    subtitlesEnabled = save.subtitlesEnabled !== undefined ? save.subtitlesEnabled : true;
 
     // Restore ship
     selectedShipIndex = SHIP_OPTIONS.indexOf(save.ship);
@@ -426,7 +430,7 @@ function handlePauseMenuSelect() {
             transitionToScreen(SCREENS.MENU);
         }
     } else if (pauseSubScreen === 'settings') {
-        if (selectedSettingsIndex === 7) { // BACK
+        if (selectedSettingsIndex === 8) { // BACK
             pauseSubScreen = 'menu';
         }
     }

@@ -131,6 +131,10 @@ const BanterEngine = {
             this.clear();
             this._activeLine = line;
             this._displayTimer = this._lineDuration;
+            // GRO-940: Play voice line if VoicePlayback is available
+            if (window.VoicePlayback) {
+                VoicePlayback.play(biome, event, line.s, line);
+            }
         }
         return line;
     },

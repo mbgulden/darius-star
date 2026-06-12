@@ -369,6 +369,11 @@ const AudioTunnel = {
             isTunnel: true, // mark as tunnel dialogue (no choice UI)
         };
 
+        // GRO-940: Play voice line for tunnel dialogue
+        if (window.VoicePlayback && this._currentTunnel) {
+            VoicePlayback.playTunnel(this._currentTunnel.biomeTo, params.speaker, params.text);
+        }
+
         // Queue dialogue in the global dialogue system
         if (typeof activeDialogue !== 'undefined') {
             activeDialogue = new DialogueSequence([line]);
