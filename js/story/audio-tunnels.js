@@ -385,3 +385,6 @@ const AudioTunnel = {
         this._backgroundTarget = params.biome;
     },
 };
+
+// ES Module bridge — publish const state to global scope
+window.AudioTunnel = AudioTunnel;

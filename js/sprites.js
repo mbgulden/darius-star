@@ -169,3 +169,6 @@ const _preCompositeCache = new Set();
             });
         }
 
+
+// ES Module bridge — publish const state to global scope
+window._preCompositeCache = _preCompositeCache;

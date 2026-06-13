@@ -43,3 +43,6 @@ const PlayerState = {
       + s.scrap + ' scrap | ' + s.shipsUnlocked + ' ships | ' + s.ending;
   }
 };
+
+// ES Module bridge — publish const state to global scope
+window.PlayerState = PlayerState;

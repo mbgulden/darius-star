@@ -55,7 +55,7 @@ let sfxSampleBuffers = {};      // type → AudioBuffer
 let sfxSamplesLoaded = false;   // true after all fetches settle
 
 // Play a preloaded sample buffer. No-op if buffer missing.
-function playSample(type, volMultiplier) {
+export function playSample(type, volMultiplier) {
     const buffer = sfxSampleBuffers[type];
     if (!buffer || !audioCtx) return;
     try {
@@ -93,7 +93,7 @@ async function loadSfxSamples() {
     if (loaded > 0) console.log(`[Darius Star] SFX samples loaded: ${loaded}/${total}`);
 }
 
-function initAudio() {
+export function initAudio() {
     if (!audioCtx) {
         try {
             audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -138,7 +138,7 @@ function initAudio() {
     loadSfxSamples();
 }
 
-function hexToRgb(hex) {
+export function hexToRgb(hex) {
     const r = parseInt(hex.slice(1, 3), 16);
     const g = parseInt(hex.slice(3, 5), 16);
     const b = parseInt(hex.slice(5, 7), 16);
@@ -151,7 +151,7 @@ let engineHumGain = null;
 let engineHumOsc = null;
 let engineHumFilter = null;
 
-function startEngineHum() {
+export function startEngineHum() {
     if (!audioCtx || engineHumActive) return;
     try {
         engineHumOsc = audioCtx.createOscillator();
@@ -172,7 +172,7 @@ function startEngineHum() {
     }
 }
 
-function updateEngineHum(speedPct) {
+export function updateEngineHum(speedPct) {
     if (!engineHumActive || !engineHumOsc || !engineHumGain || !engineHumFilter) return;
     try {
         const volMultiplier = masterVolume * sfxVolume;
@@ -188,7 +188,7 @@ function updateEngineHum(speedPct) {
     } catch(e) {}
 }
 
-function stopEngineHum() {
+export function stopEngineHum() {
     if (!engineHumActive) return;
     try {
         engineHumGain.gain.setTargetAtTime(0, audioCtx.currentTime, 0.3);
@@ -208,7 +208,7 @@ function stopEngineHum() {
     }
 }
 
-function playSound(type, params) {
+export function playSound(type, params) {
     if (!audioCtx) return;
     // GRO-1270: Try sample-based playback first (preloaded AudioBuffer).
     // Falls through to synth if sample not loaded or type not mapped.
@@ -1210,7 +1210,7 @@ const BIOME_AMBIENT_INTERVAL = 8.0; // seconds between ambient drone pulses
 
 // Called on biome transition — plays the ambient drone once immediately,
 // and the update loop will re-trigger periodically
-function triggerBiomeAmbient() {
+export function triggerBiomeAmbient() {
     const cue = BIOME_AMBIENT_MAP[biomeLevel];
     if (cue) {
         playSound(cue);
@@ -1220,7 +1220,7 @@ function triggerBiomeAmbient() {
 
 // Called every frame from update(). Periodically re-triggers the
 // current biome's ambient drone to maintain environmental presence.
-function updateBiomeAmbientLoop(dt) {
+export function updateBiomeAmbientLoop(dt) {
     _biomeAmbientTimer += dt;
     if (_biomeAmbientTimer >= BIOME_AMBIENT_INTERVAL) {
         _biomeAmbientTimer = 0;
@@ -1239,7 +1239,7 @@ function updateBiomeAmbientLoop(dt) {
 let _activeStoryBeat = null;
 let _storyBeatTimer = 0;
 
-function playAudioStoryBeat(biomeLevel) {
+export function playAudioStoryBeat(biomeLevel) {
     // Only one story beat at a time
     if (_activeStoryBeat) return;
 
@@ -1250,7 +1250,7 @@ function playAudioStoryBeat(biomeLevel) {
     _storyBeatTimer = 0;
 }
 
-function updateAudioStoryBeat(dt) {
+export function updateAudioStoryBeat(dt) {
     if (!_activeStoryBeat) return;
     _storyBeatTimer += dt;
 
@@ -1371,3 +1371,16 @@ const AUDIO_STORY_BEATS = {
     }
 };
 
+
+// ES Module bridge — publish exports to global scope for cross-module access
+window.playSample = playSample;
+window.initAudio = initAudio;
+window.hexToRgb = hexToRgb;
+window.startEngineHum = startEngineHum;
+window.updateEngineHum = updateEngineHum;
+window.stopEngineHum = stopEngineHum;
+window.playSound = playSound;
+window.triggerBiomeAmbient = triggerBiomeAmbient;
+window.updateBiomeAmbientLoop = updateBiomeAmbientLoop;
+window.playAudioStoryBeat = playAudioStoryBeat;
+window.updateAudioStoryBeat = updateAudioStoryBeat;

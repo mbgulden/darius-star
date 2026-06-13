@@ -4,7 +4,7 @@
 // The HUD is primarily DOM-based (#controls-overlay in index.html).
 // This module contains the toggle function and its event listener.
 
-function toggleStatusPanel() {
+export function toggleStatusPanel() {
     window.STATUS_EXPANDED = !window.STATUS_EXPANDED;
     const overlay = document.getElementById('controls-overlay');
     const btn = document.getElementById('controls-toggle');
@@ -28,3 +28,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+// ES Module bridge — publish exports to global scope for cross-module access
+window.toggleStatusPanel = toggleStatusPanel;

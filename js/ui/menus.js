@@ -3,7 +3,7 @@
 // Loaded BEFORE ui.js so drawMainMenu(ctx) is defined when drawMenuScreens() calls it
 // NOTE: CREDITS and CINEMATIC extraction still pending — they remain in ui.js for now
 
-function drawMainMenu(ctx) {
+export function drawMainMenu(ctx) {
     drawTitleLogo();
     
     ctx.save();
@@ -84,3 +84,6 @@ function drawMainMenu(ctx) {
     ctx.fillText('USE W/S or ARROWS to NAVIGATE | ENTER to SELECT', canvas.width / 2, canvas.height - 25);
     ctx.restore();
 }
+
+// ES Module bridge — publish exports to global scope for cross-module access
+window.drawMainMenu = drawMainMenu;

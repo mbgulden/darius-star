@@ -207,3 +207,6 @@ const StoryTriggers = {
         }
     },
 };
+
+// ES Module bridge — publish const state to global scope
+window.StoryTriggers = StoryTriggers;

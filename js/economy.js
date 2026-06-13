@@ -38,16 +38,16 @@ const ECONOMY_TABLES = {
     }
 };
 
-function economyClampBiome(biomeLevel) {
+export function economyClampBiome(biomeLevel) {
     const level = Number.isFinite(Number(biomeLevel)) ? Math.floor(Number(biomeLevel)) : 1;
     return Math.max(1, Math.min(10, level));
 }
 
-function economyGetTable(enemyType) {
+export function economyGetTable(enemyType) {
     return ECONOMY_TABLES[enemyType] || ECONOMY_TABLES.default;
 }
 
-function economyWeightedChoice(weightMap) {
+export function economyWeightedChoice(weightMap) {
     const entries = Object.entries(weightMap || ECONOMY_TABLES.default.typeWeights)
         .filter(([, weight]) => Number(weight) > 0);
     const total = entries.reduce((sum, [, weight]) => sum + Number(weight), 0);
@@ -61,7 +61,7 @@ function economyWeightedChoice(weightMap) {
     return entries[entries.length - 1][0];
 }
 
-function economyRollAmount(type, biomeLevel, table) {
+export function economyRollAmount(type, biomeLevel, table) {
     const config = ECONOMY_DROP_TYPES[type] || ECONOMY_DROP_TYPES.metal;
     const biome = economyClampBiome(biomeLevel);
     const base = config.min + Math.floor(Math.random() * (config.max - config.min + 1));
@@ -69,7 +69,7 @@ function economyRollAmount(type, biomeLevel, table) {
     return Math.max(1, Math.round(base + biomeBonus));
 }
 
-function economyNormalizeSegmentStore(store) {
+export function economyNormalizeSegmentStore(store) {
     const normalized = {};
     if (!store || typeof store !== 'object') return normalized;
 
@@ -169,3 +169,10 @@ window.Economy = {
 };
 
 console.log('[OK] economy.js loaded — Economy loot tables and anti-farming enabled');
+
+// ES Module bridge — publish exports to global scope for cross-module access
+window.economyClampBiome = economyClampBiome;
+window.economyGetTable = economyGetTable;
+window.economyWeightedChoice = economyWeightedChoice;
+window.economyRollAmount = economyRollAmount;
+window.economyNormalizeSegmentStore = economyNormalizeSegmentStore;

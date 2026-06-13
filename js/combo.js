@@ -224,3 +224,6 @@ const Combo = {
         return `${r},${g},${b}`;
     },
 };
+
+// ES Module bridge — publish const state to global scope
+window.Combo = Combo;

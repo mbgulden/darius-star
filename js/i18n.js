@@ -23,7 +23,7 @@ const I18N_CONFIG = {
 
 // ─── Dictionary Loading ──────────────────────────────────────────────────
 
-function loadDictionary(lang) {
+export function loadDictionary(lang) {
     if (I18N_CONFIG.dictionaries[lang]) {
         return I18N_CONFIG.dictionaries[lang];
     }
@@ -38,7 +38,7 @@ function loadDictionary(lang) {
     return I18N_CONFIG.dictionaries['en'] || {};
 }
 
-function getCurrentLanguage() {
+export function getCurrentLanguage() {
     try {
         const stored = localStorage.getItem(I18N_CONFIG.storageKey);
         if (stored && I18N_CONFIG.supportedLanguages.includes(stored)) {
@@ -57,7 +57,7 @@ let currentLanguage = getCurrentLanguage();
 /**
  * Translate a key. Falls back to the key itself if no translation exists.
  */
-function t(key) {
+export function t(key) {
     const dict = loadDictionary(currentLanguage);
     return dict[key] || (currentLanguage !== 'en' ? (loadDictionary('en')[key] || key) : key);
 }
@@ -66,7 +66,7 @@ function t(key) {
  * Translate with positional argument substitution.
  * Example: tFormat('SCORE: {0}', 500) → 'SCORE: 500'
  */
-function tFormat(key, ...args) {
+export function tFormat(key, ...args) {
     let template = t(key);
     for (let i = 0; i < args.length; i++) {
         template = template.replace(`{${i}}`, args[i]);
@@ -78,7 +78,7 @@ function tFormat(key, ...args) {
  * Switch display language.
  * Re-renders HUD, menus, and active subtitles if possible.
  */
-function setLanguage(lang) {
+export function setLanguage(lang) {
     if (!I18N_CONFIG.supportedLanguages.includes(lang)) {
         console.warn(`[i18n] Unsupported language: "${lang}"`);
         return false;
@@ -91,7 +91,7 @@ function setLanguage(lang) {
     return true;
 }
 
-function getAvailableLanguages() {
+export function getAvailableLanguages() {
     return I18N_CONFIG.supportedLanguages.map(code => ({
         code,
         name: I18N_CONFIG.languageNames[code] || code,
@@ -99,3 +99,11 @@ function getAvailableLanguages() {
 }
 
 console.log(`[i18n] Initialized — language: ${currentLanguage}`);
+
+// ES Module bridge — publish exports to global scope for cross-module access
+window.loadDictionary = loadDictionary;
+window.getCurrentLanguage = getCurrentLanguage;
+window.t = t;
+window.tFormat = tFormat;
+window.setLanguage = setLanguage;
+window.getAvailableLanguages = getAvailableLanguages;

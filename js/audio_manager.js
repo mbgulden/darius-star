@@ -642,3 +642,6 @@ const AudioManager = (function() {
         isInitialized: function() { return _initialized; }
     };
 })();
+
+// ES Module bridge — publish const state to global scope
+window.AudioManager = AudioManager;

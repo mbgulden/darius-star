@@ -7,7 +7,7 @@ const melody = [
     220, 220, 329, 0, 293, 0, 261, 0
 ];
 
-function playMenuMusicStep() {
+export function playMenuMusicStep() {
     if (!audioCtx || currentScreen === 'playing' || currentScreen === SCREENS.CINEMATIC || currentScreen === SCREENS.CREDITS) return;
     const now = audioCtx.currentTime;
     
@@ -44,7 +44,7 @@ function playMenuMusicStep() {
     musicStep++;
 }
 
-function startMenuMusic() {
+export function startMenuMusic() {
     if (musicInterval) return;
     // GRO-1470: If AudioManager is initialized, let it handle music via MP3 tracks.
     // The chiptune synth is a fallback only — prefer cinematic audio.
@@ -53,7 +53,7 @@ function startMenuMusic() {
     musicInterval = setInterval(playMenuMusicStep, 200); // 120 bpm, 8th notes
 }
 
-function stopMenuMusic() {
+export function stopMenuMusic() {
     if (musicInterval) {
         clearInterval(musicInterval);
         musicInterval = null;
@@ -68,7 +68,7 @@ const creditsMelody = [
     493, 493, 587, 0, 440, 0, 392, 0    // B4, B4, D5, A4, G4
 ];
 
-function playCreditsMusicStep() {
+export function playCreditsMusicStep() {
     if (!audioCtx || currentScreen !== SCREENS.CREDITS) return;
     const now = audioCtx.currentTime;
     
@@ -103,15 +103,23 @@ function playCreditsMusicStep() {
     musicStep++;
 }
 
-function startCreditsMusic() {
+export function startCreditsMusic() {
     if (creditsMusicInterval) return;
     musicStep = 0;
     creditsMusicInterval = setInterval(playCreditsMusicStep, 250); // 120 bpm, 8th notes, slightly slower
 }
 
-function stopCreditsMusic() {
+export function stopCreditsMusic() {
     if (creditsMusicInterval) {
         clearInterval(creditsMusicInterval);
         creditsMusicInterval = null;
     }
 }
+
+// ES Module bridge — publish exports to global scope for cross-module access
+window.playMenuMusicStep = playMenuMusicStep;
+window.startMenuMusic = startMenuMusic;
+window.stopMenuMusic = stopMenuMusic;
+window.playCreditsMusicStep = playCreditsMusicStep;
+window.startCreditsMusic = startCreditsMusic;
+window.stopCreditsMusic = stopCreditsMusic;
