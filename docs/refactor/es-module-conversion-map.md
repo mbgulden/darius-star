@@ -1,15 +1,17 @@
-# ES Module Conversion Dependency Map — GRO-1064
+# ES Module Conversion Dependency Map — GRO-1064 (PHASE 1 — COMPLETE)
 
-**Last updated:** 2026-06-11 by Ned (cron)
-**Prep commits:** `42071bc` (package.json), `85a4d2c` (dead code removal), `84f84a3` (build.js fix)
-**Goal:** Convert all .js files to ES modules with import/export, create js/main.js entry point
+**Last updated:** 2026-06-13 by Ned (cron)
+**Phase 1 commit:** `855de3d` (ES module shell — main.js entry point, window bridge)
+**Phase 2 plan:** See `docs/refactor/es-module-phase2-conversion-plan.md` (GRO-1528)
 
-## Current State
+## Phase 1 State (Complete ✓)
 - `package.json` with `"type": "module"` ✓
 - `build.js` (esbuild) with graceful pre-conversion handling ✓
 - Dead js/systems/ duplicates removed ✓
-- No files use `export` — all globals ✗
-- `js/main.js` doesn't exist ✗
+- `js/main.js` — imports all 46 modules in dependency order ✓
+- `index.html` — single `<script type="module" src="js/main.js">` ✓
+- 13 files use `export` statements (audio.js, audio_chip.js, economy.js, game_loop.js, i18n.js, player.js, ui.js, ui/*.js, utils.js) ✓
+- 19 files still use side-effect imports + `window.X` assignments (Phase 2 target) ✗
 
 ## Module Dependency Graph
 
