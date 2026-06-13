@@ -1,21 +1,30 @@
 // js/ui/hud.js — Controls overlay, score/shield/weapon display, banter text
-// EXTRACTION TARGET (GRO-1062): Extract from js/ui.js + index.html
+// Extracted from js/ui.js lines 1521–1544 (GRO-1062)
 //
-// HUD is largely DOM-based (#controls-overlay element in index.html) + canvas overlay
-// during pause/playing screens. The in-game HUD rendering during SCREENS.PLAYING
-// is minimal Canvas work — mostly status toggles and pause menu overlay.
-//
-// RELATED CODE:
-//   - index.html: #controls-overlay div (DOM HUD)
-//   - ui.js L1551-1612: Pause menu input handling
-//   - ui.js L1613-1646: Playing screen key handling (gameOver/gameWon checks)
-//   - ui.js L1803-1817: toggleStatusPanel() — DOM overlay expand/collapse
-//
-// DEPENDENCIES:
-//   - gameOver, gameWon, paused globals
-//   - PAUSE_OPTIONS[], SETTINGS_OPTIONS[]
-//   - pauseMenuIndex, pauseSubScreen, selectedSettingsIndex
-//   - handleDeathOrVictoryRestart(), startNGPlus(), transitionToScreen()
-//
-// WARNING: Pause menu rendering modifies Canvas state during active gameplay.
-// Extraction needs careful separation of DOM (safe to move) vs Canvas (browser verify).
+// The HUD is primarily DOM-based (#controls-overlay in index.html).
+// This module contains the toggle function and its event listener.
+
+function toggleStatusPanel() {
+    window.STATUS_EXPANDED = !window.STATUS_EXPANDED;
+    const overlay = document.getElementById('controls-overlay');
+    const btn = document.getElementById('controls-toggle');
+    if (!overlay) return;
+    if (window.STATUS_EXPANDED) {
+        overlay.classList.add('expanded');
+        if (btn) btn.textContent = '✕';
+    } else {
+        overlay.classList.remove('expanded');
+        if (btn) btn.textContent = '⚙';
+    }
+}
+
+// Click handler for the toggle button
+document.addEventListener('DOMContentLoaded', function() {
+    const btn = document.getElementById('controls-toggle');
+    if (btn) {
+        btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            toggleStatusPanel();
+        });
+    }
+});

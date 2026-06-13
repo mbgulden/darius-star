@@ -15,7 +15,7 @@ the pre-modularization monolith. The module list below is the current ground tru
 - `*.md` — documentation (except this file with approval)
 
 ## Architecture (fully modular)
-`index.html` is now a **296-line HTML/CSS shell** with 17 external `<script>` tags.
+`index.html` is now a **385-line HTML/CSS shell** with 19 external `<script>` tags.
 All game logic lives in `js/`. Load order is critical — modules are loaded
 in dependency order, with `game_loop.js` last.
 
