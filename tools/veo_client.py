@@ -1963,7 +1963,10 @@ AUDIO_DIR = REPO_ROOT / "assets" / "audio"
 CINEMATICS_DIR = REPO_ROOT / "assets" / "cinematics"
 
 CLIENT_ID = "884354919052-36trc1jjb3tguiac32ov6cod268c5blh.apps.googleusercontent.com"
-TOKEN_PATH = "/home/ubuntu/.gemini/antigravity-cli/antigravity-oauth-token"
+TOKEN_PATH = os.environ.get(
+    "ANTIGRAVITY_TOKEN_PATH",
+    os.path.expanduser("~/.gemini/antigravity-cli/antigravity-oauth-token")
+)
 
 
 def get_access_token():

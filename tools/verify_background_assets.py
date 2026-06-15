@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
 import os
 import sys
+from pathlib import Path
 from PIL import Image
+
+REPO_ROOT = Path(__file__).resolve().parent.parent
 
 def main():
     print("=== Background Asset Verification ===")
-    bg_dir = "/home/ubuntu/work/darius-star/assets/sprites/backgrounds"
+    bg_dir = str(REPO_ROOT / "assets" / "sprites" / "backgrounds")
     
     required_assets = [
         "bg_8_near.png",
@@ -39,7 +42,7 @@ def main():
             all_ok = False
             
     print("\n=== Renderer Integration Verification ===")
-    renderer_path = "/home/ubuntu/work/darius-star/js/renderer/parallax.js"
+    renderer_path = str(REPO_ROOT / "js" / "renderer" / "parallax.js")
     if os.path.exists(renderer_path):
         with open(renderer_path, "r", encoding="utf-8") as f:
             content = f.read()
