@@ -1,8 +1,12 @@
-# ES Module Conversion Dependency Map — GRO-1064 (PHASE 1 — COMPLETE)
+# ES Module Conversion Dependency Map — GRO-1064 (SUPERSEDED / ABANDONED)
 
-**Last updated:** 2026-06-13 by Ned (cron)
-**Phase 1 commit:** `855de3d` (ES module shell — main.js entry point, window bridge)
-**Phase 2 plan:** See `docs/refactor/es-module-phase2-conversion-plan.md` (GRO-1528)
+> [!IMPORTANT]
+> **Status:** SUPERSEDED & ABANDONED (2026-06-17).
+> The ES module conversion attempt under GRO-1064 has been abandoned in favor of **Option B (Abandon ES modules, keep script-tag chain)**. The game is in active development and maintaining global-scope scripts loaded via `index.html` prevents unnecessary build system complexity and avoids breaking changes to the game's active code paths.
+
+**Last updated:** 2026-06-17
+**Phase 1 status:** Reverted (PR #1 restored the script-tag architecture)
+**Phase 2 plan:** Cancelled (GRO-1528 superseded)
 
 ## Phase 1 State (Complete ✓)
 - `package.json` with `"type": "module"` ✓

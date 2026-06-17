@@ -2,12 +2,11 @@
  * Darius Star esbuild build script.
  * 
  * PRE-CONVERSION (current): This script does nothing useful — the game
- * uses global <script> tags, not ES modules.  Run `npm run dev` and serve
+ * uses global <script> tags, not ES modules. Run `npm run dev` and serve
  * files directly.
  *
- * POST-CONVERSION (after GRO-1064): Bundles js/main.js → dist/game.js
- * with all modules inlined.  Use `npm run build` for dev bundle,
- * `npm run build:prod` for minified production bundle.
+ * ES module conversion (GRO-1064) has been SUPERSEDED and ABANDONED.
+ * The game remains on the script-tag architecture.
  */
 
 import { readFileSync, existsSync } from 'fs';
@@ -18,7 +17,7 @@ const isWatch = process.argv.includes('--watch');
 const entryPoint = 'js/main.js';
 
 if (!existsSync(entryPoint)) {
-  console.log('⚠️  js/main.js not found — ES module conversion (GRO-1064) not yet complete.');
+  console.log('⚠️  js/main.js not found — ES module conversion (GRO-1064) has been superseded and abandoned.');
   console.log('   Run `npm run dev` and serve files directly with:');
   console.log('   python3 -m http.server 8080');
   process.exit(0);

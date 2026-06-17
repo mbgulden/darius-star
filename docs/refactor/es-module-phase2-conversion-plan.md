@@ -1,8 +1,12 @@
-# ES Module Phase 2 — Explicit Import/Export Conversion Plan
+# ES Module Phase 2 — Explicit Import/Export Conversion Plan (SUPERSEDED / CANCELLED)
 
-**Last updated:** 2026-06-13 by Ned (cron, GRO-1528)
-**Parent issue:** GRO-1528
-**Phase 1 commit:** `855de3d` (ES module shell — main.js entry point, window bridge)
+> [!IMPORTANT]
+> **Status:** CANCELLED & SUPERSEDED (2026-06-17).
+> This plan has been cancelled as part of Option B (Abandoning ES modules). The parent refactor task GRO-1064 and Phase 2 parent issue GRO-1528 have been marked as superseded.
+
+**Last updated:** 2026-06-17
+**Parent issue:** GRO-1528 (Superseded)
+**Phase 1 commit:** `855de3d` (Reverted)
 
 ## Phase 1 Deliverables (Complete ✓)
 

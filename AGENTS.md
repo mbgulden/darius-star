@@ -15,7 +15,8 @@ the pre-modularization monolith. The module list below is the current ground tru
 - `*.md` — documentation (except this file with approval)
 
 ## Architecture (fully modular)
-`index.html` is now a **385-line HTML/CSS shell** with 19 external `<script>` tags.
+`index.html` is now a **385-line HTML/CSS shell** with 40 external `<script>` tags.
+All modules are global-scope scripts, loaded in dependency order from index.html.
 All game logic lives in `js/`. Load order is critical — modules are loaded
 in dependency order, with `game_loop.js` last.
 
@@ -41,6 +42,7 @@ in dependency order, with `game_loop.js` last.
 | 17 | `game_loop.js` | Game state, entity pools, update(), draw(), loop(), collision, input, narrative flags (1752 lines) |
 
 ## Key Architecture Notes
+- **No ES modules / build step** — The GRO-1064 ES module refactor has been superseded and abandoned. All modules are global-scope scripts, loaded in dependency order from `index.html`.
 - **No IIFE wrappers** — modules use top-level scope. Classes defined in one module
   are visible to all subsequent modules via global scope.
 - **Shared utility functions** — `createExplosion`, `spawnHitFlash`, `checkCollision`,
