@@ -87,7 +87,10 @@
         el.textContent = label;
 
         var defaultStyles = {
-            position: 'absolute',
+            // GRO-1927: was 'absolute' which took buttons out of the CSS Grid flow
+            // and stacked all three on top of each other at bottom-right.
+            // 'relative' lets the grid place them in their assigned rows.
+            position: 'relative',
             pointerEvents: 'auto',
             userSelect: 'none',
             WebkitUserSelect: 'none',
