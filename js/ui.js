@@ -106,7 +106,7 @@ let titleLogoLoaded = false;
 titleLogoImg.onload = () => { titleLogoLoaded = true; };
 titleLogoImg.src = 'assets/sprites/title_0.png';
 
-export function transitionToScreen(newScreen) {
+function transitionToScreen(newScreen) {
     if (targetScreen) return; // already transitioning
     targetScreen = newScreen;
     transitionTimer = 0;
@@ -114,7 +114,7 @@ export function transitionToScreen(newScreen) {
 
 // ── Cinematic Video Playback ──
 
-export function playBossIntro() {
+function playBossIntro() {
     if (bossIntroPlaying) return;
     bossIntroPlaying = true;
     bossIntroVideo.muted = false; // audio allowed after user interaction (START GAME click)
@@ -137,7 +137,7 @@ export function playBossIntro() {
     };
 }
 
-export function skipBossIntro() {
+function skipBossIntro() {
     if (!bossIntroPlaying) return;
     bossIntroVideo.pause();
     bossIntroVideo.classList.remove('active');
@@ -146,13 +146,13 @@ export function skipBossIntro() {
     spawnBossNow();
 }
 
-export function spawnBossNow() {
+function spawnBossNow() {
     bossSpawned = true;
     sirenTimer = 0; // skip siren, boss appears immediately after cinematic
     boss = new Boss();
 }
 
-export function playVictoryCinematic() {
+function playVictoryCinematic() {
     if (victoryVideoPlaying) return;
     victoryVideoPlaying = true;
     victoryVideo.muted = false; // audio allowed after user interaction (START GAME click)
@@ -174,7 +174,7 @@ export function playVictoryCinematic() {
     };
 }
 
-export function skipVictoryCinematic() {
+function skipVictoryCinematic() {
     if (!victoryVideoPlaying) return;
     victoryVideo.pause();
     victoryVideo.classList.remove('active');
@@ -183,7 +183,7 @@ export function skipVictoryCinematic() {
     transitionToScreen(SCREENS.CINEMATIC);
 }
 
-export function advanceToNextBiome() {
+function advanceToNextBiome() {
     // Called after boss defeat in biomes 1-9
     // Advances the game to the next biome without resetting player progress
     
@@ -249,7 +249,7 @@ export function advanceToNextBiome() {
     console.log(`Advanced to Biome ${biomeLevel}: ${activeBiomeName}`);
 }
 
-export function updateTitleBackground(dt) {
+function updateTitleBackground(dt) {
     titleBgTimer += dt;
     if (titleBgTimer >= TITLE_FRAME_DURATION) {
         titleBgTimer -= TITLE_FRAME_DURATION;
@@ -257,7 +257,7 @@ export function updateTitleBackground(dt) {
     }
 }
 
-export function drawTitleBackground() {
+function drawTitleBackground() {
     if (titleBgLoaded && titleBgImage.naturalWidth > 0) {
         const sx = titleBgFrame * TITLE_FRAME_WIDTH;
         const sy = 0;
@@ -278,7 +278,7 @@ export function drawTitleBackground() {
     }
 }
 
-export function drawTitleLogo() {
+function drawTitleLogo() {
     if (titleLogoLoaded && titleLogoImg.naturalWidth > 0) {
         ctx.save();
         const lw = 420;
@@ -308,7 +308,7 @@ export function drawTitleLogo() {
     }
 }
 
-export function adjustSetting(index, dir) {
+function adjustSetting(index, dir) {
     const step = 0.1;
     if (index === 0) { // Master Volume
         masterVolume = Math.max(0, Math.min(1.0, masterVolume + dir * step));
@@ -346,7 +346,7 @@ export function adjustSetting(index, dir) {
     }
 }
 
-export function loadGameScreen() {
+function loadGameScreen() {
     // Show save slots as an in-game overlay rather than navigating away
     const saves = CampaignSave.loadAll();
     let hasSaves = false;
@@ -364,7 +364,7 @@ export function loadGameScreen() {
     transitionToScreen(SCREENS.LOAD_GAME);
 }
 
-export function confirmLoadGame() {
+function confirmLoadGame() {
     const slot = window._loadSelectedSlot || 0;
     const save = (window._loadSaves || [])[slot];
     if (!save) return;
@@ -410,7 +410,7 @@ export function confirmLoadGame() {
     window.location.href = 'ship_select.html?continue=' + slot;
 }
 
-export function deleteSaveSlot(slot) {
+function deleteSaveSlot(slot) {
     CampaignSave.delete(slot);
     window._loadSaves = CampaignSave.loadAll();
     // If all slots now empty, bounce back to main menu
@@ -420,7 +420,7 @@ export function deleteSaveSlot(slot) {
     }
 }
 
-export function handlePauseMenuSelect() {
+function handlePauseMenuSelect() {
     if (pauseSubScreen === 'menu') {
         if (pauseMenuIndex === 0) { // RESUME
             paused = false;
@@ -441,7 +441,7 @@ export function handlePauseMenuSelect() {
     }
 }
 
-export function handleMenuConfirm() {
+function handleMenuConfirm() {
     if (currentScreen === SCREENS.MENU) {
         if (selectedMenuIndex === 0) { // CONTINUE
             const hasSaves = (() => {
@@ -490,14 +490,14 @@ export function handleMenuConfirm() {
     }
 }
 
-export function getCanvasMouseCoords(e) {
+function getCanvasMouseCoords(e) {
     const rect = canvas.getBoundingClientRect();
     const x = (e.clientX - rect.left) * (canvas.width / rect.width);
     const y = (e.clientY - rect.top) * (canvas.height / rect.height);
     return { x, y };
 }
 
-export function drawMenuScreens() {
+function drawMenuScreens() {
     drawTitleBackground();
     
     if (currentScreen === SCREENS.MENU) {
@@ -1476,7 +1476,7 @@ window.addEventListener('keydown', e => {
 // --- Touch Controls ---
 const touchKeys = { 'w': false, 'a': false, 's': false, 'd': false, ' ': false };
 
-export function setupTouchButton(elId, key) {
+function setupTouchButton(elId, key) {
     const el = document.getElementById(elId);
     if (!el) return;
     
@@ -1561,24 +1561,3 @@ if (r.btnDelete && cx >= r.btnDelete.x && cx <= r.btnDelete.x + r.btnDelete.w &&
 }
     }
 });
-
-// ES Module bridge — publish exports to global scope for cross-module access
-window.transitionToScreen = transitionToScreen;
-window.playBossIntro = playBossIntro;
-window.skipBossIntro = skipBossIntro;
-window.spawnBossNow = spawnBossNow;
-window.playVictoryCinematic = playVictoryCinematic;
-window.skipVictoryCinematic = skipVictoryCinematic;
-window.advanceToNextBiome = advanceToNextBiome;
-window.updateTitleBackground = updateTitleBackground;
-window.drawTitleBackground = drawTitleBackground;
-window.drawTitleLogo = drawTitleLogo;
-window.adjustSetting = adjustSetting;
-window.loadGameScreen = loadGameScreen;
-window.confirmLoadGame = confirmLoadGame;
-window.deleteSaveSlot = deleteSaveSlot;
-window.handlePauseMenuSelect = handlePauseMenuSelect;
-window.handleMenuConfirm = handleMenuConfirm;
-window.getCanvasMouseCoords = getCanvasMouseCoords;
-window.drawMenuScreens = drawMenuScreens;
-window.setupTouchButton = setupTouchButton;

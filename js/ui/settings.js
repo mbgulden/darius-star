@@ -2,7 +2,7 @@
 // EXTRACTED from js/ui.js drawMenuScreens() (GRO-1062)
 // Loaded BEFORE ui.js so drawSettings(ctx) is defined when drawMenuScreens() calls it
 
-export function drawSettings(ctx) {
+function drawSettings(ctx) {
     ctx.save();
     ctx.textAlign = 'center';
     ctx.fillStyle = '#00ffff';
@@ -73,6 +73,3 @@ export function drawSettings(ctx) {
     ctx.fillText('LEFT/RIGHT to ADJUST VOLUME  |  ENTER / CLICK to TOGGLE  |  ESC to RETURN', canvas.width / 2, canvas.height - 25);
     ctx.restore();
 }
-
-// ES Module bridge — publish exports to global scope for cross-module access
-window.drawSettings = drawSettings;

@@ -182,7 +182,7 @@ const vfxExplosions = [];
 
 
 
-export function loop(timestamp) {
+function loop(timestamp) {
     if (!lastTime) lastTime = timestamp;
     const dt = Math.min((timestamp - lastTime) / 1000, 0.1);
     lastTime = timestamp;
@@ -197,7 +197,7 @@ export function loop(timestamp) {
     requestAnimationFrame(loop);
 }
 
-export function update(dt) {
+function update(dt) {
     // Screen transition overlay fading
     if (targetScreen) {
         transitionTimer += dt;
@@ -1011,7 +1011,7 @@ export function update(dt) {
     }
 }
 
-export function draw() {
+function draw() {
     if (currentScreen !== SCREENS.PLAYING) {
         drawMenuScreens();
         if (screenFadeAlpha > 0) {
@@ -1715,37 +1715,3 @@ canvas.addEventListener('touchmove', () => {
 });
 
 requestAnimationFrame(loop);
-
-// ES Module bridge — publish exports to global scope for cross-module access
-window.loop = loop;
-window.update = update;
-window.draw = draw;
-
-// ES Module bridge — live getters for mutable state (Phase 2 will replace with explicit imports)
-// Object references are stable; primitives use getters for live access
-Object.defineProperties(window, {
-    _get_score: { get() { return score; } },
-    _get_gameOver: { get() { return gameOver; } },
-    _get_gameWon: { get() { return gameWon; } },
-    _get_paused: { get() { return paused; } },
-    _get_gameTime: { get() { return gameTime; } },
-    _get_bossSpawned: { get() { return bossSpawned; } },
-    _get_biomeLevel: { get() { return biomeLevel; } },
-    _get_currentNGLevel: { get() { return currentNGLevel; } },
-    _get_selectedEnding: { get() { return selectedEnding; } },
-    _get_endingEligible: { get() { return endingEligible; } },
-});
-window.player = player;
-window.enemies = enemies;
-window.bullets = bullets;
-window.powerUps = powerUps;
-window.explosions = explosions;
-window.scrapDrops = scrapDrops;
-window.particles = particles;
-window.floatingTexts = floatingTexts;
-window.narrativeFlags = narrativeFlags;
-window.pdgZaps = pdgZaps;
-window.hitFlashes = hitFlashes;
-window.BOSS_SCORE_THRESHOLDS = BOSS_SCORE_THRESHOLDS;
-window.screenFlashAlpha = screenFlashAlpha;
-window.screenFlashColor = screenFlashColor;

@@ -140,7 +140,7 @@ const BRIEFING_SCENES = {
  * @param {number|string} biome - biome number (1-10) or key string ('biome1')
  * @param {function} onComplete - callback when briefing finishes or is skipped
  */
-export function startBriefing(biome, onComplete) {
+function startBriefing(biome, onComplete) {
     const key = typeof biome === 'number' ? `biome${biome}` : biome;
     const lines = BRIEFING_SCENES[key];
 
@@ -168,7 +168,7 @@ export function startBriefing(biome, onComplete) {
 /**
  * Skip the current briefing entirely (jump to gameplay).
  */
-export function skipBriefing() {
+function skipBriefing() {
     if (activeBriefing) {
         activeBriefing = null;
     }
@@ -177,7 +177,7 @@ export function skipBriefing() {
 /**
  * Handle click input for briefing (delegates to activeBriefing.next()).
  */
-export function handleBriefingClick() {
+function handleBriefingClick() {
     if (activeBriefing) {
         activeBriefing.next();
     }
@@ -186,7 +186,7 @@ export function handleBriefingClick() {
 /**
  * Handle keyboard input for briefing (delegates to activeBriefing.handleKey()).
  */
-export function handleBriefingKey(key) {
+function handleBriefingKey(key) {
     if (activeBriefing) {
         activeBriefing.handleKey(key);
     }
@@ -196,7 +196,7 @@ export function handleBriefingKey(key) {
  * Update briefing state (typewriter animation, etc.).
  * Called from game_loop.js's update().
  */
-export function updateBriefing(dt) {
+function updateBriefing(dt) {
     if (activeBriefing) {
         activeBriefing.update(dt);
     }
@@ -206,7 +206,7 @@ export function updateBriefing(dt) {
  * Draw the briefing screen.
  * Called from game_loop.js's draw() when currentScreen === SCREENS.BRIEFING.
  */
-export function drawBriefing() {
+function drawBriefing() {
     if (activeBriefing) {
         activeBriefing.draw();
     } else {
@@ -234,11 +234,3 @@ export function drawBriefing() {
         ctx.restore();
     }
 }
-
-// ES Module bridge — publish exports to global scope for cross-module access
-window.startBriefing = startBriefing;
-window.skipBriefing = skipBriefing;
-window.handleBriefingClick = handleBriefingClick;
-window.handleBriefingKey = handleBriefingKey;
-window.updateBriefing = updateBriefing;
-window.drawBriefing = drawBriefing;
