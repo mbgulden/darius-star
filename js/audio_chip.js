@@ -46,9 +46,10 @@ function playMenuMusicStep() {
 
 function startMenuMusic() {
     if (musicInterval) return;
-    // GRO-1470: If AudioManager is initialized, let it handle music via MP3 tracks.
-    // The chiptune synth is a fallback only — prefer cinematic audio.
-    if (typeof AudioManager !== 'undefined' && AudioManager.isInitialized && AudioManager.isInitialized()) return;
+    // GRO-1926: Chiptune starts immediately for instant feedback after user gesture.
+    // crossfadeToMenuTrack() (called from game_loop.js after AudioManager.preloadAll)
+    // ramps chiptune down and starts the cinematic MP3 once preloads finish.
+    // Don't skip when AudioManager is initialized — we want both layers active.
     musicStep = 0;
     musicInterval = setInterval(playMenuMusicStep, 200); // 120 bpm, 8th notes
 }
@@ -58,6 +59,46 @@ function stopMenuMusic() {
         clearInterval(musicInterval);
         musicInterval = null;
     }
+}
+
+// GRO-1926: Crossfade chiptune synth → cinematic MP3 over 2 seconds.
+// Called from game_loop.js after AudioManager.preloadAll() resolves.
+// Ramps the chiptune's master volume (musicVolume) down via exponential ramp
+// on the audio context, then stops the synth interval. Caller is responsible
+// for calling AudioManager.play(targetTrack) BEFORE stopMenuMusic() so the MP3
+// is already producing sound when the chiptune fades.
+function crossfadeToMenuTrack(targetTrack, durationSec) {
+    durationSec = durationSec || 2.0;
+    if (typeof audioCtx === 'undefined' || !audioCtx) return;
+    if (typeof AudioManager === 'undefined' || !AudioManager.play) return;
+
+    // Start the cinematic MP3 — it begins immediately.
+    try {
+        AudioManager.play(targetTrack, durationSec, true);
+    } catch (e) {
+        console.warn('[crossfadeToMenuTrack] AudioManager.play failed:', e.message);
+        return;
+    }
+
+    // Ramp musicVolume down over durationSec. The chiptune's gain nodes multiply
+    // by musicVolume on every step, so reducing it fades the synth out smoothly.
+    const startVol = musicVolume;
+    const startTime = audioCtx.currentTime;
+    // We can't use exponentialRampToValueAtTime on a plain JS variable, so we
+    // just step it down via setInterval, then clear the synth when it hits ~0.
+    const STEP_MS = 50;
+    const totalSteps = Math.max(1, Math.floor((durationSec * 1000) / STEP_MS));
+    let step = 0;
+    const fade = setInterval(function() {
+        step++;
+        // Linear ramp; safe for the existing synth code.
+        musicVolume = startVol * (1 - step / totalSteps);
+        if (step >= totalSteps) {
+            clearInterval(fade);
+            stopMenuMusic();
+            musicVolume = startVol; // restore for next time startMenuMusic runs
+        }
+    }, STEP_MS);
 }
 
 // --- Web Audio Credits Music Loop ---

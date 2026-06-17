@@ -23,6 +23,9 @@ window.addEventListener('DOMContentLoaded', () => {
         
         // GRO-1154: Initialize audio for auto-launch (fix silent gameplay)
         initAudio();
+        // GRO-1926: Start chiptune immediately so the user hears something
+        // before AudioManager finishes preloading the cinematic MP3s.
+        startMenuMusic();
         // Fallback: ensure AudioContext is resumed on first user interaction
         // (browsers may keep context suspended until user gesture)
         const resumeOnGesture = () => {
@@ -30,7 +33,15 @@ window.addEventListener('DOMContentLoaded', () => {
             // GRO-865: Start preloading cinematic music tracks on first interaction
             if (typeof AudioManager !== 'undefined') {
                 AudioManager.init().then(function() {
-                    AudioManager.preloadAll();
+                    // GRO-1926: Preload then crossfade chiptune → MP3 (only if
+                    // currently on a screen that wants menu music).
+                    AudioManager.preloadAll().then(function() {
+                        if (typeof crossfadeToMenuTrack === 'function' &&
+                            typeof currentScreen !== 'undefined' &&
+                            currentScreen !== SCREENS.PLAYING) {
+                            crossfadeToMenuTrack('ambient_deep_space', 2.0);
+                        }
+                    });
                 });
             }
             document.removeEventListener('click', resumeOnGesture);
@@ -1569,13 +1580,18 @@ canvas.addEventListener('mouseleave', () => {
 canvas.addEventListener('click', e => {
     setBiomeBackgrounds(biomeLevel);
     initAudio();
-    // GRO-1470: Initialize AudioManager on first click to load cinematic MP3 music tracks.
-    // AudioManager handles biome music, game over, victory, and ending themes.
-    // Chiptune synth (audio_chip.js) is the fallback — startMenuMusic() skips when
-    // AudioManager is initialized.
+    // GRO-1470 / GRO-1926: Chiptune starts immediately for instant feedback;
+    // AudioManager.preloadAll resolves and triggers crossfadeToMenuTrack()
+    // to ramp chiptune out and start the cinematic MP3.
     if (typeof AudioManager !== 'undefined') {
         AudioManager.init().then(function() {
-            AudioManager.preloadAll();
+            AudioManager.preloadAll().then(function() {
+                if (typeof crossfadeToMenuTrack === 'function' &&
+                    typeof currentScreen !== 'undefined' &&
+                    currentScreen !== SCREENS.PLAYING) {
+                    crossfadeToMenuTrack('ambient_deep_space', 2.0);
+                }
+            });
         });
     }
     loadPlayerSprites();
@@ -1586,7 +1602,7 @@ canvas.addEventListener('click', e => {
         LevelManager.initialized = true;
         LevelManager.init();
     }
-    
+
     if (currentScreen !== SCREENS.PLAYING) {
         startMenuMusic();
     }
