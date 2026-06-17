@@ -132,12 +132,12 @@ const _preCompositeCache = new Set();
             bossLoadProgress = 0;
 
             const toLoad = [
-                { key: 'boss',              src: 'assets/boss_0.png' },
-                { key: 'boss_idle',         src: 'assets/sprites/boss_idle.png' },
-                { key: 'boss_rage',         src: 'assets/sprites/boss_rage.png' },
-                { key: 'boss_laser_charge', src: 'assets/sprites/boss_charge.png' },
-                { key: 'boss_laser_fire',   src: 'assets/sprites/boss_fire.png' },
-                { key: 'boss_death',        src: 'assets/sprites/boss_death.png' },
+                { key: 'boss',              src: 'assets/sprites/boss_0.png' },
+                { key: 'boss_idle',         src: 'assets/sprites/boss_0.png' },
+                { key: 'boss_rage',         src: 'assets/sprites/boss_1.png' },
+                { key: 'boss_laser_charge', src: 'assets/sprites/boss_2.png' },
+                { key: 'boss_laser_fire',   src: 'assets/sprites/boss_3.png' },
+                { key: 'boss_death',        src: 'assets/sprites/boss_0.png' },
                 { key: 'bossMinion',        src: 'assets/sprites/boss_minion_0.png' }
             ];
             let loadedCount = 0;
