@@ -59,6 +59,22 @@
                 img.onerror = function() { enemySprites[key] = null; };
                 img.src = `assets/sprites/${key}_0.png`;
             });
+
+            const biomeEnemyTypes = [
+                'b1_crawler', 'b2_wraith', 'b3_spider', 'b4_rider', 'b4_serpent', 'b4_wisp',
+                'brute', 'crawler', 'ember_sprite', 'fleet_turret', 'frost_drone', 'gas_giant',
+                'ghost_fighter', 'glacier', 'glitch_fragment', 'hive_node', 'ice_shard', 'ice_swarm',
+                'inferno_node', 'lava_golem', 'magma_wasp', 'nebula_wraith', 'null_entity',
+                'paradox_wisp', 'plasma_wisp', 'rift_aberration', 'salvage_drone', 'spitter',
+                'static_spark', 'storm_hawk', 'storm_sentinel', 'storm_sprite', 'thunderhead',
+                'turret_battery'
+            ];
+            biomeEnemyTypes.forEach(key => {
+                const img = new Image();
+                img.onload = function() { enemySprites[key] = preCompositeAdditive(img); };
+                img.onerror = function() { enemySprites[key] = null; };
+                img.src = `assets/sprites/enemy_${key}_0.png`;
+            });
         }
 
         // --- VFX Sprite Preloading ---
@@ -80,7 +96,9 @@
             _loadVFX('laser_enemy', 'assets/sprites/enemy_bullet.png');
             _loadVFX('laser_glow', 'assets/sprites/laser_0_glow.png');
             for (let f = 0; f < 4; f++) {
-                _loadVFX('explosion_' + f, `assets/sprites/explosion_${f}.png`);
+                for (let n = 0; n < 4; n++) {
+                    _loadVFX(`explosion_${f}_${n}`, `assets/sprites/vfx/explosion_${f}_${n}.png`);
+                }
             }
             _loadVFX('shield', 'assets/sprites/shield_0.png');
             _loadVFX('thruster_0', 'assets/sprites/thruster_0.png');
@@ -132,12 +150,12 @@ const _preCompositeCache = new Set();
             bossLoadProgress = 0;
 
             const toLoad = [
-                { key: 'boss',              src: 'assets/sprites/boss_0.png' },
-                { key: 'boss_idle',         src: 'assets/sprites/boss_0.png' },
-                { key: 'boss_rage',         src: 'assets/sprites/boss_1.png' },
-                { key: 'boss_laser_charge', src: 'assets/sprites/boss_2.png' },
-                { key: 'boss_laser_fire',   src: 'assets/sprites/boss_3.png' },
-                { key: 'boss_death',        src: 'assets/sprites/boss_0.png' },
+                { key: 'boss',              src: 'assets/sprites/boss_idle.png' },
+                { key: 'boss_idle',         src: 'assets/sprites/boss_idle.png' },
+                { key: 'boss_rage',         src: 'assets/sprites/boss_rage.png' },
+                { key: 'boss_laser_charge', src: 'assets/sprites/boss_charge.png' },
+                { key: 'boss_laser_fire',   src: 'assets/sprites/boss_fire.png' },
+                { key: 'boss_death',        src: 'assets/sprites/boss_death.png' },
                 { key: 'bossMinion',        src: 'assets/sprites/boss_minion_0.png' }
             ];
             let loadedCount = 0;
