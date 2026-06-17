@@ -2,7 +2,7 @@
 // EXTRACTED from js/ui.js drawMenuScreens() (GRO-1062)
 // Loaded BEFORE ui.js so drawShipSelect(ctx) is defined when drawMenuScreens() calls it
 
-export function drawShipSelect(ctx) {
+function drawShipSelect(ctx) {
     ctx.save();
     ctx.textAlign = 'center';
     ctx.fillStyle = '#00ffff';
@@ -66,6 +66,3 @@ export function drawShipSelect(ctx) {
     ctx.fillText('ENTER / CLICK to CHOOSE  |  ESC to RETURN', canvas.width / 2, canvas.height - 25);
     ctx.restore();
 }
-
-// ES Module bridge — publish exports to global scope for cross-module access
-window.drawShipSelect = drawShipSelect;

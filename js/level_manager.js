@@ -292,11 +292,6 @@ const LevelManager = {
 
     // --- Main update called from game loop ---
     update(dt) {
-        // Special case: Biome 3 boss fight spawning rules (GRO-875)
-        if (this.biome === 3 && (this.level === 5 || this.level === 10) && (typeof boss !== 'undefined' && boss || (this.currentLevelConfig && this.currentLevelConfig.bossTrigger))) {
-            this._updateBiome3BossSpawning(dt);
-        }
-
         if (!this.waveActive || !this.currentLevelConfig) return;
 
         this.waveTimer += dt;
@@ -347,41 +342,6 @@ const LevelManager = {
         }
     },
 
-    // --- Special case spawning during Biome 3 Boss (GRO-875) ---
-    _updateBiome3BossSpawning(dt) {
-        if (typeof this.bossHeavySpawnTimer === 'undefined') {
-            this.bossHeavySpawnTimer = 3.0; // spawn first heavy cyber-eel after 3s
-        }
-        if (typeof this.bossMinionSpawnTimer === 'undefined') {
-            this.bossMinionSpawnTimer = 5.0; // spawn first minion after 5s
-        }
-
-        this.bossHeavySpawnTimer -= dt;
-        if (this.bossHeavySpawnTimer <= 0) {
-            // Spawn armored_eel (heavy cyber-eel) at a random Y coordinate
-            const spawnY = 60 + Math.random() * (canvas.height - 120);
-            this._spawnEnemy('armored_eel', canvas.width + 50, spawnY, 'heavy');
-            // Reset timer: every 7 to 11 seconds to avoid overwhelming
-            this.bossHeavySpawnTimer = 7.0 + Math.random() * 4.0;
-        }
-
-        this.bossMinionSpawnTimer -= dt;
-        if (this.bossMinionSpawnTimer <= 0) {
-            const difficultyConfig = (typeof getCurrentDifficultyConfig === 'function') 
-                ? getCurrentDifficultyConfig() : { id: 'normal' };
-            const minionCap = difficultyConfig.id === 'insane' ? 8 : (difficultyConfig.id === 'hard' ? 6 : 4);
-            
-            // Count active boss minions
-            const activeMinions = enemies.filter(e => e.type === 'boss_minion' || e.behaviorPattern === 'boss_minion').length;
-            if (activeMinions < minionCap) {
-                const spawnY = 80 + Math.random() * (canvas.height - 160);
-                this._spawnEnemy('boss_minion', canvas.width + 50, spawnY, 'scout');
-            }
-            // Reset timer: every 6 to 10 seconds
-            this.bossMinionSpawnTimer = 6.0 + Math.random() * 4.0;
-        }
-    },
-
     // --- Spawn a single enemy ---
     _spawnEnemy(type, x, y, role) {
         // Apply difficulty scaling to enemy
@@ -426,7 +386,7 @@ const LevelManager = {
         enemy.speed = Math.min(enemy.speed, 500); // cap at 500
 
         // Scale damage (stored for use by collision system)
-        const baseDmg = (type.includes('heavy') || type.includes('brute') || type.includes('golem') || type.includes('eel')) ? 35 : 15;
+        const baseDmg = (type.includes('heavy') || type.includes('brute') || type.includes('golem')) ? 35 : 15;
         enemy._waveDmg = Math.ceil(baseDmg * mb * ml);
 
         enemies.push(enemy);

@@ -26,7 +26,7 @@ const DIFFICULTY_CONFIG = {
     }
 };
 
-export function isInsaneDifficultyUnlocked() {
+function isInsaneDifficultyUnlocked() {
     try {
         return localStorage.getItem('dariusStar_insaneUnlocked') === 'true' ||
             localStorage.getItem('darius_star_ngplus_eligible') !== null;
@@ -35,13 +35,13 @@ export function isInsaneDifficultyUnlocked() {
     }
 }
 
-export function getDifficultyConfig(id) {
+function getDifficultyConfig(id) {
     let key = DIFFICULTY_CONFIG[id] ? id : 'normal';
     if (key === 'insane' && !isInsaneDifficultyUnlocked()) key = 'hard';
     return DIFFICULTY_CONFIG[key];
 }
 
-export function getCurrentDifficultyConfig() {
+function getCurrentDifficultyConfig() {
     return getDifficultyConfig(typeof difficulty !== 'undefined' ? difficulty : 'normal');
 }
 
@@ -51,7 +51,7 @@ window.getCurrentDifficultyConfig = getCurrentDifficultyConfig;
 window.isInsaneDifficultyUnlocked = isInsaneDifficultyUnlocked;
 
 // --- Player Ship Class ---
-export class Player {
+class Player {
     constructor(shipType = 'interceptor', playerId = 1) {
         this.x = 80;
         this.y = canvas.height / 2;

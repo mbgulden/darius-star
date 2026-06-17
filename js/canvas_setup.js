@@ -24,19 +24,3 @@ const uiBiome = document.getElementById('ui-biome');
 const uiNavigator = document.getElementById('ui-navigator');
 const uiStreamer = document.getElementById('ui-streamer');
 
-
-// ES Module bridge — publish const state to global scope
-window.GAME_HEIGHT = GAME_HEIGHT;
-window.GAME_WIDTH = GAME_WIDTH;
-window.canvas = canvas;
-window.ctx = ctx;
-window.uiBiome = uiBiome;
-window.uiBoost = uiBoost;
-window.uiDodge = uiDodge;
-window.uiNavigator = uiNavigator;
-window.uiScore = uiScore;
-window.uiScrap = uiScrap;
-window.uiShield = uiShield;
-window.uiSpecial = uiSpecial;
-window.uiStreamer = uiStreamer;
-window.uiWeapon = uiWeapon;

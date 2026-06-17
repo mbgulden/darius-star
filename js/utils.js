@@ -16,7 +16,7 @@ const SHIELD_FRAME = 512;  // shield ring frame cell size (2x2 grid)
 // frameW/frameH = dimensions of one frame cell.
 // frameX/frameY = column/row index in the sheet grid (0-indexed).
 // dx/dy/dW/dH = destination position and size on canvas.
-export function drawSpriteFrame(ctx, sprite, frameX, frameY, frameW, frameH, dx, dy, dW, dH) {
+function drawSpriteFrame(ctx, sprite, frameX, frameY, frameW, frameH, dx, dy, dW, dH) {
     const sheetW = (sprite.tagName === 'CANVAS') ? sprite.width : (sprite.naturalWidth || sprite.width || 0);
     const sheetH = (sprite.tagName === 'CANVAS') ? sprite.height : (sprite.naturalHeight || sprite.height || 0);
     if (sheetW === 0 || sheetH === 0) return;
@@ -30,7 +30,7 @@ export function drawSpriteFrame(ctx, sprite, frameX, frameY, frameW, frameH, dx,
     ctx.drawImage(sprite, sx, sy, frameW, frameH, dx, dy, dW, dH);
 }
 
-export function resizeCanvas() {
+function resizeCanvas() {
     var maxW = window.innerWidth;
     // GRO-1172: In fullscreen mode, no header/controls to account for
     var isFS = !!(document.fullscreenElement || document.webkitFullscreenElement);
@@ -40,19 +40,19 @@ export function resizeCanvas() {
     canvas.style.height = (GAME_HEIGHT * scale) + 'px';
 }
 
-export function setNarrativeFlag(key, value) {
+function setNarrativeFlag(key, value) {
     if (narrativeFlags.hasOwnProperty(key)) {
         narrativeFlags[key] = Math.max(0, narrativeFlags[key] + value);
     }
 }
 
-export function getNarrativeFlag(key) {
+function getNarrativeFlag(key) {
     return narrativeFlags[key] || 0;
 }
 
 // Determine which ending(s) the player qualifies for.
 // Returns array of eligible ending ids. If multiple, player chooses at climax.
-export function determineEnding() {
+function determineEnding() {
     const flags = narrativeFlags;
     const eligible = [];
 
@@ -85,7 +85,7 @@ export function determineEnding() {
     return eligible;
 }
 
-export function createExplosion(x, y, color, count = 12, style = null) {
+function createExplosion(x, y, color, count = 12, style = null) {
     // Map color/attributes to a default style if none specified
     if (!style) {
         const cLower = color ? color.toLowerCase() : '';
@@ -169,7 +169,7 @@ const HIT_FLASH_CONFIG = {
     boss:    { size: 48, maxFrames: 10, frameRate: 0.025, duration: 0.25, color: '#FF3333' }
 };
 
-export function spawnHitFlash(x, y, enemyType) {
+function spawnHitFlash(x, y, enemyType) {
     const cfg = HIT_FLASH_CONFIG[enemyType] || HIT_FLASH_CONFIG['scout'];
     // 5% chance of critical hit-flash (upgrade one tier)
     const isCrit = Math.random() < 0.05;
@@ -182,7 +182,7 @@ export function spawnHitFlash(x, y, enemyType) {
     });
 }
 
-export function checkCollision(rect1, rect2) {
+function checkCollision(rect1, rect2) {
     return rect1.x < rect2.x + rect2.width &&
            rect1.x + rect1.width > rect2.x &&
            rect1.y < rect2.y + rect2.height &&
@@ -231,7 +231,7 @@ const SCRAP_NARRATIVE_BEATS = [
     }
 ];
 
-export function triggerScrapNarrativeBeat() {
+function triggerScrapNarrativeBeat() {
     if (!banterEnabled || streamerMode || !window.BanterEngine || !BanterEngine.triggerDirect) return;
     if (BanterEngine.getActive && BanterEngine.getActive()) return;
 
@@ -244,7 +244,7 @@ export function triggerScrapNarrativeBeat() {
     }
 }
 
-export function startNGPlus(prevRunData) {
+function startNGPlus(prevRunData) {
     // Start a New Game+ run using previous run's completion data
     if (!window.NGPlus || !window.CampaignSave) return;
     
@@ -270,7 +270,7 @@ export function startNGPlus(prevRunData) {
     resetGame();
 }
 
-export function resetGame() {
+function resetGame() {
     score = 0;
     gameOver = false;
     singlePlayerPullOutTimer = 0; // GRO-1469: Reset 30s fallback
@@ -452,7 +452,7 @@ export function resetGame() {
     }
 }
 
-export function handleDeathOrVictoryRestart() {
+function handleDeathOrVictoryRestart() {
     let activeSaveSlot = parseInt(localStorage.getItem('dariusStar_activeSlot') || '0');
     if (gameOver && window.CampaignSave) {
         const restored = CampaignSave.restoreCheckpoint(activeSaveSlot);
@@ -483,17 +483,3 @@ export function handleDeathOrVictoryRestart() {
     resetGame();
 }
 
-
-// ES Module bridge — publish exports to global scope for cross-module access
-window.drawSpriteFrame = drawSpriteFrame;
-window.resizeCanvas = resizeCanvas;
-window.setNarrativeFlag = setNarrativeFlag;
-window.getNarrativeFlag = getNarrativeFlag;
-window.determineEnding = determineEnding;
-window.createExplosion = createExplosion;
-window.spawnHitFlash = spawnHitFlash;
-window.checkCollision = checkCollision;
-window.triggerScrapNarrativeBeat = triggerScrapNarrativeBeat;
-window.startNGPlus = startNGPlus;
-window.resetGame = resetGame;
-window.handleDeathOrVictoryRestart = handleDeathOrVictoryRestart;

@@ -242,6 +242,3 @@ const StoryBranching = {
         }
     },
 };
-
-// ES Module bridge — publish const state to global scope
-window.StoryBranching = StoryBranching;

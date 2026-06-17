@@ -27,6 +27,3 @@ const BIOME_DATA = {
     9:{ midBoss:220, biomeBoss:280 }, 10:{ midBoss:240, biomeBoss:400 }
   }
 };
-
-// ES Module bridge — publish const state to global scope
-window.BIOME_DATA = BIOME_DATA;
