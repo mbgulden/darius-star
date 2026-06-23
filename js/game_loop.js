@@ -345,40 +345,50 @@ function update(dt) {
 
     if (activeDialogue) {
         activeDialogue.update(dt);
-        bgLayers.forEach(layer => layer.update(dt));
-        stars.forEach(star => star.update(dt));
-        for (let i = envParticles.length - 1; i >= 0; i--) {
-            envParticles[i].update(dt);
-            if (!envParticles[i].alive) envParticles.splice(i, 1);
+        if (activeDialogue.isBlocking()) {
+            bgLayers.forEach(layer => layer.update(dt));
+            stars.forEach(star => star.update(dt));
+            for (let i = envParticles.length - 1; i >= 0; i--) {
+                envParticles[i].update(dt);
+                if (!envParticles[i].alive) envParticles.splice(i, 1);
+            }
+            
+            for (let i = vfxExplosions.length - 1; i >= 0; i--) {
+                vfxExplosions[i].update(dt);
+                if (!vfxExplosions[i].alive) vfxExplosions.splice(i, 1);
+            }
+            for (let i = particles.length - 1; i >= 0; i--) {
+                particles[i].update(dt);
+                if (!particles[i].alive) particles.splice(i, 1);
+            }
+            for (let i = floatingTexts.length - 1; i >= 0; i--) {
+                floatingTexts[i].update(dt);
+                if (floatingTexts[i].life <= 0) floatingTexts.splice(i, 1);
+            }
+            
+            if (uiBiome) uiBiome.innerText = activeBiomeName;
+            if (uiNavigator) {
+                if (stormActive) {
+                    uiNavigator.innerText = 'OFFLINE (COMA)';
+                    uiNavigator.style.color = '#ff0033';
+                } else if (pathfinderActive) {
+                    uiNavigator.innerText = 'LYRA (RESONATING)';
+                    uiNavigator.style.color = '#00ffff';
+                } else {
+                    uiNavigator.innerText = 'LYRA (ONLINE)';
+                    uiNavigator.style.color = '#00ff55';
+                }
+            }
+            return;
         }
-        
-        for (let i = vfxExplosions.length - 1; i >= 0; i--) {
-            vfxExplosions[i].update(dt);
-            if (!vfxExplosions[i].alive) vfxExplosions.splice(i, 1);
-        }
-        for (let i = particles.length - 1; i >= 0; i--) {
-            particles[i].update(dt);
-            if (!particles[i].alive) particles.splice(i, 1);
-        }
-        for (let i = floatingTexts.length - 1; i >= 0; i--) {
-            floatingTexts[i].update(dt);
-            if (floatingTexts[i].life <= 0) floatingTexts.splice(i, 1);
-        }
-        
-        if (uiBiome) uiBiome.innerText = activeBiomeName;
-        if (uiNavigator) {
-            if (stormActive) {
-                uiNavigator.innerText = 'OFFLINE (COMA)';
-                uiNavigator.style.color = '#ff0033';
-            } else if (pathfinderActive) {
-                uiNavigator.innerText = 'LYRA (RESONATING)';
-                uiNavigator.style.color = '#00ffff';
-            } else {
-                uiNavigator.innerText = 'LYRA (ONLINE)';
-                uiNavigator.style.color = '#00ff55';
+    } else {
+        if (typeof document !== 'undefined') {
+            const hud = document.getElementById('lyra-hud');
+            if (hud && hud.style.display !== 'none') {
+                hud.style.display = 'none';
+                hud.classList.remove('lyra-hud-active');
             }
         }
-        return;
     }
 
     if (bossDefeated) {
