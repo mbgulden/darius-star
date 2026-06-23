@@ -180,7 +180,7 @@
         buttonContainer.style.cssText =
             'display:grid; grid-template-columns:72px; grid-template-rows:48px 48px 56px; ' +
             'gap:8px; position:absolute; bottom:16px; right:16px; ' +
-            'z-index:100; pointer-events:none;';
+            'z-index:100; pointer-events:none; justify-items:end;';
         container.appendChild(buttonContainer);
 
         // SPEC weapon button — top (48x48), purple

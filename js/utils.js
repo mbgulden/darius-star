@@ -36,7 +36,9 @@ function resizeCanvas() {
     var maxW = window.innerWidth;
     // GRO-1172: In fullscreen mode, no header/controls to account for
     var isFS = !!(document.fullscreenElement || document.webkitFullscreenElement);
-    var maxH = isFS ? window.innerHeight : window.innerHeight - 120;
+    var isMobile = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+    var offset = isFS ? 0 : (isMobile ? 200 : 120);
+    var maxH = window.innerHeight - offset;
     var scale = Math.min(maxW / GAME_WIDTH, maxH / GAME_HEIGHT);
     canvas.style.width = (GAME_WIDTH * scale) + 'px';
     canvas.style.height = (GAME_HEIGHT * scale) + 'px';
