@@ -227,6 +227,124 @@
                 padding: 1px 4px;
             }
         }
+
+        /* GRO-2163: Lyra Navigator HUD DOM Overlay styles */
+        #lyra-hud {
+            position: absolute;
+            bottom: 15px;
+            left: 15px;
+            width: 520px;
+            max-width: calc(100% - 30px);
+            height: 95px;
+            background: rgba(5, 5, 16, 0.95);
+            border: 2px solid #00ffff;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
+            border-radius: 4px;
+            display: none;
+            z-index: 15;
+            box-sizing: border-box;
+            font-family: 'Courier New', Courier, monospace;
+            padding: 10px;
+            pointer-events: auto;
+            user-select: none;
+        }
+
+        @keyframes slide-in-bottom-left {
+            from {
+                transform: translate3d(-50px, 50px, 0);
+                opacity: 0;
+            }
+            to {
+                transform: translate3d(0, 0, 0);
+                opacity: 1;
+            }
+        }
+        
+        .lyra-hud-active {
+            animation: slide-in-bottom-left 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .lyra-portrait-box {
+            width: 70px;
+            height: 70px;
+            background: #020208;
+            border: 1px solid #2a2a4a;
+            position: absolute;
+            left: 12px;
+            top: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            box-sizing: border-box;
+        }
+        #lyra-portrait-img {
+            width: 100%;
+            height: 100%;
+            display: none;
+            object-fit: cover;
+        }
+        .lyra-no-signal {
+            font-size: 9px;
+            color: #ff3355;
+            text-align: center;
+            display: none;
+            font-weight: bold;
+        }
+        .lyra-content-box {
+            position: absolute;
+            left: 95px;
+            top: 10px;
+            right: 12px;
+            bottom: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            box-sizing: border-box;
+        }
+        .lyra-speaker-name {
+            font-size: 11px;
+            font-weight: bold;
+            color: #00ffff;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+            letter-spacing: 1px;
+        }
+        .lyra-dialogue-text {
+            font-size: 10px;
+            color: #ffffff;
+            line-height: 1.4;
+            white-space: pre-wrap;
+            flex-grow: 1;
+            font-weight: bold;
+        }
+        .lyra-choices {
+            display: flex;
+            gap: 20px;
+            margin-top: 4px;
+        }
+        .lyra-choice-option {
+            font-size: 10px;
+            cursor: pointer;
+            color: #8a8a9f;
+            padding: 2px 4px;
+            border: 1px solid transparent;
+            transition: all 0.15s;
+        }
+        .lyra-choice-option.selected {
+            color: #ffd700;
+            font-weight: bold;
+            border-color: rgba(255, 215, 0, 0.2);
+            background: rgba(255, 215, 0, 0.05);
+        }
+        .lyra-continue-prompt {
+            font-size: 8px;
+            color: #4a4a5f;
+            text-align: right;
+            position: absolute;
+            bottom: 0;
+            right: 0;
+        }
     </style>
 </head>
 <body>
@@ -308,6 +426,19 @@
                src="assets/cinematics/cinematic_victory.mp4" 
                playsinline preload="auto" muted></video>
         <div id="skip-cinematic-hint" class="skip-cinematic-hint">Press SPACE / ESC to skip</div>
+        <div id="lyra-hud">
+            <div class="lyra-portrait-box">
+                <img id="lyra-portrait-img" src="" alt="portrait" />
+                <img id="lyra-comms-overlay" src="assets/sprites/portraits/comms_overlay.png" alt="overlay" style="position: absolute; top:0; left:0; width:100%; height:100%; display:none; pointer-events:none;" />
+                <div id="lyra-no-signal" class="lyra-no-signal">NO SIGNAL</div>
+            </div>
+            <div class="lyra-content-box">
+                <div id="lyra-speaker-name" class="lyra-speaker-name"></div>
+                <div id="lyra-dialogue-text" class="lyra-dialogue-text"></div>
+                <div id="lyra-choices" class="lyra-choices"></div>
+                <div id="lyra-continue-prompt" class="lyra-continue-prompt">CLICK / ENTER to continue</div>
+            </div>
+        </div>
         <div id="controls-overlay">
             <button id="controls-toggle" title="System Status (F3)">⚙</button>
             <div id="controls-details">
