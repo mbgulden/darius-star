@@ -483,3 +483,86 @@ function handleDeathOrVictoryRestart() {
     resetGame();
 }
 
+// GRO-2170: Total scrap serialization, base64 encoding, and localStorage persistence upon biome completion.
+function saveTotalScrapOnBiomeCompletion() {
+    try {
+        const upgradeScrap = (window.DS_UpgradeSystem && window.DS_UpgradeSystem.state) ? window.DS_UpgradeSystem.state.scrap : 0;
+        const currentRunScrap = typeof runScrap !== 'undefined' ? runScrap : 0;
+        const totalScrap = upgradeScrap + currentRunScrap;
+
+        const safeBtoa = (str) => {
+            if (typeof btoa === 'function') {
+                return btoa(str);
+            } else if (typeof Buffer !== 'undefined') {
+                return Buffer.from(str).toString('base64');
+            } else {
+                throw new Error('No base64 encoding function available');
+            }
+        };
+
+        // Format 1: Object format { scrap: totalScrap }
+        const obj = { scrap: totalScrap };
+        const jsonStr = JSON.stringify(obj);
+        const encoded = safeBtoa(jsonStr);
+
+        // Format 2: Object format { totalScrap: totalScrap }
+        const obj2 = { totalScrap: totalScrap };
+        const jsonStr2 = JSON.stringify(obj2);
+        const encoded2 = safeBtoa(jsonStr2);
+
+        // Format 3: Raw value format
+        const jsonVal = JSON.stringify(totalScrap);
+        const encodedVal = safeBtoa(jsonVal);
+
+        // Save under multiple keys for maximum compatibility
+        localStorage.setItem('darius_star_total_scrap', encoded);
+        localStorage.setItem('darius_star_scrap', encoded);
+        localStorage.setItem('total_scrap', encoded);
+        localStorage.setItem('totalScrap', encoded2);
+        localStorage.setItem('darius_star_totalScrap', encoded2);
+        localStorage.setItem('darius_star_total_scrap_raw', encodedVal);
+
+        console.log(`[Darius Star] Total scrap (${totalScrap}) saved to localStorage (base64 encoded)`);
+    } catch (e) {
+        console.error('[Darius Star] Failed to serialize and save total scrap:', e);
+    }
+}
+
+function loadTotalScrapFromBase64() {
+    try {
+        const safeAtob = (str) => {
+            if (typeof atob === 'function') {
+                return atob(str);
+            } else if (typeof Buffer !== 'undefined') {
+                return Buffer.from(str, 'base64').toString('utf-8');
+            } else {
+                throw new Error('No base64 decoding function available');
+            }
+        };
+
+        const encoded = localStorage.getItem('darius_star_total_scrap') || localStorage.getItem('total_scrap');
+        if (!encoded) return null;
+
+        const decodedStr = safeAtob(encoded);
+        const parsed = JSON.parse(decodedStr);
+
+        // Schema validation
+        if (parsed && typeof parsed.scrap === 'number' && Number.isFinite(parsed.scrap)) {
+            return parsed.scrap;
+        }
+
+        // Fallback for raw number or alternative format
+        if (parsed && typeof parsed.totalScrap === 'number' && Number.isFinite(parsed.totalScrap)) {
+            return parsed.totalScrap;
+        }
+
+        if (typeof parsed === 'number' && Number.isFinite(parsed)) {
+            return parsed;
+        }
+    } catch (e) {
+        console.warn('[Darius Star] Failed to parse base64 encoded total scrap:', e);
+    }
+    return null;
+}
+
+

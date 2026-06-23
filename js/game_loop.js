@@ -233,6 +233,11 @@ function update(dt) {
                         _winTransition = false;
                         gameWon = true;
                         
+                        // GRO-2170: Serialize, base64 encode, and save total scrap to localStorage upon biome completion
+                        if (typeof saveTotalScrapOnBiomeCompletion === 'function') {
+                            saveTotalScrapOnBiomeCompletion();
+                        }
+                        
                         // Game completion: save state and trigger NGPlus.start()!
                         if (window.CampaignSave) {
                             let activeSaveSlot = parseInt(localStorage.getItem('dariusStar_activeSlot') || '0');

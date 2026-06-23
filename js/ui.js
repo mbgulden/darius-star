@@ -239,6 +239,11 @@ function advanceToNextBiome() {
         }
     }
     
+    // GRO-2170: Serialize, base64 encode, and save total scrap to localStorage upon biome completion
+    if (typeof saveTotalScrapOnBiomeCompletion === 'function') {
+        saveTotalScrapOnBiomeCompletion();
+    }
+    
     // Re-seed environmental particles for new biome
     envParticles.length = 0;
     envSpawnAccum = 0;

@@ -571,6 +571,9 @@
                     
                     if (biomeLevel >= 10) {
                         // Final boss — victory cinematic
+                        if (typeof saveTotalScrapOnBiomeCompletion === 'function') {
+                            saveTotalScrapOnBiomeCompletion();
+                        }
                         if (this._victoryTimeout) clearTimeout(this._victoryTimeout);
                         this._victoryTimeout = setTimeout(() => { playVictoryCinematic(); }, 3500);
                     } else {
