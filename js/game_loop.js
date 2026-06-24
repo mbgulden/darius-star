@@ -1240,6 +1240,11 @@ function draw() {
         ctx.fillText('CYBER COELACANTH', canvas.width / 2, by - 6);
     }
 
+    // GRO-2166: Draw/update active dialogue (handles DOM HUD overlay updating and canvas dimming)
+    if (typeof activeDialogue !== 'undefined' && activeDialogue) {
+        activeDialogue.draw();
+    }
+
     if (paused) {
         ctx.save();
         ctx.fillStyle = 'rgba(5, 5, 15, 0.82)';
