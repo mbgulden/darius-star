@@ -72,6 +72,13 @@ function testDialogueInterpolation() {
     assert.strictEqual(seq6.interpolate(lines6[0].choices[0].text), "Yes (350 scrap remaining)");
     assert.strictEqual(seq6.interpolate(lines6[0].choices[1].text), "No (2 lives left)");
 
+    // Test Case 7: Double brace interpolation with spaces and formatting
+    const lines7 = [
+        { speaker: 'Lyra', text: "Weapon is level {{weaponLevel}}." }
+    ];
+    const seq7 = new DialogueSequence(lines7);
+    assert.strictEqual(seq7.currentLineText, "Weapon is level 3.");
+
     console.log("All dialogue interpolation tests passed successfully!");
 }
 
