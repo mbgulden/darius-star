@@ -95,7 +95,7 @@ resizeCanvas();
 
 
 // Game state variables
-let score = 0;
+// score is now managed by GameState
 let gameOver = false;
 let singlePlayerPullOutTimer = 0; // GRO-1469: 30s gameOver fallback for stuck pull-out
 let gameWon = false;
