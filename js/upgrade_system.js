@@ -1,4 +1,5 @@
 // --- Darius Star: Cyber Coelacanth Upgrade System ---
+// Verified and finalized for scrapper economy implementation (#GRO-2168).
 
 (function() {
     const STORAGE_KEY = 'darius_star_metaprogression';
