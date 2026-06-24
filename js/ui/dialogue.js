@@ -2,12 +2,55 @@
 // DialogueBox, PortraitRenderer, CommsOverlay classes
 // Loaded after ui.js, before level_manager.js
 
+        // --- EventBus Definition (GRO-2163) ---
+        const EventBus = {
+            _listeners: {},
+            on(event, callback) {
+                if (!this._listeners[event]) this._listeners[event] = [];
+                this._listeners[event].push(callback);
+            },
+            off(event, callback) {
+                if (!this._listeners[event]) return;
+                this._listeners[event] = this._listeners[event].filter(cb => cb !== callback);
+            },
+            emit(event, data) {
+                const cbs = this._listeners[event];
+                if (cbs) {
+                    cbs.forEach(cb => {
+                        try { cb(data); } catch (e) { console.error("EventBus error:", e); }
+                    });
+                }
+            }
+        };
+        if (typeof window !== 'undefined') window.EventBus = EventBus;
+        if (typeof global !== 'undefined') global.EventBus = EventBus;
+
         // --- Dialogue System Classes & Data ---
-        let activeDialogue = null;
-        let dialogueCompletedScenes = {};
+        let _activeDialogue = null;
+        let _dialogueCompletedScenes = {};
+
+        const propConfig = {
+            get() { return _activeDialogue; },
+            set(val) { _activeDialogue = val; },
+            configurable: true
+        };
+        const scenesConfig = {
+            get() { return _dialogueCompletedScenes; },
+            set(val) { _dialogueCompletedScenes = val; },
+            configurable: true
+        };
+
+        if (typeof window !== 'undefined') {
+            Object.defineProperty(window, 'activeDialogue', propConfig);
+            Object.defineProperty(window, 'dialogueCompletedScenes', scenesConfig);
+        }
+        if (typeof global !== 'undefined') {
+            Object.defineProperty(global, 'activeDialogue', propConfig);
+            Object.defineProperty(global, 'dialogueCompletedScenes', scenesConfig);
+        }
 
         class DialogueSequence {
-            constructor(lines, onChoiceCallback = null) {
+            constructor(lines, onChoiceCallback = null, blocking = true) {
                 this.lines = lines;
                 this.currentLineIndex = 0;
                 this.typedText = "";
@@ -17,7 +60,71 @@
                 this.onChoice = onChoiceCallback;
                 this.selectedChoiceIndex = 0;
                 this.soundCooldown = 0;
+                this.currentLineText = "";
+                this.blocking = blocking;
+
+                if (typeof document !== 'undefined') {
+                    const hud = document.getElementById('lyra-hud');
+                    if (hud) {
+                        hud.onclick = (e) => {
+                            const l = this.lines[this.currentLineIndex];
+                            if (l && l.choices && this.charIndex >= this.currentLineText.length) {
+                                // Wait for choice select click
+                            } else {
+                                playSound('menu_select');
+                                this.next();
+                            }
+                        };
+                        hud.classList.remove('lyra-hud-active');
+                        void hud.offsetWidth; // force reflow
+                        hud.classList.add('lyra-hud-active');
+                    }
+                }
+
                 this.initLine();
+            }
+
+            isBlocking() {
+                const line = this.lines[this.currentLineIndex];
+                if (line && line.choices) return true;
+                return this.blocking;
+            }
+
+            interpolate(text) {
+                if (typeof text !== 'string') return text;
+                return text.replace(/\{\{(\w+)\}\}|\{(\w+)\}/g, (match, p1, p2) => {
+                    const key = p1 || p2;
+                    switch (key) {
+                        case 'scrap':
+                        case 'runScrap':
+                            return (typeof runScrap !== 'undefined') ? runScrap : 0;
+                        case 'score':
+                            return (typeof score !== 'undefined') ? score : 0;
+                        case 'biome':
+                            return (typeof activeBiomeName !== 'undefined') ? activeBiomeName : (typeof biomeLevel !== 'undefined' ? biomeLevel : 1);
+                        case 'weaponLevel':
+                            return (typeof player !== 'undefined' && player) ? player.weaponLevel : 1;
+                        case 'shield':
+                            return (typeof player !== 'undefined' && player) ? player.shield : 100;
+                        case 'shieldMax':
+                            return (typeof player !== 'undefined' && player) ? player.shieldMax : 100;
+                        case 'ship':
+                            return (typeof player !== 'undefined' && player) ? player.shipType : 'interceptor';
+                        case 'lives':
+                            return (typeof lives !== 'undefined') ? lives : 3;
+                        case 'permanentScrap':
+                        case 'upgradeScrap':
+                            return (window.DS_UpgradeSystem && window.DS_UpgradeSystem.state) ? window.DS_UpgradeSystem.state.scrap : 0;
+                        default:
+                            if (typeof window !== 'undefined' && window[key] !== undefined) {
+                                return window[key];
+                            }
+                            if (typeof global !== 'undefined' && global[key] !== undefined) {
+                                return global[key];
+                            }
+                            return match;
+                    }
+                });
             }
 
             initLine() {
@@ -26,8 +133,13 @@
                 this.typeTimer = 0;
                 this.soundCooldown = 0;
                 const line = this.lines[this.currentLineIndex];
-                if (line && line.onStart) {
-                    line.onStart();
+                if (line) {
+                    this.currentLineText = this.interpolate(line.text);
+                    if (line.onStart) {
+                        line.onStart();
+                    }
+                } else {
+                    this.currentLineText = "";
                 }
             }
 
@@ -35,11 +147,11 @@
                 const line = this.lines[this.currentLineIndex];
                 if (!line) return;
 
-                if (this.charIndex < line.text.length) {
+                if (this.charIndex < this.currentLineText.length) {
                     this.typeTimer += dt;
                     if (this.typeTimer >= this.typeSpeed) {
                         this.typeTimer = 0;
-                        this.typedText += line.text[this.charIndex];
+                        this.typedText += this.currentLineText[this.charIndex];
                         this.charIndex++;
                         
                         this.soundCooldown -= dt;
@@ -55,91 +167,112 @@
                 const line = this.lines[this.currentLineIndex];
                 if (!line) return;
 
-                ctx.save();
-                ctx.fillStyle = 'rgba(0, 0, 0, 0.45)';
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                if (typeof document !== 'undefined') {
+                    const hud = document.getElementById('lyra-hud');
+                    if (hud) {
+                        // Show HUD if hidden
+                        if (hud.style.display !== 'block') {
+                            hud.style.display = 'block';
+                        }
 
-                const boxX = 60;
-                const boxY = canvas.height - 135;
-                const boxW = canvas.width - 120;
-                const boxH = 95;
+                        // Determine theme color based on speaker
+                        let speakerColor = '#ffaa00';
+                        if (line.speaker === 'Lyra') speakerColor = '#00ffff';
+                        else if (line.speaker === 'Cross') speakerColor = '#ff00ff';
+                        else if (line.speaker === 'Thorne') speakerColor = '#00ff55';
 
-                // Glowing border box
-                ctx.fillStyle = 'rgba(8, 8, 20, 0.9)';
-                ctx.fillRect(boxX, boxY, boxW, boxH);
-                ctx.strokeStyle = line.speaker === 'Lyra' ? '#00ffff' : (line.speaker === 'Cross' ? '#ff00ff' : (line.speaker === 'Thorne' ? '#00ff55' : '#ffaa00'));
-                ctx.shadowColor = ctx.strokeStyle;
-                ctx.shadowBlur = 6;
-                ctx.lineWidth = 2;
-                ctx.strokeRect(boxX, boxY, boxW, boxH);
-                ctx.shadowBlur = 0;
+                        hud.style.borderColor = speakerColor;
+                        hud.style.boxShadow = `0 0 15px ${speakerColor}`;
 
-                // Character Name Header
-                ctx.fillStyle = ctx.strokeStyle;
-                ctx.font = 'bold 11px monospace';
-                ctx.textAlign = 'left';
-                ctx.fillText(line.speaker.toUpperCase(), boxX + 110, boxY + 22);
+                        const speakerNameEl = document.getElementById('lyra-speaker-name');
+                        if (speakerNameEl) {
+                            speakerNameEl.innerText = line.speaker.toUpperCase();
+                            speakerNameEl.style.color = speakerColor;
+                        }
 
-                // Portrait Box
-                const px = boxX + 12;
-                const py = boxY + 12;
-                const pSize = 70;
-                ctx.fillStyle = '#020208';
-                ctx.fillRect(px, py, pSize, pSize);
-                ctx.strokeStyle = '#2a2a4a';
-                ctx.lineWidth = 1;
-                ctx.strokeRect(px, py, pSize, pSize);
+                        // Handle portrait
+                        const imgEl = document.getElementById('lyra-portrait-img');
+                        const noSignalEl = document.getElementById('lyra-no-signal');
 
-                let showPortrait = true;
-                if (stormActive && line.speaker === 'Lyra') {
-                    showPortrait = false; // Lyra offline / blank during Biomes 7-8 coma
-                }
+                        let showPortrait = true;
+                        if (stormActive && line.speaker === 'Lyra') {
+                            showPortrait = false; // Lyra offline / blank during Biomes 7-8 coma
+                        }
 
-                if (showPortrait && line.portrait && portraitSprites[line.portrait] && portraitSprites[line.portrait].complete && portraitSprites[line.portrait].naturalWidth > 0) {
-                    ctx.drawImage(portraitSprites[line.portrait], px, py, pSize, pSize);
-                    if (portraitSprites['comms_overlay'] && portraitSprites['comms_overlay'].complete) {
-                        ctx.drawImage(portraitSprites['comms_overlay'], px, py, pSize, pSize);
+                        if (showPortrait && line.portrait && portraitSprites[line.portrait] && portraitSprites[line.portrait].complete && portraitSprites[line.portrait].naturalWidth > 0) {
+                            if (imgEl) {
+                                imgEl.src = portraitSprites[line.portrait].src;
+                                imgEl.style.display = 'block';
+                            }
+                            if (noSignalEl) noSignalEl.style.display = 'none';
+                        } else {
+                            if (imgEl) imgEl.style.display = 'none';
+                            if (noSignalEl) noSignalEl.style.display = 'block';
+                        }
+
+                        // Comms overlay
+                        const commsOverlayEl = document.getElementById('lyra-comms-overlay');
+                        if (showPortrait && line.portrait) {
+                            if (portraitSprites['comms_overlay'] && portraitSprites['comms_overlay'].complete && portraitSprites['comms_overlay'].naturalWidth > 0) {
+                                if (commsOverlayEl) {
+                                    commsOverlayEl.style.display = 'block';
+                                    commsOverlayEl.src = portraitSprites['comms_overlay'].src;
+                                }
+                            }
+                        } else {
+                            if (commsOverlayEl) commsOverlayEl.style.display = 'none';
+                        }
+
+                        // Dialogue Text
+                        const textEl = document.getElementById('lyra-dialogue-text');
+                        if (textEl) {
+                            textEl.innerText = this.typedText;
+                        }
+
+                        // Choices or continue prompt
+                        const choicesEl = document.getElementById('lyra-choices');
+                        const promptEl = document.getElementById('lyra-continue-prompt');
+
+                        if (line.choices && this.charIndex >= this.currentLineText.length) {
+                            if (promptEl) promptEl.style.display = 'none';
+                            if (choicesEl) {
+                                choicesEl.style.display = 'flex';
+                                choicesEl.innerHTML = '';
+                                line.choices.forEach((choice, idx) => {
+                                    const isSelected = this.selectedChoiceIndex === idx;
+                                    const option = document.createElement('div');
+                                    option.className = 'lyra-choice-option' + (isSelected ? ' selected' : '');
+                                    option.innerText = (isSelected ? "> " : "  ") + this.interpolate(choice.text);
+                                    option.onclick = (e) => {
+                                        e.stopPropagation();
+                                        this.selectedChoiceIndex = idx;
+                                        playSound('menu_click');
+                                        this.next();
+                                    };
+                                    choicesEl.appendChild(option);
+                                });
+                            }
+                        } else {
+                            if (choicesEl) choicesEl.style.display = 'none';
+                            if (promptEl) promptEl.style.display = 'block';
+                        }
                     }
-                } else {
-                    ctx.fillStyle = '#100505';
-                    ctx.fillRect(px + 4, py + 4, pSize - 8, pSize - 8);
-                    ctx.fillStyle = '#ff3355';
-                    ctx.font = '9px monospace';
-                    ctx.textAlign = 'center';
-                    ctx.fillText('NO SIGNAL', px + pSize / 2, py + pSize / 2 + 3);
                 }
 
-                // Dialogue Text
-                ctx.fillStyle = '#ffffff';
-                ctx.font = '10px monospace';
-                ctx.textAlign = 'left';
-                wrapText(ctx, this.typedText, boxX + 110, boxY + 38, boxW - 130, 14);
-
-                // Choices or continue prompt
-                if (line.choices && this.charIndex >= line.text.length) {
-                    const startChoiceY = boxY + 74;
-                    line.choices.forEach((choice, idx) => {
-                        const isSelected = this.selectedChoiceIndex === idx;
-                        ctx.fillStyle = isSelected ? '#ffd700' : '#8a8a9f';
-                        ctx.font = isSelected ? 'bold 10px monospace' : '10px monospace';
-                        const optionText = (isSelected ? "> " : "  ") + choice.text;
-                        ctx.fillText(optionText, boxX + 110 + idx * 210, startChoiceY);
-                    });
-                } else {
-                    ctx.fillStyle = '#4a4a5f';
-                    ctx.font = '8px monospace';
-                    ctx.textAlign = 'right';
-                    ctx.fillText('CLICK / ENTER to continue', boxX + boxW - 12, boxY + boxH - 8);
+                // Call canvas dimming only if blocking dialogue
+                if (this.isBlocking() && typeof ctx !== 'undefined' && ctx.fillRect && typeof canvas !== 'undefined') {
+                    ctx.save();
+                    ctx.fillStyle = 'rgba(0, 0, 0, 0.45)';
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    ctx.restore();
                 }
-
-                ctx.restore();
             }
 
             next() {
                 const line = this.lines[this.currentLineIndex];
                 if (!line) return;
 
-                if (line.choices && this.charIndex >= line.text.length) {
+                if (line.choices && this.charIndex >= this.currentLineText.length) {
                     const selected = line.choices[this.selectedChoiceIndex];
                     if (this.onChoice) {
                         this.onChoice(selected.value);
@@ -147,9 +280,9 @@
                     return;
                 }
 
-                if (this.charIndex < line.text.length) {
-                    this.typedText = line.text;
-                    this.charIndex = line.text.length;
+                if (this.charIndex < this.currentLineText.length) {
+                    this.typedText = this.currentLineText;
+                    this.charIndex = this.currentLineText.length;
                     return;
                 }
 
@@ -160,6 +293,13 @@
                 this.currentLineIndex++;
                 if (this.currentLineIndex >= this.lines.length) {
                     activeDialogue = null;
+                    if (typeof document !== 'undefined') {
+                        const hud = document.getElementById('lyra-hud');
+                        if (hud) {
+                            hud.style.display = 'none';
+                            hud.classList.remove('lyra-hud-active');
+                        }
+                    }
                 } else {
                     this.initLine();
                 }
@@ -169,7 +309,7 @@
                 const line = this.lines[this.currentLineIndex];
                 if (!line) return;
 
-                if (line.choices && this.charIndex >= line.text.length) {
+                if (line.choices && this.charIndex >= this.currentLineText.length) {
                     if (key === 'ArrowLeft' || key === 'a' || key === 'A') {
                         this.selectedChoiceIndex = 0;
                         playSound('menu_select');
@@ -187,6 +327,16 @@
                     }
                 }
             }
+        }
+
+        if (typeof window !== 'undefined') {
+            window.DialogueSequence = DialogueSequence;
+        }
+        if (typeof global !== 'undefined') {
+            global.DialogueSequence = DialogueSequence;
+        }
+        if (typeof module !== 'undefined' && module.exports) {
+            module.exports = { DialogueSequence };
         }
 
         const DIALOGUE_SCENES = {
@@ -527,6 +677,7 @@
             },
             scene4: {
                 triggerScore: 1810,
+                blocking: false,
                 lines: [
                     {
                         speaker: 'System',
@@ -556,6 +707,7 @@
             },
             scene5: {
                 triggerScore: 2410,
+                blocking: false,
                 lines: [
                     {
                         speaker: 'System',
@@ -602,9 +754,28 @@
             }
         };
 
+        // Event-driven dialogue triggering (GRO-2163)
+        if (typeof EventBus !== 'undefined') {
+            EventBus.on('score:changed', (newScore) => {
+                for (const sceneKey in DIALOGUE_SCENES) {
+                    const scene = DIALOGUE_SCENES[sceneKey];
+                    if (newScore >= scene.triggerScore && !dialogueCompletedScenes[sceneKey] && !activeDialogue) {
+                        dialogueCompletedScenes[sceneKey] = true;
+                        const isSceneBlocking = scene.blocking !== undefined ? scene.blocking : true;
+                        activeDialogue = new DialogueSequence(scene.lines, scene.onChoice, isSceneBlocking);
+                        break;
+                    }
+                }
+            });
+        }
+
         function updateActiveBiome(dt, score) {
             let oldBiome = activeBiomeName;
             let oldBiomeLevel = biomeLevel;
+
+            if (typeof EventBus !== 'undefined') {
+                EventBus.emit('score:changed', score);
+            }
 
             if (window.LevelManager) {
                 LevelManager.update(dt, score);

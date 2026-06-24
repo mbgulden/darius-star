@@ -393,21 +393,23 @@
 
                     ctx.restore();
                 } else {
-                    // Fallback to sprite-based animation
-                    const key = 'explosion_0';
+                    // Fallback to sprite-based animation (loaded as pre-sliced frames)
+                    let variant = 0;
+                    if (this.style && this.style.startsWith('explosion_')) {
+                        const part = this.style.split('_')[1];
+                        const parsed = parseInt(part, 10);
+                        if (!isNaN(parsed) && parsed >= 0 && parsed <= 3) {
+                            variant = parsed;
+                        }
+                    }
+                    const frameIdx = Math.min(3, this.frame);
+                    const key = `explosion_${variant}_${frameIdx}`;
                     const sprite = vfxSprites[key];
                     const hasSprite = sprite && (sprite.width > 0 || (sprite.complete && sprite.naturalWidth > 0));
                     if (hasSprite) {
-                        const sw = sprite.naturalWidth || sprite.width;
-                        const sh = sprite.naturalHeight || sprite.height;
-                        const fw = sw / 2;
-                        const fh = sh / 2;
-                        const col = this.frame % 2;
-                        const row = Math.floor(this.frame / 2);
                         ctx.save();
                         ctx.globalAlpha = 0.9;
                         ctx.drawImage(sprite,
-                            col * fw, row * fh, fw, fh,
                             this.x - this.size / 2,
                             this.y - this.size / 2,
                             this.size, this.size);

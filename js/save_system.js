@@ -9,6 +9,42 @@
     const STORAGE_KEY = 'darius_star_saves';
     const MAX_SLOTS = 3;
 
+    // Schema validation helper
+    function validateSave(saveData) {
+        if (!saveData || typeof saveData !== 'object') return false;
+        
+        // Required keys check
+        const requiredKeys = ['wave', 'ship', 'scrap', 'score', 'lives', 'difficulty', 'upgrades'];
+        for (const key of requiredKeys) {
+            if (!(key in saveData)) return false;
+        }
+
+        // Check that either biome or biomeLevel is present as a number
+        const hasBiome = ('biome' in saveData && typeof saveData.biome === 'number' && !isNaN(saveData.biome)) ||
+                         ('biomeLevel' in saveData && typeof saveData.biomeLevel === 'number' && !isNaN(saveData.biomeLevel));
+        if (!hasBiome) return false;
+
+        // Type checks
+        if (typeof saveData.wave !== 'number' || isNaN(saveData.wave)) return false;
+        if (typeof saveData.ship !== 'string') return false;
+        if (typeof saveData.scrap !== 'number' || isNaN(saveData.scrap)) return false;
+        if (typeof saveData.score !== 'number' || isNaN(saveData.score)) return false;
+        if (typeof saveData.lives !== 'number' || isNaN(saveData.lives)) return false;
+        if (typeof saveData.difficulty !== 'string') return false;
+        if (typeof saveData.upgrades !== 'object' || saveData.upgrades === null) return false;
+
+        // Checkpoint check (if present)
+        if (saveData.lastCheckpoint) {
+            const cp = saveData.lastCheckpoint;
+            if (typeof cp !== 'object' || cp === null) return false;
+            if (typeof cp.biome !== 'number' || isNaN(cp.biome)) return false;
+            if (typeof cp.wave !== 'number' || isNaN(cp.wave)) return false;
+            if (typeof cp.lives !== 'number' || isNaN(cp.lives)) return false;
+        }
+
+        return true;
+    }
+
     /**
      * Create a blank/default save object with all expected fields.
      * Mirrors the shape that index.html reads from during game start/resume.
@@ -52,16 +88,44 @@
      * Always returns a 3-element array (null for empty slots).
      */
     function _readAll() {
+        let raw = null;
         try {
-            const raw = localStorage.getItem(STORAGE_KEY);
+            raw = localStorage.getItem(STORAGE_KEY);
+            if (!raw) {
+                // Try reading the singular key too, just in case
+                raw = localStorage.getItem('darius_star_save');
+            }
             if (!raw) return [null, null, null];
+            
             const parsed = JSON.parse(raw);
-            // Ensure it's an array of exactly 3 slots
-            if (!Array.isArray(parsed)) return [null, null, null];
-            while (parsed.length < MAX_SLOTS) parsed.push(null);
-            return parsed.slice(0, MAX_SLOTS);
+            if (!Array.isArray(parsed)) {
+                // Check if it's a single save object (non-array)
+                if (typeof parsed === 'object' && parsed !== null) {
+                    if (validateSave(parsed)) {
+                        return [parsed, null, null];
+                    }
+                }
+                throw new Error("Invalid saves format (not an array)");
+            }
+            
+            // Validate each slot
+            const validated = parsed.map(slot => {
+                if (slot === null) return null;
+                if (validateSave(slot)) return slot;
+                // Corrupted save slot detected!
+                window.CampaignSave.pendingCorruptionNotice = true;
+                return null;
+            });
+            
+            while (validated.length < MAX_SLOTS) validated.push(null);
+            return validated.slice(0, MAX_SLOTS);
         } catch (e) {
             console.warn('CampaignSave: failed to read saves, resetting.', e);
+            window.CampaignSave.pendingCorruptionNotice = true;
+            try {
+                localStorage.removeItem(STORAGE_KEY);
+                localStorage.removeItem('darius_star_save');
+            } catch (ex) {}
             return [null, null, null];
         }
     }
@@ -271,8 +335,9 @@
         restoreCheckpoint: restoreCheckpoint,
         autosave: autosave,
         STORAGE_KEY: STORAGE_KEY,
-        MAX_SLOTS: MAX_SLOTS
+        MAX_SLOTS: MAX_SLOTS,
+        pendingCorruptionNotice: false
     };
 
-    console.log('[CampaignSave] save_system.js loaded — full implementation (GRO-1090)');
+    console.log('[CampaignSave] save_system.js loaded — full implementation (GRO-1090, GRO-2171)');
 })();

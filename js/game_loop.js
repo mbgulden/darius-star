@@ -88,6 +88,18 @@ window.addEventListener('DOMContentLoaded', () => {
                 // GRO-1054: Wire scrap/upgrade events into banter system
                 BanterEngine.initScrapEvents();
             }
+            if (window.CampaignSave && window.CampaignSave.pendingCorruptionNotice) {
+                window.CampaignSave.pendingCorruptionNotice = false;
+                if (typeof DialogueSequence !== 'undefined') {
+                    activeDialogue = new DialogueSequence([
+                        {
+                            speaker: 'Lyra',
+                            portrait: 'lyra_reactive',
+                            text: 'Warning: I detected corrupted telemetry save data. It has been repaired and reset to a fresh state to prevent a system crash.'
+                        }
+                    ]);
+                }
+            }
         }, 100);
     }
 });
@@ -233,6 +245,11 @@ function update(dt) {
                         _winTransition = false;
                         gameWon = true;
                         
+                        // GRO-2170: Serialize, base64 encode, and save total scrap to localStorage upon biome completion
+                        if (typeof saveTotalScrapOnBiomeCompletion === 'function') {
+                            saveTotalScrapOnBiomeCompletion();
+                        }
+                        
                         // Game completion: save state and trigger NGPlus.start()!
                         if (window.CampaignSave) {
                             let activeSaveSlot = parseInt(localStorage.getItem('dariusStar_activeSlot') || '0');
@@ -328,40 +345,50 @@ function update(dt) {
 
     if (activeDialogue) {
         activeDialogue.update(dt);
-        bgLayers.forEach(layer => layer.update(dt));
-        stars.forEach(star => star.update(dt));
-        for (let i = envParticles.length - 1; i >= 0; i--) {
-            envParticles[i].update(dt);
-            if (!envParticles[i].alive) envParticles.splice(i, 1);
+        if (activeDialogue.isBlocking()) {
+            bgLayers.forEach(layer => layer.update(dt));
+            stars.forEach(star => star.update(dt));
+            for (let i = envParticles.length - 1; i >= 0; i--) {
+                envParticles[i].update(dt);
+                if (!envParticles[i].alive) envParticles.splice(i, 1);
+            }
+            
+            for (let i = vfxExplosions.length - 1; i >= 0; i--) {
+                vfxExplosions[i].update(dt);
+                if (!vfxExplosions[i].alive) vfxExplosions.splice(i, 1);
+            }
+            for (let i = particles.length - 1; i >= 0; i--) {
+                particles[i].update(dt);
+                if (!particles[i].alive) particles.splice(i, 1);
+            }
+            for (let i = floatingTexts.length - 1; i >= 0; i--) {
+                floatingTexts[i].update(dt);
+                if (floatingTexts[i].life <= 0) floatingTexts.splice(i, 1);
+            }
+            
+            if (uiBiome) uiBiome.innerText = activeBiomeName;
+            if (uiNavigator) {
+                if (stormActive) {
+                    uiNavigator.innerText = 'OFFLINE (COMA)';
+                    uiNavigator.style.color = '#ff0033';
+                } else if (pathfinderActive) {
+                    uiNavigator.innerText = 'LYRA (RESONATING)';
+                    uiNavigator.style.color = '#00ffff';
+                } else {
+                    uiNavigator.innerText = 'LYRA (ONLINE)';
+                    uiNavigator.style.color = '#00ff55';
+                }
+            }
+            return;
         }
-        
-        for (let i = vfxExplosions.length - 1; i >= 0; i--) {
-            vfxExplosions[i].update(dt);
-            if (!vfxExplosions[i].alive) vfxExplosions.splice(i, 1);
-        }
-        for (let i = particles.length - 1; i >= 0; i--) {
-            particles[i].update(dt);
-            if (!particles[i].alive) particles.splice(i, 1);
-        }
-        for (let i = floatingTexts.length - 1; i >= 0; i--) {
-            floatingTexts[i].update(dt);
-            if (floatingTexts[i].life <= 0) floatingTexts.splice(i, 1);
-        }
-        
-        if (uiBiome) uiBiome.innerText = activeBiomeName;
-        if (uiNavigator) {
-            if (stormActive) {
-                uiNavigator.innerText = 'OFFLINE (COMA)';
-                uiNavigator.style.color = '#ff0033';
-            } else if (pathfinderActive) {
-                uiNavigator.innerText = 'LYRA (RESONATING)';
-                uiNavigator.style.color = '#00ffff';
-            } else {
-                uiNavigator.innerText = 'LYRA (ONLINE)';
-                uiNavigator.style.color = '#00ff55';
+    } else {
+        if (typeof document !== 'undefined') {
+            const hud = document.getElementById('lyra-hud');
+            if (hud && hud.style.display !== 'none') {
+                hud.style.display = 'none';
+                hud.classList.remove('lyra-hud-active');
             }
         }
-        return;
     }
 
     if (bossDefeated) {
@@ -1475,6 +1502,10 @@ function draw() {
         ctx.fillText('whatanadventure.games/darius-star', canvas.width / 2, canvas.height / 2 + 138);
     }
 
+    if (typeof activeDialogue !== 'undefined' && activeDialogue) {
+        activeDialogue.draw();
+    }
+
     if (screenFadeAlpha > 0) {
         ctx.save();
         ctx.fillStyle = `rgba(0, 0, 0, ${screenFadeAlpha})`;
@@ -1607,11 +1638,12 @@ canvas.addEventListener('click', e => {
         startMenuMusic();
     }
 
+    if (typeof activeDialogue !== 'undefined' && activeDialogue) {
+        activeDialogue.next();
+        return;
+    }
+
     if (currentScreen === SCREENS.PLAYING) {
-        if (typeof activeDialogue !== 'undefined' && activeDialogue) {
-            activeDialogue.next();
-            return;
-        }
         if (gameOver || gameWon) {
             handleDeathOrVictoryRestart();
         }
