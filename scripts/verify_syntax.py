@@ -217,7 +217,10 @@ def main(argv: list[str] | None = None) -> int:
     passes = 0
 
     for path in targets:
-        rel = path.relative_to(REPO_ROOT) if path.is_absolute() else path
+        try:
+            rel = path.relative_to(REPO_ROOT) if path.is_absolute() else path
+        except ValueError:
+            rel = path
         if path.name == "index.html":
             ok, msgs = check_index_html(verbose=args.verbose)
             label = "index.html"
