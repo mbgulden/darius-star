@@ -273,6 +273,9 @@
     </div>
 
     <script src="upgrade_system.js"></script>
+    <script src="js/parallax.js"></script>
+    <script src="js/environment.js"></script>
+    <script src="js/scrap.js"></script>
     <script>
         // --- Web Audio Synthesizer ---
         let audioCtx = null;
@@ -2679,81 +2682,6 @@
         }
 
         // --- ScrapDrop Class ---
-        class ScrapDrop {
-            constructor(x, y, type) {
-                this.x = x;
-                this.y = y;
-                this.type = type; // 'metal', 'cell', 'fragment'
-                this.width = 12;
-                this.height = 12;
-                this.vx = (Math.random() - 0.5) * 60 - 50; // drifting left
-                this.vy = (Math.random() - 0.5) * 80;
-                this.spin = Math.random() * Math.PI;
-                this.spinSpeed = 2 + Math.random() * 4;
-                
-                if (type === 'metal') {
-                    this.value = Math.floor(10 + Math.random() * 41); // 10-50
-                    this.color = '#c0c0c0'; // silver/grey
-                } else if (type === 'cell') {
-                    this.value = Math.floor(100 + Math.random() * 151); // 100-250
-                    this.color = '#00ffff'; // neon cyan
-                } else if (type === 'fragment') {
-                    this.value = Math.floor(500 + Math.random() * 501); // 500-1000
-                    this.color = '#ff00ff'; // neon purple
-                }
-            }
-            update(dt) {
-                // Apply magnetic pull toward player
-                const dx = player.x + player.width/2 - this.x;
-                const dy = player.y + player.height/2 - this.y;
-                const dist = Math.sqrt(dx*dx + dy*dy);
-                
-                const magnetRadius = 100;
-                if (dist < magnetRadius) {
-                    const pullForce = 350 * (1 - dist / magnetRadius);
-                    this.vx += (dx / dist) * pullForce * dt;
-                    this.vy += (dy / dist) * pullForce * dt;
-                } else {
-                    this.vx = this.vx * 0.98;
-                    this.vy = this.vy * 0.98;
-                    this.x -= 40 * dt;
-                }
-                
-                this.x += this.vx * dt;
-                this.y += this.vy * dt;
-                this.spin += this.spinSpeed * dt;
-            }
-            draw() {
-                ctx.save();
-                ctx.translate(this.x, this.y);
-                ctx.rotate(this.spin);
-                
-                ctx.shadowColor = this.color;
-                ctx.shadowBlur = 8;
-                ctx.fillStyle = this.color;
-                
-                if (this.type === 'metal') {
-                    ctx.beginPath();
-                    for(let i=0; i<6; i++) {
-                        const angle = i * Math.PI / 3;
-                        ctx.lineTo(Math.cos(angle)*6, Math.sin(angle)*6);
-                    }
-                    ctx.closePath();
-                    ctx.fill();
-                } else if (this.type === 'cell') {
-                    ctx.fillRect(-3, -6, 6, 12);
-                    ctx.fillStyle = '#ffffff';
-                    ctx.fillRect(-1, -4, 2, 8);
-                } else if (this.type === 'fragment') {
-                    ctx.fillRect(-5, -5, 10, 10);
-                    ctx.strokeStyle = '#ffffff';
-                    ctx.lineWidth = 1;
-                    ctx.strokeRect(-5, -5, 10, 10);
-                }
-                
-                ctx.restore();
-            }
-        }
 
         // --- FloatingText Class ---
         class FloatingText {
@@ -2818,42 +2746,6 @@
             }
         }
 
-        class ParallaxLayer {
-            constructor(key, speed, yOffset = 0, alpha = 1.0, scale = 1.0) {
-                this.key = key;          // Image key in bgImages — lazy-resolved at draw time
-                this.speed = speed;
-                this.yOffset = yOffset;
-                this.alpha = alpha;
-                this.scale = scale;
-                this.offset = 0;
-            }
-
-            getImg() {
-                // Lazy-resolve: bgImages is populated asynchronously by ensureBackgroundImages()
-                return bgImages[this.key] || null;
-            }
-
-            update(dt) {
-                const img = this.getImg();
-                this.offset = (this.offset + this.speed * dt) % (img ? img.width : canvas.width);
-            }
-
-            draw() {
-                const img = this.getImg();
-                if (!img || !img.complete || img.naturalWidth === 0) return;
-                ctx.save();
-                ctx.globalAlpha = this.alpha;
-                const w = img.width * this.scale;
-                const h = img.height * this.scale;
-                // Tile horizontally for seamless scroll
-                const drawX = -this.offset;
-                const count = Math.ceil(canvas.width / w) + 1;
-                for (let i = 0; i < count; i++) {
-                    ctx.drawImage(img, drawX + i * w, this.yOffset, w, h);
-                }
-                ctx.restore();
-            }
-        }
 
         // --- Player Sprite Preloading ---
         const playerSprites = {};
@@ -3017,28 +2909,6 @@
         }
 
         // --- Deep-sea particle layer (ambient drift) ---
-        class SeaParticle {
-            constructor() {
-                this.reset(true);
-            }
-            reset(initial = false) {
-                this.x = initial ? Math.random() * canvas.width : canvas.width + 20;
-                this.y = Math.random() * canvas.height;
-                this.size = 0.6 + Math.random() * 2.5;
-                this.speed = 8 + Math.random() * 25;
-                this.drift = (Math.random() - 0.5) * 12;
-                this.alpha = 0.05 + Math.random() * 0.18;
-                this.color = Math.random() < 0.3 ? '#00ffaa' : '#3388aa';
-            }
-            update(dt) {
-                this.x -= this.speed * dt;
-                this.y += this.drift * dt;
-                if (this.y < 0) this.y = canvas.height;
-                if (this.y > canvas.height) this.y = 0;
-                if (this.x < -10) this.reset();
-            }
-            draw() {} // No-op — rendered via offscreen buffer
-        }
 
         // Offscreen buffer for sea particles (redrawn every 200ms)
         const seaBuffer = new OffscreenBuffer(canvas.width, canvas.height);
@@ -3074,7 +2944,7 @@
 
         // Deep-sea ambient particles
         const seaParticles = [];
-        for (let i = 0; i < 45; i++) seaParticles.push(new SeaParticle());
+        for (let i = 0; i < 45; i++) seaParticles.push(new EnvironmentParticle());
 
         let boss = null;
         let enemySpawnTimer = 1.2;
