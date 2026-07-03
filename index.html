@@ -63,7 +63,7 @@
             max-height: calc(100vh - 120px);
         }
 
-        window.canvas {
+        canvas {
             display: block;
             background: #000;
             /* Responsive scaling: fit viewport, maintain 16:9 */
@@ -82,7 +82,7 @@
             line-height: 1.4;
         }
 
-        /* Cinematic video overlay — full-size over the window.canvas */
+        /* Cinematic video overlay — full-size over the canvas */
         .cinematic-video-overlay {
             position: absolute;
             top: 0;
@@ -232,7 +232,7 @@
     <h1>DARIUS STAR: CYBER COELACANTH</h1>
     <div class="studio-credit">A <a href="https://whatanadventure.games" target="_blank">What An Adventure</a> Game</div>
     <div id="game-container">
-        <window.canvas id="gameCanvas" width="800" height="450"></window.canvas>
+        <canvas id="gameCanvas" width="800" height="450"></canvas>
         <video id="boss-intro-video" class="cinematic-video-overlay" 
                src="assets/cinematics/cinematic_boss_intro.mp4" 
                playsinline preload="auto" muted></video>
@@ -405,7 +405,7 @@
         window.canvas = document.getElementById('gameCanvas');
         window.ctx = window.canvas.getContext('2d');
 
-        // Responsive window.canvas: maintain internal 800x450, scale display via CSS
+        // Responsive canvas: maintain internal 800x450, scale display via CSS
         const GAME_WIDTH = 800;
         const GAME_HEIGHT = 450;
         window.canvas.width = GAME_WIDTH;
@@ -1978,18 +1978,18 @@
 
         class OffscreenBuffer {
             constructor(width, height) {
-                this.window.canvas = document.createElement('window.canvas');
-                this.window.canvas.width = width;
-                this.window.canvas.height = height;
-                this.window.ctx = this.window.canvas.getContext('2d');
+                this.canvas = document.createElement('canvas');
+                this.canvas.width = width;
+                this.canvas.height = height;
+                this.ctx = this.canvas.getContext('2d');
                 this.dirty = true;          // force first render
                 this.renderInterval = 0;     // ms between rebuilds
                 this.renderTimer = 0;        // countdown accumulator
             }
             markDirty() { this.dirty = true; }
             rebuild(renderFn) {
-                this.window.ctx.clearRect(0, 0, this.window.canvas.width, this.window.canvas.height);
-                renderFn(this.window.ctx);
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                renderFn(this.ctx);
                 this.dirty = false;
             }
         }

@@ -54,39 +54,49 @@ if os.path.exists(manifest_path):
 else:
     warnings.append("sprites.json not found — skipping power-of-two validation")
 
-# 2. Generate minified production HTML
+# 2. Generate minified production HTML and copy dependencies
 print("\n📦 Generating production build...")
 dist_dir = Path('dist')
 dist_dir.mkdir(exist_ok=True)
 
-with open('index.html', 'r') as f:
-    html = f.read()
+# Minify all HTML files
+html_files = list(Path('.').glob('*.html'))
+total_orig = 0
+total_min = 0
 
-# Simple minification: strip comments, collapse whitespace
-# (Preserve script content integrity)
 def minify_html(content):
-    # Remove HTML comments (not inside script tags)
+    # Simple minification: strip comments
     content = re.sub(r'<!--.*?-->', '', content, flags=re.DOTALL)
-    # Collapse multiple whitespace to single space (outside tags)
-    content = re.sub(r'>\s+<', '><', content)
-    content = re.sub(r'\s{2,}', ' ', content)
-    # Trim leading/trailing whitespace
-    content = content.strip()
-    return content
+    # Collapse multiple whitespace but preserve newlines to avoid breaking // comments in scripts
+    content = re.sub(r'[ \t]+', ' ', content)
+    return content.strip()
 
-minified = minify_html(html)
-min_path = dist_dir / 'index.html'
-min_path.write_text(minified, encoding='utf-8')
+for html_path in html_files:
+    content = html_path.read_text(encoding='utf-8')
+    minified = minify_html(content)
+    (dist_dir / html_path.name).write_text(minified, encoding='utf-8')
 
-orig_size = len(html)
-min_size = len(minified)
-savings = ((orig_size - min_size) / orig_size) * 100
-print(f"   Original: {orig_size:,} bytes")
-print(f"   Minified: {min_size:,} bytes")
-print(f"   Savings:  {savings:.1f}%")
+    total_orig += len(content)
+    total_min += len(minified)
+    print(f"   Processed: {html_path.name}")
+
+savings = ((total_orig - total_min) / total_orig) * 100
+print(f"   Total HTML Original: {total_orig:,} bytes")
+print(f"   Total HTML Minified: {total_min:,} bytes")
+print(f"   HTML Savings:  {savings:.1f}%")
+
+import shutil
+
+# Copy JS directory to dist
+js_src = Path('js')
+js_dst = dist_dir / 'js'
+if js_src.exists():
+    if js_dst.exists():
+        shutil.rmtree(js_dst)
+    shutil.copytree(js_src, js_dst)
+    print(f"   JS modules copied to dist/js/")
 
 # Copy assets to dist
-import shutil
 assets_src = Path('assets')
 assets_dst = dist_dir / 'assets'
 if assets_dst.exists():
