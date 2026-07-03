@@ -1,0 +1,27 @@
+127.0.0.1 - - [11/Jun/2026 00:38:14] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [11/Jun/2026 00:38:14] "GET /js/player.js HTTP/1.1" 200 -
+127.0.0.1 - - [11/Jun/2026 00:38:14] "GET /upgrade_system.js HTTP/1.1" 200 -
+127.0.0.1 - - [11/Jun/2026 00:38:14] code 404, message File not found
+127.0.0.1 - - [11/Jun/2026 00:38:14] "GET /assets/cinematics/ending_sunrise.png HTTP/1.1" 404 -
+127.0.0.1 - - [11/Jun/2026 00:38:14] code 404, message File not found
+127.0.0.1 - - [11/Jun/2026 00:38:14] "GET /assets/sprites/studio_logo.png HTTP/1.1" 404 -
+127.0.0.1 - - [11/Jun/2026 00:38:14] "GET /assets/sprites/title_0.png HTTP/1.1" 200 -
+127.0.0.1 - - [11/Jun/2026 00:38:14] "GET /assets/sprites/backgrounds/bg_title_strip.png HTTP/1.1" 200 -
+127.0.0.1 - - [11/Jun/2026 00:38:14] "GET /assets/cinematics/cinematic_boss_intro.mp4 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Jun/2026 00:38:14] "GET /assets/cinematics/cinematic_victory.mp4 HTTP/1.1" 200 -
+127.0.0.1 - - [11/Jun/2026 00:38:22] "GET /assets/sprites/bg_nebula_0.png HTTP/1.1" 200 -
+127.0.0.1 - - [11/Jun/2026 00:38:22] "GET /assets/sprites/bg_city_0.png HTTP/1.1" 200 -
+127.0.0.1 - - [11/Jun/2026 00:38:22] "GET /assets/sprites/player_0.png HTTP/1.1" 200 -
+127.0.0.1 - - [11/Jun/2026 00:38:22] "GET /assets/sprites/player_1.png HTTP/1.1" 200 -
+127.0.0.1 - - [11/Jun/2026 00:38:22] "GET /assets/sprites/interceptor_0.png HTTP/1.1" 200 -
+127.0.0.1 - - [11/Jun/2026 00:38:22] "GET /assets/sprites/scout_0.png HTTP/1.1" 200 -
+127.0.0.1 - - [11/Jun/2026 00:38:22] "GET /assets/sprites/heavy_0.png HTTP/1.1" 200 -
+127.0.0.1 - - [11/Jun/2026 00:38:22] "GET /assets/sprites/boss_minion_0.png HTTP/1.1" 200 -
+127.0.0.1 - - [11/Jun/2026 00:38:22] "GET /assets/sprites/laser_0.png HTTP/1.1" 200 -
+127.0.0.1 - - [11/Jun/2026 00:38:22] "GET /assets/sprites/laser_enemy.png HTTP/1.1" 200 -
+127.0.0.1 - - [11/Jun/2026 00:38:22] "GET /assets/sprites/laser_0_glow.png HTTP/1.1" 200 -
+127.0.0.1 - - [11/Jun/2026 00:38:22] "GET /assets/sprites/explosion_0.png HTTP/1.1" 200 -
+127.0.0.1 - - [11/Jun/2026 00:38:22] "GET /assets/sprites/explosion_1.png HTTP/1.1" 200 -
+127.0.0.1 - - [11/Jun/2026 00:38:22] "GET /assets/sprites/explosion_2.png HTTP/1.1" 200 -
+127.0.0.1 - - [11/Jun/2026 00:38:22] "GET /assets/sprites/explosion_3.png HTTP/1.1" 200 -
+127.0.0.1 - - [11/Jun/2026 00:38:22] "GET /assets/sprites/shield_0.png HTTP/1.1" 200 -
