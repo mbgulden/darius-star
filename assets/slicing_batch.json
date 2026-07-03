@@ -1,0 +1,17 @@
+[
+  {
+    "input": "assets/sheets/explosions.png",
+    "prefix": "explosion",
+    "width": 64,
+    "height": 64,
+    "padding": 4,
+    "start_index": 1
+  },
+  {
+    "input": "assets/sheets/enemies_scout.png",
+    "prefix": "scout",
+    "cols": 8,
+    "rows": 4,
+    "skip_empty": true
+  }
+]

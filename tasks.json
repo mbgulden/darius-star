@@ -30,6 +30,10 @@
     "lint:fix": {
       "description": "Auto-fix missing sprites.json entries for files found on disk",
       "command": "python3 tasks/lint.py --fix"
+    },
+    "slice": {
+      "description": "Process a batch of sprite sheets defined in assets/slicing_batch.json",
+      "command": "python3 tools/sprite_slicer.py --batch assets/slicing_batch.json"
     }
   },
   "ci": {
