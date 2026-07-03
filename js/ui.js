@@ -176,33 +176,33 @@ const melody = [
 ];
 
 function playMenuMusicStep() {
-    if (!audioCtx || window.currentScreen === 'playing' || window.currentScreen === window.SCREENS.CINEMATIC || window.currentScreen === window.SCREENS.CREDITS) return;
-    const now = audioCtx.currentTime;
+    if (!window.audioCtx || window.currentScreen === 'playing' || window.currentScreen === window.SCREENS.CINEMATIC || window.currentScreen === window.SCREENS.CREDITS) return;
+    const now = window.audioCtx.currentTime;
 
     const bassFreq = bassLine[Math.floor(musicStep / 2) % bassLine.length];
     if (musicStep % 2 === 0 && bassFreq > 0) {
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
+        const osc = window.audioCtx.createOscillator();
+        const gain = window.audioCtx.createGain();
         osc.type = 'sawtooth';
         osc.frequency.setValueAtTime(bassFreq, now);
         gain.gain.setValueAtTime(0.015 * window.masterVolume * window.musicVolume, now);
         gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
         osc.connect(gain);
-        gain.connect(audioCtx.destination);
+        gain.connect(window.audioCtx.destination);
         osc.start(now);
         osc.stop(now + 0.35);
     }
 
     const melFreq = melody[musicStep % melody.length];
     if (melFreq > 0) {
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
+        const osc = window.audioCtx.createOscillator();
+        const gain = window.audioCtx.createGain();
         osc.type = 'triangle';
         osc.frequency.setValueAtTime(melFreq, now);
         gain.gain.setValueAtTime(0.02 * window.masterVolume * window.musicVolume, now);
         gain.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
         osc.connect(gain);
-        gain.connect(audioCtx.destination);
+        gain.connect(window.audioCtx.destination);
         osc.start(now);
         osc.stop(now + 0.18);
     }
@@ -230,33 +230,33 @@ const creditsMelody = [
 ];
 
 function playCreditsMusicStep() {
-    if (!audioCtx || window.currentScreen !== window.SCREENS.CREDITS) return;
-    const now = audioCtx.currentTime;
+    if (!window.audioCtx || window.currentScreen !== window.SCREENS.CREDITS) return;
+    const now = window.audioCtx.currentTime;
 
     const bassFreq = creditsBassLine[Math.floor(musicStep / 2) % creditsBassLine.length];
     if (musicStep % 2 === 0 && bassFreq > 0) {
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
+        const osc = window.audioCtx.createOscillator();
+        const gain = window.audioCtx.createGain();
         osc.type = 'triangle';
         osc.frequency.setValueAtTime(bassFreq, now);
         gain.gain.setValueAtTime(0.015 * window.masterVolume * window.musicVolume, now);
         gain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
         osc.connect(gain);
-        gain.connect(audioCtx.destination);
+        gain.connect(window.audioCtx.destination);
         osc.start(now);
         osc.stop(now + 0.45);
     }
 
     const melFreq = creditsMelody[musicStep % creditsMelody.length];
     if (melFreq > 0) {
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
+        const osc = window.audioCtx.createOscillator();
+        const gain = window.audioCtx.createGain();
         osc.type = 'sine';
         osc.frequency.setValueAtTime(melFreq, now);
         gain.gain.setValueAtTime(0.012 * window.masterVolume * window.musicVolume, now);
         gain.gain.exponentialRampToValueAtTime(0.001, now + 0.28);
         osc.connect(gain);
-        gain.connect(audioCtx.destination);
+        gain.connect(window.audioCtx.destination);
         osc.start(now);
         osc.stop(now + 0.28);
     }
@@ -341,9 +341,9 @@ function handleMenuConfirm() {
 }
 
 function getCanvasMouseCoords(e) {
-    const rect = canvas.getBoundingClientRect();
-    const x = (e.clientX - rect.left) * (canvas.width / rect.width);
-    const y = (e.clientY - rect.top) * (canvas.height / rect.height);
+    const rect = window.canvas.getBoundingClientRect();
+    const x = (e.clientX - rect.left) * (window.canvas.width / rect.width);
+    const y = (e.clientY - rect.top) * (window.canvas.height / rect.height);
     return { x, y };
 }
 
@@ -435,50 +435,50 @@ function drawTitleBackground() {
     if (window.titleBgLoaded && titleBgImage.naturalWidth > 0) {
         const sx = window.titleBgFrame * TITLE_FRAME_WIDTH;
         const sy = 0;
-        ctx.drawImage(titleBgImage,
+        window.ctx.drawImage(titleBgImage,
             sx, sy, TITLE_FRAME_WIDTH, TITLE_FRAME_HEIGHT,
-            0, 0, canvas.width, canvas.height
+            0, 0, window.canvas.width, window.canvas.height
         );
     } else {
-        ctx.fillStyle = '#01010c';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+        window.ctx.fillStyle = '#01010c';
+        window.ctx.fillRect(0, 0, window.canvas.width, window.canvas.height);
+        window.ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
         stars.forEach(star => {
             const alpha = star.getAlpha();
-            ctx.globalAlpha = alpha;
-            ctx.fillRect(star.x, star.y, star.size, star.size);
+            window.ctx.globalAlpha = alpha;
+            window.ctx.fillRect(star.x, star.y, star.size, star.size);
         });
-        ctx.globalAlpha = 1.0;
+        window.ctx.globalAlpha = 1.0;
     }
 }
 
 function drawTitleLogo() {
     if (window.titleLogoLoaded && titleLogoImg.naturalWidth > 0) {
-        ctx.save();
+        window.ctx.save();
         const lw = 420;
         const lh = 140;
-        const lx = canvas.width / 2 - lw / 2;
+        const lx = window.canvas.width / 2 - lw / 2;
         const ly = 30 + Math.sin(window.gameTime * 2.5) * 6; // floating effect
 
-        ctx.shadowColor = '#00ffff';
-        ctx.shadowBlur = 12 + Math.sin(window.gameTime * 5) * 6;
-        ctx.drawImage(titleLogoImg, lx, ly, lw, lh);
-        ctx.restore();
+        window.ctx.shadowColor = '#00ffff';
+        window.ctx.shadowBlur = 12 + Math.sin(window.gameTime * 5) * 6;
+        window.ctx.drawImage(titleLogoImg, lx, ly, lw, lh);
+        window.ctx.restore();
     } else {
-        ctx.save();
-        ctx.textAlign = 'center';
-        ctx.font = 'bold 36px Courier New';
-        ctx.shadowColor = '#00ffff';
-        ctx.shadowBlur = 15 + Math.sin(window.gameTime * 5) * 8;
-        ctx.fillStyle = '#00ffff';
-        ctx.fillText('DARIUS STAR', canvas.width / 2, 85 + Math.sin(window.gameTime * 2) * 4);
+        window.ctx.save();
+        window.ctx.textAlign = 'center';
+        window.ctx.font = 'bold 36px Courier New';
+        window.ctx.shadowColor = '#00ffff';
+        window.ctx.shadowBlur = 15 + Math.sin(window.gameTime * 5) * 8;
+        window.ctx.fillStyle = '#00ffff';
+        window.ctx.fillText('DARIUS STAR', window.canvas.width / 2, 85 + Math.sin(window.gameTime * 2) * 4);
 
-        ctx.font = 'bold 16px Courier New';
-        ctx.fillStyle = '#ff0055';
-        ctx.shadowColor = '#ff0055';
-        ctx.shadowBlur = 8;
-        ctx.fillText('CYBER COELACANTH', canvas.width / 2, 115 + Math.sin(window.gameTime * 2) * 4);
-        ctx.restore();
+        window.ctx.font = 'bold 16px Courier New';
+        window.ctx.fillStyle = '#ff0055';
+        window.ctx.shadowColor = '#ff0055';
+        window.ctx.shadowBlur = 8;
+        window.ctx.fillText('CYBER COELACANTH', window.canvas.width / 2, 115 + Math.sin(window.gameTime * 2) * 4);
+        window.ctx.restore();
     }
 }
 
@@ -488,55 +488,55 @@ function drawMenuScreens() {
     if (window.currentScreen === window.SCREENS.MENU) {
         drawTitleLogo();
 
-        ctx.save();
-        ctx.textAlign = 'center';
-        ctx.font = 'bold 15px monospace';
+        window.ctx.save();
+        window.ctx.textAlign = 'center';
+        window.ctx.font = 'bold 15px monospace';
 
         const startY = 210;
         const spacing = 35;
 
         const lifetimeScrap = window.DS_UpgradeSystem ? window.DS_UpgradeSystem.state.scrap : 0;
-        ctx.fillStyle = '#00ff55';
-        ctx.font = 'bold 12px monospace';
-        ctx.fillText(`⚙️ SCRAP CORE: ${lifetimeScrap.toLocaleString()}`, canvas.width / 2, startY - 45);
+        window.ctx.fillStyle = '#00ff55';
+        window.ctx.font = 'bold 12px monospace';
+        window.ctx.fillText(`⚙️ SCRAP CORE: ${lifetimeScrap.toLocaleString()}`, window.canvas.width / 2, startY - 45);
 
         const topScore = getTopScore();
         if (topScore) {
-            ctx.fillStyle = '#ffaa00';
-            ctx.font = 'bold 12px monospace';
-            ctx.fillText(`★ HIGH SCORE: ${topScore.score.toLocaleString()} — ${topScore.ship.toUpperCase()} — ${topScore.difficulty.toUpperCase()}`, canvas.width / 2, startY - 25);
+            window.ctx.fillStyle = '#ffaa00';
+            window.ctx.font = 'bold 12px monospace';
+            window.ctx.fillText(`★ HIGH SCORE: ${topScore.score.toLocaleString()} — ${topScore.ship.toUpperCase()} — ${topScore.difficulty.toUpperCase()}`, window.canvas.width / 2, startY - 25);
         }
 
-        ctx.font = 'bold 15px monospace';
+        window.ctx.font = 'bold 15px monospace';
         for (let i = 0; i < window.menuOptions.length; i++) {
             const itemY = startY + i * spacing;
             const isSelected = window.selectedMenuIndex === i;
 
             if (isSelected) {
-                ctx.fillStyle = '#00ffff';
-                ctx.shadowColor = '#00ffff';
-                ctx.shadowBlur = 10;
-                ctx.fillText(`>  ${window.menuOptions[i]}  <`, canvas.width / 2, itemY);
-                ctx.shadowBlur = 0;
+                window.ctx.fillStyle = '#00ffff';
+                window.ctx.shadowColor = '#00ffff';
+                window.ctx.shadowBlur = 10;
+                window.ctx.fillText(`>  ${window.menuOptions[i]}  <`, window.canvas.width / 2, itemY);
+                window.ctx.shadowBlur = 0;
             } else {
-                ctx.fillStyle = '#8a8a9f';
-                ctx.fillText(window.menuOptions[i], canvas.width / 2, itemY);
+                window.ctx.fillStyle = '#8a8a9f';
+                window.ctx.fillText(window.menuOptions[i], window.canvas.width / 2, itemY);
             }
         }
 
-        ctx.fillStyle = '#4a4a5f';
-        ctx.font = '10px monospace';
-        ctx.fillText('USE W/S or ARROWS to NAVIGATE | ENTER to SELECT', canvas.width / 2, canvas.height - 25);
-        ctx.restore();
+        window.ctx.fillStyle = '#4a4a5f';
+        window.ctx.font = '10px monospace';
+        window.ctx.fillText('USE W/S or ARROWS to NAVIGATE | ENTER to SELECT', window.canvas.width / 2, window.canvas.height - 25);
+        window.ctx.restore();
     } else if (window.currentScreen === window.SCREENS.SHIP_SELECT) {
-        ctx.save();
-        ctx.textAlign = 'center';
-        ctx.fillStyle = '#00ffff';
-        ctx.font = 'bold 22px monospace';
-        ctx.shadowColor = '#00ffff';
-        ctx.shadowBlur = 10;
-        ctx.fillText('SELECT YOUR FIGHTER', canvas.width / 2, 60);
-        ctx.shadowBlur = 0;
+        window.ctx.save();
+        window.ctx.textAlign = 'center';
+        window.ctx.fillStyle = '#00ffff';
+        window.ctx.font = 'bold 22px monospace';
+        window.ctx.shadowColor = '#00ffff';
+        window.ctx.shadowBlur = 10;
+        window.ctx.fillText('SELECT YOUR FIGHTER', window.canvas.width / 2, 60);
+        window.ctx.shadowBlur = 0;
 
         const startY = 140;
         const spacing = 65;
@@ -551,55 +551,55 @@ function drawMenuScreens() {
             const itemY = startY + i * spacing;
             const isSelected = window.selectedShipIndex === i;
 
-            ctx.fillStyle = isSelected ? 'rgba(0, 255, 255, 0.08)' : 'rgba(255, 255, 255, 0.02)';
-            ctx.strokeStyle = isSelected ? '#00ffff' : '#3a3a4a';
-            ctx.lineWidth = isSelected ? 2 : 1;
-            ctx.fillRect(80, itemY - 25, 640, 52);
-            ctx.strokeRect(80, itemY - 25, 640, 52);
+            window.ctx.fillStyle = isSelected ? 'rgba(0, 255, 255, 0.08)' : 'rgba(255, 255, 255, 0.02)';
+            window.ctx.strokeStyle = isSelected ? '#00ffff' : '#3a3a4a';
+            window.ctx.lineWidth = isSelected ? 2 : 1;
+            window.ctx.fillRect(80, itemY - 25, 640, 52);
+            window.ctx.strokeRect(80, itemY - 25, 640, 52);
 
             const spriteKey = i === 0 ? 'scout_0' : (i === 2 ? 'heavy_0' : 'interceptor_0');
             const sprite = playerSprites[spriteKey];
             if (sprite && sprite.complete && sprite.naturalWidth > 0) {
-                ctx.drawImage(sprite, 105, itemY - 20, 40, 40);
+                window.ctx.drawImage(sprite, 105, itemY - 20, 40, 40);
             } else {
-                ctx.fillStyle = i === 0 ? '#00ffff' : (i === 2 ? '#ff9900' : '#00ffaa');
-                ctx.fillRect(115, itemY - 10, 20, 20);
+                window.ctx.fillStyle = i === 0 ? '#00ffff' : (i === 2 ? '#ff9900' : '#00ffaa');
+                window.ctx.fillRect(115, itemY - 10, 20, 20);
             }
 
-            ctx.textAlign = 'left';
-            ctx.font = 'bold 14px monospace';
-            ctx.fillStyle = isSelected ? '#00ffff' : '#8a8a9f';
-            ctx.fillText(shipNames[i], 170, itemY - 5);
+            window.ctx.textAlign = 'left';
+            window.ctx.font = 'bold 14px monospace';
+            window.ctx.fillStyle = isSelected ? '#00ffff' : '#8a8a9f';
+            window.ctx.fillText(shipNames[i], 170, itemY - 5);
 
-            ctx.font = '10px monospace';
-            ctx.fillStyle = isSelected ? '#ffffff' : '#6a6a7f';
-            ctx.fillText(`SPEED: ${shipStats[i].speed}  |  SHIELD: ${shipStats[i].shield}  |  WEAPON: ${shipStats[i].weapon}`, 170, itemY + 14);
+            window.ctx.font = '10px monospace';
+            window.ctx.fillStyle = isSelected ? '#ffffff' : '#6a6a7f';
+            window.ctx.fillText(`SPEED: ${shipStats[i].speed}  |  SHIELD: ${shipStats[i].shield}  |  WEAPON: ${shipStats[i].weapon}`, 170, itemY + 14);
 
             if (isSelected) {
-                ctx.font = 'bold 14px monospace';
-                ctx.fillStyle = '#00ffff';
-                ctx.fillText('SELECTED', 620, itemY + 5);
+                window.ctx.font = 'bold 14px monospace';
+                window.ctx.fillStyle = '#00ffff';
+                window.ctx.fillText('SELECTED', 620, itemY + 5);
             }
         }
 
-        ctx.textAlign = 'center';
-        ctx.font = 'bold 14px monospace';
-        ctx.fillStyle = '#ff0055';
-        ctx.fillText('BACK TO MENU', canvas.width / 2, 365);
+        window.ctx.textAlign = 'center';
+        window.ctx.font = 'bold 14px monospace';
+        window.ctx.fillStyle = '#ff0055';
+        window.ctx.fillText('BACK TO MENU', window.canvas.width / 2, 365);
 
-        ctx.fillStyle = '#4a4a5f';
-        ctx.font = '10px monospace';
-        ctx.fillText('ENTER / CLICK to CHOOSE  |  ESC to RETURN', canvas.width / 2, canvas.height - 25);
-        ctx.restore();
+        window.ctx.fillStyle = '#4a4a5f';
+        window.ctx.font = '10px monospace';
+        window.ctx.fillText('ENTER / CLICK to CHOOSE  |  ESC to RETURN', window.canvas.width / 2, window.canvas.height - 25);
+        window.ctx.restore();
     } else if (window.currentScreen === window.SCREENS.SETTINGS) {
-        ctx.save();
-        ctx.textAlign = 'center';
-        ctx.fillStyle = '#00ffff';
-        ctx.font = 'bold 22px monospace';
-        ctx.shadowColor = '#00ffff';
-        ctx.shadowBlur = 10;
-        ctx.fillText('SYSTEM SETTINGS', canvas.width / 2, 60);
-        ctx.shadowBlur = 0;
+        window.ctx.save();
+        window.ctx.textAlign = 'center';
+        window.ctx.fillStyle = '#00ffff';
+        window.ctx.font = 'bold 22px monospace';
+        window.ctx.shadowColor = '#00ffff';
+        window.ctx.shadowBlur = 10;
+        window.ctx.fillText('SYSTEM SETTINGS', window.canvas.width / 2, 60);
+        window.ctx.shadowBlur = 0;
 
         const startY = 175;
         const spacing = 36;
@@ -608,70 +608,70 @@ function drawMenuScreens() {
             const itemY = startY + i * spacing;
             const isSelected = window.selectedSettingsIndex === i;
 
-            ctx.textAlign = 'left';
-            ctx.font = 'bold 14px monospace';
-            ctx.fillStyle = isSelected ? '#00ffff' : '#8a8a9f';
+            window.ctx.textAlign = 'left';
+            window.ctx.font = 'bold 14px monospace';
+            window.ctx.fillStyle = isSelected ? '#00ffff' : '#8a8a9f';
 
             if (i < 3) {
                 const volVal = i === 0 ? window.masterVolume : (i === 1 ? window.sfxVolume : window.musicVolume);
-                ctx.fillText(window.SETTINGS_OPTIONS[i], 220, itemY + 5);
+                window.ctx.fillText(window.SETTINGS_OPTIONS[i], 220, itemY + 5);
 
                 const sliderX = 450;
                 const sliderWidth = 130;
-                ctx.fillStyle = '#222';
-                ctx.fillRect(sliderX, itemY - 6, sliderWidth, 12);
+                window.ctx.fillStyle = '#222';
+                window.ctx.fillRect(sliderX, itemY - 6, sliderWidth, 12);
 
-                ctx.fillStyle = isSelected ? '#00ffff' : '#ff0055';
-                ctx.fillRect(sliderX, itemY - 6, sliderWidth * volVal, 12);
+                window.ctx.fillStyle = isSelected ? '#00ffff' : '#ff0055';
+                window.ctx.fillRect(sliderX, itemY - 6, sliderWidth * volVal, 12);
 
-                ctx.strokeStyle = '#fff';
-                ctx.strokeRect(sliderX, itemY - 6, sliderWidth, 12);
+                window.ctx.strokeStyle = '#fff';
+                window.ctx.strokeRect(sliderX, itemY - 6, sliderWidth, 12);
 
-                ctx.fillText(Math.round(volVal * 100) + '%', 595, itemY + 5);
+                window.ctx.fillText(Math.round(volVal * 100) + '%', 595, itemY + 5);
             } else if (i === 3) {
-                ctx.fillText(window.SETTINGS_OPTIONS[i], 220, itemY + 5);
-                ctx.fillStyle = isSelected ? '#ffffff' : '#6a6a7f';
-                ctx.fillText(window.difficulty.toUpperCase(), 450, itemY + 5);
+                window.ctx.fillText(window.SETTINGS_OPTIONS[i], 220, itemY + 5);
+                window.ctx.fillStyle = isSelected ? '#ffffff' : '#6a6a7f';
+                window.ctx.fillText(window.difficulty.toUpperCase(), 450, itemY + 5);
             } else if (i === 4) {
-                ctx.textAlign = 'center';
-                ctx.fillStyle = isSelected ? '#ff0055' : '#8a8a9f';
-                ctx.fillText('BACK TO MENU', canvas.width / 2, itemY + 5);
+                window.ctx.textAlign = 'center';
+                window.ctx.fillStyle = isSelected ? '#ff0055' : '#8a8a9f';
+                window.ctx.fillText('BACK TO MENU', window.canvas.width / 2, itemY + 5);
             }
         }
 
-        ctx.textAlign = 'center';
-        ctx.fillStyle = '#4a4a5f';
-        ctx.font = '10px monospace';
-        ctx.fillText('CONTROLS: WASD / ARROWS to MOVE  |  SPACE / J to FIRE  |  E to DODGE  |  P to PAUSE', canvas.width / 2, 335);
-        ctx.fillText('LEFT/RIGHT to ADJUST VOLUME  |  ENTER / CLICK to TOGGLE  |  ESC to RETURN', canvas.width / 2, canvas.height - 25);
-        ctx.restore();
+        window.ctx.textAlign = 'center';
+        window.ctx.fillStyle = '#4a4a5f';
+        window.ctx.font = '10px monospace';
+        window.ctx.fillText('CONTROLS: WASD / ARROWS to MOVE  |  SPACE / J to FIRE  |  E to DODGE  |  P to PAUSE', window.canvas.width / 2, 335);
+        window.ctx.fillText('LEFT/RIGHT to ADJUST VOLUME  |  ENTER / CLICK to TOGGLE  |  ESC to RETURN', window.canvas.width / 2, window.canvas.height - 25);
+        window.ctx.restore();
     } else if (window.currentScreen === window.SCREENS.LEADERBOARD) {
-        ctx.fillStyle = 'rgba(5, 5, 12, 0.75)';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.save();
-        ctx.textAlign = 'center';
+        window.ctx.fillStyle = 'rgba(5, 5, 12, 0.75)';
+        window.ctx.fillRect(0, 0, window.canvas.width, window.canvas.height);
+        window.ctx.save();
+        window.ctx.textAlign = 'center';
 
-        ctx.fillStyle = '#ffaa00';
-        ctx.font = 'bold 24px monospace';
-        ctx.shadowColor = '#ffaa00';
-        ctx.shadowBlur = 12;
-        ctx.fillText('🏆 HIGH SCORE LEADERBOARD', canvas.width / 2, 55);
-        ctx.shadowBlur = 0;
+        window.ctx.fillStyle = '#ffaa00';
+        window.ctx.font = 'bold 24px monospace';
+        window.ctx.shadowColor = '#ffaa00';
+        window.ctx.shadowBlur = 12;
+        window.ctx.fillText('🏆 HIGH SCORE LEADERBOARD', window.canvas.width / 2, 55);
+        window.ctx.shadowBlur = 0;
 
         const scores = getFilteredScores();
         const topScore = getTopScore();
 
         if (topScore) {
-            ctx.fillStyle = '#00ffff';
-            ctx.font = 'bold 14px monospace';
-            ctx.fillText(`TOP SCORE: ${topScore.score.toLocaleString()} — ${topScore.ship.toUpperCase()} — ${topScore.difficulty.toUpperCase()}`, canvas.width / 2, 90);
+            window.ctx.fillStyle = '#00ffff';
+            window.ctx.font = 'bold 14px monospace';
+            window.ctx.fillText(`TOP SCORE: ${topScore.score.toLocaleString()} — ${topScore.ship.toUpperCase()} — ${topScore.difficulty.toUpperCase()}`, window.canvas.width / 2, 90);
         } else {
-            ctx.fillStyle = '#8a8a9f';
-            ctx.font = '14px monospace';
-            ctx.fillText('No scores yet. Go fight!', canvas.width / 2, 90);
+            window.ctx.fillStyle = '#8a8a9f';
+            window.ctx.font = '14px monospace';
+            window.ctx.fillText('No scores yet. Go fight!', window.canvas.width / 2, 90);
         }
 
-        ctx.font = 'bold 11px monospace';
+        window.ctx.font = 'bold 11px monospace';
         const filters = ['all', 'scout', 'interceptor', 'heavy', 'easy', 'normal', 'hard'];
         const filterLabels = ['ALL', 'SCOUT', 'INT.', 'HEAVY', 'EASY', 'NORM', 'HARD'];
         const filterStartX = 130;
@@ -680,15 +680,15 @@ function drawMenuScreens() {
         for (let fi = 0; fi < filters.length; fi++) {
             const fx = filterStartX + fi * 78;
             const isActive = window.leaderboardFilter === filters[fi];
-            ctx.fillStyle = isActive ? '#ffaa00' : '#4a4a5f';
-            ctx.fillText(filterLabels[fi], fx, filterY);
+            window.ctx.fillStyle = isActive ? '#ffaa00' : '#4a4a5f';
+            window.ctx.fillText(filterLabels[fi], fx, filterY);
             if (isActive) {
-                ctx.fillRect(fx - 10, filterY + 4, 38, 2);
+                window.ctx.fillRect(fx - 10, filterY + 4, 38, 2);
             }
         }
 
-        ctx.fillStyle = '#3a3a5f';
-        ctx.fillRect(80, 135, 640, 2);
+        window.ctx.fillStyle = '#3a3a5f';
+        window.ctx.fillRect(80, 135, 640, 2);
 
         const listStartY = 155;
         const rowH = 28;
@@ -696,73 +696,73 @@ function drawMenuScreens() {
         const display = scores.slice(window.leaderboardScrollOffset, window.leaderboardScrollOffset + maxVisible);
 
         if (display.length === 0) {
-            ctx.fillStyle = '#8a8a9f';
-            ctx.font = '14px monospace';
-            ctx.fillText('No scores match this filter.', canvas.width / 2, 250);
+            window.ctx.fillStyle = '#8a8a9f';
+            window.ctx.font = '14px monospace';
+            window.ctx.fillText('No scores match this filter.', window.canvas.width / 2, 250);
         } else {
-            ctx.font = 'bold 10px monospace';
-            ctx.fillStyle = '#5a5a7f';
-            ctx.textAlign = 'left';
-            ctx.fillText('#', 100, listStartY - 8);
-            ctx.fillText('SCORE', 140, listStartY - 8);
-            ctx.fillText('SHIP', 280, listStartY - 8);
-            ctx.fillText('BIOME', 380, listStartY - 8);
-            ctx.fillText('DIFF', 460, listStartY - 8);
-            ctx.fillText('DATE', 540, listStartY - 8);
+            window.ctx.font = 'bold 10px monospace';
+            window.ctx.fillStyle = '#5a5a7f';
+            window.ctx.textAlign = 'left';
+            window.ctx.fillText('#', 100, listStartY - 8);
+            window.ctx.fillText('SCORE', 140, listStartY - 8);
+            window.ctx.fillText('SHIP', 280, listStartY - 8);
+            window.ctx.fillText('BIOME', 380, listStartY - 8);
+            window.ctx.fillText('DIFF', 460, listStartY - 8);
+            window.ctx.fillText('DATE', 540, listStartY - 8);
 
-            ctx.font = '13px monospace';
+            window.ctx.font = '13px monospace';
             for (let si = 0; si < display.length; si++) {
                 const s = display[si];
                 const rank = window.leaderboardScrollOffset + si + 1;
                 const ry = listStartY + si * rowH;
 
-                ctx.fillStyle = si % 2 === 0 ? 'rgba(255,255,255,0.02)' : 'rgba(255,255,255,0.04)';
-                ctx.fillRect(85, ry - 14, 630, rowH);
+                window.ctx.fillStyle = si % 2 === 0 ? 'rgba(255,255,255,0.02)' : 'rgba(255,255,255,0.04)';
+                window.ctx.fillRect(85, ry - 14, 630, rowH);
 
                 if (rank <= 3) {
                     const medal = rank === 1 ? '#ffd700' : (rank === 2 ? '#c0c0c0' : '#cd7f32');
-                    ctx.fillStyle = medal;
+                    window.ctx.fillStyle = medal;
                 } else {
-                    ctx.fillStyle = '#8a8a9f';
+                    window.ctx.fillStyle = '#8a8a9f';
                 }
-                ctx.textAlign = 'left';
-                ctx.fillText(rank, 100, ry + 4);
+                window.ctx.textAlign = 'left';
+                window.ctx.fillText(rank, 100, ry + 4);
 
-                ctx.fillStyle = '#ffffff';
-                ctx.fillText(s.score.toLocaleString(), 140, ry + 4);
-                ctx.fillText(s.ship.toUpperCase(), 280, ry + 4);
-                ctx.fillText('BIOME ' + s.biome, 380, ry + 4);
+                window.ctx.fillStyle = '#ffffff';
+                window.ctx.fillText(s.score.toLocaleString(), 140, ry + 4);
+                window.ctx.fillText(s.ship.toUpperCase(), 280, ry + 4);
+                window.ctx.fillText('BIOME ' + s.biome, 380, ry + 4);
 
                 const diffColors = { easy: '#00ff55', normal: '#ffaa00', hard: '#ff0033' };
-                ctx.fillStyle = diffColors[s.difficulty] || '#ffffff';
-                ctx.fillText(s.difficulty.toUpperCase(), 460, ry + 4);
+                window.ctx.fillStyle = diffColors[s.difficulty] || '#ffffff';
+                window.ctx.fillText(s.difficulty.toUpperCase(), 460, ry + 4);
 
-                ctx.fillStyle = '#8a8a9f';
-                ctx.fillText(s.date, 540, ry + 4);
+                window.ctx.fillStyle = '#8a8a9f';
+                window.ctx.fillText(s.date, 540, ry + 4);
             }
         }
 
         if (scores.length > maxVisible) {
-            ctx.fillStyle = '#5a5a7f';
-            ctx.font = '10px monospace';
+            window.ctx.fillStyle = '#5a5a7f';
+            window.ctx.font = '10px monospace';
             const showing = Math.min(window.leaderboardScrollOffset + maxVisible, scores.length);
-            ctx.fillText(`Showing ${window.leaderboardScrollOffset + 1}-${showing} of ${scores.length}  |  UP/DOWN to scroll`, canvas.width / 2, canvas.height - 48);
+            window.ctx.fillText(`Showing ${window.leaderboardScrollOffset + 1}-${showing} of ${scores.length}  |  UP/DOWN to scroll`, window.canvas.width / 2, window.canvas.height - 48);
         }
 
-        ctx.font = 'bold 13px monospace';
-        ctx.fillStyle = '#ff0033';
-        ctx.fillText('[C] CLEAR ALL SCORES', canvas.width / 2, canvas.height - 28);
+        window.ctx.font = 'bold 13px monospace';
+        window.ctx.fillStyle = '#ff0033';
+        window.ctx.fillText('[C] CLEAR ALL SCORES', window.canvas.width / 2, window.canvas.height - 28);
 
-        ctx.fillStyle = '#8a8a9f';
-        ctx.font = '10px monospace';
-        ctx.fillText('ESC / BACKSPACE to RETURN  |  ARROWS to FILTER', canvas.width / 2, canvas.height - 8);
+        window.ctx.fillStyle = '#8a8a9f';
+        window.ctx.font = '10px monospace';
+        window.ctx.fillText('ESC / BACKSPACE to RETURN  |  ARROWS to FILTER', window.canvas.width / 2, window.canvas.height - 8);
 
-        ctx.restore();
+        window.ctx.restore();
     } else if (window.currentScreen === window.SCREENS.CREDITS) {
-        ctx.fillStyle = 'rgba(5, 5, 12, 0.75)';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        window.ctx.fillStyle = 'rgba(5, 5, 12, 0.75)';
+        window.ctx.fillRect(0, 0, window.canvas.width, window.canvas.height);
 
-        ctx.save();
+        window.ctx.save();
 
         const creditsList = [
             { type: 'logo' },
@@ -802,54 +802,54 @@ function drawMenuScreens() {
             { type: 'end', text: 'THE END' }
         ];
 
-        let currentY = canvas.height - window.creditsScrollY;
-        ctx.textAlign = 'center';
+        let currentY = window.canvas.height - window.creditsScrollY;
+        window.ctx.textAlign = 'center';
 
         for (let i = 0; i < creditsList.length; i++) {
             const item = creditsList[i];
 
-            if (currentY > -100 && currentY < canvas.height + 100) {
+            if (currentY > -100 && currentY < window.canvas.height + 100) {
                 if (item.type === 'logo') {
                     if (window.studioLogoLoaded && studioLogoImg.naturalWidth > 0) {
-                        ctx.drawImage(studioLogoImg, canvas.width / 2 - 80, currentY - 50, 160, 160);
+                        window.ctx.drawImage(studioLogoImg, window.canvas.width / 2 - 80, currentY - 50, 160, 160);
                     } else {
-                        ctx.fillStyle = '#ff0055';
-                        ctx.font = 'bold 16px monospace';
-                        ctx.fillText('WHAT AN ADVENTURE GAMES', canvas.width / 2, currentY);
+                        window.ctx.fillStyle = '#ff0055';
+                        window.ctx.font = 'bold 16px monospace';
+                        window.ctx.fillText('WHAT AN ADVENTURE GAMES', window.canvas.width / 2, currentY);
                     }
                 } else if (item.type === 'title') {
-                    ctx.fillStyle = '#00ffff';
-                    ctx.font = 'bold 18px monospace';
-                    ctx.shadowColor = '#00ffff';
-                    ctx.shadowBlur = 8;
-                    ctx.fillText(item.text, canvas.width / 2, currentY);
-                    ctx.shadowBlur = 0;
+                    window.ctx.fillStyle = '#00ffff';
+                    window.ctx.font = 'bold 18px monospace';
+                    window.ctx.shadowColor = '#00ffff';
+                    window.ctx.shadowBlur = 8;
+                    window.ctx.fillText(item.text, window.canvas.width / 2, currentY);
+                    window.ctx.shadowBlur = 0;
                 } else if (item.type === 'subtitle') {
-                    ctx.fillStyle = '#8a8a9f';
-                    ctx.font = '9px monospace';
-                    ctx.fillText(item.text, canvas.width / 2, currentY);
+                    window.ctx.fillStyle = '#8a8a9f';
+                    window.ctx.font = '9px monospace';
+                    window.ctx.fillText(item.text, window.canvas.width / 2, currentY);
                 } else if (item.type === 'role') {
-                    ctx.fillStyle = '#ff0055';
-                    ctx.font = 'bold 11px monospace';
-                    ctx.fillText(item.text, canvas.width / 2, currentY);
+                    window.ctx.fillStyle = '#ff0055';
+                    window.ctx.font = 'bold 11px monospace';
+                    window.ctx.fillText(item.text, window.canvas.width / 2, currentY);
                 } else if (item.type === 'name') {
-                    ctx.fillStyle = '#ffffff';
-                    ctx.font = '13px monospace';
-                    ctx.fillText(item.text, canvas.width / 2, currentY);
+                    window.ctx.fillStyle = '#ffffff';
+                    window.ctx.font = '13px monospace';
+                    window.ctx.fillText(item.text, window.canvas.width / 2, currentY);
                 } else if (item.type === 'thanks') {
-                    ctx.fillStyle = '#00ff55';
-                    ctx.font = 'bold 18px monospace';
-                    ctx.shadowColor = '#00ff55';
-                    ctx.shadowBlur = 10;
-                    ctx.fillText(item.text, canvas.width / 2, currentY);
-                    ctx.shadowBlur = 0;
+                    window.ctx.fillStyle = '#00ff55';
+                    window.ctx.font = 'bold 18px monospace';
+                    window.ctx.shadowColor = '#00ff55';
+                    window.ctx.shadowBlur = 10;
+                    window.ctx.fillText(item.text, window.canvas.width / 2, currentY);
+                    window.ctx.shadowBlur = 0;
                 } else if (item.type === 'end') {
-                    ctx.fillStyle = '#ff0055';
-                    ctx.font = 'bold 26px monospace';
-                    ctx.shadowColor = '#ff0055';
-                    ctx.shadowBlur = 12;
-                    ctx.fillText(item.text, canvas.width / 2, currentY);
-                    ctx.shadowBlur = 0;
+                    window.ctx.fillStyle = '#ff0055';
+                    window.ctx.font = 'bold 26px monospace';
+                    window.ctx.shadowColor = '#ff0055';
+                    window.ctx.shadowBlur = 12;
+                    window.ctx.fillText(item.text, window.canvas.width / 2, currentY);
+                    window.ctx.shadowBlur = 0;
                 }
             }
 
@@ -872,38 +872,38 @@ function drawMenuScreens() {
             }
         }
 
-        ctx.restore();
+        window.ctx.restore();
 
-        const totalCreditsHeight = currentY - (canvas.height - window.creditsScrollY);
+        const totalCreditsHeight = currentY - (window.canvas.height - window.creditsScrollY);
         window.maxCreditsScroll = totalCreditsHeight;
 
-        ctx.fillStyle = '#4a4a5f';
-        ctx.font = '10px monospace';
-        ctx.textAlign = 'center';
-        ctx.fillText('CLICK / SPACE / ESC to SKIP TO MENU', canvas.width / 2, canvas.height - 15);
+        window.ctx.fillStyle = '#4a4a5f';
+        window.ctx.font = '10px monospace';
+        window.ctx.textAlign = 'center';
+        window.ctx.fillText('CLICK / SPACE / ESC to SKIP TO MENU', window.canvas.width / 2, window.canvas.height - 15);
     } else if (window.currentScreen === window.SCREENS.CINEMATIC) {
-        ctx.save();
+        window.ctx.save();
 
         if (window.endingSunriseLoaded && endingSunriseImg.naturalWidth > 0) {
             const progress = Math.min(window.cinematicTime / 20, 1.0);
             const sx = progress * 120;
             const sy = 150 + Math.sin(progress * Math.PI / 2) * 250;
 
-            ctx.drawImage(endingSunriseImg,
+            window.ctx.drawImage(endingSunriseImg,
                 sx, sy, 800, 450,
-                0, 0, canvas.width, canvas.height
+                0, 0, window.canvas.width, window.canvas.height
             );
         } else {
-            ctx.fillStyle = '#010108';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            window.ctx.fillStyle = '#010108';
+            window.ctx.fillRect(0, 0, window.canvas.width, window.canvas.height);
         }
 
-        const scanlineGrad = ctx.createLinearGradient(0, 0, 0, canvas.height);
+        const scanlineGrad = window.ctx.createLinearGradient(0, 0, 0, window.canvas.height);
         scanlineGrad.addColorStop(0, 'rgba(0, 255, 255, 0.05)');
         scanlineGrad.addColorStop(0.5, 'rgba(0, 0, 0, 0.1)');
         scanlineGrad.addColorStop(1, 'rgba(255, 0, 255, 0.05)');
-        ctx.fillStyle = scanlineGrad;
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        window.ctx.fillStyle = scanlineGrad;
+        window.ctx.fillRect(0, 0, window.canvas.width, window.canvas.height);
 
         if (window.cinematicTime > 3) {
             const flightProgress = Math.min((window.cinematicTime - 3) / 15, 1.0);
@@ -916,21 +916,21 @@ function drawMenuScreens() {
             const shipY = startY + (targetY - startY) * flightProgress;
             const size = 32 * (1 - flightProgress * 0.75);
 
-            ctx.fillStyle = Math.random() < 0.5 ? '#ff0055' : '#ffff00';
-            ctx.beginPath();
-            ctx.moveTo(shipX - 10, shipY + size/2);
-            ctx.lineTo(shipX, shipY + size/2 - 4);
-            ctx.lineTo(shipX, shipY + size/2 + 4);
-            ctx.closePath();
-            ctx.fill();
+            window.ctx.fillStyle = Math.random() < 0.5 ? '#ff0055' : '#ffff00';
+            window.ctx.beginPath();
+            window.ctx.moveTo(shipX - 10, shipY + size/2);
+            window.ctx.lineTo(shipX, shipY + size/2 - 4);
+            window.ctx.lineTo(shipX, shipY + size/2 + 4);
+            window.ctx.closePath();
+            window.ctx.fill();
 
             const shipKey = window.selectedShip === 'scout' ? 'scout_0' : (window.selectedShip === 'heavy' ? 'heavy_0' : 'interceptor_0');
             const shipSprite = playerSprites[shipKey];
             if (shipSprite && shipSprite.complete && shipSprite.naturalWidth > 0) {
-                ctx.drawImage(shipSprite, shipX, shipY, size, size);
+                window.ctx.drawImage(shipSprite, shipX, shipY, size, size);
             } else {
-                ctx.fillStyle = '#00ffff';
-                ctx.fillRect(shipX, shipY, size, size);
+                window.ctx.fillStyle = '#00ffff';
+                window.ctx.fillRect(shipX, shipY, size, size);
             }
         }
 
@@ -954,22 +954,22 @@ function drawMenuScreens() {
         const typedLength = Math.floor(subTime * 25);
         const visibleText = txt.substring(0, typedLength);
 
-        ctx.fillStyle = 'rgba(5, 5, 15, 0.8)';
-        ctx.fillRect(50, canvas.height - 75, canvas.width - 100, 45);
-        ctx.strokeStyle = '#ff0055';
-        ctx.lineWidth = 2;
-        ctx.strokeRect(50, canvas.height - 75, canvas.width - 100, 45);
+        window.ctx.fillStyle = 'rgba(5, 5, 15, 0.8)';
+        window.ctx.fillRect(50, window.canvas.height - 75, window.canvas.width - 100, 45);
+        window.ctx.strokeStyle = '#ff0055';
+        window.ctx.lineWidth = 2;
+        window.ctx.strokeRect(50, window.canvas.height - 75, window.canvas.width - 100, 45);
 
-        ctx.fillStyle = '#ffffff';
-        ctx.font = 'bold 11px monospace';
-        ctx.textAlign = 'left';
-        ctx.fillText(visibleText, 70, canvas.height - 48);
+        window.ctx.fillStyle = '#ffffff';
+        window.ctx.font = 'bold 11px monospace';
+        window.ctx.textAlign = 'left';
+        window.ctx.fillText(visibleText, 70, window.canvas.height - 48);
 
-        ctx.fillStyle = '#4a4a5f';
-        ctx.font = '9px monospace';
-        ctx.textAlign = 'center';
-        ctx.fillText('PRESS ENTER / ESC / CLICK to SKIP CUTSCENE', canvas.width / 2, canvas.height - 12);
+        window.ctx.fillStyle = '#4a4a5f';
+        window.ctx.font = '9px monospace';
+        window.ctx.textAlign = 'center';
+        window.ctx.fillText('PRESS ENTER / ESC / CLICK to SKIP CUTSCENE', window.canvas.width / 2, window.canvas.height - 12);
 
-        ctx.restore();
+        window.ctx.restore();
     }
 }
