@@ -2,7 +2,7 @@
 import os
 import sys
 import argparse
-import json
+import subprocess
 from PIL import Image
 
 def is_power_of_two(n):
@@ -78,13 +78,17 @@ def slice_sprite_sheet(sheet_path, out_dir, prefix, frame_width, frame_height, m
     return True
 
 def main():
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    default_outdir = os.path.join(script_dir, "assets", "sprites")
+
     parser = argparse.ArgumentParser(description="Pillow-based Sprite Sheet Slicer for Darius Star")
     parser.add_argument("--input", required=True, help="Path to input sprite sheet image (PNG)")
-    parser.add_argument("--outdir", default="/home/ubuntu/work/darius-star/assets/sprites", help="Output directory for sliced frames")
+    parser.add_argument("--outdir", default=default_outdir, help=f"Output directory for sliced frames (default: {default_outdir})")
     parser.add_argument("--prefix", required=True, help="Prefix name for sliced frames (e.g. player, scout)")
     parser.add_argument("--width", type=int, default=64, help="Width of individual frame (default: 64)")
     parser.add_argument("--height", type=int, default=64, help="Height of individual frame (default: 64)")
     parser.add_argument("--count", type=int, default=None, help="Maximum number of frames to extract")
+    parser.add_argument("--skip-manifest", action="store_true", help="Skip updating the sprite manifest after slicing")
 
     args = parser.parse_args()
 
@@ -97,11 +101,18 @@ def main():
         max_frames=args.count
     )
 
-    if success:
+    if success and not args.skip_manifest:
         # Run manifest generator to update sprites.json
         print("Updating sprite manifest...")
-        os.system("python3 /home/ubuntu/work/darius-star/generate_sprites_manifest.py")
-    else:
+        manifest_script = os.path.join(script_dir, "generate_sprites_manifest.py")
+        if os.path.exists(manifest_script):
+            try:
+                subprocess.run([sys.executable, manifest_script], check=True)
+            except subprocess.CalledProcessError as e:
+                print(f"Error: Manifest generator failed with return code {e.returncode}")
+        else:
+            print(f"Warning: Manifest generator '{manifest_script}' not found.")
+    elif not success:
         sys.exit(1)
 
 if __name__ == "__main__":

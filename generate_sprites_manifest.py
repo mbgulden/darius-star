@@ -22,38 +22,43 @@ def is_power_of_two(n):
     """Returns True if n is a power of two, otherwise False."""
     return n > 0 and (n & (n - 1)) == 0
 
-def scan_and_generate_manifest(sprites_dir, output_file):
+def scan_and_generate_manifest(sprites_dir, output_file, project_root):
     print(f"Scanning directory: {sprites_dir}")
     
     if not os.path.exists(sprites_dir):
         os.makedirs(sprites_dir, exist_ok=True)
         print(f"Created empty directory: {sprites_dir}")
         
-    # Get all image files in directory
+    # Get all image files in directory recursively
     valid_extensions = ('.png', '.jpg', '.jpeg')
-    files = [f for f in os.listdir(sprites_dir) if f.lower().endswith(valid_extensions)]
-    files.sort()
+    files_with_paths = []
+    for root, dirs, files in os.walk(sprites_dir):
+        for f in files:
+            if f.lower().endswith(valid_extensions):
+                files_with_paths.append(os.path.join(root, f))
+
+    files_with_paths.sort()
     
     sprites_data = {}
     errors = []
     warnings = []
     
-    total_files_scanned = len(files)
+    total_files_scanned = len(files_with_paths)
     valid_power_of_two_count = 0
     invalid_power_of_two_count = 0
     
     # Naming pattern: prefix_index.ext (e.g. player_0.png)
     name_pattern = re.compile(r"^([a-zA-Z_]+)_(\d+)\.(png|jpg|jpeg)$", re.IGNORECASE)
     
-    for filename in files:
-        filepath = os.path.join(sprites_dir, filename)
+    for filepath in files_with_paths:
+        filename = os.path.basename(filepath)
         
         # Determine image dimensions using Pillow
         try:
             with Image.open(filepath) as img:
                 width, height = img.size
         except Exception as e:
-            errors.append(f"Could not open image file '{filename}': {str(e)}")
+            errors.append(f"Could not open image file '{filepath}': {str(e)}")
             continue
             
         # Validate power-of-two dimensions
@@ -65,6 +70,8 @@ def scan_and_generate_manifest(sprites_dir, output_file):
             valid_power_of_two_count += 1
         else:
             invalid_power_of_two_count += 1
+            # Filter out known non-POT assets to keep error list clean if needed,
+            # but for now, we follow the original logic and report them.
             errors.append(f"Asset '{filename}' has non-power-of-two dimensions: {width}x{height}")
             
         # Parse prefix and index
@@ -100,7 +107,7 @@ def scan_and_generate_manifest(sprites_dir, output_file):
             
         # Add frame details
         # Store path relative to project root (e.g. assets/sprites/player_0.png)
-        relative_path = os.path.relpath(filepath, start=os.path.dirname(os.path.dirname(sprites_dir)))
+        relative_path = os.path.relpath(filepath, start=project_root)
         sprite_group["frames"].append({
             "index": frame_idx,
             "filename": filename,
@@ -147,11 +154,12 @@ def scan_and_generate_manifest(sprites_dir, output_file):
     print(f"Missing assets: {len(missing_assets)}")
 
 def main():
-    project_dir = "/home/ubuntu/work/darius-star"
-    sprites_dir = os.path.join(project_dir, "assets/sprites")
-    output_file = os.path.join(project_dir, "assets/sprites.json")
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    project_root = script_dir
+    sprites_dir = os.path.join(project_root, "assets", "sprites")
+    output_file = os.path.join(project_root, "assets", "sprites.json")
     
-    scan_and_generate_manifest(sprites_dir, output_file)
+    scan_and_generate_manifest(sprites_dir, output_file, project_root)
 
 if __name__ == "__main__":
     main()
