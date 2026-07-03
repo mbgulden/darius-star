@@ -147,7 +147,7 @@ def scan_and_generate_manifest(sprites_dir, output_file):
     print(f"Missing assets: {len(missing_assets)}")
 
 def main():
-    project_dir = "/home/ubuntu/work/darius-star"
+    project_dir = os.path.dirname(os.path.abspath(__file__))
     sprites_dir = os.path.join(project_dir, "assets/sprites")
     output_file = os.path.join(project_dir, "assets/sprites.json")
     
