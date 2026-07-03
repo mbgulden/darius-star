@@ -63,7 +63,7 @@
             max-height: calc(100vh - 120px);
         }
 
-        canvas {
+        window.canvas {
             display: block;
             background: #000;
             /* Responsive scaling: fit viewport, maintain 16:9 */
@@ -82,7 +82,7 @@
             line-height: 1.4;
         }
 
-        /* Cinematic video overlay — full-size over the canvas */
+        /* Cinematic video overlay — full-size over the window.canvas */
         .cinematic-video-overlay {
             position: absolute;
             top: 0;
@@ -232,7 +232,7 @@
     <h1>DARIUS STAR: CYBER COELACANTH</h1>
     <div class="studio-credit">A <a href="https://whatanadventure.games" target="_blank">What An Adventure</a> Game</div>
     <div id="game-container">
-        <canvas id="gameCanvas" width="800" height="450"></canvas>
+        <window.canvas id="gameCanvas" width="800" height="450"></window.canvas>
         <video id="boss-intro-video" class="cinematic-video-overlay" 
                src="assets/cinematics/cinematic_boss_intro.mp4" 
                playsinline preload="auto" muted></video>
@@ -272,16 +272,16 @@
         <span style="color: #ff0055;">Red Orbs</span> upgrade primary weapons. <span style="color: #00ff55;">Green Orbs</span> restore Shields. Reaching 2,000 points triggers the Boss Battle!
     </div>
 
-    <script src="upgrade_system.js"></script>
+    <script src="js/upgrade_system.js"></script>
+    <script src="js/ui.js"></script>
     <script>
         // --- Web Audio Synthesizer ---
-        let audioCtx = null;
         function initAudio() {
-            if (!audioCtx) {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            if (!window.audioCtx) {
+                window.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             }
-            if (audioCtx.state === 'suspended') {
-                audioCtx.resume();
+            if (window.audioCtx.state === 'suspended') {
+                window.audioCtx.resume();
             }
         }
 
@@ -293,104 +293,104 @@
         }
 
         function playSound(type) {
-            if (!audioCtx) return;
+            if (!window.audioCtx) return;
             try {
-                const osc = audioCtx.createOscillator();
-                const gain = audioCtx.createGain();
+                const osc = window.audioCtx.createOscillator();
+                const gain = window.audioCtx.createGain();
                 osc.connect(gain);
-                gain.connect(audioCtx.destination);
+                gain.connect(window.audioCtx.destination);
                 
-                const volMultiplier = masterVolume * sfxVolume;
+                const volMultiplier = window.masterVolume * window.sfxVolume;
 
                 if (type === 'shoot') {
                     osc.type = 'sawtooth';
-                    osc.frequency.setValueAtTime(500, audioCtx.currentTime);
-                    osc.frequency.exponentialRampToValueAtTime(120, audioCtx.currentTime + 0.12);
-                    gain.gain.setValueAtTime(0.08 * volMultiplier, audioCtx.currentTime);
-                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.12);
+                    osc.frequency.setValueAtTime(500, window.audioCtx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(120, window.audioCtx.currentTime + 0.12);
+                    gain.gain.setValueAtTime(0.08 * volMultiplier, window.audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, window.audioCtx.currentTime + 0.12);
                     osc.start();
-                    osc.stop(audioCtx.currentTime + 0.12);
+                    osc.stop(window.audioCtx.currentTime + 0.12);
                 } else if (type === 'hit') {
                     osc.type = 'triangle';
-                    osc.frequency.setValueAtTime(140, audioCtx.currentTime);
-                    osc.frequency.exponentialRampToValueAtTime(30, audioCtx.currentTime + 0.1);
-                    gain.gain.setValueAtTime(0.15 * volMultiplier, audioCtx.currentTime);
-                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
+                    osc.frequency.setValueAtTime(140, window.audioCtx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(30, window.audioCtx.currentTime + 0.1);
+                    gain.gain.setValueAtTime(0.15 * volMultiplier, window.audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, window.audioCtx.currentTime + 0.1);
                     osc.start();
-                    osc.stop(audioCtx.currentTime + 0.1);
+                    osc.stop(window.audioCtx.currentTime + 0.1);
                 } else if (type === 'explosion') {
                     osc.type = 'sawtooth';
-                    osc.frequency.setValueAtTime(80, audioCtx.currentTime);
-                    osc.frequency.exponentialRampToValueAtTime(10, audioCtx.currentTime + 0.45);
-                    gain.gain.setValueAtTime(0.25 * volMultiplier, audioCtx.currentTime);
-                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.45);
+                    osc.frequency.setValueAtTime(80, window.audioCtx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(10, window.audioCtx.currentTime + 0.45);
+                    gain.gain.setValueAtTime(0.25 * volMultiplier, window.audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, window.audioCtx.currentTime + 0.45);
                     osc.start();
-                    osc.stop(audioCtx.currentTime + 0.45);
+                    osc.stop(window.audioCtx.currentTime + 0.45);
                 } else if (type === 'powerup') {
                     osc.type = 'sine';
-                    osc.frequency.setValueAtTime(280, audioCtx.currentTime);
-                    osc.frequency.linearRampToValueAtTime(520, audioCtx.currentTime + 0.08);
-                    osc.frequency.linearRampToValueAtTime(850, audioCtx.currentTime + 0.2);
-                    gain.gain.setValueAtTime(0.12 * volMultiplier, audioCtx.currentTime);
-                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.2);
+                    osc.frequency.setValueAtTime(280, window.audioCtx.currentTime);
+                    osc.frequency.linearRampToValueAtTime(520, window.audioCtx.currentTime + 0.08);
+                    osc.frequency.linearRampToValueAtTime(850, window.audioCtx.currentTime + 0.2);
+                    gain.gain.setValueAtTime(0.12 * volMultiplier, window.audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, window.audioCtx.currentTime + 0.2);
                     osc.start();
-                    osc.stop(audioCtx.currentTime + 0.2);
+                    osc.stop(window.audioCtx.currentTime + 0.2);
                 } else if (type === 'siren') {
                     osc.type = 'sawtooth';
-                    osc.frequency.setValueAtTime(350, audioCtx.currentTime);
-                    osc.frequency.linearRampToValueAtTime(450, audioCtx.currentTime + 0.2);
-                    osc.frequency.linearRampToValueAtTime(350, audioCtx.currentTime + 0.4);
-                    gain.gain.setValueAtTime(0.06 * volMultiplier, audioCtx.currentTime);
-                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.4);
+                    osc.frequency.setValueAtTime(350, window.audioCtx.currentTime);
+                    osc.frequency.linearRampToValueAtTime(450, window.audioCtx.currentTime + 0.2);
+                    osc.frequency.linearRampToValueAtTime(350, window.audioCtx.currentTime + 0.4);
+                    gain.gain.setValueAtTime(0.06 * volMultiplier, window.audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, window.audioCtx.currentTime + 0.4);
                     osc.start();
-                    osc.stop(audioCtx.currentTime + 0.4);
+                    osc.stop(window.audioCtx.currentTime + 0.4);
                 } else if (type === 'laser_charge') {
                     osc.type = 'sine';
-                    osc.frequency.setValueAtTime(100, audioCtx.currentTime);
-                    osc.frequency.exponentialRampToValueAtTime(1000, audioCtx.currentTime + 1.2);
-                    gain.gain.setValueAtTime(0.05 * volMultiplier, audioCtx.currentTime);
-                    gain.gain.exponentialRampToValueAtTime(0.1 * volMultiplier, audioCtx.currentTime + 1.2);
+                    osc.frequency.setValueAtTime(100, window.audioCtx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(1000, window.audioCtx.currentTime + 1.2);
+                    gain.gain.setValueAtTime(0.05 * volMultiplier, window.audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.1 * volMultiplier, window.audioCtx.currentTime + 1.2);
                     osc.start();
-                    osc.stop(audioCtx.currentTime + 1.2);
+                    osc.stop(window.audioCtx.currentTime + 1.2);
                 } else if (type === 'laser_fire') {
                     osc.type = 'sawtooth';
-                    osc.frequency.setValueAtTime(120, audioCtx.currentTime);
-                    osc.frequency.linearRampToValueAtTime(80, audioCtx.currentTime + 1.5);
-                    gain.gain.setValueAtTime(0.2 * volMultiplier, audioCtx.currentTime);
-                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 1.5);
+                    osc.frequency.setValueAtTime(120, window.audioCtx.currentTime);
+                    osc.frequency.linearRampToValueAtTime(80, window.audioCtx.currentTime + 1.5);
+                    gain.gain.setValueAtTime(0.2 * volMultiplier, window.audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, window.audioCtx.currentTime + 1.5);
                     osc.start();
-                    osc.stop(audioCtx.currentTime + 1.5);
+                    osc.stop(window.audioCtx.currentTime + 1.5);
                 } else if (type === 'menu_select') {
                     osc.type = 'sine';
-                    osc.frequency.setValueAtTime(600, audioCtx.currentTime);
-                    osc.frequency.exponentialRampToValueAtTime(300, audioCtx.currentTime + 0.05);
-                    gain.gain.setValueAtTime(0.05 * volMultiplier, audioCtx.currentTime);
-                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
+                    osc.frequency.setValueAtTime(600, window.audioCtx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(300, window.audioCtx.currentTime + 0.05);
+                    gain.gain.setValueAtTime(0.05 * volMultiplier, window.audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, window.audioCtx.currentTime + 0.05);
                     osc.start();
-                    osc.stop(audioCtx.currentTime + 0.05);
+                    osc.stop(window.audioCtx.currentTime + 0.05);
                 } else if (type === 'menu_click') {
                     osc.type = 'sine';
-                    osc.frequency.setValueAtTime(400, audioCtx.currentTime);
-                    osc.frequency.linearRampToValueAtTime(800, audioCtx.currentTime + 0.08);
-                    gain.gain.setValueAtTime(0.08 * volMultiplier, audioCtx.currentTime);
-                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.08);
+                    osc.frequency.setValueAtTime(400, window.audioCtx.currentTime);
+                    osc.frequency.linearRampToValueAtTime(800, window.audioCtx.currentTime + 0.08);
+                    gain.gain.setValueAtTime(0.08 * volMultiplier, window.audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, window.audioCtx.currentTime + 0.08);
                     osc.start();
-                    osc.stop(audioCtx.currentTime + 0.08);
+                    osc.stop(window.audioCtx.currentTime + 0.08);
                 } else if (type === 'victory_fanfare') {
                     // Triumphant 16-bit melody: C4, E4, G4, C5, G4, C5, E5
                     const notes = [261.63, 329.63, 392.00, 523.25, 392.00, 523.25, 659.25];
                     const durations = [0.12, 0.12, 0.12, 0.24, 0.12, 0.12, 0.48];
                     let accumTime = 0;
                     notes.forEach((freq, idx) => {
-                        const noteTime = audioCtx.currentTime + accumTime;
-                        const oscNode = audioCtx.createOscillator();
-                        const gainNode = audioCtx.createGain();
+                        const noteTime = window.audioCtx.currentTime + accumTime;
+                        const oscNode = window.audioCtx.createOscillator();
+                        const gainNode = window.audioCtx.createGain();
                         oscNode.type = 'square'; // chiptune brass/lead feel
                         oscNode.frequency.setValueAtTime(freq, noteTime);
                         gainNode.gain.setValueAtTime(0.05 * volMultiplier, noteTime);
                         gainNode.gain.exponentialRampToValueAtTime(0.001, noteTime + durations[idx]);
                         oscNode.connect(gainNode);
-                        gainNode.connect(audioCtx.destination);
+                        gainNode.connect(window.audioCtx.destination);
                         oscNode.start(noteTime);
                         oscNode.stop(noteTime + durations[idx]);
                         accumTime += durations[idx] * 0.8;
@@ -402,21 +402,21 @@
         }
 
         // --- Game Setup ---
-        const canvas = document.getElementById('gameCanvas');
-        const ctx = canvas.getContext('2d');
+        window.canvas = document.getElementById('gameCanvas');
+        window.ctx = window.canvas.getContext('2d');
 
-        // Responsive canvas: maintain internal 800x450, scale display via CSS
+        // Responsive window.canvas: maintain internal 800x450, scale display via CSS
         const GAME_WIDTH = 800;
         const GAME_HEIGHT = 450;
-        canvas.width = GAME_WIDTH;
-        canvas.height = GAME_HEIGHT;
+        window.canvas.width = GAME_WIDTH;
+        window.canvas.height = GAME_HEIGHT;
 
         function resizeCanvas() {
             const maxW = window.innerWidth;
             const maxH = window.innerHeight - 120; // space for header + controls
             const scale = Math.min(maxW / GAME_WIDTH, maxH / GAME_HEIGHT);
-            canvas.style.width = (GAME_WIDTH * scale) + 'px';
-            canvas.style.height = (GAME_HEIGHT * scale) + 'px';
+            window.canvas.style.width = (GAME_WIDTH * scale) + 'px';
+            window.canvas.style.height = (GAME_HEIGHT * scale) + 'px';
         }
         window.addEventListener('resize', resizeCanvas);
         window.addEventListener('orientationchange', () => setTimeout(resizeCanvas, 100));
@@ -430,988 +430,9 @@
         const uiSpecial = document.getElementById('ui-special');
         const uiDodge = document.getElementById('ui-dodge');
 
-        // Game state variables
-        let score = 0;
-        let gameOver = false;
-        let gameWon = false;
-        let paused = false;
-        let lastTime = 0;
-        let gameTime = 0;
-        let bossSpawned = false;
-        let sirenTimer = 0;
 
-        // --- Menu & Settings State Variables ---
-        const SCREENS = {
-            MENU: 'menu',
-            SHIP_SELECT: 'ship_select',
-            SETTINGS: 'settings',
-            CREDITS: 'credits',
-            LEADERBOARD: 'leaderboard',
-            PLAYING: 'playing',
-            CINEMATIC: 'cinematic'
-        };
-        let currentScreen = SCREENS.MENU;
-        let selectedMenuIndex = 0;
-        const menuOptions = ['START GAME', 'UPGRADE SHOP', 'SHIP SELECT', 'SETTINGS', 'LEADERBOARD', 'CREDITS'];
-        let shipSelectSource = 'menu'; // 'menu' or 'start'
-        
-        let selectedSettingsIndex = 0;
-        const SETTINGS_OPTIONS = ['MASTER VOLUME', 'SFX VOLUME', 'MUSIC VOLUME', 'DIFFICULTY', 'BACK'];
-        
-        let selectedShipIndex = 1; // 0=scout, 1=interceptor, 2=heavy
-        const SHIP_OPTIONS = ['scout', 'interceptor', 'heavy'];
-        let selectedShip = 'interceptor';
-
-        // High Score & Leaderboard state
-        const LS_KEY = 'darius_star_scores';
-        let leaderboardFilter = 'all'; // 'all' | ship name | 'easy' | 'normal' | 'hard'
-        let leaderboardScrollOffset = 0;
-        let newHighScoreCelebrated = false;
-        let highScoreBannerTimer = 0;
-        let highScoreParticles = [];
-
-        function loadScores() {
-            try {
-                const raw = localStorage.getItem(LS_KEY);
-                return raw ? JSON.parse(raw) : { highScores: [] };
-            } catch(e) {
-                return { highScores: [] };
-            }
-        }
-
-        function saveScores(data) {
-            try {
-                localStorage.setItem(LS_KEY, JSON.stringify(data));
-            } catch(e) {
-                // localStorage full or unavailable
-            }
-        }
-
-        function saveRunScore(score, ship, biome, difficulty) {
-            const data = loadScores();
-            const entry = {
-                score: score,
-                ship: ship,
-                biome: biome,
-                difficulty: difficulty,
-                date: new Date().toISOString().split('T')[0]
-            };
-            data.highScores.push(entry);
-            // Sort descending by score
-            data.highScores.sort((a, b) => b.score - a.score);
-            // Keep top 50
-            if (data.highScores.length > 50) {
-                data.highScores = data.highScores.slice(0, 50);
-            }
-            saveScores(data);
-            return entry;
-        }
-
-        function getTopScore() {
-            const data = loadScores();
-            return data.highScores.length > 0 ? data.highScores[0] : null;
-        }
-
-        function isNewHighScore(score) {
-            const top = getTopScore();
-            if (!top) return score > 0;
-            return score > top.score;
-        }
-
-        function getFilteredScores() {
-            const data = loadScores();
-            if (leaderboardFilter === 'all') return data.highScores;
-            if (['easy', 'normal', 'hard'].includes(leaderboardFilter)) {
-                return data.highScores.filter(s => s.difficulty === leaderboardFilter);
-            }
-            return data.highScores.filter(s => s.ship === leaderboardFilter);
-        }
-
-        function clearAllScores() {
-            saveScores({ highScores: [] });
-        }
-
-        // Cinematic & Credits Scroll variables
-        let cinematicTime = 0;
-        let creditsScrollY = 0;
-        let creditsHoldTimer = 0;
-        let maxCreditsScroll = 1050;
-        let bossDefeated = false;
-        let bossIntroPlaying = false;
-        let victoryVideoPlaying = false;
-
-        // Video elements for cinematics
-        const bossIntroVideo = document.getElementById('boss-intro-video');
-        const victoryVideo = document.getElementById('victory-video');
-        const skipHint = document.getElementById('skip-cinematic-hint');
-
-        // Click/touch to skip cinematic videos
-        bossIntroVideo.addEventListener('click', () => { if (bossIntroPlaying) skipBossIntro(); });
-        victoryVideo.addEventListener('click', () => { if (victoryVideoPlaying) skipVictoryCinematic(); });
-
-        // Ending cinematic assets
-        const endingSunriseImg = new Image();
-        let endingSunriseLoaded = false;
-        endingSunriseImg.onload = () => { endingSunriseLoaded = true; };
-        endingSunriseImg.src = 'assets/cinematics/ending_sunrise.png';
-
-        const studioLogoImg = new Image();
-        let studioLogoLoaded = false;
-        studioLogoImg.onload = () => { studioLogoLoaded = true; };
-        studioLogoImg.src = 'assets/sprites/studio_logo.png';
-
-        let masterVolume = 0.8;
-        let sfxVolume = 0.8;
-        let musicVolume = 0.6;
-        let difficulty = 'normal'; // 'easy', 'normal', 'hard'
-
-        let screenFadeAlpha = 0;
-        let targetScreen = null;
-        let transitionTimer = 0;
-        const TRANSITION_DURATION = 0.3; // 300ms transition fade
-
-        // Background title loop strip assets
-        const titleBgImage = new Image();
-        let titleBgLoaded = false;
-        titleBgImage.onload = () => { titleBgLoaded = true; };
-        titleBgImage.src = 'assets/sprites/backgrounds/bg_title_strip.png';
-
-        let titleBgFrame = 0;
-        let titleBgTimer = 0;
-        const TITLE_FRAME_WIDTH = 1280;
-        const TITLE_FRAME_HEIGHT = 720;
-        const TITLE_TOTAL_FRAMES = 31;
-        const TITLE_FRAME_DURATION = 0.067; // ~15fps (1/15s)
-
-        // Title logo asset
-        const titleLogoImg = new Image();
-        let titleLogoLoaded = false;
-        titleLogoImg.onload = () => { titleLogoLoaded = true; };
-        titleLogoImg.src = 'assets/sprites/title_0.png';
-
-        // --- Web Audio Chiptune Synthesizer Loop ---
-        let musicInterval = null;
-        let musicStep = 0;
-        const bassLine = [110, 110, 130, 130, 146, 146, 165, 165]; // A2, C3, D3, E3
-        const melody = [
-            220, 0, 261, 293, 329, 0, 293, 261,
-            220, 220, 329, 0, 293, 0, 261, 0
-        ];
-
-        function playMenuMusicStep() {
-            if (!audioCtx || currentScreen === 'playing' || currentScreen === SCREENS.CINEMATIC || currentScreen === SCREENS.CREDITS) return;
-            const now = audioCtx.currentTime;
-            
-            // Play bass note
-            const bassFreq = bassLine[Math.floor(musicStep / 2) % bassLine.length];
-            if (musicStep % 2 === 0 && bassFreq > 0) {
-                const osc = audioCtx.createOscillator();
-                const gain = audioCtx.createGain();
-                osc.type = 'sawtooth';
-                osc.frequency.setValueAtTime(bassFreq, now);
-                gain.gain.setValueAtTime(0.015 * masterVolume * musicVolume, now);
-                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
-                osc.start(now);
-                osc.stop(now + 0.35);
-            }
-            
-            // Play melody note
-            const melFreq = melody[musicStep % melody.length];
-            if (melFreq > 0) {
-                const osc = audioCtx.createOscillator();
-                const gain = audioCtx.createGain();
-                osc.type = 'triangle';
-                osc.frequency.setValueAtTime(melFreq, now);
-                gain.gain.setValueAtTime(0.02 * masterVolume * musicVolume, now);
-                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
-                osc.start(now);
-                osc.stop(now + 0.18);
-            }
-            
-            musicStep++;
-        }
-
-        function startMenuMusic() {
-            if (musicInterval) return;
-            musicStep = 0;
-            musicInterval = setInterval(playMenuMusicStep, 200); // 120 bpm, 8th notes
-        }
-
-        function stopMenuMusic() {
-            if (musicInterval) {
-                clearInterval(musicInterval);
-                musicInterval = null;
-            }
-        }
-
-        // --- Web Audio Credits Music Loop ---
-        let creditsMusicInterval = null;
-        const creditsBassLine = [98, 98, 146, 146, 130, 130, 98, 98]; // G2, D3, C3, G2
-        const creditsMelody = [
-            392, 0, 493, 587, 784, 0, 739, 587, // G4, B4, D5, G5, F#5, D5
-            493, 493, 587, 0, 440, 0, 392, 0    // B4, B4, D5, A4, G4
-        ];
-
-        function playCreditsMusicStep() {
-            if (!audioCtx || currentScreen !== SCREENS.CREDITS) return;
-            const now = audioCtx.currentTime;
-            
-            const bassFreq = creditsBassLine[Math.floor(musicStep / 2) % creditsBassLine.length];
-            if (musicStep % 2 === 0 && bassFreq > 0) {
-                const osc = audioCtx.createOscillator();
-                const gain = audioCtx.createGain();
-                osc.type = 'triangle';
-                osc.frequency.setValueAtTime(bassFreq, now);
-                gain.gain.setValueAtTime(0.015 * masterVolume * musicVolume, now);
-                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
-                osc.start(now);
-                osc.stop(now + 0.45);
-            }
-            
-            const melFreq = creditsMelody[musicStep % creditsMelody.length];
-            if (melFreq > 0) {
-                const osc = audioCtx.createOscillator();
-                const gain = audioCtx.createGain();
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(melFreq, now);
-                gain.gain.setValueAtTime(0.012 * masterVolume * musicVolume, now);
-                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.28);
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
-                osc.start(now);
-                osc.stop(now + 0.28);
-            }
-            
-            musicStep++;
-        }
-
-        function startCreditsMusic() {
-            if (creditsMusicInterval) return;
-            musicStep = 0;
-            creditsMusicInterval = setInterval(playCreditsMusicStep, 250); // 120 bpm, 8th notes, slightly slower
-        }
-
-        function stopCreditsMusic() {
-            if (creditsMusicInterval) {
-                clearInterval(creditsMusicInterval);
-                creditsMusicInterval = null;
-            }
-        }
-
-        function transitionToScreen(newScreen) {
-            if (targetScreen) return; // already transitioning
-            targetScreen = newScreen;
-            transitionTimer = 0;
-        }
-
-        // ── Cinematic Video Playback ──
-
-        function playBossIntro() {
-            if (bossIntroPlaying) return;
-            bossIntroPlaying = true;
-            bossIntroVideo.muted = false; // audio allowed after user interaction (START GAME click)
-            bossIntroVideo.classList.add('active');
-            skipHint.classList.add('active');
-            bossIntroVideo.currentTime = 0;
-            bossIntroVideo.play().catch(() => {
-                // Autoplay blocked — try again on next user interaction
-                bossIntroPlaying = false;
-                bossIntroVideo.classList.remove('active');
-                skipHint.classList.remove('active');
-                spawnBossNow();
-                return;
-            });
-            bossIntroVideo.onended = () => {
-                bossIntroVideo.classList.remove('active');
-                skipHint.classList.remove('active');
-                bossIntroPlaying = false;
-                spawnBossNow();
-            };
-        }
-
-        function skipBossIntro() {
-            if (!bossIntroPlaying) return;
-            bossIntroVideo.pause();
-            bossIntroVideo.classList.remove('active');
-            skipHint.classList.remove('active');
-            bossIntroPlaying = false;
-            spawnBossNow();
-        }
-
-        function spawnBossNow() {
-            bossSpawned = true;
-            sirenTimer = 0; // skip siren, boss appears immediately after cinematic
-            boss = new Boss();
-        }
-
-        function playVictoryCinematic() {
-            if (victoryVideoPlaying) return;
-            victoryVideoPlaying = true;
-            victoryVideo.muted = false; // audio allowed after user interaction (START GAME click)
-            victoryVideo.classList.add('active');
-            skipHint.classList.add('active');
-            victoryVideo.currentTime = 0;
-            victoryVideo.play().catch(() => {
-                victoryVideoPlaying = false;
-                victoryVideo.classList.remove('active');
-                skipHint.classList.remove('active');
-                transitionToScreen(SCREENS.CINEMATIC);
-                return;
-            });
-            victoryVideo.onended = () => {
-                victoryVideo.classList.remove('active');
-                skipHint.classList.remove('active');
-                victoryVideoPlaying = false;
-                transitionToScreen(SCREENS.CINEMATIC);
-            };
-        }
-
-        function skipVictoryCinematic() {
-            if (!victoryVideoPlaying) return;
-            victoryVideo.pause();
-            victoryVideo.classList.remove('active');
-            skipHint.classList.remove('active');
-            victoryVideoPlaying = false;
-            transitionToScreen(SCREENS.CINEMATIC);
-        }
-
-        function updateTitleBackground(dt) {
-            titleBgTimer += dt;
-            if (titleBgTimer >= TITLE_FRAME_DURATION) {
-                titleBgTimer -= TITLE_FRAME_DURATION;
-                titleBgFrame = (titleBgFrame + 1) % TITLE_TOTAL_FRAMES;
-            }
-        }
-
-        function drawTitleBackground() {
-            if (titleBgLoaded && titleBgImage.naturalWidth > 0) {
-                const sx = titleBgFrame * TITLE_FRAME_WIDTH;
-                const sy = 0;
-                ctx.drawImage(titleBgImage, 
-                    sx, sy, TITLE_FRAME_WIDTH, TITLE_FRAME_HEIGHT,
-                    0, 0, canvas.width, canvas.height
-                );
-            } else {
-                ctx.fillStyle = '#01010c';
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-                ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
-                stars.forEach(star => {
-                    const alpha = star.getAlpha();
-                    ctx.globalAlpha = alpha;
-                    ctx.fillRect(star.x, star.y, star.size, star.size);
-                });
-                ctx.globalAlpha = 1.0;
-            }
-        }
-
-        function drawTitleLogo() {
-            if (titleLogoLoaded && titleLogoImg.naturalWidth > 0) {
-                ctx.save();
-                const lw = 420;
-                const lh = 140;
-                const lx = canvas.width / 2 - lw / 2;
-                const ly = 30 + Math.sin(gameTime * 2.5) * 6; // floating effect
-                
-                ctx.shadowColor = '#00ffff';
-                ctx.shadowBlur = 12 + Math.sin(gameTime * 5) * 6;
-                ctx.drawImage(titleLogoImg, lx, ly, lw, lh);
-                ctx.restore();
-            } else {
-                ctx.save();
-                ctx.textAlign = 'center';
-                ctx.font = 'bold 36px Courier New';
-                ctx.shadowColor = '#00ffff';
-                ctx.shadowBlur = 15 + Math.sin(gameTime * 5) * 8;
-                ctx.fillStyle = '#00ffff';
-                ctx.fillText('DARIUS STAR', canvas.width / 2, 85 + Math.sin(gameTime * 2) * 4);
-                
-                ctx.font = 'bold 16px Courier New';
-                ctx.fillStyle = '#ff0055';
-                ctx.shadowColor = '#ff0055';
-                ctx.shadowBlur = 8;
-                ctx.fillText('CYBER COELACANTH', canvas.width / 2, 115 + Math.sin(gameTime * 2) * 4);
-                ctx.restore();
-            }
-        }
-
-        function adjustSetting(index, dir) {
-            const step = 0.1;
-            if (index === 0) { // Master Volume
-                masterVolume = Math.max(0, Math.min(1.0, masterVolume + dir * step));
-            } else if (index === 1) { // SFX Volume
-                sfxVolume = Math.max(0, Math.min(1.0, sfxVolume + dir * step));
-            } else if (index === 2) { // Music Volume
-                musicVolume = Math.max(0, Math.min(1.0, musicVolume + dir * step));
-            } else if (index === 3) { // Difficulty
-                const diffs = ['easy', 'normal', 'hard'];
-                let currentIdx = diffs.indexOf(difficulty);
-                currentIdx = (currentIdx + dir + 3) % 3;
-                difficulty = diffs[currentIdx];
-            }
-        }
-
-        function handleMenuConfirm() {
-            if (currentScreen === SCREENS.MENU) {
-                if (selectedMenuIndex === 0) { // START GAME
-                    shipSelectSource = 'start';
-                    transitionToScreen(SCREENS.SHIP_SELECT);
-                } else if (selectedMenuIndex === 1) { // UPGRADE SHOP
-                    window.location.href = 'upgrade_shop.html';
-                } else if (selectedMenuIndex === 2) { // SHIP SELECT
-                    shipSelectSource = 'menu';
-                    transitionToScreen(SCREENS.SHIP_SELECT);
-                } else if (selectedMenuIndex === 3) { // SETTINGS
-                    selectedSettingsIndex = 0;
-                    transitionToScreen(SCREENS.SETTINGS);
-                } else if (selectedMenuIndex === 4) { // LEADERBOARD
-                    transitionToScreen(SCREENS.LEADERBOARD);
-                } else if (selectedMenuIndex === 5) { // CREDITS
-                    transitionToScreen(SCREENS.CREDITS);
-                }
-            } else if (currentScreen === SCREENS.SHIP_SELECT) {
-                selectedShip = SHIP_OPTIONS[selectedShipIndex];
-                if (shipSelectSource === 'start') {
-                    transitionToScreen(SCREENS.PLAYING);
-                } else {
-                    transitionToScreen(SCREENS.MENU);
-                }
-            } else if (currentScreen === SCREENS.SETTINGS) {
-                if (selectedSettingsIndex === 4) { // BACK
-                    transitionToScreen(SCREENS.MENU);
-                }
-            } else if (currentScreen === SCREENS.CREDITS) {
-                transitionToScreen(SCREENS.MENU);
-            }
-        }
-
-        function getCanvasMouseCoords(e) {
-            const rect = canvas.getBoundingClientRect();
-            const x = (e.clientX - rect.left) * (canvas.width / rect.width);
-            const y = (e.clientY - rect.top) * (canvas.height / rect.height);
-            return { x, y };
-        }
-
-        function drawMenuScreens() {
-            drawTitleBackground();
-            
-            if (currentScreen === SCREENS.MENU) {
-                drawTitleLogo();
-                
-                ctx.save();
-                ctx.textAlign = 'center';
-                ctx.font = 'bold 15px monospace';
-                
-                const startY = 210;
-                const spacing = 35;
-                
-                // Draw lifetime scrap balance on the menu screen
-                const lifetimeScrap = window.DS_UpgradeSystem ? window.DS_UpgradeSystem.state.scrap : 0;
-                ctx.fillStyle = '#00ff55';
-                ctx.font = 'bold 12px monospace';
-                ctx.fillText(`⚙️ SCRAP CORE: ${lifetimeScrap.toLocaleString()}`, canvas.width / 2, startY - 45);
-                
-                // Show high score on menu
-                const topScore = getTopScore();
-                if (topScore) {
-                    ctx.fillStyle = '#ffaa00';
-                    ctx.font = 'bold 12px monospace';
-                    ctx.fillText(`★ HIGH SCORE: ${topScore.score.toLocaleString()} — ${topScore.ship.toUpperCase()} — ${topScore.difficulty.toUpperCase()}`, canvas.width / 2, startY - 25);
-                }
-                
-                ctx.font = 'bold 15px monospace';
-                for (let i = 0; i < menuOptions.length; i++) {
-                    const itemY = startY + i * spacing;
-                    const isSelected = selectedMenuIndex === i;
-                    
-                    if (isSelected) {
-                        ctx.fillStyle = '#00ffff';
-                        ctx.shadowColor = '#00ffff';
-                        ctx.shadowBlur = 10;
-                        ctx.fillText(`>  ${menuOptions[i]}  <`, canvas.width / 2, itemY);
-                        ctx.shadowBlur = 0;
-                    } else {
-                        ctx.fillStyle = '#8a8a9f';
-                        ctx.fillText(menuOptions[i], canvas.width / 2, itemY);
-                    }
-                }
-                
-                ctx.fillStyle = '#4a4a5f';
-                ctx.font = '10px monospace';
-                ctx.fillText('USE W/S or ARROWS to NAVIGATE | ENTER to SELECT', canvas.width / 2, canvas.height - 25);
-                ctx.restore();
-            } else if (currentScreen === SCREENS.SHIP_SELECT) {
-                ctx.save();
-                ctx.textAlign = 'center';
-                ctx.fillStyle = '#00ffff';
-                ctx.font = 'bold 22px monospace';
-                ctx.shadowColor = '#00ffff';
-                ctx.shadowBlur = 10;
-                ctx.fillText('SELECT YOUR FIGHTER', canvas.width / 2, 60);
-                ctx.shadowBlur = 0;
-                
-                const startY = 140;
-                const spacing = 65;
-                const shipNames = ['X-1 SCOUT', 'Y-2 INTERCEPTOR', 'Z-3 DREADNOUGHT'];
-                const shipStats = [
-                    { speed: 'HIGH (280)', shield: 'LOW (80)', weapon: 'RAPID SINGLE' },
-                    { speed: 'MID (220)', shield: 'MID (100)', weapon: 'SPREAD DOUBLE' },
-                    { speed: 'LOW (170)', shield: 'HIGH (150)', weapon: 'SLOW WAVE' }
-                ];
-                
-                for (let i = 0; i < 3; i++) {
-                    const itemY = startY + i * spacing;
-                    const isSelected = selectedShipIndex === i;
-                    
-                    ctx.fillStyle = isSelected ? 'rgba(0, 255, 255, 0.08)' : 'rgba(255, 255, 255, 0.02)';
-                    ctx.strokeStyle = isSelected ? '#00ffff' : '#3a3a4a';
-                    ctx.lineWidth = isSelected ? 2 : 1;
-                    ctx.fillRect(80, itemY - 25, 640, 52);
-                    ctx.strokeRect(80, itemY - 25, 640, 52);
-                    
-                    const spriteKey = i === 0 ? 'scout_0' : (i === 2 ? 'heavy_0' : 'interceptor_0');
-                    const sprite = playerSprites[spriteKey];
-                    if (sprite && sprite.complete && sprite.naturalWidth > 0) {
-                        ctx.drawImage(sprite, 105, itemY - 20, 40, 40);
-                    } else {
-                        ctx.fillStyle = i === 0 ? '#00ffff' : (i === 2 ? '#ff9900' : '#00ffaa');
-                        ctx.fillRect(115, itemY - 10, 20, 20);
-                    }
-                    
-                    ctx.textAlign = 'left';
-                    ctx.font = 'bold 14px monospace';
-                    ctx.fillStyle = isSelected ? '#00ffff' : '#8a8a9f';
-                    ctx.fillText(shipNames[i], 170, itemY - 5);
-                    
-                    ctx.font = '10px monospace';
-                    ctx.fillStyle = isSelected ? '#ffffff' : '#6a6a7f';
-                    ctx.fillText(`SPEED: ${shipStats[i].speed}  |  SHIELD: ${shipStats[i].shield}  |  WEAPON: ${shipStats[i].weapon}`, 170, itemY + 14);
-                    
-                    if (isSelected) {
-                        ctx.font = 'bold 14px monospace';
-                        ctx.fillStyle = '#00ffff';
-                        ctx.fillText('SELECTED', 620, itemY + 5);
-                    }
-                }
-                
-                ctx.textAlign = 'center';
-                ctx.font = 'bold 14px monospace';
-                ctx.fillStyle = '#ff0055';
-                ctx.fillText('BACK TO MENU', canvas.width / 2, 365);
-                
-                ctx.fillStyle = '#4a4a5f';
-                ctx.font = '10px monospace';
-                ctx.fillText('ENTER / CLICK to CHOOSE  |  ESC to RETURN', canvas.width / 2, canvas.height - 25);
-                ctx.restore();
-            } else if (currentScreen === SCREENS.SETTINGS) {
-                ctx.save();
-                ctx.textAlign = 'center';
-                ctx.fillStyle = '#00ffff';
-                ctx.font = 'bold 22px monospace';
-                ctx.shadowColor = '#00ffff';
-                ctx.shadowBlur = 10;
-                ctx.fillText('SYSTEM SETTINGS', canvas.width / 2, 60);
-                ctx.shadowBlur = 0;
-                
-                const startY = 175;
-                const spacing = 36;
-                
-                for (let i = 0; i < SETTINGS_OPTIONS.length; i++) {
-                    const itemY = startY + i * spacing;
-                    const isSelected = selectedSettingsIndex === i;
-                    
-                    ctx.textAlign = 'left';
-                    ctx.font = 'bold 14px monospace';
-                    ctx.fillStyle = isSelected ? '#00ffff' : '#8a8a9f';
-                    
-                    if (i < 3) {
-                        const volVal = i === 0 ? masterVolume : (i === 1 ? sfxVolume : musicVolume);
-                        ctx.fillText(SETTINGS_OPTIONS[i], 220, itemY + 5);
-                        
-                        const sliderX = 450;
-                        const sliderWidth = 130;
-                        ctx.fillStyle = '#222';
-                        ctx.fillRect(sliderX, itemY - 6, sliderWidth, 12);
-                        
-                        ctx.fillStyle = isSelected ? '#00ffff' : '#ff0055';
-                        ctx.fillRect(sliderX, itemY - 6, sliderWidth * volVal, 12);
-                        
-                        ctx.strokeStyle = '#fff';
-                        ctx.strokeRect(sliderX, itemY - 6, sliderWidth, 12);
-                        
-                        ctx.fillText(Math.round(volVal * 100) + '%', 595, itemY + 5);
-                    } else if (i === 3) {
-                        ctx.fillText(SETTINGS_OPTIONS[i], 220, itemY + 5);
-                        ctx.fillStyle = isSelected ? '#ffffff' : '#6a6a7f';
-                        ctx.fillText(difficulty.toUpperCase(), 450, itemY + 5);
-                    } else if (i === 4) {
-                        ctx.textAlign = 'center';
-                        ctx.fillStyle = isSelected ? '#ff0055' : '#8a8a9f';
-                        ctx.fillText('BACK TO MENU', canvas.width / 2, itemY + 5);
-                    }
-                }
-                
-                ctx.textAlign = 'center';
-                ctx.fillStyle = '#4a4a5f';
-                ctx.font = '10px monospace';
-                ctx.fillText('CONTROLS: WASD / ARROWS to MOVE  |  SPACE / J to FIRE  |  E to DODGE  |  P to PAUSE', canvas.width / 2, 335);
-                ctx.fillText('LEFT/RIGHT to ADJUST VOLUME  |  ENTER / CLICK to TOGGLE  |  ESC to RETURN', canvas.width / 2, canvas.height - 25);
-                ctx.restore();
-            } else if (currentScreen === SCREENS.LEADERBOARD) {
-                ctx.fillStyle = 'rgba(5, 5, 12, 0.75)';
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-                ctx.save();
-                ctx.textAlign = 'center';
-                
-                // Header
-                ctx.fillStyle = '#ffaa00';
-                ctx.font = 'bold 24px monospace';
-                ctx.shadowColor = '#ffaa00';
-                ctx.shadowBlur = 12;
-                ctx.fillText('🏆 HIGH SCORE LEADERBOARD', canvas.width / 2, 55);
-                ctx.shadowBlur = 0;
-                
-                const scores = getFilteredScores();
-                const topScore = getTopScore();
-                
-                // Show top score summary
-                if (topScore) {
-                    ctx.fillStyle = '#00ffff';
-                    ctx.font = 'bold 14px monospace';
-                    ctx.fillText(`TOP SCORE: ${topScore.score.toLocaleString()} — ${topScore.ship.toUpperCase()} — ${topScore.difficulty.toUpperCase()}`, canvas.width / 2, 90);
-                } else {
-                    ctx.fillStyle = '#8a8a9f';
-                    ctx.font = '14px monospace';
-                    ctx.fillText('No scores yet. Go fight!', canvas.width / 2, 90);
-                }
-                
-                // Filter bar
-                ctx.font = 'bold 11px monospace';
-                const filters = ['all', 'scout', 'interceptor', 'heavy', 'easy', 'normal', 'hard'];
-                const filterLabels = ['ALL', 'SCOUT', 'INT.', 'HEAVY', 'EASY', 'NORM', 'HARD'];
-                const filterStartX = 130;
-                const filterY = 115;
-                
-                for (let fi = 0; fi < filters.length; fi++) {
-                    const fx = filterStartX + fi * 78;
-                    const isActive = leaderboardFilter === filters[fi];
-                    ctx.fillStyle = isActive ? '#ffaa00' : '#4a4a5f';
-                    ctx.fillText(filterLabels[fi], fx, filterY);
-                    if (isActive) {
-                        ctx.fillRect(fx - 10, filterY + 4, 38, 2);
-                    }
-                }
-                
-                ctx.fillStyle = '#3a3a5f';
-                ctx.fillRect(80, 135, 640, 2);
-                
-                // Score entries
-                const listStartY = 155;
-                const rowH = 28;
-                const maxVisible = 10;
-                const display = scores.slice(leaderboardScrollOffset, leaderboardScrollOffset + maxVisible);
-                
-                if (display.length === 0) {
-                    ctx.fillStyle = '#8a8a9f';
-                    ctx.font = '14px monospace';
-                    ctx.fillText('No scores match this filter.', canvas.width / 2, 250);
-                } else {
-                    // Column headers
-                    ctx.font = 'bold 10px monospace';
-                    ctx.fillStyle = '#5a5a7f';
-                    ctx.textAlign = 'left';
-                    ctx.fillText('#', 100, listStartY - 8);
-                    ctx.fillText('SCORE', 140, listStartY - 8);
-                    ctx.fillText('SHIP', 280, listStartY - 8);
-                    ctx.fillText('BIOME', 380, listStartY - 8);
-                    ctx.fillText('DIFF', 460, listStartY - 8);
-                    ctx.fillText('DATE', 540, listStartY - 8);
-                    
-                    ctx.font = '13px monospace';
-                    for (let si = 0; si < display.length; si++) {
-                        const s = display[si];
-                        const rank = leaderboardScrollOffset + si + 1;
-                        const ry = listStartY + si * rowH;
-                        
-                        // Row background
-                        ctx.fillStyle = si % 2 === 0 ? 'rgba(255,255,255,0.02)' : 'rgba(255,255,255,0.04)';
-                        ctx.fillRect(85, ry - 14, 630, rowH);
-                        
-                        // Rank highlight
-                        if (rank <= 3) {
-                            const medal = rank === 1 ? '#ffd700' : (rank === 2 ? '#c0c0c0' : '#cd7f32');
-                            ctx.fillStyle = medal;
-                        } else {
-                            ctx.fillStyle = '#8a8a9f';
-                        }
-                        ctx.textAlign = 'left';
-                        ctx.fillText(rank, 100, ry + 4);
-                        
-                        ctx.fillStyle = '#ffffff';
-                        ctx.fillText(s.score.toLocaleString(), 140, ry + 4);
-                        ctx.fillText(s.ship.toUpperCase(), 280, ry + 4);
-                        ctx.fillText('BIOME ' + s.biome, 380, ry + 4);
-                        
-                        const diffColors = { easy: '#00ff55', normal: '#ffaa00', hard: '#ff0033' };
-                        ctx.fillStyle = diffColors[s.difficulty] || '#ffffff';
-                        ctx.fillText(s.difficulty.toUpperCase(), 460, ry + 4);
-                        
-                        ctx.fillStyle = '#8a8a9f';
-                        ctx.fillText(s.date, 540, ry + 4);
-                    }
-                }
-                
-                // Scroll indicator
-                if (scores.length > maxVisible) {
-                    ctx.fillStyle = '#5a5a7f';
-                    ctx.font = '10px monospace';
-                    const showing = Math.min(leaderboardScrollOffset + maxVisible, scores.length);
-                    ctx.fillText(`Showing ${leaderboardScrollOffset + 1}-${showing} of ${scores.length}  |  UP/DOWN to scroll`, canvas.width / 2, canvas.height - 48);
-                }
-                
-                // Clear & Back
-                ctx.font = 'bold 13px monospace';
-                ctx.fillStyle = '#ff0033';
-                ctx.fillText('[C] CLEAR ALL SCORES', canvas.width / 2, canvas.height - 28);
-                
-                ctx.fillStyle = '#8a8a9f';
-                ctx.font = '10px monospace';
-                ctx.fillText('ESC / BACKSPACE to RETURN  |  ARROWS to FILTER', canvas.width / 2, canvas.height - 8);
-                
-                ctx.restore();
-            } else if (currentScreen === SCREENS.CREDITS) {
-                // Dim the title loop background for legibility
-                ctx.fillStyle = 'rgba(5, 5, 12, 0.75)';
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-                ctx.save();
-                
-                const creditsList = [
-                    { type: 'logo' },
-                    { type: 'spacer', height: 40 },
-                    { type: 'title', text: 'DARIUS STAR: CYBER COELACANTH' },
-                    { type: 'subtitle', text: 'DEVELOPMENT CREDITS' },
-                    { type: 'spacer', height: 50 },
-                    { type: 'role', text: 'GAME DESIGN & NARRATIVE' },
-                    { type: 'name', text: 'Michael Gulden' },
-                    { type: 'spacer', height: 35 },
-                    { type: 'role', text: 'AI AGENT ENGINEERING' },
-                    { type: 'name', text: 'Fred (Implementation)' },
-                    { type: 'name', text: 'AGY (Content & Story)' },
-                    { type: 'spacer', height: 35 },
-                    { type: 'role', text: 'ART GENERATION' },
-                    { type: 'name', text: 'Imagen 3 (Vertex AI)' },
-                    { type: 'name', text: 'Google Flow' },
-                    { type: 'spacer', height: 35 },
-                    { type: 'role', text: 'VIDEO GENERATION' },
-                    { type: 'name', text: 'Veo 3.1 (Vertex AI)' },
-                    { type: 'spacer', height: 35 },
-                    { type: 'role', text: 'MUSIC PRODUCTION' },
-                    { type: 'name', text: 'Lyria 2/3 (Vertex AI)' },
-                    { type: 'spacer', height: 35 },
-                    { type: 'role', text: 'SOUND EFFECTS' },
-                    { type: 'name', text: 'jsfxr' },
-                    { type: 'name', text: 'Web Audio Synth Engine' },
-                    { type: 'spacer', height: 35 },
-                    { type: 'role', text: 'SPECIAL THANKS' },
-                    { type: 'name', text: 'Vertex AI Model Garden' },
-                    { type: 'name', text: 'Google DeepMind Team' },
-                    { type: 'name', text: 'GrowthWebDev Tester Squad' },
-                    { type: 'name', text: 'Our retro arcade community' },
-                    { type: 'spacer', height: 60 },
-                    { type: 'thanks', text: 'THANK YOU FOR PLAYING' },
-                    { type: 'spacer', height: 50 },
-                    { type: 'end', text: 'THE END' }
-                ];
-
-                let currentY = canvas.height - creditsScrollY;
-                ctx.textAlign = 'center';
-
-                for (let i = 0; i < creditsList.length; i++) {
-                    const item = creditsList[i];
-                    
-                    if (currentY > -100 && currentY < canvas.height + 100) {
-                        if (item.type === 'logo') {
-                            if (studioLogoLoaded && studioLogoImg.naturalWidth > 0) {
-                                ctx.drawImage(studioLogoImg, canvas.width / 2 - 80, currentY - 50, 160, 160);
-                            } else {
-                                ctx.fillStyle = '#ff0055';
-                                ctx.font = 'bold 16px monospace';
-                                ctx.fillText('WHAT AN ADVENTURE GAMES', canvas.width / 2, currentY);
-                            }
-                        } else if (item.type === 'title') {
-                            ctx.fillStyle = '#00ffff';
-                            ctx.font = 'bold 18px monospace';
-                            ctx.shadowColor = '#00ffff';
-                            ctx.shadowBlur = 8;
-                            ctx.fillText(item.text, canvas.width / 2, currentY);
-                            ctx.shadowBlur = 0;
-                        } else if (item.type === 'subtitle') {
-                            ctx.fillStyle = '#8a8a9f';
-                            ctx.font = '9px monospace';
-                            ctx.fillText(item.text, canvas.width / 2, currentY);
-                        } else if (item.type === 'role') {
-                            ctx.fillStyle = '#ff0055';
-                            ctx.font = 'bold 11px monospace';
-                            ctx.fillText(item.text, canvas.width / 2, currentY);
-                        } else if (item.type === 'name') {
-                            ctx.fillStyle = '#ffffff';
-                            ctx.font = '13px monospace';
-                            ctx.fillText(item.text, canvas.width / 2, currentY);
-                        } else if (item.type === 'thanks') {
-                            ctx.fillStyle = '#00ff55';
-                            ctx.font = 'bold 18px monospace';
-                            ctx.shadowColor = '#00ff55';
-                            ctx.shadowBlur = 10;
-                            ctx.fillText(item.text, canvas.width / 2, currentY);
-                            ctx.shadowBlur = 0;
-                        } else if (item.type === 'end') {
-                            ctx.fillStyle = '#ff0055';
-                            ctx.font = 'bold 26px monospace';
-                            ctx.shadowColor = '#ff0055';
-                            ctx.shadowBlur = 12;
-                            ctx.fillText(item.text, canvas.width / 2, currentY);
-                            ctx.shadowBlur = 0;
-                        }
-                    }
-
-                    // Increment Y for next item
-                    if (item.type === 'spacer') {
-                        currentY += item.height;
-                    } else if (item.type === 'logo') {
-                        currentY += 100;
-                    } else if (item.type === 'title') {
-                        currentY += 22;
-                    } else if (item.type === 'subtitle') {
-                        currentY += 16;
-                    } else if (item.type === 'role') {
-                        currentY += 18;
-                    } else if (item.type === 'name') {
-                        currentY += 18;
-                    } else if (item.type === 'thanks') {
-                        currentY += 30;
-                    } else if (item.type === 'end') {
-                        currentY += 40;
-                    }
-                }
-
-                ctx.restore();
-
-                const totalCreditsHeight = currentY - (canvas.height - creditsScrollY);
-                if (typeof maxCreditsScroll !== 'undefined') {
-                    maxCreditsScroll = totalCreditsHeight;
-                }
-
-                ctx.fillStyle = '#4a4a5f';
-                ctx.font = '10px monospace';
-                ctx.textAlign = 'center';
-                ctx.fillText('CLICK / SPACE / ESC to SKIP TO MENU', canvas.width / 2, canvas.height - 15);
-            } else if (currentScreen === SCREENS.CINEMATIC) {
-                ctx.save();
-                
-                // Animate background image panning
-                if (endingSunriseLoaded && endingSunriseImg.naturalWidth > 0) {
-                    const progress = Math.min(cinematicTime / 20, 1.0);
-                    // Panning viewport (800x450) from the 1024x1024 source image
-                    // Start at top-left, pan slowly down and right
-                    const sx = progress * 120;
-                    const sy = 150 + Math.sin(progress * Math.PI / 2) * 250;
-                    
-                    ctx.drawImage(endingSunriseImg,
-                        sx, sy, 800, 450,
-                        0, 0, canvas.width, canvas.height
-                    );
-                } else {
-                    ctx.fillStyle = '#010108';
-                    ctx.fillRect(0, 0, canvas.width, canvas.height);
-                }
-
-                // Draw a retro screen glare overlay for cinematic effect
-                const scanlineGrad = ctx.createLinearGradient(0, 0, 0, canvas.height);
-                scanlineGrad.addColorStop(0, 'rgba(0, 255, 255, 0.05)');
-                scanlineGrad.addColorStop(0.5, 'rgba(0, 0, 0, 0.1)');
-                scanlineGrad.addColorStop(1, 'rgba(255, 0, 255, 0.05)');
-                ctx.fillStyle = scanlineGrad;
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-                // Draw player ship flying into the sunrise
-                if (cinematicTime > 3) {
-                    const flightProgress = Math.min((cinematicTime - 3) / 15, 1.0);
-                    const startX = -50;
-                    const startY = 320;
-                    const targetX = 480;
-                    const targetY = 220;
-
-                    const shipX = startX + (targetX - startX) * flightProgress;
-                    const shipY = startY + (targetY - startY) * flightProgress;
-                    const size = 32 * (1 - flightProgress * 0.75); // scales down
-
-                    // Draw retro flame
-                    ctx.fillStyle = Math.random() < 0.5 ? '#ff0055' : '#ffff00';
-                    ctx.beginPath();
-                    ctx.moveTo(shipX - 10, shipY + size/2);
-                    ctx.lineTo(shipX, shipY + size/2 - 4);
-                    ctx.lineTo(shipX, shipY + size/2 + 4);
-                    ctx.closePath();
-                    ctx.fill();
-
-                    // Draw player ship sprite
-                    const shipKey = selectedShip === 'scout' ? 'scout_0' : (selectedShip === 'heavy' ? 'heavy_0' : 'interceptor_0');
-                    const shipSprite = playerSprites[shipKey];
-                    if (shipSprite && shipSprite.complete && shipSprite.naturalWidth > 0) {
-                        ctx.drawImage(shipSprite, shipX, shipY, size, size);
-                    } else {
-                        ctx.fillStyle = '#00ffff';
-                        ctx.fillRect(shipX, shipY, size, size);
-                    }
-                }
-
-                // Narrative typography typing text
-                let txt = "";
-                if (cinematicTime < 3) {
-                    txt = "CYBER COELACANTH MELTDOWN INITIALIZED...";
-                } else if (cinematicTime < 7) {
-                    txt = "SECTOR 3 DEPTH LAIR SECURED. ESCAPING CAVERN...";
-                } else if (cinematicTime < 18) {
-                    txt = "The Cyber Coelacanth is defeated... but the galaxy still needs you.";
-                } else {
-                    txt = "TO BE CONTINUED...";
-                }
-
-                let subTime = 0;
-                if (cinematicTime < 3) subTime = cinematicTime;
-                else if (cinematicTime < 7) subTime = cinematicTime - 3;
-                else if (cinematicTime < 18) subTime = cinematicTime - 7;
-                else subTime = cinematicTime - 18;
-
-                const typedLength = Math.floor(subTime * 25);
-                const visibleText = txt.substring(0, typedLength);
-
-                // Dialog Box
-                ctx.fillStyle = 'rgba(5, 5, 15, 0.8)';
-                ctx.fillRect(50, canvas.height - 75, canvas.width - 100, 45);
-                ctx.strokeStyle = '#ff0055';
-                ctx.lineWidth = 2;
-                ctx.strokeRect(50, canvas.height - 75, canvas.width - 100, 45);
-
-                ctx.fillStyle = '#ffffff';
-                ctx.font = 'bold 11px monospace';
-                ctx.textAlign = 'left';
-                ctx.fillText(visibleText, 70, canvas.height - 48);
-
-                ctx.fillStyle = '#4a4a5f';
-                ctx.font = '9px monospace';
-                ctx.textAlign = 'center';
-                ctx.fillText('PRESS ENTER / ESC / CLICK to SKIP CUTSCENE', canvas.width / 2, canvas.height - 12);
-
-                ctx.restore();
-            }
-        }
+        // Initialize UI video elements from ui.js
+        initUIVideoElements();
 
         // Keys pressed
         const keys = {};
@@ -1424,92 +445,92 @@
 
             // Cinematic skip: Space or Escape while a video is playing
             if (e.key === ' ' || e.key === 'Space' || e.key === 'Escape') {
-                if (bossIntroPlaying) {
+                if (window.bossIntroPlaying) {
                     skipBossIntro();
                     e.preventDefault();
                     return;
                 }
-                if (victoryVideoPlaying) {
+                if (window.victoryVideoPlaying) {
                     skipVictoryCinematic();
                     e.preventDefault();
                     return;
                 }
             }
             
-            if (currentScreen !== SCREENS.PLAYING) {
+            if (window.currentScreen !== SCREENS.PLAYING) {
                 startMenuMusic();
             }
 
-            if (currentScreen === SCREENS.PLAYING) {
+            if (window.currentScreen === SCREENS.PLAYING) {
                 if (e.key === 'p' || e.key === 'P') {
-                    paused = !paused;
+                    window.paused = !window.paused;
                 }
                 keys[e.key] = true;
                 if (['Space', ' ', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'e', 'E'].indexOf(e.key) > -1) {
                     e.preventDefault();
                 }
-                if (e.key === ' ' && (gameOver || gameWon)) {
+                if (e.key === ' ' && (window.gameOver || window.gameWon)) {
                     resetGame();
                 }
-                if (e.key === 'Escape' && (gameOver || gameWon)) {
+                if (e.key === 'Escape' && (window.gameOver || window.gameWon)) {
                     playSound('menu_click');
                     transitionToScreen(SCREENS.MENU);
                 }
             } else {
-                if (targetScreen) return;
+                if (window.targetScreen) return;
                 
                 if (e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W') {
                     playSound('menu_select');
-                    if (currentScreen === SCREENS.MENU) {
-                        selectedMenuIndex = (selectedMenuIndex - 1 + menuOptions.length) % menuOptions.length;
-                    } else if (currentScreen === SCREENS.SETTINGS) {
-                        selectedSettingsIndex = (selectedSettingsIndex - 1 + SETTINGS_OPTIONS.length) % SETTINGS_OPTIONS.length;
-                    } else if (currentScreen === SCREENS.SHIP_SELECT) {
-                        selectedShipIndex = (selectedShipIndex - 1 + 3) % 3;
-                    } else if (currentScreen === SCREENS.LEADERBOARD) {
-                        if (leaderboardScrollOffset > 0) leaderboardScrollOffset--;
+                    if (window.currentScreen === SCREENS.MENU) {
+                        window.selectedMenuIndex = (window.selectedMenuIndex - 1 + window.menuOptions.length) % window.menuOptions.length;
+                    } else if (window.currentScreen === SCREENS.SETTINGS) {
+                        window.selectedSettingsIndex = (window.selectedSettingsIndex - 1 + window.SETTINGS_OPTIONS.length) % window.SETTINGS_OPTIONS.length;
+                    } else if (window.currentScreen === SCREENS.SHIP_SELECT) {
+                        window.selectedShipIndex = (window.selectedShipIndex - 1 + 3) % 3;
+                    } else if (window.currentScreen === SCREENS.LEADERBOARD) {
+                        if (window.leaderboardScrollOffset > 0) window.leaderboardScrollOffset--;
                     }
                     e.preventDefault();
                 } else if (e.key === 'ArrowDown' || e.key === 's' || e.key === 'S') {
                     playSound('menu_select');
-                    if (currentScreen === SCREENS.MENU) {
-                        selectedMenuIndex = (selectedMenuIndex + 1) % menuOptions.length;
-                    } else if (currentScreen === SCREENS.SETTINGS) {
-                        selectedSettingsIndex = (selectedSettingsIndex + 1) % SETTINGS_OPTIONS.length;
-                    } else if (currentScreen === SCREENS.SHIP_SELECT) {
-                        selectedShipIndex = (selectedShipIndex + 1) % 3;
-                    } else if (currentScreen === SCREENS.LEADERBOARD) {
+                    if (window.currentScreen === SCREENS.MENU) {
+                        window.selectedMenuIndex = (window.selectedMenuIndex + 1) % window.menuOptions.length;
+                    } else if (window.currentScreen === SCREENS.SETTINGS) {
+                        window.selectedSettingsIndex = (window.selectedSettingsIndex + 1) % window.SETTINGS_OPTIONS.length;
+                    } else if (window.currentScreen === SCREENS.SHIP_SELECT) {
+                        window.selectedShipIndex = (window.selectedShipIndex + 1) % 3;
+                    } else if (window.currentScreen === SCREENS.LEADERBOARD) {
                         const scores = getFilteredScores();
-                        if (leaderboardScrollOffset + 10 < scores.length) leaderboardScrollOffset++;
+                        if (window.leaderboardScrollOffset + 10 < scores.length) window.leaderboardScrollOffset++;
                     }
                     e.preventDefault();
                 } else if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') {
-                    if (currentScreen === SCREENS.SETTINGS) {
+                    if (window.currentScreen === SCREENS.SETTINGS) {
                         playSound('menu_select');
-                        adjustSetting(selectedSettingsIndex, -1);
-                    } else if (currentScreen === SCREENS.LEADERBOARD) {
+                        adjustSetting(window.selectedSettingsIndex, -1);
+                    } else if (window.currentScreen === SCREENS.LEADERBOARD) {
                         playSound('menu_select');
                         const filters = ['all', 'scout', 'interceptor', 'heavy', 'easy', 'normal', 'hard'];
-                        const idx = filters.indexOf(leaderboardFilter);
-                        leaderboardFilter = filters[(idx - 1 + filters.length) % filters.length];
-                        leaderboardScrollOffset = 0;
+                        const idx = filters.indexOf(window.leaderboardFilter);
+                        window.leaderboardFilter = filters[(idx - 1 + filters.length) % filters.length];
+                        window.leaderboardScrollOffset = 0;
                     }
                     e.preventDefault();
                 } else if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') {
-                    if (currentScreen === SCREENS.SETTINGS) {
+                    if (window.currentScreen === SCREENS.SETTINGS) {
                         playSound('menu_select');
-                        adjustSetting(selectedSettingsIndex, 1);
-                    } else if (currentScreen === SCREENS.LEADERBOARD) {
+                        adjustSetting(window.selectedSettingsIndex, 1);
+                    } else if (window.currentScreen === SCREENS.LEADERBOARD) {
                         playSound('menu_select');
                         const filters = ['all', 'scout', 'interceptor', 'heavy', 'easy', 'normal', 'hard'];
-                        const idx = filters.indexOf(leaderboardFilter);
-                        leaderboardFilter = filters[(idx + 1) % filters.length];
-                        leaderboardScrollOffset = 0;
+                        const idx = filters.indexOf(window.leaderboardFilter);
+                        window.leaderboardFilter = filters[(idx + 1) % filters.length];
+                        window.leaderboardScrollOffset = 0;
                     }
                     e.preventDefault();
                 } else if (e.key === 'Enter' || e.key === ' ') {
                     playSound('menu_click');
-                    if (currentScreen === SCREENS.CINEMATIC) {
+                    if (window.currentScreen === SCREENS.CINEMATIC) {
                         transitionToScreen(SCREENS.CREDITS);
                     } else {
                         handleMenuConfirm();
@@ -1517,22 +538,22 @@
                     e.preventDefault();
                 } else if (e.key === 'Escape') {
                     playSound('menu_click');
-                    if (currentScreen === SCREENS.CINEMATIC) {
+                    if (window.currentScreen === SCREENS.CINEMATIC) {
                         transitionToScreen(SCREENS.CREDITS);
-                    } else if (currentScreen === SCREENS.SHIP_SELECT || currentScreen === SCREENS.SETTINGS || currentScreen === SCREENS.CREDITS || currentScreen === SCREENS.LEADERBOARD) {
-                        if (currentScreen === SCREENS.LEADERBOARD) {
-                            leaderboardFilter = 'all';
-                            leaderboardScrollOffset = 0;
+                    } else if (window.currentScreen === SCREENS.SHIP_SELECT || window.currentScreen === SCREENS.SETTINGS || window.currentScreen === SCREENS.CREDITS || window.currentScreen === SCREENS.LEADERBOARD) {
+                        if (window.currentScreen === SCREENS.LEADERBOARD) {
+                            window.leaderboardFilter = 'all';
+                            window.leaderboardScrollOffset = 0;
                         }
                         transitionToScreen(SCREENS.MENU);
                     }
                     e.preventDefault();
-                } else if ((e.key === 'u' || e.key === 'U') && (gameOver || gameWon || currentScreen === SCREENS.MENU)) {
+                } else if ((e.key === 'u' || e.key === 'U') && (window.gameOver || window.gameWon || window.currentScreen === SCREENS.MENU)) {
                     window.location.href = 'upgrade_shop.html';
-                } else if ((e.key === 'c' || e.key === 'C') && currentScreen === SCREENS.LEADERBOARD) {
+                } else if ((e.key === 'c' || e.key === 'C') && window.currentScreen === SCREENS.LEADERBOARD) {
                     if (confirm('Clear ALL high scores? This cannot be undone.')) {
                         clearAllScores();
-                        leaderboardScrollOffset = 0;
+                        window.leaderboardScrollOffset = 0;
                     }
                 }
             }
@@ -1583,7 +604,7 @@
         class Player {
             constructor(shipType = 'interceptor') {
                 this.x = 80;
-                this.y = canvas.height / 2;
+                this.y = window.canvas.height / 2;
                 this.width = 40;
                 this.height = 20;
                 this.shipType = shipType;
@@ -1773,9 +794,9 @@
                 this.y += dy * currentSpeed * dt;
 
                 if (this.x < 10) this.x = 10;
-                if (this.x > canvas.width - this.width - 10) this.x = canvas.width - this.width - 10;
+                if (this.x > window.canvas.width - this.width - 10) this.x = window.canvas.width - this.width - 10;
                 if (this.y < 10) this.y = 10;
-                if (this.y > canvas.height - this.height - 10) this.y = canvas.height - this.height - 10;
+                if (this.y > window.canvas.height - this.height - 10) this.y = window.canvas.height - this.height - 10;
 
                 // --- Dodge/Evade ---
                 // Update dodge invulnerability timer
@@ -1874,9 +895,9 @@
                 
                 // Clamp to bounds after dodge
                 if (this.x < 10) this.x = 10;
-                if (this.x > canvas.width - this.width - 10) this.x = canvas.width - this.width - 10;
+                if (this.x > window.canvas.width - this.width - 10) this.x = window.canvas.width - this.width - 10;
                 if (this.y < 10) this.y = 10;
-                if (this.y > canvas.height - this.height - 10) this.y = canvas.height - this.height - 10;
+                if (this.y > window.canvas.height - this.height - 10) this.y = window.canvas.height - this.height - 10;
                 
                 // Spawn particle burst at destination
                 createExplosion(this.x + this.width/2, this.y + this.height/2, '#00ffaa', 5);
@@ -1921,7 +942,7 @@
 
                 if (this.shield <= 0) {
                     this.shield = 0;
-                    gameOver = true;
+                    window.gameOver = true;
                     playSound('explosion');
                     createExplosion(this.x, this.y, '#ff0000', 40);
                 }
@@ -1932,8 +953,8 @@
                     return;
                 }
 
-                ctx.save();
-                ctx.translate(this.x, this.y);
+                window.ctx.save();
+                window.ctx.translate(this.x, this.y);
 
                 // --- Apply Ship Color Cosmetic plating tint ---
                 const mods = window.DS_UpgradeSystem ? window.DS_UpgradeSystem.getGameplayModifiers() : null;
@@ -1950,67 +971,67 @@
                 }
                 
                 if (!sprite || !sprite.complete || sprite.naturalWidth === 0) {
-                    const frameKey = (Math.floor(gameTime * 6) % 2 === 0) ? 'player_0' : 'player_1';
+                    const frameKey = (Math.floor(window.gameTime * 6) % 2 === 0) ? 'player_0' : 'player_1';
                     sprite = playerSprites[frameKey];
                 }
 
                 if (sprite && sprite.complete && sprite.naturalWidth > 0) {
                     // Render sprite scaled to 48x48 (ship area ~40x20, sprite is 1024x1024)
                     const spriteSize = 48;
-                    ctx.drawImage(sprite, 0, 0, spriteSize, spriteSize);
+                    window.ctx.drawImage(sprite, 0, 0, spriteSize, spriteSize);
 
                     // Tint plating with chosen cosmetic color
                     if (cosmeticColor !== 'default') {
-                        ctx.save();
-                        ctx.globalCompositeOperation = 'source-atop';
+                        window.ctx.save();
+                        window.ctx.globalCompositeOperation = 'source-atop';
                         switch(cosmeticColor) {
-                            case 'cyan': ctx.fillStyle = 'rgba(0, 255, 255, 0.3)'; break;
-                            case 'magenta': ctx.fillStyle = 'rgba(255, 0, 85, 0.3)'; break;
-                            case 'emerald': ctx.fillStyle = 'rgba(0, 255, 85, 0.3)'; break;
-                            case 'gold': ctx.fillStyle = 'rgba(255, 204, 0, 0.35)'; break;
-                            case 'purple': ctx.fillStyle = 'rgba(176, 38, 255, 0.3)'; break;
+                            case 'cyan': window.ctx.fillStyle = 'rgba(0, 255, 255, 0.3)'; break;
+                            case 'magenta': window.ctx.fillStyle = 'rgba(255, 0, 85, 0.3)'; break;
+                            case 'emerald': window.ctx.fillStyle = 'rgba(0, 255, 85, 0.3)'; break;
+                            case 'gold': window.ctx.fillStyle = 'rgba(255, 204, 0, 0.35)'; break;
+                            case 'purple': window.ctx.fillStyle = 'rgba(176, 38, 255, 0.3)'; break;
                         }
-                        ctx.fillRect(0, 0, spriteSize, spriteSize);
-                        ctx.restore();
+                        window.ctx.fillRect(0, 0, spriteSize, spriteSize);
+                        window.ctx.restore();
                     }
                 } else {
                     // Fallback: simple triangle ship if sprite not loaded yet
                     if (cosmeticColor !== 'default') {
                         switch(cosmeticColor) {
-                            case 'cyan': ctx.fillStyle = '#00ffff'; break;
-                            case 'magenta': ctx.fillStyle = '#ff00ff'; break;
-                            case 'emerald': ctx.fillStyle = '#00ff55'; break;
-                            case 'gold': ctx.fillStyle = '#ffcc00'; break;
-                            case 'purple': ctx.fillStyle = '#b026ff'; break;
+                            case 'cyan': window.ctx.fillStyle = '#00ffff'; break;
+                            case 'magenta': window.ctx.fillStyle = '#ff00ff'; break;
+                            case 'emerald': window.ctx.fillStyle = '#00ff55'; break;
+                            case 'gold': window.ctx.fillStyle = '#ffcc00'; break;
+                            case 'purple': window.ctx.fillStyle = '#b026ff'; break;
                         }
                     } else {
-                        ctx.fillStyle = this.color;
+                        window.ctx.fillStyle = this.color;
                     }
-                    ctx.beginPath();
-                    ctx.moveTo(0, 4);
-                    ctx.lineTo(25, 4);
-                    ctx.lineTo(40, this.height / 2);
-                    ctx.lineTo(25, this.height - 4);
-                    ctx.lineTo(0, this.height - 4);
-                    ctx.closePath();
-                    ctx.fill();
+                    window.ctx.beginPath();
+                    window.ctx.moveTo(0, 4);
+                    window.ctx.lineTo(25, 4);
+                    window.ctx.lineTo(40, this.height / 2);
+                    window.ctx.lineTo(25, this.height - 4);
+                    window.ctx.lineTo(0, this.height - 4);
+                    window.ctx.closePath();
+                    window.ctx.fill();
 
-                    ctx.fillStyle = '#ff7700';
-                    ctx.beginPath();
-                    ctx.moveTo(0, 5);
-                    ctx.lineTo(-8, this.height / 2);
-                    ctx.lineTo(0, this.height - 5);
-                    ctx.closePath();
-                    ctx.fill();
+                    window.ctx.fillStyle = '#ff7700';
+                    window.ctx.beginPath();
+                    window.ctx.moveTo(0, 5);
+                    window.ctx.lineTo(-8, this.height / 2);
+                    window.ctx.lineTo(0, this.height - 5);
+                    window.ctx.closePath();
+                    window.ctx.fill();
                 }
 
                 // Draw Overload active visual aura
                 if (this.isSpecialActive) {
-                    ctx.strokeStyle = '#ff00aa';
-                    ctx.lineWidth = 2 + Math.sin(gameTime * 15) * 1.5;
-                    ctx.beginPath();
-                    ctx.arc(20, this.height/2, 28, 0, Math.PI * 2);
-                    ctx.stroke();
+                    window.ctx.strokeStyle = '#ff00aa';
+                    window.ctx.lineWidth = 2 + Math.sin(window.gameTime * 15) * 1.5;
+                    window.ctx.beginPath();
+                    window.ctx.arc(20, this.height/2, 28, 0, Math.PI * 2);
+                    window.ctx.stroke();
                 }
 
                 // Weapon level 4+ shield aura (sprite-based)
@@ -2018,38 +1039,38 @@
                     const shieldSprite = vfxSprites['shield'];
                     if (shieldSprite && shieldSprite.complete && shieldSprite.naturalWidth > 0) {
                         // Pulsing alpha based on game time
-                        const pulse = 0.25 + Math.sin(gameTime * 3) * 0.15;
-                        ctx.globalAlpha = pulse;
+                        const pulse = 0.25 + Math.sin(window.gameTime * 3) * 0.15;
+                        window.ctx.globalAlpha = pulse;
                         // Render translucent blue forcefield ring (1024x1024 → 72x72)
                         const shieldSize = 72;
-                        ctx.drawImage(shieldSprite,
+                        window.ctx.drawImage(shieldSprite,
                             -shieldSize / 2 + 24,  // center x offset
                             -shieldSize / 2 + this.height / 2,  // center y offset
                             shieldSize, shieldSize);
-                        ctx.globalAlpha = 1;
+                        window.ctx.globalAlpha = 1;
                     } else {
                         // Fallback: procedural circle
-                        ctx.strokeStyle = 'rgba(0, 255, 255, 0.4)';
-                        ctx.lineWidth = 2;
-                        ctx.beginPath();
-                        ctx.arc(24, this.height / 2, 28, 0, Math.PI * 2);
-                        ctx.stroke();
+                        window.ctx.strokeStyle = 'rgba(0, 255, 255, 0.4)';
+                        window.ctx.lineWidth = 2;
+                        window.ctx.beginPath();
+                        window.ctx.arc(24, this.height / 2, 28, 0, Math.PI * 2);
+                        window.ctx.stroke();
                     }
                 }
 
                 // Dodge-ready glow ring
                 if (this.dodgeCooldown <= 0 && !this.isDodging) {
-                    const dodgePulse = 0.3 + Math.sin(gameTime * 5) * 0.2;
-                    ctx.strokeStyle = `rgba(0, 255, 170, ${dodgePulse})`;
-                    ctx.lineWidth = 1.5;
-                    ctx.setLineDash([4, 3]);
-                    ctx.beginPath();
-                    ctx.arc(20, this.height / 2, 26, 0, Math.PI * 2);
-                    ctx.stroke();
-                    ctx.setLineDash([]);
+                    const dodgePulse = 0.3 + Math.sin(window.gameTime * 5) * 0.2;
+                    window.ctx.strokeStyle = `rgba(0, 255, 170, ${dodgePulse})`;
+                    window.ctx.lineWidth = 1.5;
+                    window.ctx.setLineDash([4, 3]);
+                    window.ctx.beginPath();
+                    window.ctx.arc(20, this.height / 2, 26, 0, Math.PI * 2);
+                    window.ctx.stroke();
+                    window.ctx.setLineDash([]);
                 }
 
-                ctx.restore();
+                window.ctx.restore();
             }
         }
 
@@ -2077,40 +1098,40 @@
             }
 
             draw() {
-                ctx.save();
-                ctx.translate(this.x, this.y);
+                window.ctx.save();
+                window.ctx.translate(this.x, this.y);
 
                 // Rotate to face bullet direction
                 const angle = Math.atan2(this.vy, this.vx);
-                ctx.rotate(angle);
+                window.ctx.rotate(angle);
 
                 const sprite = vfxSprites['laser'];
                 if (sprite && sprite.complete && sprite.naturalWidth > 0) {
                     // Render laser sprite scaled to bullet size (sprite is 1024x1024)
                     const renderSize = this.size * 3.5;
-                    ctx.globalAlpha = 0.9;
+                    window.ctx.globalAlpha = 0.9;
                     if (this.isWave) {
-                        ctx.shadowColor = this.color;
-                        ctx.shadowBlur = 12;
+                        window.ctx.shadowColor = this.color;
+                        window.ctx.shadowBlur = 12;
                     }
-                    ctx.drawImage(sprite, -renderSize / 2, -renderSize / 2, renderSize, renderSize);
-                    ctx.shadowBlur = 0;
+                    window.ctx.drawImage(sprite, -renderSize / 2, -renderSize / 2, renderSize, renderSize);
+                    window.ctx.shadowBlur = 0;
                 } else {
                     // Fallback: colored rectangle
-                    ctx.fillStyle = this.color;
+                    window.ctx.fillStyle = this.color;
                     if (this.isWave) {
-                        ctx.shadowColor = this.color;
-                        ctx.shadowBlur = 10;
-                        ctx.beginPath();
-                        ctx.arc(0, 0, this.size, 0, Math.PI * 2);
-                        ctx.fill();
-                        ctx.shadowBlur = 0;
+                        window.ctx.shadowColor = this.color;
+                        window.ctx.shadowBlur = 10;
+                        window.ctx.beginPath();
+                        window.ctx.arc(0, 0, this.size, 0, Math.PI * 2);
+                        window.ctx.fill();
+                        window.ctx.shadowBlur = 0;
                     } else {
-                        ctx.fillRect(-this.size, -2, this.size * 2, 4);
+                        window.ctx.fillRect(-this.size, -2, this.size * 2, 4);
                     }
                 }
 
-                ctx.restore();
+                window.ctx.restore();
             }
         }
 
@@ -2131,41 +1152,41 @@
             }
 
             draw() {
-                ctx.save();
-                ctx.translate(this.x, this.y);
+                window.ctx.save();
+                window.ctx.translate(this.x, this.y);
 
                 // Rotate: enemy bullets move left-to-right (vx is negative)
                 const angle = Math.atan2(this.vy, this.vx);
-                ctx.rotate(angle);
+                window.ctx.rotate(angle);
 
                 const renderSize = this.size * 4;
-                const pulse = 0.7 + Math.sin(gameTime * 8 + this.x * 0.05) * 0.3;
+                const pulse = 0.7 + Math.sin(window.gameTime * 8 + this.x * 0.05) * 0.3;
 
                 // Subtle shimmer accent — faint radial glow behind the bolt
-                const glowGrad = ctx.createRadialGradient(0, 0, renderSize * 0.15, 0, 0, renderSize * 0.8);
+                const glowGrad = window.ctx.createRadialGradient(0, 0, renderSize * 0.15, 0, 0, renderSize * 0.8);
                 glowGrad.addColorStop(0, 'rgba(255, 100, 30, 0.5)');
                 glowGrad.addColorStop(0.5, 'rgba(255, 30, 0, 0.15)');
                 glowGrad.addColorStop(1, 'rgba(255, 0, 0, 0)');
 
-                ctx.globalAlpha = pulse * 0.7;
-                ctx.fillStyle = glowGrad;
-                ctx.fillRect(-renderSize * 0.8, -renderSize * 0.8, renderSize * 1.6, renderSize * 1.6);
+                window.ctx.globalAlpha = pulse * 0.7;
+                window.ctx.fillStyle = glowGrad;
+                window.ctx.fillRect(-renderSize * 0.8, -renderSize * 0.8, renderSize * 1.6, renderSize * 1.6);
 
                 // Enemy laser bolt sprite on top
                 const sprite = vfxSprites['laser_enemy'];
                 if (sprite && sprite.complete && sprite.naturalWidth > 0) {
-                    ctx.globalAlpha = 0.9;
+                    window.ctx.globalAlpha = 0.9;
                     // Center the 1024×1024 sprite, scale to renderSize
                     const sw = sprite.naturalWidth;
                     const sh = sprite.naturalHeight;
-                    ctx.drawImage(sprite,
+                    window.ctx.drawImage(sprite,
                         0, 0, sw, sh,                           // source rect (full sprite)
                         -renderSize / 2, -renderSize / 2,       // dest x, y
                         renderSize, renderSize);                 // dest w, h
                 }
 
-                ctx.globalAlpha = 1;
-                ctx.restore();
+                window.ctx.globalAlpha = 1;
+                window.ctx.restore();
             }
         }
 
@@ -2173,8 +1194,8 @@
         class Enemy {
             constructor(type) {
                 this.type = type;
-                this.x = canvas.width + 50;
-                this.y = 50 + Math.random() * (canvas.height - 100);
+                this.x = window.canvas.width + 50;
+                this.y = 50 + Math.random() * (window.canvas.height - 100);
                 this.width = 30;
                 this.height = 30;
                 this.age = 0;
@@ -2236,8 +1257,8 @@
             }
 
             draw() {
-                ctx.save();
-                ctx.translate(this.x, this.y);
+                window.ctx.save();
+                window.ctx.translate(this.x, this.y);
 
                 const sprite = enemySprites[this.type];
                 const hasSprite = sprite && sprite.complete && sprite.naturalWidth > 0;
@@ -2246,38 +1267,38 @@
                     // Map each type to appropriate render size (sprites are 1024x1024)
                     const sizes = { scout: 36, interceptor: 36, heavy: 44, boss_minion: 32 };
                     const size = sizes[this.type] || 36;
-                    ctx.drawImage(sprite, 0, 0, size, size);
+                    window.ctx.drawImage(sprite, 0, 0, size, size);
                 } else {
                     // Fallback: colored shapes if sprite not loaded
-                    ctx.fillStyle = this.color;
+                    window.ctx.fillStyle = this.color;
                     if (this.type === 'scout') {
-                        ctx.beginPath();
-                        ctx.moveTo(30, 15); ctx.lineTo(10, 0); ctx.lineTo(0, 15); ctx.lineTo(10, 30);
-                        ctx.closePath(); ctx.fill();
+                        window.ctx.beginPath();
+                        window.ctx.moveTo(30, 15); window.ctx.lineTo(10, 0); window.ctx.lineTo(0, 15); window.ctx.lineTo(10, 30);
+                        window.ctx.closePath(); window.ctx.fill();
                     } else if (this.type === 'interceptor') {
-                        ctx.beginPath();
-                        ctx.moveTo(30, 15); ctx.lineTo(0, 5); ctx.lineTo(10, 15); ctx.lineTo(0, 25);
-                        ctx.closePath(); ctx.fill();
+                        window.ctx.beginPath();
+                        window.ctx.moveTo(30, 15); window.ctx.lineTo(0, 5); window.ctx.lineTo(10, 15); window.ctx.lineTo(0, 25);
+                        window.ctx.closePath(); window.ctx.fill();
                     } else if (this.type === 'heavy') {
-                        ctx.beginPath();
-                        ctx.moveTo(30, 5); ctx.lineTo(10, 0); ctx.lineTo(0, 15); ctx.lineTo(10, 30);
-                        ctx.lineTo(30, 25); ctx.lineTo(20, 15);
-                        ctx.closePath(); ctx.fill();
+                        window.ctx.beginPath();
+                        window.ctx.moveTo(30, 5); window.ctx.lineTo(10, 0); window.ctx.lineTo(0, 15); window.ctx.lineTo(10, 30);
+                        window.ctx.lineTo(30, 25); window.ctx.lineTo(20, 15);
+                        window.ctx.closePath(); window.ctx.fill();
                     } else if (this.type === 'boss_minion') {
-                        ctx.beginPath();
-                        ctx.arc(15, 15, 14, 0, Math.PI * 2); ctx.fill();
+                        window.ctx.beginPath();
+                        window.ctx.arc(15, 15, 14, 0, Math.PI * 2); window.ctx.fill();
                     }
                 }
 
-                ctx.restore();
+                window.ctx.restore();
             }
         }
 
         // --- Boss Fighter Class (Cyber Coelacanth) ---
         class Boss {
             constructor() {
-                this.x = canvas.width + 100;
-                this.y = canvas.height / 2 - 80;
+                this.x = window.canvas.width + 100;
+                this.y = window.canvas.height / 2 - 80;
                 this.width = 180;
                 this.height = 140;
                 this.hpMax = 120;
@@ -2296,8 +1317,8 @@
 
                 if (this.state === 'intro') {
                     this.x -= 40 * dt;
-                    if (this.x <= canvas.width - 210) {
-                        this.x = canvas.width - 210;
+                    if (this.x <= window.canvas.width - 210) {
+                        this.x = window.canvas.width - 210;
                         this.state = 'idle';
                         this.stateTimer = 3;
                     }
@@ -2379,7 +1400,7 @@
 
                 if (this.hp <= 0) {
                     this.hp = 0;
-                    bossDefeated = true;
+                    window.bossDefeated = true;
                     playSound('explosion');
                     
                     // Spawn Data Fragments on Boss defeat!
@@ -2403,8 +1424,8 @@
             }
 
             draw() {
-                ctx.save();
-                ctx.translate(this.x, this.y);
+                window.ctx.save();
+                window.ctx.translate(this.x, this.y);
 
                 // --- Sprite-based boss rendering ---
                 // boss_0.png is 1280x896; render scaled to 190x133 (matching original boss footprint)
@@ -2417,148 +1438,148 @@
                     // State-based visual effects applied on top of the sprite
                     if (this.state === 'laser_charge') {
                         // Cyan charge glow pulsing around the sprite
-                        ctx.shadowColor = '#00ffff';
-                        ctx.shadowBlur = 15 + Math.sin(this.bobTimer * 8) * 8;
+                        window.ctx.shadowColor = '#00ffff';
+                        window.ctx.shadowBlur = 15 + Math.sin(this.bobTimer * 8) * 8;
                     }
                     if (this.state === 'rage') {
                         // Red rage tint overlay via global composite
-                        ctx.drawImage(sprite, 0, 0, renderW, renderH);
-                        ctx.globalCompositeOperation = 'source-atop';
-                        ctx.fillStyle = 'rgba(255, 0, 30, 0.25)';
-                        ctx.fillRect(0, 0, renderW, renderH);
-                        ctx.globalCompositeOperation = 'source-over';
+                        window.ctx.drawImage(sprite, 0, 0, renderW, renderH);
+                        window.ctx.globalCompositeOperation = 'source-atop';
+                        window.ctx.fillStyle = 'rgba(255, 0, 30, 0.25)';
+                        window.ctx.fillRect(0, 0, renderW, renderH);
+                        window.ctx.globalCompositeOperation = 'source-over';
                     } else if (this.state === 'intro') {
                         // Intro: fade in from the right edge
-                        const introProgress = Math.min(1, (canvas.width - 210 - this.x) / 100 + 1);
-                        ctx.globalAlpha = Math.min(1, introProgress);
-                        ctx.drawImage(sprite, 0, 0, renderW, renderH);
-                        ctx.globalAlpha = 1;
+                        const introProgress = Math.min(1, (window.canvas.width - 210 - this.x) / 100 + 1);
+                        window.ctx.globalAlpha = Math.min(1, introProgress);
+                        window.ctx.drawImage(sprite, 0, 0, renderW, renderH);
+                        window.ctx.globalAlpha = 1;
                     } else {
-                        ctx.drawImage(sprite, 0, 0, renderW, renderH);
+                        window.ctx.drawImage(sprite, 0, 0, renderW, renderH);
                     }
-                    ctx.shadowBlur = 0;
+                    window.ctx.shadowBlur = 0;
                 } else {
-                    // --- Fallback: original canvas-drawn boss (kept for graceful degradation) ---
+                    // --- Fallback: original window.canvas-drawn boss (kept for graceful degradation) ---
                     // Tail fin
-                    ctx.fillStyle = '#ff3366';
-                    ctx.beginPath();
-                    ctx.moveTo(140, 70);
-                    ctx.lineTo(190, 20);
-                    ctx.lineTo(165, 70);
-                    ctx.lineTo(190, 120);
-                    ctx.closePath();
-                    ctx.fill();
+                    window.ctx.fillStyle = '#ff3366';
+                    window.ctx.beginPath();
+                    window.ctx.moveTo(140, 70);
+                    window.ctx.lineTo(190, 20);
+                    window.ctx.lineTo(165, 70);
+                    window.ctx.lineTo(190, 120);
+                    window.ctx.closePath();
+                    window.ctx.fill();
 
                     // Top spines
-                    ctx.fillStyle = '#ff3366';
+                    window.ctx.fillStyle = '#ff3366';
                     for (let i = 0; i < 3; i++) {
-                        ctx.beginPath();
-                        ctx.moveTo(40 + i*30, 25);
-                        ctx.lineTo(65 + i*30, -15);
-                        ctx.lineTo(80 + i*30, 25);
-                        ctx.closePath();
-                        ctx.fill();
+                        window.ctx.beginPath();
+                        window.ctx.moveTo(40 + i*30, 25);
+                        window.ctx.lineTo(65 + i*30, -15);
+                        window.ctx.lineTo(80 + i*30, 25);
+                        window.ctx.closePath();
+                        window.ctx.fill();
                     }
 
                     // Bottom spines
                     for (let i = 0; i < 2; i++) {
-                        ctx.beginPath();
-                        ctx.moveTo(60 + i*40, 115);
-                        ctx.lineTo(80 + i*40, 145);
-                        ctx.lineTo(95 + i*40, 115);
-                        ctx.closePath();
-                        ctx.fill();
+                        window.ctx.beginPath();
+                        window.ctx.moveTo(60 + i*40, 115);
+                        window.ctx.lineTo(80 + i*40, 145);
+                        window.ctx.lineTo(95 + i*40, 115);
+                        window.ctx.closePath();
+                        window.ctx.fill();
                     }
 
                     // Main body
-                    ctx.fillStyle = this.color;
-                    ctx.fillRect(30, 25, 120, 90);
+                    window.ctx.fillStyle = this.color;
+                    window.ctx.fillRect(30, 25, 120, 90);
 
                     // Armor plates
                     for (let col = 0; col < 4; col++) {
                         for (let row = 0; row < 3; row++) {
-                            ctx.fillStyle = (col + row) % 2 === 0 ? '#406090' : '#284068';
-                            ctx.fillRect(35 + col*28, 30 + row*26, 25, 22);
+                            window.ctx.fillStyle = (col + row) % 2 === 0 ? '#406090' : '#284068';
+                            window.ctx.fillRect(35 + col*28, 30 + row*26, 25, 22);
                         }
                     }
 
                     // Head / cockpit
-                    ctx.fillStyle = '#1e2d42';
-                    ctx.beginPath();
-                    ctx.moveTo(40, 25);
-                    ctx.lineTo(10, 40);
-                    ctx.lineTo(0, 70);
-                    ctx.lineTo(15, 95);
-                    ctx.lineTo(40, 115);
-                    ctx.lineTo(45, 25);
-                    ctx.closePath();
-                    ctx.fill();
+                    window.ctx.fillStyle = '#1e2d42';
+                    window.ctx.beginPath();
+                    window.ctx.moveTo(40, 25);
+                    window.ctx.lineTo(10, 40);
+                    window.ctx.lineTo(0, 70);
+                    window.ctx.lineTo(15, 95);
+                    window.ctx.lineTo(40, 115);
+                    window.ctx.lineTo(45, 25);
+                    window.ctx.closePath();
+                    window.ctx.fill();
 
                     // Eye
-                    ctx.fillStyle = this.state === 'rage' ? '#ff0000' : '#00ffcc';
-                    ctx.beginPath();
-                    ctx.arc(28, 50, 6, 0, Math.PI*2);
-                    ctx.fill();
+                    window.ctx.fillStyle = this.state === 'rage' ? '#ff0000' : '#00ffcc';
+                    window.ctx.beginPath();
+                    window.ctx.arc(28, 50, 6, 0, Math.PI*2);
+                    window.ctx.fill();
 
                     // Vent
-                    ctx.fillStyle = '#ff7700';
-                    ctx.fillRect(-2, 60, 10, 20);
+                    window.ctx.fillStyle = '#ff7700';
+                    window.ctx.fillRect(-2, 60, 10, 20);
 
                     // Rage glow border
                     if (this.state === 'rage') {
-                        ctx.strokeStyle = '#ff0055';
-                        ctx.lineWidth = 3 + Math.sin(this.bobTimer * 10) * 2;
-                        ctx.strokeRect(30, 25, 120, 90);
+                        window.ctx.strokeStyle = '#ff0055';
+                        window.ctx.lineWidth = 3 + Math.sin(this.bobTimer * 10) * 2;
+                        window.ctx.strokeRect(30, 25, 120, 90);
                     }
                 }
 
                 // --- Laser beam overlay (always drawn, independent of sprite/fallback) ---
                 if (this.state === 'laser_fire') {
-                    ctx.shadowColor = '#00ffff';
-                    ctx.shadowBlur = 25;
-                    const bGrd = ctx.createLinearGradient(0, 50, 0, 90);
+                    window.ctx.shadowColor = '#00ffff';
+                    window.ctx.shadowBlur = 25;
+                    const bGrd = window.ctx.createLinearGradient(0, 50, 0, 90);
                     bGrd.addColorStop(0, 'rgba(0, 255, 255, 0.2)');
                     bGrd.addColorStop(0.4, '#ffffff');
                     bGrd.addColorStop(0.5, '#00ffff');
                     bGrd.addColorStop(0.6, '#ffffff');
                     bGrd.addColorStop(1, 'rgba(0, 255, 255, 0.2)');
-                    ctx.fillStyle = bGrd;
+                    window.ctx.fillStyle = bGrd;
 
                     // Beam starts at 10px high at mouth (y: 65-75), expanding to 40px (y: 50-90) over first 100px
                     const endX = -this.x;
                     const transX = Math.max(-this.x, -100);
-                    ctx.beginPath();
-                    ctx.moveTo(0, 65);
-                    ctx.lineTo(transX, 50);
-                    ctx.lineTo(endX, 50);
-                    ctx.lineTo(endX, 90);
-                    ctx.lineTo(transX, 90);
-                    ctx.lineTo(0, 75);
-                    ctx.closePath();
-                    ctx.fill();
+                    window.ctx.beginPath();
+                    window.ctx.moveTo(0, 65);
+                    window.ctx.lineTo(transX, 50);
+                    window.ctx.lineTo(endX, 50);
+                    window.ctx.lineTo(endX, 90);
+                    window.ctx.lineTo(transX, 90);
+                    window.ctx.lineTo(0, 75);
+                    window.ctx.closePath();
+                    window.ctx.fill();
 
                     // Concentrated muzzle flash at origin (0, 70)
-                    const muzzleGrd = ctx.createRadialGradient(0, 70, 0, 0, 70, 30);
+                    const muzzleGrd = window.ctx.createRadialGradient(0, 70, 0, 0, 70, 30);
                     muzzleGrd.addColorStop(0, '#ffffff');
                     muzzleGrd.addColorStop(0.3, '#ffffff');
                     muzzleGrd.addColorStop(0.7, 'rgba(0, 255, 255, 0.8)');
                     muzzleGrd.addColorStop(1, 'rgba(0, 255, 255, 0)');
-                    ctx.fillStyle = muzzleGrd;
-                    ctx.beginPath();
-                    ctx.arc(0, 70, 30, 0, Math.PI * 2);
-                    ctx.fill();
+                    window.ctx.fillStyle = muzzleGrd;
+                    window.ctx.beginPath();
+                    window.ctx.arc(0, 70, 30, 0, Math.PI * 2);
+                    window.ctx.fill();
 
-                    ctx.shadowBlur = 0;
+                    window.ctx.shadowBlur = 0;
                 }
 
                 // --- Rage glow overlay (when using sprite, draw pulsating border) ---
                 if (hasSprite && this.state === 'rage') {
-                    ctx.strokeStyle = '#ff0055';
-                    ctx.lineWidth = 3 + Math.sin(this.bobTimer * 10) * 2;
-                    ctx.strokeRect(0, 0, renderW, renderH);
+                    window.ctx.strokeStyle = '#ff0055';
+                    window.ctx.lineWidth = 3 + Math.sin(this.bobTimer * 10) * 2;
+                    window.ctx.strokeRect(0, 0, renderW, renderH);
                 }
 
-                ctx.restore();
+                window.ctx.restore();
             }
         }
 
@@ -2581,23 +1602,23 @@
             }
 
             draw() {
-                ctx.save();
-                ctx.translate(this.x, this.y);
+                window.ctx.save();
+                window.ctx.translate(this.x, this.y);
 
                 const color = this.kind === 'W' ? '#ff0055' : '#00ff55';
-                ctx.shadowColor = color;
-                ctx.shadowBlur = 8;
+                window.ctx.shadowColor = color;
+                window.ctx.shadowBlur = 8;
 
-                ctx.fillStyle = color;
-                ctx.beginPath();
-                ctx.arc(8, 8, 8, 0, Math.PI*2);
-                ctx.fill();
+                window.ctx.fillStyle = color;
+                window.ctx.beginPath();
+                window.ctx.arc(8, 8, 8, 0, Math.PI*2);
+                window.ctx.fill();
 
-                ctx.fillStyle = '#ffffff';
-                ctx.font = 'bold 10px monospace';
-                ctx.fillText(this.kind, 5, 11);
+                window.ctx.fillStyle = '#ffffff';
+                window.ctx.font = 'bold 10px monospace';
+                window.ctx.fillText(this.kind, 5, 11);
 
-                ctx.restore();
+                window.ctx.restore();
             }
         }
 
@@ -2621,11 +1642,11 @@
             }
 
             draw() {
-                ctx.save();
-                ctx.globalAlpha = Math.max(0, this.alpha);
-                ctx.fillStyle = this.color;
-                ctx.fillRect(this.x, this.y, this.size, this.size);
-                ctx.restore();
+                window.ctx.save();
+                window.ctx.globalAlpha = Math.max(0, this.alpha);
+                window.ctx.fillStyle = this.color;
+                window.ctx.fillRect(this.x, this.y, this.size, this.size);
+                window.ctx.restore();
             }
         }
 
@@ -2657,23 +1678,23 @@
                 const key = 'explosion_' + this.frame;
                 const sprite = vfxSprites[key];
                 if (sprite && sprite.complete && sprite.naturalWidth > 0) {
-                    ctx.save();
-                    ctx.globalAlpha = 0.9;
-                    ctx.drawImage(sprite,
+                    window.ctx.save();
+                    window.ctx.globalAlpha = 0.9;
+                    window.ctx.drawImage(sprite,
                         this.x - this.size / 2,
                         this.y - this.size / 2,
                         this.size, this.size);
-                    ctx.restore();
+                    window.ctx.restore();
                 } else {
                     // Fallback: orange flash circle
                     const progress = this.frame / 4;
-                    ctx.save();
-                    ctx.globalAlpha = 1 - progress;
-                    ctx.fillStyle = '#ff6600';
-                    ctx.beginPath();
-                    ctx.arc(this.x, this.y, this.size * (0.5 + progress * 0.5), 0, Math.PI * 2);
-                    ctx.fill();
-                    ctx.restore();
+                    window.ctx.save();
+                    window.ctx.globalAlpha = 1 - progress;
+                    window.ctx.fillStyle = '#ff6600';
+                    window.ctx.beginPath();
+                    window.ctx.arc(this.x, this.y, this.size * (0.5 + progress * 0.5), 0, Math.PI * 2);
+                    window.ctx.fill();
+                    window.ctx.restore();
                 }
             }
         }
@@ -2724,34 +1745,34 @@
                 this.spin += this.spinSpeed * dt;
             }
             draw() {
-                ctx.save();
-                ctx.translate(this.x, this.y);
-                ctx.rotate(this.spin);
+                window.ctx.save();
+                window.ctx.translate(this.x, this.y);
+                window.ctx.rotate(this.spin);
                 
-                ctx.shadowColor = this.color;
-                ctx.shadowBlur = 8;
-                ctx.fillStyle = this.color;
+                window.ctx.shadowColor = this.color;
+                window.ctx.shadowBlur = 8;
+                window.ctx.fillStyle = this.color;
                 
                 if (this.type === 'metal') {
-                    ctx.beginPath();
+                    window.ctx.beginPath();
                     for(let i=0; i<6; i++) {
                         const angle = i * Math.PI / 3;
-                        ctx.lineTo(Math.cos(angle)*6, Math.sin(angle)*6);
+                        window.ctx.lineTo(Math.cos(angle)*6, Math.sin(angle)*6);
                     }
-                    ctx.closePath();
-                    ctx.fill();
+                    window.ctx.closePath();
+                    window.ctx.fill();
                 } else if (this.type === 'cell') {
-                    ctx.fillRect(-3, -6, 6, 12);
-                    ctx.fillStyle = '#ffffff';
-                    ctx.fillRect(-1, -4, 2, 8);
+                    window.ctx.fillRect(-3, -6, 6, 12);
+                    window.ctx.fillStyle = '#ffffff';
+                    window.ctx.fillRect(-1, -4, 2, 8);
                 } else if (this.type === 'fragment') {
-                    ctx.fillRect(-5, -5, 10, 10);
-                    ctx.strokeStyle = '#ffffff';
-                    ctx.lineWidth = 1;
-                    ctx.strokeRect(-5, -5, 10, 10);
+                    window.ctx.fillRect(-5, -5, 10, 10);
+                    window.ctx.strokeStyle = '#ffffff';
+                    window.ctx.lineWidth = 1;
+                    window.ctx.strokeRect(-5, -5, 10, 10);
                 }
                 
-                ctx.restore();
+                window.ctx.restore();
             }
         }
 
@@ -2772,13 +1793,13 @@
                 this.alpha = Math.max(0, this.life);
             }
             draw() {
-                ctx.save();
-                ctx.globalAlpha = this.alpha;
-                ctx.fillStyle = this.color;
-                ctx.font = 'bold 11px monospace';
-                ctx.textAlign = 'center';
-                ctx.fillText(this.text, this.x, this.y);
-                ctx.restore();
+                window.ctx.save();
+                window.ctx.globalAlpha = this.alpha;
+                window.ctx.fillStyle = this.color;
+                window.ctx.font = 'bold 11px monospace';
+                window.ctx.textAlign = 'center';
+                window.ctx.fillText(this.text, this.x, this.y);
+                window.ctx.restore();
             }
         }
 
@@ -2835,23 +1856,23 @@
 
             update(dt) {
                 const img = this.getImg();
-                this.offset = (this.offset + this.speed * dt) % (img ? img.width : canvas.width);
+                this.offset = (this.offset + this.speed * dt) % (img ? img.width : window.canvas.width);
             }
 
             draw() {
                 const img = this.getImg();
                 if (!img || !img.complete || img.naturalWidth === 0) return;
-                ctx.save();
-                ctx.globalAlpha = this.alpha;
+                window.ctx.save();
+                window.ctx.globalAlpha = this.alpha;
                 const w = img.width * this.scale;
                 const h = img.height * this.scale;
                 // Tile horizontally for seamless scroll
                 const drawX = -this.offset;
-                const count = Math.ceil(canvas.width / w) + 1;
+                const count = Math.ceil(window.canvas.width / w) + 1;
                 for (let i = 0; i < count; i++) {
-                    ctx.drawImage(img, drawX + i * w, this.yOffset, w, h);
+                    window.ctx.drawImage(img, drawX + i * w, this.yOffset, w, h);
                 }
-                ctx.restore();
+                window.ctx.restore();
             }
         }
 
@@ -2909,7 +1930,7 @@
         }
 
         // --- Boss Asset Lazy-Loading ---
-        // Boss sprites are preloaded when score nears 2,000-point trigger
+        // Boss sprites are preloaded when window.score nears 2,000-point trigger
         const bossSprites = {};
         let bossAssetsLoading = false;
         let bossAssetsLoaded = false;
@@ -2957,18 +1978,18 @@
 
         class OffscreenBuffer {
             constructor(width, height) {
-                this.canvas = document.createElement('canvas');
-                this.canvas.width = width;
-                this.canvas.height = height;
-                this.ctx = this.canvas.getContext('2d');
+                this.window.canvas = document.createElement('window.canvas');
+                this.window.canvas.width = width;
+                this.window.canvas.height = height;
+                this.window.ctx = this.window.canvas.getContext('2d');
                 this.dirty = true;          // force first render
                 this.renderInterval = 0;     // ms between rebuilds
                 this.renderTimer = 0;        // countdown accumulator
             }
             markDirty() { this.dirty = true; }
             rebuild(renderFn) {
-                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-                renderFn(this.ctx);
+                this.window.ctx.clearRect(0, 0, this.window.canvas.width, this.window.canvas.height);
+                renderFn(this.window.ctx);
                 this.dirty = false;
             }
         }
@@ -2977,8 +1998,8 @@
         class Star {
             constructor(depth) {
                 this.depth = depth; // 1=far, 2=mid, 3=near
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
+                this.x = Math.random() * window.canvas.width;
+                this.y = Math.random() * window.canvas.height;
                 this.speed = 20 + depth * 25;
                 this.size = 0.5 + depth * 0.4;
                 this.twinkle = Math.random() * Math.PI * 2;
@@ -2990,8 +2011,8 @@
                 this.x -= this.speed * dt;
                 this.twinkle += this.twinkleSpeed * dt;
                 if (this.x < -5) {
-                    this.x = canvas.width + 5;
-                    this.y = Math.random() * canvas.height;
+                    this.x = window.canvas.width + 5;
+                    this.y = Math.random() * window.canvas.height;
                 }
             }
 
@@ -2999,7 +2020,7 @@
         }
 
         // Offscreen buffer for star field (rendered lazily every 250ms)
-        const starBuffer = new OffscreenBuffer(canvas.width, canvas.height);
+        const starBuffer = new OffscreenBuffer(window.canvas.width, window.canvas.height);
         starBuffer.renderInterval = 0.25; // seconds
         const stars = [];
         for (let i = 0; i < 35; i++) stars.push(new Star(1));   // far
@@ -3022,8 +2043,8 @@
                 this.reset(true);
             }
             reset(initial = false) {
-                this.x = initial ? Math.random() * canvas.width : canvas.width + 20;
-                this.y = Math.random() * canvas.height;
+                this.x = initial ? Math.random() * window.canvas.width : window.canvas.width + 20;
+                this.y = Math.random() * window.canvas.height;
                 this.size = 0.6 + Math.random() * 2.5;
                 this.speed = 8 + Math.random() * 25;
                 this.drift = (Math.random() - 0.5) * 12;
@@ -3033,15 +2054,15 @@
             update(dt) {
                 this.x -= this.speed * dt;
                 this.y += this.drift * dt;
-                if (this.y < 0) this.y = canvas.height;
-                if (this.y > canvas.height) this.y = 0;
+                if (this.y < 0) this.y = window.canvas.height;
+                if (this.y > window.canvas.height) this.y = 0;
                 if (this.x < -10) this.reset();
             }
             draw() {} // No-op — rendered via offscreen buffer
         }
 
         // Offscreen buffer for sea particles (redrawn every 200ms)
-        const seaBuffer = new OffscreenBuffer(canvas.width, canvas.height);
+        const seaBuffer = new OffscreenBuffer(window.canvas.width, window.canvas.height);
         seaBuffer.renderInterval = 0.20; // seconds
 
         function rebuildSeaBuffer(offCtx) {
@@ -3068,15 +2089,14 @@
 
         // Parallax background layers (image-based)
         const bgLayers = [
-            new ParallaxLayer('nebula', 12, 0, 0.55, canvas.height / 768),      // Far: nebula cloud
-            new ParallaxLayer('city',   55, 0, 0.45, canvas.height / 450)        // Mid: city silhouette
+            new ParallaxLayer('nebula', 12, 0, 0.55, window.canvas.height / 768),      // Far: nebula cloud
+            new ParallaxLayer('city',   55, 0, 0.45, window.canvas.height / 450)        // Mid: city silhouette
         ];
 
         // Deep-sea ambient particles
         const seaParticles = [];
         for (let i = 0; i < 45; i++) seaParticles.push(new SeaParticle());
 
-        let boss = null;
         let enemySpawnTimer = 1.2;
 
         const vfxExplosions = [];
@@ -3100,19 +2120,19 @@
         }
 
         function resetGame() {
-            score = 0;
-            gameOver = false;
-            gameWon = false;
-            bossSpawned = false;
-            boss = null;
-            sirenTimer = 0;
-            gameTime = 0;
-            bossDefeated = false;
-            bossIntroPlaying = false;
-            victoryVideoPlaying = false;
-            if (bossIntroVideo) { bossIntroVideo.pause(); bossIntroVideo.classList.remove('active'); bossIntroVideo.muted = true; }
-            if (victoryVideo) { victoryVideo.pause(); victoryVideo.classList.remove('active'); victoryVideo.muted = true; }
-            skipHint.classList.remove('active');
+            window.score = 0;
+            window.gameOver = false;
+            window.gameWon = false;
+            window.bossSpawned = false;
+            window.boss = null;
+            window.sirenTimer = 0;
+            window.gameTime = 0;
+            window.bossDefeated = false;
+            window.bossIntroPlaying = false;
+            window.victoryVideoPlaying = false;
+            if (window.bossIntroVideo) { window.bossIntroVideo.pause(); window.bossIntroVideo.classList.remove('active'); window.bossIntroVideo.muted = true; }
+            if (window.victoryVideo) { window.victoryVideo.pause(); window.victoryVideo.classList.remove('active'); window.victoryVideo.muted = true; }
+            window.skipHint.classList.remove('active');
             
             runScrap = 0;
             runScrapSaved = false;
@@ -3121,7 +2141,7 @@
             highScoreParticles = [];
             
             // Re-instantiate player ship with the currently selected model
-            player = new Player(SHIP_OPTIONS[selectedShipIndex]);
+            player = new Player(window.SHIP_OPTIONS[window.selectedShipIndex]);
             
             bullets.length = 0;
             enemyBullets.length = 0;
@@ -3134,12 +2154,12 @@
         }
 
         function loop(timestamp) {
-            if (!lastTime) lastTime = timestamp;
-            const dt = Math.min((timestamp - lastTime) / 1000, 0.1);
-            lastTime = timestamp;
+            if (!window.lastTime) window.lastTime = timestamp;
+            const dt = Math.min((timestamp - window.lastTime) / 1000, 0.1);
+            window.lastTime = timestamp;
 
-            if (!paused && !gameOver && !gameWon && !bossIntroPlaying && !victoryVideoPlaying) {
-                gameTime += dt;
+            if (!window.paused && !window.gameOver && !window.gameWon && !window.bossIntroPlaying && !window.victoryVideoPlaying) {
+                window.gameTime += dt;
                 update(dt);
             }
 
@@ -3149,47 +2169,47 @@
 
         function update(dt) {
             // Screen transition overlay fading
-            if (targetScreen) {
-                transitionTimer += dt;
-                const halfDuration = TRANSITION_DURATION / 2;
-                if (transitionTimer < halfDuration) {
-                    screenFadeAlpha = transitionTimer / halfDuration;
-                } else if (transitionTimer >= halfDuration && transitionTimer < TRANSITION_DURATION) {
-                    if (currentScreen !== targetScreen) {
-                        currentScreen = targetScreen;
-                        if (currentScreen === SCREENS.PLAYING) {
+            if (window.targetScreen) {
+                window.transitionTimer += dt;
+                const halfDuration = window.TRANSITION_DURATION / 2;
+                if (window.transitionTimer < halfDuration) {
+                    window.screenFadeAlpha = window.transitionTimer / halfDuration;
+                } else if (window.transitionTimer >= halfDuration && window.transitionTimer < window.TRANSITION_DURATION) {
+                    if (window.currentScreen !== window.targetScreen) {
+                        window.currentScreen = window.targetScreen;
+                        if (window.currentScreen === SCREENS.PLAYING) {
                             stopMenuMusic();
                             stopCreditsMusic();
                             resetGame();
-                        } else if (currentScreen === SCREENS.CREDITS) {
+                        } else if (window.currentScreen === SCREENS.CREDITS) {
                             stopMenuMusic();
                             startCreditsMusic();
                             creditsScrollY = 0;
                             creditsHoldTimer = 0;
-                        } else if (currentScreen === SCREENS.CINEMATIC) {
+                        } else if (window.currentScreen === SCREENS.CINEMATIC) {
                             stopMenuMusic();
                             stopCreditsMusic();
-                            cinematicTime = 0;
+                            window.cinematicTime = 0;
                             playSound('victory_fanfare');
                         } else {
                             stopCreditsMusic();
                             startMenuMusic();
                         }
                     }
-                    screenFadeAlpha = 1 - (transitionTimer - halfDuration) / halfDuration;
+                    window.screenFadeAlpha = 1 - (window.transitionTimer - halfDuration) / halfDuration;
                 } else {
-                    currentScreen = targetScreen;
-                    targetScreen = null;
-                    screenFadeAlpha = 0;
+                    window.currentScreen = window.targetScreen;
+                    window.targetScreen = null;
+                    window.screenFadeAlpha = 0;
                 }
             }
 
-            if (currentScreen !== SCREENS.PLAYING) {
-                if (currentScreen === SCREENS.CREDITS) {
+            if (window.currentScreen !== SCREENS.PLAYING) {
+                if (window.currentScreen === SCREENS.CREDITS) {
                     creditsScrollY += 35 * dt;
-                } else if (currentScreen === SCREENS.CINEMATIC) {
-                    cinematicTime += dt;
-                    if (cinematicTime >= 20 && !targetScreen) {
+                } else if (window.currentScreen === SCREENS.CINEMATIC) {
+                    window.cinematicTime += dt;
+                    if (window.cinematicTime >= 20 && !window.targetScreen) {
                         transitionToScreen(SCREENS.CREDITS);
                     }
                 }
@@ -3197,13 +2217,13 @@
                 return;
             }
 
-            if (bossDefeated) {
+            if (window.bossDefeated) {
                 bgLayers.forEach(layer => layer.update(dt));
                 stars.forEach(star => star.update(dt));
                 seaParticles.forEach(p => p.update(dt));
                 player.invulnerable = 999;
                 player.update(dt);
-                if (boss) boss.update(dt);
+                if (window.boss) window.boss.update(dt);
                 
                 bullets.forEach(b => b.update(dt));
                 enemyBullets.forEach(eb => eb.update(dt));
@@ -3236,7 +2256,7 @@
 
             player.update(dt);
 
-            if (!bossSpawned && !bossIntroPlaying) {
+            if (!window.bossSpawned && !window.bossIntroPlaying) {
                 enemySpawnTimer -= dt;
                 if (enemySpawnTimer <= 0) {
                     const r = Math.random();
@@ -3252,36 +2272,36 @@
                     if (difficulty === 'easy') spawnModifier = 1.3;
                     else if (difficulty === 'hard') spawnModifier = 0.8;
                     
-                    enemySpawnTimer = Math.max(0.5, (1.5 - (score / 15000)) * spawnModifier);
+                    enemySpawnTimer = Math.max(0.5, (1.5 - (window.score / 15000)) * spawnModifier);
                 }
 
-                if (score >= 1500 && !bossAssetsLoaded) {
+                if (window.score >= 1500 && !bossAssetsLoaded) {
                     preloadBossAssets();
                 }
 
-                if (score >= 2000) {
-                    if (!bossSpawned) {
+                if (window.score >= 2000) {
+                    if (!window.bossSpawned) {
                         playBossIntro();
                     }
                 }
             } else {
-                if (sirenTimer > 0) {
-                    sirenTimer -= dt;
-                    if (Math.floor(sirenTimer * 10) % 4 === 0) {
+                if (window.sirenTimer > 0) {
+                    window.sirenTimer -= dt;
+                    if (Math.floor(window.sirenTimer * 10) % 4 === 0) {
                         playSound('siren');
                     }
-                    if (sirenTimer <= 0) {
-                        boss = new Boss();
+                    if (window.sirenTimer <= 0) {
+                        window.boss = new Boss();
                     }
-                } else if (boss) {
-                    boss.update(dt);
+                } else if (window.boss) {
+                    window.boss.update(dt);
                 }
             }
 
             for (let i = bullets.length - 1; i >= 0; i--) {
                 const b = bullets[i];
                 b.update(dt);
-                if (b.x > canvas.width + 20) {
+                if (b.x > window.canvas.width + 20) {
                     bullets.splice(i, 1);
                 }
             }
@@ -3326,7 +2346,7 @@
                         if (e.hp <= 0) {
                             createExplosion(e.x + e.width/2, e.y + e.height/2, e.color, 12);
                             playSound('explosion');
-                            score += e.scoreValue;
+                            window.score += e.scoreValue;
 
                             // Spawn scrap drops
                             const metalCount = e.type === 'heavy' ? 3 : 1;
@@ -3355,26 +2375,26 @@
                 }
             }
 
-            if (boss) {
+            if (window.boss) {
                 for (let j = bullets.length - 1; j >= 0; j--) {
                     const b = bullets[j];
                     const bBox = { x: b.x - b.size, y: b.y - 2, width: b.size*2, height: 4 };
-                    if (checkCollision(bBox, boss)) {
+                    if (checkCollision(bBox, window.boss)) {
                         const mods = window.DS_UpgradeSystem ? window.DS_UpgradeSystem.getGameplayModifiers() : null;
                         const dmg = (player.weaponLevel >= 4 ? 2 : 1) * (mods ? mods.weaponDamageMultiplier : 1.0);
-                        boss.takeDamage(dmg);
+                        window.boss.takeDamage(dmg);
                         bullets.splice(j, 1);
                     }
                 }
 
-                if (checkCollision(player, boss)) {
+                if (checkCollision(player, window.boss)) {
                     player.takeDamage(35);
                 }
 
-                if (boss.state === 'laser_fire') {
-                    const laserYStart = boss.y + 50;
+                if (window.boss.state === 'laser_fire') {
+                    const laserYStart = window.boss.y + 50;
                     const laserHeight = 40;
-                    if (player.x + player.width > 0 && player.x < boss.x + 20) {
+                    if (player.x + player.width > 0 && player.x < window.boss.x + 20) {
                         if (player.y + player.height > laserYStart && player.y < laserYStart + laserHeight) {
                             player.takeDamage(3);
                         }
@@ -3442,7 +2462,7 @@
                 }
             }
 
-            // Update high score celebration particles
+            // Update high window.score celebration particles
             if (highScoreBannerTimer > 0) {
                 highScoreBannerTimer -= dt;
                 for (let i = highScoreParticles.length - 1; i >= 0; i--) {
@@ -3457,26 +2477,26 @@
                 }
             }
 
-            if ((gameOver || gameWon) && !runScrapSaved) {
+            if ((window.gameOver || window.gameWon) && !runScrapSaved) {
                 if (window.DS_UpgradeSystem) {
                     window.DS_UpgradeSystem.addScrap(runScrap);
                 }
                 runScrapSaved = true;
                 
-                // Save score to leaderboard
-                if (score > 0) {
-                    const biome = Math.floor(score / 1500) + 1;
-                    saveRunScore(score, selectedShip, Math.min(biome, 10), difficulty);
+                // Save window.score to leaderboard
+                if (window.score > 0) {
+                    const biome = Math.floor(window.score / 1500) + 1;
+                    saveRunScore(window.score, selectedShip, Math.min(biome, 10), difficulty);
                     
-                    // Check for new high score
-                    if (isNewHighScore(score) && !newHighScoreCelebrated) {
+                    // Check for new high window.score
+                    if (isNewHighScore(window.score) && !newHighScoreCelebrated) {
                         newHighScoreCelebrated = true;
                         highScoreBannerTimer = 4.0; // 4 seconds of celebration
                         // Spawn celebration particles
                         for (let p = 0; p < 40; p++) {
                             highScoreParticles.push({
-                                x: canvas.width / 2 + (Math.random() - 0.5) * 400,
-                                y: canvas.height / 2 + (Math.random() - 0.5) * 200,
+                                x: window.canvas.width / 2 + (Math.random() - 0.5) * 400,
+                                y: window.canvas.height / 2 + (Math.random() - 0.5) * 200,
                                 vx: (Math.random() - 0.5) * 120,
                                 vy: (Math.random() - 0.5) * 120 - 40,
                                 life: 1.5 + Math.random() * 2.0,
@@ -3491,7 +2511,7 @@
             uiShield.innerText = Math.round(player.shield) + '%';
             uiShield.style.color = player.shield > 40 ? '#00ff00' : '#ff0033';
             uiWeapon.innerText = 'LVL ' + player.weaponLevel + (player.weaponLevel === 5 ? ' (MAX)' : '');
-            uiScore.innerText = score;
+            uiScore.innerText = window.score;
             if (uiScrap) uiScrap.innerText = '⚙️' + runScrap;
             
             if (uiBoost) {
@@ -3535,19 +2555,19 @@
         }
 
         function draw() {
-            if (currentScreen !== SCREENS.PLAYING) {
+            if (window.currentScreen !== SCREENS.PLAYING) {
                 drawMenuScreens();
-                if (screenFadeAlpha > 0) {
-                    ctx.save();
-                    ctx.fillStyle = `rgba(0, 0, 0, ${screenFadeAlpha})`;
-                    ctx.fillRect(0, 0, canvas.width, canvas.height);
-                    ctx.restore();
+                if (window.screenFadeAlpha > 0) {
+                    window.ctx.save();
+                    window.ctx.fillStyle = `rgba(0, 0, 0, ${window.screenFadeAlpha})`;
+                    window.ctx.fillRect(0, 0, window.canvas.width, window.canvas.height);
+                    window.ctx.restore();
                 }
                 return;
             }
 
-            ctx.fillStyle = '#010108';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            window.ctx.fillStyle = '#010108';
+            window.ctx.fillRect(0, 0, window.canvas.width, window.canvas.height);
 
             // Render parallax layers back-to-front (image-based, drawn directly)
             bgLayers.forEach(layer => layer.draw());
@@ -3556,15 +2576,15 @@
             // First frame: force-build buffers if not yet rendered
             if (starBuffer.dirty) starBuffer.rebuild(rebuildStarBuffer);
             if (seaBuffer.dirty) seaBuffer.rebuild(rebuildSeaBuffer);
-            ctx.drawImage(starBuffer.canvas, 0, 0);
-            ctx.drawImage(seaBuffer.canvas, 0, 0);
+            window.ctx.drawImage(starBuffer.window.canvas, 0, 0);
+            window.ctx.drawImage(seaBuffer.window.canvas, 0, 0);
 
             bullets.forEach(b => b.draw());
             enemyBullets.forEach(eb => eb.draw());
             powerups.forEach(pu => pu.draw());
             scrapDrops.forEach(sd => sd.draw());
             enemies.forEach(e => e.draw());
-            if (boss) boss.draw();
+            if (window.boss) window.boss.draw();
             player.draw();
             vfxExplosions.forEach(ex => ex.draw());
             particles.forEach(p => p.draw());
@@ -3572,202 +2592,202 @@
 
             // Boss asset loading indicator
             if (bossAssetsLoading && !bossAssetsLoaded) {
-                const loadY = canvas.height - 30;
-                ctx.fillStyle = 'rgba(5, 5, 15, 0.8)';
-                ctx.fillRect(canvas.width / 2 - 100, loadY - 12, 200, 28);
+                const loadY = window.canvas.height - 30;
+                window.ctx.fillStyle = 'rgba(5, 5, 15, 0.8)';
+                window.ctx.fillRect(window.canvas.width / 2 - 100, loadY - 12, 200, 28);
 
                 // Progress bar background
-                ctx.fillStyle = '#1a1a2e';
-                ctx.fillRect(canvas.width / 2 - 80, loadY + 2, 160, 6);
+                window.ctx.fillStyle = '#1a1a2e';
+                window.ctx.fillRect(window.canvas.width / 2 - 80, loadY + 2, 160, 6);
 
                 // Progress bar fill
-                ctx.fillStyle = '#00ffff';
-                ctx.fillRect(canvas.width / 2 - 80, loadY + 2, 160 * (bossLoadProgress / 100), 6);
+                window.ctx.fillStyle = '#00ffff';
+                window.ctx.fillRect(window.canvas.width / 2 - 80, loadY + 2, 160 * (bossLoadProgress / 100), 6);
 
                 // Text
-                ctx.fillStyle = '#00ffff';
-                ctx.font = '10px monospace';
-                ctx.textAlign = 'center';
-                ctx.fillText('PRELOADING BOSS ASSETS... ' + bossLoadProgress + '%', canvas.width / 2, loadY - 2);
+                window.ctx.fillStyle = '#00ffff';
+                window.ctx.font = '10px monospace';
+                window.ctx.textAlign = 'center';
+                window.ctx.fillText('PRELOADING BOSS ASSETS... ' + bossLoadProgress + '%', window.canvas.width / 2, loadY - 2);
             }
 
-            if (sirenTimer > 0) {
-                ctx.fillStyle = 'rgba(255, 0, 0, ' + (Math.sin(gameTime * 20) * 0.2 + 0.25) + ')';
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-                ctx.fillStyle = '#ff0033';
-                ctx.font = 'bold 32px monospace';
-                ctx.textAlign = 'center';
-                ctx.fillText('WARNING: BOSS ENGAGING', canvas.width / 2, canvas.height / 2 - 20);
-                ctx.font = '16px monospace';
-                ctx.fillText('CRITICAL SIGNALS DETECTED AHEAD', canvas.width / 2, canvas.height / 2 + 15);
+            if (window.sirenTimer > 0) {
+                window.ctx.fillStyle = 'rgba(255, 0, 0, ' + (Math.sin(window.gameTime * 20) * 0.2 + 0.25) + ')';
+                window.ctx.fillRect(0, 0, window.canvas.width, window.canvas.height);
+                window.ctx.fillStyle = '#ff0033';
+                window.ctx.font = 'bold 32px monospace';
+                window.ctx.textAlign = 'center';
+                window.ctx.fillText('WARNING: BOSS ENGAGING', window.canvas.width / 2, window.canvas.height / 2 - 20);
+                window.ctx.font = '16px monospace';
+                window.ctx.fillText('CRITICAL SIGNALS DETECTED AHEAD', window.canvas.width / 2, window.canvas.height / 2 + 15);
             }
 
-            if (boss && boss.state !== 'intro') {
+            if (window.boss && window.boss.state !== 'intro') {
                 const barWidth = 300;
                 const barHeight = 12;
-                const bx = canvas.width / 2 - barWidth / 2;
+                const bx = window.canvas.width / 2 - barWidth / 2;
                 const by = 20;
 
-                ctx.fillStyle = '#111';
-                ctx.fillRect(bx, by, barWidth, barHeight);
+                window.ctx.fillStyle = '#111';
+                window.ctx.fillRect(bx, by, barWidth, barHeight);
 
-                const hpPercent = boss.hp / boss.hpMax;
-                ctx.fillStyle = hpPercent > 0.4 ? '#ff3300' : '#ff00ff';
-                ctx.fillRect(bx, by, barWidth * hpPercent, barHeight);
+                const hpPercent = window.boss.hp / window.boss.hpMax;
+                window.ctx.fillStyle = hpPercent > 0.4 ? '#ff3300' : '#ff00ff';
+                window.ctx.fillRect(bx, by, barWidth * hpPercent, barHeight);
 
-                ctx.strokeStyle = '#fff';
-                ctx.lineWidth = 1;
-                ctx.strokeRect(bx, by, barWidth, barHeight);
+                window.ctx.strokeStyle = '#fff';
+                window.ctx.lineWidth = 1;
+                window.ctx.strokeRect(bx, by, barWidth, barHeight);
 
-                ctx.fillStyle = '#fff';
-                ctx.font = 'bold 11px monospace';
-                ctx.textAlign = 'center';
-                ctx.fillText('CYBER COELACANTH', canvas.width / 2, by - 6);
+                window.ctx.fillStyle = '#fff';
+                window.ctx.font = 'bold 11px monospace';
+                window.ctx.textAlign = 'center';
+                window.ctx.fillText('CYBER COELACANTH', window.canvas.width / 2, by - 6);
             }
 
-            if (paused) {
-                ctx.fillStyle = 'rgba(5, 5, 15, 0.75)';
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-                ctx.fillStyle = '#00ffff';
-                ctx.font = 'bold 36px monospace';
-                ctx.textAlign = 'center';
-                ctx.fillText('SYSTEM PAUSED', canvas.width / 2, canvas.height / 2);
-                ctx.font = '14px monospace';
-                ctx.fillText('Press P to Resume System', canvas.width / 2, canvas.height / 2 + 30);
+            if (window.paused) {
+                window.ctx.fillStyle = 'rgba(5, 5, 15, 0.75)';
+                window.ctx.fillRect(0, 0, window.canvas.width, window.canvas.height);
+                window.ctx.fillStyle = '#00ffff';
+                window.ctx.font = 'bold 36px monospace';
+                window.ctx.textAlign = 'center';
+                window.ctx.fillText('SYSTEM PAUSED', window.canvas.width / 2, window.canvas.height / 2);
+                window.ctx.font = '14px monospace';
+                window.ctx.fillText('Press P to Resume System', window.canvas.width / 2, window.canvas.height / 2 + 30);
             }
 
-            if (gameOver) {
-                ctx.fillStyle = 'rgba(15, 5, 5, 0.85)';
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            if (window.gameOver) {
+                window.ctx.fillStyle = 'rgba(15, 5, 5, 0.85)';
+                window.ctx.fillRect(0, 0, window.canvas.width, window.canvas.height);
                 
                 // High Score Celebration
                 if (highScoreBannerTimer > 0 && newHighScoreCelebrated) {
                     const bannerAlpha = Math.min(1, highScoreBannerTimer);
                     const pulse = Math.sin(highScoreBannerTimer * 8) * 0.3 + 0.7;
                     
-                    ctx.save();
-                    ctx.fillStyle = `rgba(255, 170, 0, ${bannerAlpha * 0.15})`;
-                    ctx.fillRect(0, canvas.height / 2 - 100, canvas.width, 200);
+                    window.ctx.save();
+                    window.ctx.fillStyle = `rgba(255, 170, 0, ${bannerAlpha * 0.15})`;
+                    window.ctx.fillRect(0, window.canvas.height / 2 - 100, window.canvas.width, 200);
                     
-                    ctx.font = 'bold 36px monospace';
-                    ctx.textAlign = 'center';
-                    ctx.fillStyle = `rgba(255, 215, 0, ${bannerAlpha * pulse})`;
-                    ctx.shadowColor = '#ffaa00';
-                    ctx.shadowBlur = 20 * pulse;
-                    ctx.fillText('★ NEW HIGH SCORE! ★', canvas.width / 2, canvas.height / 2 - 68);
-                    ctx.shadowBlur = 0;
+                    window.ctx.font = 'bold 36px monospace';
+                    window.ctx.textAlign = 'center';
+                    window.ctx.fillStyle = `rgba(255, 215, 0, ${bannerAlpha * pulse})`;
+                    window.ctx.shadowColor = '#ffaa00';
+                    window.ctx.shadowBlur = 20 * pulse;
+                    window.ctx.fillText('★ NEW HIGH SCORE! ★', window.canvas.width / 2, window.canvas.height / 2 - 68);
+                    window.ctx.shadowBlur = 0;
                     
-                    ctx.font = 'bold 16px monospace';
-                    ctx.fillStyle = `rgba(255, 255, 255, ${bannerAlpha * 0.9})`;
-                    ctx.fillText(score.toLocaleString() + ' POINTS', canvas.width / 2, canvas.height / 2 - 38);
+                    window.ctx.font = 'bold 16px monospace';
+                    window.ctx.fillStyle = `rgba(255, 255, 255, ${bannerAlpha * 0.9})`;
+                    window.ctx.fillText(window.score.toLocaleString() + ' POINTS', window.canvas.width / 2, window.canvas.height / 2 - 38);
                     
                     // Celebration particles
                     for (const p of highScoreParticles) {
-                        ctx.fillStyle = `rgba(${hexToRgb(p.color)}, ${Math.min(1, p.life)})`;
-                        ctx.fillRect(p.x - p.size / 2, p.y - p.size / 2, p.size, p.size);
+                        window.ctx.fillStyle = `rgba(${hexToRgb(p.color)}, ${Math.min(1, p.life)})`;
+                        window.ctx.fillRect(p.x - p.size / 2, p.y - p.size / 2, p.size, p.size);
                     }
-                    ctx.restore();
+                    window.ctx.restore();
                 }
                 
-                ctx.fillStyle = '#ff0033';
-                ctx.font = 'bold 42px monospace';
-                ctx.textAlign = 'center';
-                ctx.fillText('FIGHTER CRUSHED', canvas.width / 2, canvas.height / 2 - 30);
-                ctx.fillStyle = '#ffffff';
-                ctx.font = '16px monospace';
-                ctx.fillText('SCORE: ' + score, canvas.width / 2, canvas.height / 2 + 10);
+                window.ctx.fillStyle = '#ff0033';
+                window.ctx.font = 'bold 42px monospace';
+                window.ctx.textAlign = 'center';
+                window.ctx.fillText('FIGHTER CRUSHED', window.canvas.width / 2, window.canvas.height / 2 - 30);
+                window.ctx.fillStyle = '#ffffff';
+                window.ctx.font = '16px monospace';
+                window.ctx.fillText('SCORE: ' + window.score, window.canvas.width / 2, window.canvas.height / 2 + 10);
                 const top = getTopScore();
                 if (top) {
-                    ctx.fillStyle = '#ffaa00';
-                    ctx.font = '12px monospace';
-                    ctx.fillText('★ HIGH SCORE: ' + top.score.toLocaleString() + ' — ' + top.ship.toUpperCase(), canvas.width / 2, canvas.height / 2 + 28);
+                    window.ctx.fillStyle = '#ffaa00';
+                    window.ctx.font = '12px monospace';
+                    window.ctx.fillText('★ HIGH SCORE: ' + top.window.score.toLocaleString() + ' — ' + top.ship.toUpperCase(), window.canvas.width / 2, window.canvas.height / 2 + 28);
                 }
-                ctx.fillStyle = '#00ff55';
-                ctx.fillText('SCRAP EARNED: +' + runScrap, canvas.width / 2, canvas.height / 2 + 30);
-                ctx.font = '14px monospace';
-                ctx.fillStyle = '#8a8a9f';
-                ctx.fillText('Click screen or press SPACE to retry', canvas.width / 2, canvas.height / 2 + 55);
-                ctx.fillText('Press U to open Upgrades Shop', canvas.width / 2, canvas.height / 2 + 75);
-                ctx.fillText('Press ESC to return to main menu', canvas.width / 2, canvas.height / 2 + 95);
-                ctx.fillStyle = '#ff0055';
-                ctx.font = '11px monospace';
-                ctx.fillText('whatanadventure.games/darius-star', canvas.width / 2, canvas.height / 2 + 118);
+                window.ctx.fillStyle = '#00ff55';
+                window.ctx.fillText('SCRAP EARNED: +' + runScrap, window.canvas.width / 2, window.canvas.height / 2 + 30);
+                window.ctx.font = '14px monospace';
+                window.ctx.fillStyle = '#8a8a9f';
+                window.ctx.fillText('Click screen or press SPACE to retry', window.canvas.width / 2, window.canvas.height / 2 + 55);
+                window.ctx.fillText('Press U to open Upgrades Shop', window.canvas.width / 2, window.canvas.height / 2 + 75);
+                window.ctx.fillText('Press ESC to return to main menu', window.canvas.width / 2, window.canvas.height / 2 + 95);
+                window.ctx.fillStyle = '#ff0055';
+                window.ctx.font = '11px monospace';
+                window.ctx.fillText('whatanadventure.games/darius-star', window.canvas.width / 2, window.canvas.height / 2 + 118);
             }
 
-            if (gameWon) {
-                ctx.fillStyle = 'rgba(5, 15, 10, 0.85)';
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-                ctx.fillStyle = '#00ff55';
-                ctx.font = 'bold 42px monospace';
-                ctx.textAlign = 'center';
-                ctx.fillText('VICTORY ACHIEVED', canvas.width / 2, canvas.height / 2 - 40);
-                ctx.fillStyle = '#ffffff';
-                ctx.font = '18px monospace';
-                ctx.fillText('SCORE: ' + score, canvas.width / 2, canvas.height / 2);
+            if (window.gameWon) {
+                window.ctx.fillStyle = 'rgba(5, 15, 10, 0.85)';
+                window.ctx.fillRect(0, 0, window.canvas.width, window.canvas.height);
+                window.ctx.fillStyle = '#00ff55';
+                window.ctx.font = 'bold 42px monospace';
+                window.ctx.textAlign = 'center';
+                window.ctx.fillText('VICTORY ACHIEVED', window.canvas.width / 2, window.canvas.height / 2 - 40);
+                window.ctx.fillStyle = '#ffffff';
+                window.ctx.font = '18px monospace';
+                window.ctx.fillText('SCORE: ' + window.score, window.canvas.width / 2, window.canvas.height / 2);
                 const topV = getTopScore();
                 if (topV) {
-                    ctx.fillStyle = '#ffaa00';
-                    ctx.font = '12px monospace';
-                    ctx.fillText('★ HIGH SCORE: ' + topV.score.toLocaleString() + ' — ' + topV.ship.toUpperCase(), canvas.width / 2, canvas.height / 2 + 18);
+                    window.ctx.fillStyle = '#ffaa00';
+                    window.ctx.font = '12px monospace';
+                    window.ctx.fillText('★ HIGH SCORE: ' + topV.window.score.toLocaleString() + ' — ' + topV.ship.toUpperCase(), window.canvas.width / 2, window.canvas.height / 2 + 18);
                 }
-                ctx.fillStyle = '#00ff55';
-                ctx.fillText('SCRAP EARNED: +' + runScrap, canvas.width / 2, canvas.height / 2 + 36);
-                ctx.fillStyle = '#00ffff';
-                ctx.fillText('Cyber Coelacanth eradicated.', canvas.width / 2, canvas.height / 2 + 45);
-                ctx.fillStyle = '#8a8a9f';
-                ctx.font = '14px monospace';
-                ctx.fillText('Click screen or press SPACE to replay', canvas.width / 2, canvas.height / 2 + 75);
-                ctx.fillText('Press U to open Upgrades Shop', canvas.width / 2, canvas.height / 2 + 95);
-                ctx.fillText('Press ESC to return to main menu', canvas.width / 2, canvas.height / 2 + 115);
-                ctx.fillStyle = '#ff0055';
-                ctx.font = '11px monospace';
-                ctx.fillText('whatanadventure.games/darius-star', canvas.width / 2, canvas.height / 2 + 138);
+                window.ctx.fillStyle = '#00ff55';
+                window.ctx.fillText('SCRAP EARNED: +' + runScrap, window.canvas.width / 2, window.canvas.height / 2 + 36);
+                window.ctx.fillStyle = '#00ffff';
+                window.ctx.fillText('Cyber Coelacanth eradicated.', window.canvas.width / 2, window.canvas.height / 2 + 45);
+                window.ctx.fillStyle = '#8a8a9f';
+                window.ctx.font = '14px monospace';
+                window.ctx.fillText('Click screen or press SPACE to replay', window.canvas.width / 2, window.canvas.height / 2 + 75);
+                window.ctx.fillText('Press U to open Upgrades Shop', window.canvas.width / 2, window.canvas.height / 2 + 95);
+                window.ctx.fillText('Press ESC to return to main menu', window.canvas.width / 2, window.canvas.height / 2 + 115);
+                window.ctx.fillStyle = '#ff0055';
+                window.ctx.font = '11px monospace';
+                window.ctx.fillText('whatanadventure.games/darius-star', window.canvas.width / 2, window.canvas.height / 2 + 138);
             }
 
-            if (screenFadeAlpha > 0) {
-                ctx.save();
-                ctx.fillStyle = `rgba(0, 0, 0, ${screenFadeAlpha})`;
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-                ctx.restore();
+            if (window.screenFadeAlpha > 0) {
+                window.ctx.save();
+                window.ctx.fillStyle = `rgba(0, 0, 0, ${window.screenFadeAlpha})`;
+                window.ctx.fillRect(0, 0, window.canvas.width, window.canvas.height);
+                window.ctx.restore();
             }
         }
 
-        canvas.addEventListener('mousemove', e => {
-            if (currentScreen === SCREENS.PLAYING || targetScreen) return;
+        window.canvas.addEventListener('mousemove', e => {
+            if (window.currentScreen === SCREENS.PLAYING || window.targetScreen) return;
             const { x, y } = getCanvasMouseCoords(e);
             
-            if (currentScreen === SCREENS.MENU) {
+            if (window.currentScreen === SCREENS.MENU) {
                 const startY = 210;
                 const spacing = 35;
-                for (let i = 0; i < menuOptions.length; i++) {
+                for (let i = 0; i < window.menuOptions.length; i++) {
                     const itemY = startY + i * spacing;
                     if (x >= 280 && x <= 520 && y >= itemY - 18 && y <= itemY + 8) {
-                        if (selectedMenuIndex !== i) {
-                            selectedMenuIndex = i;
+                        if (window.selectedMenuIndex !== i) {
+                            window.selectedMenuIndex = i;
                             playSound('menu_select');
                         }
                     }
                 }
-            } else if (currentScreen === SCREENS.SHIP_SELECT) {
+            } else if (window.currentScreen === SCREENS.SHIP_SELECT) {
                 const startY = 140;
                 const spacing = 65;
                 for (let i = 0; i < 3; i++) {
                     const itemY = startY + i * spacing;
                     if (x >= 80 && x <= 720 && y >= itemY - 25 && y <= itemY + 27) {
-                        if (selectedShipIndex !== i) {
-                            selectedShipIndex = i;
+                        if (window.selectedShipIndex !== i) {
+                            window.selectedShipIndex = i;
                             playSound('menu_select');
                         }
                     }
                 }
-            } else if (currentScreen === SCREENS.SETTINGS) {
+            } else if (window.currentScreen === SCREENS.SETTINGS) {
                 const startY = 175;
                 const spacing = 36;
-                for (let i = 0; i < SETTINGS_OPTIONS.length; i++) {
+                for (let i = 0; i < window.SETTINGS_OPTIONS.length; i++) {
                     const itemY = startY + i * spacing;
                     if (x >= 200 && x <= 600 && y >= itemY - 15 && y <= itemY + 15) {
-                        if (selectedSettingsIndex !== i) {
-                            selectedSettingsIndex = i;
+                        if (window.selectedSettingsIndex !== i) {
+                            window.selectedSettingsIndex = i;
                             playSound('menu_select');
                         }
                     }
@@ -3775,46 +2795,46 @@
             }
         });
 
-        canvas.addEventListener('click', e => {
+        window.canvas.addEventListener('click', e => {
             ensureBackgroundImages();
             initAudio();
             loadPlayerSprites();
             loadEnemySprites();
             loadVFXSprites();
             
-            if (currentScreen !== SCREENS.PLAYING) {
+            if (window.currentScreen !== SCREENS.PLAYING) {
                 startMenuMusic();
             }
 
-            if (currentScreen === SCREENS.PLAYING) {
-                if (gameOver || gameWon) {
+            if (window.currentScreen === SCREENS.PLAYING) {
+                if (window.gameOver || window.gameWon) {
                     resetGame();
                 }
                 return;
             }
             
-            if (targetScreen) return;
+            if (window.targetScreen) return;
             
             const { x, y } = getCanvasMouseCoords(e);
             
-            if (currentScreen === SCREENS.MENU) {
+            if (window.currentScreen === SCREENS.MENU) {
                 const startY = 210;
                 const spacing = 35;
-                for (let i = 0; i < menuOptions.length; i++) {
+                for (let i = 0; i < window.menuOptions.length; i++) {
                     const itemY = startY + i * spacing;
                     if (x >= 280 && x <= 520 && y >= itemY - 18 && y <= itemY + 8) {
-                        selectedMenuIndex = i;
+                        window.selectedMenuIndex = i;
                         playSound('menu_click');
                         handleMenuConfirm();
                     }
                 }
-            } else if (currentScreen === SCREENS.SHIP_SELECT) {
+            } else if (window.currentScreen === SCREENS.SHIP_SELECT) {
                 const startY = 140;
                 const spacing = 65;
                 for (let i = 0; i < 3; i++) {
                     const itemY = startY + i * spacing;
                     if (x >= 80 && x <= 720 && y >= itemY - 25 && y <= itemY + 27) {
-                        selectedShipIndex = i;
+                        window.selectedShipIndex = i;
                         playSound('menu_click');
                         handleMenuConfirm();
                         return;
@@ -3824,14 +2844,14 @@
                     playSound('menu_click');
                     transitionToScreen(SCREENS.MENU);
                 }
-            } else if (currentScreen === SCREENS.SETTINGS) {
+            } else if (window.currentScreen === SCREENS.SETTINGS) {
                 const startY = 175;
                 const spacing = 36;
                 
-                for (let i = 0; i < SETTINGS_OPTIONS.length; i++) {
+                for (let i = 0; i < window.SETTINGS_OPTIONS.length; i++) {
                     const itemY = startY + i * spacing;
                     if (x >= 200 && x <= 600 && y >= itemY - 15 && y <= itemY + 15) {
-                        selectedSettingsIndex = i;
+                        window.selectedSettingsIndex = i;
                         if (i === 4) {
                             playSound('menu_click');
                             handleMenuConfirm();
@@ -3841,9 +2861,9 @@
                                     const rawVal = (x - 450) / 130;
                                     const newVal = Math.max(0, Math.min(1.0, rawVal));
                                     playSound('menu_select');
-                                    if (i === 0) masterVolume = newVal;
-                                    else if (i === 1) sfxVolume = newVal;
-                                    else if (i === 2) musicVolume = newVal;
+                                    if (i === 0) window.masterVolume = newVal;
+                                    else if (i === 1) window.sfxVolume = newVal;
+                                    else if (i === 2) window.musicVolume = newVal;
                                 }
                             } else if (i === 3) {
                                 playSound('menu_select');
@@ -3852,10 +2872,10 @@
                         }
                     }
                 }
-            } else if (currentScreen === SCREENS.CREDITS) {
+            } else if (window.currentScreen === SCREENS.CREDITS) {
                 playSound('menu_click');
                 transitionToScreen(SCREENS.MENU);
-            } else if (currentScreen === SCREENS.CINEMATIC) {
+            } else if (window.currentScreen === SCREENS.CINEMATIC) {
                 playSound('menu_click');
                 transitionToScreen(SCREENS.CREDITS);
             }
