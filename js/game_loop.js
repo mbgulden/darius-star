@@ -1507,9 +1507,6 @@ function draw() {
         ctx.fillText('whatanadventure.games/darius-star', canvas.width / 2, canvas.height / 2 + 138);
     }
 
-    if (typeof activeDialogue !== 'undefined' && activeDialogue) {
-        activeDialogue.draw();
-    }
 
     if (screenFadeAlpha > 0) {
         ctx.save();
