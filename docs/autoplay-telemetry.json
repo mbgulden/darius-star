@@ -1,9 +1,9 @@
 {
-  "generated": "2026-07-05T22:45:17.515Z",
+  "generated": "2026-07-05T22:46:50.382Z",
   "gameUrl": "https://staging.darius-star.pages.dev",
   "config": {
     "runs": 1,
-    "durationPerRun": 10
+    "durationPerRun": 15
   },
   "summary": {
     "totalRuns": 1,
@@ -15,7 +15,7 @@
   },
   "runs": [
     {
-      "timestamp": "2026-07-05T22:45:17.353Z",
+      "timestamp": "2026-07-05T22:46:50.203Z",
       "screen": "playing",
       "player": {
         "dead": false,
@@ -31,15 +31,15 @@
         "killed": 0,
         "bossDefeated": false,
         "bossHp": 0,
-        "active": 6
+        "active": 4
       },
       "fps": 0,
       "runIndex": 1,
-      "durationSec": 10,
+      "durationSec": 15,
       "consoleErrors": [],
       "samples": [
         {
-          "timestamp": "2026-07-05T22:45:07.559Z",
+          "timestamp": "2026-07-05T22:46:35.635Z",
           "screen": "playing",
           "player": {
             "dead": false,
@@ -55,12 +55,12 @@
             "killed": 0,
             "bossDefeated": false,
             "bossHp": 0,
-            "active": 1
+            "active": 7
           },
           "fps": 0
         },
         {
-          "timestamp": "2026-07-05T22:45:15.801Z",
+          "timestamp": "2026-07-05T22:46:43.881Z",
           "screen": "playing",
           "player": {
             "dead": false,
@@ -76,7 +76,7 @@
             "killed": 0,
             "bossDefeated": false,
             "bossHp": 0,
-            "active": 1
+            "active": 5
           },
           "fps": 0
         }
