@@ -56,6 +56,16 @@ async function run() {
 
     console.log("Window objects inspection:", JSON.stringify(windowInspection, null, 2));
 
+    // Strict assertions checking that critical game systems are loaded
+    const requiredSystems = ['LevelManager', 'Player', 'Economy', 'CampaignSave'];
+    for (const system of requiredSystems) {
+        const prop = `has${system}`;
+        if (!windowInspection[prop]) {
+            throw new Error(`CRITICAL SYSTEM MISSING: ${system} is not loaded in browser context!`);
+        }
+    }
+    console.log("All critical systems (LevelManager, Player, Economy, CampaignSave) successfully verified.");
+
     // Wait 2 seconds to see if anything changes or logs appear
     await page.waitForTimeout(2000);
 

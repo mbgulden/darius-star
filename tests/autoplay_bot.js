@@ -174,8 +174,21 @@ async function runAutoplay(browser, runIndex) {
     page.on('pageerror', err => consoleErrors.push(err.message));
 
     try {
-        console.log(`  Navigating to ${CONFIG.gameUrl}...`);
-        await page.goto(CONFIG.gameUrl, { waitUntil: 'networkidle', timeout: 30000 });
+        // Construct the target URL to point directly to index.html with query parameters to launch the game immediately.
+        let targetUrl = CONFIG.gameUrl;
+        const separator = targetUrl.includes('?') ? '&' : '?';
+        if (targetUrl.endsWith('/')) {
+            targetUrl += 'index.html?launch=true&biome=1&level=1&mode=solo';
+        } else if (!targetUrl.includes('index.html') && !targetUrl.includes('.html')) {
+            targetUrl += '/index.html?launch=true&biome=1&level=1&mode=solo';
+        } else {
+            if (!targetUrl.includes('launch=true')) {
+                targetUrl += separator + 'launch=true&biome=1&level=1&mode=solo';
+            }
+        }
+
+        console.log(`  Navigating to ${targetUrl}...`);
+        await page.goto(targetUrl, { waitUntil: 'networkidle', timeout: 30000 });
 
         const title = await page.title();
         console.log(`  Page: ${title}`);
@@ -196,24 +209,21 @@ async function runAutoplay(browser, runIndex) {
             await page.mouse.click(cx, cy);
             await page.waitForTimeout(1000);
 
-            // Second click: navigate START GAME (menu option index 1)
-            // The menu uses canvas clicks, not DOM buttons
-            // "START GAME" is at menuOptions[1] — about 40% down from center
-            console.log('  Clicking START GAME...');
-            await page.mouse.click(cx, cy * 1.3); // Slightly below center for START GAME
+            // Force transition to PLAYING screen
+            console.log('  Transitioning to PLAYING screen...');
+            await page.evaluate(() => {
+                if (typeof transitionToScreen === 'function' && typeof SCREENS !== 'undefined') {
+                    transitionToScreen(SCREENS.PLAYING);
+                } else if (typeof currentScreen !== 'undefined') {
+                    currentScreen = 'playing';
+                }
+            });
             await page.waitForTimeout(1000);
 
-            // Click through upgrade shop if it appears
             const screen = await page.evaluate(() => {
                 return typeof currentScreen !== 'undefined' ? currentScreen : 'unknown';
             });
-            console.log(`  Screen after START: ${screen}`);
-
-            if (screen === 'upgrade_shop') {
-                console.log('  In upgrade shop — clicking through...');
-                await page.mouse.click(cx, cy);
-                await page.waitForTimeout(2000);
-            }
+            console.log(`  Screen after transition: ${screen}`);
 
             // Start autoplay — fire continuously + move
             console.log(`  Starting autoplay for ${CONFIG.durationPerRun}s...`);
