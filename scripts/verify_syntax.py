@@ -183,7 +183,7 @@ def iter_js_targets(explicit: Iterable[str] | None) -> list[Path]:
         return out
     targets: list[Path] = []
     if JS_DIR.is_dir():
-        targets.extend(sorted(JS_DIR.glob("*.js")))
+        targets.extend(sorted(JS_DIR.rglob("*.js")))
     if INDEX_HTML.is_file():
         targets.append(INDEX_HTML)
     return targets

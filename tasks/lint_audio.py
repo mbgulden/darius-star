@@ -106,6 +106,8 @@ def lint(verbose: bool = False) -> dict:
             results["missing"].append(f"{track_id}: no file field")
             continue
         if fname not in disk_files:
+            if track.get("fallback") == "synth":
+                continue
             results["missing"].append(f"{track_id}: {fname} not found on disk")
             continue
 

@@ -239,6 +239,11 @@ function advanceToNextBiome() {
         }
     }
     
+    // GRO-2170: Serialize, base64 encode, and save total scrap to localStorage upon biome completion
+    if (typeof saveTotalScrapOnBiomeCompletion === 'function') {
+        saveTotalScrapOnBiomeCompletion();
+    }
+    
     // Re-seed environmental particles for new biome
     envParticles.length = 0;
     envSpawnAccum = 0;
@@ -1211,6 +1216,10 @@ function drawMenuScreens() {
         // GRO-936: Mission Briefing Screen — delegate to briefing.js
         drawBriefing();
     }
+
+    if (typeof activeDialogue !== 'undefined' && activeDialogue) {
+        activeDialogue.draw();
+    }
 }
 
 // Keys pressed
@@ -1222,6 +1231,13 @@ window.addEventListener('keydown', e => {
     loadPortraitSprites();
     loadEnemySprites();
     loadVFXSprites();
+
+    // Check active dialogue first, on any screen!
+    if (typeof activeDialogue !== 'undefined' && activeDialogue) {
+        activeDialogue.handleKey(e.key);
+        e.preventDefault();
+        return;
+    }
 
     // GRO-1009: Ending choice keyboard handling
     if (currentScreen === SCREENS.CINEMATIC && endingEligible.length > 1 && !selectedEnding) {
@@ -1253,12 +1269,6 @@ window.addEventListener('keydown', e => {
     }
 
     if (currentScreen === SCREENS.PLAYING) {
-        if (typeof activeDialogue !== 'undefined' && activeDialogue) {
-            activeDialogue.handleKey(e.key);
-            e.preventDefault();
-            return;
-        }
-        
         // Pause menu input (overrides all other input when paused)
         if (paused) {
             if (e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W') {

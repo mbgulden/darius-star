@@ -88,6 +88,18 @@ window.addEventListener('DOMContentLoaded', () => {
                 // GRO-1054: Wire scrap/upgrade events into banter system
                 BanterEngine.initScrapEvents();
             }
+            if (window.CampaignSave && window.CampaignSave.pendingCorruptionNotice) {
+                window.CampaignSave.pendingCorruptionNotice = false;
+                if (typeof DialogueSequence !== 'undefined') {
+                    activeDialogue = new DialogueSequence([
+                        {
+                            speaker: 'Lyra',
+                            portrait: 'lyra_reactive',
+                            text: 'Warning: I detected corrupted telemetry save data. It has been repaired and reset to a fresh state to prevent a system crash.'
+                        }
+                    ]);
+                }
+            }
         }, 100);
     }
 });
@@ -232,6 +244,11 @@ function update(dt) {
                     } else {
                         _winTransition = false;
                         gameWon = true;
+                        
+                        // GRO-2170: Serialize, base64 encode, and save total scrap to localStorage upon biome completion
+                        if (typeof saveTotalScrapOnBiomeCompletion === 'function') {
+                            saveTotalScrapOnBiomeCompletion();
+                        }
                         
                         // Game completion: save state and trigger NGPlus.start()!
                         if (window.CampaignSave) {
@@ -1490,6 +1507,10 @@ function draw() {
         ctx.fillText('whatanadventure.games/darius-star', canvas.width / 2, canvas.height / 2 + 138);
     }
 
+    if (typeof activeDialogue !== 'undefined' && activeDialogue) {
+        activeDialogue.draw();
+    }
+
     if (screenFadeAlpha > 0) {
         ctx.save();
         ctx.fillStyle = `rgba(0, 0, 0, ${screenFadeAlpha})`;
@@ -1622,11 +1643,12 @@ canvas.addEventListener('click', e => {
         startMenuMusic();
     }
 
+    if (typeof activeDialogue !== 'undefined' && activeDialogue) {
+        activeDialogue.next();
+        return;
+    }
+
     if (currentScreen === SCREENS.PLAYING) {
-        if (typeof activeDialogue !== 'undefined' && activeDialogue) {
-            activeDialogue.next();
-            return;
-        }
         if (gameOver || gameWon) {
             handleDeathOrVictoryRestart();
         }
