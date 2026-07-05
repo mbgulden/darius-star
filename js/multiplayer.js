@@ -22,6 +22,29 @@ const Multiplayer = {
         this.lastJoinEvents = [];
         this.lastLeaveEvents = [];
         this.joinCooldown = 0;
+
+        try {
+            if (typeof localStorage !== 'undefined') {
+                const storedSelection = localStorage.getItem('dariusStar_shipSelection');
+                if (storedSelection) {
+                    const parsed = JSON.parse(storedSelection);
+                    // Update P1's ship if configured in shipSelection
+                    if (parsed.p1 && parsed.p1.shipId) {
+                        this.players[0].ship = this.normalizeShip(parsed.p1.shipId);
+                    }
+                    // If Player 2 is active on the selection screen, add Player 2
+                    if (parsed.p2 && parsed.p2.active === true) {
+                        const p2Ship = parsed.p2.shipId || this.defaultShip;
+                        const spawn = this.getSpawnPoint(2);
+                        const p2Meta = this.createPlayerMeta(2, p2Ship, false, spawn.x, spawn.y);
+                        this.players.push(p2Meta);
+                        this.count = this.getActivePlayers().length;
+                    }
+                }
+            }
+        } catch (e) {
+            console.error("Failed to load P2 initialization ship selection:", e);
+        }
     },
 
     createPlayerMeta(id, shipType, isHost = false, x = null, y = null) {
@@ -93,6 +116,43 @@ const Multiplayer = {
             if (player.alive) player.lastSeen = now;
             if (player.shield <= 0 && !player._wasPulledOut) {
                 this.onPlayerPullOut(player.id);
+            }
+        }
+        
+        // Gamepad polling loop (Goal 1)
+        if (typeof keys !== 'undefined') {
+            const gamepads = navigator.getGamepads ? navigator.getGamepads() : [];
+            const gamepadPrefixes = ['Gamepad1', 'Gamepad2'];
+            for (let i = 0; i < 2; i++) {
+                const prefix = gamepadPrefixes[i];
+                const gp = gamepads[i];
+                const gpKeys = [
+                    prefix + 'U', prefix + 'D', prefix + 'L', prefix + 'R',
+                    prefix + 'A', prefix + 'B', prefix + 'X', prefix + 'Y',
+                    prefix + 'LB', prefix + 'RB'
+                ];
+                if (!gp || !gp.connected) {
+                    for (const key of gpKeys) {
+                        keys[key] = false;
+                    }
+                    continue;
+                }
+                const btnPressed = (index) => {
+                    const btn = gp.buttons[index];
+                    return btn && (typeof btn === 'object' ? btn.pressed : btn === 1.0);
+                };
+                const leftStickY = gp.axes && gp.axes[1] !== undefined ? gp.axes[1] : 0;
+                keys[prefix + 'U'] = btnPressed(12) || leftStickY < -0.5;
+                keys[prefix + 'D'] = btnPressed(13) || leftStickY > 0.5;
+                const leftStickX = gp.axes && gp.axes[0] !== undefined ? gp.axes[0] : 0;
+                keys[prefix + 'L'] = btnPressed(14) || leftStickX < -0.5;
+                keys[prefix + 'R'] = btnPressed(15) || leftStickX > 0.5;
+                keys[prefix + 'A'] = btnPressed(0);
+                keys[prefix + 'B'] = btnPressed(1);
+                keys[prefix + 'X'] = btnPressed(2);
+                keys[prefix + 'Y'] = btnPressed(3);
+                keys[prefix + 'LB'] = btnPressed(4);
+                keys[prefix + 'RB'] = btnPressed(5);
             }
         }
     },

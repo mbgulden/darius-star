@@ -9,7 +9,11 @@
   },
   {
     "type": "log",
-    "text": "[OK] multiplayer.js loaded — 1-4 player couch-coop, drop-in/drop-out"
+    "text": "[OK] scrap_events.js loaded — economy ↔ banter bridge active"
+  },
+  {
+    "type": "log",
+    "text": "[Darius Star] multiplayer.js loaded — 1-4 player drop-in and drop-out enabled"
   },
   {
     "type": "log",
@@ -18,9 +22,5 @@
   {
     "type": "log",
     "text": "[OK] leaderboard.js loaded — 3 categories, tiered display, localStorage-backed"
-  },
-  {
-    "type": "error",
-    "text": "Page Error: Unexpected token 'const'"
   }
 ]

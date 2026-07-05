@@ -176,7 +176,7 @@
                     this.shootTimer = this.shootCooldown;
                 } else if (type === 'boss_minion') {
                     this.behaviorPattern = 'boss_minion';
-                    this.enemyType = 'grunt';
+                    this.enemyType = 'boss_minion';
                     this.speed = 180;
                     this.hp = 2;
                     this.scoreValue = 50;
@@ -380,7 +380,7 @@
                 this.stateTimer -= dt;
                 if (this.stateTimer <= 0) {
                     // Economy-based scrap drops on boss state transition
-                    if (typeof scrapDrops !== 'undefined' && window.Economy && Economy.shouldDrop(this.id)) {
+                    if (typeof scrapDrops !== 'undefined' && window.Economy && Economy.shouldDrop(this.id, this.enemyType)) {
                         const tx = this.x + 30;
                         const ty = this.y + 60;
                         const drop = Economy.rollDrop(this.enemyType, biomeLevel);
@@ -541,7 +541,13 @@
                         try {
                             const ngKey = 'darius_star_ngplus_eligible';
                             const eligible = JSON.parse(localStorage.getItem(ngKey) || '{}');
-                            eligible[selectedShip] = { biome: biomeLevel, score: score, scrap: runScrap, date: new Date().toISOString() };
+                            eligible[selectedShip] = { 
+                                biome: biomeLevel, 
+                                score: score, 
+                                scrap: runScrap, 
+                                date: new Date().toISOString(),
+                                ngLevel: typeof currentNGLevel !== 'undefined' ? currentNGLevel : 0
+                            };
                             localStorage.setItem(ngKey, JSON.stringify(eligible));
                         } catch(e) {}
                     }

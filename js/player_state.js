@@ -16,7 +16,11 @@ const PlayerState = {
   },
 
   getShipsUnlocked: function() {
-    var save = CampaignSave ? CampaignSave.loadLast() : null;
+    let activeSlot = 0;
+    try {
+        activeSlot = parseInt(localStorage.getItem('dariusStar_activeSlot') || '0');
+    } catch (e) {}
+    var save = (CampaignSave && typeof CampaignSave.load === 'function') ? CampaignSave.load(activeSlot) : null;
     return (save && save.shipsUnlocked) ? save.shipsUnlocked : 3;
   },
 

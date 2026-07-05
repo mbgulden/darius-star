@@ -110,14 +110,15 @@ window.Economy = {
         return this._lootedSegments[segmentKey];
     },
 
-    shouldDrop(enemyId) {
+    shouldDrop(enemyId, enemyType) {
         const id = enemyId === undefined || enemyId === null ? `unknown_${Date.now()}_${Math.random()}` : String(enemyId);
         const looted = this._currentLootSet();
         if (looted.has(id)) return false;
 
         // Mark first, even if the chance roll fails, so checkpoint reloads cannot re-roll the same enemy.
         looted.add(id);
-        const chance = ECONOMY_TABLES.default.dropChance;
+        const table = economyGetTable(enemyType);
+        const chance = table ? table.dropChance : ECONOMY_TABLES.default.dropChance;
         return Math.random() < chance;
     },
 
@@ -161,8 +162,22 @@ window.Economy = {
         return serializable;
     },
 
-    restoreLootedSegments(serialized, currentSegment = this._currentSegment) {
+    restoreLootedSegments(serialized, currentSegment) {
         this._lootedSegments = economyNormalizeSegmentStore(serialized);
+        if (currentSegment === undefined) {
+            let maxSeg = 0;
+            if (serialized && typeof serialized === 'object') {
+                for (const key in serialized) {
+                    if (key.startsWith('segment_')) {
+                        const num = parseInt(key.replace('segment_', ''));
+                        if (!isNaN(num) && num > maxSeg) {
+                            maxSeg = num;
+                        }
+                    }
+                }
+            }
+            currentSegment = maxSeg;
+        }
         this._currentSegment = Math.max(0, Math.floor(Number(currentSegment) || 0));
         this._currentLootSet();
     }

@@ -55,7 +55,7 @@
             biomeLevel: 1,
             biome: 1,
             wave: 1,
-            ship: 'interceptor',
+            ship: 'striker',
             scrap: 0,
             score: 0,
             playTime: 0,
@@ -280,7 +280,13 @@
             streamerMode: payload.streamerMode,
             subtitlesEnabled: payload.subtitlesEnabled !== undefined ? payload.subtitlesEnabled : true,
             lives: payload.lives,
-            inGameFlags: payload.inGameFlags ? { ...payload.inGameFlags } : {}
+            inGameFlags: payload.inGameFlags ? { ...payload.inGameFlags } : {},
+            lootedSegments: (window.Economy && typeof window.Economy.serializeLootedSegments === 'function')
+                ? window.Economy.serializeLootedSegments()
+                : null,
+            currentSegment: (window.Economy && typeof window.Economy._currentSegment === 'number')
+                ? window.Economy._currentSegment
+                : 0
         };
         save(slotIndex, saveData);
     }
@@ -311,6 +317,11 @@
         // Decrement deaths counter on the save itself
         saveData.deaths = (saveData.deaths || 0) + 1;
         save(slotIndex, saveData);
+
+        // Anti-farming: restore looted segments
+        if (cp.lootedSegments && window.Economy && typeof window.Economy.restoreLootedSegments === 'function') {
+            window.Economy.restoreLootedSegments(cp.lootedSegments, cp.currentSegment);
+        }
 
         return cp;
     }

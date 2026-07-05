@@ -60,8 +60,8 @@ class Player {
         this.inputKeys = {
             1: { up:'w', down:'s', left:'a', right:'d', fire:' ', special:'k', dodge:'e', boost:'Shift' },
             2: { up:'ArrowUp', down:'ArrowDown', left:'ArrowLeft', right:'ArrowRight', fire:'0', special:'1', dodge:'2', boost:'Enter' },
-            3: { up:'Gamepad1U', down:'Gamepad1D', left:'Gamepad1L', right:'Gamepad1R', fire:'Gamepad1A', special:'Gamepad1B', dodge:'Gamepad1X', boost:'Gamepad1L' },
-            4: { up:'Gamepad2U', down:'Gamepad2D', left:'Gamepad2L', right:'Gamepad2R', fire:'Gamepad2A', special:'Gamepad2B', dodge:'Gamepad2X', boost:'Gamepad2L' },
+            3: { up:'Gamepad1U', down:'Gamepad1D', left:'Gamepad1L', right:'Gamepad1R', fire:'Gamepad1A', special:'Gamepad1B', dodge:'Gamepad1X', boost:'Gamepad1LB' },
+            4: { up:'Gamepad2U', down:'Gamepad2D', left:'Gamepad2L', right:'Gamepad2R', fire:'Gamepad2A', special:'Gamepad2B', dodge:'Gamepad2X', boost:'Gamepad2LB' },
         }[playerId];
         this.width = 40;
         this.height = 20;
@@ -172,6 +172,22 @@ class Player {
             this.dodgeMaxInvuln = 0.25;
         }
         
+        // Apply custom ship color from localStorage
+        try {
+            if (typeof localStorage !== 'undefined') {
+                const storedSelection = localStorage.getItem('dariusStar_shipSelection');
+                if (storedSelection) {
+                    const parsed = JSON.parse(storedSelection);
+                    const slotKey = 'p' + this.playerId;
+                    if (parsed[slotKey] && parsed[slotKey].color) {
+                        this.color = parsed[slotKey].color;
+                    }
+                }
+            }
+        } catch (e) {
+            console.error("Failed to load custom ship color:", e);
+        }
+        
         this.shield = this.shieldMax;
         this.shootTimer = 0;
         this.invulnerable = 0;
@@ -210,7 +226,11 @@ class Player {
             playSound('powerup');
             createExplosion(this.x + this.width/2, this.y + this.height/2, '#00ff88', 20);
             // Return flash text
-            floatingTexts.push({ text: 'REPAIRED', x: this.x + this.width/2, y: this.y - 30, life: 2.0, color: '#00ff88' });
+            if (typeof FloatingText !== 'undefined') {
+                floatingTexts.push(new FloatingText(this.x + this.width/2, this.y - 30, 'REPAIRED', '#00ff88'));
+            } else {
+                floatingTexts.push({ text: 'REPAIRED', x: this.x + this.width/2, y: this.y - 30, life: 2.0, color: '#00ff88' });
+            }
         }
         
         if (this.invulnerable > 0) {
@@ -556,7 +576,7 @@ class Player {
                 destroyed++;
                 const comboMult = Combo.onKill();
                 score += Math.floor(e.scoreValue * comboMult);
-                if (window.Economy && Economy.shouldDrop(e.id)) {
+                if (window.Economy && Economy.shouldDrop(e.id, e.enemyType)) {
                     const drop = Economy.rollDrop(e.enemyType, biomeLevel);
                     const ecoDrop = Economy.createDrop(e.x + e.width / 2, e.y + e.height / 2, drop.type, drop.amount);
                     scrapDrops.push(new ScrapDrop(ecoDrop.x, ecoDrop.y, ecoDrop.type, drop.amount));
@@ -761,12 +781,17 @@ class Player {
                 createExplosion(this.x, this.y, '#ff6600', 30);
                 
                 // Trigger pull-out banter — use the assigned player character, not ship type
-                if (window.BanterEngine && currentBiome > 0 && banterEnabled && !streamerMode) {
+                const bLevel = typeof biomeLevel !== 'undefined' ? biomeLevel : (typeof LevelManager !== 'undefined' ? LevelManager.biome : 1);
+                if (window.BanterEngine && bLevel > 0 && banterEnabled && !streamerMode) {
                     const character = this.character || 'D';
-                    const line = BanterEngine.getLine('pull_out', currentBiome, character);
+                    const line = BanterEngine.getLine('pull_out', bLevel, character);
                     if (line && window.activeDialogue === undefined) {
                         // Queue pull-out line as floating text (non-blocking)
-                        floatingTexts.push({ text: line.l, x: this.x + this.width/2, y: this.y - 20, life: 3.0, color: '#ff6600' });
+                        if (typeof FloatingText !== 'undefined') {
+                            floatingTexts.push(new FloatingText(this.x + this.width/2, this.y - 20, line.l, '#ff6600'));
+                        } else {
+                            floatingTexts.push({ text: line.l, x: this.x + this.width/2, y: this.y - 20, life: 3.0, color: '#ff6600' });
+                        }
                     }
                 }
                 

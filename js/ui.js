@@ -27,13 +27,13 @@ let hoveredSettingsIndex = -1;
 let prevHoveredSettingsIndex = -1; // GRO-1294
 const SETTINGS_OPTIONS = ['MASTER VOLUME', 'SFX VOLUME', 'MUSIC VOLUME', 'DIFFICULTY', 'AUDIO TUNNELS', 'BANTER SYSTEM', 'STREAMER MODE', 'SUBTITLES', 'BACK'];
 
-let selectedShipIndex = 1; // 0=scout, 1=interceptor, 2=heavy
+let selectedShipIndex = 0; // 0=scout, 1=interceptor, 2=heavy
 let hoveredShipIndex = -1;
 let prevHoveredShipIndex = -1;   // GRO-1294
 let hoveredUpgradeIndex = -1;     // GRO-1294: upgrade shop hover
 let prevHoveredUpgradeIndex = -1; // GRO-1294
-const SHIP_OPTIONS = ['scout', 'interceptor', 'heavy'];
-let selectedShip = 'interceptor';
+const SHIP_OPTIONS = ['striker', 'phantom', 'bastion', 'tempest', 'specter', 'warden'];
+let selectedShip = 'striker';
 
 // Unified Leaderboard state
 let leaderboardFilter = 'speedrun'; // 'speedrun' | 'scrapLord' | 'survivor'
@@ -387,6 +387,8 @@ function confirmLoadGame() {
             weaponLevel: cp.weaponLevel,
             shield: cp.shield,
             lives: cp.lives,
+            lootedSegments: cp.lootedSegments,
+            currentSegment: cp.currentSegment
         });
         // Re-read the saved state we just updated
         const reloaded = CampaignSave.load(slot);
@@ -794,7 +796,7 @@ function drawMenuScreens() {
         const us = window.DS_UpgradeSystem;
         const upgradeLabels = ['weapons', 'shields', 'engines', 'specials', 'cosmetics'];
         const upgradeNames = ['Weapon Systems', 'Shield Generators', 'Engines & Thrusters', 'Cyber Overload', 'Ship Customization'];
-        const maxRanks = [10, 10, 10, 10, 10];
+        const maxRanks = upgradeLabels.map(label => us ? us.getMaxRank(label) : 10);
         const selected = window._upgradeSelected || 0;
         const startY = 80, spacing = 75;
 
@@ -815,7 +817,7 @@ function drawMenuScreens() {
             const rank = us && us.state ? (us.state.upgrades[label] || 0) : 0;
             const maxRank = maxRanks[i];
             let cost = 0;
-            try { cost = us ? us.getCost(label) : 999; } catch(e) {}
+            try { cost = us ? us.getUpgradeCost(label) : 999; } catch(e) {}
             const isMaxed = rank >= maxRank;
             const canAfford = !isMaxed && scrap >= cost;
             const isSelected = i === selected;
@@ -1348,8 +1350,15 @@ window.addEventListener('keydown', e => {
             if (ngData) {
                 try {
                     const parsed = JSON.parse(ngData);
-                    if (parsed.ngLevel) {
-                        startNGPlus(parsed);
+                    const shipData = parsed[selectedShip];
+                    if (shipData) {
+                        let activeSaveSlot = parseInt(localStorage.getItem('dariusStar_activeSlot') || '0');
+                        let currentSave = (window.CampaignSave ? CampaignSave.load(activeSaveSlot) : null) || {};
+                        startNGPlus({
+                            ngLevel: shipData.ngLevel || 0,
+                            ship: selectedShip,
+                            upgrades: currentSave.upgrades || {}
+                        });
                     }
                 } catch(ex) {}
             }
@@ -1368,7 +1377,7 @@ window.addEventListener('keydown', e => {
             } else if (currentScreen === SCREENS.SETTINGS) {
                 selectedSettingsIndex = (selectedSettingsIndex - 1 + SETTINGS_OPTIONS.length) % SETTINGS_OPTIONS.length;
             } else if (currentScreen === SCREENS.SHIP_SELECT) {
-                selectedShipIndex = (selectedShipIndex - 1 + 3) % 3;
+                selectedShipIndex = (selectedShipIndex - 1 + SHIP_OPTIONS.length) % SHIP_OPTIONS.length;
             } else if (currentScreen === SCREENS.LEADERBOARD) {
                 if (leaderboardScrollOffset > 0) leaderboardScrollOffset--;
             } else if (currentScreen === SCREENS.LOAD_GAME) {
@@ -1385,7 +1394,7 @@ window.addEventListener('keydown', e => {
             } else if (currentScreen === SCREENS.SETTINGS) {
                 selectedSettingsIndex = (selectedSettingsIndex + 1) % SETTINGS_OPTIONS.length;
             } else if (currentScreen === SCREENS.SHIP_SELECT) {
-                selectedShipIndex = (selectedShipIndex + 1) % 3;
+                selectedShipIndex = (selectedShipIndex + 1) % SHIP_OPTIONS.length;
             } else if (currentScreen === SCREENS.LEADERBOARD) {
                 const scores = window.Leaderboard ? Leaderboard.getTop(leaderboardFilter, 50) : [];
                 if (leaderboardScrollOffset + 10 < scores.length) leaderboardScrollOffset++;
@@ -1440,9 +1449,23 @@ window.addEventListener('keydown', e => {
                 const labels = ['weapons','shields','engines','specials','cosmetics'];
                 const i = window._upgradeSelected || 0;
                 const us = window.DS_UpgradeSystem;
-                if (us && us.canAfford && us.canAfford(labels[i])) {
-                    us.purchase(labels[i]);
-                    playSound('menu_click');
+                if (us) {
+                    const cost = us.getUpgradeCost(labels[i]);
+                    if (us.state && us.state.scrap >= cost) {
+                        us.buyUpgrade(labels[i]);
+                        playSound('menu_click');
+                        
+                        // Sync upgrades back to the active campaign save slot
+                        if (window.CampaignSave) {
+                            const activeSlot = parseInt(localStorage.getItem('dariusStar_activeSlot') || '0');
+                            const saveData = CampaignSave.load(activeSlot);
+                            if (saveData) {
+                                saveData.upgrades = { ...us.state.upgrades };
+                                saveData.scrap = us.state.scrap;
+                                CampaignSave.save(activeSlot, saveData);
+                            }
+                        }
+                    }
                 }
             } else {
                 handleMenuConfirm();

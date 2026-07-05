@@ -2,7 +2,7 @@
   "consoleLogs": [
     {
       "type": "log",
-      "text": "[CampaignSave] save_system.js loaded — full implementation (GRO-1090)"
+      "text": "[CampaignSave] save_system.js loaded — full implementation (GRO-1090, GRO-2171)"
     },
     {
       "type": "log",
@@ -47,31 +47,259 @@
     {
       "type": "error",
       "text": "Failed to load resource: the server responded with a status of 404 (File not found)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Manifest loaded: 83 tracks"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloading 83 tracks..."
+    },
+    {
+      "type": "log",
+      "text": "[Darius Star] SFX samples loaded: 10/12"
+    },
+    {
+      "type": "log",
+      "text": "[Darius Star] SFX samples loaded: 10/12"
+    },
+    {
+      "type": "log",
+      "text": "[Darius Star] SFX samples loaded: 10/12"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: ambient_deep_space (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: victory (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: ambient_abyssal_trench (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: mystery_first_contact (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: mystery_biome_reveal (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: mystery_lyra_vision (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: mystery_hidden_chamber (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: mystery_precursor_awakening (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: mystery_lost_civilization (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: mystery_revelation (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: mystery_cosmic_secret (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: mystery_ancient_signal (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: victory_b1_abyssal (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: victory_b3_lair (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: mystery_transcendence (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: victory_b2_coral (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: victory_b4_nebula (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: victory_b5_ice (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: victory_b7_storm (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: victory_b6_fire (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: relief_post_boss (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: victory_b10_core (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: victory_b9_hive (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: victory_b8_derelict (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: relief_interlude (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: relief_story_resolution (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: relief_bonding (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: relief_checkpoint (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: relief_near_miss (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: relief_home_base (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: relief_companion (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: relief_star_gazing (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: suspense_b1_preboss (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: suspense_b3_preboss (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: suspense_b2_preboss (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: relief_aftermath (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: suspense_b7_preboss (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: suspense_b6_preboss (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: suspense_b4_preboss (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: suspense_b5_preboss (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: suspense_b10_preboss (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: suspense_b9_preboss (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: suspense_b5_reveal1 (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: suspense_b8_preboss (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: suspense_b6_reveal2 (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: suspense_b5_reveal2 (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: suspense_b6_reveal1 (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: suspense_b5_betrayal1 (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: suspense_b6_betrayal2 (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: suspense_b5_betrayal2 (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: suspense_b8_catastrophe1 (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: suspense_b6_betrayal1 (32.8s)"
     }
   ],
   "failedNetworkRequests": [
     {
-      "url": "http://127.0.0.1:8088/assets/cinematics/cinematic_boss_intro.mp4",
+      "url": "http://127.0.0.1:8088/assets/audio/sfx/ui_hover.mp3",
       "status": 404
     },
     {
-      "url": "http://127.0.0.1:8088/assets/cinematics/cinematic_victory.mp4",
+      "url": "http://127.0.0.1:8088/assets/audio/sfx/shield_hit.mp3",
       "status": 404
     },
     {
-      "url": "http://127.0.0.1:8088/assets/sprites/backgrounds/bg_title_strip.png",
+      "url": "http://127.0.0.1:8088/assets/audio/sfx/shield_hit.mp3",
       "status": 404
     },
     {
-      "url": "http://127.0.0.1:8088/assets/sprites/studio_logo.png",
+      "url": "http://127.0.0.1:8088/assets/audio/sfx/ui_hover.mp3",
       "status": 404
     },
     {
-      "url": "http://127.0.0.1:8088/assets/cinematics/ending_sunrise.png",
+      "url": "http://127.0.0.1:8088/assets/audio/sfx/ui_hover.mp3",
       "status": 404
     },
     {
-      "url": "http://127.0.0.1:8088/assets/sprites/title_0.png",
+      "url": "http://127.0.0.1:8088/assets/audio/sfx/shield_hit.mp3",
       "status": 404
     }
   ]

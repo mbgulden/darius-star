@@ -835,20 +835,28 @@
                 if (audioTunnelsEnabled) triggerBiomeAmbient();
                 // GRO-1028: Trigger audio-only story beat for this biome
                 if (audioTunnelsEnabled) playAudioStoryBeat(biomeLevel);
-                // Notify Economy of new segment for loot tracking
-                if (window.Economy && oldBiomeLevel !== biomeLevel) {
-                    Economy.newSegment();
-                }
+            }
 
-                // Narrative flags: entering biome 3 (Coelacanth Lair) — dreamer connection deepens
-                if (biomeLevel === 3) setNarrativeFlag('dreamer_connection', 1);
-                // GRO-1045: Cross defects at B5 level_end — set flag on B6 entry
-                if (biomeLevel === 6) setNarrativeFlag('cross_defected', 1);
-                // Biome 10 (Core Rift) — final confrontation, all flags intensify
-                if (biomeLevel === 10) {
-                    setNarrativeFlag('coelacanth_mercy', 1);
-                    setNarrativeFlag('power_lust', 1);
+            if (window.maxBiomeReached === undefined) {
+                window.maxBiomeReached = oldBiomeLevel || biomeLevel || 1;
+            }
+
+            if (biomeLevel > window.maxBiomeReached) {
+                // Loop through all un-entered intermediate biomes
+                for (let b = window.maxBiomeReached + 1; b <= biomeLevel; b++) {
+                    // Narrative flags for intermediate biomes
+                    if (b === 3) setNarrativeFlag('dreamer_connection', 1);
+                    if (b === 6) setNarrativeFlag('cross_defected', 1);
+                    if (b === 10) {
+                        setNarrativeFlag('coelacanth_mercy', 1);
+                        setNarrativeFlag('power_lust', 1);
+                    }
+                    if (window.Economy) {
+                        Economy.newSegment();
+                    }
                 }
+                
+                window.maxBiomeReached = biomeLevel;
 
                 // Campaign Save System: save checkpoint on entering a new biome
                 if (window.CampaignSave && typeof player !== 'undefined') {
@@ -874,7 +882,9 @@
                     });
                     console.log(`Saved Campaign Checkpoint in slot ${activeSaveSlot}: Biome ${biomeLevel}, Lives ${currentLives}`);
                 }
+            }
 
+            if (oldBiome !== activeBiomeName) {
                 // Transition environmental particles to new biome
                 if (typeof envParticles !== 'undefined') {
                     envParticles.length = 0;

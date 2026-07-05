@@ -12,8 +12,9 @@ window.NGPlus = {
      */
     start(prevRunData) {
         let prevLevel = 0;
-        let prevShip = 'interceptor';
+        let prevShip = 'striker';
         let prevEnding = null;
+        let prevUpgrades = {};
 
         if (typeof prevRunData === 'number') {
             // Called with a save slot number — load the save
@@ -21,19 +22,57 @@ window.NGPlus = {
                 const save = CampaignSave.load(prevRunData);
                 if (save) {
                     prevLevel = save.ngLevel || 0;
-                    prevShip = save.ship || 'interceptor';
+                    prevShip = save.ship || 'striker';
                     prevEnding = save.ending || null;
+                    prevUpgrades = save.upgrades || {};
                 }
             }
         } else if (prevRunData && typeof prevRunData === 'object') {
             prevLevel = prevRunData.ngLevel || 0;
-            prevShip = prevRunData.ship || 'interceptor';
+            prevShip = prevRunData.ship || 'striker';
+            prevUpgrades = prevRunData.upgrades || {};
         }
 
         const nextLevel = prevLevel + 1;
         const scrapMult = 1 + nextLevel * 0.5;
 
+        const base = (window.CampaignSave && typeof window.CampaignSave.createBlank === 'function')
+            ? window.CampaignSave.createBlank()
+            : {
+                biomeLevel: 1,
+                biome: 1,
+                wave: 1,
+                ship: 'striker',
+                scrap: 0,
+                score: 0,
+                playTime: 0,
+                deaths: 0,
+                lives: 2,
+                difficulty: 'normal',
+                lastCheckpoint: null,
+                upgrades: {},
+                masterVolume: 0.8,
+                sfxVolume: 0.8,
+                musicVolume: 0.6,
+                banterEnabled: true,
+                audioTunnelsEnabled: true,
+                streamerMode: false,
+                subtitlesEnabled: true,
+                weaponLevel: 1,
+                shield: 100,
+                shieldMax: 100,
+                ngLevel: 0,
+                runScrap: 0,
+                seed: Math.floor(Math.random() * 2147483648),
+                inGameFlags: {},
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString()
+            };
+
         return {
+            ...base,
+            ship: prevShip,
+            upgrades: prevUpgrades,
             ngLevel: nextLevel,
             scrapMult: scrapMult,
             paradoxRate: Math.min(0.5, 0.1 * nextLevel),

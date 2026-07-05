@@ -284,7 +284,10 @@ function resetGame() {
     let campaignSave = null;
     if (window.CampaignSave) {
         campaignSave = CampaignSave.load(activeSaveSlot);
+        initCampaignSession(campaignSave);
     }
+    window.maxBiomeReached = campaignSave ? (campaignSave.biome || 1) : 1;
+    window.maxBiomeReached = campaignSave ? (campaignSave.biome || 1) : 1;
 
     // GRO-1009: Reset narrative state for new run
     selectedEnding = null;
@@ -350,6 +353,8 @@ function resetGame() {
             difficulty = localStorage.getItem('dariusStar_difficulty') || difficulty || 'normal';
         }
     }
+
+    if (window.Multiplayer) Multiplayer.init();
 
     // Re-instantiate player ship with the currently selected model or saved model
     let activeShip = 'striker';
@@ -433,8 +438,6 @@ function resetGame() {
     envBuffer.markDirty();
 
     Combo.init();
-    // Re-initialize campaign modules if loaded to avoid stale state on retry/restart
-    if (window.Multiplayer) Multiplayer.init();
     // Preserve looted segments across restarts (prevents checkpoint farming)
     const savedLooted = {};
     if (window.Economy && Economy._lootedSegments) {
@@ -443,7 +446,19 @@ function resetGame() {
         }
     }
     if (window.Economy) Economy.init();
-    if (window.Economy) Economy._lootedSegments = savedLooted;
+    
+    // Restore looted segments from campaign save if resuming/loading
+    if (campaignSave && campaignSave.lastCheckpoint && campaignSave.lastCheckpoint.lootedSegments) {
+        if (window.Economy && typeof Economy.restoreLootedSegments === 'function') {
+            Economy.restoreLootedSegments(campaignSave.lastCheckpoint.lootedSegments, campaignSave.lastCheckpoint.currentSegment);
+        }
+    } else if (campaignSave && campaignSave.lootedSegments) {
+        if (window.Economy && typeof Economy.restoreLootedSegments === 'function') {
+            Economy.restoreLootedSegments(campaignSave.lootedSegments, campaignSave.currentSegment);
+        }
+    } else {
+        if (window.Economy) Economy._lootedSegments = savedLooted;
+    }
     if (window.BanterEngine) {
         BanterEngine.init(window.Multiplayer ? Multiplayer.count : 1);
         BanterEngine.trigger('level_start', 1);
@@ -566,3 +581,15 @@ function loadTotalScrapFromBase64() {
 }
 
 
+
+function initCampaignSession(campaignSave) {
+    if (!campaignSave && window.CampaignSave) {
+        let activeSaveSlot = parseInt(localStorage.getItem('dariusStar_activeSlot') || '0');
+        campaignSave = CampaignSave.load(activeSaveSlot);
+    }
+    if (campaignSave && campaignSave.ship) {
+        const activeShip = campaignSave.ship;
+        selectedShip = activeShip;
+        selectedShipIndex = SHIP_OPTIONS.indexOf(selectedShip);
+    }
+}

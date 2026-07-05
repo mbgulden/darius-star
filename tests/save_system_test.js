@@ -40,7 +40,7 @@ function testSaveSystemValidation() {
     assert.ok(loaded);
     assert.strictEqual(loaded.biome, 1);
     assert.strictEqual(loaded.wave, 1);
-    assert.strictEqual(loaded.ship, 'interceptor');
+    assert.strictEqual(loaded.ship, 'striker');
     assert.strictEqual(CampaignSave.pendingCorruptionNotice, false);
 
     // Test case 3: corrupted schema validation (missing required upgrades key)

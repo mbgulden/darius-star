@@ -1,0 +1,2035 @@
+{
+  "generated": "2026-07-05T22:09:05.234Z",
+  "gameUrl": "http://127.0.0.1:8088",
+  "config": {
+    "runs": 3,
+    "durationPerRun": 120
+  },
+  "summary": {
+    "totalRuns": 3,
+    "successfulRuns": 3,
+    "averageWeaponLevel": 0,
+    "averageScrap": 0,
+    "maxBiomeReached": 0,
+    "totalErrors": 1019
+  },
+  "runs": [
+    {
+      "timestamp": "2026-07-05T22:04:53.347Z",
+      "screen": "unknown",
+      "player": {
+        "dead": false,
+        "weaponLevel": 0,
+        "scrap": 0,
+        "hp": 0
+      },
+      "level": {
+        "biome": 0,
+        "level": 0
+      },
+      "enemies": {
+        "killed": 0,
+        "bossDefeated": false,
+        "bossHp": 0
+      },
+      "fps": 0,
+      "runIndex": 1,
+      "durationSec": 120,
+      "consoleErrors": [
+        "Failed to load resource: the server responded with a status of 404 (File not found)",
+        "Failed to load resource: the server responded with a status of 404 (File not found)",
+        "Failed to load resource: the server responded with a status of 404 (File not found)",
+        "Failed to load resource: the server responded with a status of 404 (File not found)",
+        "Failed to load resource: the server responded with a status of 404 (File not found)",
+        "Failed to load resource: the server responded with a status of 404 (File not found)",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources."
+      ],
+      "samples": [
+        {
+          "timestamp": "2026-07-05T22:02:53.418Z",
+          "screen": "unknown",
+          "player": {
+            "dead": false,
+            "weaponLevel": 0,
+            "scrap": 0,
+            "hp": 0
+          },
+          "level": {
+            "biome": 0,
+            "level": 0
+          },
+          "enemies": {
+            "killed": 0,
+            "bossDefeated": false,
+            "bossHp": 0
+          },
+          "fps": 0
+        },
+        {
+          "timestamp": "2026-07-05T22:03:01.878Z",
+          "screen": "unknown",
+          "player": {
+            "dead": false,
+            "weaponLevel": 0,
+            "scrap": 0,
+            "hp": 0
+          },
+          "level": {
+            "biome": 0,
+            "level": 0
+          },
+          "enemies": {
+            "killed": 0,
+            "bossDefeated": false,
+            "bossHp": 0
+          },
+          "fps": 0
+        },
+        {
+          "timestamp": "2026-07-05T22:03:09.473Z",
+          "screen": "unknown",
+          "player": {
+            "dead": false,
+            "weaponLevel": 0,
+            "scrap": 0,
+            "hp": 0
+          },
+          "level": {
+            "biome": 0,
+            "level": 0
+          },
+          "enemies": {
+            "killed": 0,
+            "bossDefeated": false,
+            "bossHp": 0
+          },
+          "fps": 0
+        },
+        {
+          "timestamp": "2026-07-05T22:03:17.628Z",
+          "screen": "unknown",
+          "player": {
+            "dead": false,
+            "weaponLevel": 0,
+            "scrap": 0,
+            "hp": 0
+          },
+          "level": {
+            "biome": 0,
+            "level": 0
+          },
+          "enemies": {
+            "killed": 0,
+            "bossDefeated": false,
+            "bossHp": 0
+          },
+          "fps": 0
+        },
+        {
+          "timestamp": "2026-07-05T22:03:25.367Z",
+          "screen": "unknown",
+          "player": {
+            "dead": false,
+            "weaponLevel": 0,
+            "scrap": 0,
+            "hp": 0
+          },
+          "level": {
+            "biome": 0,
+            "level": 0
+          },
+          "enemies": {
+            "killed": 0,
+            "bossDefeated": false,
+            "bossHp": 0
+          },
+          "fps": 0
+        },
+        {
+          "timestamp": "2026-07-05T22:03:33.486Z",
+          "screen": "unknown",
+          "player": {
+            "dead": false,
+            "weaponLevel": 0,
+            "scrap": 0,
+            "hp": 0
+          },
+          "level": {
+            "biome": 0,
+            "level": 0
+          },
+          "enemies": {
+            "killed": 0,
+            "bossDefeated": false,
+            "bossHp": 0
+          },
+          "fps": 0
+        },
+        {
+          "timestamp": "2026-07-05T22:03:42.621Z",
+          "screen": "unknown",
+          "player": {
+            "dead": false,
+            "weaponLevel": 0,
+            "scrap": 0,
+            "hp": 0
+          },
+          "level": {
+            "biome": 0,
+            "level": 0
+          },
+          "enemies": {
+            "killed": 0,
+            "bossDefeated": false,
+            "bossHp": 0
+          },
+          "fps": 0
+        },
+        {
+          "timestamp": "2026-07-05T22:03:50.742Z",
+          "screen": "unknown",
+          "player": {
+            "dead": false,
+            "weaponLevel": 0,
+            "scrap": 0,
+            "hp": 0
+          },
+          "level": {
+            "biome": 0,
+            "level": 0
+          },
+          "enemies": {
+            "killed": 0,
+            "bossDefeated": false,
+            "bossHp": 0
+          },
+          "fps": 0
+        },
+        {
+          "timestamp": "2026-07-05T22:03:57.717Z",
+          "screen": "unknown",
+          "player": {
+            "dead": false,
+            "weaponLevel": 0,
+            "scrap": 0,
+            "hp": 0
+          },
+          "level": {
+            "biome": 0,
+            "level": 0
+          },
+          "enemies": {
+            "killed": 0,
+            "bossDefeated": false,
+            "bossHp": 0
+          },
+          "fps": 0
+        },
+        {
+          "timestamp": "2026-07-05T22:04:05.027Z",
+          "screen": "unknown",
+          "player": {
+            "dead": false,
+            "weaponLevel": 0,
+            "scrap": 0,
+            "hp": 0
+          },
+          "level": {
+            "biome": 0,
+            "level": 0
+          },
+          "enemies": {
+            "killed": 0,
+            "bossDefeated": false,
+            "bossHp": 0
+          },
+          "fps": 0
+        },
+        {
+          "timestamp": "2026-07-05T22:04:13.125Z",
+          "screen": "unknown",
+          "player": {
+            "dead": false,
+            "weaponLevel": 0,
+            "scrap": 0,
+            "hp": 0
+          },
+          "level": {
+            "biome": 0,
+            "level": 0
+          },
+          "enemies": {
+            "killed": 0,
+            "bossDefeated": false,
+            "bossHp": 0
+          },
+          "fps": 0
+        },
+        {
+          "timestamp": "2026-07-05T22:04:20.964Z",
+          "screen": "unknown",
+          "player": {
+            "dead": false,
+            "weaponLevel": 0,
+            "scrap": 0,
+            "hp": 0
+          },
+          "level": {
+            "biome": 0,
+            "level": 0
+          },
+          "enemies": {
+            "killed": 0,
+            "bossDefeated": false,
+            "bossHp": 0
+          },
+          "fps": 0
+        },
+        {
+          "timestamp": "2026-07-05T22:04:28.853Z",
+          "screen": "unknown",
+          "player": {
+            "dead": false,
+            "weaponLevel": 0,
+            "scrap": 0,
+            "hp": 0
+          },
+          "level": {
+            "biome": 0,
+            "level": 0
+          },
+          "enemies": {
+            "killed": 0,
+            "bossDefeated": false,
+            "bossHp": 0
+          },
+          "fps": 0
+        },
+        {
+          "timestamp": "2026-07-05T22:04:36.979Z",
+          "screen": "unknown",
+          "player": {
+            "dead": false,
+            "weaponLevel": 0,
+            "scrap": 0,
+            "hp": 0
+          },
+          "level": {
+            "biome": 0,
+            "level": 0
+          },
+          "enemies": {
+            "killed": 0,
+            "bossDefeated": false,
+            "bossHp": 0
+          },
+          "fps": 0
+        },
+        {
+          "timestamp": "2026-07-05T22:04:45.136Z",
+          "screen": "unknown",
+          "player": {
+            "dead": false,
+            "weaponLevel": 0,
+            "scrap": 0,
+            "hp": 0
+          },
+          "level": {
+            "biome": 0,
+            "level": 0
+          },
+          "enemies": {
+            "killed": 0,
+            "bossDefeated": false,
+            "bossHp": 0
+          },
+          "fps": 0
+        },
+        {
+          "timestamp": "2026-07-05T22:04:53.345Z",
+          "screen": "unknown",
+          "player": {
+            "dead": false,
+            "weaponLevel": 0,
+            "scrap": 0,
+            "hp": 0
+          },
+          "level": {
+            "biome": 0,
+            "level": 0
+          },
+          "enemies": {
+            "killed": 0,
+            "bossDefeated": false,
+            "bossHp": 0
+          },
+          "fps": 0
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-07-05T22:06:59.210Z",
+      "screen": "unknown",
+      "player": {
+        "dead": false,
+        "weaponLevel": 0,
+        "scrap": 0,
+        "hp": 0
+      },
+      "level": {
+        "biome": 0,
+        "level": 0
+      },
+      "enemies": {
+        "killed": 0,
+        "bossDefeated": false,
+        "bossHp": 0
+      },
+      "fps": 0,
+      "runIndex": 2,
+      "durationSec": 120,
+      "consoleErrors": [
+        "Failed to load resource: the server responded with a status of 404 (File not found)",
+        "Failed to load resource: the server responded with a status of 404 (File not found)",
+        "Failed to load resource: the server responded with a status of 404 (File not found)",
+        "Failed to load resource: the server responded with a status of 404 (File not found)",
+        "Failed to load resource: the server responded with a status of 404 (File not found)",
+        "Failed to load resource: the server responded with a status of 404 (File not found)",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources."
+      ],
+      "samples": [
+        {
+          "timestamp": "2026-07-05T22:04:59.856Z",
+          "screen": "unknown",
+          "player": {
+            "dead": false,
+            "weaponLevel": 0,
+            "scrap": 0,
+            "hp": 0
+          },
+          "level": {
+            "biome": 0,
+            "level": 0
+          },
+          "enemies": {
+            "killed": 0,
+            "bossDefeated": false,
+            "bossHp": 0
+          },
+          "fps": 0
+        },
+        {
+          "timestamp": "2026-07-05T22:05:08.564Z",
+          "screen": "unknown",
+          "player": {
+            "dead": false,
+            "weaponLevel": 0,
+            "scrap": 0,
+            "hp": 0
+          },
+          "level": {
+            "biome": 0,
+            "level": 0
+          },
+          "enemies": {
+            "killed": 0,
+            "bossDefeated": false,
+            "bossHp": 0
+          },
+          "fps": 0
+        },
+        {
+          "timestamp": "2026-07-05T22:05:17.546Z",
+          "screen": "unknown",
+          "player": {
+            "dead": false,
+            "weaponLevel": 0,
+            "scrap": 0,
+            "hp": 0
+          },
+          "level": {
+            "biome": 0,
+            "level": 0
+          },
+          "enemies": {
+            "killed": 0,
+            "bossDefeated": false,
+            "bossHp": 0
+          },
+          "fps": 0
+        },
+        {
+          "timestamp": "2026-07-05T22:05:25.987Z",
+          "screen": "unknown",
+          "player": {
+            "dead": false,
+            "weaponLevel": 0,
+            "scrap": 0,
+            "hp": 0
+          },
+          "level": {
+            "biome": 0,
+            "level": 0
+          },
+          "enemies": {
+            "killed": 0,
+            "bossDefeated": false,
+            "bossHp": 0
+          },
+          "fps": 0
+        },
+        {
+          "timestamp": "2026-07-05T22:05:33.502Z",
+          "screen": "unknown",
+          "player": {
+            "dead": false,
+            "weaponLevel": 0,
+            "scrap": 0,
+            "hp": 0
+          },
+          "level": {
+            "biome": 0,
+            "level": 0
+          },
+          "enemies": {
+            "killed": 0,
+            "bossDefeated": false,
+            "bossHp": 0
+          },
+          "fps": 0
+        },
+        {
+          "timestamp": "2026-07-05T22:05:40.583Z",
+          "screen": "unknown",
+          "player": {
+            "dead": false,
+            "weaponLevel": 0,
+            "scrap": 0,
+            "hp": 0
+          },
+          "level": {
+            "biome": 0,
+            "level": 0
+          },
+          "enemies": {
+            "killed": 0,
+            "bossDefeated": false,
+            "bossHp": 0
+          },
+          "fps": 0
+        },
+        {
+          "timestamp": "2026-07-05T22:05:47.749Z",
+          "screen": "unknown",
+          "player": {
+            "dead": false,
+            "weaponLevel": 0,
+            "scrap": 0,
+            "hp": 0
+          },
+          "level": {
+            "biome": 0,
+            "level": 0
+          },
+          "enemies": {
+            "killed": 0,
+            "bossDefeated": false,
+            "bossHp": 0
+          },
+          "fps": 0
+        },
+        {
+          "timestamp": "2026-07-05T22:05:56.428Z",
+          "screen": "unknown",
+          "player": {
+            "dead": false,
+            "weaponLevel": 0,
+            "scrap": 0,
+            "hp": 0
+          },
+          "level": {
+            "biome": 0,
+            "level": 0
+          },
+          "enemies": {
+            "killed": 0,
+            "bossDefeated": false,
+            "bossHp": 0
+          },
+          "fps": 0
+        },
+        {
+          "timestamp": "2026-07-05T22:06:04.909Z",
+          "screen": "unknown",
+          "player": {
+            "dead": false,
+            "weaponLevel": 0,
+            "scrap": 0,
+            "hp": 0
+          },
+          "level": {
+            "biome": 0,
+            "level": 0
+          },
+          "enemies": {
+            "killed": 0,
+            "bossDefeated": false,
+            "bossHp": 0
+          },
+          "fps": 0
+        },
+        {
+          "timestamp": "2026-07-05T22:06:13.092Z",
+          "screen": "unknown",
+          "player": {
+            "dead": false,
+            "weaponLevel": 0,
+            "scrap": 0,
+            "hp": 0
+          },
+          "level": {
+            "biome": 0,
+            "level": 0
+          },
+          "enemies": {
+            "killed": 0,
+            "bossDefeated": false,
+            "bossHp": 0
+          },
+          "fps": 0
+        },
+        {
+          "timestamp": "2026-07-05T22:06:21.422Z",
+          "screen": "unknown",
+          "player": {
+            "dead": false,
+            "weaponLevel": 0,
+            "scrap": 0,
+            "hp": 0
+          },
+          "level": {
+            "biome": 0,
+            "level": 0
+          },
+          "enemies": {
+            "killed": 0,
+            "bossDefeated": false,
+            "bossHp": 0
+          },
+          "fps": 0
+        },
+        {
+          "timestamp": "2026-07-05T22:06:30.149Z",
+          "screen": "unknown",
+          "player": {
+            "dead": false,
+            "weaponLevel": 0,
+            "scrap": 0,
+            "hp": 0
+          },
+          "level": {
+            "biome": 0,
+            "level": 0
+          },
+          "enemies": {
+            "killed": 0,
+            "bossDefeated": false,
+            "bossHp": 0
+          },
+          "fps": 0
+        },
+        {
+          "timestamp": "2026-07-05T22:06:37.022Z",
+          "screen": "unknown",
+          "player": {
+            "dead": false,
+            "weaponLevel": 0,
+            "scrap": 0,
+            "hp": 0
+          },
+          "level": {
+            "biome": 0,
+            "level": 0
+          },
+          "enemies": {
+            "killed": 0,
+            "bossDefeated": false,
+            "bossHp": 0
+          },
+          "fps": 0
+        },
+        {
+          "timestamp": "2026-07-05T22:06:43.766Z",
+          "screen": "unknown",
+          "player": {
+            "dead": false,
+            "weaponLevel": 0,
+            "scrap": 0,
+            "hp": 0
+          },
+          "level": {
+            "biome": 0,
+            "level": 0
+          },
+          "enemies": {
+            "killed": 0,
+            "bossDefeated": false,
+            "bossHp": 0
+          },
+          "fps": 0
+        },
+        {
+          "timestamp": "2026-07-05T22:06:51.737Z",
+          "screen": "unknown",
+          "player": {
+            "dead": false,
+            "weaponLevel": 0,
+            "scrap": 0,
+            "hp": 0
+          },
+          "level": {
+            "biome": 0,
+            "level": 0
+          },
+          "enemies": {
+            "killed": 0,
+            "bossDefeated": false,
+            "bossHp": 0
+          },
+          "fps": 0
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-07-05T22:09:05.118Z",
+      "screen": "unknown",
+      "player": {
+        "dead": false,
+        "weaponLevel": 0,
+        "scrap": 0,
+        "hp": 0
+      },
+      "level": {
+        "biome": 0,
+        "level": 0
+      },
+      "enemies": {
+        "killed": 0,
+        "bossDefeated": false,
+        "bossHp": 0
+      },
+      "fps": 0,
+      "runIndex": 3,
+      "durationSec": 120,
+      "consoleErrors": [
+        "Failed to load resource: the server responded with a status of 404 (File not found)",
+        "Failed to load resource: the server responded with a status of 404 (File not found)",
+        "Failed to load resource: the server responded with a status of 404 (File not found)",
+        "Failed to load resource: the server responded with a status of 404 (File not found)",
+        "Failed to load resource: the server responded with a status of 404 (File not found)",
+        "Failed to load resource: the server responded with a status of 404 (File not found)",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources.",
+        "The element has no supported sources."
+      ],
+      "samples": [
+        {
+          "timestamp": "2026-07-05T22:07:05.562Z",
+          "screen": "unknown",
+          "player": {
+            "dead": false,
+            "weaponLevel": 0,
+            "scrap": 0,
+            "hp": 0
+          },
+          "level": {
+            "biome": 0,
+            "level": 0
+          },
+          "enemies": {
+            "killed": 0,
+            "bossDefeated": false,
+            "bossHp": 0
+          },
+          "fps": 0
+        },
+        {
+          "timestamp": "2026-07-05T22:07:13.943Z",
+          "screen": "unknown",
+          "player": {
+            "dead": false,
+            "weaponLevel": 0,
+            "scrap": 0,
+            "hp": 0
+          },
+          "level": {
+            "biome": 0,
+            "level": 0
+          },
+          "enemies": {
+            "killed": 0,
+            "bossDefeated": false,
+            "bossHp": 0
+          },
+          "fps": 0
+        },
+        {
+          "timestamp": "2026-07-05T22:07:22.026Z",
+          "screen": "unknown",
+          "player": {
+            "dead": false,
+            "weaponLevel": 0,
+            "scrap": 0,
+            "hp": 0
+          },
+          "level": {
+            "biome": 0,
+            "level": 0
+          },
+          "enemies": {
+            "killed": 0,
+            "bossDefeated": false,
+            "bossHp": 0
+          },
+          "fps": 0
+        },
+        {
+          "timestamp": "2026-07-05T22:07:30.635Z",
+          "screen": "unknown",
+          "player": {
+            "dead": false,
+            "weaponLevel": 0,
+            "scrap": 0,
+            "hp": 0
+          },
+          "level": {
+            "biome": 0,
+            "level": 0
+          },
+          "enemies": {
+            "killed": 0,
+            "bossDefeated": false,
+            "bossHp": 0
+          },
+          "fps": 0
+        },
+        {
+          "timestamp": "2026-07-05T22:07:39.368Z",
+          "screen": "unknown",
+          "player": {
+            "dead": false,
+            "weaponLevel": 0,
+            "scrap": 0,
+            "hp": 0
+          },
+          "level": {
+            "biome": 0,
+            "level": 0
+          },
+          "enemies": {
+            "killed": 0,
+            "bossDefeated": false,
+            "bossHp": 0
+          },
+          "fps": 0
+        },
+        {
+          "timestamp": "2026-07-05T22:07:48.249Z",
+          "screen": "unknown",
+          "player": {
+            "dead": false,
+            "weaponLevel": 0,
+            "scrap": 0,
+            "hp": 0
+          },
+          "level": {
+            "biome": 0,
+            "level": 0
+          },
+          "enemies": {
+            "killed": 0,
+            "bossDefeated": false,
+            "bossHp": 0
+          },
+          "fps": 0
+        },
+        {
+          "timestamp": "2026-07-05T22:07:56.651Z",
+          "screen": "unknown",
+          "player": {
+            "dead": false,
+            "weaponLevel": 0,
+            "scrap": 0,
+            "hp": 0
+          },
+          "level": {
+            "biome": 0,
+            "level": 0
+          },
+          "enemies": {
+            "killed": 0,
+            "bossDefeated": false,
+            "bossHp": 0
+          },
+          "fps": 0
+        },
+        {
+          "timestamp": "2026-07-05T22:08:04.589Z",
+          "screen": "unknown",
+          "player": {
+            "dead": false,
+            "weaponLevel": 0,
+            "scrap": 0,
+            "hp": 0
+          },
+          "level": {
+            "biome": 0,
+            "level": 0
+          },
+          "enemies": {
+            "killed": 0,
+            "bossDefeated": false,
+            "bossHp": 0
+          },
+          "fps": 0
+        },
+        {
+          "timestamp": "2026-07-05T22:08:12.746Z",
+          "screen": "unknown",
+          "player": {
+            "dead": false,
+            "weaponLevel": 0,
+            "scrap": 0,
+            "hp": 0
+          },
+          "level": {
+            "biome": 0,
+            "level": 0
+          },
+          "enemies": {
+            "killed": 0,
+            "bossDefeated": false,
+            "bossHp": 0
+          },
+          "fps": 0
+        },
+        {
+          "timestamp": "2026-07-05T22:08:20.752Z",
+          "screen": "unknown",
+          "player": {
+            "dead": false,
+            "weaponLevel": 0,
+            "scrap": 0,
+            "hp": 0
+          },
+          "level": {
+            "biome": 0,
+            "level": 0
+          },
+          "enemies": {
+            "killed": 0,
+            "bossDefeated": false,
+            "bossHp": 0
+          },
+          "fps": 0
+        },
+        {
+          "timestamp": "2026-07-05T22:08:29.139Z",
+          "screen": "unknown",
+          "player": {
+            "dead": false,
+            "weaponLevel": 0,
+            "scrap": 0,
+            "hp": 0
+          },
+          "level": {
+            "biome": 0,
+            "level": 0
+          },
+          "enemies": {
+            "killed": 0,
+            "bossDefeated": false,
+            "bossHp": 0
+          },
+          "fps": 0
+        },
+        {
+          "timestamp": "2026-07-05T22:08:37.346Z",
+          "screen": "unknown",
+          "player": {
+            "dead": false,
+            "weaponLevel": 0,
+            "scrap": 0,
+            "hp": 0
+          },
+          "level": {
+            "biome": 0,
+            "level": 0
+          },
+          "enemies": {
+            "killed": 0,
+            "bossDefeated": false,
+            "bossHp": 0
+          },
+          "fps": 0
+        },
+        {
+          "timestamp": "2026-07-05T22:08:45.165Z",
+          "screen": "unknown",
+          "player": {
+            "dead": false,
+            "weaponLevel": 0,
+            "scrap": 0,
+            "hp": 0
+          },
+          "level": {
+            "biome": 0,
+            "level": 0
+          },
+          "enemies": {
+            "killed": 0,
+            "bossDefeated": false,
+            "bossHp": 0
+          },
+          "fps": 0
+        },
+        {
+          "timestamp": "2026-07-05T22:08:53.336Z",
+          "screen": "unknown",
+          "player": {
+            "dead": false,
+            "weaponLevel": 0,
+            "scrap": 0,
+            "hp": 0
+          },
+          "level": {
+            "biome": 0,
+            "level": 0
+          },
+          "enemies": {
+            "killed": 0,
+            "bossDefeated": false,
+            "bossHp": 0
+          },
+          "fps": 0
+        },
+        {
+          "timestamp": "2026-07-05T22:09:02.189Z",
+          "screen": "unknown",
+          "player": {
+            "dead": false,
+            "weaponLevel": 0,
+            "scrap": 0,
+            "hp": 0
+          },
+          "level": {
+            "biome": 0,
+            "level": 0
+          },
+          "enemies": {
+            "killed": 0,
+            "bossDefeated": false,
+            "bossHp": 0
+          },
+          "fps": 0
+        }
+      ]
+    }
+  ]
+}

@@ -253,18 +253,24 @@ function update(dt) {
                         // Game completion: save state and trigger NGPlus.start()!
                         if (window.CampaignSave) {
                             let activeSaveSlot = parseInt(localStorage.getItem('dariusStar_activeSlot') || '0');
+                            const currentSave = CampaignSave.load(activeSaveSlot) || CampaignSave.createBlank();
                             // Save the final completed campaign state
                             CampaignSave.autosave(activeSaveSlot, {
+                                ...currentSave,
                                 biome: 10,
                                 score: score,
+                                scrap: currentSave.scrap || 0,
                                 runScrap: runScrap,
-                                ship: player.shipType,
+                                ship: player.shipType || currentSave.ship || 'striker',
                                 weaponLevel: player.weaponLevel,
                                 shieldMax: player.shieldMax,
                                 shield: player.shield,
                                 difficulty: difficulty,
                                 ngLevel: currentNGLevel,
                                 inGameFlags: narrativeFlags,
+                                wave: currentSave.wave || 1,
+                                lives: currentSave.lives || 2,
+                                upgrades: currentSave.upgrades || {}
                             });
                             
                             // Upgrade the slot to New Game+
@@ -480,9 +486,23 @@ function update(dt) {
         Multiplayer.update(dt);
         // P2 joins by pressing Enter/NumpadEnter during gameplay
         if (keys['Enter'] && Multiplayer.count < Multiplayer.maxPlayers && !remotePlayers.find(rp => rp.playerId === 2)) {
-            Multiplayer.requestJoin('interceptor');
+            let p2ShipType = 'interceptor';
+            try {
+                if (typeof localStorage !== 'undefined') {
+                    const storedSelection = localStorage.getItem('dariusStar_shipSelection');
+                    if (storedSelection) {
+                        const parsed = JSON.parse(storedSelection);
+                        if (parsed.p2 && parsed.p2.shipId) {
+                            p2ShipType = parsed.p2.shipId;
+                        }
+                    }
+                }
+            } catch (e) {
+                console.error("Failed to load P2 ship selection on drop-in:", e);
+            }
+            Multiplayer.requestJoin(p2ShipType);
             Multiplayer.processJoins(biomeLevel);
-            const rp2 = new Player('interceptor', 2);
+            const rp2 = new Player(p2ShipType, 2);
             rp2.x = 120; rp2.y = 200;
             rp2.isRemote = true;
             remotePlayers.push(rp2);
@@ -495,6 +515,15 @@ function update(dt) {
             rp3.x = 140; rp3.y = 240;
             rp3.isRemote = true;
             remotePlayers.push(rp3);
+        }
+        // P4 joins by pressing key '4'
+        if (keys['4'] && Multiplayer.count < Multiplayer.maxPlayers && !remotePlayers.find(rp => rp.playerId === 4)) {
+            Multiplayer.requestJoin('interceptor');
+            Multiplayer.processJoins(biomeLevel);
+            const rp4 = new Player('interceptor', 4);
+            rp4.x = 160; rp4.y = 280;
+            rp4.isRemote = true;
+            remotePlayers.push(rp4);
         }
         // Sync remote player shield/state back to Multiplayer module
         for (const rp of remotePlayers) {
@@ -513,7 +542,15 @@ function update(dt) {
         // Process any queued leaves
         const leaveLine = Multiplayer.processLeaves();
         if (leaveLine) {
-            floatingTexts.push({ text: leaveLine, x: canvas.width/2, y: 60, life: 3.0, color: '#ff6600' });
+            // Re-sync remotePlayers array by removing any players that are no longer in Multiplayer.players
+            remotePlayers = remotePlayers.filter(rp => 
+                Multiplayer.players.some(mp => mp.id === rp.playerId && mp.alive && mp.status !== "leaving")
+            );
+            if (typeof FloatingText !== 'undefined') {
+                floatingTexts.push(new FloatingText(canvas.width/2, 60, leaveLine, '#ff6600'));
+            } else {
+                floatingTexts.push({ text: leaveLine, x: canvas.width/2, y: 60, life: 3.0, color: '#ff6600' });
+            }
         }
     }
     if (hpPct < 0.25) {
@@ -670,7 +707,7 @@ function update(dt) {
                     if (player.addSecondaryCharge) player.addSecondaryCharge(5);
 
                     // Economy-based scrap drops (prevents checkpoint farming)
-                    if (window.Economy && Economy.shouldDrop(e.id)) {
+                    if (window.Economy && Economy.shouldDrop(e.id, e.enemyType)) {
                         const drop = Economy.rollDrop(e.enemyType, biomeLevel);
                         const ecoDrop = Economy.createDrop(e.x + e.width/2, e.y + e.height/2, drop.type, drop.amount);
                         scrapDrops.push(new ScrapDrop(ecoDrop.x, ecoDrop.y, ecoDrop.type, drop.amount));
@@ -1488,12 +1525,15 @@ function draw() {
         if (ngEligible) {
             try {
                 const ngData = JSON.parse(ngEligible);
-                const nextLevel = (ngData.ngLevel || 0) + 1;
-                const mult = window.NGPlus ? NGPlus.getScrapMult({ ngLevel: nextLevel }) : 1;
-                ctx.fillStyle = '#cc44ff';
-                ctx.font = 'bold 16px monospace';
-                ctx.fillText('⚡ PRESS N: NEW GAME+ Lv' + nextLevel + ' (' + mult.toFixed(1) + 'x SCRAP)', canvas.width / 2, canvas.height / 2 + yOffsetVal);
-                yOffsetVal += 20;
+                const shipData = ngData[selectedShip];
+                if (shipData) {
+                    const nextLevel = (shipData.ngLevel || 0) + 1;
+                    const mult = window.NGPlus ? NGPlus.getScrapMult({ ngLevel: nextLevel }) : 1;
+                    ctx.fillStyle = '#cc44ff';
+                    ctx.font = 'bold 16px monospace';
+                    ctx.fillText('⚡ PRESS N: NEW GAME+ Lv' + nextLevel + ' (' + mult.toFixed(1) + 'x SCRAP)', canvas.width / 2, canvas.height / 2 + yOffsetVal);
+                    yOffsetVal += 20;
+                }
             } catch(e) {}
         }
         ctx.fillStyle = '#8a8a9f';

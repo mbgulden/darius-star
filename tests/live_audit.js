@@ -3,7 +3,8 @@ const fs = require('fs');
 const path = require('path');
 
 async function run() {
-    console.log("=== STARTING LIVE AUDIT OF DARIUS-STAR.PAGES.DEV ===");
+    const targetUrl = process.env.GAME_URL || process.env.STAGING_URL || 'https://darius-star.pages.dev';
+    console.log(`=== STARTING LIVE AUDIT OF ${targetUrl} ===`);
     
     const browser = await chromium.launch({ headless: true });
     const context = await browser.newContext({
@@ -24,8 +25,8 @@ async function run() {
         console.error(`[Browser PageError] ${err.stack}`);
     });
 
-    console.log("Navigating to https://darius-star.pages.dev...");
-    await page.goto('https://darius-star.pages.dev', { waitUntil: 'networkidle' });
+    console.log(`Navigating to ${targetUrl}...`);
+    await page.goto(targetUrl, { waitUntil: 'networkidle' });
 
     console.log("Page loaded. Title:", await page.title());
 
