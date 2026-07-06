@@ -56,10 +56,28 @@ class Player {
         this.x = 80;
         this.y = canvas.height / 2;
         this.playerId = playerId;
-        // Per-player input binding — each player uses their own keys
+        // Per-player input binding — each player uses their own keys (can be single string or array of strings)
         this.inputKeys = {
-            1: { up:'w', down:'s', left:'a', right:'d', fire:' ', special:'k', dodge:'e', boost:'Shift' },
-            2: { up:'ArrowUp', down:'ArrowDown', left:'ArrowLeft', right:'ArrowRight', fire:'0', special:'1', dodge:'2', boost:'Enter' },
+            1: { 
+                up: ['w', 'W'], 
+                down: ['s', 'S'], 
+                left: ['a', 'A'], 
+                right: ['d', 'D'], 
+                fire: [' '], 
+                special: ['k', 'K'], 
+                dodge: ['e', 'E'], 
+                boost: ['Shift'] 
+            },
+            2: { 
+                up: ['ArrowUp'], 
+                down: ['ArrowDown'], 
+                left: ['ArrowLeft'], 
+                right: ['ArrowRight'], 
+                fire: ['0', 'Numpad0', 'ControlRight', 'Control'], 
+                special: ['1', 'Numpad1', 'ShiftRight', 'Shift'], 
+                dodge: ['2', 'Numpad2', 'NumpadDot', '.'], 
+                boost: ['Enter', 'NumpadEnter'] 
+            },
             3: { up:'Gamepad1U', down:'Gamepad1D', left:'Gamepad1L', right:'Gamepad1R', fire:'Gamepad1A', special:'Gamepad1B', dodge:'Gamepad1X', boost:'Gamepad1LB' },
             4: { up:'Gamepad2U', down:'Gamepad2D', left:'Gamepad2L', right:'Gamepad2R', fire:'Gamepad2A', special:'Gamepad2B', dodge:'Gamepad2X', boost:'Gamepad2LB' },
         }[playerId];
@@ -209,6 +227,15 @@ class Player {
         this.pullOutReturnInvuln = 0;   // 3s invulnerability after return
     }
 
+    isKeyPressed(action) {
+        const binding = this.inputKeys[action];
+        if (!binding) return false;
+        if (Array.isArray(binding)) {
+            return binding.some(k => keys[k]);
+        }
+        return !!keys[binding];
+    }
+
     update(dt) {
         // GRO-1003: Pull-out system — disable during repair, auto-return
         if (this.isPulledOut) {
@@ -243,10 +270,10 @@ class Player {
 
         let dx = 0;
         let dy = 0;
-        if (keys[this.inputKeys.up]) dy -= 1;
-        if (keys[this.inputKeys.down]) dy += 1;
-        if (keys[this.inputKeys.left]) dx -= 1;
-        if (keys[this.inputKeys.right]) dx += 1;
+        if (this.isKeyPressed('up')) dy -= 1;
+        if (this.isKeyPressed('down')) dy += 1;
+        if (this.isKeyPressed('left')) dx -= 1;
+        if (this.isKeyPressed('right')) dx += 1;
 
         if (dx !== 0 && dy !== 0) {
             dx *= 0.7071;
@@ -262,7 +289,7 @@ class Player {
             this.shield = Math.min(this.shieldMax, this.shield + mods.shieldRegenRate * dt);
             
             // Engine Afterburner Boost
-            const canBoost = keys[this.inputKeys.boost] && this.boostCooldown <= 0 && this.boostFuel > 0;
+            const canBoost = this.isKeyPressed('boost') && this.boostCooldown <= 0 && this.boostFuel > 0;
             if (canBoost) {
                 this.isBoosting = true;
                 this.boostFuel -= dt;
@@ -343,7 +370,7 @@ class Player {
             this.dodgeCooldown -= dt;
         }
         // Execute dodge on E key press
-        const canDodge = keys[this.inputKeys.dodge] && this.dodgeCooldown <= 0 && !this.isDodging;
+        const canDodge = this.isKeyPressed('dodge') && this.dodgeCooldown <= 0 && !this.isDodging;
         if (canDodge) {
             this.dodge();
         }
@@ -409,7 +436,7 @@ class Player {
             this.shootTimer -= dt;
         }
 
-        if (keys[this.inputKeys.fire] && this.shootTimer <= 0) {
+        if (this.isKeyPressed('fire') && this.shootTimer <= 0) {
             this.shoot();
             this.shootTimer = currentShootCooldown;
         }
@@ -523,9 +550,9 @@ class Player {
         if (this.secondaryFlashTimer > 0) this.secondaryFlashTimer -= dt;
         if (this.specialCooldown > 0) this.specialCooldown -= dt;
 
-        const bombPressed = !!(keys['b'] || keys['B']);
-        const missilePressed = !!(keys['m'] || keys['M']);
-        const specialPressed = !!keys[this.inputKeys.special];
+        const bombPressed = !!(keys['b'] || keys['B'] || keys['NumpadDivide'] || keys['/']);
+        const missilePressed = !!(keys['m'] || keys['M'] || keys['NumpadMultiply'] || keys['*']);
+        const specialPressed = this.isKeyPressed('special');
 
         if (bombPressed && !this.secondaryKeyLatch.bomb) this.fireSmartBomb();
         if (missilePressed && !this.secondaryKeyLatch.missile) this.fireHomingMissiles();
@@ -673,10 +700,10 @@ class Player {
     dodge() {
         // Determine dodge direction based on current movement input
         let ddx = 0, ddy = 0;
-        if (keys[this.inputKeys.up]) ddy -= 1;
-        if (keys[this.inputKeys.down]) ddy += 1;
-        if (keys[this.inputKeys.left]) ddx -= 1;
-        if (keys[this.inputKeys.right]) ddx += 1;
+        if (this.isKeyPressed('up')) ddy -= 1;
+        if (this.isKeyPressed('down')) ddy += 1;
+        if (this.isKeyPressed('left')) ddx -= 1;
+        if (this.isKeyPressed('right')) ddx += 1;
         
         // If no direction input, dodge backward (left)
         if (ddx === 0 && ddy === 0) {

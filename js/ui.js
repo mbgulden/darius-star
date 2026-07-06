@@ -1339,6 +1339,7 @@ window.addEventListener('keydown', e => {
             e.preventDefault();
         }
         keys[e.key] = true;
+        if (e.code) keys[e.code] = true;
         if (['Space', ' ', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'e', 'E'].indexOf(e.key) > -1) {
             e.preventDefault();
         }
@@ -1547,6 +1548,7 @@ setupTouchButton('fire-btn', ' ');
 
 window.addEventListener('keyup', e => {
     keys[e.key] = false;
+    if (e.code) keys[e.code] = false;
 });
 
 window.STATUS_EXPANDED = false;

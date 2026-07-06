@@ -17,6 +17,17 @@ ctx.scale(2, 2);
 canvas.style.width = '800px';
 canvas.style.height = '450px';
 
+// Override DOM properties to return logical coordinate space (800x450)
+// to prevent game positioning math throughout the project from breaking
+Object.defineProperty(canvas, 'width', {
+    get: () => GAME_WIDTH,
+    configurable: true
+});
+Object.defineProperty(canvas, 'height', {
+    get: () => GAME_HEIGHT,
+    configurable: true
+});
+
 const uiShield = document.getElementById('ui-shield');
 const uiWeapon = document.getElementById('ui-weapon');
 const uiScore = document.getElementById('ui-score');

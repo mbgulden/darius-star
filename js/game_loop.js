@@ -451,7 +451,7 @@ function update(dt) {
     }
 
     // --- Overheat detection (§6.3) — Supreme Nova (weapon 5) held fire tracking ---
-    const playerFiring = keys[player.inputKeys.fire] && player.weaponLevel === 5;
+    const playerFiring = player.isKeyPressed('fire') && player.weaponLevel === 5;
     if (playerFiring && !player.isSpecialActive) {
         overheatTimer += dt;
         overheatWarning = overheatTimer >= 3.0;
