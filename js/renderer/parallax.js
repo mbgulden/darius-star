@@ -180,54 +180,56 @@
                 // Use scaled width so offset wrap aligns with draw() tiling
                 let w;
                 if (img && img.complete && img.naturalWidth > 0) {
-                    w = img.width * this.scale;
+                const scaleY = canvas.height / img.naturalHeight;
+                w = img.naturalWidth * scaleY;
                 } else {
-                    const match = this.key.match(/bg_(\d+)/);
-                    const biomeNum = match ? parseInt(match[1]) : 1;
-                    const procBg = biomeBgCanvases[biomeNum] || generateBiomeBackground(biomeNum);
-                    w = procBg ? procBg.width * this.scale : (canvas.width || 800);
-                }
+                const match = this.key.match(/bg_(\d+)/);
+                const biomeNum = match ? parseInt(match[1]) : 1;
+                const procBg = biomeBgCanvases[biomeNum] || generateBiomeBackground(biomeNum);
+                w = procBg ? procBg.width : (canvas.width || 800);
+            }
                 // Guard against zero-width (uninitialized canvas or broken image)
                 if (w <= 0) w = canvas.width || 800;
                 this.offset = (this.offset + this.speed * dt) % w;
             }
-
+                
             draw() {
                 const img = this.getImg();
                 // Fall back to procedural background if image not loaded
                 if (!img || !img.complete || img.naturalWidth === 0) {
-                    // Try procedural: extract biome number from key (bg_1 → 1)
-                    let biomeNum = 1;
-                    const match = this.key.match(/bg_(\d+)/);
-                    if (match) biomeNum = parseInt(match[1]);
-                    const procBg = generateBiomeBackground(biomeNum);
-                    if (procBg) {
-                        ctx.save();
-                        ctx.globalAlpha = this.alpha;
-                        const w = procBg.width * this.scale;
-                        const h = procBg.height * this.scale;
-                        const drawX = -this.offset % w;
-                        const count = Math.ceil(canvas.width / w) + 1;
-                        for (let i = 0; i < count; i++) {
-                            ctx.drawImage(procBg, drawX + i * w, this.yOffset, w, h);
-                        }
-                        ctx.restore();
-                    }
-                    return;
-                }
+                // Try procedural: extract biome number from key (bg_1 ??? 1)
+                let biomeNum = 1;
+                const match = this.key.match(/bg_(\d+)/);
+                if (match) biomeNum = parseInt(match[1]);
+                const procBg = generateBiomeBackground(biomeNum);
+                if (procBg) {
                 ctx.save();
                 ctx.globalAlpha = this.alpha;
-                const w = img.width * this.scale;
-                const h = img.height * this.scale;
+                const w = procBg.width;
+                const h = procBg.height;
+                const drawX = -this.offset % w;
+                const count = Math.ceil(canvas.width / w) + 1;
+                for (let i = 0; i < count; i++) {
+                ctx.drawImage(procBg, drawX + i * w, this.yOffset, w, h);
+            }
+                ctx.restore();
+            }
+                return;
+            }
+                ctx.save();
+                ctx.globalAlpha = this.alpha;
+                const scaleY = canvas.height / img.naturalHeight;
+                const w = img.naturalWidth * scaleY;
+                const h = canvas.height;
                 // Tile horizontally for seamless scroll
                 const drawX = -this.offset;
                 const count = Math.ceil(canvas.width / w) + 1;
                 for (let i = 0; i < count; i++) {
-                    ctx.drawImage(img, drawX + i * w, this.yOffset, w, h);
-                }
+                ctx.drawImage(img, drawX + i * w, this.yOffset, w, h);
+            }
                 ctx.restore();
             }
-        }
+            }
 
         // --- Player Sprite Preloading ---
         // --- Offscreen Canvas Pre-Rendering ---

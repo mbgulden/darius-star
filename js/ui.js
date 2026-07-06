@@ -228,7 +228,7 @@ function advanceToNextBiome() {
     }
     
     // Update biome display and ambient audio
-    updateActiveBiome(score);
+    updateActiveBiome(0, score);
     if (uiBiome) uiBiome.innerText = activeBiomeName;
     
     // GRO-1187: Story triggers — biome transition & first biome clear

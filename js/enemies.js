@@ -332,26 +332,27 @@
         // --- Boss Fighter Class (Cyber Coelacanth) ---
         class Boss {
             constructor() {
-                this.id = ++enemyIdCounter;  // Unique ID for Economy.shouldDrop()
-                this.enemyType = 'boss';     // Economy scrapDropTable key
-                this.x = canvas.width + 100;
-                this.y = canvas.height / 2 - 80;
-                this.width = 180;
-                this.height = 140;
-                const difficultyConfig = getCurrentDifficultyConfig();
-                this.hpMax = Math.round(120 * difficultyConfig.bossHpMultiplier);
-                this.hp = this.hpMax;
-                this.state = 'intro';
-                this.stateTimer = 2;
-                this.bobTimer = 0;
-                this.shootTimer = 1.0 / difficultyConfig.enemyFireRateMultiplier;
-                this.laserWarningTimer = 0;
-                this.color = '#305080';
-                this.shieldColor = '#ff00aa';
-                this.architectPhase = null; // GRO-1009: 'sacrifice'|'transcendence'|'dominion' — set at low HP
-                this._victoryTimeout = null;
-                this._advanceTimeout = null;
-                this._explosionTimers = [];
+            this.id = ++enemyIdCounter;  // Unique ID for Economy.shouldDrop()
+            this.enemyType = 'boss';     // Economy scrapDropTable key
+            this.x = canvas.width + 100;
+            this.y = canvas.height / 2 - 80;
+            this.width = 180;
+            this.height = 140;
+            const difficultyConfig = getCurrentDifficultyConfig();
+            this.hpMax = Math.round(120 * difficultyConfig.bossHpMultiplier);
+            this.hp = this.hpMax;
+            this.state = 'intro';
+            this.stateTimer = 2;
+            this.bobTimer = 0;
+            this.shootTimer = 1.0 / difficultyConfig.enemyFireRateMultiplier;
+            this.laserWarningTimer = 0;
+            this.color = '#305080';
+            this.shieldColor = '#ff00aa';
+            this.architectPhase = null; // GRO-1009: 'sacrifice'|'transcendence'|'dominion' ??? set at low HP
+            this._victoryTimeout = null;
+            this._advanceTimeout = null;
+            this._explosionTimers = [];
+            console.log(`[BOSS] Spawning boss: Biome ${biomeLevel}, Max HP: ${this.hpMax}, State: ${this.state}`);
             }
 
             cleanup() {
@@ -598,80 +599,112 @@
                 // boss_0.png is 1280x896; render scaled to 190x133 (matching original boss footprint)
                 let spriteKey = 'boss';
                 if (this.hp <= 0) {
-                    spriteKey = 'boss_death';
+                spriteKey = 'boss_death';
                 } else if (this.state === 'intro' || this.state === 'idle') {
-                    spriteKey = 'boss_idle';
+                spriteKey = 'boss_idle';
                 } else if (this.state === 'rage' || this.state === 'architect_final') {
-                    spriteKey = 'boss_rage';
+                spriteKey = 'boss_rage';
                 } else if (this.state === 'laser_charge') {
-                    spriteKey = 'boss_laser_charge';
+                spriteKey = 'boss_laser_charge';
                 } else if (this.state === 'laser_fire') {
-                    spriteKey = 'boss_laser_fire';
+                spriteKey = 'boss_laser_fire';
                 }
-
-                let sprite = bossSprites[spriteKey] || bossSprites['boss'];
+                
+                // Select boss sheet based on biome level (wrap around 4 custom sheets)
+                const bossIndex = (biomeLevel - 1) % 4; // 0, 1, 2, 3
+                const biomeBossKey = `boss_${bossIndex}`;
+                let sprite = bossSprites[biomeBossKey];
+                
                 const checkSprite = (s) => {
-                    if (!s) return false;
-                    if (s.tagName === 'CANVAS') return s.width > 0;
-                    return s.complete && s.naturalWidth > 0;
+                if (!s) return false;
+                if (s.tagName === 'CANVAS') return s.width > 0;
+                return s.complete && s.naturalWidth > 0;
                 };
+                
                 let hasSprite = checkSprite(sprite);
+                let isBiomeSpecificSheet = true;
+                
                 if (!hasSprite) {
-                    sprite = bossSprites['boss'];
-                    hasSprite = checkSprite(sprite);
+                sprite = bossSprites[spriteKey] || bossSprites['boss_0'];
+                hasSprite = checkSprite(sprite);
+                isBiomeSpecificSheet = false;
                 }
                 const renderW = 190;
                 const renderH = 133;
 
                 if (hasSprite) {
+                    let frameX = 0;
+                    let frameY = 0;
+                    
+                    if (isBiomeSpecificSheet) {
+                    // Map state to row index in the 1024x1024 sheet
+                    if (this.hp <= 0) {
+                    frameY = 0; // Death fallback
+                    } else if (this.state === 'intro' || this.state === 'idle') {
+                    frameY = 0; // Row 0: Idle
+                    } else if (this.state === 'rage' || this.state === 'architect_final') {
+                    frameY = 1; // Row 1: Rage
+                    } else if (this.state === 'laser_charge') {
+                    frameY = 2; // Row 2: Charge
+                    } else if (this.state === 'laser_fire') {
+                    frameY = 3; // Row 3: Fire
+                    }
+                    // Animate columns (4 frames)
+                    frameX = Math.floor(this.bobTimer * 4) % 4;
+                } else {
+                    // Legacy: sheet is state, animate columns
+                    frameX = Math.floor(this.bobTimer * 4) % 4;
+                    frameY = 0;
+                    }
+                    
                     // State-based visual effects applied on top of the sprite
                     if (this.state === 'laser_charge') {
-                        // Cyan charge glow pulsing around the sprite
-                        ctx.shadowColor = '#00ffff';
-                        ctx.shadowBlur = 15 + Math.sin(this.bobTimer * 8) * 8;
+                    // Cyan charge glow pulsing around the sprite
+                    ctx.shadowColor = '#00ffff';
+                    ctx.shadowBlur = 15 + Math.sin(this.bobTimer * 8) * 8;
                     }
                     if (this.state === 'rage') {
-                        // Red rage tint overlay via global composite
-                        drawSpriteFrame(ctx, sprite, 0, 0, BOSS_FRAME, BOSS_FRAME, 0, 0, renderW, renderH);
-                        ctx.globalCompositeOperation = 'source-atop';
-                        ctx.fillStyle = 'rgba(255, 0, 30, 0.25)';
-                        ctx.fillRect(0, 0, renderW, renderH);
-                        ctx.globalCompositeOperation = 'source-over';
+                    // Red rage tint overlay via global composite
+                    drawSpriteFrame(ctx, sprite, frameX, frameY, BOSS_FRAME, BOSS_FRAME, 0, 0, renderW, renderH);
+                    ctx.globalCompositeOperation = 'source-atop';
+                    ctx.fillStyle = 'rgba(255, 0, 30, 0.25)';
+                    ctx.fillRect(0, 0, renderW, renderH);
+                    ctx.globalCompositeOperation = 'source-over';
                     } else if (this.state === 'architect_final') {
-                        // GRO-1009: Architect final phase — ending-specific boss aura
-                        drawSpriteFrame(ctx, sprite, 0, 0, BOSS_FRAME, BOSS_FRAME, 0, 0, renderW, renderH);
-                        const phase = this.architectPhase;
-                        const pulse = Math.sin(this.bobTimer * 6) * 0.5 + 0.5;
-                        if (phase === 'sacrifice') {
-                            ctx.shadowColor = '#00ffff';
-                            ctx.shadowBlur = 20 + pulse * 15;
-                            ctx.globalCompositeOperation = 'source-atop';
-                            ctx.fillStyle = `rgba(0, 255, 255, ${0.15 + pulse * 0.1})`;
-                            ctx.fillRect(0, 0, renderW, renderH);
-                            ctx.globalCompositeOperation = 'source-over';
-                        } else if (phase === 'transcendence') {
-                            ctx.shadowColor = '#ff00ff';
-                            ctx.shadowBlur = 25 + pulse * 20;
-                            ctx.globalCompositeOperation = 'source-atop';
-                            ctx.fillStyle = `rgba(255, 0, 255, ${0.12 + pulse * 0.08})`;
-                            ctx.fillRect(0, 0, renderW, renderH);
-                            ctx.globalCompositeOperation = 'source-over';
-                        } else {
-                            ctx.shadowColor = '#ff3300';
-                            ctx.shadowBlur = 18 + pulse * 22;
-                            ctx.globalCompositeOperation = 'source-atop';
-                            ctx.fillStyle = `rgba(255, 50, 0, ${0.2 + pulse * 0.15})`;
-                            ctx.fillRect(0, 0, renderW, renderH);
-                            ctx.globalCompositeOperation = 'source-over';
-                        }
+                    // GRO-1009: Architect final phase ??? ending-specific boss aura
+                    drawSpriteFrame(ctx, sprite, frameX, frameY, BOSS_FRAME, BOSS_FRAME, 0, 0, renderW, renderH);
+                    const phase = this.architectPhase;
+                    const pulse = Math.sin(this.bobTimer * 6) * 0.5 + 0.5;
+                    if (phase === 'sacrifice') {
+                    ctx.shadowColor = '#00ffff';
+                    ctx.shadowBlur = 20 + pulse * 15;
+                    ctx.globalCompositeOperation = 'source-atop';
+                    ctx.fillStyle = `rgba(0, 255, 255, ${0.15 + pulse * 0.1})`;
+                    ctx.fillRect(0, 0, renderW, renderH);
+                    ctx.globalCompositeOperation = 'source-over';
+                    } else if (phase === 'transcendence') {
+                    ctx.shadowColor = '#ff00ff';
+                    ctx.shadowBlur = 25 + pulse * 20;
+                    ctx.globalCompositeOperation = 'source-atop';
+                    ctx.fillStyle = `rgba(255, 0, 255, ${0.12 + pulse * 0.08})`;
+                    ctx.fillRect(0, 0, renderW, renderH);
+                    ctx.globalCompositeOperation = 'source-over';
+                } else {
+                    ctx.shadowColor = '#ff3300';
+                    ctx.shadowBlur = 18 + pulse * 22;
+                    ctx.globalCompositeOperation = 'source-atop';
+                    ctx.fillStyle = `rgba(255, 50, 0, ${0.2 + pulse * 0.15})`;
+                    ctx.fillRect(0, 0, renderW, renderH);
+                    ctx.globalCompositeOperation = 'source-over';
+                    }
                     } else if (this.state === 'intro') {
-                        // Intro: fade in from the right edge
-                        const introProgress = Math.min(1, (canvas.width - 210 - this.x) / 100 + 1);
-                        ctx.globalAlpha = Math.min(1, introProgress);
-                        drawSpriteFrame(ctx, sprite, 0, 0, BOSS_FRAME, BOSS_FRAME, 0, 0, renderW, renderH);
-                        ctx.globalAlpha = 1;
-                    } else {
-                        drawSpriteFrame(ctx, sprite, 0, 0, BOSS_FRAME, BOSS_FRAME, 0, 0, renderW, renderH);
+                    // Intro: fade in from the right edge
+                    const introProgress = Math.min(1, (canvas.width - 210 - this.x) / 100 + 1);
+                    ctx.globalAlpha = Math.min(1, introProgress);
+                    drawSpriteFrame(ctx, sprite, frameX, frameY, BOSS_FRAME, BOSS_FRAME, 0, 0, renderW, renderH);
+                    ctx.globalAlpha = 1;
+                } else {
+                    drawSpriteFrame(ctx, sprite, frameX, frameY, BOSS_FRAME, BOSS_FRAME, 0, 0, renderW, renderH);
                     }
                     ctx.shadowBlur = 0;
                 } else {

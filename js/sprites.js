@@ -1,4 +1,4 @@
-// sprites.js — Player, Portrait, Enemy, VFX, and Boss sprite loading functions
+// sprites.js ??? Player, Portrait, Enemy, VFX, and Boss sprite loading functions
 // Extracted from index.html by Ned (GRO-1097)
 
         // --- Player Sprite Preloading ---
@@ -8,6 +8,7 @@
         function loadPlayerSprites() {
             if (playerSpritesLoaded) return;
             playerSpritesLoaded = true;
+            console.log("[SPRITE] Starting preloading of player sprites...");
             const frames = [
                 'player_0', 'player_1',
                 'player_phantom_0', 'player_phantom_1',
@@ -19,6 +20,8 @@
             ];
             frames.forEach(key => {
                 playerSprites[key] = new Image();
+                playerSprites[key].onload = () => console.log(`[SPRITE] Successfully loaded player sprite: ${key}`);
+                playerSprites[key].onerror = () => console.error(`[SPRITE] [ERROR] Failed to load player sprite: ${key}`);
                 playerSprites[key].src = `assets/sprites/${key}.png`;
             });
         }
@@ -30,6 +33,7 @@
         function loadPortraitSprites() {
             if (portraitSpritesLoaded) return;
             portraitSpritesLoaded = true;
+            console.log("[SPRITE] Starting preloading of character portrait sprites...");
             const characters = [
                 'lyra_neutral', 'lyra_reactive',
                 'darius_neutral', 'darius_reactive',
@@ -39,9 +43,13 @@
             ];
             characters.forEach(char => {
                 portraitSprites[char] = new Image();
+                portraitSprites[char].onload = () => console.log(`[SPRITE] Successfully loaded portrait: ${char}`);
+                portraitSprites[char].onerror = () => console.error(`[SPRITE] [ERROR] Failed to load portrait: ${char}`);
                 portraitSprites[char].src = `assets/sprites/portraits/${char}.png`;
             });
             portraitSprites['comms_overlay'] = new Image();
+            portraitSprites['comms_overlay'].onload = () => console.log("[SPRITE] Successfully loaded comms_overlay");
+            portraitSprites['comms_overlay'].onerror = () => console.error("[SPRITE] [ERROR] Failed to load comms_overlay");
             portraitSprites['comms_overlay'].src = 'assets/sprites/portraits/comms_overlay.png';
         }
 
@@ -52,28 +60,48 @@
         function loadEnemySprites() {
             if (enemySpritesLoaded) return;
             enemySpritesLoaded = true;
+            console.log("[SPRITE] Starting preloading of enemy sprites...");
+            
+            // Generic fallback enemy types
             const types = ['scout', 'interceptor', 'heavy', 'boss_minion'];
             types.forEach(key => {
                 const img = new Image();
-                img.onload = function() { enemySprites[key] = preCompositeAdditive(img); };
-                img.onerror = function() { enemySprites[key] = null; };
+                img.onload = function() { 
+                    enemySprites[key] = preCompositeAdditive(img); 
+                    console.log(`[SPRITE] Successfully loaded fallback enemy: ${key}`);
+                };
+                img.onerror = function() { 
+                    enemySprites[key] = null; 
+                    console.error(`[SPRITE] [ERROR] Failed to load fallback enemy: ${key}`);
+                };
                 img.src = `assets/sprites/${key}_0.png`;
             });
 
-            const biomeEnemyTypes = [
-                'b1_crawler', 'b2_wraith', 'b3_spider', 'b4_rider', 'b4_serpent', 'b4_wisp',
-                'brute', 'crawler', 'ember_sprite', 'fleet_turret', 'frost_drone', 'gas_giant',
-                'ghost_fighter', 'glacier', 'glitch_fragment', 'hive_node', 'ice_shard', 'ice_swarm',
-                'inferno_node', 'lava_golem', 'magma_wasp', 'nebula_wraith', 'null_entity',
-                'paradox_wisp', 'plasma_wisp', 'rift_aberration', 'salvage_drone', 'spitter',
-                'static_spark', 'storm_hawk', 'storm_sentinel', 'storm_sprite', 'thunderhead',
-                'turret_battery'
+            // Map custom biome-specific enemy sprites directly to the spawned enemy types.
+            // Other biomes are left undefined so they fallback to generic scout/interceptor/heavy.
+            const customBiomeEnemies = [
+                { key: 'angler_scout', src: 'assets/sprites/enemy_b1_crawler_0.png' },
+                { key: 'rust_drone',   src: 'assets/sprites/enemy_b2_wraith_0.png' },
+                { key: 'sparker',      src: 'assets/sprites/enemy_b3_spider_0.png' },
+                { key: 'plasma_wisp',  src: 'assets/sprites/enemy_b4_wisp_0.png' },
+                { key: 'storm_sprite', src: 'assets/sprites/enemy_b4_rider_0.png' },
+                { key: 'gas_giant',    src: 'assets/sprites/enemy_b4_serpent_0.png' },
+                { key: 'crawler',      src: 'assets/sprites/enemy_crawler_0.png' },
+                { key: 'spitter',      src: 'assets/sprites/enemy_spitter_0.png' },
+                { key: 'brute',        src: 'assets/sprites/enemy_brute_0.png' }
             ];
-            biomeEnemyTypes.forEach(key => {
+
+            customBiomeEnemies.forEach(({key, src}) => {
                 const img = new Image();
-                img.onload = function() { enemySprites[key] = preCompositeAdditive(img); };
-                img.onerror = function() { enemySprites[key] = null; };
-                img.src = `assets/sprites/enemy_${key}_0.png`;
+                img.onload = function() { 
+                    enemySprites[key] = preCompositeAdditive(img); 
+                    console.log(`[SPRITE] Successfully loaded custom biome enemy: ${key} (${src})`);
+                };
+                img.onerror = function() { 
+                    enemySprites[key] = null; 
+                    console.error(`[SPRITE] [ERROR] Failed to load custom biome enemy: ${key} (${src})`);
+                };
+                img.src = src;
             });
         }
 
@@ -84,11 +112,18 @@
         function loadVFXSprites() {
             if (vfxSpritesLoaded) return;
             vfxSpritesLoaded = true;
+            console.log("[SPRITE] Starting preloading of VFX sprites...");
 
             const _loadVFX = (key, src) => {
                 const img = new Image();
-                img.onload = function() { vfxSprites[key] = preCompositeAdditive(img); };
-                img.onerror = function() { vfxSprites[key] = null; };
+                img.onload = function() { 
+                    vfxSprites[key] = preCompositeAdditive(img); 
+                    console.log(`[SPRITE] Successfully loaded VFX sprite: ${key}`);
+                };
+                img.onerror = function() { 
+                    vfxSprites[key] = null; 
+                    console.error(`[SPRITE] [ERROR] Failed to load VFX sprite: ${key} (${src})`);
+                };
                 img.src = src;
             };
 
@@ -148,15 +183,23 @@ const _preCompositeCache = new Set();
             if (bossAssetsLoading || bossAssetsLoaded) return;
             bossAssetsLoading = true;
             bossLoadProgress = 0;
+            console.log("[BOSS] Starting preloading of boss assets...");
 
             const toLoad = [
+                // Biome-specific boss sheets
+                { key: 'boss_0',            src: 'assets/sprites/boss_0.png' },
+                { key: 'boss_1',            src: 'assets/sprites/boss_1.png' },
+                { key: 'boss_2',            src: 'assets/sprites/boss_2.png' },
+                { key: 'boss_3',            src: 'assets/sprites/boss_3.png' },
+                { key: 'bossMinion',        src: 'assets/sprites/boss_minion_0.png' },
+                { key: 'boss_minion_0',     src: 'assets/sprites/boss_minion_0.png' },
+                // Legacy state-specific sheets (retained as backup fallbacks)
                 { key: 'boss',              src: 'assets/sprites/boss_idle.png' },
                 { key: 'boss_idle',         src: 'assets/sprites/boss_idle.png' },
                 { key: 'boss_rage',         src: 'assets/sprites/boss_rage.png' },
                 { key: 'boss_laser_charge', src: 'assets/sprites/boss_charge.png' },
                 { key: 'boss_laser_fire',   src: 'assets/sprites/boss_fire.png' },
-                { key: 'boss_death',        src: 'assets/sprites/boss_death.png' },
-                { key: 'bossMinion',        src: 'assets/sprites/boss_minion_0.png' }
+                { key: 'boss_death',        src: 'assets/sprites/boss_death.png' }
             ];
             let loadedCount = 0;
             const total = toLoad.length;
@@ -168,15 +211,18 @@ const _preCompositeCache = new Set();
                     bossSprites[key] = preCompositeAdditive(img);
                     loadedCount++;
                     bossLoadProgress = Math.round((loadedCount / total) * 100);
+                    console.log(`[BOSS] Successfully loaded boss asset: ${key} (${src})`);
                     if (loadedCount >= total) {
                         bossAssetsLoaded = true;
                         bossAssetsLoading = false;
+                        console.log("[BOSS] All boss assets successfully preloaded!");
                     }
                 };
                 img.onerror = () => {
                     // Graceful fallback: mark done even on error
                     loadedCount++;
                     bossLoadProgress = Math.round((loadedCount / total) * 100);
+                    console.error(`[BOSS] [ERROR] Failed to load boss asset: ${key} (${src})`);
                     if (loadedCount >= total) {
                         bossAssetsLoaded = true;
                         bossAssetsLoading = false;
@@ -186,4 +232,3 @@ const _preCompositeCache = new Set();
                 bossSprites[key] = img;
             });
         }
-
