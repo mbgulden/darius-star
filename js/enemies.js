@@ -791,7 +791,6 @@
                         ctx.globalCompositeOperation = 'source-over';
                     }
                     ctx.shadowBlur = 0;
-                }
                 } else {
                     // --- Fallback: original canvas-drawn boss (kept for graceful degradation) ---
                     // Tail fin
