@@ -1291,7 +1291,7 @@ function draw() {
         ctx.fillStyle = '#fff';
         ctx.font = 'bold 11px monospace';
         ctx.textAlign = 'center';
-        ctx.fillText('CYBER COELACANTH', canvas.width / 2, by - 6);
+        ctx.fillText(boss.bossName || 'CYBER COELACANTH', canvas.width / 2, by - 6);
     }
 
     // GRO-2166: Draw/update active dialogue (handles DOM HUD overlay updating and canvas dimming)

@@ -353,6 +353,42 @@
             this._advanceTimeout = null;
             this._explosionTimers = [];
             console.log(`[BOSS] Spawning boss: Biome ${biomeLevel}, Max HP: ${this.hpMax}, State: ${this.state}`);
+
+            // Dynamic Boss Names & Themes per Biome
+            const bossNames = {
+                1: "ABYSSAL GUARDIAN",
+                2: "CORAL COLOSSUS",
+                3: "HATCHERY QUEEN",
+                4: "NEBULA WRAITH",
+                5: "KRAKEN UMBRA",
+                6: "EMBER OVERLORD",
+                7: "STORM SENTINEL",
+                8: "NAVY DREADNOUGHT",
+                9: "HIVE MIND NODE",
+                10: "CYBER COELACANTH"
+            };
+            this.bossName = bossNames[biomeLevel] || "UNKNOWN THREAT";
+
+            const bossThemes = {
+                1: { color: 'rgba(0, 50, 150, 0.15)', shadow: '#003399' },
+                2: { color: 'rgba(0, 200, 100, 0.15)', shadow: '#00cc66' },
+                3: { color: 'rgba(0, 200, 200, 0.15)', shadow: '#00cccc' },
+                4: { color: 'rgba(150, 0, 150, 0.15)', shadow: '#990099' },
+                5: { color: 'rgba(200, 230, 255, 0.2)', shadow: '#cce6ff' },
+                6: { color: 'rgba(255, 60, 0, 0.2)', shadow: '#ff3300' },
+                7: { color: 'rgba(255, 230, 0, 0.15)', shadow: '#ffe600' },
+                8: { color: 'rgba(80, 80, 80, 0.2)', shadow: '#505050' },
+                9: { color: 'rgba(50, 220, 0, 0.15)', shadow: '#32dc00' },
+                10: { color: 'rgba(255, 0, 128, 0.2)', shadow: '#ff0080' }
+            };
+            const theme = bossThemes[biomeLevel] || { color: 'rgba(0, 50, 150, 0.15)', shadow: '#003399' };
+            this.themeColor = theme.color;
+            this.themeShadow = theme.shadow;
+
+            // Trigger boss entrance dialogue
+            if (window.BanterEngine) {
+                BanterEngine.trigger('boss_entrance', biomeLevel);
+            }
             }
 
             cleanup() {
@@ -472,10 +508,62 @@
                         }
                     }
                 } else if (this.state === 'idle') {
-                    enemyBullets.push(new EnemyBullet(this.x + 10, this.y + 50, -260, -80));
-                    enemyBullets.push(new EnemyBullet(this.x + 10, this.y + 70, -280, 0, 'missile'));
-                    enemyBullets.push(new EnemyBullet(this.x + 10, this.y + 90, -260, 80));
                     const difficultyConfig = getCurrentDifficultyConfig();
+                    const b = biomeLevel;
+                    
+                    if (b === 1) {
+                        // Standard spread
+                        enemyBullets.push(new EnemyBullet(this.x + 10, this.y + 50, -260, -80));
+                        enemyBullets.push(new EnemyBullet(this.x + 10, this.y + 70, -280, 0, 'missile'));
+                        enemyBullets.push(new EnemyBullet(this.x + 10, this.y + 90, -260, 80));
+                    } else if (b === 2) {
+                        // Coral Graveyard: Dense bubble wave (more spread but slower)
+                        for (let i = -1; i <= 1; i++) {
+                            enemyBullets.push(new EnemyBullet(this.x + 10, this.y + 70, -220, i * 70));
+                        }
+                        enemyBullets.push(new EnemyBullet(this.x + 10, this.y + 70, -260, 0));
+                    } else if (b === 3) {
+                        // Hatchery Queen: Spawns tracking missile and small fast spread
+                        enemyBullets.push(new EnemyBullet(this.x + 10, this.y + 70, -320, 0, 'missile'));
+                        enemyBullets.push(new EnemyBullet(this.x + 10, this.y + 40, -260, -50));
+                        enemyBullets.push(new EnemyBullet(this.x + 10, this.y + 100, -260, 50));
+                    } else if (b === 4) {
+                        // Nebula Drift: Curving spread of wisps
+                        enemyBullets.push(new EnemyBullet(this.x + 10, this.y + 50, -280, -110));
+                        enemyBullets.push(new EnemyBullet(this.x + 10, this.y + 70, -300, 0));
+                        enemyBullets.push(new EnemyBullet(this.x + 10, this.y + 90, -280, 110));
+                    } else if (b === 5) {
+                        // Kraken Umbra: Ice rings / heavy split missiles
+                        enemyBullets.push(new EnemyBullet(this.x + 10, this.y + 50, -250, -60, 'missile'));
+                        enemyBullets.push(new EnemyBullet(this.x + 10, this.y + 90, -250, 60, 'missile'));
+                        enemyBullets.push(new EnemyBullet(this.x + 10, this.y + 70, -300, 0));
+                    } else if (b === 6) {
+                        // Ember Overlord: Fiery fireballs (radial spread)
+                        for (let i = -2; i <= 2; i++) {
+                            enemyBullets.push(new EnemyBullet(this.x + 10, this.y + 70, -280, i * 50));
+                        }
+                    } else if (b === 7) {
+                        // Storm Sentinel: Lightning fast lightning bolts
+                        enemyBullets.push(new EnemyBullet(this.x + 10, this.y + 50, -420, 0));
+                        enemyBullets.push(new EnemyBullet(this.x + 10, this.y + 70, -450, 0));
+                        enemyBullets.push(new EnemyBullet(this.x + 10, this.y + 90, -420, 0));
+                    } else if (b === 8) {
+                        // Navy Dreadnought: Massive grid pattern
+                        enemyBullets.push(new EnemyBullet(this.x + 10, this.y + 40, -320, -100));
+                        enemyBullets.push(new EnemyBullet(this.x + 10, this.y + 70, -350, 0, 'missile'));
+                        enemyBullets.push(new EnemyBullet(this.x + 10, this.y + 100, -320, 100));
+                    } else if (b === 9) {
+                        // Hive Mind Node: Spawns spitters and crawler projectiles
+                        enemyBullets.push(new EnemyBullet(this.x + 10, this.y + 50, -240, -130));
+                        enemyBullets.push(new EnemyBullet(this.x + 10, this.y + 70, -280, 0));
+                        enemyBullets.push(new EnemyBullet(this.x + 10, this.y + 90, -240, 130));
+                    } else {
+                        // Default / Biome 10
+                        enemyBullets.push(new EnemyBullet(this.x + 10, this.y + 50, -260, -80));
+                        enemyBullets.push(new EnemyBullet(this.x + 10, this.y + 70, -280, 0, 'missile'));
+                        enemyBullets.push(new EnemyBullet(this.x + 10, this.y + 90, -260, 80));
+                    }
+
                     if (difficultyConfig.id === 'hard' || difficultyConfig.id === 'insane') {
                         enemyBullets.push(new EnemyBullet(this.x + 30, this.y + 40, -300, -130));
                         enemyBullets.push(new EnemyBullet(this.x + 30, this.y + 100, -300, 130));
@@ -520,6 +608,11 @@
                     // GRO-1187: Story trigger — boss defeated
                     if (typeof StoryTriggers !== 'undefined') {
                         StoryTriggers.onBossKill(biomeLevel, false);
+                    }
+
+                    // Trigger level end dialogue on boss defeat!
+                    if (window.BanterEngine) {
+                        BanterEngine.trigger('level_end', biomeLevel);
                     }
                     
                     // GRO-1009: Determine ending only on final boss (biome 10)
@@ -662,7 +755,11 @@
                     // Cyan charge glow pulsing around the sprite
                     ctx.shadowColor = '#00ffff';
                     ctx.shadowBlur = 15 + Math.sin(this.bobTimer * 8) * 8;
+                    } else if (this.state !== 'laser_fire' && this.state !== 'architect_final' && this.state !== 'rage') {
+                    ctx.shadowColor = this.themeShadow;
+                    ctx.shadowBlur = 10 + Math.sin(this.bobTimer * 4) * 4;
                     }
+
                     if (this.state === 'rage') {
                     // Red rage tint overlay via global composite
                     drawSpriteFrame(ctx, sprite, frameX, frameY, BOSS_FRAME, BOSS_FRAME, 0, 0, renderW, renderH);
@@ -702,9 +799,19 @@
                     const introProgress = Math.min(1, (canvas.width - 210 - this.x) / 100 + 1);
                     ctx.globalAlpha = Math.min(1, introProgress);
                     drawSpriteFrame(ctx, sprite, frameX, frameY, BOSS_FRAME, BOSS_FRAME, 0, 0, renderW, renderH);
+                    ctx.globalCompositeOperation = 'source-atop';
+                    ctx.fillStyle = this.themeColor;
+                    ctx.fillRect(0, 0, renderW, renderH);
+                    ctx.globalCompositeOperation = 'source-over';
                     ctx.globalAlpha = 1;
+                } else if (this.state === 'laser_fire') {
+                    drawSpriteFrame(ctx, sprite, frameX, frameY, BOSS_FRAME, BOSS_FRAME, 0, 0, renderW, renderH);
                 } else {
                     drawSpriteFrame(ctx, sprite, frameX, frameY, BOSS_FRAME, BOSS_FRAME, 0, 0, renderW, renderH);
+                    ctx.globalCompositeOperation = 'source-atop';
+                    ctx.fillStyle = this.themeColor;
+                    ctx.fillRect(0, 0, renderW, renderH);
+                    ctx.globalCompositeOperation = 'source-over';
                     }
                     ctx.shadowBlur = 0;
                 } else {

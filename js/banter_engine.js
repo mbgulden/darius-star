@@ -15,7 +15,7 @@ const BanterEngine = {
     _displayTimer: 0,
     _lineDuration: 4.0,
     // Banter database loaded from js/banter_db.js (GRO-1050)
-    _data: BanterDB,
+    _data: typeof BanterDB !== 'undefined' ? (BanterDB._data || BanterDB) : null,
 
     // GRO-1054: Scrap-to-story dialogue — global banter for scrap/upgrade events.
     // Delivered via ScrapEvents listeners rather than the standard getLine/biome path.

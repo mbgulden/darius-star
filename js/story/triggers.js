@@ -28,7 +28,7 @@ const StoryTriggers = {
         switch (bossIndex) {
             case 1: // Abyssal Trench boss — no branch, but trigger banter
                 if (typeof BanterEngine !== 'undefined') {
-                    BanterEngine.trigger('boss_entrance', 'abyssal_guardian');
+                    BanterEngine.trigger('level_end', bossIndex);
                 }
                 break;
 
@@ -36,7 +36,7 @@ const StoryTriggers = {
                 if (spared) {
                     StoryBranching.registerChoice('coelacanth_spared', true);
                     if (typeof BanterEngine !== 'undefined') {
-                        BanterEngine.trigger('boss_defeat', 'coelacanth_merciful');
+                        BanterEngine.trigger('level_end', bossIndex);
                     }
                 }
                 break;
