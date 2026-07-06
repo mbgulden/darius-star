@@ -1,0 +1,221 @@
+{
+  "timestamp": "2026-07-06T01:39:48.182Z",
+  "url": "https://staging.darius-star.pages.dev/index.html?launch=true&biome=1&level=1&mode=solo",
+  "consoleMsgs": [
+    {
+      "type": "log",
+      "text": "[CampaignSave] save_system.js loaded — full implementation (GRO-1090, GRO-2171)"
+    },
+    {
+      "type": "log",
+      "text": "[OK] economy.js loaded — Economy loot tables and anti-farming enabled"
+    },
+    {
+      "type": "log",
+      "text": "[OK] scrap_events.js loaded — economy ↔ banter bridge active"
+    },
+    {
+      "type": "log",
+      "text": "[Darius Star] multiplayer.js loaded — 1-4 player drop-in and drop-out enabled"
+    },
+    {
+      "type": "log",
+      "text": "[OK] ngplus.js loaded — NG+ loops, paradox enemies, scrap scaling"
+    },
+    {
+      "type": "log",
+      "text": "[OK] leaderboard.js loaded — 3 categories, tiered display, localStorage-backed"
+    },
+    {
+      "type": "warning",
+      "text": "The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. https://developer.chrome.com/blog/autoplay/#web_audio"
+    },
+    {
+      "type": "warning",
+      "text": "The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. https://developer.chrome.com/blog/autoplay/#web_audio"
+    },
+    {
+      "type": "log",
+      "text": "[Darius Star] SFX samples loaded: 12/12"
+    },
+    {
+      "type": "warning",
+      "text": "The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. https://developer.chrome.com/blog/autoplay/#web_audio"
+    },
+    {
+      "type": "warning",
+      "text": "The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. https://developer.chrome.com/blog/autoplay/#web_audio"
+    },
+    {
+      "type": "warning",
+      "text": "The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. https://developer.chrome.com/blog/autoplay/#web_audio"
+    },
+    {
+      "type": "warning",
+      "text": "The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. https://developer.chrome.com/blog/autoplay/#web_audio"
+    },
+    {
+      "type": "warning",
+      "text": "The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. https://developer.chrome.com/blog/autoplay/#web_audio"
+    },
+    {
+      "type": "warning",
+      "text": "The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. https://developer.chrome.com/blog/autoplay/#web_audio"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Manifest loaded: 83 tracks"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloading 83 tracks..."
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: ambient_deep_space (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: ambient_abyssal_trench (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: victory (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: mystery_first_contact (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: suspense_b1_preboss (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "Triggering playSound(ui_hover) and playSound(shield_hit) inside page evaluate..."
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: mystery_lyra_vision (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: mystery_precursor_awakening (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: mystery_biome_reveal (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: mystery_hidden_chamber (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: mystery_cosmic_secret (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: mystery_ancient_signal (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: mystery_revelation (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: mystery_lost_civilization (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: mystery_transcendence (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: victory_b1_abyssal (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: victory_b3_lair (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: victory_b2_coral (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: victory_b7_storm (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: victory_b4_nebula (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: victory_b5_ice (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: victory_b6_fire (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: relief_post_boss (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: victory_b10_core (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: victory_b9_hive (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: victory_b8_derelict (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: relief_bonding (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: relief_story_resolution (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: relief_checkpoint (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: relief_interlude (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: relief_near_miss (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: relief_star_gazing (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: relief_companion (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: relief_home_base (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: relief_aftermath (32.8s)"
+    },
+    {
+      "type": "log",
+      "text": "[AudioManager] Preloaded: suspense_b2_preboss (32.8s)"
+    }
+  ],
+  "pageErrors": [],
+  "networkErrors": [],
+  "totalRequests": 182
+}

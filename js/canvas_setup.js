@@ -10,8 +10,12 @@ const ctx = canvas.getContext('2d');
 // Responsive canvas: maintain internal 800x450, scale display via CSS
 const GAME_WIDTH = 800;
 const GAME_HEIGHT = 450;
-canvas.width = GAME_WIDTH;
-canvas.height = GAME_HEIGHT;
+canvas.width = GAME_WIDTH * 2;
+canvas.height = GAME_HEIGHT * 2;
+ctx.scale(2, 2);
+
+canvas.style.width = '800px';
+canvas.style.height = '450px';
 
 const uiShield = document.getElementById('ui-shield');
 const uiWeapon = document.getElementById('ui-weapon');
@@ -23,4 +27,3 @@ const uiDodge = document.getElementById('ui-dodge');
 const uiBiome = document.getElementById('ui-biome');
 const uiNavigator = document.getElementById('ui-navigator');
 const uiStreamer = document.getElementById('ui-streamer');
-

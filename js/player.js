@@ -191,6 +191,7 @@ class Player {
         this.shield = this.shieldMax;
         this.shootTimer = 0;
         this.invulnerable = 0;
+        this.shieldHitFlash = 0;
 
         // Secondary weapon system (GRO-929)
         this.secondaryMeter = 0;
@@ -235,6 +236,9 @@ class Player {
         
         if (this.invulnerable > 0) {
             this.invulnerable -= dt;
+        }
+        if (this.shieldHitFlash > 0) {
+            this.shieldHitFlash -= dt;
         }
 
         let dx = 0;
@@ -754,6 +758,9 @@ class Player {
         
         const shieldBefore = this.shield;
         this.shield -= finalDmg;
+        if (shieldBefore > 0) {
+            this.shieldHitFlash = 0.35;
+        }
         
         const mods = window.DS_UpgradeSystem ? window.DS_UpgradeSystem.getGameplayModifiers() : null;
         this.invulnerable = 0.8 + (mods ? mods.shieldInvulnBonus : 0);
@@ -965,6 +972,120 @@ class Player {
             ctx.lineTo(0, this.height - 5);
             ctx.closePath();
             ctx.fill();
+        }
+
+        // --- Draw Weapon Upgrade Attachments ---
+        if (this.weaponLevel >= 2 && !this.isPulledOut) {
+            ctx.save();
+            ctx.fillStyle = '#445577';
+            ctx.strokeStyle = '#223355';
+            ctx.lineWidth = 1;
+            // Top wing mount
+            ctx.fillRect(10, 8, 12, 4);
+            ctx.strokeRect(10, 8, 12, 4);
+            // Bottom wing mount
+            ctx.fillRect(10, 36, 12, 4);
+            ctx.strokeRect(10, 36, 12, 4);
+            
+            const muzzlePulse = 0.5 + Math.sin(gameTime * 20) * 0.3;
+            ctx.shadowBlur = 10 * muzzlePulse;
+            ctx.shadowColor = '#00ffff';
+            ctx.fillStyle = `rgba(0, 255, 255, ${0.6 + muzzlePulse * 0.4})`;
+            // Top muzzle
+            ctx.beginPath();
+            ctx.arc(22, 10, 3, 0, Math.PI * 2);
+            ctx.fill();
+            // Bottom muzzle
+            ctx.beginPath();
+            ctx.arc(22, 38, 3, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+        }
+        
+        if (this.weaponLevel >= 3 && !this.isPulledOut) {
+            ctx.save();
+            ctx.fillStyle = '#223344';
+            ctx.fillRect(16, 6, 16, 3);
+            ctx.fillRect(16, 39, 16, 3);
+            
+            const chargePos = 32;
+            const sparkPulse = Math.sin(gameTime * 25) * 2;
+            ctx.fillStyle = '#00ffaa';
+            ctx.shadowBlur = 8;
+            ctx.shadowColor = '#00ffaa';
+            ctx.beginPath();
+            ctx.arc(chargePos, 7.5, 1.5 + Math.abs(sparkPulse)*0.5, 0, Math.PI * 2);
+            ctx.arc(chargePos, 40.5, 1.5 + Math.abs(sparkPulse)*0.5, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+        }
+        
+        if (this.weaponLevel >= 4 && !this.isPulledOut) {
+            ctx.save();
+            ctx.fillStyle = '#88aaee';
+            ctx.fillRect(36, 20, 8, 8);
+            
+            const arcPulse = Math.random();
+            ctx.strokeStyle = `rgba(0, 255, 255, ${0.4 + arcPulse * 0.6})`;
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            ctx.moveTo(34, 16);
+            ctx.quadraticCurveTo(40 + arcPulse * 5, 24, 34, 32);
+            ctx.stroke();
+            
+            ctx.fillStyle = '#ffffff';
+            ctx.shadowBlur = 15;
+            ctx.shadowColor = '#00ffff';
+            ctx.beginPath();
+            ctx.arc(42, 24, 4 + Math.sin(gameTime * 30) * 1.5, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+        }
+        
+        if (this.weaponLevel >= 5 && !this.isPulledOut) {
+            ctx.save();
+            ctx.strokeStyle = 'rgba(240, 0, 255, 0.6)';
+            ctx.shadowBlur = 20;
+            ctx.shadowColor = '#ff00ff';
+            ctx.lineWidth = 2;
+            
+            ctx.translate(24, 24);
+            ctx.rotate(gameTime * 4);
+            ctx.beginPath();
+            ctx.ellipse(0, 0, 26, 12, 0, 0, Math.PI * 2);
+            ctx.stroke();
+            
+            const coreGrad = ctx.createRadialGradient(0, 0, 1, 0, 0, 8);
+            coreGrad.addColorStop(0, '#ffffff');
+            coreGrad.addColorStop(0.5, 'rgba(255, 0, 255, 0.8)');
+            coreGrad.addColorStop(1, 'rgba(0, 255, 255, 0)');
+            ctx.fillStyle = coreGrad;
+            ctx.beginPath();
+            ctx.arc(0, 0, 8, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+        }
+
+        // --- Draw Dynamic Shield Bubble ---
+        if (this.shield > 0 && !this.isPulledOut) {
+            ctx.save();
+            const pulse = 0.15 + Math.sin(gameTime * 4) * 0.05;
+            const flash = (this.shieldHitFlash || 0) * 2.0;
+            const totalAlpha = Math.min(1.0, pulse + flash);
+            
+            ctx.strokeStyle = `rgba(0, 200, 255, ${totalAlpha})`;
+            ctx.shadowColor = '#00ffff';
+            ctx.shadowBlur = 10 + flash * 15;
+            ctx.lineWidth = 1.5 + flash * 2.5;
+            ctx.beginPath();
+            ctx.arc(20, this.height/2, 28, 0, Math.PI * 2);
+            ctx.stroke();
+            
+            ctx.fillStyle = `rgba(0, 200, 255, ${(pulse + flash) * 0.15})`;
+            ctx.beginPath();
+            ctx.arc(20, this.height/2, 28, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
         }
 
         // Draw Overload active visual aura / dome shield

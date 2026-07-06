@@ -726,94 +726,72 @@
                 const renderH = 133;
 
                 if (hasSprite) {
-                    let frameX = 0;
-                    let frameY = 0;
-                    
-                    if (isBiomeSpecificSheet) {
-                    // Map state to row index in the 1024x1024 sheet
-                    if (this.hp <= 0) {
-                    frameY = 0; // Death fallback
-                    } else if (this.state === 'intro' || this.state === 'idle') {
-                    frameY = 0; // Row 0: Idle
-                    } else if (this.state === 'rage' || this.state === 'architect_final') {
-                    frameY = 1; // Row 1: Rage
-                    } else if (this.state === 'laser_charge') {
-                    frameY = 2; // Row 2: Charge
-                    } else if (this.state === 'laser_fire') {
-                    frameY = 3; // Row 3: Fire
-                    }
-                    // Animate columns (4 frames)
-                    frameX = Math.floor(this.bobTimer * 4) % 4;
-                } else {
-                    // Legacy: sheet is state, animate columns
-                    frameX = Math.floor(this.bobTimer * 4) % 4;
-                    frameY = 0;
-                    }
-                    
+                    const sw = sprite.naturalWidth || sprite.width || 1024;
+                    const sh = sprite.naturalHeight || sprite.height || 1024;
+
                     // State-based visual effects applied on top of the sprite
                     if (this.state === 'laser_charge') {
-                    // Cyan charge glow pulsing around the sprite
-                    ctx.shadowColor = '#00ffff';
-                    ctx.shadowBlur = 15 + Math.sin(this.bobTimer * 8) * 8;
+                        // Cyan charge glow pulsing around the sprite
+                        ctx.shadowColor = '#00ffff';
+                        ctx.shadowBlur = 15 + Math.sin(this.bobTimer * 8) * 8;
                     } else if (this.state !== 'laser_fire' && this.state !== 'architect_final' && this.state !== 'rage') {
-                    ctx.shadowColor = this.themeShadow;
-                    ctx.shadowBlur = 10 + Math.sin(this.bobTimer * 4) * 4;
+                        ctx.shadowColor = this.themeShadow;
+                        ctx.shadowBlur = 10 + Math.sin(this.bobTimer * 4) * 4;
                     }
 
                     if (this.state === 'rage') {
-                    // Red rage tint overlay via global composite
-                    drawSpriteFrame(ctx, sprite, frameX, frameY, BOSS_FRAME, BOSS_FRAME, 0, 0, renderW, renderH);
-                    ctx.globalCompositeOperation = 'source-atop';
-                    ctx.fillStyle = 'rgba(255, 0, 30, 0.25)';
-                    ctx.fillRect(0, 0, renderW, renderH);
-                    ctx.globalCompositeOperation = 'source-over';
+                        // Red rage tint overlay
+                        drawSpriteFrame(ctx, sprite, 0, 0, sw, sh, 0, 0, renderW, renderH);
+                        ctx.globalCompositeOperation = 'source-atop';
+                        ctx.fillStyle = 'rgba(255, 0, 30, 0.25)';
+                        ctx.fillRect(0, 0, renderW, renderH);
+                        ctx.globalCompositeOperation = 'source-over';
                     } else if (this.state === 'architect_final') {
-                    // GRO-1009: Architect final phase ??? ending-specific boss aura
-                    drawSpriteFrame(ctx, sprite, frameX, frameY, BOSS_FRAME, BOSS_FRAME, 0, 0, renderW, renderH);
-                    const phase = this.architectPhase;
-                    const pulse = Math.sin(this.bobTimer * 6) * 0.5 + 0.5;
-                    if (phase === 'sacrifice') {
-                    ctx.shadowColor = '#00ffff';
-                    ctx.shadowBlur = 20 + pulse * 15;
-                    ctx.globalCompositeOperation = 'source-atop';
-                    ctx.fillStyle = `rgba(0, 255, 255, ${0.15 + pulse * 0.1})`;
-                    ctx.fillRect(0, 0, renderW, renderH);
-                    ctx.globalCompositeOperation = 'source-over';
-                    } else if (phase === 'transcendence') {
-                    ctx.shadowColor = '#ff00ff';
-                    ctx.shadowBlur = 25 + pulse * 20;
-                    ctx.globalCompositeOperation = 'source-atop';
-                    ctx.fillStyle = `rgba(255, 0, 255, ${0.12 + pulse * 0.08})`;
-                    ctx.fillRect(0, 0, renderW, renderH);
-                    ctx.globalCompositeOperation = 'source-over';
-                } else {
-                    ctx.shadowColor = '#ff3300';
-                    ctx.shadowBlur = 18 + pulse * 22;
-                    ctx.globalCompositeOperation = 'source-atop';
-                    ctx.fillStyle = `rgba(255, 50, 0, ${0.2 + pulse * 0.15})`;
-                    ctx.fillRect(0, 0, renderW, renderH);
-                    ctx.globalCompositeOperation = 'source-over';
-                    }
+                        drawSpriteFrame(ctx, sprite, 0, 0, sw, sh, 0, 0, renderW, renderH);
+                        const phase = this.architectPhase;
+                        const pulse = Math.sin(this.bobTimer * 6) * 0.5 + 0.5;
+                        if (phase === 'sacrifice') {
+                            ctx.shadowColor = '#00ffff';
+                            ctx.shadowBlur = 20 + pulse * 15;
+                            ctx.globalCompositeOperation = 'source-atop';
+                            ctx.fillStyle = `rgba(0, 255, 255, ${0.15 + pulse * 0.1})`;
+                            ctx.fillRect(0, 0, renderW, renderH);
+                            ctx.globalCompositeOperation = 'source-over';
+                        } else if (phase === 'transcendence') {
+                            ctx.shadowColor = '#ff00ff';
+                            ctx.shadowBlur = 25 + pulse * 20;
+                            ctx.globalCompositeOperation = 'source-atop';
+                            ctx.fillStyle = `rgba(255, 0, 255, ${0.12 + pulse * 0.08})`;
+                            ctx.fillRect(0, 0, renderW, renderH);
+                            ctx.globalCompositeOperation = 'source-over';
+                        } else {
+                            ctx.shadowColor = '#ff3300';
+                            ctx.shadowBlur = 18 + pulse * 22;
+                            ctx.globalCompositeOperation = 'source-atop';
+                            ctx.fillStyle = `rgba(255, 50, 0, ${0.2 + pulse * 0.15})`;
+                            ctx.fillRect(0, 0, renderW, renderH);
+                            ctx.globalCompositeOperation = 'source-over';
+                        }
                     } else if (this.state === 'intro') {
-                    // Intro: fade in from the right edge
-                    const introProgress = Math.min(1, (canvas.width - 210 - this.x) / 100 + 1);
-                    ctx.globalAlpha = Math.min(1, introProgress);
-                    drawSpriteFrame(ctx, sprite, frameX, frameY, BOSS_FRAME, BOSS_FRAME, 0, 0, renderW, renderH);
-                    ctx.globalCompositeOperation = 'source-atop';
-                    ctx.fillStyle = this.themeColor;
-                    ctx.fillRect(0, 0, renderW, renderH);
-                    ctx.globalCompositeOperation = 'source-over';
-                    ctx.globalAlpha = 1;
-                } else if (this.state === 'laser_fire') {
-                    drawSpriteFrame(ctx, sprite, frameX, frameY, BOSS_FRAME, BOSS_FRAME, 0, 0, renderW, renderH);
-                } else {
-                    drawSpriteFrame(ctx, sprite, frameX, frameY, BOSS_FRAME, BOSS_FRAME, 0, 0, renderW, renderH);
-                    ctx.globalCompositeOperation = 'source-atop';
-                    ctx.fillStyle = this.themeColor;
-                    ctx.fillRect(0, 0, renderW, renderH);
-                    ctx.globalCompositeOperation = 'source-over';
+                        const introProgress = Math.min(1, (canvas.width - 210 - this.x) / 100 + 1);
+                        ctx.globalAlpha = Math.min(1, introProgress);
+                        drawSpriteFrame(ctx, sprite, 0, 0, sw, sh, 0, 0, renderW, renderH);
+                        ctx.globalCompositeOperation = 'source-atop';
+                        ctx.fillStyle = this.themeColor;
+                        ctx.fillRect(0, 0, renderW, renderH);
+                        ctx.globalCompositeOperation = 'source-over';
+                        ctx.globalAlpha = 1;
+                    } else if (this.state === 'laser_fire') {
+                        drawSpriteFrame(ctx, sprite, 0, 0, sw, sh, 0, 0, renderW, renderH);
+                    } else {
+                        drawSpriteFrame(ctx, sprite, 0, 0, sw, sh, 0, 0, renderW, renderH);
+                        ctx.globalCompositeOperation = 'source-atop';
+                        ctx.fillStyle = this.themeColor;
+                        ctx.fillRect(0, 0, renderW, renderH);
+                        ctx.globalCompositeOperation = 'source-over';
                     }
                     ctx.shadowBlur = 0;
+                }
                 } else {
                     // --- Fallback: original canvas-drawn boss (kept for graceful degradation) ---
                     // Tail fin
