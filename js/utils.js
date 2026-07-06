@@ -20,8 +20,10 @@ function drawSpriteFrame(ctx, sprite, frameX, frameY, frameW, frameH, dx, dy, dW
     const sheetW = (sprite.tagName === 'CANVAS') ? sprite.width : (sprite.naturalWidth || sprite.width || 0);
     const sheetH = (sprite.tagName === 'CANVAS') ? sprite.height : (sprite.naturalHeight || sprite.height || 0);
     if (sheetW === 0 || sheetH === 0) return;
-    // If sheet is smaller than one frame cell, it's not a sprite sheet — draw it directly
-    if (sheetW <= frameW && sheetH <= frameH) {
+    
+    // If sheet is smaller than one frame cell, or if it is a standalone image
+    // (only boss [256] and shield [512] use grid-based sheets; others are standalone images)
+    if ((sheetW <= frameW && sheetH <= frameH) || (frameW !== 256 && frameW !== 512)) {
         ctx.drawImage(sprite, dx, dy, dW, dH);
         return;
     }
