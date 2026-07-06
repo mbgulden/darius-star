@@ -645,7 +645,7 @@
     "main-theme-action": {
       "scene": "Auto-detected: main-theme-action.mp3",
       "file": "main-theme-action.mp3",
-      "path": "/home/ubuntu/work/darius-star/assets/audio/main-theme-action.mp3",
+      "path": "assets/audio/main-theme-action.mp3",
       "duration_sec": 30,
       "loop": true,
       "generated": true,
@@ -654,7 +654,7 @@
     "main-theme-dark": {
       "scene": "Auto-detected: main-theme-dark.mp3",
       "file": "main-theme-dark.mp3",
-      "path": "/home/ubuntu/work/darius-star/assets/audio/main-theme-dark.mp3",
+      "path": "assets/audio/main-theme-dark.mp3",
       "duration_sec": 30,
       "loop": true,
       "generated": true,
@@ -663,7 +663,7 @@
     "main-theme-heroic": {
       "scene": "Auto-detected: main-theme-heroic.mp3",
       "file": "main-theme-heroic.mp3",
-      "path": "/home/ubuntu/work/darius-star/assets/audio/main-theme-heroic.mp3",
+      "path": "assets/audio/main-theme-heroic.mp3",
       "duration_sec": 30,
       "loop": true,
       "generated": true,
@@ -672,7 +672,7 @@
     "main-theme-lament": {
       "scene": "Auto-detected: main-theme-lament.mp3",
       "file": "main-theme-lament.mp3",
-      "path": "/home/ubuntu/work/darius-star/assets/audio/main-theme-lament.mp3",
+      "path": "assets/audio/main-theme-lament.mp3",
       "duration_sec": 30,
       "loop": true,
       "generated": true,
@@ -681,7 +681,7 @@
     "main-theme-mystery": {
       "scene": "Auto-detected: main-theme-mystery.mp3",
       "file": "main-theme-mystery.mp3",
-      "path": "/home/ubuntu/work/darius-star/assets/audio/main-theme-mystery.mp3",
+      "path": "assets/audio/main-theme-mystery.mp3",
       "duration_sec": 30,
       "loop": true,
       "generated": true,
@@ -690,7 +690,7 @@
     "main-theme-wonder": {
       "scene": "Auto-detected: main-theme-wonder.mp3",
       "file": "main-theme-wonder.mp3",
-      "path": "/home/ubuntu/work/darius-star/assets/audio/main-theme-wonder.mp3",
+      "path": "assets/audio/main-theme-wonder.mp3",
       "duration_sec": 30,
       "loop": true,
       "generated": true,
@@ -699,7 +699,7 @@
     "title-screen": {
       "scene": "Auto-detected: title-screen.mp3",
       "file": "title-screen.mp3",
-      "path": "/home/ubuntu/work/darius-star/assets/audio/title-screen.mp3",
+      "path": "assets/audio/title-screen.mp3",
       "duration_sec": 30,
       "loop": true,
       "generated": true,
