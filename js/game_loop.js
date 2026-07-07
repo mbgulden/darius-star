@@ -772,6 +772,11 @@ function update(dt) {
         if (checkCollision(player, boss)) {
             player.takeDamage(35);
         }
+        for (const rp of remotePlayers) {
+            if (checkCollision(rp, boss)) {
+                rp.takeDamage(35);
+            }
+        }
 
         if (boss.state === 'laser_fire') {
             const laserYStart = boss.y + 50;
@@ -781,6 +786,13 @@ function update(dt) {
                     player.takeDamage(3);
                 }
             }
+            for (const rp of remotePlayers) {
+                if (rp.x + rp.width > 0 && rp.x < boss.x + 20) {
+                    if (rp.y + rp.height > laserYStart && rp.y < laserYStart + laserHeight) {
+                        rp.takeDamage(3);
+                    }
+                }
+            }
         }
     }
 
@@ -788,15 +800,27 @@ function update(dt) {
         const pu = powerups[i];
         pu.update(dt);
 
+        let collectingPlayer = null;
         if (checkCollision(pu, player)) {
+            collectingPlayer = player;
+        } else {
+            for (const rp of remotePlayers) {
+                if (checkCollision(pu, rp)) {
+                    collectingPlayer = rp;
+                    break;
+                }
+            }
+        }
+
+        if (collectingPlayer) {
             playSound('powerup');
             if (pu.kind === 'W') {
-                player.weaponLevel = Math.min(5, player.weaponLevel + 1);
-                playSound('weapon_upgrade', {newLevel: player.weaponLevel});
+                collectingPlayer.weaponLevel = Math.min(5, collectingPlayer.weaponLevel + 1);
+                playSound('weapon_upgrade', {newLevel: collectingPlayer.weaponLevel});
             } else if (pu.kind === 'S') {
-                player.shield = Math.min(player.shieldMax, player.shield + 30);
+                collectingPlayer.shield = Math.min(collectingPlayer.shieldMax, collectingPlayer.shield + 30);
             }
-            if (player.addSecondaryCharge) player.addSecondaryCharge(25, 'METER');
+            if (collectingPlayer.addSecondaryCharge) collectingPlayer.addSecondaryCharge(25, 'METER');
             powerups.splice(i, 1);
             continue;
         }
@@ -810,10 +834,22 @@ function update(dt) {
         const sd = scrapDrops[i];
         sd.update(dt);
 
+        let collectingPlayer = null;
         if (checkCollision(sd, player)) {
+            collectingPlayer = player;
+        } else {
+            for (const rp of remotePlayers) {
+                if (checkCollision(sd, rp)) {
+                    collectingPlayer = rp;
+                    break;
+                }
+            }
+        }
+
+        if (collectingPlayer) {
             playSound('powerup');
             let collectedVal = sd.value;
-            if (player.shipType === 'warden') {
+            if (collectingPlayer.shipType === 'warden') {
                 collectedVal = Math.round(collectedVal * 1.20);
             }
             runScrap += collectedVal;
