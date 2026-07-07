@@ -588,7 +588,7 @@
     // ── LOAD BRIEFING DATA ──
     async function loadBriefing() {
         try {
-            const resp = await fetch('docs/mission-briefings.json');
+            const resp = await fetch('assets/mission-briefings.json');
             if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
             const data = await resp.json();
             renderIntel(data);
