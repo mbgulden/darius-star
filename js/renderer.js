@@ -159,7 +159,8 @@ class ParallaxLayer {
 
     update(dt) {
         const img = this.getImg();
-        this.offset = (this.offset + this.speed * dt) % (img ? img.width : 800);
+        const baseWidth = (img && img.naturalWidth > 0) ? img.width : (typeof canvas !== 'undefined' ? canvas.width : 800);
+        this.offset = (this.offset + this.speed * dt) % baseWidth;
     }
 
     draw() {
@@ -171,7 +172,8 @@ class ParallaxLayer {
         const h = img.height * this.scale;
         // Tile horizontally for seamless scroll
         const drawX = -this.offset;
-        const count = Math.ceil(800 / w) + 1;
+        const screenWidth = typeof canvas !== 'undefined' ? canvas.width : 800;
+        const count = Math.ceil(screenWidth / w) + 1;
         for (let i = 0; i < count; i++) {
             ctx.drawImage(img, drawX + i * w, this.yOffset, w, h);
         }
@@ -201,9 +203,11 @@ class OffscreenBuffer {
 // --- Star Class ---
 class Star {
     constructor(depth) {
+        const w = typeof canvas !== 'undefined' ? canvas.width : 800;
+        const h = typeof canvas !== 'undefined' ? canvas.height : 450;
         this.depth = depth; // 1=far, 2=mid, 3=near
-        this.x = Math.random() * 800;
-        this.y = Math.random() * 450;
+        this.x = Math.random() * w;
+        this.y = Math.random() * h;
         this.speed = 20 + depth * 25;
         this.size = 0.5 + depth * 0.4;
         this.twinkle = Math.random() * Math.PI * 2;
@@ -212,11 +216,13 @@ class Star {
     }
 
     update(dt) {
+        const w = typeof canvas !== 'undefined' ? canvas.width : 800;
+        const h = typeof canvas !== 'undefined' ? canvas.height : 450;
         this.x -= this.speed * dt;
         this.twinkle += this.twinkleSpeed * dt;
         if (this.x < -5) {
-            this.x = 800 + 5;
-            this.y = Math.random() * 450;
+            this.x = w + 5;
+            this.y = Math.random() * h;
         }
     }
 
@@ -229,8 +235,10 @@ class SeaParticle {
         this.reset(true);
     }
     reset(initial = false) {
-        this.x = initial ? Math.random() * 800 : 800 + 20;
-        this.y = Math.random() * 450;
+        const w = typeof canvas !== 'undefined' ? canvas.width : 800;
+        const h = typeof canvas !== 'undefined' ? canvas.height : 450;
+        this.x = initial ? Math.random() * w : w + 20;
+        this.y = Math.random() * h;
         this.size = 0.6 + Math.random() * 2.5;
         this.speed = 8 + Math.random() * 25;
         this.drift = (Math.random() - 0.5) * 12;
@@ -238,10 +246,11 @@ class SeaParticle {
         this.color = Math.random() < 0.3 ? '#00ffaa' : '#3388aa';
     }
     update(dt) {
+        const h = typeof canvas !== 'undefined' ? canvas.height : 450;
         this.x -= this.speed * dt;
         this.y += this.drift * dt;
-        if (this.y < 0) this.y = 450;
-        if (this.y > 450) this.y = 0;
+        if (this.y < 0) this.y = h;
+        if (this.y > h) this.y = 0;
         if (this.x < -10) this.reset();
     }
     draw() {} // No-op — rendered via offscreen buffer
@@ -255,14 +264,16 @@ let seaBuffer;
 let seaParticles = [];
 
 function initRendererBuffers() {
-    starBuffer = new OffscreenBuffer(800, 450);
+    const w = typeof canvas !== 'undefined' ? canvas.width : 800;
+    const h = typeof canvas !== 'undefined' ? canvas.height : 450;
+    starBuffer = new OffscreenBuffer(w, h);
     starBuffer.renderInterval = 0.25; // seconds
     stars = [];
     for (let i = 0; i < 35; i++) stars.push(new Star(1));   // far
     for (let i = 0; i < 22; i++) stars.push(new Star(2));   // mid
     for (let i = 0; i < 10; i++) stars.push(new Star(3));   // near
 
-    seaBuffer = new OffscreenBuffer(800, 450);
+    seaBuffer = new OffscreenBuffer(w, h);
     seaBuffer.renderInterval = 0.20; // seconds
     seaParticles = [];
     for (let i = 0; i < 45; i++) seaParticles.push(new SeaParticle());

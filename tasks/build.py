@@ -85,7 +85,7 @@ print(f"   Original: {orig_size:,} bytes")
 print(f"   Minified: {min_size:,} bytes")
 print(f"   Savings:  {savings:.1f}%")
 
-# Copy assets to dist
+# Copy assets and JS to dist
 import shutil
 assets_src = Path('assets')
 assets_dst = dist_dir / 'assets'
@@ -93,7 +93,17 @@ if assets_dst.exists():
     shutil.rmtree(assets_dst)
 shutil.copytree(assets_src, assets_dst)
 
-print(f"   Assets copied to dist/assets/")
+js_src = Path('js')
+js_dst = dist_dir / 'js'
+if js_src.exists():
+    if js_dst.exists():
+        shutil.rmtree(js_dst)
+    shutil.copytree(js_src, js_dst)
+
+# Also copy upgrade_system.js which is in root
+shutil.copy('upgrade_system.js', dist_dir / 'upgrade_system.js')
+
+print(f"   Assets and scripts copied to dist/")
 print(f"✅ Build complete: dist/")
 
 if errors:
