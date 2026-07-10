@@ -61,7 +61,7 @@ window.bossIntroVideo = null;
 window.victoryVideo = null;
 window.skipHint = null;
 
-function initUIVideoElements() {
+window.initUIVideoElements = function() {
     window.bossIntroVideo = document.getElementById('boss-intro-video');
     window.victoryVideo = document.getElementById('victory-video');
     window.skipHint = document.getElementById('skip-cinematic-hint');
@@ -105,7 +105,7 @@ titleLogoImg.onload = () => { window.titleLogoLoaded = true; };
 titleLogoImg.src = 'assets/sprites/title_0.png';
 
 // --- Leaderboard Functions ---
-function loadScores() {
+window.loadScores = function() {
     try {
         const raw = localStorage.getItem(window.LS_KEY);
         return raw ? JSON.parse(raw) : { highScores: [] };
@@ -114,7 +114,7 @@ function loadScores() {
     }
 }
 
-function saveScores(data) {
+window.saveScores = function(data) {
     try {
         localStorage.setItem(window.LS_KEY, JSON.stringify(data));
     } catch(e) {
@@ -122,7 +122,7 @@ function saveScores(data) {
     }
 }
 
-function saveRunScore(score, ship, biome, difficulty) {
+window.saveRunScore = function(score, ship, biome, difficulty) {
     const data = loadScores();
     const entry = {
         score: score,
@@ -142,18 +142,18 @@ function saveRunScore(score, ship, biome, difficulty) {
     return entry;
 }
 
-function getTopScore() {
+window.getTopScore = function() {
     const data = loadScores();
     return data.highScores.length > 0 ? data.highScores[0] : null;
 }
 
-function isNewHighScore(score) {
+window.isNewHighScore = function(score) {
     const top = getTopScore();
     if (!top) return score > 0;
     return score > top.score;
 }
 
-function getFilteredScores() {
+window.getFilteredScores = function() {
     const data = loadScores();
     if (window.leaderboardFilter === 'all') return data.highScores;
     if (['easy', 'normal', 'hard'].includes(window.leaderboardFilter)) {
@@ -162,7 +162,7 @@ function getFilteredScores() {
     return data.highScores.filter(s => s.ship === window.leaderboardFilter);
 }
 
-function clearAllScores() {
+window.clearAllScores = function() {
     saveScores({ highScores: [] });
 }
 
@@ -175,7 +175,7 @@ const melody = [
     220, 220, 329, 0, 293, 0, 261, 0
 ];
 
-function playMenuMusicStep() {
+window.playMenuMusicStep = function() {
     if (!window.audioCtx || window.currentScreen === 'playing' || window.currentScreen === window.SCREENS.CINEMATIC || window.currentScreen === window.SCREENS.CREDITS) return;
     const now = window.audioCtx.currentTime;
 
@@ -209,13 +209,13 @@ function playMenuMusicStep() {
     musicStep++;
 }
 
-function startMenuMusic() {
+window.startMenuMusic = function() {
     if (musicInterval) return;
     musicStep = 0;
     musicInterval = setInterval(playMenuMusicStep, 200);
 }
 
-function stopMenuMusic() {
+window.stopMenuMusic = function() {
     if (musicInterval) {
         clearInterval(musicInterval);
         musicInterval = null;
@@ -229,7 +229,7 @@ const creditsMelody = [
     493, 493, 587, 0, 440, 0, 392, 0    // B4, B4, D5, A4, G4
 ];
 
-function playCreditsMusicStep() {
+window.playCreditsMusicStep = function() {
     if (!window.audioCtx || window.currentScreen !== window.SCREENS.CREDITS) return;
     const now = window.audioCtx.currentTime;
 
@@ -263,13 +263,13 @@ function playCreditsMusicStep() {
     musicStep++;
 }
 
-function startCreditsMusic() {
+window.startCreditsMusic = function() {
     if (creditsMusicInterval) return;
     musicStep = 0;
     creditsMusicInterval = setInterval(playCreditsMusicStep, 250);
 }
 
-function stopCreditsMusic() {
+window.stopCreditsMusic = function() {
     if (creditsMusicInterval) {
         clearInterval(creditsMusicInterval);
         creditsMusicInterval = null;
@@ -277,20 +277,20 @@ function stopCreditsMusic() {
 }
 
 // --- UI Utility Functions ---
-function transitionToScreen(newScreen) {
+window.transitionToScreen = function(newScreen) {
     if (window.targetScreen) return;
     window.targetScreen = newScreen;
     window.transitionTimer = 0;
 }
 
-function hexToRgb(hex) {
+window.hexToRgb = function(hex) {
     const r = parseInt(hex.slice(1, 3), 16);
     const g = parseInt(hex.slice(3, 5), 16);
     const b = parseInt(hex.slice(5, 7), 16);
     return `${r}, ${g}, ${b}`;
 }
 
-function adjustSetting(index, dir) {
+window.adjustSetting = function(index, dir) {
     const step = 0.1;
     if (index === 0) {
         window.masterVolume = Math.max(0, Math.min(1.0, window.masterVolume + dir * step));
@@ -306,7 +306,7 @@ function adjustSetting(index, dir) {
     }
 }
 
-function handleMenuConfirm() {
+window.handleMenuConfirm = function() {
     if (window.currentScreen === window.SCREENS.MENU) {
         if (window.selectedMenuIndex === 0) {
             window.shipSelectSource = 'start';
@@ -340,7 +340,7 @@ function handleMenuConfirm() {
     }
 }
 
-function getCanvasMouseCoords(e) {
+window.getCanvasMouseCoords = function(e) {
     const rect = window.canvas.getBoundingClientRect();
     const x = (e.clientX - rect.left) * (window.canvas.width / rect.width);
     const y = (e.clientY - rect.top) * (window.canvas.height / rect.height);
@@ -348,7 +348,7 @@ function getCanvasMouseCoords(e) {
 }
 
 // --- Cinematic Video Playback ---
-function playBossIntro() {
+window.playBossIntro = function() {
     if (window.bossIntroPlaying) return;
     window.bossIntroPlaying = true;
     if (window.bossIntroVideo) {
@@ -371,7 +371,7 @@ function playBossIntro() {
     }
 }
 
-function skipBossIntro() {
+window.skipBossIntro = function() {
     if (!window.bossIntroPlaying) return;
     if (window.bossIntroVideo) {
         window.bossIntroVideo.pause();
@@ -382,13 +382,13 @@ function skipBossIntro() {
     spawnBossNow();
 }
 
-function spawnBossNow() {
+window.spawnBossNow = function() {
     window.bossSpawned = true;
     window.sirenTimer = 0;
-    boss = new Boss();
+    window.boss = new window.Boss();
 }
 
-function playVictoryCinematic() {
+window.playVictoryCinematic = function() {
     if (window.victoryVideoPlaying) return;
     window.victoryVideoPlaying = true;
     if (window.victoryVideo) {
@@ -411,7 +411,7 @@ function playVictoryCinematic() {
     }
 }
 
-function skipVictoryCinematic() {
+window.skipVictoryCinematic = function() {
     if (!window.victoryVideoPlaying) return;
     if (window.victoryVideo) {
         window.victoryVideo.pause();
@@ -423,7 +423,7 @@ function skipVictoryCinematic() {
 }
 
 // --- Rendering Functions ---
-function updateTitleBackground(dt) {
+window.updateTitleBackground = function(dt) {
     window.titleBgTimer += dt;
     if (window.titleBgTimer >= TITLE_FRAME_DURATION) {
         window.titleBgTimer -= TITLE_FRAME_DURATION;
@@ -431,7 +431,7 @@ function updateTitleBackground(dt) {
     }
 }
 
-function drawTitleBackground() {
+window.drawTitleBackground = function() {
     if (window.titleBgLoaded && titleBgImage.naturalWidth > 0) {
         const sx = window.titleBgFrame * TITLE_FRAME_WIDTH;
         const sy = 0;
@@ -443,7 +443,7 @@ function drawTitleBackground() {
         window.ctx.fillStyle = '#01010c';
         window.ctx.fillRect(0, 0, window.canvas.width, window.canvas.height);
         window.ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
-        stars.forEach(star => {
+        window.stars.forEach(star => {
             const alpha = star.getAlpha();
             window.ctx.globalAlpha = alpha;
             window.ctx.fillRect(star.x, star.y, star.size, star.size);
@@ -452,7 +452,7 @@ function drawTitleBackground() {
     }
 }
 
-function drawTitleLogo() {
+window.drawTitleLogo = function() {
     if (window.titleLogoLoaded && titleLogoImg.naturalWidth > 0) {
         window.ctx.save();
         const lw = 420;
@@ -482,7 +482,7 @@ function drawTitleLogo() {
     }
 }
 
-function drawMenuScreens() {
+window.drawMenuScreens = function() {
     drawTitleBackground();
 
     if (window.currentScreen === window.SCREENS.MENU) {
@@ -558,7 +558,7 @@ function drawMenuScreens() {
             window.ctx.strokeRect(80, itemY - 25, 640, 52);
 
             const spriteKey = i === 0 ? 'scout_0' : (i === 2 ? 'heavy_0' : 'interceptor_0');
-            const sprite = playerSprites[spriteKey];
+            const sprite = window.playerSprites[spriteKey];
             if (sprite && sprite.complete && sprite.naturalWidth > 0) {
                 window.ctx.drawImage(sprite, 105, itemY - 20, 40, 40);
             } else {
@@ -925,7 +925,7 @@ function drawMenuScreens() {
             window.ctx.fill();
 
             const shipKey = window.selectedShip === 'scout' ? 'scout_0' : (window.selectedShip === 'heavy' ? 'heavy_0' : 'interceptor_0');
-            const shipSprite = playerSprites[shipKey];
+            const shipSprite = window.playerSprites[shipKey];
             if (shipSprite && shipSprite.complete && shipSprite.naturalWidth > 0) {
                 window.ctx.drawImage(shipSprite, shipX, shipY, size, size);
             } else {
