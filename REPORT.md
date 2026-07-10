@@ -25,6 +25,16 @@
     - Performance optimizations (offscreen canvas, lazy-loading).
     - Refinement of the build and deployment pipeline as defined in `tasks.json`.
 
+## Recent Repository Maintenance (Rescue Sweep)
+The repository recently underwent a "Ned rescue sweep" to consolidate stale pull requests and maintain a clean `master` lineage. Key outcomes include:
+- **Consolidation**: Safe artifacts from various feature branches were merged into `master` via targeted PRs (#18, #19, #20).
+- **Branch Management**: The `main` branch is considered to have unrelated history and is currently avoided for direct merges to prevent mass deletion diffs.
+- **Preserved Material**:
+    - Documentation and reference media (PR #19).
+    - Sprite slicer tooling (PR #20).
+    - Transparent VFX feature assets (PR #18).
+- **Procedural Backgrounds**: Recent fixes included 2× width backgrounds for seamless tiling and additive blending for explosions.
+
 ## Repository Structure
 - `index.html`: Main game file.
 - `assets/`: Contains sprites and audio (to be fully populated).
