@@ -29,24 +29,28 @@ def scan_and_generate_manifest(sprites_dir, output_file):
         os.makedirs(sprites_dir, exist_ok=True)
         print(f"Created empty directory: {sprites_dir}")
         
-    # Get all image files in directory
+    # Get all image files in directory recursively
     valid_extensions = ('.png', '.jpg', '.jpeg')
-    files = [f for f in os.listdir(sprites_dir) if f.lower().endswith(valid_extensions)]
-    files.sort()
+    all_files = []
+    for root, _, files in os.walk(sprites_dir):
+        for f in files:
+            if f.lower().endswith(valid_extensions):
+                all_files.append(os.path.join(root, f))
+    all_files.sort()
     
     sprites_data = {}
     errors = []
     warnings = []
     
-    total_files_scanned = len(files)
+    total_files_scanned = len(all_files)
     valid_power_of_two_count = 0
     invalid_power_of_two_count = 0
     
     # Naming pattern: prefix_index.ext (e.g. player_0.png)
-    name_pattern = re.compile(r"^([a-zA-Z_]+)_(\d+)\.(png|jpg|jpeg)$", re.IGNORECASE)
+    name_pattern = re.compile(r"^([a-zA-Z0-9_]+)_(\d+)\.(png|jpg|jpeg)$", re.IGNORECASE)
     
-    for filename in files:
-        filepath = os.path.join(sprites_dir, filename)
+    for filepath in all_files:
+        filename = os.path.basename(filepath)
         
         # Determine image dimensions using Pillow
         try:
@@ -147,7 +151,8 @@ def scan_and_generate_manifest(sprites_dir, output_file):
     print(f"Missing assets: {len(missing_assets)}")
 
 def main():
-    project_dir = "/home/ubuntu/work/darius-star"
+    # Use relative paths from the script's location
+    project_dir = os.path.dirname(os.path.abspath(__file__))
     sprites_dir = os.path.join(project_dir, "assets/sprites")
     output_file = os.path.join(project_dir, "assets/sprites.json")
     
