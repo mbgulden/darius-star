@@ -1,0 +1,19 @@
+{
+  "prompt": "16-bit pixel art spaceship, side-scrolling shoot-em-up style, from Darius Star, sleek metallic fighter with blue energy glow, gold trim accents, transparent background, clean pixel edges, single centered ship facing right, no text, no UI elements",
+  "imagen": {
+    "success": true,
+    "output_path": "/home/ubuntu/work/darius-star/docs/imagen_spaceship.png",
+    "size_bytes": 533280,
+    "time_seconds": 8.3
+  },
+  "veo": {
+    "success": true,
+    "output_path": "/home/ubuntu/work/darius-star/docs/veo_spaceship.mp4",
+    "frame_path": "/home/ubuntu/work/darius-star/docs/veo_spaceship_frame1.png",
+    "audio_path": "/home/ubuntu/work/darius-star/docs/veo_spaceship_audio.wav",
+    "size_bytes": 767750,
+    "time_seconds": 32.5,
+    "submit_time": 0.2,
+    "poll_count": 6
+  }
+}
