@@ -1,0 +1,33 @@
+rescued_path	original_path	source_pr	source_branch	source_title
+docs/rescued-open-prs/AGY-REVIEW.md	AGY-REVIEW.md	17	refactor-ui-modularization-1690307054593867763	Modularize UI rendering and centralize shared game state
+docs/rescued-open-prs/PHASE2-AUDIO-PLAN.md	PHASE2-AUDIO-PLAN.md	17	refactor-ui-modularization-1690307054593867763	Modularize UI rendering and centralize shared game state
+docs/rescued-open-prs/PROJECT-ASSESSMENT-REPORT.md	REPORT.md	4	project-report-initial-assessment-5679823778339456790	Project Assessment and Status Report
+docs/LEVEL-THEME-SPEC.md	docs/LEVEL-THEME-SPEC.md	17	refactor-ui-modularization-1690307054593867763	Modularize UI rendering and centralize shared game state
+docs/assets/coop_gameplay_hud_mockup.png	docs/assets/coop_gameplay_hud_mockup.png	17	refactor-ui-modularization-1690307054593867763	Modularize UI rendering and centralize shared game state
+docs/assets/coop_ship_selection_mockup.png	docs/assets/coop_ship_selection_mockup.png	17	refactor-ui-modularization-1690307054593867763	Modularize UI rendering and centralize shared game state
+docs/biome-boss-design.md	docs/biome-boss-design.md	17	refactor-ui-modularization-1690307054593867763	Modularize UI rendering and centralize shared game state
+docs/comprehensive-gap-analysis.md	docs/comprehensive-gap-analysis.md	17	refactor-ui-modularization-1690307054593867763	Modularize UI rendering and centralize shared game state
+docs/credits-content.md	docs/credits-content.md	17	refactor-ui-modularization-1690307054593867763	Modularize UI rendering and centralize shared game state
+docs/enemy-variety-design.md	docs/enemy-variety-design.md	17	refactor-ui-modularization-1690307054593867763	Modularize UI rendering and centralize shared game state
+docs/explosion-taxonomy.md	docs/explosion-taxonomy.md	17	refactor-ui-modularization-1690307054593867763	Modularize UI rendering and centralize shared game state
+docs/game-architecture.md	docs/game-architecture.md	17	refactor-ui-modularization-1690307054593867763	Modularize UI rendering and centralize shared game state
+docs/game-mechanics-design.md	docs/game-mechanics-design.md	17	refactor-ui-modularization-1690307054593867763	Modularize UI rendering and centralize shared game state
+docs/imagen_spaceship.png	docs/imagen_spaceship.png	17	refactor-ui-modularization-1690307054593867763	Modularize UI rendering and centralize shared game state
+docs/integration-pack.md	docs/integration-pack.md	17	refactor-ui-modularization-1690307054593867763	Modularize UI rendering and centralize shared game state
+docs/level-system-design.md	docs/level-system-design.md	17	refactor-ui-modularization-1690307054593867763	Modularize UI rendering and centralize shared game state
+docs/linear-task-map.md	docs/linear-task-map.md	17	refactor-ui-modularization-1690307054593867763	Modularize UI rendering and centralize shared game state
+docs/mission-briefings-formatted.md	docs/mission-briefings-formatted.md	17	refactor-ui-modularization-1690307054593867763	Modularize UI rendering and centralize shared game state
+docs/mission-briefings.json	docs/mission-briefings.json	17	refactor-ui-modularization-1690307054593867763	Modularize UI rendering and centralize shared game state
+docs/multiplayer-architecture.md	docs/multiplayer-architecture.md	17	refactor-ui-modularization-1690307054593867763	Modularize UI rendering and centralize shared game state
+docs/performance-audit.md	docs/performance-audit.md	13	docs-performance-audit-3491999146700214720	Comprehensive Performance Audit Report
+docs/sfx-cohesion-strategy.md	docs/sfx-cohesion-strategy.md	17	refactor-ui-modularization-1690307054593867763	Modularize UI rendering and centralize shared game state
+docs/ship-generation-prompts.md	docs/ship-generation-prompts.md	17	refactor-ui-modularization-1690307054593867763	Modularize UI rendering and centralize shared game state
+docs/story-mode-design.md	docs/story-mode-design.md	17	refactor-ui-modularization-1690307054593867763	Modularize UI rendering and centralize shared game state
+docs/story-mode-narrative.md	docs/story-mode-narrative.md	17	refactor-ui-modularization-1690307054593867763	Modularize UI rendering and centralize shared game state
+docs/sub-level-variations.md	docs/sub-level-variations.md	17	refactor-ui-modularization-1690307054593867763	Modularize UI rendering and centralize shared game state
+docs/veo-cutscene-prompts.md	docs/veo-cutscene-prompts.md	17	refactor-ui-modularization-1690307054593867763	Modularize UI rendering and centralize shared game state
+docs/veo-vs-imagen-comparison.md	docs/veo-vs-imagen-comparison.md	17	refactor-ui-modularization-1690307054593867763	Modularize UI rendering and centralize shared game state
+docs/veo_spaceship.mp4	docs/veo_spaceship.mp4	17	refactor-ui-modularization-1690307054593867763	Modularize UI rendering and centralize shared game state
+docs/veo_spaceship_audio.wav	docs/veo_spaceship_audio.wav	17	refactor-ui-modularization-1690307054593867763	Modularize UI rendering and centralize shared game state
+docs/veo_spaceship_frame1.png	docs/veo_spaceship_frame1.png	17	refactor-ui-modularization-1690307054593867763	Modularize UI rendering and centralize shared game state
+docs/veo_vs_imagen_results.json	docs/veo_vs_imagen_results.json	17	refactor-ui-modularization-1690307054593867763	Modularize UI rendering and centralize shared game state

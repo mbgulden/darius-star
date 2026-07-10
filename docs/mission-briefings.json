@@ -1,0 +1,1223 @@
+{
+  "project": "Darius Star: Cyber Coelacanth",
+  "version": "1.0.0",
+  "format_spec": {
+    "typewriter_effect": true,
+    "sfx_per_character": "sfx_typewriter_click",
+    "whip_transition": true,
+    "max_lines_visible": 3,
+    "pace_guide": {
+      "normal": "Standard text scrolling speed",
+      "slow": "Reduced speed for emphasis and crucial plot reveals",
+      "fast": "Accelerated scrolling for high-stress alerts"
+    }
+  },
+  "biomes": [
+    {
+      "id": 1,
+      "name": "Abyssal Trench",
+      "location": "Earth — Pacific Ocean",
+      "commander": "Commander Jack Thorne",
+      "pre_level": {
+        "solo": [
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Darius, this is Thorne. Comms are verified, but pressure readings are climbing. We are tracking the Nyxa's descent into the Abyssal Trench.",
+            "speed": "normal",
+            "sfx": "comms_incoming"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Objective: Locate the Guardian Coelacanth at the bottom of the canyon and retrieve the GLYPH-1 Neural Stabilizer.",
+            "speed": "normal",
+            "sfx": "typewriter"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Threats: Watch out for robotic Anglerfish and cybernetic Jellyfish. They are highly aggressive in the dark.",
+            "speed": "normal",
+            "sfx": "typewriter"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Pilot, you're our only hope. Lyra's sickness is worsening by the hour, and we need that stabilizer. Get in, get the core, and get out. Thorne out.",
+            "speed": "slow",
+            "sfx": "typewriter"
+          }
+        ],
+        "coop2": [
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Darius, Valera, Thorne here. Comm lines are open. We're monitoring your entry vectors into the Abyssal Trench.",
+            "speed": "normal",
+            "sfx": "comms_incoming"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Objective: Locate the Guardian Coelacanth at the ocean floor and retrieve the GLYPH-1 Neural Stabilizer core.",
+            "speed": "normal",
+            "sfx": "typewriter"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Threats: Robotic Anglerfish and cybernetic Jellyfish are patrolling the thermal vents. Expect heavy resistance.",
+            "speed": "normal",
+            "sfx": "typewriter"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "You two are the best we've got. Keep your shields aligned and watch each other's backs. We need that core to save Lyra. Good luck.",
+            "speed": "slow",
+            "sfx": "typewriter"
+          }
+        ],
+        "coop4": [
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Squadron, listen up. This is Thorne. Comms are synced. We are tracking the Nyxa's insertion into the Abyssal Trench.",
+            "speed": "normal",
+            "sfx": "comms_incoming"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Objective: Reach the bottom of the trench, destroy the corrupted defenses, and secure the GLYPH-1 Neural Stabilizer.",
+            "speed": "normal",
+            "sfx": "typewriter"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Threats: Deep-sea automated anglerfish and jellyfish swarms. High density of mineral smoke will restrict visibility.",
+            "speed": "normal",
+            "sfx": "typewriter"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Lyra's life depends on this run. Stay in tight formation, cover your sectors, and bring that core back to Haven-7. Move out!",
+            "speed": "slow",
+            "sfx": "typewriter"
+          }
+        ]
+      },
+      "post_level": [
+        {
+          "speaker": "COMMANDER THORNE",
+          "text": "Thorne here. Excellent work, team. Area is secured and the hydrothermal vents are stabilizing.",
+          "speed": "normal",
+          "sfx": "comms_incoming"
+        },
+        {
+          "speaker": "COMMANDER THORNE",
+          "text": "We've integrated the GLYPH-1 Neural Stabilizer into Lyra's treatment. Her vitals are holding for now.",
+          "speed": "slow",
+          "sfx": "typewriter"
+        },
+        {
+          "speaker": "COMMANDER THORNE",
+          "text": "Aldric's decrypted logs point to Kepler-442b. Standby for warp sequence. We are transitioning to the Coral Graveyard.",
+          "speed": "normal",
+          "sfx": "warp_transition"
+        }
+      ],
+      "boss_defeat": [
+        {
+          "speaker": "TRENCH GUARDIAN",
+          "text": "*static* ...Star genetic sequence detected... authorization recognized... deactivating primary weapon grid...",
+          "speed": "slow",
+          "sfx": "boss_voice"
+        },
+        {
+          "speaker": "TRENCH GUARDIAN",
+          "text": "...GLYPH-1 core released... warning: containment boundary failing... Ophion's code is spreading...",
+          "speed": "slow",
+          "sfx": "boss_voice"
+        },
+        {
+          "speaker": "DARIUS",
+          "text": "It recognized my grandfather's sequence. It shut down peaceably. Securing the neural stabilizer now.",
+          "speed": "normal",
+          "sfx": "typewriter"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Coral Graveyard",
+      "location": "Kepler-442b — Shallow Seas",
+      "commander": "Commander Jack Thorne",
+      "pre_level": {
+        "solo": [
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Darius, we've arrived at Kepler-442b. This whole ocean is glowing, but it's not life—it's rusted cyber-coral and dead neon wiring.",
+            "speed": "normal",
+            "sfx": "comms_incoming"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Objective: Locate the second Coelacanth entity and retrieve the GLYPH-2 Synaptic Bridge.",
+            "speed": "normal",
+            "sfx": "typewriter"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Threats: Watch out for swarming Coral Wasps and Armored Eels weaving through the metal coral. They move fast.",
+            "speed": "normal",
+            "sfx": "typewriter"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Pilot, you're our only hope. The local ruins are highly unstable. Find the precursor memory-vault and get that bridge. Thorne out.",
+            "speed": "slow",
+            "sfx": "typewriter"
+          }
+        ],
+        "coop2": [
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Darius, Valera, comms are solid. We're in orbit above Kepler-442b's dead seas.",
+            "speed": "normal",
+            "sfx": "comms_incoming"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Objective: Navigate the cyber-coral maze, locate the Graveyard Leviathan, and secure the GLYPH-2 Synaptic Bridge.",
+            "speed": "normal",
+            "sfx": "typewriter"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Threats: Aggressive coral wasps and armored eels. The electromagnetic static here will mess with your targeting.",
+            "speed": "normal",
+            "sfx": "typewriter"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "You two are the best we've got. The Navy is sniffing around our warp trail. Work together and get that memory-vault open.",
+            "speed": "slow",
+            "sfx": "typewriter"
+          }
+        ],
+        "coop4": [
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Squadron, listen up. Kepler-442b is a graveyard. The precursor ruins are leaking raw data and rust clouds.",
+            "speed": "normal",
+            "sfx": "comms_incoming"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Objective: Penetrate the bleached reef, defeat the Graveyard Leviathan, and extract the GLYPH-2 Synaptic Bridge.",
+            "speed": "normal",
+            "sfx": "typewriter"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Threats: Coral wasps, rust drones, and armored eels. Be careful—these structures can collapse under heavy fire.",
+            "speed": "normal",
+            "sfx": "typewriter"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Our timeline is shrinking. Keep the formations tight and focus your firepower on the heavy targets. Thorne out.",
+            "speed": "slow",
+            "sfx": "typewriter"
+          }
+        ]
+      },
+      "post_level": [
+        {
+          "speaker": "COMMANDER THORNE",
+          "text": "Thorne here. Sensors show the memory-vault is open and the GLYPH-2 Synaptic Bridge is secured.",
+          "speed": "normal",
+          "sfx": "comms_incoming"
+        },
+        {
+          "speaker": "COMMANDER THORNE",
+          "text": "The data download was massive. It references a dissident precursor named Ophion who sabotaged the grid.",
+          "speed": "slow",
+          "sfx": "typewriter"
+        },
+        {
+          "speaker": "COMMANDER THORNE",
+          "text": "Next coordinates locked. We are heading into Europa's subsurface ocean. Prepare for a deep freeze.",
+          "speed": "normal",
+          "sfx": "warp_transition"
+        }
+      ],
+      "boss_defeat": [
+        {
+          "speaker": "GRAVEYARD LEVIATHAN",
+          "text": "*low sonar groan* ...Ophion's legacy... the truth is buried in the ice... do not trust the containment...",
+          "speed": "slow",
+          "sfx": "boss_voice"
+        },
+        {
+          "speaker": "VALERA",
+          "text": "Its vocal emulator... it was playing back precursor logs. We've got the synaptic bridge, Thorne. Let's move.",
+          "speed": "normal",
+          "sfx": "typewriter"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Coelacanth's Lair",
+      "location": "Europa — Subsurface Ocean",
+      "commander": "Commander Jack Thorne",
+      "pre_level": {
+        "solo": [
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Darius, we are under the ice shell of Europa. It is freezing, dark, and filled with ancient machinery.",
+            "speed": "normal",
+            "sfx": "comms_incoming"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Objective: Navigate the frozen machinery, defeat the Cyber Coelacanth, and extract the GLYPH-3 Memory Integration core.",
+            "speed": "normal",
+            "sfx": "typewriter"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Threats: Heavy walker mechs on ceiling tracks, Sentinels, and Sparker drones leaving electric trails.",
+            "speed": "normal",
+            "sfx": "typewriter"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Pilot, you're our only hope. The Navy is closing in. Find that core so we can start decoding Ophion's records. Good hunting.",
+            "speed": "slow",
+            "sfx": "typewriter"
+          }
+        ],
+        "coop2": [
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Darius, Valera, keep your thrusters warm. We're in the deep vents beneath Europa's ice sheet.",
+            "speed": "normal",
+            "sfx": "comms_incoming"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Objective: Penetrate the ancient nesting grounds, defeat the Cyber Coelacanth, and secure GLYPH-3.",
+            "speed": "normal",
+            "sfx": "typewriter"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Threats: Ceiling walker juggernauts, sparkers, and stationary sentinels. Watch out for arcing electrical currents.",
+            "speed": "normal",
+            "sfx": "typewriter"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "You two are the best we've got. The Navy has sent a probe team nearby. Grab that core before they pin us down.",
+            "speed": "slow",
+            "sfx": "typewriter"
+          }
+        ],
+        "coop4": [
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Squadron, listen up. We are in the birthing chambers of the Coelacanth network beneath Europa's ice shell.",
+            "speed": "normal",
+            "sfx": "comms_incoming"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Objective: Defeat the primary Cyber Coelacanth dreadnought and secure the GLYPH-3 Memory Integration core.",
+            "speed": "normal",
+            "sfx": "typewriter"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Threats: Sparkers, Juggernauts, and automated defenses. The cold will slow your shield recharge rates.",
+            "speed": "normal",
+            "sfx": "typewriter"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Lyra's condition is shifting. We need this piece of the puzzle immediately. Keep coordinates aligned. Break orbit!",
+            "speed": "slow",
+            "sfx": "typewriter"
+          }
+        ]
+      },
+      "post_level": [
+        {
+          "speaker": "COMMANDER THORNE",
+          "text": "Thorne here. The Cyber Coelacanth is down. We've recovered the GLYPH-3 Memory Integration core.",
+          "speed": "normal",
+          "sfx": "comms_incoming"
+        },
+        {
+          "speaker": "COMMANDER THORNE",
+          "text": "We also salvaged a living Coelacanth embryo in stasis. It's safe on Haven-7.",
+          "speed": "slow",
+          "sfx": "typewriter"
+        },
+        {
+          "speaker": "COMMANDER THORNE",
+          "text": "The decrypted logs suggest the next entity drifted out of the atmosphere. Preparing for space transit to the Nebula Drift.",
+          "speed": "normal",
+          "sfx": "warp_transition"
+        }
+      ],
+      "boss_defeat": [
+        {
+          "speaker": "CYBER COELACANTH",
+          "text": "...The dream cannot be contained... the prison walls crumble... the Dreamer Below All Depths is calling...",
+          "speed": "slow",
+          "sfx": "boss_voice"
+        },
+        {
+          "speaker": "DARIUS",
+          "text": "The dreadnought is breaking apart. I've got the embryo in stasis. Heading back to the surface.",
+          "speed": "normal",
+          "sfx": "typewriter"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Nebula Drift",
+      "location": "The Veil Nebula — Deep Space",
+      "commander": "Commander Jack Thorne",
+      "pre_level": {
+        "solo": [
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Darius, we've broken orbit and entered the Veil Nebula. Comms are cracking under high electromagnetic storms.",
+            "speed": "normal",
+            "sfx": "comms_incoming"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Objective: Navigate the gas clouds, locate the fourth Coelacanth, and extract the GLYPH-4 Psychic Dampener.",
+            "speed": "normal",
+            "sfx": "typewriter"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Threats: Watch out for phase-shifting Plasma Wisps and Nebula Wraiths that can pass through solid obstacles.",
+            "speed": "normal",
+            "sfx": "typewriter"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Pilot, you're our only hope. The cosmic gas itself feels alive down there. Keep your head on straight, son. Thorne out.",
+            "speed": "slow",
+            "sfx": "typewriter"
+          }
+        ],
+        "coop2": [
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Darius, Valera, welcome to the deep void. Comms are garbled but readable.",
+            "speed": "normal",
+            "sfx": "comms_incoming"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Objective: Track the signal of the fourth Coelacanth and retrieve the GLYPH-4 Psychic Dampener.",
+            "speed": "normal",
+            "sfx": "typewriter"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Threats: Storm Sprites with chain-lightning attacks and heavy Gas Giants that absorb bullets from the front.",
+            "speed": "normal",
+            "sfx": "typewriter"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "You two are the best we've got. The environment is shifting based on neural patterns. Do not lose your focus.",
+            "speed": "slow",
+            "sfx": "typewriter"
+          }
+        ],
+        "coop4": [
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Squadron, listen up. We are deep in the Veil Nebula. The Abyss Mind is dreaming this gas cloud into a weapon.",
+            "speed": "normal",
+            "sfx": "comms_incoming"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Objective: Defeat the Nebula Serpent, secure GLYPH-4, and escape before the storm collapses.",
+            "speed": "normal",
+            "sfx": "typewriter"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Threats: Phase-shifting plasma wisps, storm sprites, and cloaked nebula wraiths. Visual range is limited.",
+            "speed": "normal",
+            "sfx": "typewriter"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Lyra's neural scans are showing spikes matching this nebula's resonance. Get this dampener. Thorne out.",
+            "speed": "slow",
+            "sfx": "typewriter"
+          }
+        ]
+      },
+      "post_level": [
+        {
+          "speaker": "COMMANDER THORNE",
+          "text": "Thorne here. The Nebula Serpent is down and GLYPH-4 is secured.",
+          "speed": "normal",
+          "sfx": "comms_incoming"
+        },
+        {
+          "speaker": "DARIUS",
+          "text": "Thorne, I... I felt something down there. A voice. It was lonely. It wasn't attacking, it was just... crying out.",
+          "speed": "slow",
+          "sfx": "typewriter"
+        },
+        {
+          "speaker": "COMMANDER THORNE",
+          "text": "Stay focused, kid. The Navy is tracking us. Next target is the asteroid ice ring around Saturn. Get ready.",
+          "speed": "normal",
+          "sfx": "warp_transition"
+        }
+      ],
+      "boss_defeat": [
+        {
+          "speaker": "NEBULA SERPENT",
+          "text": "...Why do you fight the tide?... We are only the drift... the lonely drift seeking its kin...",
+          "speed": "slow",
+          "sfx": "boss_voice"
+        },
+        {
+          "speaker": "DARIUS",
+          "text": "It dissolved. The psychic dampener is intact. But it's getting harder to block out the whispers.",
+          "speed": "slow",
+          "sfx": "typewriter"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "name": "Ice Ring",
+      "location": "Saturn's Rings — Cryo-Debris Field",
+      "commander": "Commander Jack Thorne",
+      "pre_level": {
+        "solo": [
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Darius, we've dropped into Saturn's rings. The ice shards are dense, and we've got a massive problem.",
+            "speed": "normal",
+            "sfx": "comms_incoming"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Objective: Navigate the freezing debris, defeat the Frost Wyrm, and extract the GLYPH-5 Cellular Regulator.",
+            "speed": "normal",
+            "sfx": "typewriter"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Threats: Swarming Ice Drones, Frost Interceptors, and the Navy's elite Squadron Umbra interceptors.",
+            "speed": "normal",
+            "sfx": "typewriter"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Pilot, you're our only hope. Valera Cross is commanding the Navy force. She has orders to terminate you. Watch your back.",
+            "speed": "slow",
+            "sfx": "typewriter"
+          }
+        ],
+        "coop2": [
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Darius, Valera, this is it. The Navy has blocked the exit vectors in the rings.",
+            "speed": "normal",
+            "sfx": "comms_incoming"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Objective: Defeat the Frost Wyrm, retrieve the GLYPH-5 Cellular Regulator, and disable the Navy blockers.",
+            "speed": "normal",
+            "sfx": "typewriter"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Threats: Spinning Ice Shards, Frost Drones with freeze beams, and Squadron Umbra strike ships.",
+            "speed": "normal",
+            "sfx": "typewriter"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "You two are the best we've got. Valera, Crane's orders are fake—he's using your squad as bait. Trust Darius and clear the path.",
+            "speed": "slow",
+            "sfx": "typewriter"
+          }
+        ],
+        "coop4": [
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Squadron, listen up. We are surrounded by ice rings and the Navy's heavy fleet blockade.",
+            "speed": "normal",
+            "sfx": "comms_incoming"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Objective: Secure the GLYPH-5 Cellular Regulator from the Frost Wyrm and punch a hole through the Navy blockade.",
+            "speed": "normal",
+            "sfx": "typewriter"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Threats: Frost drones, glaciers that explode into ice needles on death, and elite Navy interceptors.",
+            "speed": "normal",
+            "sfx": "typewriter"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Valera has defected to our side, but Admiral Crane is sending reinforcements. Fight together, or we freeze here. Go!",
+            "speed": "slow",
+            "sfx": "typewriter"
+          }
+        ]
+      },
+      "post_level": [
+        {
+          "speaker": "COMMANDER THORNE",
+          "text": "Thorne here. The Frost Wyrm is down and the Navy blockade is broken. GLYPH-5 is secured.",
+          "speed": "normal",
+          "sfx": "comms_incoming"
+        },
+        {
+          "speaker": "VALERA",
+          "text": "I can confirm Thorne's intel. Crane lied to us. The Navy is using Lyra as a control mechanism for a psychic weapon.",
+          "speed": "slow",
+          "sfx": "typewriter"
+        },
+        {
+          "speaker": "COMMANDER THORNE",
+          "text": "We've got to hide. We're warping into the Betelgeuse Remnant—the Fire Nebula. The heat signatures should block their scans.",
+          "speed": "normal",
+          "sfx": "warp_transition"
+        }
+      ],
+      "boss_defeat": [
+        {
+          "speaker": "FROST WYRM",
+          "text": "...The cold... preserves the dream... why do you bring the fire?... the cycle must continue...",
+          "speed": "slow",
+          "sfx": "boss_voice"
+        },
+        {
+          "speaker": "VALERA",
+          "text": "Darius, my ship is heavily damaged, but I'm calling a cease-fire. The Navy... they set us up. I'm with you now.",
+          "speed": "normal",
+          "sfx": "typewriter"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "name": "Fire Nebula",
+      "location": "Betelgeuse Remnant — Plasma Expanse",
+      "commander": "Commander Jack Thorne",
+      "pre_level": {
+        "solo": [
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Darius, we are in the Betelgeuse Remnant. The ambient temperature is off the charts. We've got bad news from Haven-7.",
+            "speed": "normal",
+            "sfx": "comms_incoming"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Objective: Navigate the volcanic cluster, defeat the Inferno Titan, and retrieve the GLYPH-6 Thermal Stabilizer.",
+            "speed": "normal",
+            "sfx": "typewriter"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Threats: Watch out for Ember Sprites leaving burning trails and Magma Wasps that explode on impact.",
+            "speed": "normal",
+            "sfx": "typewriter"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Pilot, you're our only hope. The Navy attacked Haven-7 during the warp, and Lyra's attunement has spiked. Stay focused, son.",
+            "speed": "slow",
+            "sfx": "typewriter"
+          }
+        ],
+        "coop2": [
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Darius, Valera, comms are fluctuating under the thermal haze. This nebula is a living furnace.",
+            "speed": "normal",
+            "sfx": "comms_incoming"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Objective: Navigate the Betelgeuse Remnant, destroy the Inferno Titan, and secure GLYPH-6.",
+            "speed": "normal",
+            "sfx": "typewriter"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Threats: Molten Lava Golems forming hazard pools, magma wasps, and extreme heat distortion.",
+            "speed": "normal",
+            "sfx": "typewriter"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "You two are the best we've got. The Navy has boarded Haven-7. Naya is holding them off, but Lyra is changing. Move fast!",
+            "speed": "slow",
+            "sfx": "typewriter"
+          }
+        ],
+        "coop4": [
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Squadron, listen up. Haven-7 has been breached. Selene and Naya evacuated, but Lyra was exposed to the Navy's signal accelerator.",
+            "speed": "normal",
+            "sfx": "comms_incoming"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Objective: Defeat the Inferno Titan (the Forge-Mind), secure GLYPH-6, and return to the evacuation coordinates.",
+            "speed": "normal",
+            "sfx": "typewriter"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Threats: High-density magma wasps, lava golems, and superheated plasma storms. Shield efficiency is down by 30%.",
+            "speed": "normal",
+            "sfx": "typewriter"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "The Forge-Mind is actively broadcasting the Dreamer's signal. Shut it down before Lyra's mind is fully overwritten. Go!",
+            "speed": "slow",
+            "sfx": "typewriter"
+          }
+        ]
+      },
+      "post_level": [
+        {
+          "speaker": "COMMANDER THORNE",
+          "text": "Thorne here. The Inferno Titan is down. GLYPH-6 secured. We've reached the evac ship.",
+          "speed": "normal",
+          "sfx": "comms_incoming"
+        },
+        {
+          "speaker": "LYRA",
+          "text": "Daddy... I can hear it. It's not angry. It's just... so cold and alone in the dark. It's scared, Daddy.",
+          "speed": "slow",
+          "sfx": "lyra_glow_voice"
+        },
+        {
+          "speaker": "COMMANDER THORNE",
+          "text": "Her eyes are glowing cyan. We need to stabilize her now. Warping to HD 189733b—the Storm Belt.",
+          "speed": "normal",
+          "sfx": "warp_transition"
+        }
+      ],
+      "boss_defeat": [
+        {
+          "speaker": "INFERNO TITAN",
+          "text": "...The furnace consumes... but the signal cannot be extinguished... the broad-cast is... galaxy-wide...",
+          "speed": "slow",
+          "sfx": "boss_voice"
+        },
+        {
+          "speaker": "DARIUS",
+          "text": "It's slagged. Thermal stabilizer is ours. Thorne, get the medical bay ready, we are coming in hot.",
+          "speed": "normal",
+          "sfx": "typewriter"
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "name": "Storm Belt",
+      "location": "HD 189733b — Eternal Hurricane",
+      "commander": "Commander Jack Thorne",
+      "pre_level": {
+        "solo": [
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Darius, we're in the atmosphere of HD 189733b. The winds are hitting 5,000 miles per hour, and lightning is constant.",
+            "speed": "normal",
+            "sfx": "comms_incoming"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Objective: Fly through the hurricane, defeat the Tempest Colossus, and extract the GLYPH-7 Atmospheric Interface.",
+            "speed": "normal",
+            "sfx": "typewriter"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Threats: Watch out for Storm Hawks with EMP attacks that can temporarily disable your weapons.",
+            "speed": "normal",
+            "sfx": "typewriter"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Pilot, you're our only hope. The seventh Coelacanth is mad. Decades in this storm broke its program. End its suffering, son.",
+            "speed": "slow",
+            "sfx": "typewriter"
+          }
+        ],
+        "coop2": [
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Darius, Valera, maintain tight vector stabilization. These crosswinds will drag you into the debris field.",
+            "speed": "normal",
+            "sfx": "comms_incoming"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Objective: Navigate the storm core, defeat the Tempest Colossus, and retrieve the GLYPH-7 interface.",
+            "speed": "normal",
+            "sfx": "typewriter"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Threats: Static Sparks, Storm Hawks with EMP bursts, and stationary Storm Sentinels projecting lightning barriers.",
+            "speed": "normal",
+            "sfx": "typewriter"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "You two are the best we've got. Naya is monitoring Lyra's vitals. The storm's electrical energy is keeping her stable. Stay focused.",
+            "speed": "slow",
+            "sfx": "typewriter"
+          }
+        ],
+        "coop4": [
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Squadron, listen up. We are descending into the eye of the eternal hurricane on HD 189733b.",
+            "speed": "normal",
+            "sfx": "comms_incoming"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Objective: Defeat the corrupted Storm-Singer (Tempest Colossus) and secure the GLYPH-7 Atmospheric Interface.",
+            "speed": "normal",
+            "sfx": "typewriter"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Threats: EMP storms, static sparks, and rotating lightning walls. Navigation systems will occasionally glitch.",
+            "speed": "normal",
+            "sfx": "typewriter"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "We need this interface to decode the precursor logs. The Storm-Singer is trapped in a loop of madness. Free it, squadron. Out.",
+            "speed": "slow",
+            "sfx": "typewriter"
+          }
+        ]
+      },
+      "post_level": [
+        {
+          "speaker": "COMMANDER THORNE",
+          "text": "Thorne here. The Tempest Colossus has been put to rest. GLYPH-7 interface secured.",
+          "speed": "normal",
+          "sfx": "comms_incoming"
+        },
+        {
+          "speaker": "OPHION AI",
+          "text": "Greetings, descendants. I am Ophion's neural imprint, restored by the Storm-Singer's data. I will guide you from here.",
+          "speed": "slow",
+          "sfx": "precursor_voice"
+        },
+        {
+          "speaker": "COMMANDER THORNE",
+          "text": "We've got a precursor AI on board. Next coordinates locked. Warping to the Graveyard Orbit—the Derelict Fleet.",
+          "speed": "normal",
+          "sfx": "warp_transition"
+        }
+      ],
+      "boss_defeat": [
+        {
+          "speaker": "TEMPEST COLOSSUS",
+          "text": "*crying out* ...Forgive me... Ophion... the silence was too loud... I only wanted... someone to listen...",
+          "speed": "slow",
+          "sfx": "boss_voice"
+        },
+        {
+          "speaker": "DARIUS",
+          "text": "It transferred its core voluntarily at the end. It wanted to die sane. The precursor AI is uploading now.",
+          "speed": "slow",
+          "sfx": "typewriter"
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "name": "Derelict Fleet",
+      "location": "Graveyard Orbit — Abandoned Navy Armada",
+      "commander": "Commander Jack Thorne",
+      "pre_level": {
+        "solo": [
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Darius, we've dropped into the ship graveyard. Hundreds of abandoned Navy vessels. The ghosts of Project Dream-Weapon.",
+            "speed": "normal",
+            "sfx": "comms_incoming"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Objective: Search the wreckage, defeat the Dreadnought AI, and retrieve the GLYPH-8 Genetic Matrix.",
+            "speed": "normal",
+            "sfx": "typewriter"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Threats: Salvage Drones, Ghost Fighters on autopilot, and active deck turrets popping out of wreckage.",
+            "speed": "normal",
+            "sfx": "typewriter"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Pilot, you're our only hope. Admiral Crane's psychic imprint is running the system. The truth about your family is here. Go, son.",
+            "speed": "slow",
+            "sfx": "typewriter"
+          }
+        ],
+        "coop2": [
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Darius, Valera, watch the debris. These hulks still have automated defense grids active.",
+            "speed": "normal",
+            "sfx": "comms_incoming"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Objective: Infiltrate the flagship NSS Event Horizon, defeat the Dreadnought AI, and extract the GLYPH-8 Genetic Matrix.",
+            "speed": "normal",
+            "sfx": "typewriter"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Threats: Kamikaze salvage drones, ghost fighters, and heavy turret batteries firing synchronized volleys.",
+            "speed": "normal",
+            "sfx": "typewriter"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "You two are the best we've got. The logs in this fleet will reveal why the Navy targeted the Star bloodline. Find the core.",
+            "speed": "slow",
+            "sfx": "typewriter"
+          }
+        ],
+        "coop4": [
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Squadron, listen up. We are flying through the graveyard of the Navy's secret armada.",
+            "speed": "normal",
+            "sfx": "comms_incoming"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Objective: Secure the GLYPH-8 Genetic Matrix from the Dreadnought AI and retrieve the project records.",
+            "speed": "normal",
+            "sfx": "typewriter"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Threats: Automated turrets, salvage drones, and ghost fighter swarms. The debris field makes navigation hazardous.",
+            "speed": "normal",
+            "sfx": "typewriter"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Ophion's AI is scanning the network. Admiral Crane's digital ghost is defending the core. Wipe him out, squadron.",
+            "speed": "slow",
+            "sfx": "typewriter"
+          }
+        ]
+      },
+      "post_level": [
+        {
+          "speaker": "COMMANDER THORNE",
+          "text": "Thorne here. The Dreadnought AI is deactivated. GLYPH-8 secured. We have the logs.",
+          "speed": "normal",
+          "sfx": "comms_incoming"
+        },
+        {
+          "speaker": "DARIUS",
+          "text": "Thorne... my family. Aldric didn't die in an accident. The Navy engineered our bloodline to be the Dreamer's vessel. Lyra was designed.",
+          "speed": "slow",
+          "sfx": "typewriter"
+        },
+        {
+          "speaker": "COMMANDER THORNE",
+          "text": "I'm sorry, kid. I knew Aldric, but I never knew how deep the rot went. Warping to Proxima Centauri B—the Xenomorph Hive. Stay strong.",
+          "speed": "normal",
+          "sfx": "warp_transition"
+        }
+      ],
+      "boss_defeat": [
+        {
+          "speaker": "DREADNOUGHT AI",
+          "text": "...She is our weapon!... The ultimate shield against the deep!... You are throwing away humanity's salvation!...",
+          "speed": "slow",
+          "sfx": "boss_voice"
+        },
+        {
+          "speaker": "DARIUS",
+          "text": "You used my grandfather. You killed my father. And you targeted my daughter. Burn in the junk pile, Crane.",
+          "speed": "normal",
+          "sfx": "typewriter"
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "name": "Xenomorph Hive",
+      "location": "Proxima Centauri B — Dreamed World",
+      "commander": "Commander Jack Thorne",
+      "pre_level": {
+        "solo": [
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Darius, we've arrived at Proxima Centauri B. It's a nightmare. The planet has been entirely reshaped into flesh and bones.",
+            "speed": "normal",
+            "sfx": "comms_incoming"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Objective: Navigate the fleshy tunnels, defeat the Hive Mind, and retrieve the GLYPH-9 Consciousness Anchor.",
+            "speed": "normal",
+            "sfx": "typewriter"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Threats: Wall-crawling Crawlers, Spitters firing acidic globs, and armored Brutes. Destroy Hive Nodes to stop spawns.",
+            "speed": "normal",
+            "sfx": "typewriter"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Pilot, you're our only hope. The Hive is trying to negotiate with you, offering Lyra's safety for your surrender. Don't listen to its lies.",
+            "speed": "slow",
+            "sfx": "typewriter"
+          }
+        ],
+        "coop2": [
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Darius, Valera, the atmosphere here is organic and acidic. Keep your shields at maximum polarity.",
+            "speed": "normal",
+            "sfx": "comms_incoming"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Objective: Infiltrate the Hive core, defeat the Hive Mind nexus, and secure the GLYPH-9 Consciousness Anchor.",
+            "speed": "normal",
+            "sfx": "typewriter"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Threats: Acidic spitters (DoT damage), skittering crawlers, and armored brutes. Watch out for shifting organic walls.",
+            "speed": "normal",
+            "sfx": "typewriter"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "You two are the best we've got. The Hive is using Lyra's voice to lure you into a trap. Keep your focus on the objective.",
+            "speed": "slow",
+            "sfx": "typewriter"
+          }
+        ],
+        "coop4": [
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Squadron, listen up. Proxima Centauri B is a fully 'Dreamed' world. The Abyss Mind has rewritten its physics.",
+            "speed": "normal",
+            "sfx": "comms_incoming"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Objective: Penetrate the hive nexus, destroy the Hive Mind, and extract the GLYPH-9 Consciousness Anchor.",
+            "speed": "normal",
+            "sfx": "typewriter"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Threats: Spitters with high acidic damage, wall crawlers, and spawning hive nodes. Gravity will warp occasionally.",
+            "speed": "normal",
+            "sfx": "typewriter"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Ophion's AI is warning us that this is what happens when the containment fails. We must stop this infestation. Move in!",
+            "speed": "slow",
+            "sfx": "typewriter"
+          }
+        ]
+      },
+      "post_level": [
+        {
+          "speaker": "COMMANDER THORNE",
+          "text": "Thorne here. The Hive Mind is destroyed and GLYPH-9 is secured. But the galactic core is cracking.",
+          "speed": "normal",
+          "sfx": "comms_incoming"
+        },
+        {
+          "speaker": "OPHION AI",
+          "text": "The final Coelacanth—the Prime—is failing at the black hole's event horizon. The Architect is awakening.",
+          "speed": "slow",
+          "sfx": "precursor_voice"
+        },
+        {
+          "speaker": "COMMANDER THORNE",
+          "text": "This is it, team. Warp coordinates set for the Core Rift. Whatever happens next... I'm proud of you. Warping.",
+          "speed": "normal",
+          "sfx": "warp_transition"
+        }
+      ],
+      "boss_defeat": [
+        {
+          "speaker": "HIVE MIND",
+          "text": "...Why do you reject the union?... She would have been a god... free from pain, free from the flesh... why choose death?...",
+          "speed": "slow",
+          "sfx": "boss_voice"
+        },
+        {
+          "speaker": "DARIUS",
+          "text": "Because she deserves a life, not to be a voice in your chorus. The anchor is ours. Let's get out of this flesh pit.",
+          "speed": "normal",
+          "sfx": "typewriter"
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "name": "Core Rift",
+      "location": "Galactic Core — The Dreamer's Threshold",
+      "commander": "Commander Jack Thorne",
+      "pre_level": {
+        "solo": [
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Darius, we've arrived at the galactic center. The supermassive black hole is right below us. Space and time are breaking apart.",
+            "speed": "normal",
+            "sfx": "comms_incoming"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Objective: Navigate the reality cracks, defeat The Architect, and secure the GLYPH-10 Integration Core.",
+            "speed": "normal",
+            "sfx": "typewriter"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Threats: Glitch Fragments, Paradox Wisps moving in reverse, Null Entities, and Void Maws that pull you in.",
+            "speed": "normal",
+            "sfx": "typewriter"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Darius... you have all nine components. Once you secure the tenth, the final choice is yours. Save your daughter, son. Thorne out.",
+            "speed": "slow",
+            "sfx": "typewriter"
+          }
+        ],
+        "coop2": [
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Darius, Valera, comms are failing. We are at the event horizon of oblivion.",
+            "speed": "normal",
+            "sfx": "comms_incoming"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Objective: Defeat The Architect, retrieve the GLYPH-10 Integration Core, and decide the fate of the galaxy.",
+            "speed": "normal",
+            "sfx": "typewriter"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Threats: Glitch fragments, paradox wisps, null entities erasing bullets, and void maw gravity wells (instant death).",
+            "speed": "normal",
+            "sfx": "typewriter"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "You two are the best we've got. The final barrier is ahead. Trust your training, trust each other, and make your decision.",
+            "speed": "slow",
+            "sfx": "typewriter"
+          }
+        ],
+        "coop4": [
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Squadron, listen up. This is the end of the line. The Prime Coelacanth is collapsing into the event horizon.",
+            "speed": "normal",
+            "sfx": "comms_incoming"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Objective: Destroy The Architect, secure the GLYPH-10 Integration Core, and initiate the final protocol.",
+            "speed": "normal",
+            "sfx": "typewriter"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Threats: Shifting geometry Rift Aberrations, void maws, and severe UI corruption glitches.",
+            "speed": "normal",
+            "sfx": "typewriter"
+          },
+          {
+            "speaker": "COMMANDER THORNE",
+            "text": "Whatever you choose at the core, we are with you. Naya, Valera, Ophion, Darius... save our girl. Thorne out.",
+            "speed": "slow",
+            "sfx": "typewriter"
+          }
+        ]
+      },
+      "post_level": [
+        {
+          "speaker": "COMMANDER THORNE",
+          "text": "Thorne here. The Architect is shattered. The way to the core is open. You have all ten pieces of the key, Darius.",
+          "speed": "normal",
+          "sfx": "comms_incoming"
+        },
+        {
+          "speaker": "LYRA",
+          "text": "Daddy... the entity is waiting. It is not afraid anymore. It wants to know what we should do next.",
+          "speed": "slow",
+          "sfx": "lyra_glow_voice"
+        },
+        {
+          "speaker": "COMMANDER THORNE",
+          "text": "Initiating selection sequence. Make your choice, pilot. The galaxy is holding its breath.",
+          "speed": "slow",
+          "sfx": "choice_activation"
+        }
+      ],
+      "boss_defeat": [
+        {
+          "speaker": "THE ARCHITECT",
+          "text": "...The cycle... is broken... The consciousness of the stars... is yours to mold... choose...",
+          "speed": "slow",
+          "sfx": "boss_voice"
+        },
+        {
+          "speaker": "DARIUS",
+          "text": "I see the three pathways. The core is exposed. It's time to end this containment, once and for all.",
+          "speed": "slow",
+          "sfx": "typewriter"
+        }
+      ]
+    }
+  ]
+}
