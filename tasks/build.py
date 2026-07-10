@@ -67,12 +67,18 @@ with open('index.html', 'r') as f:
 def minify_html(content):
     # Remove HTML comments (not inside script tags)
     content = re.sub(r'<!--.*?-->', '', content, flags=re.DOTALL)
-    # Collapse multiple whitespace to single space (outside tags)
-    content = re.sub(r'>\s+<', '><', content)
-    content = re.sub(r'\s{2,}', ' ', content)
+
+    # Split by script tags to avoid collapsing whitespace inside JS,
+    # which would break single-line comments (//)
+    parts = re.split(r'(<script.*?>.*?</script>)', content, flags=re.DOTALL)
+    for i in range(len(parts)):
+        if not parts[i].startswith('<script'):
+            # Collapse multiple whitespace to single space (outside tags)
+            parts[i] = re.sub(r'>\s+<', '><', parts[i])
+            parts[i] = re.sub(r'\s{2,}', ' ', parts[i])
+
     # Trim leading/trailing whitespace
-    content = content.strip()
-    return content
+    return "".join(parts).strip()
 
 minified = minify_html(html)
 min_path = dist_dir / 'index.html'
