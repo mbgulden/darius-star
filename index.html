@@ -10,6 +10,8 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://whatanadventure.games/darius-star/">
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>">
+    <script src="upgrade_system.js"></script>
+    <script src="js/sprites.js"></script>
     <style>
         body {
             margin: 0;
@@ -272,7 +274,6 @@
         <span style="color: #ff0055;">Red Orbs</span> upgrade primary weapons. <span style="color: #00ff55;">Green Orbs</span> restore Shields. Reaching 2,000 points triggers the Boss Battle!
     </div>
 
-    <script src="upgrade_system.js"></script>
     <script>
         // --- Web Audio Synthesizer ---
         let audioCtx = null;
@@ -2796,27 +2797,6 @@
         // --- Parallax Background System ---
         // Image-based parallax layers (bg_nebula, bg_city) + procedural starfield
 
-        const bgImages = {};
-        function loadBackgroundImages() {
-            const toLoad = [
-                { key: 'nebula', src: 'assets/sprites/bg_nebula_0.png' },
-                { key: 'city',   src: 'assets/sprites/bg_city_0.png' }
-            ];
-            let loaded = 0;
-            toLoad.forEach(({key, src}) => {
-                bgImages[key] = new Image();
-                bgImages[key].onload = () => { loaded++; };
-                bgImages[key].src = src;
-            });
-        }
-        // Background images lazy-loaded on first user interaction
-        let bgImagesLoaded = false;
-        function ensureBackgroundImages() {
-            if (!bgImagesLoaded) {
-                bgImagesLoaded = true;
-                loadBackgroundImages();
-            }
-        }
 
         class ParallaxLayer {
             constructor(key, speed, yOffset = 0, alpha = 1.0, scale = 1.0) {
@@ -2855,101 +2835,6 @@
             }
         }
 
-        // --- Player Sprite Preloading ---
-        const playerSprites = {};
-        let playerSpritesLoaded = false;
-
-        function loadPlayerSprites() {
-            if (playerSpritesLoaded) return;
-            playerSpritesLoaded = true;
-            const frames = ['player_0', 'player_1', 'scout_0', 'interceptor_0', 'heavy_0'];
-            frames.forEach(key => {
-                playerSprites[key] = new Image();
-                playerSprites[key].src = `assets/sprites/${key}.png`;
-            });
-        }
-
-        // --- Enemy Sprite Preloading ---
-        const enemySprites = {};
-        let enemySpritesLoaded = false;
-
-        function loadEnemySprites() {
-            if (enemySpritesLoaded) return;
-            enemySpritesLoaded = true;
-            const types = ['scout', 'interceptor', 'heavy', 'boss_minion'];
-            types.forEach(key => {
-                enemySprites[key] = new Image();
-                enemySprites[key].src = `assets/sprites/${key}_0.png`;
-            });
-        }
-
-        // --- VFX Sprite Preloading ---
-        const vfxSprites = {};
-        let vfxSpritesLoaded = false;
-
-        function loadVFXSprites() {
-            if (vfxSpritesLoaded) return;
-            vfxSpritesLoaded = true;
-            // Laser (player bullets)
-            vfxSprites['laser'] = new Image();
-            vfxSprites['laser'].src = 'assets/sprites/laser_0.png';
-            // Enemy laser + glow
-            vfxSprites['laser_enemy'] = new Image();
-            vfxSprites['laser_enemy'].src = 'assets/sprites/laser_enemy.png';
-            vfxSprites['laser_glow'] = new Image();
-            vfxSprites['laser_glow'].src = 'assets/sprites/laser_0_glow.png';
-            // Multi-frame explosion (4 frames)
-            for (let f = 0; f < 4; f++) {
-                vfxSprites['explosion_' + f] = new Image();
-                vfxSprites['explosion_' + f].src = `assets/sprites/explosion_${f}.png`;
-            }
-            // Shield forcefield ring
-            vfxSprites['shield'] = new Image();
-            vfxSprites['shield'].src = 'assets/sprites/shield_0.png';
-        }
-
-        // --- Boss Asset Lazy-Loading ---
-        // Boss sprites are preloaded when score nears 2,000-point trigger
-        const bossSprites = {};
-        let bossAssetsLoading = false;
-        let bossAssetsLoaded = false;
-        let bossLoadProgress = 0;  // 0-100
-
-        function preloadBossAssets() {
-            if (bossAssetsLoading || bossAssetsLoaded) return;
-            bossAssetsLoading = true;
-            bossLoadProgress = 0;
-
-            const toLoad = [
-                { key: 'boss',       src: 'assets/sprites/boss_0.png' },
-                { key: 'bossMinion', src: 'assets/sprites/boss_minion_0.png' }
-            ];
-            let loadedCount = 0;
-            const total = toLoad.length;
-
-            toLoad.forEach(({key, src}) => {
-                const img = new Image();
-                img.onload = () => {
-                    loadedCount++;
-                    bossLoadProgress = Math.round((loadedCount / total) * 100);
-                    if (loadedCount >= total) {
-                        bossAssetsLoaded = true;
-                        bossAssetsLoading = false;
-                    }
-                };
-                img.onerror = () => {
-                    // Graceful fallback: mark done even on error
-                    loadedCount++;
-                    bossLoadProgress = Math.round((loadedCount / total) * 100);
-                    if (loadedCount >= total) {
-                        bossAssetsLoaded = true;
-                        bossAssetsLoading = false;
-                    }
-                };
-                img.src = src;
-                bossSprites[key] = img;
-            });
-        }
 
         // --- Offscreen Canvas Pre-Rendering ---
         // Static/procedural assets are rendered to offscreen canvases
