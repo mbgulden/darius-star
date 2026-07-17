@@ -1,21 +1,21 @@
 {
-  "generated": "2026-07-05T22:46:50.382Z",
-  "gameUrl": "https://staging.darius-star.pages.dev",
+  "generated": "2026-07-17T01:08:39.629Z",
+  "gameUrl": "http://127.0.0.1:8099",
   "config": {
-    "runs": 1,
+    "runs": 2,
     "durationPerRun": 15
   },
   "summary": {
-    "totalRuns": 1,
-    "successfulRuns": 1,
+    "totalRuns": 2,
+    "successfulRuns": 2,
     "averageWeaponLevel": 1,
     "averageScrap": 0,
     "maxBiomeReached": 1,
-    "totalErrors": 0
+    "totalErrors": 1
   },
   "runs": [
     {
-      "timestamp": "2026-07-05T22:46:50.203Z",
+      "timestamp": "2026-07-17T01:08:02.991Z",
       "screen": "playing",
       "player": {
         "dead": false,
@@ -25,7 +25,7 @@
       },
       "level": {
         "biome": 1,
-        "level": 1
+        "level": 2
       },
       "enemies": {
         "killed": 0,
@@ -39,7 +39,28 @@
       "consoleErrors": [],
       "samples": [
         {
-          "timestamp": "2026-07-05T22:46:35.635Z",
+          "timestamp": "2026-07-17T01:07:48.259Z",
+          "screen": "playing",
+          "player": {
+            "dead": false,
+            "weaponLevel": 1,
+            "scrap": 0,
+            "hp": 0
+          },
+          "level": {
+            "biome": 1,
+            "level": 1
+          },
+          "enemies": {
+            "killed": 0,
+            "bossDefeated": false,
+            "bossHp": 0,
+            "active": 1
+          },
+          "fps": 0
+        },
+        {
+          "timestamp": "2026-07-17T01:07:57.753Z",
           "screen": "playing",
           "player": {
             "dead": false,
@@ -58,9 +79,37 @@
             "active": 7
           },
           "fps": 0
-        },
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-07-17T01:08:39.449Z",
+      "screen": "playing",
+      "player": {
+        "dead": false,
+        "weaponLevel": 1,
+        "scrap": 0,
+        "hp": 0
+      },
+      "level": {
+        "biome": 1,
+        "level": 1
+      },
+      "enemies": {
+        "killed": 0,
+        "bossDefeated": false,
+        "bossHp": 0,
+        "active": 2
+      },
+      "fps": 0,
+      "runIndex": 2,
+      "durationSec": 15,
+      "consoleErrors": [
+        "Failed to load resource: the server responded with a status of 404 (Not Found)"
+      ],
+      "samples": [
         {
-          "timestamp": "2026-07-05T22:46:43.881Z",
+          "timestamp": "2026-07-17T01:08:24.810Z",
           "screen": "playing",
           "player": {
             "dead": false,
@@ -76,7 +125,28 @@
             "killed": 0,
             "bossDefeated": false,
             "bossHp": 0,
-            "active": 5
+            "active": 4
+          },
+          "fps": 0
+        },
+        {
+          "timestamp": "2026-07-17T01:08:34.325Z",
+          "screen": "playing",
+          "player": {
+            "dead": false,
+            "weaponLevel": 1,
+            "scrap": 0,
+            "hp": 0
+          },
+          "level": {
+            "biome": 1,
+            "level": 1
+          },
+          "enemies": {
+            "killed": 0,
+            "bossDefeated": false,
+            "bossHp": 0,
+            "active": 4
           },
           "fps": 0
         }
