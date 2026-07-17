@@ -174,8 +174,30 @@ const scrapDrops = [];
 const floatingTexts = [];
 let runScrap = 0;
 let runScrapSaved = false;
+let runEndTelemetryLogged = false;
 const scrapNarrativeMilestonesPlayed = new Set();
 let enemyIdCounter = 0;  // Unique IDs for Economy.shouldDrop()
+
+function recordRunEndTelemetry() {
+    if (runEndTelemetryLogged || !window.Telemetry || (!gameOver && !gameWon)) return;
+    runEndTelemetryLogged = true;
+    if (gameOver) {
+        Telemetry.logEvent('death', {
+            score: score,
+            biome: window.LevelManager ? LevelManager.biome : 1,
+            level: window.LevelManager ? LevelManager.level : 1,
+            scrap: runScrap
+        });
+    } else if (gameWon) {
+        Telemetry.logEvent('completion', {
+            score: score,
+            biome: window.LevelManager ? LevelManager.biome : 10,
+            level: window.LevelManager ? LevelManager.level : 10,
+            scrap: runScrap,
+            is_final_victory: true
+        });
+    }
+}
 
 // Procedural variation seed (GRO-1006): set at run start, stored in save
 let runSeed = Math.floor(Math.random() * 2147483648);
@@ -221,6 +243,8 @@ function loop(timestamp) {
 }
 
 function update(dt) {
+    recordRunEndTelemetry();
+
     // Screen transition overlay fading
     if (targetScreen) {
         transitionTimer += dt;
@@ -921,6 +945,7 @@ function update(dt) {
     }
 
     if ((gameOver || gameWon) && !runScrapSaved) {
+        recordRunEndTelemetry();
         if (window.DS_UpgradeSystem) {
             window.DS_UpgradeSystem.addScrap(runScrap);
         }

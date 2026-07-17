@@ -190,6 +190,16 @@ function advanceToNextBiome() {
     bossesDefeated++;
     const oldBiome = biomeLevel;
     
+    if (window.Telemetry) {
+        Telemetry.logEvent('completion', {
+            score: score,
+            biome: oldBiome,
+            level: 10,
+            scrap: runScrap,
+            is_final_victory: false
+        });
+    }
+    
     // Show biome clear message
     floatingTexts.push(new FloatingText(canvas.width / 2, canvas.height / 3, 
         `BIOME ${oldBiome} CLEAR!`, '#00ffff'));
