@@ -269,6 +269,13 @@ function startNGPlus(prevRunData) {
     localStorage.removeItem('darius_star_ngplus_eligible');
     
     playSound('menu_select');
+    if (window.Telemetry) {
+        Telemetry.logEvent('replay_intent', {
+            replay_type: 'ngplus',
+            previous_biome: 10,
+            previous_score: typeof score !== 'undefined' ? score : 0
+        });
+    }
     resetGame();
 }
 
@@ -467,6 +474,12 @@ function resetGame() {
         // GRO-1054: Wire scrap/upgrade events (save-load path)
         BanterEngine.initScrapEvents();
     }
+    if (typeof runEndTelemetryLogged !== 'undefined') {
+        runEndTelemetryLogged = false;
+    }
+    if (window.Telemetry) {
+        Telemetry.startSession(activeShip, difficulty);
+    }
 }
 
 function handleDeathOrVictoryRestart() {
@@ -496,6 +509,13 @@ function handleDeathOrVictoryRestart() {
             }
             console.log(`No lives remaining. Campaign reset in slot ${activeSaveSlot}.`);
         }
+    }
+    if (window.Telemetry) {
+        Telemetry.logEvent('replay_intent', {
+            replay_type: 'restart',
+            previous_biome: window.LevelManager ? LevelManager.biome : 1,
+            previous_score: typeof score !== 'undefined' ? score : 0
+        });
     }
     resetGame();
 }
