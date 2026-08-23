@@ -23,6 +23,7 @@ in dependency order, with `game_loop.js` last.
 ### js/ module map (loaded in this order)
 | # | Module | What it contains |
 |---|--------|-----------------|
+| 0 | `telemetry.js` | Session and player funnel telemetry (GRO-3832) |
 | 1 | `upgrade_system.js` | Ship upgrade tree |
 | 2 | `save_system.js` | CampaignSave — 3-slot save/load |
 | 3 | `combo.js` | Kill streak scoring |
@@ -41,7 +42,9 @@ in dependency order, with `game_loop.js` last.
 | 16 | `level_manager.js` | Wave system, formation spawning, difficulty scaling (GRO-1140) |
 | 17 | `game_loop.js` | Game state, entity pools, update(), draw(), loop(), collision, input, narrative flags (1752 lines) |
 
-## Key Architecture Notes
+## Key Architecture & Branching Notes
+- **Unified Branches** — `main` is the GitHub default branch, with `master` mirroring `main`. `deploy-fresh` serves as the staging branch. All three branches are maintained in lockstep.
+- **Edge Routing** — Cloudflare Worker reverse proxy configuration lives in `router/` (`router/wrangler.toml` and `router/src/index.js`), routing `play.whatanadventure.games/darius-star` to `darius-star.pages.dev`.
 - **No ES modules / build step** — The GRO-1064 ES module refactor has been superseded and abandoned. All modules are global-scope scripts, loaded in dependency order from `index.html`.
 - **No IIFE wrappers** — modules use top-level scope. Classes defined in one module
   are visible to all subsequent modules via global scope.
@@ -65,3 +68,4 @@ in dependency order, with `game_loop.js` last.
 - Remove extracted code from index.html
 - `git push` can take 3-10 minutes (repo is ~11GB). Run in background.
 - Use `spritesReady` Set pattern for sprite loading
+
