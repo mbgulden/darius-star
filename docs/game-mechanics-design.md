@@ -119,7 +119,26 @@ Power Cores are rare drops used for **permanent meta-progression unlocks** (ship
 | Secret area discovery | 1 |
 | Achievement milestones | 1–5 |
 
-### 2.3 Upgrade Tree
+### 2.3 One-in-a-Million Legendary Scrap System
+
+In addition to standard scrap and Power Cores, every enemy destroyed has a **0.0001% (one-in-a-million)** baseline chance to drop a **Legendary Scrap Component**. These components represent highly advanced or pristine precursor/naval technology salvaged from the wreckage. Collecting a Legendary Scrap Component instantly unlocks a unique, game-changing passive buff or ability for the rest of the run.
+
+| Biome | Legendary Component | Rest-of-Run Active/Passive Effect |
+|---|---|---|
+| **1: Abyssal Trench** | **Abyssal Heart Core** | +25% scrap multiplier from all deep-sea enemies. |
+| **2: Coral Graveyard** | **Precursor Resonance Shard** | Special ability cooldown reduced by 20%. |
+| **3: Coelacanth Lair** | **Cryo-Forged Alloy** | Max Hull +200, immune to freezing conditions. |
+| **4: Nebula Drift** | **Nebula Essence** | Weapons gain 10% chance to bypass enemy shields entirely. |
+| **5: Ice Ring** | **Umbra Stealth Circuit** | Active cloak duration increased by 3 seconds. |
+| **6: Fire Nebula** | **Forge-Mind Ember** | Primary weapon gains heat damage-over-time (burns for 5% DPS). |
+| **7: Storm Belt** | **Storm-Singer's Tear** | Shield recharge delay reduced by 50%, regen rate +50%. |
+| **8: Derelict Fleet** | **Admiral's Cipher** | 15% chance when destroying an enemy drone to hack and convert it to fight for you. |
+| **9: Xenomorph Hive** | **Hive Nucleus** | Slowly regenerate 2% Hull per second when remaining stationary for 1.5s. |
+| **10: Core Rift** | **Dreamer's Fragment** | Permanent +10% boost to all ship attributes (Hull, Shield, Speed, Damage). Carries over into NG+. |
+
+*Note: In New Game Plus (NG+), the drop rate of these legendary components is enhanced by 0.0001% for each previous Legendary Component found (capped at a cumulative +0.001% bonus drop rate).*
+
+### 2.4 Upgrade Tree
 
 Upgrades are purchased between sub-levels at the **Upgrade Station** (appears every 3 sub-levels). All upgrades are **per-run only** (lost on death/restart).
 

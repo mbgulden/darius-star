@@ -24,12 +24,32 @@ Darius's motivation is brutally simple: **dive into the deepest hells of known s
 - **Grandfather Aldric** — murdered (officially: accident) to suppress what he discovered
 - **Father Marcus** — died broken, chasing a truth he never found
 - **Family reputation** — branded as conspiracy theorists, unemployable in legitimate space
-- **Financial stability** — Darius is deeply in debt to salvage cartels
+- **Financial stability** — Darius is deeply in debt to salvage cartels, operating as a scrapper to pay them off
 - **Daughter Lyra's health** — deteriorating, driving the entire narrative urgency
 
 ---
 
-## 2. THE THREAT
+## 2. SCRAP NARRATIVE & UPGRADE ECONOMY — "ONE-WAY TRIP & ONE-IN-A-MILLION"
+
+### Core Principle: Darius the Scrapper
+Darius Star is a salvage mercenary by trade. Before Lyra got sick, his job was diving into dangerous wreckage zones, stripping valuable components from dead ships, and selling them to pay off family debts. He's not a soldier, not an explorer — he's a scrapper. The mission to save Lyra is a salvage run with the highest stakes imaginable. Every enemy in the game is resource-rich. They're not just obstacles — they're walking (swimming, floating) piles of salvageable material. The game's upgrade economy is built on this.
+
+### The One-Way Trip: No Retreat
+*"The Nyxa doesn't have enough fuel for a round trip. Not through ten biomes. Every gram of thrust I spend on the way down is a gram I can't spend coming back up. I either find what I need and synthesize a way out, or I don't come back at all."*
+
+The *Nyxa* launched from Haven-7 with enough fuel for a one-way descent. Darius cannot turn back. Each biome transition burns fuel reserves that cannot be replenished. The only way home is to collect all ten glyphs, synthesize the cure, and use the Coelacanth network's own energy for the return trip. This creates a ratchet mechanic: the player cannot grind earlier biomes. They must push forward. Every enemy they skip is scrap they will never collect. Every upgrade they miss makes later biomes harder.
+
+### The "One-in-a-Million" Legendary Scrap System
+A core mechanic: every enemy has a **0.0001%** (one-in-a-million) chance to drop a **Legendary Scrap Component** — a unique, ultra-rare material that enables a game-changing upgrade.
+
+Darius's philosophy (delivered in a cockpit monologue during biome 1):
+> *"My granddad used to say: in the salvage trade, you look for the one-in-a-million. The Navy cruiser with a prototype reactor still intact. The dead freighter with a cargo hold full of unregistered tech. Most of the time, you find rust and regret. But you keep looking, because all it takes is one. One-in-a-million. And when you find it... everything changes."*
+
+This is the game's rare-drop philosophy stated explicitly through character voice.
+
+---
+
+## 3. THE THREAT
 
 ### The Cyber Coelacanth — Origin
 The **Coelacanth** is not a biological creature. It is a **biosynthetic entity** — a hybrid of ancient deep-sea organism and self-replicating cybernetic architecture, created eons ago by a precursor civilization as a **containment system**. 

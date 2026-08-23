@@ -1,0 +1,11 @@
+name = "darius-star-router"
+main = "src/index.js"
+compatibility_date = "2026-06-10"
+
+[[routes]]
+pattern = "play.whatanadventure.games/darius-star*"
+zone_id = "0bf4759e7c74f31606fa524494197cf1"
+
+[[routes]]
+pattern = "play.whatanadventure.games/staging/darius-star*"
+zone_id = "0bf4759e7c74f31606fa524494197cf1"
