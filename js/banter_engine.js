@@ -1,24 +1,40 @@
 /**
- * Darius Star — Banter Engine (GRO-957 / GRO-1004)
- * Event-driven in-mission dialogue. PG-rated, 75% positive.
- * Supports Solo/Duo/4P. Event triggers: level_start, unique_enemy,
- * boss_entrance, player_death, player_respawn, low_health, 
- * wave_clear, level_end, pull_out.
+ * Darius Star — Banter Engine (GRO-957 / GRO-1004 / GRO-4202)
+ * Event-driven in-mission dialogue with 3-Tier Attempt-Aware Progressive Narrative.
+ * Tier 1: First Reconnaissance & Mystery
+ * Tier 2: Tactical Countermeasures & Adaptation (addressing prior wipe)
+ * Tier 3: Tenacity, Mastery & Gritty Focus
  */
+
+const SPEAKER_NAMES = {
+    'D': 'Darius',
+    'L': 'Lyra',
+    'N': 'Naya',
+    'T': 'Thorne',
+    'C': 'Cross',
+    'S': 'Selene',
+    'A': 'Architect',
+    'O': 'Ophion'
+};
 
 const BanterEngine = {
     _playerCount: 1,
-    _playerCharacters: {},  // GRO-1039: player ID → speaker code
+    _playerCharacters: {},
     _playedLines: new Set(),
     _activeLine: null,
     _activeResponse: null,
     _displayTimer: 0,
-    _lineDuration: 4.0,
-    // Banter database loaded from js/banter_db.js (GRO-1050)
-    _data: typeof BanterDB !== 'undefined' ? (BanterDB._data || BanterDB) : null,
+    _lineDuration: 4.2,
+    _levelAttempts: {}, // { 'b1_l1': 1, ... }
+    
+    // Banter database loaded from js/banter_db.js
+    get _data() {
+        if (typeof BanterDB !== 'undefined') {
+            return BanterDB._data || BanterDB;
+        }
+        return null;
+    },
 
-    // GRO-1054: Scrap-to-story dialogue — global banter for scrap/upgrade events.
-    // Delivered via ScrapEvents listeners rather than the standard getLine/biome path.
     _scrapData: {
         scrap_collected: [
             {s:'D', l:"Another plate. The Nyxa appreciates it."},
@@ -71,69 +87,117 @@ const BanterEngine = {
     ],
 
     init(playerCount) {
-        this._playerCount = playerCount;
+        this._playerCount = playerCount || 1;
         this._playedLines.clear();
         this.clear();
-        // GRO-1039: Assign characters to players (P1=always Darius)
-        const chars = ['D', 'L', 'T', 'N']; // Darius, Lyra, Thorne, Naya
+        const chars = ['D', 'L', 'T', 'N'];
         this._playerCharacters = {};
-        for (let i = 0; i < playerCount; i++) {
+        for (let i = 0; i < this._playerCount; i++) {
             this._playerCharacters[i + 1] = chars[i] || 'N';
         }
     },
 
-    // GRO-1039: Get speaker code for a player
     getSpeakerForPlayer(playerId) {
         return this._playerCharacters[playerId] || 'L';
     },
 
-    getLine(trigger, biome, speaker = null) {
-        const biomeData = this._data[biome];
-        if (!biomeData || !biomeData[trigger]) return null;
-        let lines = biomeData[trigger];
-        
-        // Filter by speaker if requested
-        if (speaker) {
-            lines = lines.filter(l => l.s === speaker);
-            if (lines.length === 0) {
-                // Fallback to all if no lines found for this speaker
-                lines = biomeData[trigger];
-            }
+    getAttemptCount(biome = 1, level = 1) {
+        if (typeof LevelManager !== 'undefined' && LevelManager.getAttemptCount) {
+            return LevelManager.getAttemptCount(biome, level);
         }
-        
-        let available = lines.filter((_, i) => !this._playedLines.has(`${biome}_${trigger}_${biomeData[trigger].indexOf(lines[i])}`));
-        if (available.length === 0) {
-            // Reset played lines for this specific trigger and speaker combo in this biome
-            lines.forEach(l => {
-                const originalIdx = biomeData[trigger].indexOf(l);
-                this._playedLines.delete(`${biome}_${trigger}_${originalIdx}`);
-            });
-            available = lines;
-        }
-        
-        const idx = Math.floor(Math.random() * available.length);
-        const originalIndex = biomeData[trigger].indexOf(available[idx]);
-        this._playedLines.add(`${biome}_${trigger}_${originalIndex}`);
-        return available[idx];
+        return this._levelAttempts[`b${biome}_l${level}`] || 1;
     },
 
-    getJoinLine(biome) {
+    recordAttempt(biome = 1, level = 1) {
+        const key = `b${biome}_l${level}`;
+        this._levelAttempts[key] = (this._levelAttempts[key] || 0) + 1;
+        return this._levelAttempts[key];
+    },
+
+    getLine(trigger, biome = 1, speaker = null, attemptCount = 1) {
+        const db = this._data;
+        if (!db || !db[biome] || !db[biome][trigger]) return null;
+        
+        const rawTriggerData = db[biome][trigger];
+        let lines = [];
+
+        // Check if data is structured as 3-tier object or flat array
+        if (rawTriggerData && typeof rawTriggerData === 'object' && !Array.isArray(rawTriggerData)) {
+            let tierKey = 'tier1';
+            if (attemptCount === 2) tierKey = 'tier2';
+            else if (attemptCount >= 3) tierKey = 'tier3';
+
+            lines = rawTriggerData[tierKey] || [];
+            if (!lines || lines.length === 0) {
+                // Fallback to tier1 or any tier
+                lines = rawTriggerData.tier1 || rawTriggerData.tier2 || rawTriggerData.tier3 || [];
+            }
+        } else if (Array.isArray(rawTriggerData)) {
+            lines = rawTriggerData;
+        }
+
+        if (!lines || lines.length === 0) return null;
+
+        // Filter by speaker if requested
+        if (speaker) {
+            const filtered = lines.filter(l => l.s === speaker);
+            if (filtered.length > 0) lines = filtered;
+        }
+
+        // Anti-repetition check per tier
+        const attemptTier = Math.min(Math.max(1, attemptCount), 3);
+        let available = lines.filter(l => !this._playedLines.has(`${biome}_${trigger}_t${attemptTier}_${l.l}`));
+        if (available.length === 0) {
+            lines.forEach(l => this._playedLines.delete(`${biome}_${trigger}_t${attemptTier}_${l.l}`));
+            available = lines;
+        }
+
+        const pick = available[Math.floor(Math.random() * available.length)];
+        if (pick) {
+            this._playedLines.add(`${biome}_${trigger}_t${attemptTier}_${pick.l}`);
+        }
+        return pick;
+    },
+
+    getJoinLine(biome = 1) {
         let phase = biome >= 7 ? 'late' : (biome >= 4 ? 'mid' : 'early');
         const lines = this._joinBanter[phase];
         return lines[Math.floor(Math.random() * lines.length)];
     },
 
-    getLeaveLine() { return this._leaveBanter[Math.floor(Math.random() * this._leaveBanter.length)]; },
+    getLeaveLine() {
+        return this._leaveBanter[Math.floor(Math.random() * this._leaveBanter.length)];
+    },
 
-    trigger(event, biome, speaker = null) {
-        const line = this.getLine(event, biome, speaker);
+    trigger(event, biome = 1, speaker = null, attemptCount = null) {
+        const attempts = (attemptCount !== null && attemptCount !== undefined) 
+            ? attemptCount 
+            : this.getAttemptCount(biome, (typeof LevelManager !== 'undefined' ? LevelManager.level : 1));
+
+        const line = this.getLine(event, biome, speaker, attempts);
         if (line) {
             this.clear();
             this._activeLine = line;
             this._displayTimer = this._lineDuration;
-            // GRO-940: Play voice line if VoicePlayback is available
-            if (window.VoicePlayback) {
-                VoicePlayback.play(biome, event, line.s, line);
+
+            // Trigger non-blocking Holographic Comms Banner HUD if DialogueSequence is available
+            if (typeof DialogueSequence !== 'undefined' && typeof window !== 'undefined' && window.activeDialogue === null) {
+                const speakerName = SPEAKER_NAMES[line.s] || line.s || 'SYSTEM';
+                const sequenceLines = [{ speaker: speakerName, text: line.l }];
+                
+                if (line.r) {
+                    const respSpeakerName = SPEAKER_NAMES[line.r.s] || line.r.s || 'SYSTEM';
+                    sequenceLines.push({ speaker: respSpeakerName, text: line.r.l });
+                }
+
+                window.activeDialogue = new DialogueSequence(sequenceLines, null, false);
+            }
+
+            // Play voice line if VoicePlayback is available
+            if (typeof window !== 'undefined' && window.VoicePlayback) {
+                try {
+                    window.VoicePlayback.play(biome, event, line.s, line);
+                } catch(e) {}
             }
         }
         return line;
@@ -144,6 +208,11 @@ const BanterEngine = {
         this.clear();
         this._activeLine = line;
         this._displayTimer = duration;
+
+        if (typeof DialogueSequence !== 'undefined' && typeof window !== 'undefined' && window.activeDialogue === null) {
+            const speakerName = SPEAKER_NAMES[line.s] || line.s || 'SYSTEM';
+            window.activeDialogue = new DialogueSequence([{ speaker: speakerName, text: line.l }], null, false);
+        }
         return line;
     },
 
@@ -152,7 +221,6 @@ const BanterEngine = {
             this._displayTimer -= dt;
             if (this._displayTimer <= 0) {
                 if (this._activeLine && this._activeLine.r && !this._activeResponse) {
-                    // Show response
                     this._activeResponse = this._activeLine.r;
                     this._displayTimer = this._lineDuration;
                 } else {
@@ -162,14 +230,18 @@ const BanterEngine = {
         }
     },
 
-    getActive() { return this._activeResponse || this._activeLine; },
-    clear() { this._activeLine = null; this._activeResponse = null; this._displayTimer = 0; },
+    getActive() {
+        return this._activeResponse || this._activeLine;
+    },
 
-    // GRO-1054: Trigger a scrap/upgrade event line from _scrapData.
-    // Falls back to event-system banter (SCRAP_NARRATIVE_BEATS) if no specific data.
+    clear() {
+        this._activeLine = null;
+        this._activeResponse = null;
+        this._displayTimer = 0;
+    },
+
     triggerScrapEvent(trigger, line) {
         if (line) {
-            // Direct line provided (from legacy SCRAP_NARRATIVE_BEATS)
             return this.triggerDirect(line, 5.0);
         }
         const lines = this._scrapData[trigger];
@@ -180,42 +252,34 @@ const BanterEngine = {
         return null;
     },
 
-    /**
-     * GRO-1054: Wire ScrapEvents into the banter system.
-     * Call once after both modules are loaded (e.g. from game_loop.js init).
-     */
     initScrapEvents() {
-        if (!window.ScrapEvents) return;
+        if (typeof window === 'undefined' || !window.ScrapEvents) return;
 
-        ScrapEvents.on('scrap:collected', () => {
-            if (this.getActive()) return; // don't stomp active dialogue
+        window.ScrapEvents.on('scrap:collected', () => {
+            if (this.getActive()) return;
             this.triggerScrapEvent('scrap_collected');
         });
 
-        ScrapEvents.on('scrap:milestone', () => {
+        window.ScrapEvents.on('scrap:milestone', () => {
             if (this.getActive()) return;
             this.triggerScrapEvent('scrap_milestone');
         });
 
-        ScrapEvents.on('scrap:legendary', () => {
-            // Legendary drops are rare — override active dialogue if needed
+        window.ScrapEvents.on('scrap:legendary', () => {
             this.triggerScrapEvent('legendary_drop');
         });
 
-        ScrapEvents.on('upgrade:purchased', () => {
+        window.ScrapEvents.on('upgrade:purchased', () => {
             if (this.getActive()) return;
             this.triggerScrapEvent('upgrade_purchased');
         });
 
-        ScrapEvents.on('upgrade:max_tier', () => {
-            // Max tier upgrades are significant — override active dialogue
+        window.ScrapEvents.on('upgrade:max_tier', () => {
             this.triggerScrapEvent('upgrade_max_tier');
         });
-    },
+    }
 };
 
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = BanterEngine;
-}
-// Attach to window for browser access (required by game_loop.js)
-window.BanterEngine = BanterEngine;
+if (typeof window !== 'undefined') window.BanterEngine = BanterEngine;
+if (typeof global !== 'undefined') global.BanterEngine = BanterEngine;
+if (typeof module !== 'undefined' && module.exports) module.exports = BanterEngine;

@@ -78,6 +78,7 @@
             runScrap: 0,
             seed: Math.floor(Math.random() * 2147483648),
             inGameFlags: {},
+            levelAttempts: {},
             createdAt: now,
             updatedAt: now
         };
@@ -150,7 +151,14 @@
             return;
         }
         const saves = _readAll();
-        saves[slotIndex] = saveObj ? { ...saveObj, updatedAt: new Date().toISOString() } : null;
+        if (saveObj) {
+            const attempts = (typeof window !== 'undefined' && window.LevelManager && window.LevelManager.levelAttempts) 
+                ? { ...window.LevelManager.levelAttempts } 
+                : (saveObj.levelAttempts || {});
+            saves[slotIndex] = { ...saveObj, levelAttempts: attempts, updatedAt: new Date().toISOString() };
+        } else {
+            saves[slotIndex] = null;
+        }
         _writeAll(saves);
     }
 

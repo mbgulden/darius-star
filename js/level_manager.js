@@ -211,6 +211,27 @@ const LevelManager = {
             this.advanceLevel();
         }
     },
+    // --- Attempt-Aware Tracking (GRO-4202) ---
+    levelAttempts: {},
+
+    getAttemptCount(biome, level) {
+        const b = biome || this.biome || 1;
+        const l = level || this.level || 1;
+        return (this.levelAttempts && this.levelAttempts[`b${b}_l${l}`]) || 1;
+    },
+
+    recordAttempt(biome, level) {
+        if (!this.levelAttempts) this.levelAttempts = {};
+        const b = biome || this.biome || 1;
+        const l = level || this.level || 1;
+        const key = `b${b}_l${l}`;
+        this.levelAttempts[key] = (this.levelAttempts[key] || 0) + 1;
+        return this.levelAttempts[key];
+    },
+
+    resetLevelAttempts() {
+        this.levelAttempts = {};
+    },
 
     setBiomeAndLevel(biome, level) {
         this.resetLevelStats();
@@ -229,6 +250,12 @@ const LevelManager = {
         this.resetLevelStats();
         if (typeof setBiomeBackgrounds === 'function') setBiomeBackgrounds(this.biome, this.level);
         this._refreshLevelConfig(false);
+
+        // Record sector attempt and trigger progressive attempt banter
+        const attempts = this.recordAttempt(this.biome, this.level);
+        if (typeof BanterEngine !== 'undefined' && BanterEngine.trigger) {
+            BanterEngine.trigger('level_start', this.biome, null, attempts);
+        }
 
         // Set initial wave
         this._queueWave();

@@ -107,28 +107,19 @@ global.spawnHitFlash = () => {};
 global.drawSpriteFrame = () => {};
 global.getCurrentDifficultyConfig = () => ({ playerDamageMultiplier: 1.0, startingLives: 3 });
 
-// Load upgrade_system.js
+// Load scripts in canonical index.html order
 eval(fs.readFileSync(path.join(__dirname, '../js/upgrade_system.js'), 'utf8'));
-
-// Load multiplayer.js
+eval(fs.readFileSync(path.join(__dirname, '../js/save_system.js'), 'utf8'));
+eval(fs.readFileSync(path.join(__dirname, '../js/economy.js'), 'utf8'));
+eval(fs.readFileSync(path.join(__dirname, '../js/banter_db.js'), 'utf8'));
+eval(fs.readFileSync(path.join(__dirname, '../js/banter_engine.js'), 'utf8'));
 eval(fs.readFileSync(path.join(__dirname, '../js/multiplayer.js'), 'utf8'));
-
-// Load player.js
 eval(fs.readFileSync(path.join(__dirname, '../js/player.js'), 'utf8'));
-
-// Load biome_data.js
 eval(fs.readFileSync(path.join(__dirname, '../js/levels/biome_data.js'), 'utf8'));
-
-// Load combat.js
+eval(fs.readFileSync(path.join(__dirname, '../js/levels/wave_campaign.js'), 'utf8'));
 eval(fs.readFileSync(path.join(__dirname, '../js/combat.js'), 'utf8'));
-
-// Load parallax.js
 eval(fs.readFileSync(path.join(__dirname, '../js/renderer/parallax.js'), 'utf8'));
-
-// Load utils.js
 eval(fs.readFileSync(path.join(__dirname, '../js/utils.js'), 'utf8'));
-
-// Load audio.js
 eval(fs.readFileSync(path.join(__dirname, '../js/audio.js'), 'utf8'));
 
 const _origPlaySound = global.playSound;
@@ -137,17 +128,13 @@ global.playSound = (type, p) => {
     if (typeof _origPlaySound === 'function') _origPlaySound(type, p);
 };
 
-// Load dialogue.js
 eval(fs.readFileSync(path.join(__dirname, '../js/ui/dialogue.js'), 'utf8'));
-
-// Load game_loop.js
+eval(fs.readFileSync(path.join(__dirname, '../js/level_manager.js'), 'utf8'));
 eval(fs.readFileSync(path.join(__dirname, '../js/game_loop.js'), 'utf8'));
 
 global.playSound = (type, p) => {
     playedSounds.push(type);
-    console.log("TEST playSound called with:", type);
 };
-
 
 // ─── 1. Non-Blocking Holographic Comms Banner Initialisation ────────────────
 console.log("1. Testing Non-Blocking Holographic Comms Banner Initialization...");
@@ -228,6 +215,79 @@ assert.ok(playedSounds.includes('radio_squelch_out'), "Radio squelch close click
 
 console.log("  [PASS] Dialogue auto-advances and dismisses with radio squelch close click.");
 
+
+// ─── 6. GRO-4202: Attempt-Aware Progressive Banter Engine Tests ─────────────
+console.log("6. Testing 3-Tier Attempt-Aware Progressive Dialogue Retrieval...");
+
+// Test Tier 1 (Attempt 1)
+const t1_line = BanterEngine.getLine('level_start', 1, 'D', 1);
+assert.ok(t1_line, "Must return a Tier 1 line for Attempt 1");
+assert.strictEqual(t1_line.s, 'D', "Speaker must match requested speaker code");
+assert.strictEqual(t1_line.l.includes("Grandpa"), true, "Attempt 1 should return mystery/recon line about Grandpa");
+console.log("  [PASS] Tier 1 (Attempt 1) returned First Reconnaissance line:", t1_line.l);
+
+// Test Tier 2 (Attempt 2 - Tactical Countermeasure)
+const t2_line = BanterEngine.getLine('level_start', 1, 'D', 2);
+assert.ok(t2_line, "Must return a Tier 2 line for Attempt 2");
+assert.strictEqual(t2_line.s, 'D', "Speaker must match requested speaker code");
+assert.strictEqual(t2_line.l.includes("silt vents") || t2_line.l.includes("ambush"), true, "Attempt 2 should return tactical adaptation line addressing prior wipe");
+console.log("  [PASS] Tier 2 (Attempt 2) returned Tactical Countermeasure line:", t2_line.l);
+
+// Test Tier 3 (Attempt 3+ - Tenacity & Mastery)
+const t3_line = BanterEngine.getLine('level_start', 1, 'D', 3);
+assert.ok(t3_line, "Must return a Tier 3 line for Attempt 3");
+assert.strictEqual(t3_line.s, 'D', "Speaker must match requested speaker code");
+assert.strictEqual(t3_line.l.includes("Third dive") || t3_line.l.includes("patrol loops"), true, "Attempt 3 should return tenacity/mastery line");
+console.log("  [PASS] Tier 3 (Attempt 3+) returned Tenacity & Mastery line:", t3_line.l);
+
+// ─── 7. GRO-4202: LevelManager Attempt Tracking & Wipe Progression ──────────
+console.log("7. Testing LevelManager Sector Attempt Tracking & Checkpoint Retries...");
+LevelManager.resetLevelAttempts();
+
+LevelManager.setBiomeAndLevel(2, 5);
+assert.strictEqual(LevelManager.getAttemptCount(2, 5), 1, "First visit to Biome 2 Level 5 must have attempt count 1");
+
+LevelManager.setBiomeAndLevel(2, 5); // Player wiped and restarted level
+assert.strictEqual(LevelManager.getAttemptCount(2, 5), 2, "Second attempt at Biome 2 Level 5 must have attempt count 2");
+
+LevelManager.setBiomeAndLevel(2, 5); // Player wiped third time
+assert.strictEqual(LevelManager.getAttemptCount(2, 5), 3, "Third attempt at Biome 2 Level 5 must have attempt count 3");
+
+console.log("  [PASS] LevelManager accurately tracks consecutive attempts across wipes and restarts.");
+
+// ─── 8. GRO-4202: 10-Biome Progressive Coverage Verification ────────────────
+console.log("8. Testing 3-Tier Progressive Coverage across all 10 Biomes...");
+for (let b = 1; b <= 10; b++) {
+    const tier1 = BanterEngine.getLine('level_start', b, null, 1);
+    const tier2 = BanterEngine.getLine('level_start', b, null, 2);
+    const tier3 = BanterEngine.getLine('level_start', b, null, 3);
+    assert.ok(tier1, `Biome ${b} must have valid Tier 1 level_start dialogue`);
+    assert.ok(tier2, `Biome ${b} must have valid Tier 2 level_start dialogue`);
+    assert.ok(tier3, `Biome ${b} must have valid Tier 3 level_start dialogue`);
+    assert.notStrictEqual(tier1.l, tier2.l, `Biome ${b} Tier 1 and Tier 2 lines must be differentiated`);
+    assert.notStrictEqual(tier2.l, tier3.l, `Biome ${b} Tier 2 and Tier 3 lines must be differentiated`);
+}
+console.log("  [PASS] All 10 biomes have differentiated Tier 1, Tier 2, and Tier 3 dialogue.");
+
+// ─── 9. GRO-4202: CampaignSave levelAttempts Serialization ──────────────────
+console.log("9. Testing CampaignSave levelAttempts Serialization & Loading...");
+CampaignSave.save(0, {
+    wave: 1,
+    ship: 'striker',
+    scrap: 250,
+    score: 1200,
+    lives: 3,
+    difficulty: 'normal',
+    upgrades: {},
+    biome: 2
+});
+
+const loadedSave = CampaignSave.load(0);
+assert.ok(loadedSave, "Save slot 0 must load successfully");
+assert.ok(loadedSave.levelAttempts, "Loaded save must contain levelAttempts map");
+assert.strictEqual(loadedSave.levelAttempts['b2_l5'], 3, "Loaded save must preserve attempt count for sector b2_l5");
+console.log("  [PASS] CampaignSave successfully serializes and restores levelAttempts without regression.");
+
 console.log("============================================================");
-console.log("ALL GRO-4201 HOLOGRAPHIC COMMS TESTS PASSED (100%)");
+console.log("ALL GRO-4201 & GRO-4202 NARRATIVE JOURNEY TESTS PASSED (100%)");
 console.log("============================================================");
