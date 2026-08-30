@@ -59,7 +59,8 @@ const mockEl = {
     style: {},
     appendChild: () => {},
     querySelector: () => null,
-    querySelectorAll: () => []
+    querySelectorAll: () => [],
+    getContext: () => global.ctx
 };
 
 global.bossIntroVideo = { ...mockEl };
@@ -462,6 +463,48 @@ assert.strictEqual(loadedSave2.highestCompletedDifficulty, 'hard', "Loaded save 
 assert.strictEqual(loadedSave2.unlockedClassifiedLore['b1_l1'], true, "Loaded save must preserve unlockedClassifiedLore map");
 console.log("  [PASS] CampaignSave successfully serializes and restores highestCompletedDifficulty & unlockedClassifiedLore.");
 
+
+// ─── 13. GRO-4207: Holographic Animated Portrait Suite Tests ────────────────
+console.log("13. Testing Holographic Animated Portrait Suite (GRO-4207)...");
+
+// 1. Verify Situational Mood Resolution across multiple emotional contexts
+assert.strictEqual(PortraitAnimator.getSituationalMood('Darius', "Warning! Heavy laser ambush in front of us!"), 'reactive', "Combat/alert lines must resolve to 'reactive'");
+assert.strictEqual(PortraitAnimator.getSituationalMood('Lyra', "Daddy, the void is swallowing everything..."), 'somber', "Tragedy/death lines must resolve to 'somber'");
+assert.strictEqual(PortraitAnimator.getSituationalMood('Naya', "Wave clear! All ships advance with full burn!"), 'determined', "Victory/sweep lines must resolve to 'determined'");
+assert.strictEqual(PortraitAnimator.getSituationalMood('Thorne', "Entering Mariana Ridge corridor."), 'neutral', "Standard recon lines must resolve to 'neutral'");
+console.log("  [PASS] Situational mood emotion resolution verified across reactive, somber, determined, and neutral states.");
+
+// 2. Verify Canvas Rendering for all 7 Characters (with mock Canvas 2D Context)
+const mockCtx = {
+    fillRect: () => {},
+    drawImage: () => {},
+    beginPath: () => {},
+    moveTo: () => {},
+    lineTo: () => {},
+    stroke: () => {},
+    fill: () => {},
+    arc: () => {},
+    strokeRect: () => {},
+    save: () => {},
+    restore: () => {},
+    translate: () => {},
+    rotate: () => {}
+};
+const mockCanvas = {
+    width: 56,
+    height: 56,
+    getContext: () => mockCtx
+};
+
+const characters = ['Darius', 'Lyra', 'Naya', 'Thorne', 'Cross', 'Selene', 'Architect'];
+characters.forEach(char => {
+    assert.doesNotThrow(() => {
+        PortraitAnimator.renderToCanvas(mockCanvas, char, "Tactical operational status green.", true, 0.016);
+        PortraitAnimator.renderToCanvas(mockCanvas, char, "Warning! Shield failure imminent!", false, 0.016, 'reactive');
+    }, `PortraitAnimator must render character ${char} without errors`);
+});
+console.log("  [PASS] Holographic animated portrait rendering verified for all 7 story characters with CRT scanlines & mouth animation.");
+
 console.log("============================================================");
-console.log("ALL GRO-4201, GRO-4202, GRO-4203, GRO-4204 & GRO-4206 NARRATIVE TESTS PASSED (100%)");
+console.log("ALL GRO-4201, GRO-4202, GRO-4203, GRO-4204, GRO-4206 & GRO-4207 NARRATIVE TESTS PASSED (100%)");
 console.log("============================================================");

@@ -63,6 +63,173 @@
         };
         if (typeof window !== 'undefined') window.SPEAKER_CONFIG = SPEAKER_CONFIG;
 
+        // ─── GRO-4207: Character-Consistent Holographic Animated Portrait Suite ────────────
+        const PortraitAnimator = {
+            _animTimer: 0,
+
+            getSituationalMood(speaker, text, explicitMood = null) {
+                if (explicitMood) return explicitMood;
+                if (!text) return 'neutral';
+                const t = text.toLowerCase();
+                if (t.includes('victory') || t.includes('clear') || t.includes('answer') || t.includes('together') || 
+                    t.includes('hold fast') || t.includes('full burn') || t.includes('sweep') || t.includes('purpose') || 
+                    t.includes('ready') || t.includes('locked')) {
+                    return 'determined';
+                }
+                if (t.includes('sorrow') || t.includes('dying') || t.includes('lost') || t.includes('corpse') || 
+                    t.includes('graveyard') || t.includes('ghost') || t.includes('goodbye') || t.includes('die') || t.includes('crying') ||
+                    t.includes('nightmare') || t.includes('swallowing')) {
+                    return 'somber';
+                }
+                if (t.includes('warning') || t.includes('danger') || t.includes('ambush') || 
+                    t.includes('shields down') || t.includes('under attack') || t.includes('taking fire') ||
+                    t.includes('redline') || t.includes('rupture') || t.includes('black smoke') || t.includes('crush') ||
+                    t.includes('intercept') || t.includes('shearing') || t.includes('pull out') || t.includes('!')) {
+                    return 'reactive';
+                }
+                return 'neutral';
+            },
+
+            renderToCanvas(canvasEl, speakerName, text, isTalking, dt = 0.016, explicitMood = null) {
+                if (!canvasEl || typeof canvasEl.getContext !== 'function') return;
+                const ctx = canvasEl.getContext('2d');
+                if (!ctx) return;
+
+                this._animTimer += dt;
+                const t = this._animTimer;
+                const w = canvasEl.width || 56;
+                const h = canvasEl.height || 56;
+                const mood = this.getSituationalMood(speakerName, text, explicitMood);
+                const spk = SPEAKER_CONFIG[speakerName] || { color: '#00ffff', callsign: '[COMMS]', portrait: 'lyra_neutral' };
+                const color = spk.color || '#00ffff';
+
+                // Background
+                ctx.fillStyle = '#02040c';
+                ctx.fillRect(0, 0, w, h);
+
+                const speakerKey = (speakerName || 'Lyra').toLowerCase();
+                let spriteKey = `${speakerKey}_${mood === 'reactive' ? 'reactive' : 'neutral'}`;
+                if (typeof portraitSprites !== 'undefined' && !portraitSprites[spriteKey]) {
+                    spriteKey = `${speakerKey}_neutral`;
+                }
+
+                const sprite = (typeof portraitSprites !== 'undefined') ? portraitSprites[spriteKey] : null;
+
+                if (sprite && sprite.complete && sprite.naturalWidth > 0) {
+                    ctx.drawImage(sprite, 0, 0, w, h);
+
+                    // Situational mood color grading
+                    if (mood === 'reactive') {
+                        ctx.fillStyle = 'rgba(255, 60, 40, 0.18)';
+                        ctx.fillRect(0, 0, w, h);
+                    } else if (mood === 'determined') {
+                        ctx.fillStyle = 'rgba(255, 200, 50, 0.14)';
+                        ctx.fillRect(0, 0, w, h);
+                    } else if (mood === 'somber') {
+                        ctx.fillStyle = 'rgba(30, 80, 160, 0.22)';
+                        ctx.fillRect(0, 0, w, h);
+                    }
+
+                    // Talking mouth animation flap when text typing is active
+                    if (isTalking) {
+                        const mouthOpen = Math.sin(t * 22) > 0.15;
+                        if (mouthOpen) {
+                            ctx.fillStyle = 'rgba(10, 10, 15, 0.75)';
+                            ctx.fillRect(w * 0.44, h * 0.68, w * 0.13, h * 0.06);
+                        }
+                    }
+
+                    // Natural eye blink cycle
+                    const blinkCycle = t % 3.6;
+                    if (blinkCycle < 0.14) {
+                        ctx.fillStyle = color;
+                        ctx.fillRect(w * 0.32, h * 0.46, w * 0.12, 2);
+                        ctx.fillRect(w * 0.56, h * 0.46, w * 0.12, 2);
+                    }
+                } else {
+                    // Procedural High-Tech Holographic Avatar
+                    ctx.save();
+                    ctx.fillStyle = 'rgba(4, 10, 24, 0.95)';
+                    ctx.fillRect(0, 0, w, h);
+
+                    // Tech grid
+                    ctx.strokeStyle = `${color}22`;
+                    ctx.lineWidth = 1;
+                    for (let x = 8; x < w; x += 12) {
+                        ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke();
+                    }
+                    for (let y = 8; y < h; y += 12) {
+                        ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
+                    }
+
+                    if (speakerKey === 'architect' || speakerKey === 'ophion') {
+                        // Precursor Singularity Matrix
+                        const rot = t * 1.2;
+                        ctx.translate(w / 2, h / 2);
+                        ctx.rotate(rot);
+                        ctx.strokeStyle = '#cc44ff';
+                        ctx.lineWidth = 1.5;
+                        ctx.strokeRect(-14, -14, 28, 28);
+                        ctx.rotate(-rot * 2);
+                        ctx.strokeStyle = '#00ffff';
+                        ctx.strokeRect(-9, -9, 18, 18);
+                        ctx.rotate(rot);
+                        const corePulse = 4 + Math.sin(t * 8) * 1.5;
+                        ctx.fillStyle = '#ffffff';
+                        ctx.beginPath(); ctx.arc(0, 0, corePulse, 0, Math.PI * 2); ctx.fill();
+                    } else if (speakerKey === 'selene') {
+                        // Jovian Storm-Singer Solar Corona
+                        ctx.translate(w / 2, h / 2);
+                        const rayCount = 8;
+                        for (let i = 0; i < rayCount; i++) {
+                            const angle = (i / rayCount) * Math.PI * 2 + t * 0.8;
+                            const r1 = 12 + Math.sin(t * 6 + i) * 3;
+                            const r2 = 22 + Math.sin(t * 6 + i) * 4;
+                            ctx.strokeStyle = '#ffd700';
+                            ctx.lineWidth = 1.5;
+                            ctx.beginPath();
+                            ctx.moveTo(Math.cos(angle) * r1, Math.sin(angle) * r1);
+                            ctx.lineTo(Math.cos(angle) * r2, Math.sin(angle) * r2);
+                            ctx.stroke();
+                        }
+                        ctx.fillStyle = '#ffeedd';
+                        ctx.beginPath(); ctx.arc(0, 0, 9, 0, Math.PI * 2); ctx.fill();
+                    } else {
+                        // Procedural Cyber Pilot Visor Silhouette
+                        ctx.fillStyle = `${color}44`;
+                        ctx.beginPath();
+                        ctx.arc(w / 2, h * 0.45, 14, 0, Math.PI * 2);
+                        ctx.fill();
+                        ctx.fillStyle = color;
+                        const visorY = h * 0.42 + (mood === 'reactive' ? Math.sin(t * 20) * 1.5 : 0);
+                        ctx.fillRect(w * 0.28, visorY, w * 0.44, 5);
+                        ctx.strokeStyle = color;
+                        ctx.lineWidth = 2;
+                        ctx.strokeRect(w * 0.22, h * 0.38, 4, 8);
+                        ctx.strokeRect(w * 0.72, h * 0.38, 4, 8);
+                    }
+                    ctx.restore();
+                }
+
+                // Animated CRT Raster Scanlines
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.26)';
+                for (let y = 0; y < h; y += 3) {
+                    ctx.fillRect(0, y, w, 1);
+                }
+
+                const scanlineY = (t * 42) % h;
+                ctx.fillStyle = `${color}44`;
+                ctx.fillRect(0, scanlineY, w, 2);
+
+                // Frame Border Glow
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 1.5;
+                ctx.strokeRect(0.75, 0.75, w - 1.5, h - 1.5);
+            }
+        };
+        if (typeof window !== 'undefined') window.PortraitAnimator = PortraitAnimator;
+        if (typeof global !== 'undefined') global.PortraitAnimator = PortraitAnimator;
+
         
 
         function triggerDialogueSFX(name, vol) {
@@ -235,7 +402,8 @@
                             callsignEl.style.color = `${speakerColor}aa`;
                         }
 
-                        // Handle portrait
+                        // Handle holographic animated portrait
+                        const portraitCanvas = document.getElementById('lyra-portrait-canvas');
                         const imgEl = document.getElementById('lyra-portrait-img');
                         const noSignalEl = document.getElementById('lyra-no-signal');
                         let showPortrait = true;
@@ -243,14 +411,21 @@
                             showPortrait = false;
                         }
 
-                        const portraitKey = line.portrait || spk.portrait;
-                        if (showPortrait && portraitKey && typeof portraitSprites !== 'undefined' && portraitSprites[portraitKey] && portraitSprites[portraitKey].complete && portraitSprites[portraitKey].naturalWidth > 0) {
-                            if (imgEl) {
-                                imgEl.src = portraitSprites[portraitKey].src;
-                                imgEl.style.display = 'block';
+                        if (showPortrait) {
+                            if (portraitCanvas) {
+                                portraitCanvas.style.display = 'block';
+                                const isTalking = this.charIndex < this.currentLineText.length;
+                                PortraitAnimator.renderToCanvas(portraitCanvas, line.speaker || 'Lyra', line.text, isTalking, 0.016, line.mood);
+                            } else if (imgEl) {
+                                const portraitKey = line.portrait || spk.portrait;
+                                if (portraitKey && typeof portraitSprites !== 'undefined' && portraitSprites[portraitKey] && portraitSprites[portraitKey].complete && portraitSprites[portraitKey].naturalWidth > 0) {
+                                    imgEl.src = portraitSprites[portraitKey].src;
+                                    imgEl.style.display = 'block';
+                                }
                             }
                             if (noSignalEl) noSignalEl.style.display = 'none';
                         } else {
+                            if (portraitCanvas) portraitCanvas.style.display = 'none';
                             if (imgEl) imgEl.style.display = 'none';
                             if (noSignalEl) noSignalEl.style.display = 'block';
                         }

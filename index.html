@@ -290,6 +290,26 @@
             object-fit: cover;
             image-rendering: pixelated;
         }
+        #lyra-portrait-canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+            image-rendering: pixelated;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        .portrait-crt-scanlines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.35) 50%);
+            background-size: 100% 3px;
+            z-index: 3;
+        }
         .lyra-no-signal {
             font-size: 8px;
             color: #ff3355;
@@ -468,7 +488,9 @@
         <div id="skip-cinematic-hint" class="skip-cinematic-hint">Press SPACE / ESC to skip</div>
         <div id="lyra-hud">
             <div class="lyra-portrait-box">
+                <canvas id="lyra-portrait-canvas" width="56" height="56"></canvas>
                 <img id="lyra-portrait-img" src="" alt="portrait" />
+                <div class="portrait-crt-scanlines"></div>
                 <img id="lyra-comms-overlay" src="assets/sprites/portraits/comms_overlay.png" alt="overlay" style="position: absolute; top:0; left:0; width:100%; height:100%; display:none; pointer-events:none;" />
                 <div id="lyra-no-signal" class="lyra-no-signal">NO SIGNAL</div>
             </div>
