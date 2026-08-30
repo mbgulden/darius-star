@@ -4203,6 +4203,83 @@
       "duration": 5.7,
       "biome": 10,
       "event": "pull_out"
+    },
+    "ending_sacrifice_lyra_final": {
+      "id": "ending_sacrifice_lyra_final",
+      "speaker": "lyra",
+      "file": "lyra/ending_sacrifice_lyra_final.mp3",
+      "text": "It's okay, Daddy. I know what I have to do. My signal will neutralize the singularity from within.",
+      "duration": 6.84
+    },
+    "ending_sacrifice_darius_farewell": {
+      "id": "ending_sacrifice_darius_farewell",
+      "speaker": "darius",
+      "file": "darius/ending_sacrifice_darius_farewell.mp3",
+      "text": "One life exchanged for a galaxy. For you, Lyra... the stars will always shine.",
+      "duration": 5.32
+    },
+    "ending_transcendence_lyra_unbound": {
+      "id": "ending_transcendence_lyra_unbound",
+      "speaker": "lyra",
+      "file": "lyra/ending_transcendence_lyra_unbound.mp3",
+      "text": "We are not ending, Daddy. We are becoming something else. We dreamed ourselves into gods.",
+      "duration": 5.7
+    },
+    "ending_transcendence_darius_unbound": {
+      "id": "ending_transcendence_darius_unbound",
+      "speaker": "darius",
+      "file": "darius/ending_transcendence_darius_unbound.mp3",
+      "text": "Beyond the physical realm... the Nyxa and humanity evolve beyond the reach of war.",
+      "duration": 5.32
+    },
+    "ending_dominion_darius_supreme": {
+      "id": "ending_dominion_darius_supreme",
+      "speaker": "darius",
+      "file": "darius/ending_dominion_darius_supreme.mp3",
+      "text": "The Coelacanth network is mine. Absolute power belongs to humanity now.",
+      "duration": 4.18
+    },
+    "ending_dominion_thorne_warning": {
+      "id": "ending_dominion_thorne_warning",
+      "speaker": "thorne",
+      "file": "thorne/ending_dominion_thorne_warning.mp3",
+      "text": "Absolute power has a cost, Darius. And the galaxy will soon learn what that cost is.",
+      "duration": 6.08
+    },
+    "avionics_hull_critical": {
+      "id": "avionics_hull_critical",
+      "speaker": "selene",
+      "file": "selene/avionics_hull_critical.mp3",
+      "text": "Warning: Hull integrity critical. Shield collapse imminent.",
+      "duration": 2.66
+    },
+    "avionics_quantum_ready": {
+      "id": "avionics_quantum_ready",
+      "speaker": "selene",
+      "file": "selene/avionics_quantum_ready.mp3",
+      "text": "Precursor Quantum Fabricator operational. Scrap magnetism active.",
+      "duration": 2.66
+    },
+    "avionics_singularity_warning": {
+      "id": "avionics_singularity_warning",
+      "speaker": "selene",
+      "file": "selene/avionics_singularity_warning.mp3",
+      "text": "Proximity alert: Precursor Singularity anomaly detected.",
+      "duration": 2.28
+    },
+    "avionics_wingman_link_ok": {
+      "id": "avionics_wingman_link_ok",
+      "speaker": "selene",
+      "file": "selene/avionics_wingman_link_ok.mp3",
+      "text": "Tactical squadron data link established. All wingmen synced.",
+      "duration": 3.04
+    },
+    "avionics_nanite_deployed": {
+      "id": "avionics_nanite_deployed",
+      "speaker": "selene",
+      "file": "selene/avionics_nanite_deployed.mp3",
+      "text": "Emergency shield nanites deployed.",
+      "duration": 2.2
     }
   }
 }
