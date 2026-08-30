@@ -24,7 +24,7 @@ const WAVE_CAMPAIGN = {
       "scout": "angler_scout",
       "interceptor": "jelly_interceptor",
       "heavy": "vent_crab_heavy",
-      "alt": "angler_scout"
+      "alt": "trench_eel"
     },
     "levels": {
       "level1": {
@@ -793,7 +793,7 @@ const WAVE_CAMPAIGN = {
       "scout": "rust_drone",
       "interceptor": "coral_wasp",
       "heavy": "armored_eel",
-      "alt": "rust_drone"
+      "alt": "spine_urchin"
     },
     "levels": {
       "level1": {
@@ -3869,7 +3869,7 @@ const WAVE_CAMPAIGN = {
       "scout": "ember_sprite",
       "interceptor": "magma_wasp",
       "heavy": "lava_golem",
-      "alt": "ember_sprite"
+      "alt": "inferno_node"
     },
     "levels": {
       "level1": {

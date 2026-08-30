@@ -60,78 +60,89 @@
         function loadEnemySprites() {
             if (enemySpritesLoaded) return;
             enemySpritesLoaded = true;
-            console.log("[SPRITE] Starting preloading of enemy sprites...");
-            
-            // Generic fallback enemy types
-            const types = ['scout', 'interceptor', 'heavy', 'boss_minion'];
-            types.forEach(key => {
-                const img = new Image();
-                img.onload = function() { 
-                    enemySprites[key] = preCompositeAdditive(img); 
-                    console.log(`[SPRITE] Successfully loaded fallback enemy: ${key}`);
-                };
-                img.onerror = function() { 
-                    enemySprites[key] = null; 
-                    console.error(`[SPRITE] [ERROR] Failed to load fallback enemy: ${key}`);
-                };
-                img.src = `assets/sprites/${key}_0.png`;
-            });
+            console.log("[SPRITE] Starting preloading of stratum enemy sprites...");
 
-            // Map custom biome-specific enemy sprites directly to the spawned enemy types.
-            const customBiomeEnemies = [
-                { key: 'angler_scout', src: 'assets/sprites/enemy_b1_crawler_0.png' },
-                { key: 'rust_drone',   src: 'assets/sprites/enemy_b2_wraith_0.png' },
-                { key: 'sparker',      src: 'assets/sprites/enemy_b3_spider_0.png' },
-                { key: 'plasma_wisp',  src: 'assets/sprites/enemy_b4_wisp_0.png' },
-                { key: 'storm_sprite', src: 'assets/sprites/enemy_b4_rider_0.png' },
-                { key: 'gas_giant',    src: 'assets/sprites/enemy_b4_serpent_0.png' },
-                { key: 'crawler',      src: 'assets/sprites/enemy_crawler_0.png' },
-                { key: 'spitter',      src: 'assets/sprites/enemy_spitter_0.png' },
-                { key: 'brute',        src: 'assets/sprites/enemy_brute_0.png' },
+            // 40 Stratum-Specific Enemy Archetypes across all 10 Biomes
+            const allStratumEnemies = [
+                // Biome 1: Abyssal Trench
+                { key: 'angler_scout',        src: 'assets/sprites/enemy_angler_scout_0.png' },
+                { key: 'jelly_interceptor',   src: 'assets/sprites/enemy_jelly_interceptor_0.png' },
+                { key: 'vent_crab_heavy',     src: 'assets/sprites/enemy_vent_crab_heavy_0.png' },
+                { key: 'trench_eel',          src: 'assets/sprites/enemy_trench_eel_0.png' },
                 
-                // Biome 5
-                { key: 'frost_drone',   src: 'assets/sprites/enemy_frost_drone_0.png' },
-                { key: 'ice_shard',     src: 'assets/sprites/enemy_ice_shard_0.png' },
-                { key: 'ice_swarm',     src: 'assets/sprites/enemy_ice_swarm_0.png' },
+                // Biome 2: Coral Graveyard
+                { key: 'rust_drone',          src: 'assets/sprites/enemy_rust_drone_0.png' },
+                { key: 'coral_wasp',          src: 'assets/sprites/enemy_coral_wasp_0.png' },
+                { key: 'armored_eel',         src: 'assets/sprites/enemy_armored_eel_0.png' },
+                { key: 'spine_urchin',        src: 'assets/sprites/enemy_spine_urchin_0.png' },
                 
-                // Biome 6
-                { key: 'ember_sprite',  src: 'assets/sprites/enemy_ember_sprite_0.png' },
-                { key: 'magma_wasp',    src: 'assets/sprites/enemy_magma_wasp_0.png' },
-                { key: 'lava_golem',    src: 'assets/sprites/enemy_lava_golem_0.png' },
+                // Biome 3: Europa Coelacanth Lair
+                { key: 'sparker',             src: 'assets/sprites/enemy_sparker_0.png' },
+                { key: 'sentinel',            src: 'assets/sprites/enemy_sentinel_0.png' },
+                { key: 'juggernaut',          src: 'assets/sprites/enemy_juggernaut_0.png' },
+                { key: 'boss_minion',         src: 'assets/sprites/enemy_boss_minion_0.png' },
                 
-                // Biome 7
-                { key: 'static_spark',  src: 'assets/sprites/enemy_static_spark_0.png' },
-                { key: 'storm_hawk',    src: 'assets/sprites/enemy_storm_hawk_0.png' },
-                { key: 'thunderhead',   src: 'assets/sprites/enemy_thunderhead_0.png' },
+                // Biome 4: Nebula Drift
+                { key: 'plasma_wisp',         src: 'assets/sprites/enemy_plasma_wisp_0.png' },
+                { key: 'storm_sprite',        src: 'assets/sprites/enemy_storm_sprite_0.png' },
+                { key: 'gas_giant',           src: 'assets/sprites/enemy_gas_giant_0.png' },
+                { key: 'nebula_wraith',       src: 'assets/sprites/enemy_nebula_wraith_0.png' },
                 
-                // Biome 8
-                { key: 'salvage_drone',  src: 'assets/sprites/enemy_salvage_drone_0.png' },
-                { key: 'ghost_fighter',  src: 'assets/sprites/enemy_ghost_fighter_0.png' },
-                { key: 'fleet_turret',   src: 'assets/sprites/enemy_fleet_turret_0.png' },
+                // Biome 5: Ice Ring / Iron Trench
+                { key: 'ice_shard',           src: 'assets/sprites/enemy_ice_shard_0.png' },
+                { key: 'frost_drone',         src: 'assets/sprites/enemy_frost_drone_0.png' },
+                { key: 'glacier',             src: 'assets/sprites/enemy_glacier_0.png' },
+                { key: 'ice_swarm',           src: 'assets/sprites/enemy_ice_swarm_0.png' },
                 
-                // Biome 9
-                { key: 'glitch_fragment', src: 'assets/sprites/enemy_glitch_fragment_0.png' },
-                { key: 'rift_aberration', src: 'assets/sprites/enemy_rift_aberration_0.png' },
-                { key: 'hive_node',       src: 'assets/sprites/enemy_hive_node_0.png' },
+                // Biome 6: Fire Nebula / Corona
+                { key: 'ember_sprite',        src: 'assets/sprites/enemy_ember_sprite_0.png' },
+                { key: 'magma_wasp',          src: 'assets/sprites/enemy_magma_wasp_0.png' },
+                { key: 'lava_golem',          src: 'assets/sprites/enemy_lava_golem_0.png' },
+                { key: 'inferno_node',        src: 'assets/sprites/enemy_inferno_node_0.png' },
                 
-                // Biome 10
-                { key: 'null_entity',     src: 'assets/sprites/enemy_null_entity_0.png' },
-                { key: 'paradox_wisp',    src: 'assets/sprites/enemy_paradox_wisp_0.png' },
-                { key: 'storm_sentinel',  src: 'assets/sprites/enemy_storm_sentinel_0.png' }
+                // Biome 7: Storm Belt / Tempest
+                { key: 'static_spark',        src: 'assets/sprites/enemy_static_spark_0.png' },
+                { key: 'storm_hawk',          src: 'assets/sprites/enemy_storm_hawk_0.png' },
+                { key: 'thunderhead',         src: 'assets/sprites/enemy_thunderhead_0.png' },
+                { key: 'storm_sentinel',      src: 'assets/sprites/enemy_storm_sentinel_0.png' },
+                
+                // Biome 8: Derelict Fleet
+                { key: 'salvage_drone',       src: 'assets/sprites/enemy_salvage_drone_0.png' },
+                { key: 'ghost_fighter',       src: 'assets/sprites/enemy_ghost_fighter_0.png' },
+                { key: 'turret_battery',      src: 'assets/sprites/enemy_turret_battery_0.png' },
+                { key: 'fleet_turret',        src: 'assets/sprites/enemy_fleet_turret_0.png' },
+                
+                // Biome 9: Xenomorph Hive
+                { key: 'crawler',             src: 'assets/sprites/enemy_crawler_0.png' },
+                { key: 'spitter',             src: 'assets/sprites/enemy_spitter_0.png' },
+                { key: 'brute',               src: 'assets/sprites/enemy_brute_0.png' },
+                { key: 'hive_node',           src: 'assets/sprites/enemy_hive_node_0.png' },
+                
+                // Biome 10: Core Rift / Event Horizon
+                { key: 'glitch_fragment',     src: 'assets/sprites/enemy_glitch_fragment_0.png' },
+                { key: 'paradox_wisp',        src: 'assets/sprites/enemy_paradox_wisp_0.png' },
+                { key: 'null_entity',         src: 'assets/sprites/enemy_null_entity_0.png' },
+                { key: 'rift_aberration',     src: 'assets/sprites/enemy_rift_aberration_0.png' }
             ];
 
-            customBiomeEnemies.forEach(({key, src}) => {
+            allStratumEnemies.forEach(({key, src}) => {
                 const img = new Image();
                 img.onload = function() { 
                     enemySprites[key] = preCompositeAdditive(img); 
-                    console.log(`[SPRITE] Successfully loaded custom biome enemy: ${key} (${src})`);
+                    console.log(`[SPRITE] Successfully loaded stratum enemy: ${key} (${src})`);
                 };
                 img.onerror = function() { 
                     enemySprites[key] = null; 
-                    console.error(`[SPRITE] [ERROR] Failed to load custom biome enemy: ${key} (${src})`);
+                    console.error(`[SPRITE] [ERROR] Failed to load stratum enemy: ${key} (${src})`);
                 };
                 img.src = src;
             });
+
+            // Dedicated role-based fallbacks using distinct alien sprites (NEVER player ships)
+            enemySprites['scout'] = enemySprites['angler_scout'];
+            enemySprites['interceptor'] = enemySprites['jelly_interceptor'];
+            enemySprites['heavy'] = enemySprites['vent_crab_heavy'];
+            enemySprites['boss_minion'] = enemySprites['boss_minion'];
         }
 
         // --- VFX Sprite Preloading ---

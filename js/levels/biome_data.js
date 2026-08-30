@@ -2,12 +2,12 @@
 // Loaded before level_manager.js
 const BIOME_DATA = {
   enemies: {
-    1: { scout:'angler_scout', interceptor:'jelly_interceptor', heavy:'vent_crab_heavy', alt:'angler_scout' },
-    2: { scout:'rust_drone', interceptor:'coral_wasp', heavy:'armored_eel', alt:'rust_drone' },
+    1: { scout:'angler_scout', interceptor:'jelly_interceptor', heavy:'vent_crab_heavy', alt:'trench_eel' },
+    2: { scout:'rust_drone', interceptor:'coral_wasp', heavy:'armored_eel', alt:'spine_urchin' },
     3: { scout:'sparker', interceptor:'sentinel', heavy:'juggernaut', alt:'boss_minion' },
     4: { scout:'plasma_wisp', interceptor:'storm_sprite', heavy:'gas_giant', alt:'nebula_wraith' },
     5: { scout:'ice_shard', interceptor:'frost_drone', heavy:'glacier', alt:'ice_swarm' },
-    6: { scout:'ember_sprite', interceptor:'magma_wasp', heavy:'lava_golem', alt:'ember_sprite' },
+    6: { scout:'ember_sprite', interceptor:'magma_wasp', heavy:'lava_golem', alt:'inferno_node' },
     7: { scout:'static_spark', interceptor:'storm_hawk', heavy:'thunderhead', alt:'storm_sentinel' },
     8: { scout:'salvage_drone', interceptor:'ghost_fighter', heavy:'turret_battery', alt:'fleet_turret' },
     9: { scout:'crawler', interceptor:'spitter', heavy:'brute', alt:'hive_node' },

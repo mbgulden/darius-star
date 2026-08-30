@@ -135,25 +135,44 @@
         // --- Enemy Ship Classes ---
         class Enemy {
             constructor(type) {
-                this.type = type;
+                this.type = type || 'scout';
                 this.id = ++enemyIdCounter;  // Unique ID for Economy.shouldDrop()
                 this.x = canvas.width + 50;
                 this.y = 50 + Math.random() * (canvas.height - 100);
-                this.width = 30;
-                this.height = 30;
+                this.width = 32;
+                this.height = 32;
                 this.age = 0;
+                this.rotation = 0;
+
+                // Current stratum / biome detection
+                this.biome = (typeof LevelManager !== 'undefined' && LevelManager.biome) ? LevelManager.biome : 1;
+
+                // Stratum glow colors
+                const BIOME_GLOWS = {
+                    1: '#00ffff', 2: '#ff6b81', 3: '#74b9ff', 4: '#e056fd',
+                    5: '#00cec9', 6: '#f39c12', 7: '#fed330', 8: '#2ed573',
+                    9: '#00b894', 10: '#e84393'
+                };
+                this.biomeGlowColor = BIOME_GLOWS[this.biome] || '#00ffff';
 
                 // Determine behavior pattern and map attributes
-                this.behaviorPattern = 'scout'; // default fallback
-                
-                const isScout = type === 'scout' || type.includes('crawler') || type.includes('drone') || type.includes('sprite') || type.includes('wisp') || type.includes('spark') || type.includes('fragment');
-                const isInterceptor = type === 'interceptor' || type.includes('interceptor') || type.includes('spitter') || type.includes('wraith') || type.includes('fighter') || type.includes('hawk') || type.includes('aberration');
-                const isHeavy = type === 'heavy' || type.includes('heavy') || type.includes('brute') || type.includes('turret') || type.includes('battery') || type.includes('sentinel') || type.includes('golem') || type.includes('giant') || type.includes('node') || type.includes('glacier') || type.includes('thunderhead') || type.includes('shard') || type.includes('swarm') || type.includes('eel');
-                
-                if (isScout) {
+                const isScout = type === 'scout' || type.includes('crawler') || type.includes('drone') || type.includes('sprite') || type.includes('wisp') || type.includes('spark') || type.includes('fragment') || type.includes('angler');
+                const isInterceptor = type === 'interceptor' || type.includes('interceptor') || type.includes('spitter') || type.includes('wraith') || type.includes('fighter') || type.includes('hawk') || type.includes('aberration') || type.includes('wasp') || type.includes('sentinel');
+                const isHeavy = type === 'heavy' || type.includes('heavy') || type.includes('brute') || type.includes('turret') || type.includes('battery') || type.includes('golem') || type.includes('giant') || type.includes('node') || type.includes('glacier') || type.includes('thunderhead') || type.includes('juggernaut') || type.includes('null_entity') || type.includes('crab');
+                const isHazard = type.includes('eel') || type.includes('urchin') || type.includes('swarm') || type.includes('shard');
+
+                if (isHazard) {
+                    this.behaviorPattern = 'hazard';
+                    this.enemyType = 'elite';
+                    this.speed = 130;
+                    this.hp = 3;
+                    this.scoreValue = 200;
+                    this.color = this.biomeGlowColor;
+                    this.startY = this.y;
+                } else if (isScout) {
                     this.behaviorPattern = 'scout';
                     this.enemyType = 'grunt';
-                    this.speed = 150;
+                    this.speed = 160;
                     this.hp = 1;
                     this.scoreValue = 100;
                     this.color = '#ff5500';
@@ -161,32 +180,33 @@
                 } else if (isInterceptor) {
                     this.behaviorPattern = 'interceptor';
                     this.enemyType = 'elite';
-                    this.speed = 280;
-                    this.hp = 1;
-                    this.scoreValue = 150;
+                    this.speed = 260;
+                    this.hp = 2;
+                    this.scoreValue = 180;
                     this.color = '#ff0055';
+                    this.startY = this.y;
                 } else if (isHeavy) {
                     this.behaviorPattern = 'heavy';
                     this.enemyType = 'elite';
-                    this.speed = 80;
+                    this.speed = 85;
                     this.hp = 4;
                     this.scoreValue = 300;
                     this.color = '#9a33cc';
-                    this.shootCooldown = 1.2 + Math.random() * 0.8;
+                    this.shootCooldown = 1.1 + Math.random() * 0.7;
                     this.shootTimer = this.shootCooldown;
                 } else if (type === 'boss_minion') {
                     this.behaviorPattern = 'boss_minion';
                     this.enemyType = 'boss_minion';
                     this.speed = 180;
                     this.hp = 2;
-                    this.scoreValue = 50;
+                    this.scoreValue = 75;
                     this.color = '#33cc55';
                 } else {
                     this.behaviorPattern = 'scout';
                     this.enemyType = 'grunt';
-                    this.speed = 180;
+                    this.speed = 160;
                     this.hp = 2;
-                    this.scoreValue = 50;
+                    this.scoreValue = 100;
                     this.color = '#33cc55';
                     this.startY = this.y;
                 }
@@ -200,9 +220,8 @@
                 }
 
                 // GRO-1006: Procedural mob variation — seed-based per-enemy variance
-                // Uses mulberry32 seeded RNG: (runSeed * prime + enemyId) for deterministic uniqueness
                 const _varRng = mulberry32(runSeed * 31 + this.id);
-                this._speedVar = 0.88 + _varRng() * 0.24;       // ±12% speed variance
+                this._speedVar = 0.90 + _varRng() * 0.20;       // ±10% speed variance
                 const difficultyConfig = getCurrentDifficultyConfig();
                 this.hp = Math.max(1, Math.ceil(this.hp * difficultyConfig.enemyHpMultiplier));
                 this.speed = Math.round(this.speed * this._speedVar * difficultyConfig.enemySpeedMultiplier);
@@ -211,7 +230,7 @@
                     this.shootTimer = Math.min(this.shootTimer || this.shootCooldown, this.shootCooldown);
                 }
                 this._moveVariant = Math.floor(_varRng() * 3);   // 0-2 movement pattern
-                this._bulletAngleShift = (_varRng() - 0.5) * 0.10; // ±5% bullet angle shift (radians)
+                this._bulletAngleShift = (_varRng() - 0.5) * 0.10; // ±5% bullet angle shift
             }
 
             update(dt) {
@@ -219,23 +238,30 @@
 
                 if (this.behaviorPattern === 'scout') {
                     this.x -= this.speed * dt;
-                    // GRO-1006: path variant — 3 different sine patterns
-                    const _freq = [4.5, 5.0, 6.0][this._moveVariant];
-                    const _amp = [55, 60, 70][this._moveVariant];
+                    const _freq = [4.5, 5.2, 6.0][this._moveVariant];
+                    const _amp = [50, 65, 75][this._moveVariant];
                     this.y = this.startY + Math.sin(this.age * _freq) * _amp;
                 } else if (this.behaviorPattern === 'interceptor') {
                     this.x -= this.speed * dt;
-                    // GRO-1006: interceptor gets subtle y-drift on variants 1-2
-                    if (this._moveVariant > 0) {
-                        this.y += Math.sin(this.age * (3 + this._moveVariant)) * 25 * dt;
+                    // Interceptor jukes vertically toward player plane
+                    if (typeof player !== 'undefined' && player) {
+                        const targetY = player.y;
+                        const dy = targetY - this.y;
+                        this.y += Math.sign(dy) * Math.min(Math.abs(dy), 60 * dt);
                     }
+                    this.y += Math.sin(this.age * 6) * 15 * dt;
                 } else if (this.behaviorPattern === 'heavy') {
                     this.x -= this.speed * dt;
+                    this.y += Math.sin(this.age * 2) * 12 * dt;
                     this.shootTimer -= dt;
                     if (this.shootTimer <= 0) {
                         this.shoot();
                         this.shootTimer = this.shootCooldown;
                     }
+                } else if (this.behaviorPattern === 'hazard') {
+                    this.x -= this.speed * 0.8 * dt;
+                    this.rotation += dt * 2.5;
+                    this.y += Math.sin(this.age * 4) * 35 * dt;
                 } else if (this.behaviorPattern === 'boss_minion') {
                     this.x -= this.speed * dt;
                     this.y += Math.sin(this.age * 8) * 80 * dt;
@@ -243,12 +269,12 @@
             }
 
             shoot() {
-                const dx = player.x - this.x;
-                const dy = player.y - this.y;
-                const dist = Math.sqrt(dx*dx + dy*dy);
+                const targetPlayer = (typeof player !== 'undefined') ? player : { x: 100, y: canvas.height / 2 };
+                const dx = targetPlayer.x - this.x;
+                const dy = targetPlayer.y - this.y;
+                const dist = Math.max(1, Math.sqrt(dx*dx + dy*dy));
                 const bulletSpeed = -220;
 
-                // GRO-1006: apply per-enemy bullet angle shift
                 const _shiftedDy = (dy/dist) + this._bulletAngleShift;
 
                 playSound('enemy_shoot', {enemyType: this.type});
@@ -257,72 +283,80 @@
 
             draw() {
                 ctx.save();
-                ctx.translate(this.x, this.y);
+                
+                const cx = this.x + this.width / 2;
+                const cy = this.y + this.height / 2;
+                ctx.translate(cx, cy);
 
-                const sprite = enemySprites[this.type] || enemySprites[this.behaviorPattern];
+                // Dynamic banking and organic pulsation
+                const pulseX = 1 + Math.sin(this.age * 7) * 0.05;
+                const pulseY = 1 + Math.cos(this.age * 7) * 0.05;
+                ctx.scale(pulseX, pulseY);
+
+                if (this.rotation) {
+                    ctx.rotate(this.rotation);
+                }
+
+                // Resolve exact sprite
+                const sprite = enemySprites[this.type] ||
+                               enemySprites[this.type + '_0'] ||
+                               enemySprites['enemy_' + this.type + '_0'] ||
+                               enemySprites[this.behaviorPattern] ||
+                               enemySprites['angler_scout'];
+
                 const isImage = sprite && sprite.tagName !== 'CANVAS' && sprite.complete && sprite.naturalWidth > 0;
                 const isCanvas = sprite && sprite.tagName === 'CANVAS' && sprite.width > 0;
                 const hasSprite = isImage || isCanvas;
 
+                // Render dimensions based on unit class
+                const sizes = { scout: 38, interceptor: 40, heavy: 52, hazard: 42, boss_minion: 34 };
+                const renderSize = sizes[this.behaviorPattern] || 38;
+
                 if (hasSprite) {
-                    // Map each type to appropriate render size (sprites are 1024x1024)
-                    const sizes = { scout: 36, interceptor: 36, heavy: 44, boss_minion: 32 };
-                    const size = sizes[this.behaviorPattern] || 36;
-                    
-                    if (this.isParadox) {
-                        ctx.shadowBlur = 12;
-                        ctx.shadowColor = this.paradoxColor;
-                    }
-                    // Use additive only for non-pre-composited images (fallback)
+                    // Stratum glow aura
+                    ctx.shadowColor = this.isParadox ? this.paradoxColor : this.biomeGlowColor;
+                    ctx.shadowBlur = this.isParadox ? 16 : 10;
+
                     if (isImage) {
                         ctx.globalCompositeOperation = 'lighter';
                     }
-                    // Use drawSpriteFrame to properly slice from 1024x1024 sheet
-                    drawSpriteFrame(ctx, sprite, 0, 0, SPRITE_FRAME, SPRITE_FRAME, 0, 0, size, size);
+                    
+                    ctx.drawImage(sprite, -renderSize / 2, -renderSize / 2, renderSize, renderSize);
+
                     if (isImage) {
                         ctx.globalCompositeOperation = 'source-over';
                     }
                 } else {
-                    // Fallback: colored shapes if sprite not loaded
+                    // Fallback geometry (unique non-player silhouette)
                     ctx.fillStyle = this.isParadox ? this.paradoxColor : this.color;
-                    if (this.behaviorPattern === 'scout') {
-                        ctx.beginPath();
-                        ctx.moveTo(30, 15); ctx.lineTo(10, 0); ctx.lineTo(0, 15); ctx.lineTo(10, 30);
-                        ctx.closePath(); ctx.fill();
-                    } else if (this.behaviorPattern === 'interceptor') {
-                        ctx.beginPath();
-                        ctx.moveTo(30, 15); ctx.lineTo(0, 5); ctx.lineTo(10, 15); ctx.lineTo(0, 25);
-                        ctx.closePath(); ctx.fill();
-                    } else if (this.behaviorPattern === 'heavy') {
-                        ctx.beginPath();
-                        ctx.moveTo(30, 5); ctx.lineTo(10, 0); ctx.lineTo(0, 15); ctx.lineTo(10, 30);
-                        ctx.lineTo(30, 25); ctx.lineTo(20, 15);
-                        ctx.closePath(); ctx.fill();
-                    } else if (this.behaviorPattern === 'boss_minion') {
-                        ctx.beginPath();
-                        ctx.arc(15, 15, 14, 0, Math.PI * 2); ctx.fill();
-                    }
+                    ctx.shadowColor = this.biomeGlowColor;
+                    ctx.shadowBlur = 8;
+                    
+                    ctx.beginPath();
+                    ctx.arc(0, 0, renderSize / 2.5, 0, Math.PI * 2);
+                    ctx.fill();
                 }
 
-                // If Paradox, draw name text above
+                // If Paradox, draw title above
                 if (this.isParadox) {
+                    ctx.shadowBlur = 0;
                     ctx.fillStyle = this.paradoxColor;
                     ctx.font = 'bold 9px monospace';
                     ctx.textAlign = 'center';
-                    ctx.fillText(this.paradoxName, 15, -6);
+                    ctx.fillText(this.paradoxName, 0, -renderSize / 2 - 4);
                 }
                 
-                // GRO-1068: Debug labels — show enemy type for playtesting identification
+                // Debug labels
                 if (window.DEBUG_LABELS) {
-                    ctx.fillStyle = 'rgba(255,255,255,0.75)';
+                    ctx.shadowBlur = 0;
+                    ctx.fillStyle = 'rgba(255,255,255,0.85)';
                     ctx.font = '8px monospace';
                     ctx.textAlign = 'center';
                     const label = this.type + (this.enemyType ? '/' + this.enemyType : '');
-                    // Draw text with dark outline for readability on any background
                     ctx.strokeStyle = 'rgba(0,0,0,0.8)';
                     ctx.lineWidth = 2;
-                    ctx.strokeText(label, 15, -6);
-                    ctx.fillText(label, 15, -6);
+                    ctx.strokeText(label, 0, -renderSize / 2 - 4);
+                    ctx.fillText(label, 0, -renderSize / 2 - 4);
                 }
 
                 ctx.restore();

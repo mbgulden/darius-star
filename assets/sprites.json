@@ -48,14 +48,15 @@
           "index": 0,
           "filename": "boss_charge.png",
           "path": "assets/sprites/boss_charge.png",
-          "width": 1024,
-          "height": 1024,
-          "is_power_of_two": true
+          "width": 512,
+          "height": 512,
+          "is_power_of_two": true,
+          "sha256": "078f229f45aab61d0ffb38462d028496c242d80f7bf56c48a4307d3dffbc59ba"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "boss_death": {
@@ -64,14 +65,15 @@
           "index": 0,
           "filename": "boss_death.png",
           "path": "assets/sprites/boss_death.png",
-          "width": 1024,
-          "height": 1024,
-          "is_power_of_two": true
+          "width": 512,
+          "height": 512,
+          "is_power_of_two": true,
+          "sha256": "d22de5cdff168a6efa4310fd405eb5ecc9c7743e0220c82df401d077ac82a5b6"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "boss_fire": {
@@ -80,14 +82,15 @@
           "index": 0,
           "filename": "boss_fire.png",
           "path": "assets/sprites/boss_fire.png",
-          "width": 1024,
-          "height": 1024,
-          "is_power_of_two": true
+          "width": 512,
+          "height": 512,
+          "is_power_of_two": true,
+          "sha256": "83ce3e720e5c51bf893390f5b0367c6e9274226cfb63b13f2431d5a19a583033"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "boss_idle": {
@@ -96,14 +99,15 @@
           "index": 0,
           "filename": "boss_idle.png",
           "path": "assets/sprites/boss_idle.png",
-          "width": 1024,
-          "height": 1024,
-          "is_power_of_two": true
+          "width": 512,
+          "height": 512,
+          "is_power_of_two": true,
+          "sha256": "6b7850171fb16537120cda24605fc767ef36a25b8666b98a41945891db20831e"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "boss_minion": {
@@ -128,14 +132,15 @@
           "index": 0,
           "filename": "boss_rage.png",
           "path": "assets/sprites/boss_rage.png",
-          "width": 1024,
-          "height": 1024,
-          "is_power_of_two": true
+          "width": 512,
+          "height": 512,
+          "is_power_of_two": true,
+          "sha256": "d3ab4926592d3040512102dd28dfe424f6ef8907b54a3179b396d7fb23127b50"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "cooldown_rings": {
@@ -144,15 +149,16 @@
           "index": 0,
           "filename": "cooldown_rings.png",
           "path": "assets/sprites/cooldown_rings.png",
-          "width": 160,
-          "height": 48,
-          "is_power_of_two": false
+          "width": 512,
+          "height": 512,
+          "is_power_of_two": true,
+          "sha256": "46a6aeefc476d9e369e17b1178b942d87a092756f3744ad8b011bfbd2e652765"
         }
       ],
       "frame_count": 1,
-      "width": 160,
-      "height": 48,
-      "is_valid_power_of_two": false
+      "width": 512,
+      "height": 512,
+      "is_valid_power_of_two": true
     },
     "enemy_b1_crawler_0": {
       "frames": [
@@ -160,14 +166,15 @@
           "index": 0,
           "filename": "enemy_b1_crawler_0.png",
           "path": "assets/sprites/enemy_b1_crawler_0.png",
-          "width": 1024,
-          "height": 1024,
-          "is_power_of_two": true
+          "width": 512,
+          "height": 512,
+          "is_power_of_two": true,
+          "sha256": "69e4e1ed0a299144d3440046ceede414eab1cb0582dcbfd48b7c838bec5fa3fb"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "enemy_b2_wraith_0": {
@@ -176,14 +183,15 @@
           "index": 0,
           "filename": "enemy_b2_wraith_0.png",
           "path": "assets/sprites/enemy_b2_wraith_0.png",
-          "width": 1024,
-          "height": 1024,
-          "is_power_of_two": true
+          "width": 512,
+          "height": 512,
+          "is_power_of_two": true,
+          "sha256": "f20097408f1425fe7734bda35416cc8b40f28e42a8ad8dcee03b73de6c33329a"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "enemy_b3_spider_0": {
@@ -192,14 +200,15 @@
           "index": 0,
           "filename": "enemy_b3_spider_0.png",
           "path": "assets/sprites/enemy_b3_spider_0.png",
-          "width": 1024,
-          "height": 1024,
-          "is_power_of_two": true
+          "width": 512,
+          "height": 512,
+          "is_power_of_two": true,
+          "sha256": "a47bda05511a5c2bb153e5f102f4851d2db2c9f59d625b7e8d4388d93abf0368"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "enemy_b4_rider_0": {
@@ -208,14 +217,15 @@
           "index": 0,
           "filename": "enemy_b4_rider_0.png",
           "path": "assets/sprites/enemy_b4_rider_0.png",
-          "width": 1024,
-          "height": 1024,
-          "is_power_of_two": true
+          "width": 512,
+          "height": 512,
+          "is_power_of_two": true,
+          "sha256": "c408636546ff56061c0e335b8aa04adf27e2fa19f5b06af07d3bcbddc88ed56d"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "enemy_b4_serpent_0": {
@@ -224,15 +234,16 @@
           "index": 0,
           "filename": "enemy_b4_serpent_0.png",
           "path": "assets/sprites/enemy_b4_serpent_0.png",
-          "width": 1408,
-          "height": 768,
-          "is_power_of_two": false
+          "width": 512,
+          "height": 512,
+          "is_power_of_two": true,
+          "sha256": "e2518e6db5575ad6433421c615ed58689b924905f68182e59ce53a1cfb2ab2ba"
         }
       ],
       "frame_count": 1,
-      "width": 1408,
-      "height": 768,
-      "is_valid_power_of_two": false
+      "width": 512,
+      "height": 512,
+      "is_valid_power_of_two": true
     },
     "enemy_b4_wisp_0": {
       "frames": [
@@ -240,14 +251,15 @@
           "index": 0,
           "filename": "enemy_b4_wisp_0.png",
           "path": "assets/sprites/enemy_b4_wisp_0.png",
-          "width": 1024,
-          "height": 1024,
-          "is_power_of_two": true
+          "width": 512,
+          "height": 512,
+          "is_power_of_two": true,
+          "sha256": "bfab68f1f7081406c85c3380ec19eeb9640acc6f13c3132dacda64cdca53ddff"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "enemy_brute": {
@@ -272,15 +284,16 @@
           "index": 0,
           "filename": "enemy_bullet.png",
           "path": "assets/sprites/enemy_bullet.png",
-          "width": 48,
-          "height": 48,
-          "is_power_of_two": false
+          "width": 512,
+          "height": 512,
+          "is_power_of_two": true,
+          "sha256": "250cd944b517e963dd70608c22d466361cfd7a24f5d9635dc9665b2f47e5c1c9"
         }
       ],
       "frame_count": 1,
-      "width": 48,
-      "height": 48,
-      "is_valid_power_of_two": false
+      "width": 512,
+      "height": 512,
+      "is_valid_power_of_two": true
     },
     "enemy_crawler": {
       "frames": [
@@ -1336,14 +1349,15 @@
           "index": 0,
           "filename": "laser_0_glow.png",
           "path": "assets/sprites/laser_0_glow.png",
-          "width": 1024,
-          "height": 1024,
-          "is_power_of_two": true
+          "width": 512,
+          "height": 512,
+          "is_power_of_two": true,
+          "sha256": "afc4b1db5b90f01b20d67abf8d2270f551dc8726291a65cf84a9f3cbf4c9894f"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "laser_enemy": {
@@ -1352,14 +1366,15 @@
           "index": 0,
           "filename": "laser_enemy.png",
           "path": "assets/sprites/laser_enemy.png",
-          "width": 1024,
-          "height": 1024,
-          "is_power_of_two": true
+          "width": 512,
+          "height": 512,
+          "is_power_of_two": true,
+          "sha256": "fb365beabb529709436ed40631206a7ef139317e182e8295b7a8958e6a5ae1fd"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "level3_bg": {
@@ -1368,15 +1383,16 @@
           "index": 0,
           "filename": "level3_bg.png",
           "path": "assets/sprites/level3_bg.png",
-          "width": 800,
-          "height": 450,
-          "is_power_of_two": false
+          "width": 512,
+          "height": 512,
+          "is_power_of_two": true,
+          "sha256": "51e39b346330e0eca99be50d5940e1c492758bd6b3d30d55fde2a3bc6e7a9aec"
         }
       ],
       "frame_count": 1,
-      "width": 800,
-      "height": 450,
-      "is_valid_power_of_two": false
+      "width": 512,
+      "height": 512,
+      "is_valid_power_of_two": true
     },
     "player": {
       "frames": [
@@ -1408,14 +1424,15 @@
           "index": 0,
           "filename": "player_0_glow.png",
           "path": "assets/sprites/player_0_glow.png",
-          "width": 1024,
-          "height": 1024,
-          "is_power_of_two": true
+          "width": 512,
+          "height": 512,
+          "is_power_of_two": true,
+          "sha256": "373b6b56ce1830b0a8bc25ab590061cde7455730a0035e8123b5e77ca6ed7400"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "player_1_glow": {
@@ -1424,14 +1441,15 @@
           "index": 0,
           "filename": "player_1_glow.png",
           "path": "assets/sprites/player_1_glow.png",
-          "width": 1024,
-          "height": 1024,
-          "is_power_of_two": true
+          "width": 512,
+          "height": 512,
+          "is_power_of_two": true,
+          "sha256": "22dc6cc2a182861afdceb4620f4074c723946807fd092668889ebcf308706618"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "player_bastion": {
@@ -1464,14 +1482,15 @@
           "index": 0,
           "filename": "player_bullet.png",
           "path": "assets/sprites/player_bullet.png",
-          "width": 64,
-          "height": 64,
-          "is_power_of_two": true
+          "width": 512,
+          "height": 512,
+          "is_power_of_two": true,
+          "sha256": "1929263fd0bc20e7177356d36d37b8fe6d43f007130663b9238e99f5fc958851"
         }
       ],
       "frame_count": 1,
-      "width": 64,
-      "height": 64,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "player_phantom": {
@@ -1856,15 +1875,16 @@
           "index": 0,
           "filename": "scrap_icons.png",
           "path": "assets/sprites/scrap_icons.png",
-          "width": 96,
-          "height": 16,
-          "is_power_of_two": false
+          "width": 512,
+          "height": 512,
+          "is_power_of_two": true,
+          "sha256": "4196d17c6157ab7a2edda016ad56bd973de9d25eabeaed48c72ba3a31516413d"
         }
       ],
       "frame_count": 1,
-      "width": 96,
-      "height": 16,
-      "is_valid_power_of_two": false
+      "width": 512,
+      "height": 512,
+      "is_valid_power_of_two": true
     },
     "shield": {
       "frames": [
@@ -1928,15 +1948,15 @@
           "index": 0,
           "filename": "scout_cycle_0020.png",
           "path": "assets/sprites/scout_cycle_0020.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "1edba26e2e217ad539077d82c4389fe48fc551bc051f3c78a6e40b8ce1924a0f"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "scout_cycle_0025": {
@@ -1945,15 +1965,15 @@
           "index": 0,
           "filename": "scout_cycle_0025.png",
           "path": "assets/sprites/scout_cycle_0025.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "a77b62b40ac370edfc69aa41b6bf914541e0ae731e36fd28987d7f3ae254c81f"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "title_0": {
@@ -1962,15 +1982,15 @@
           "index": 0,
           "filename": "title_0.png",
           "path": "assets/sprites/title_0.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "562f80e813030c0a32d6a81db5d5a67f63ced09ba9e277a00665a9bc1fd477c7"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "studio_logo": {
@@ -1979,15 +1999,15 @@
           "index": 0,
           "filename": "studio_logo.png",
           "path": "assets/sprites/studio_logo.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "7d48eeffbfeab134d823a2956e405dd0d051f21a4366b7529aa3863d6aa08f18"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "player_phantom_1": {
@@ -1996,15 +2016,15 @@
           "index": 0,
           "filename": "player_phantom_1.png",
           "path": "assets/sprites/player_phantom_1.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "31cb1c2903462a3597700ab5d9cf2ac03177ca82629f5dd1c92634e48c805cf9"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "enemy_storm_sentinel_0": {
@@ -2013,15 +2033,15 @@
           "index": 0,
           "filename": "enemy_storm_sentinel_0.png",
           "path": "assets/sprites/enemy_storm_sentinel_0.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
-          "sha256": "6fa829e881833973c9a82e27210ec0f2f7ed0dd515e80b38526c459815da343e"
+          "sha256": "2216a86c17273ac34dce390ce95b440256b358d8abda0716a24b5f7786d11c36"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "enemy_storm_sprite_0": {
@@ -2030,15 +2050,15 @@
           "index": 0,
           "filename": "enemy_storm_sprite_0.png",
           "path": "assets/sprites/enemy_storm_sprite_0.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
-          "sha256": "c978483efb80e41097fb2f1b7eddbbc4a62cf77c378d38f66f441b606270fc4d"
+          "sha256": "c408636546ff56061c0e335b8aa04adf27e2fa19f5b06af07d3bcbddc88ed56d"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "heavy_cycle_0008": {
@@ -2047,15 +2067,15 @@
           "index": 0,
           "filename": "heavy_cycle_0008.png",
           "path": "assets/sprites/heavy_cycle_0008.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "3fdbf586a5da1061182c6d955d73cd1bea48e9ed57b0e076348df14f10e09705"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "scout_cycle_0032": {
@@ -2064,15 +2084,15 @@
           "index": 0,
           "filename": "scout_cycle_0032.png",
           "path": "assets/sprites/scout_cycle_0032.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "c5a4a751db75b94f60c525177c4b8a999db9a93c991de8fbe7eb5d9427361b02"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "interceptor_cycle_0015": {
@@ -2081,15 +2101,15 @@
           "index": 0,
           "filename": "interceptor_cycle_0015.png",
           "path": "assets/sprites/interceptor_cycle_0015.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "5878bcd61c9b4f29160a164687389073878bfc05dafe270d0f5cbe1cc0a3db74"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "interceptor_cycle_0025": {
@@ -2098,15 +2118,15 @@
           "index": 0,
           "filename": "interceptor_cycle_0025.png",
           "path": "assets/sprites/interceptor_cycle_0025.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "3000b7e3e86a74380232bccba4497b0ef217211d18143f173be831f0052c397a"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "scout_cycle_0022": {
@@ -2115,15 +2135,15 @@
           "index": 0,
           "filename": "scout_cycle_0022.png",
           "path": "assets/sprites/scout_cycle_0022.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "03a24f902c1cc4e88c2ee7d7883a4a4ebd2161058eaacf596f2d053c853a96a9"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "scout_cycle_0010": {
@@ -2132,15 +2152,15 @@
           "index": 0,
           "filename": "scout_cycle_0010.png",
           "path": "assets/sprites/scout_cycle_0010.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "7709aeca00217e1b0170a967f431f69238da5780304cef9ef0bd5d9914a656ae"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "scout_cycle_0005": {
@@ -2149,15 +2169,15 @@
           "index": 0,
           "filename": "scout_cycle_0005.png",
           "path": "assets/sprites/scout_cycle_0005.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "94065b63bc2ff2667006be3573e3a3973b3d20fc86e03663c250f9b836fa6a29"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "interceptor_cycle_0010": {
@@ -2166,15 +2186,15 @@
           "index": 0,
           "filename": "interceptor_cycle_0010.png",
           "path": "assets/sprites/interceptor_cycle_0010.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "75f780a51f11923d6128e44cc9d59aa4a28721946f76a4e8666aae9f45db78ac"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "interceptor_cycle_0012": {
@@ -2183,15 +2203,15 @@
           "index": 0,
           "filename": "interceptor_cycle_0012.png",
           "path": "assets/sprites/interceptor_cycle_0012.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "43e71ed335dd69ba10502e96f43b400506570fdedf872d7c4eb401669dc8bfe1"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "enemy_static_spark_0": {
@@ -2200,15 +2220,15 @@
           "index": 0,
           "filename": "enemy_static_spark_0.png",
           "path": "assets/sprites/enemy_static_spark_0.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
-          "sha256": "fef8505da9b85dce8b03f934cd6edae7b2a2f225684028a4b550592753c9525d"
+          "sha256": "e1cea4cd19ea8941bbf653f99da2075f88eefa5ef9b367ffd0b7ea9810ad1809"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "scout_cycle_0026": {
@@ -2217,15 +2237,15 @@
           "index": 0,
           "filename": "scout_cycle_0026.png",
           "path": "assets/sprites/scout_cycle_0026.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "29ed693dfe651e60d6c0bdf3b741438246c200bc356f9e38c1a37cc266ccb01e"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "interceptor_cycle_0001": {
@@ -2234,15 +2254,15 @@
           "index": 0,
           "filename": "interceptor_cycle_0001.png",
           "path": "assets/sprites/interceptor_cycle_0001.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "2f144babe4c98b774c472277c902951cfc514d58575631ff4d30447153d2bd9d"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "interceptor_cycle_0018": {
@@ -2251,15 +2271,15 @@
           "index": 0,
           "filename": "interceptor_cycle_0018.png",
           "path": "assets/sprites/interceptor_cycle_0018.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "4865076c3e616074865666724dba037d732a3e5f826d445984383c9d53dfd095"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "heavy_cycle_0031": {
@@ -2268,15 +2288,15 @@
           "index": 0,
           "filename": "heavy_cycle_0031.png",
           "path": "assets/sprites/heavy_cycle_0031.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "a3dbf1bf4f104a3cff9abc8f3259a681b75efe18ac7af8438c864a4110821cc2"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "enemy_glacier_0": {
@@ -2285,15 +2305,15 @@
           "index": 0,
           "filename": "enemy_glacier_0.png",
           "path": "assets/sprites/enemy_glacier_0.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
-          "sha256": "9d046f1e05b72bda928c4c3fb9a4c3de9ae27d8cb423e0d7fa65254503908e59"
+          "sha256": "2e833f97c2a1052fa014aad6b1fcbbdc9ab472b668dd5effaf110d57b918fd33"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "heavy_cycle_0009": {
@@ -2302,15 +2322,15 @@
           "index": 0,
           "filename": "heavy_cycle_0009.png",
           "path": "assets/sprites/heavy_cycle_0009.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "7fe450bb33565638fc865d1ed21d92da5fab8e9be2cc9c9d5b8f70d8581cce53"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "enemy_storm_hawk_0": {
@@ -2319,15 +2339,15 @@
           "index": 0,
           "filename": "enemy_storm_hawk_0.png",
           "path": "assets/sprites/enemy_storm_hawk_0.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
-          "sha256": "641f19b989aba002d8f8080819246d3e5fed68114ab70d5a25eb72a1f78ed344"
+          "sha256": "a263a458dcd53228d67828f4449baf29ca89f684e0e33e91e5897b72d9257e83"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "interceptor_cycle_0009": {
@@ -2336,15 +2356,15 @@
           "index": 0,
           "filename": "interceptor_cycle_0009.png",
           "path": "assets/sprites/interceptor_cycle_0009.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "79701b059114d7a7b901b1dd98c5bffba23a422a9f5dee833c83d2b9ef5228b9"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "interceptor_cycle_0023": {
@@ -2353,15 +2373,15 @@
           "index": 0,
           "filename": "interceptor_cycle_0023.png",
           "path": "assets/sprites/interceptor_cycle_0023.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "850115192f8758da51df33c09a2bbcaddc145c57a0dd9a9fcb3d26b3dcfb33bc"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "enemy_rift_aberration_0": {
@@ -2370,15 +2390,15 @@
           "index": 0,
           "filename": "enemy_rift_aberration_0.png",
           "path": "assets/sprites/enemy_rift_aberration_0.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
-          "sha256": "ef66307f6187cba05813e5f7e7e98fff3642fd41d02013838a1c20be8698a19e"
+          "sha256": "463b0f1b2cbb17e54a60b69ff12b9d95b71f82e47163d4cc93fa9aa72525ba1c"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "heavy_cycle_0020": {
@@ -2387,15 +2407,15 @@
           "index": 0,
           "filename": "heavy_cycle_0020.png",
           "path": "assets/sprites/heavy_cycle_0020.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "63d885acb94bd53a1a328b09b278171cb61b6ce9a41bb2f19d0cf48010f8a1e2"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "heavy_cycle_0014": {
@@ -2404,15 +2424,15 @@
           "index": 0,
           "filename": "heavy_cycle_0014.png",
           "path": "assets/sprites/heavy_cycle_0014.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "61c16c919fb684503d63da3f926b66133f6e24cebf2d897cf8f416aa31c006e7"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "heavy_cycle_0006": {
@@ -2421,15 +2441,15 @@
           "index": 0,
           "filename": "heavy_cycle_0006.png",
           "path": "assets/sprites/heavy_cycle_0006.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "f66d5935060b4c562db325434598ef00fb2b311f3a0f3f4e745801e55c267377"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "heavy_cycle_0025": {
@@ -2438,15 +2458,15 @@
           "index": 0,
           "filename": "heavy_cycle_0025.png",
           "path": "assets/sprites/heavy_cycle_0025.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "5c68257bf29813801818aa78347935aa9d4f0b5f98b6232817f4366a2b8c237d"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "heavy_cycle_0001": {
@@ -2455,15 +2475,15 @@
           "index": 0,
           "filename": "heavy_cycle_0001.png",
           "path": "assets/sprites/heavy_cycle_0001.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "785579fb7ac08ee1045f3ef174005083bb95f4c1a3a74888b91c650ab9163cdc"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "enemy_gas_giant_0": {
@@ -2472,15 +2492,15 @@
           "index": 0,
           "filename": "enemy_gas_giant_0.png",
           "path": "assets/sprites/enemy_gas_giant_0.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
-          "sha256": "23734d6b4edea404c7f04b09bb30ee93174253d128d8a2d252d5098f42bc14ca"
+          "sha256": "e2518e6db5575ad6433421c615ed58689b924905f68182e59ce53a1cfb2ab2ba"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "scout_cycle_0027": {
@@ -2489,15 +2509,15 @@
           "index": 0,
           "filename": "scout_cycle_0027.png",
           "path": "assets/sprites/scout_cycle_0027.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "953ce45cd2b344e53741787d5971cabe186b6fd0fe0f39427fde2d1b4ecf6656"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "explosion_0": {
@@ -2506,15 +2526,15 @@
           "index": 0,
           "filename": "explosion_0.png",
           "path": "assets/sprites/explosion_0.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "185d9c1a97f308f01f66dfaa7e82342d5e3281045fdfae1d8a30f145c42fc5a5"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "laser_0": {
@@ -2523,15 +2543,15 @@
           "index": 0,
           "filename": "laser_0.png",
           "path": "assets/sprites/laser_0.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "862a415fcb6efd56736c3999f4b838d57edf1ed95cbf1374c13f51090157835a"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "scout_cycle_0014": {
@@ -2540,15 +2560,15 @@
           "index": 0,
           "filename": "scout_cycle_0014.png",
           "path": "assets/sprites/scout_cycle_0014.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "cc99ad0c4101b6c8bc3450aee2771d293d8f8cb103adc01e0f13a7693d4a93c0"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "interceptor_cycle_0005": {
@@ -2557,15 +2577,15 @@
           "index": 0,
           "filename": "interceptor_cycle_0005.png",
           "path": "assets/sprites/interceptor_cycle_0005.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "f232a7ff877bdf9ad15997c61d852a09eb4bbd6d6a23702f41abe1a67f507f96"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "scout_cycle_0024": {
@@ -2574,15 +2594,15 @@
           "index": 0,
           "filename": "scout_cycle_0024.png",
           "path": "assets/sprites/scout_cycle_0024.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "31240b8528318f51ec1dc2eef973e1559e16f096d9b1e24e1972adc19356cad1"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "thruster_1": {
@@ -2591,15 +2611,15 @@
           "index": 0,
           "filename": "thruster_1.png",
           "path": "assets/sprites/thruster_1.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "ad39cefecf236b0ae0211f7aa1bc17ebba22f0edf4fb60429216a3d0e465c783"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "interceptor_cycle_0008": {
@@ -2608,15 +2628,15 @@
           "index": 0,
           "filename": "interceptor_cycle_0008.png",
           "path": "assets/sprites/interceptor_cycle_0008.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "43d1b25b604adff38119deff9139f058c4c80f3ed5ef0bc9bdec569a27cd503f"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "enemy_null_entity_0": {
@@ -2625,15 +2645,15 @@
           "index": 0,
           "filename": "enemy_null_entity_0.png",
           "path": "assets/sprites/enemy_null_entity_0.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
-          "sha256": "4611ea4d2f3ceacef677d405c81ce6debbcc0b6add5e7cc72e825ca365d18d01"
+          "sha256": "112639da75795b8fe912b47763562796fd69464a629e49fd8a0572100485d4bd"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "scout_cycle_0015": {
@@ -2642,15 +2662,15 @@
           "index": 0,
           "filename": "scout_cycle_0015.png",
           "path": "assets/sprites/scout_cycle_0015.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "a462bcd6caf19de1be5df5f8e2dd978d210a095d72b8af09ea01563bd7bbfd26"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "heavy_cycle_0003": {
@@ -2659,15 +2679,15 @@
           "index": 0,
           "filename": "heavy_cycle_0003.png",
           "path": "assets/sprites/heavy_cycle_0003.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "c65a30e8d279a845e63c5add4749d56f001171c11ca7c9bb28c4613da698f012"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "heavy_cycle_0004": {
@@ -2676,15 +2696,15 @@
           "index": 0,
           "filename": "heavy_cycle_0004.png",
           "path": "assets/sprites/heavy_cycle_0004.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "dc827da28fdf2b30fa93e60249ccb4c9915c149764295c160d62a4c1b7f07929"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "heavy_cycle_0032": {
@@ -2693,15 +2713,15 @@
           "index": 0,
           "filename": "heavy_cycle_0032.png",
           "path": "assets/sprites/heavy_cycle_0032.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "4f85c6a7a5d9930826d7ac0a9b59bed95602a2c712fdd235f8ccfd57dd7c5aff"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "thruster_0": {
@@ -2710,15 +2730,15 @@
           "index": 0,
           "filename": "thruster_0.png",
           "path": "assets/sprites/thruster_0.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "6a40681c255f2d8561264696749204a7bdb6ba03ef1eeec3ae4f302c1954ad05"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "interceptor_cycle_0014": {
@@ -2727,15 +2747,15 @@
           "index": 0,
           "filename": "interceptor_cycle_0014.png",
           "path": "assets/sprites/interceptor_cycle_0014.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "4ff40d9d91c6399ce11ca4723e30776633c04c82ce714ac40c9f8fc5eb99dba2"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "heavy_cycle_0023": {
@@ -2744,15 +2764,15 @@
           "index": 0,
           "filename": "heavy_cycle_0023.png",
           "path": "assets/sprites/heavy_cycle_0023.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "ab71764e1436f9bf51eb5498a6ba2bb45669e5ce0b4282f72b8c3fa60a8a3e7c"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "enemy_ember_sprite_0": {
@@ -2761,15 +2781,15 @@
           "index": 0,
           "filename": "enemy_ember_sprite_0.png",
           "path": "assets/sprites/enemy_ember_sprite_0.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
-          "sha256": "837518257feafd9e895da5d8f78ee334a78c8d53acfa98034b8ac046221dcb21"
+          "sha256": "d9398af4d10bcddb901817f2b0ffaeca4f42f977aff9cac90c6ff4507cf21f31"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "heavy_cycle_0015": {
@@ -2778,15 +2798,15 @@
           "index": 0,
           "filename": "heavy_cycle_0015.png",
           "path": "assets/sprites/heavy_cycle_0015.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "0c5108fcea06092512a133abc7f72b05c6e6b021cecf04339d2e4fbcf8631d4d"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "scout_cycle_0002": {
@@ -2795,15 +2815,15 @@
           "index": 0,
           "filename": "scout_cycle_0002.png",
           "path": "assets/sprites/scout_cycle_0002.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "633b7e819f2f14fdfd88bb74b2e8a09948fa31ba62258182fe09f3404f2e2a29"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "scout_cycle_0008": {
@@ -2812,15 +2832,15 @@
           "index": 0,
           "filename": "scout_cycle_0008.png",
           "path": "assets/sprites/scout_cycle_0008.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "cf5a6adc4c498e3682c43b63bf71a228107bfa399539660df9a5d12384aa9a72"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "interceptor_cycle_0026": {
@@ -2829,15 +2849,15 @@
           "index": 0,
           "filename": "interceptor_cycle_0026.png",
           "path": "assets/sprites/interceptor_cycle_0026.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "85fb15dfdfc91ebc3c4569e22097ae17df2b9b5b1391b4960ff149e21f363d32"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "enemy_lava_golem_0": {
@@ -2846,15 +2866,15 @@
           "index": 0,
           "filename": "enemy_lava_golem_0.png",
           "path": "assets/sprites/enemy_lava_golem_0.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
-          "sha256": "7dc50e8dc1b9be2e36a4d1d5b24ea63c3b38352213f6fd11d9823f59b0f230f8"
+          "sha256": "32b03abc94fe06dcbf5635ff3444ccb001114f58e65257e3b8e2ac0a161af394"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "interceptor_cycle_0020": {
@@ -2863,15 +2883,15 @@
           "index": 0,
           "filename": "interceptor_cycle_0020.png",
           "path": "assets/sprites/interceptor_cycle_0020.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "eeafee123fce94e3e84e4b2b872ca9383f1d3ed47b4b95992780cfb4569ea0a3"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "player_warden_0": {
@@ -2880,15 +2900,15 @@
           "index": 0,
           "filename": "player_warden_0.png",
           "path": "assets/sprites/player_warden_0.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "89475474d9834885b4038f8d25db1e8d4ce3d568cad9adfc8d2ff970039304f2"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "enemy_ghost_fighter_0": {
@@ -2897,15 +2917,15 @@
           "index": 0,
           "filename": "enemy_ghost_fighter_0.png",
           "path": "assets/sprites/enemy_ghost_fighter_0.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
-          "sha256": "e8568f49149a4f744294715cee1778032d16920c6ce9cdb13b7ad2c30a8349d8"
+          "sha256": "7dbd9461568185019a5508865d30e9da9fcaba8f90000d60c800eeb5d65ae31a"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "player_bastion_1": {
@@ -2914,15 +2934,15 @@
           "index": 0,
           "filename": "player_bastion_1.png",
           "path": "assets/sprites/player_bastion_1.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "aaffe4e97aa00b99651552c6eb29773ea357863a0cf559e62813211bb8a31683"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "heavy_cycle_0021": {
@@ -2931,15 +2951,15 @@
           "index": 0,
           "filename": "heavy_cycle_0021.png",
           "path": "assets/sprites/heavy_cycle_0021.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "1fc1afacceaa3d23d5f5cd14b578d8b6c2046cf3e61c6f132444e1ab11f13095"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "shield_0": {
@@ -2948,15 +2968,15 @@
           "index": 0,
           "filename": "shield_0.png",
           "path": "assets/sprites/shield_0.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "891097f4205bd40ce5df3cb83f6454d0e78a74084158546645dc9aa9535e43ef"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "boss_0": {
@@ -2965,15 +2985,15 @@
           "index": 0,
           "filename": "boss_0.png",
           "path": "assets/sprites/boss_0.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "83334c0a2f65ca9bc7d989992bc535eea69d06502e7c640652aa23798a521656"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "bg_nebula_0": {
@@ -2982,15 +3002,15 @@
           "index": 0,
           "filename": "bg_nebula_0.png",
           "path": "assets/sprites/bg_nebula_0.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "57ed77dc28791bf9664217cfcd79533b60567dcb3107a9976fcefd22db86ceb9"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "player_warden_1": {
@@ -2999,15 +3019,15 @@
           "index": 0,
           "filename": "player_warden_1.png",
           "path": "assets/sprites/player_warden_1.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "902654486241474e5d4eaa0cb0aac016e0f0df32422dc69c3ef7359be97e63b6"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "interceptor_cycle_0022": {
@@ -3016,15 +3036,15 @@
           "index": 0,
           "filename": "interceptor_cycle_0022.png",
           "path": "assets/sprites/interceptor_cycle_0022.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "ece4ff5bfb3d03a32fb9b32f0739bb1c9d6d7fc98c06a205e33a48bafdced129"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "interceptor_cycle_0027": {
@@ -3033,15 +3053,15 @@
           "index": 0,
           "filename": "interceptor_cycle_0027.png",
           "path": "assets/sprites/interceptor_cycle_0027.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "761c40f4a23718e0438670dc17ed8e2e251609e82a23fd24d6164476db8909bf"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "heavy_cycle_0010": {
@@ -3050,15 +3070,15 @@
           "index": 0,
           "filename": "heavy_cycle_0010.png",
           "path": "assets/sprites/heavy_cycle_0010.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "1ca65d88621b880658deb2c505fc1b2dc43b02fda9868284d45003f48ccf0acd"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "heavy_cycle_0016": {
@@ -3067,15 +3087,15 @@
           "index": 0,
           "filename": "heavy_cycle_0016.png",
           "path": "assets/sprites/heavy_cycle_0016.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "935a6180c17e002a29d035543d2f0d879ab23b7d610b9e36ff0f89cda50149b9"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "enemy_spitter_0": {
@@ -3084,15 +3104,15 @@
           "index": 0,
           "filename": "enemy_spitter_0.png",
           "path": "assets/sprites/enemy_spitter_0.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
-          "sha256": "4638779a21d11d8cd54ced0ffd3a86a1755deab8750c07adca3a5f33181995a0"
+          "sha256": "05696a86ccf280d62d217b9fddd8e16970e6ce1ddba9ffd145792cc8efdd1f7a"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "boss_1": {
@@ -3101,15 +3121,15 @@
           "index": 0,
           "filename": "boss_1.png",
           "path": "assets/sprites/boss_1.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "3f397ad1b6158d834ec7db49c7d789d0c432d841fc39d82fb2f41a7779646c59"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "enemy_hive_node_0": {
@@ -3118,15 +3138,15 @@
           "index": 0,
           "filename": "enemy_hive_node_0.png",
           "path": "assets/sprites/enemy_hive_node_0.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
-          "sha256": "dd34a6965f6ff8d57ff85c561c7a3c2fcae41fc3b54b954c5aa1b03d84ca4edd"
+          "sha256": "e90727d3682445351cfbc316395efbec5c89124443a733c2d0d6d61df6512888"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "enemy_fleet_turret_0": {
@@ -3135,15 +3155,15 @@
           "index": 0,
           "filename": "enemy_fleet_turret_0.png",
           "path": "assets/sprites/enemy_fleet_turret_0.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
-          "sha256": "83d2ac154fb405846fa35b120ad6ab61695f9b54fee9f939a62b607d434e4f51"
+          "sha256": "56e67c4112fc5bbe2e33cbeeb7cbee490bf6ad1f7b08cb519f9595c7030d4830"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "heavy_0": {
@@ -3152,15 +3172,15 @@
           "index": 0,
           "filename": "heavy_0.png",
           "path": "assets/sprites/heavy_0.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "562b775b518fc85bf6b574b23411f16a864a5aee6a18bdf0147c066ed694bf21"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "enemy_inferno_node_0": {
@@ -3169,15 +3189,15 @@
           "index": 0,
           "filename": "enemy_inferno_node_0.png",
           "path": "assets/sprites/enemy_inferno_node_0.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
-          "sha256": "cd78dac356b39cf0557ec39ce9fc75b84d29bd471fff5132f43dd4419a06a88b"
+          "sha256": "0d5fb243fb7029b538481e6d280dddc32acee151f68aa1e25388874847b406f3"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "enemy_nebula_wraith_0": {
@@ -3186,15 +3206,15 @@
           "index": 0,
           "filename": "enemy_nebula_wraith_0.png",
           "path": "assets/sprites/enemy_nebula_wraith_0.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
-          "sha256": "3afbb4a73da13b00911fee0ec099fe01f86cebb8a368c00ca9233f8ca6cc3975"
+          "sha256": "af5ef155f4942b07c5d8a9058cfecabf1b95be4de6b9825aa3d2b7923c991aee"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "enemy_paradox_wisp_0": {
@@ -3203,15 +3223,15 @@
           "index": 0,
           "filename": "enemy_paradox_wisp_0.png",
           "path": "assets/sprites/enemy_paradox_wisp_0.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
-          "sha256": "ef950f0ae22137f696d4e36dc8a97bfe9231aa35e4ccd0fee525f64819b8e398"
+          "sha256": "f2168b3407d5a217695400c51f9b8bc910b926170be91963505d35c0836047f7"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "scout_cycle_0001": {
@@ -3220,15 +3240,15 @@
           "index": 0,
           "filename": "scout_cycle_0001.png",
           "path": "assets/sprites/scout_cycle_0001.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "32af6a739e6c89300d8adc6970b483211b416c3670bc15add4ae2cf4611f1f30"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "interceptor_cycle_0007": {
@@ -3237,15 +3257,15 @@
           "index": 0,
           "filename": "interceptor_cycle_0007.png",
           "path": "assets/sprites/interceptor_cycle_0007.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "6ec25fc07907d7c8ebfafc602986ea9218a9b5224c704a1eac8064f6964513f9"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "enemy_frost_drone_0": {
@@ -3254,15 +3274,15 @@
           "index": 0,
           "filename": "enemy_frost_drone_0.png",
           "path": "assets/sprites/enemy_frost_drone_0.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
-          "sha256": "6668be60985946731ee7ac369b75449a85140623cc6e07abdc470576347f7f73"
+          "sha256": "15b269b6a7060498a7dd7a9a49c586c5a08dc15e33aa3430357f8f61e7cbc0a8"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "enemy_plasma_wisp_0": {
@@ -3271,15 +3291,15 @@
           "index": 0,
           "filename": "enemy_plasma_wisp_0.png",
           "path": "assets/sprites/enemy_plasma_wisp_0.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
-          "sha256": "e1427e19b330b91a19b06bc298d41f880758a5818a1ba108aff85af410f40b04"
+          "sha256": "bfab68f1f7081406c85c3380ec19eeb9640acc6f13c3132dacda64cdca53ddff"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "scout_cycle_0019": {
@@ -3288,15 +3308,15 @@
           "index": 0,
           "filename": "scout_cycle_0019.png",
           "path": "assets/sprites/scout_cycle_0019.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "e4f3c164eda2d723c5d4cf6ebc52ac4af280d69cc749dd4feafd54578a55ed9c"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "enemy_ice_swarm_0": {
@@ -3305,15 +3325,15 @@
           "index": 0,
           "filename": "enemy_ice_swarm_0.png",
           "path": "assets/sprites/enemy_ice_swarm_0.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
-          "sha256": "9c3ad4e7ee257cb50841518448b625eb3308c37e68a8e6466b49664bb0471128"
+          "sha256": "f7908410c8accac859a2c96073bb426b83b7f79be0f77843c063c4b15bfb2fea"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "player_specter_1": {
@@ -3322,15 +3342,15 @@
           "index": 0,
           "filename": "player_specter_1.png",
           "path": "assets/sprites/player_specter_1.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "1cbbfeefd88ea32fad58bc9cb91d1c85c0a3a083ab64d702f96988130096591d"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "player_0": {
@@ -3339,15 +3359,15 @@
           "index": 0,
           "filename": "player_0.png",
           "path": "assets/sprites/player_0.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "cb66ec3e5d46cb1b1299fd9275f165115db6d74651ff545c7bf40f6e262541bc"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "interceptor_cycle_0013": {
@@ -3356,15 +3376,15 @@
           "index": 0,
           "filename": "interceptor_cycle_0013.png",
           "path": "assets/sprites/interceptor_cycle_0013.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "a98afe07d6c6b8dfb884f971581e62ca0eabeb9440538d91bbd0e5c86790e830"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "shop_background_0": {
@@ -3373,15 +3393,15 @@
           "index": 0,
           "filename": "shop_background_0.png",
           "path": "assets/sprites/shop_background_0.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "75e5f76c908c8153b9121fd481a0debd9f9a018c4c622e3c1c60640fa9a1a441"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "interceptor_0": {
@@ -3390,15 +3410,15 @@
           "index": 0,
           "filename": "interceptor_0.png",
           "path": "assets/sprites/interceptor_0.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "39ec553cdd6510f49dfd999db57e54446319809b60620b2b73a00da995b3a0b6"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "enemy_glitch_fragment_0": {
@@ -3407,15 +3427,15 @@
           "index": 0,
           "filename": "enemy_glitch_fragment_0.png",
           "path": "assets/sprites/enemy_glitch_fragment_0.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
-          "sha256": "686cb7df310ca19812d63bbdfd8ee1a9dd660b17888e3aea6aa7914d9c0a3cff"
+          "sha256": "c4a55a75a2ca0a89ea18b6316f78d8b9e4d0bb3e2d1d65f63fd1a8dd88fe03d5"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "scout_cycle_0029": {
@@ -3424,15 +3444,15 @@
           "index": 0,
           "filename": "scout_cycle_0029.png",
           "path": "assets/sprites/scout_cycle_0029.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "04a8a3611f47b95200a7882a902978cd0aada1415516543747c1efec6178c5bd"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "heavy_cycle_0017": {
@@ -3441,15 +3461,15 @@
           "index": 0,
           "filename": "heavy_cycle_0017.png",
           "path": "assets/sprites/heavy_cycle_0017.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "83f77965b6ab9bdb38e385a90e65e7d067377f866e0b89c42c18c879f07d84e8"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "enemy_ice_shard_0": {
@@ -3458,15 +3478,15 @@
           "index": 0,
           "filename": "enemy_ice_shard_0.png",
           "path": "assets/sprites/enemy_ice_shard_0.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
-          "sha256": "928566c6530ca77ce7a43f80c3c3bb7b45cf37b670b82865b3db472083bd7707"
+          "sha256": "935ff88d9d982e6c32d7a2d67879301db5abdf5d170bab0a46221f38a0bf7fce"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "scout_cycle_0030": {
@@ -3475,15 +3495,15 @@
           "index": 0,
           "filename": "scout_cycle_0030.png",
           "path": "assets/sprites/scout_cycle_0030.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "d138ebbb974c05ac2c16afc81b7a2feeec787b7a8120602f09aed651d5115dbc"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "interceptor_cycle_0003": {
@@ -3492,15 +3512,15 @@
           "index": 0,
           "filename": "interceptor_cycle_0003.png",
           "path": "assets/sprites/interceptor_cycle_0003.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "13615ebb49f5a13a556149af19bcb8b73a5070b2f4852519f98349e95b0e133c"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "player_phantom_0": {
@@ -3509,15 +3529,15 @@
           "index": 0,
           "filename": "player_phantom_0.png",
           "path": "assets/sprites/player_phantom_0.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "5c2f8f73a190de19a3c6a8ce34f83feb98379f302e4976877e482faa3e07bd88"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "interceptor_cycle_0032": {
@@ -3526,15 +3546,15 @@
           "index": 0,
           "filename": "interceptor_cycle_0032.png",
           "path": "assets/sprites/interceptor_cycle_0032.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "ec35ff1e8a35c585f9d13e98d71058cdd9f500034970a5ddfe052b2fa1e37033"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "heavy_cycle_0027": {
@@ -3543,15 +3563,15 @@
           "index": 0,
           "filename": "heavy_cycle_0027.png",
           "path": "assets/sprites/heavy_cycle_0027.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "78b5631b47667d94307f8b817de5a90b4ffff558003371b9a5b6166d598350ac"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "player_1": {
@@ -3560,15 +3580,15 @@
           "index": 0,
           "filename": "player_1.png",
           "path": "assets/sprites/player_1.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "4ad092ea1617f02c4b0647bd2ddd741ba5ab896aef29906eab04805942d68d0c"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "heavy_cycle_0007": {
@@ -3577,15 +3597,15 @@
           "index": 0,
           "filename": "heavy_cycle_0007.png",
           "path": "assets/sprites/heavy_cycle_0007.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "f002dcfc16e8f57f6af550587ded36d120899d22d1b4b3eb01a10bcdbb01807d"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "interceptor_cycle_0006": {
@@ -3594,15 +3614,15 @@
           "index": 0,
           "filename": "interceptor_cycle_0006.png",
           "path": "assets/sprites/interceptor_cycle_0006.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "ca25213d262b765e349646072ade3917324352fb9a429fff5fb9002d8fbe862b"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "heavy_cycle_0011": {
@@ -3611,15 +3631,15 @@
           "index": 0,
           "filename": "heavy_cycle_0011.png",
           "path": "assets/sprites/heavy_cycle_0011.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "1affb83bd88af8759a56c41e107a03a52e286f1c9805cb43be4862a5863d1905"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "explosion_3": {
@@ -3628,15 +3648,15 @@
           "index": 0,
           "filename": "explosion_3.png",
           "path": "assets/sprites/explosion_3.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "cf75fd0ff1b0454698ff7476bf6af408554d251031a8a89120dfb275f483604a"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "scout_cycle_0017": {
@@ -3645,15 +3665,15 @@
           "index": 0,
           "filename": "scout_cycle_0017.png",
           "path": "assets/sprites/scout_cycle_0017.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "14532b7814a31c4b6605feb84d73801c81e648acbbd8bbdd7ba7eeb940a6f0d8"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "interceptor_cycle_0017": {
@@ -3662,15 +3682,15 @@
           "index": 0,
           "filename": "interceptor_cycle_0017.png",
           "path": "assets/sprites/interceptor_cycle_0017.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "cd4bd5550341347bb913bd886b3ee73f653265baab81f76c571d8b9aa55381a2"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "interceptor_cycle_0011": {
@@ -3679,15 +3699,15 @@
           "index": 0,
           "filename": "interceptor_cycle_0011.png",
           "path": "assets/sprites/interceptor_cycle_0011.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "f0e5dc767d9152ff8c7e4098692f9ca5f79cf32d329a14798cf40b4901b09e7b"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "scout_cycle_0011": {
@@ -3696,15 +3716,15 @@
           "index": 0,
           "filename": "scout_cycle_0011.png",
           "path": "assets/sprites/scout_cycle_0011.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "36c8481a66e87f1796d05c058ed68876dad8079268a51c0816955edc1fdcecc0"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "interceptor_cycle_0016": {
@@ -3713,15 +3733,15 @@
           "index": 0,
           "filename": "interceptor_cycle_0016.png",
           "path": "assets/sprites/interceptor_cycle_0016.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "737a74e30cb159ccd5378d2fbe07db444828431597a9d8c6fe21c4c2ff45aaca"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "scout_cycle_0007": {
@@ -3730,15 +3750,15 @@
           "index": 0,
           "filename": "scout_cycle_0007.png",
           "path": "assets/sprites/scout_cycle_0007.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "d05af34dbb9cdc2439fff76f6e1d15659a675615d323956cf5d373a2c50d5df3"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "enemy_thunderhead_0": {
@@ -3747,15 +3767,15 @@
           "index": 0,
           "filename": "enemy_thunderhead_0.png",
           "path": "assets/sprites/enemy_thunderhead_0.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
-          "sha256": "e3ad94077d8664f423f344fd10426a83a5a26a9593dd3658087a6ab4b393eafb"
+          "sha256": "74a9a9ec555b3a1a3ed71ea706c355979f7982ebc4d05d159ad35a12d50266aa"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "heavy_cycle_0022": {
@@ -3764,15 +3784,15 @@
           "index": 0,
           "filename": "heavy_cycle_0022.png",
           "path": "assets/sprites/heavy_cycle_0022.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "64e26681a0f2d23efd9b1b316785271e74fda0a406dd22bd0aae83df6456ce6b"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "scout_cycle_0028": {
@@ -3781,15 +3801,15 @@
           "index": 0,
           "filename": "scout_cycle_0028.png",
           "path": "assets/sprites/scout_cycle_0028.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "0bf6d49e2332f1d544bd689ee5be05b157fafa697481f347d59915f5787e570b"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "interceptor_cycle_0029": {
@@ -3798,15 +3818,15 @@
           "index": 0,
           "filename": "interceptor_cycle_0029.png",
           "path": "assets/sprites/interceptor_cycle_0029.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "82578eecf19e58f564893da595e966d8baf4863351821cdd73c7ccaac577b1a1"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "explosion_1": {
@@ -3815,15 +3835,15 @@
           "index": 0,
           "filename": "explosion_1.png",
           "path": "assets/sprites/explosion_1.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "0d5a75cbfab2b14dd54250b472b6c97901d576e48caf9df5dc9a2170bb3934c9"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "interceptor_cycle_0031": {
@@ -3832,15 +3852,15 @@
           "index": 0,
           "filename": "interceptor_cycle_0031.png",
           "path": "assets/sprites/interceptor_cycle_0031.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "a5fa98468649f797abae75b9aa2a5c22b70ebebd0890686679ce0146585d721b"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "enemy_brute_0": {
@@ -3849,15 +3869,15 @@
           "index": 0,
           "filename": "enemy_brute_0.png",
           "path": "assets/sprites/enemy_brute_0.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
-          "sha256": "35ea0d60e7034322bffae7a382fb5f91fa1a66982d93ab463f5872ce5781577d"
+          "sha256": "b2aab8b0cb57b075b4da576209dbd6157161c51c412ece7cbeaa52f841fb9d63"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "heavy_cycle_0005": {
@@ -3866,15 +3886,15 @@
           "index": 0,
           "filename": "heavy_cycle_0005.png",
           "path": "assets/sprites/heavy_cycle_0005.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "4813ec5d3e9461d0bd697d3e8c2fb75f7ffabcdd1479509941bce6f4aa7405c2"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "scout_cycle_0009": {
@@ -3883,15 +3903,15 @@
           "index": 0,
           "filename": "scout_cycle_0009.png",
           "path": "assets/sprites/scout_cycle_0009.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "78d6a827a98ae2bb560f213544f84d435891ed4a00f5c4f7dfe2e0a20c716ebe"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "interceptor_cycle_0028": {
@@ -3900,15 +3920,15 @@
           "index": 0,
           "filename": "interceptor_cycle_0028.png",
           "path": "assets/sprites/interceptor_cycle_0028.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "d10284f18c205bb30c79b58d02ff08e61e93fd79eb8d40ed9a1d5b254bd706c8"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "enemy_salvage_drone_0": {
@@ -3917,15 +3937,15 @@
           "index": 0,
           "filename": "enemy_salvage_drone_0.png",
           "path": "assets/sprites/enemy_salvage_drone_0.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
-          "sha256": "ef7bb88ad2cd70909692b99e83a0da6eab66c657922f4491167815be5df5e298"
+          "sha256": "584e0e0e107a4702bc3e459653abc00acc7b257539fe6b0ff066ba5cd669d3d8"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "heavy_cycle_0026": {
@@ -3934,15 +3954,15 @@
           "index": 0,
           "filename": "heavy_cycle_0026.png",
           "path": "assets/sprites/heavy_cycle_0026.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "65a01dfe16806214e1e02df438245299e44d935d58ff8571a54629a7389ca488"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "scout_0": {
@@ -3951,15 +3971,15 @@
           "index": 0,
           "filename": "scout_0.png",
           "path": "assets/sprites/scout_0.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "e157a48eef3e39720b6b71ee376109f3d1942ff7aa38a5c98f05c1fc85484021"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "scout_cycle_0003": {
@@ -3968,15 +3988,15 @@
           "index": 0,
           "filename": "scout_cycle_0003.png",
           "path": "assets/sprites/scout_cycle_0003.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "d73c9413b819168f10621df22f6f36a9309a467a33d78f6f7c4576b9f4efa915"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "scout_cycle_0023": {
@@ -3985,15 +4005,15 @@
           "index": 0,
           "filename": "scout_cycle_0023.png",
           "path": "assets/sprites/scout_cycle_0023.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "0239ca999490e481517339364ac854139352ee521c151b7f64ab2a3129ef0526"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "player_bastion_0": {
@@ -4002,15 +4022,15 @@
           "index": 0,
           "filename": "player_bastion_0.png",
           "path": "assets/sprites/player_bastion_0.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "4ec7480660c065b982769f04ea7db14458a391e0e2643b85d3f7aa620819a562"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "scout_cycle_0013": {
@@ -4019,15 +4039,15 @@
           "index": 0,
           "filename": "scout_cycle_0013.png",
           "path": "assets/sprites/scout_cycle_0013.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "6cf8e4a676c63ad8ef2cc4c8b01100bf470203b4503535f359be003031446008"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "scout_cycle_0016": {
@@ -4036,15 +4056,15 @@
           "index": 0,
           "filename": "scout_cycle_0016.png",
           "path": "assets/sprites/scout_cycle_0016.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "963c9efeb5f81ae5e42211e5d323a039fd569e45ff7676fe6be9543bbbdb3261"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "boss_minion_0": {
@@ -4053,15 +4073,15 @@
           "index": 0,
           "filename": "boss_minion_0.png",
           "path": "assets/sprites/boss_minion_0.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "285923155b0476fb9a62ae5287a7f981dfca429b8243a8c86b8e0e3d267ff31b"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "heavy_cycle_0018": {
@@ -4070,15 +4090,15 @@
           "index": 0,
           "filename": "heavy_cycle_0018.png",
           "path": "assets/sprites/heavy_cycle_0018.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "79bab214bf11e97e0034905634d1777d1a8a25b857c78456c91edfb10ee4ac2c"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "enemy_turret_battery_0": {
@@ -4087,15 +4107,15 @@
           "index": 0,
           "filename": "enemy_turret_battery_0.png",
           "path": "assets/sprites/enemy_turret_battery_0.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
-          "sha256": "5e373088b776f1a489d16ded5efbbadbb984b2d2e28f254a2bbd56d71e2a1aec"
+          "sha256": "7306c71bf6b687725373b342579262f53bece973d4712f8b86ca33729e5252e7"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "scout_cycle_0012": {
@@ -4104,15 +4124,15 @@
           "index": 0,
           "filename": "scout_cycle_0012.png",
           "path": "assets/sprites/scout_cycle_0012.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "18736422cdd407b6c79f8248590da65918156267d0b9d8dae70af66eded65498"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "heavy_cycle_0019": {
@@ -4121,15 +4141,15 @@
           "index": 0,
           "filename": "heavy_cycle_0019.png",
           "path": "assets/sprites/heavy_cycle_0019.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "d9cd7efa43760ef0f7cbdeb6b71f1316768a71ae9c0f24b0989716a4e0ba89fe"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "interceptor_cycle_0030": {
@@ -4138,15 +4158,15 @@
           "index": 0,
           "filename": "interceptor_cycle_0030.png",
           "path": "assets/sprites/interceptor_cycle_0030.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "5a53de20e54010e1e09562c260940b3fbb62fd8aab5cb2cf87948f0a7b546a53"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "heavy_cycle_0012": {
@@ -4155,15 +4175,15 @@
           "index": 0,
           "filename": "heavy_cycle_0012.png",
           "path": "assets/sprites/heavy_cycle_0012.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "38c44a23e55b9c78556847625e45022ed8a5ff50cc4d0787892313f3c7bc2972"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "interceptor_cycle_0004": {
@@ -4172,15 +4192,15 @@
           "index": 0,
           "filename": "interceptor_cycle_0004.png",
           "path": "assets/sprites/interceptor_cycle_0004.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "0499f2e36cdfdd45fda355bf1b9dafe26dbfc5b8e44fb6f4f33803d0569230ca"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "heavy_cycle_0013": {
@@ -4189,15 +4209,15 @@
           "index": 0,
           "filename": "heavy_cycle_0013.png",
           "path": "assets/sprites/heavy_cycle_0013.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "df7f31b3afd17df5341be851b3da8aedd46c57c609ad92145c623835aadd284e"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "enemy_crawler_0": {
@@ -4206,15 +4226,15 @@
           "index": 0,
           "filename": "enemy_crawler_0.png",
           "path": "assets/sprites/enemy_crawler_0.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
-          "sha256": "c5a0a5d0481eddfa228076410531fec30dbd1a39be22e11665ccd8c266003e68"
+          "sha256": "ccc893959a70b523c698e9bf415ffd6f488a3d520a7765f9573bf32b76607626"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "enemy_magma_wasp_0": {
@@ -4223,15 +4243,15 @@
           "index": 0,
           "filename": "enemy_magma_wasp_0.png",
           "path": "assets/sprites/enemy_magma_wasp_0.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
-          "sha256": "44fd592741fb84e26b20eeaef740e78bfbc5ac7e0f06abb6bcff8bbceeebb2d4"
+          "sha256": "a067b02ea4ced044328778765da144b0233076d9e70e5733200a7f8d3c058585"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "scout_cycle_0021": {
@@ -4240,15 +4260,15 @@
           "index": 0,
           "filename": "scout_cycle_0021.png",
           "path": "assets/sprites/scout_cycle_0021.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "90d71c74635e12df1ed551ff1faa91d6c3f36fe89f504be2dd03d08b99d13501"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "interceptor_cycle_0019": {
@@ -4257,15 +4277,15 @@
           "index": 0,
           "filename": "interceptor_cycle_0019.png",
           "path": "assets/sprites/interceptor_cycle_0019.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "7976c9ad5e79758a3b9831f2a0483a84e00cc22161ce6eec7c001fd6afbb5475"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "heavy_cycle_0024": {
@@ -4274,15 +4294,15 @@
           "index": 0,
           "filename": "heavy_cycle_0024.png",
           "path": "assets/sprites/heavy_cycle_0024.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "eda369fc939d6ca66886e07e08579dd84ea5f531ddb053f9212739732bc455c5"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "heavy_cycle_0002": {
@@ -4291,15 +4311,15 @@
           "index": 0,
           "filename": "heavy_cycle_0002.png",
           "path": "assets/sprites/heavy_cycle_0002.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "debfc69cd28f65e113c8e9ecc2ab0adf50fabff0fbeb08f19d6c66a87a7fa0c1"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "scout_cycle_0004": {
@@ -4308,15 +4328,15 @@
           "index": 0,
           "filename": "scout_cycle_0004.png",
           "path": "assets/sprites/scout_cycle_0004.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "247906a9060bbf0bbffa90b16307791222e470327b94302ce61b04040d1e128d"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "interceptor_cycle_0024": {
@@ -4325,15 +4345,15 @@
           "index": 0,
           "filename": "interceptor_cycle_0024.png",
           "path": "assets/sprites/interceptor_cycle_0024.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "6ca61a3629e45d1c73c4820085b76019fd8da0ccd1758376d470925b62f301cc"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "interceptor_cycle_0021": {
@@ -4342,15 +4362,15 @@
           "index": 0,
           "filename": "interceptor_cycle_0021.png",
           "path": "assets/sprites/interceptor_cycle_0021.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "8b6728cef52bcdfc2226c1d4e4a68b541b29b37d0f0822c8b47a04e694e55e58"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "player_tempest_1": {
@@ -4359,15 +4379,15 @@
           "index": 0,
           "filename": "player_tempest_1.png",
           "path": "assets/sprites/player_tempest_1.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "277f194e068a440787f852f22fb9921c51a1df8986f7e5569444b9b9f292da6d"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "scout_cycle_0006": {
@@ -4376,15 +4396,15 @@
           "index": 0,
           "filename": "scout_cycle_0006.png",
           "path": "assets/sprites/scout_cycle_0006.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "6f3a84bb0628154b9f72c79a383ed71fb13d98315c393847a75769cda961d32c"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "player_specter_0": {
@@ -4393,15 +4413,15 @@
           "index": 0,
           "filename": "player_specter_0.png",
           "path": "assets/sprites/player_specter_0.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "c5f5c8b938708e30497c1ab6a0b7592b4a2a8aebdc543928a57f41f560bcb04b"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "explosion_2": {
@@ -4410,15 +4430,15 @@
           "index": 0,
           "filename": "explosion_2.png",
           "path": "assets/sprites/explosion_2.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "fd14906b75e89cbd8d57354eaed1d195ef7f91d90f0ee4ef444437a7be509ccd"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "boss_2": {
@@ -4427,15 +4447,15 @@
           "index": 0,
           "filename": "boss_2.png",
           "path": "assets/sprites/boss_2.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "9abecf2e1c08c4a66f4f1e136fd5ab3c55c5b5a70fba9703cc041826401861e2"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "scout_cycle_0018": {
@@ -4444,15 +4464,15 @@
           "index": 0,
           "filename": "scout_cycle_0018.png",
           "path": "assets/sprites/scout_cycle_0018.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "2f26b28b9f08984532861db0e417325ef33c51408b60dbd25b8f2f3f10fdde5c"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "heavy_cycle_0030": {
@@ -4461,15 +4481,15 @@
           "index": 0,
           "filename": "heavy_cycle_0030.png",
           "path": "assets/sprites/heavy_cycle_0030.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "f9674e468c4e9cc73aa1782dd5415feb53d6aaf37a79faed085ea38bf28a0507"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "heavy_cycle_0028": {
@@ -4478,15 +4498,15 @@
           "index": 0,
           "filename": "heavy_cycle_0028.png",
           "path": "assets/sprites/heavy_cycle_0028.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "156f3c36d3a142e850e1555c2bbaa086f64f3dd39ca2aacec59326096a80d37e"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "player_tempest_0": {
@@ -4495,15 +4515,15 @@
           "index": 0,
           "filename": "player_tempest_0.png",
           "path": "assets/sprites/player_tempest_0.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "8b0e15d60968bedb70162ad8733debbd1b292eb2782925a91e263d5bae11c732"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "interceptor_cycle_0002": {
@@ -4512,15 +4532,15 @@
           "index": 0,
           "filename": "interceptor_cycle_0002.png",
           "path": "assets/sprites/interceptor_cycle_0002.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "a3c9b12166282ca630c65c19c8a7c72008247f7fb208bce09ec8f2d96dc6953e"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "heavy_cycle_0029": {
@@ -4529,15 +4549,15 @@
           "index": 0,
           "filename": "heavy_cycle_0029.png",
           "path": "assets/sprites/heavy_cycle_0029.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "b653f387ea494388cc4ddeffbc1027c83c8c534525bd4a945313a842498f8d00"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "boss_3": {
@@ -4546,15 +4566,15 @@
           "index": 0,
           "filename": "boss_3.png",
           "path": "assets/sprites/boss_3.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "fadeedd799d5afdb7990ee3302f0f0e9cc16e30e92aa098545b19334be9fc580"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "bg_city_0": {
@@ -4563,15 +4583,15 @@
           "index": 0,
           "filename": "bg_city_0.png",
           "path": "assets/sprites/bg_city_0.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "f431f1e444da65580ce5fa08dffac3f56d31b2fbd8505a641117904fd1b6bd25"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     },
     "scout_cycle_0031": {
@@ -4580,15 +4600,219 @@
           "index": 0,
           "filename": "scout_cycle_0031.png",
           "path": "assets/sprites/scout_cycle_0031.png",
-          "width": 1024,
-          "height": 1024,
+          "width": 512,
+          "height": 512,
           "is_power_of_two": true,
           "sha256": "ed85e134f838ff8faed7722af3ea8036420eec1880346d50e31205a05dd536d3"
         }
       ],
       "frame_count": 1,
-      "width": 1024,
-      "height": 1024,
+      "width": 512,
+      "height": 512,
+      "is_valid_power_of_two": true
+    },
+    "enemy_boss_minion_0": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "enemy_boss_minion_0.png",
+          "path": "assets/sprites/enemy_boss_minion_0.png",
+          "width": 512,
+          "height": 512,
+          "is_power_of_two": true,
+          "sha256": "1cc846a58cb3d06b10b30eaf8b6555335246db7220b4fb7ccd3cecb20c19676e"
+        }
+      ],
+      "frame_count": 1,
+      "width": 512,
+      "height": 512,
+      "is_valid_power_of_two": true
+    },
+    "enemy_vent_crab_heavy_0": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "enemy_vent_crab_heavy_0.png",
+          "path": "assets/sprites/enemy_vent_crab_heavy_0.png",
+          "width": 512,
+          "height": 512,
+          "is_power_of_two": true,
+          "sha256": "29c4fa2f21c89a8429cde876a818511569b81951c5977b06d14eec3af778b4f1"
+        }
+      ],
+      "frame_count": 1,
+      "width": 512,
+      "height": 512,
+      "is_valid_power_of_two": true
+    },
+    "enemy_sparker_0": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "enemy_sparker_0.png",
+          "path": "assets/sprites/enemy_sparker_0.png",
+          "width": 512,
+          "height": 512,
+          "is_power_of_two": true,
+          "sha256": "a47bda05511a5c2bb153e5f102f4851d2db2c9f59d625b7e8d4388d93abf0368"
+        }
+      ],
+      "frame_count": 1,
+      "width": 512,
+      "height": 512,
+      "is_valid_power_of_two": true
+    },
+    "enemy_juggernaut_0": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "enemy_juggernaut_0.png",
+          "path": "assets/sprites/enemy_juggernaut_0.png",
+          "width": 512,
+          "height": 512,
+          "is_power_of_two": true,
+          "sha256": "3dd4b5fd1b6e5009bf21d990e046c053649f209b9b0f41cdea3d82041d141076"
+        }
+      ],
+      "frame_count": 1,
+      "width": 512,
+      "height": 512,
+      "is_valid_power_of_two": true
+    },
+    "enemy_trench_eel_0": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "enemy_trench_eel_0.png",
+          "path": "assets/sprites/enemy_trench_eel_0.png",
+          "width": 512,
+          "height": 512,
+          "is_power_of_two": true,
+          "sha256": "9deda115b706449c33a25a3006a9040effca57657868fd3a2389d8db669a5e2e"
+        }
+      ],
+      "frame_count": 1,
+      "width": 512,
+      "height": 512,
+      "is_valid_power_of_two": true
+    },
+    "enemy_angler_scout_0": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "enemy_angler_scout_0.png",
+          "path": "assets/sprites/enemy_angler_scout_0.png",
+          "width": 512,
+          "height": 512,
+          "is_power_of_two": true,
+          "sha256": "69e4e1ed0a299144d3440046ceede414eab1cb0582dcbfd48b7c838bec5fa3fb"
+        }
+      ],
+      "frame_count": 1,
+      "width": 512,
+      "height": 512,
+      "is_valid_power_of_two": true
+    },
+    "enemy_sentinel_0": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "enemy_sentinel_0.png",
+          "path": "assets/sprites/enemy_sentinel_0.png",
+          "width": 512,
+          "height": 512,
+          "is_power_of_two": true,
+          "sha256": "a6da9c7856ef13c6bfb4ec496b82c25c0a9a60a86d60029afb2d9ba3fac5bda7"
+        }
+      ],
+      "frame_count": 1,
+      "width": 512,
+      "height": 512,
+      "is_valid_power_of_two": true
+    },
+    "enemy_armored_eel_0": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "enemy_armored_eel_0.png",
+          "path": "assets/sprites/enemy_armored_eel_0.png",
+          "width": 512,
+          "height": 512,
+          "is_power_of_two": true,
+          "sha256": "382981b3973072befc1873df15641af8948e524392233eee0da369cee0bfb8ae"
+        }
+      ],
+      "frame_count": 1,
+      "width": 512,
+      "height": 512,
+      "is_valid_power_of_two": true
+    },
+    "enemy_spine_urchin_0": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "enemy_spine_urchin_0.png",
+          "path": "assets/sprites/enemy_spine_urchin_0.png",
+          "width": 512,
+          "height": 512,
+          "is_power_of_two": true,
+          "sha256": "749b1cb6784a8bcf174ab30e1a0c27ebb253371e0951df12eeb5d5982e0c1848"
+        }
+      ],
+      "frame_count": 1,
+      "width": 512,
+      "height": 512,
+      "is_valid_power_of_two": true
+    },
+    "enemy_rust_drone_0": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "enemy_rust_drone_0.png",
+          "path": "assets/sprites/enemy_rust_drone_0.png",
+          "width": 512,
+          "height": 512,
+          "is_power_of_two": true,
+          "sha256": "f20097408f1425fe7734bda35416cc8b40f28e42a8ad8dcee03b73de6c33329a"
+        }
+      ],
+      "frame_count": 1,
+      "width": 512,
+      "height": 512,
+      "is_valid_power_of_two": true
+    },
+    "enemy_coral_wasp_0": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "enemy_coral_wasp_0.png",
+          "path": "assets/sprites/enemy_coral_wasp_0.png",
+          "width": 512,
+          "height": 512,
+          "is_power_of_two": true,
+          "sha256": "004e3ab4d4e61aa769622315d513166a5a0dec36893cc66fc86783df5878eddd"
+        }
+      ],
+      "frame_count": 1,
+      "width": 512,
+      "height": 512,
+      "is_valid_power_of_two": true
+    },
+    "enemy_jelly_interceptor_0": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "enemy_jelly_interceptor_0.png",
+          "path": "assets/sprites/enemy_jelly_interceptor_0.png",
+          "width": 512,
+          "height": 512,
+          "is_power_of_two": true,
+          "sha256": "10629c8bdad52afbfcb756a70365efe7fb097643516c93f41f3274c3ea486d39"
+        }
+      ],
+      "frame_count": 1,
+      "width": 512,
+      "height": 512,
       "is_valid_power_of_two": true
     }
   },

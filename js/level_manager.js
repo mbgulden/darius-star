@@ -359,12 +359,17 @@ const LevelManager = {
             } else if (role === 'heavy' && enemy.behaviorPattern !== 'heavy') {
                 enemy.behaviorPattern = 'heavy';
                 enemy.enemyType = 'elite';
-                enemy.speed = 80;
+                enemy.speed = 85;
                 enemy.hp = 4;
                 enemy.scoreValue = 300;
-                enemy.color = '#9a33cc';
-                enemy.shootCooldown = 1.2 + Math.random() * 0.8;
+                enemy.shootCooldown = 1.1 + Math.random() * 0.7;
                 enemy.shootTimer = enemy.shootCooldown;
+            } else if (role === 'alt') {
+                enemy.behaviorPattern = 'hazard';
+                enemy.enemyType = 'elite';
+                enemy.speed = 130;
+                enemy.hp = 3;
+                enemy.scoreValue = 200;
             }
         }
         enemy.x = x;
