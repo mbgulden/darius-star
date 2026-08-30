@@ -61,3 +61,12 @@
 - **GRO-4112**: Automated Playwright End-to-End Campaign Smoke Test Suite (`agent:fred`)
 - **GRO-4113**: Edge Router Telemetry Aggregation & Healthcheck Endpoint (`agent:fred`)
 
+### Track 7: Narrative Journey & Non-Blocking Comms (GRO-4200 Series) 📡
+*Canonical Narrative Roadmap:* [`docs/LINEAR-NARRATIVE-JOURNEY-ROADMAP.md`](./LINEAR-NARRATIVE-JOURNEY-ROADMAP.md)
+- **GRO-4201**: Non-Blocking Holographic Comms Banner HUD with Waveform & Radio Squelch SFX (`agent:fred`)
+- **GRO-4202**: Attempt-Aware Progressive Banter Engine & Dynamic Replay State (`agent:fred`)
+- **GRO-4203**: Canonical Lore Ingestion & 100-Level Sector Intel Master Catalog (`agent:agy`)
+- **GRO-4204**: Precursor Sector Intel Archive Terminal on Level Debriefing Screen (`agent:fred`)
+- **GRO-4205**: Automated Narrative Journey & Comms Verification Suite (`agent:fred`)
+
+
