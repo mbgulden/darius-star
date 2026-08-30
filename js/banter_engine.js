@@ -181,7 +181,7 @@ const BanterEngine = {
             this._displayTimer = this._lineDuration;
 
             // Trigger non-blocking Holographic Comms Banner HUD if DialogueSequence is available
-            if (typeof DialogueSequence !== 'undefined' && typeof window !== 'undefined' && window.activeDialogue === null) {
+            if (typeof DialogueSequence !== 'undefined' && typeof window !== 'undefined') {
                 const speakerName = SPEAKER_NAMES[line.s] || line.s || 'SYSTEM';
                 const sequenceLines = [{ speaker: speakerName, text: line.l }];
                 
@@ -209,7 +209,7 @@ const BanterEngine = {
         this._activeLine = line;
         this._displayTimer = duration;
 
-        if (typeof DialogueSequence !== 'undefined' && typeof window !== 'undefined' && window.activeDialogue === null) {
+        if (typeof DialogueSequence !== 'undefined' && typeof window !== 'undefined') {
             const speakerName = SPEAKER_NAMES[line.s] || line.s || 'SYSTEM';
             window.activeDialogue = new DialogueSequence([{ speaker: speakerName, text: line.l }], null, false);
         }

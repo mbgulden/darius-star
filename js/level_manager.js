@@ -233,6 +233,24 @@ const LevelManager = {
         this.levelAttempts = {};
     },
 
+    getSectorIntel(biome, level) {
+        const b = biome || this.biome || 1;
+        const l = level || this.level || 1;
+        if (typeof BIOME_DATA !== 'undefined' && BIOME_DATA.getSectorIntel) {
+            return BIOME_DATA.getSectorIntel(b, l);
+        }
+        return {
+            sectorId: `b${b}_l${l}`,
+            name: `${b}.${l} Sector`,
+            shortName: `Sector ${b}.${l}`,
+            landmark: 'coral_spire',
+            hazard: 'Standard Sector Resistance',
+            intel: 'Active sector operation underway.',
+            classifiedLog: 'No classified telemetry available.',
+            commLine: { s: 'D', l: `Sector ${b}.${l} entered.` }
+        };
+    },
+
     setBiomeAndLevel(biome, level) {
         this.resetLevelStats();
         if (typeof setBiomeBackgrounds === 'function') setBiomeBackgrounds(biome, level);
@@ -253,8 +271,13 @@ const LevelManager = {
 
         // Record sector attempt and trigger progressive attempt banter
         const attempts = this.recordAttempt(this.biome, this.level);
+        const sectorIntel = this.getSectorIntel(this.biome, this.level);
         if (typeof BanterEngine !== 'undefined' && BanterEngine.trigger) {
-            BanterEngine.trigger('level_start', this.biome, null, attempts);
+            if (attempts === 1 && sectorIntel && sectorIntel.commLine) {
+                BanterEngine.triggerDirect(sectorIntel.commLine, 4.2);
+            } else {
+                BanterEngine.trigger('level_start', this.biome, null, attempts);
+            }
         }
 
         // Set initial wave
