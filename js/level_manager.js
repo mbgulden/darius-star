@@ -249,11 +249,11 @@ const LevelManager = {
         this.unlockedIntelLogs = {};
     },
 
-    getSectorIntel(biome, level) {
+    getSectorIntel(biome, level, difficulty = null, ngLevel = null) {
         const b = biome || this.biome || 1;
         const l = level || this.level || 1;
         if (typeof BIOME_DATA !== 'undefined' && BIOME_DATA.getSectorIntel) {
-            return BIOME_DATA.getSectorIntel(b, l);
+            return BIOME_DATA.getSectorIntel(b, l, difficulty, ngLevel);
         }
         return {
             sectorId: `b${b}_l${l}`,

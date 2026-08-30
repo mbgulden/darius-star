@@ -701,6 +701,94 @@ const BanterDB = {
         {s:'N', l:"Gravitational shearing is tearing my hull apart! I have to back off before I'm crushed!", r:{s:'C', l:"Engage reverse thrusters, Naya. I'll drop a gravity anchor to hold you."}}
       ]
     }
+  },
+  
+  // ─── GRO-4206: Higher-Difficulty Classified Lore (ACE / CYBER) ─────────────
+  classified: {
+    1: [
+      { s: 'C', l: "[EDC BLACK-OPS // INTERCEPT]: Mariana Trench was never an expedition—it was a quarantine zone for Prototype Alpha." },
+      { s: 'D', l: "Marcus Star Log #00: The Navy told me I was surveying sea life. They lied. The Coelacanth was already awake." }
+    ],
+    2: [
+      { s: 'N', l: "[PRECURSOR DECRYPT]: The Great Dying wasn't a plague. The Precursors chose crystallisation over surrender." },
+      { s: 'T', l: "I found Navy transponders inside the bone fields. High Command sent an entire black-ops strike wing here." }
+    ],
+    3: [
+      { s: 'N', l: "[PROJECT OPHION FILE 402]: The cybernetic genome was spliced from Darius's grandfather forty years ago." },
+      { s: 'D', l: "Grandpa didn't just find the hatchery on Europa... he helped build the neural interface." }
+    ],
+    4: [
+      { s: 'L', l: "[DREAMER CIPHER]: The Veil is not a gas cloud. It is the dreaming mind of the first Precursor Architect." },
+      { s: 'C', l: "Navy lost three stealth squadrons in the Veil trying to capture the Dreamer's core. None survived." }
+    ],
+    5: [
+      { s: 'C', l: "[ADMIRAL CRANE DIRECTIVE 9]: All civilian craft passing Saturn rings are to be neutralized on sight." },
+      { s: 'D', l: "Crane knew about Haven-7 all along. The rings were his blockade to keep humanity trapped inside." }
+    ],
+    6: [
+      { s: 'T', l: "[FORGE-MIND REGISTRY]: Smelter output reached 12,000 hulls per day before the overseers were terminated." },
+      { s: 'N', l: "The Forge-Mind isn't building defenders for Earth. It's building an armada for the Architect." }
+    ],
+    7: [
+      { s: 'S', l: "[STORM-SINGER ARCHIVE]: Her acoustic song is a distress beacon broadcasting on frequencies older than stars." },
+      { s: 'L', l: "She's crying because she knows what happens at the end of the universe, Daddy." }
+    ],
+    8: [
+      { s: 'C', l: "[FLAGSHIP GOLIATH PURGE LOG]: Admiral Crane digitized his consciousness 48 hours before the fleet fell." },
+      { s: 'D', l: "He gave up his humanity to keep command. Now he's just a program trapped in rusted steel." }
+    ],
+    9: [
+      { s: 'N', l: "[SYNAPTIC HIVE GENOME]: The Hive Mother was human once. The first test pilot to interface with the Coelacanth." },
+      { s: 'L', l: "Her name was Elena... Daddy, she remembers you." }
+    ],
+    10: [
+      { s: 'A', l: "[ARCHITECT OMEGA CIPHER]: The Cyber Coelacanth is the eternal reset button. Every timeline ends here." },
+      { s: 'D', l: "Then every timeline ends with us breaking through the cycle." }
+    ]
+  },
+
+  // ─── GRO-4206: New Game+ Timeline Paradox Chatter ─────────────────────────
+  paradox: {
+    1: [
+      { s: 'D', l: "[TIMELINE ECHO]: I remember this silt reef... we've flown this dive before in another life." },
+      { s: 'L', l: "The timeline is looping, Daddy! But our weapons are tuned from our last run!" }
+    ],
+    2: [
+      { s: 'N', l: "[PARADOX TELEMETRY]: Crystalline lattice resonance matches data from our previous campaign." },
+      { s: 'T', l: "Paradox enemies inbound! They remember our tactics—switch up attack vectors!" }
+    ],
+    3: [
+      { s: 'D', l: "[CHRONO RESIDUAL]: Europa's ice feels familiar. We know every ambush coordinate." },
+      { s: 'N', l: "Quantum fabricator has retained full blueprint memory. Sweep the sector clean." }
+    ],
+    4: [
+      { s: 'L', l: "[DREAMER RECURSION]: The stars in the Veil are singing the song from our previous victory!" },
+      { s: 'D', l: "We're bending spacetime back on itself. Push through the paradox fog." }
+    ],
+    5: [
+      { s: 'C', l: "[UMBRA DEJA-VU]: Crane's ring blockade is tighter in this timeline, but we know the weak points." },
+      { s: 'T', l: "Blow the kraken generators on the fly. Second time's the charm." }
+    ],
+    6: [
+      { s: 'N', l: "[FOUNDRY ECHO]: The Forge-Mind has upgraded its armor based on our last assault." },
+      { s: 'D', l: "Let it upgrade. Our quantum dodad has higher output this loop." }
+    ],
+    7: [
+      { s: 'S', l: "[STORM-SINGER HARMONIC]: The tempest recognizes your ship signature, Vanguard." },
+      { s: 'L', l: "We promised we'd come back and free her song. Time to keep that promise." }
+    ],
+    8: [
+      { s: 'D', l: "[GHOST FLEET PARADOX]: Crane's AI is panicking—his sensors show two iterations of us on radar." },
+      { s: 'C', l: "Overload his processing core before he reconciles the timeline paradox." }
+    ],
+    9: [
+      { s: 'L', l: "[HIVE MEMORY FRACTURE]: Elena's mind is calling out clearer than before... she knows we're close." },
+      { s: 'D', l: "We're going to break the synaptic web for good this time." }
+    ],
+    10: [
+      { s: 'A', l: "[ARCHITECT PARADOX EQUATION]: You return to the singularity... yet each return brings higher entropy..." },
+      { s: 'D', l: "Not entropy, Architect. Purpose. All ships, engage the Cyber Coelacanth!" }
+    ]
   }
 };
 

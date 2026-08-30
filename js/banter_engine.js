@@ -114,7 +114,35 @@ const BanterEngine = {
         return this._levelAttempts[key];
     },
 
-    getLine(trigger, biome = 1, speaker = null, attemptCount = 1) {
+    getLine(trigger, biome = 1, speaker = null, attemptCount = 1, difficulty = null, ngLevel = null) {
+        const curDiff = difficulty || (typeof window !== 'undefined' && window.difficulty ? window.difficulty : 'normal');
+        const curNg = (ngLevel !== null && ngLevel !== undefined) ? ngLevel : (typeof window !== 'undefined' && window.ngLevel ? window.ngLevel : 0);
+
+        // Check for bonus NG+ Paradox chatter on sector entry (GRO-4206)
+        if (curNg >= 1 && typeof BanterDB !== 'undefined' && BanterDB.paradox && BanterDB.paradox[biome] && trigger === 'level_start' && attemptCount === 1) {
+            const pLines = BanterDB.paradox[biome];
+            if (pLines && pLines.length > 0) {
+                const pLine = speaker ? pLines.find(l => l.s === speaker) : pLines[0];
+                if (pLine && !this._playedLines.has(pLine.l)) {
+                    this._playedLines.add(pLine.l);
+                    return pLine;
+                }
+            }
+        }
+
+        // Check for bonus Classified lore on ACE ('hard') and CYBER ('insane') (GRO-4206)
+        if ((curDiff === 'hard' || curDiff === 'insane') && typeof BanterDB !== 'undefined' && BanterDB.classified && BanterDB.classified[biome] && trigger === 'level_start' && attemptCount === 1) {
+            const cLines = BanterDB.classified[biome];
+            if (cLines && cLines.length > 0) {
+                const cLine = speaker ? cLines.find(l => l.s === speaker) : cLines[0];
+                if (cLine && !this._playedLines.has(cLine.l)) {
+                    this._playedLines.add(cLine.l);
+                    return cLine;
+                }
+            }
+        }
+
+        // Standard 3-tier attempt-aware line retrieval (ensures full main storyline on Cadet/Pilot)
         const db = this._data;
         if (!db || !db[biome] || !db[biome][trigger]) return null;
         

@@ -1283,8 +1283,35 @@ const BIOME_DATA = {
     };
   },
 
-  getSectorIntel(biome, level) {
-    return this.getLevelInfo(biome, level);
+  getSectorIntel(biome, level, difficulty = null, ngLevel = null) {
+    const info = this.getLevelInfo(biome, level);
+    const b = Math.max(1, Math.min(10, biome || 1));
+    const l = Math.max(1, Math.min(10, level || 1));
+    const curDiff = difficulty || (typeof window !== 'undefined' && window.difficulty ? window.difficulty : 'normal');
+    const curNg = (ngLevel !== null && ngLevel !== undefined) ? ngLevel : (typeof window !== 'undefined' && window.ngLevel ? window.ngLevel : 0);
+
+    let bonusClassified = null;
+    let bonusParadox = null;
+
+    if (curDiff === 'hard' || curDiff === 'insane') {
+      const cPool = (typeof BanterDB !== 'undefined' && BanterDB.classified) ? BanterDB.classified[b] : null;
+      if (cPool && cPool.length > 0) {
+        bonusClassified = cPool[(l - 1) % cPool.length].l;
+      }
+    }
+
+    if (curNg >= 1) {
+      const pPool = (typeof BanterDB !== 'undefined' && BanterDB.paradox) ? BanterDB.paradox[b] : null;
+      if (pPool && pPool.length > 0) {
+        bonusParadox = pPool[(l - 1) % pPool.length].l;
+      }
+    }
+
+    return {
+      ...info,
+      bonusClassified,
+      bonusParadox
+    };
   }
 };
 

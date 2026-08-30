@@ -1479,28 +1479,46 @@ function drawMenuScreens() {
             ctx.fillStyle = '#fff0dd';
             ctx.font = '9px monospace';
             if (typeof wrapText === 'function') {
-                wrapText(ctx, lvlInfo.classifiedLog || 'Classified Precursor telemetry log decrypted.', col2X + 14, colTopY + 64, colW - 24, 14);
+                wrapText(ctx, lvlInfo.classifiedLog || 'Classified Precursor telemetry log decrypted.', col2X + 14, colTopY + 62, colW - 24, 13);
             } else {
-                ctx.fillText(lvlInfo.classifiedLog || '', col2X + 14, colTopY + 64);
+                ctx.fillText(lvlInfo.classifiedLog || '', col2X + 14, colTopY + 62);
+            }
+
+            // Bonus Higher-Difficulty / NG+ Lore (GRO-4206)
+            if (lvlInfo.bonusClassified || lvlInfo.bonusParadox) {
+                const bonusText = lvlInfo.bonusParadox || lvlInfo.bonusClassified;
+                const bonusHeader = lvlInfo.bonusParadox ? '🌌 [TIMELINE PARADOX ECHO // NG+]' : '🔒 [EDC NAVY BLACK-OPS // ACE+]';
+                const bonusColor = lvlInfo.bonusParadox ? '#cc44ff' : '#ffaa00';
+                
+                ctx.fillStyle = bonusColor;
+                ctx.font = 'bold 9.5px monospace';
+                ctx.fillText(bonusHeader, col2X + 14, colTopY + 115);
+                ctx.fillStyle = '#ffffff';
+                ctx.font = 'italic 8.5px monospace';
+                if (typeof wrapText === 'function') {
+                    wrapText(ctx, bonusText, col2X + 14, colTopY + 129, colW - 24, 12);
+                } else {
+                    ctx.fillText(bonusText, col2X + 14, colTopY + 129);
+                }
             }
 
             // In-flight Audio Intercept
             ctx.fillStyle = '#00ffff';
             ctx.font = 'bold 9.5px monospace';
-            ctx.fillText('📻 FLIGHT COMMS TRANSCRIPT:', col2X + 14, colTopY + 145);
+            ctx.fillText('📻 FLIGHT COMMS TRANSCRIPT:', col2X + 14, colTopY + 168);
             const speakerCodes = { 'D':'Darius', 'L':'Lyra', 'N':'Naya', 'T':'Thorne', 'C':'Cross', 'S':'Selene', 'A':'Architect', 'O':'Ophion' };
             const speakerCode = (lvlInfo.commLine && lvlInfo.commLine.s) ? lvlInfo.commLine.s : 'D';
             const speakerName = speakerCodes[speakerCode] || speakerCode;
             const commText = (lvlInfo.commLine && lvlInfo.commLine.l) ? `"${lvlInfo.commLine.l}"` : '"Weapons hot. Stay in formation."';
             ctx.fillStyle = '#88ccff';
             ctx.font = 'italic 9px monospace';
-            ctx.fillText(`[CALLSIGN: ${speakerName.toUpperCase()}]`, col2X + 14, colTopY + 162);
+            ctx.fillText(`[CALLSIGN: ${speakerName.toUpperCase()}]`, col2X + 14, colTopY + 184);
             ctx.fillStyle = '#ffffff';
             ctx.font = '9px monospace';
             if (typeof wrapText === 'function') {
-                wrapText(ctx, commText, col2X + 14, colTopY + 178, colW - 24, 14);
+                wrapText(ctx, commText, col2X + 14, colTopY + 198, colW - 24, 13);
             } else {
-                ctx.fillText(commText, col2X + 14, colTopY + 178);
+                ctx.fillText(commText, col2X + 14, colTopY + 198);
             }
 
             // Bottom Footer Prompt

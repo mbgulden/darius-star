@@ -79,6 +79,9 @@
             seed: Math.floor(Math.random() * 2147483648),
             inGameFlags: {},
             levelAttempts: {},
+            unlockedIntelLogs: {},
+            highestCompletedDifficulty: 'easy',
+            unlockedClassifiedLore: {},
             createdAt: now,
             updatedAt: now
         };
@@ -158,7 +161,16 @@
             const intelLogs = (typeof window !== 'undefined' && window.LevelManager && window.LevelManager.unlockedIntelLogs)
                 ? { ...window.LevelManager.unlockedIntelLogs }
                 : (saveObj.unlockedIntelLogs || {});
-            saves[slotIndex] = { ...saveObj, levelAttempts: attempts, unlockedIntelLogs: intelLogs, updatedAt: new Date().toISOString() };
+            const highestDiff = saveObj.highestCompletedDifficulty || 'easy';
+            const classified = saveObj.unlockedClassifiedLore || {};
+            saves[slotIndex] = { 
+                ...saveObj, 
+                levelAttempts: attempts, 
+                unlockedIntelLogs: intelLogs,
+                highestCompletedDifficulty: highestDiff,
+                unlockedClassifiedLore: classified,
+                updatedAt: new Date().toISOString() 
+            };
         } else {
             saves[slotIndex] = null;
         }

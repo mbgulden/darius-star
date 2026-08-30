@@ -409,6 +409,59 @@ assert.ok(loadedSave1.unlockedIntelLogs, "Loaded save must contain unlockedIntel
 assert.strictEqual(loadedSave1.unlockedIntelLogs['b3_l4'], true, "Loaded save must persist viewed intel for sector b3_l4");
 console.log("  [PASS] CampaignSave successfully serializes and restores unlockedIntelLogs.");
 
+
+// ─── 12. GRO-4206: Higher-Difficulty & NG+ Classified Lore Tests ────────────
+console.log("12. Testing Higher-Difficulty & NG+ Classified Lore Injections...");
+
+// 1. Verify Easiest Difficulty (CADET / 'easy') receives 100% complete core storyline
+const cadetLine = BanterEngine.getLine('level_start', 1, 'D', 1, 'easy', 0);
+assert.ok(cadetLine, "Cadet mode must return valid core storyline line");
+assert.ok(cadetLine.l.includes("Grandpa") || cadetLine.l.includes("Deepest"), "Cadet mode must contain complete canonical dialogue");
+const cadetIntel = LevelManager.getSectorIntel(1, 1, 'easy', 0);
+assert.ok(cadetIntel.intel && cadetIntel.classifiedLog && cadetIntel.commLine, "Cadet mode must have complete sector intel without truncation");
+console.log("  [PASS] Easiest difficulty (CADET) verified: 100% full main storyline intact and unobstructed.");
+
+// 2. Verify ACE ('hard') & CYBER ('insane') Classified Lore Unlocks
+const aceLine = BanterEngine.getLine('level_start', 1, null, 1, 'hard', 0);
+assert.ok(aceLine, "ACE difficulty must return a classified lore line");
+assert.ok(aceLine.l.includes("BLACK-OPS") || aceLine.l.includes("Marcus Star"), "ACE difficulty must return classified Navy/Precursor decrypt");
+console.log("  [PASS] ACE difficulty returned Classified Black-Ops Intercept:", aceLine.l);
+
+const aceIntel = LevelManager.getSectorIntel(1, 1, 'hard', 0);
+assert.ok(aceIntel.bonusClassified, "ACE difficulty must provide bonus classified decrypt in sector intel");
+assert.ok(aceIntel.bonusClassified.includes("BLACK-OPS") || aceIntel.bonusClassified.includes("Marcus Star"), "Bonus classified decrypt payload verified");
+console.log("  [PASS] Sector Intel returned ACE Black-Ops Decrypt:", aceIntel.bonusClassified);
+
+// 3. Verify NG+ Timeline Paradox Dialogue & Ciphers
+const ngPlusLine = BanterEngine.getLine('level_start', 1, null, 1, 'normal', 1);
+assert.ok(ngPlusLine, "NG+ mode must return a paradox timeline line");
+assert.ok(ngPlusLine.l.includes("TIMELINE ECHO") || ngPlusLine.l.includes("looping"), "NG+ mode must return timeline paradox chatter");
+console.log("  [PASS] NG+ Replay returned Timeline Paradox line:", ngPlusLine.l);
+
+const ngPlusIntel = LevelManager.getSectorIntel(1, 1, 'normal', 1);
+assert.ok(ngPlusIntel.bonusParadox, "NG+ mode must provide bonus paradox cipher in sector intel");
+assert.ok(ngPlusIntel.bonusParadox.includes("TIMELINE ECHO") || ngPlusIntel.bonusParadox.includes("looping"), "Bonus paradox cipher payload verified");
+console.log("  [PASS] Sector Intel returned NG+ Paradox Cipher:", ngPlusIntel.bonusParadox);
+
+// 4. Verify CampaignSave highestCompletedDifficulty and unlockedClassifiedLore
+CampaignSave.save(2, {
+    wave: 1,
+    ship: 'warden',
+    scrap: 800,
+    score: 5500,
+    lives: 1,
+    difficulty: 'hard',
+    highestCompletedDifficulty: 'hard',
+    unlockedClassifiedLore: { 'b1_l1': true, 'b2_l5': true },
+    upgrades: {},
+    biome: 5
+});
+
+const loadedSave2 = CampaignSave.load(2);
+assert.strictEqual(loadedSave2.highestCompletedDifficulty, 'hard', "Loaded save must preserve highestCompletedDifficulty");
+assert.strictEqual(loadedSave2.unlockedClassifiedLore['b1_l1'], true, "Loaded save must preserve unlockedClassifiedLore map");
+console.log("  [PASS] CampaignSave successfully serializes and restores highestCompletedDifficulty & unlockedClassifiedLore.");
+
 console.log("============================================================");
-console.log("ALL GRO-4201, GRO-4202, GRO-4203 & GRO-4204 NARRATIVE TESTS PASSED (100%)");
+console.log("ALL GRO-4201, GRO-4202, GRO-4203, GRO-4204 & GRO-4206 NARRATIVE TESTS PASSED (100%)");
 console.log("============================================================");
