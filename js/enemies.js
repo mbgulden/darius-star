@@ -339,7 +339,20 @@
             this.width = 180;
             this.height = 140;
             const difficultyConfig = getCurrentDifficultyConfig();
-            this.hpMax = Math.round(120 * difficultyConfig.bossHpMultiplier);
+            let baseHp = 120;
+            if (typeof LevelManager !== 'undefined' && typeof LevelManager.getBossHP === 'function') {
+                baseHp = LevelManager.getBossHP(biomeLevel, true) || 120;
+            } else if (typeof BIOME_DATA !== 'undefined' && BIOME_DATA.bossHP && BIOME_DATA.bossHP[biomeLevel]) {
+                baseHp = BIOME_DATA.bossHP[biomeLevel].biomeBoss || 120;
+            }
+
+            // GRO-4108: Dynamic Multi-Player Co-Op Scaling: HP_scaled = HP_base * (1 + 0.45 * (N - 1))
+            let coOpMultiplier = 1.0;
+            if (typeof Multiplayer !== 'undefined' && Multiplayer.activePlayers && Multiplayer.activePlayers.length > 1) {
+                coOpMultiplier = 1.0 + 0.45 * (Multiplayer.activePlayers.length - 1);
+            }
+            
+            this.hpMax = Math.round(baseHp * difficultyConfig.bossHpMultiplier * coOpMultiplier);
             this.hp = this.hpMax;
             this.state = 'intro';
             this.stateTimer = 2;
@@ -348,11 +361,11 @@
             this.laserWarningTimer = 0;
             this.color = '#305080';
             this.shieldColor = '#ff00aa';
-            this.architectPhase = null; // GRO-1009: 'sacrifice'|'transcendence'|'dominion' ??? set at low HP
+            this.architectPhase = null; // GRO-1009: 'sacrifice'|'transcendence'|'dominion' — set at low HP
             this._victoryTimeout = null;
             this._advanceTimeout = null;
             this._explosionTimers = [];
-            console.log(`[BOSS] Spawning boss: Biome ${biomeLevel}, Max HP: ${this.hpMax}, State: ${this.state}`);
+            console.log(`[BOSS] Spawning boss: Biome ${biomeLevel}, Max HP: ${this.hpMax} (Co-op Mult: ${coOpMultiplier.toFixed(2)}), State: ${this.state}`);
 
             // Dynamic Boss Names & Themes per Biome
             const bossNames = {

@@ -65,8 +65,10 @@ function economyRollAmount(type, biomeLevel, table) {
     const config = ECONOMY_DROP_TYPES[type] || ECONOMY_DROP_TYPES.metal;
     const biome = economyClampBiome(biomeLevel);
     const base = config.min + Math.floor(Math.random() * (config.max - config.min + 1));
+    // GRO-4109: Calibrate Biomes 6-10 yield curve (+15% throughput for high-tier upgrades)
+    const deepBiomeBonus = biome >= 6 ? 1.15 : 1.0;
     const biomeBonus = (biome - 1) * (table.biomeBonus || 0);
-    return Math.max(1, Math.round(base + biomeBonus));
+    return Math.max(1, Math.round((base + biomeBonus) * deepBiomeBonus));
 }
 
 function economyNormalizeSegmentStore(store) {

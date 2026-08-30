@@ -240,21 +240,37 @@ const AudioManager = (function() {
             return 'game_over_cinematic'; // try to load even if not in manifest
         }
 
-        // --- VICTORY (gameWon or bossDefeated) → biome victory track (one-shot) ---
-        if ((typeof gameWon !== 'undefined' && gameWon) ||
-            (typeof bossDefeated !== 'undefined' && bossDefeated)) {
+        // --- VICTORY (gameWon or bossDefeated) → branch ending or biome victory track ---
+        if (typeof gameWon !== 'undefined' && gameWon) {
+            // GRO-4107: If an ending was selected at Biome 10 climax, play its ending track
+            var ending = (typeof selectedEnding !== 'undefined' && selectedEnding) ? selectedEnding : 'transcendence';
+            var endingTrackId = 'ending_' + ending;
+            if (_manifest.tracks[endingTrackId]) return endingTrackId;
+
             var biome = _getCurrentBiome();
             var suffix = BIOME_SUFFIX[biome] || 'abyssal';
             var victoryId = 'victory_b' + biome + '_' + suffix;
             if (_manifest.tracks[victoryId]) return victoryId;
-            // Fallback: generic victory
             if (_manifest.tracks['victory_cinematic']) return 'victory_cinematic';
             if (_manifest.tracks['victory']) return 'victory';
             return 'victory_cinematic';
         }
 
-        // --- CREDITS → victory cinematic ---
+        if (typeof bossDefeated !== 'undefined' && bossDefeated) {
+            var biome = _getCurrentBiome();
+            var suffix = BIOME_SUFFIX[biome] || 'abyssal';
+            var victoryId = 'victory_b' + biome + '_' + suffix;
+            if (_manifest.tracks[victoryId]) return victoryId;
+            if (_manifest.tracks['victory_cinematic']) return 'victory_cinematic';
+            if (_manifest.tracks['victory']) return 'victory';
+            return 'victory_cinematic';
+        }
+
+        // --- CREDITS → ending suite or victory cinematic ---
         if (currentScreen === SCREENS.CREDITS || currentScreen === SCREENS.LEADERBOARD) {
+            var ending = (typeof selectedEnding !== 'undefined' && selectedEnding) ? selectedEnding : 'transcendence';
+            var endingTrackId = 'ending_' + ending;
+            if (_manifest.tracks[endingTrackId]) return endingTrackId;
             if (_manifest.tracks['victory_cinematic']) return 'victory_cinematic';
             if (_manifest.tracks['victory']) return 'victory';
             return 'title_cinematic';
@@ -642,3 +658,5 @@ const AudioManager = (function() {
         isInitialized: function() { return _initialized; }
     };
 })();
+
+window.AudioManager = AudioManager;

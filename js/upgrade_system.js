@@ -234,4 +234,5 @@
 
     // Attach to global window object
     window.DS_UpgradeSystem = new UpgradeSystem();
+    window.UpgradeSystem = window.DS_UpgradeSystem;
 })();

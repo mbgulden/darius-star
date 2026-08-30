@@ -12,57 +12,60 @@ function drawShipSelect(ctx) {
     ctx.fillText('SELECT YOUR FIGHTER', canvas.width / 2, 60);
     ctx.shadowBlur = 0;
     
-    const startY = 140;
-    const spacing = 65;
-    const shipNames = ['X-1 SCOUT', 'Y-2 INTERCEPTOR', 'Z-3 DREADNOUGHT'];
-    const shipStats = [
-        { speed: 'HIGH (280)', shield: 'LOW (80)', weapon: 'RAPID SINGLE' },
-        { speed: 'MID (220)', shield: 'MID (100)', weapon: 'SPREAD DOUBLE' },
-        { speed: 'LOW (170)', shield: 'HIGH (150)', weapon: 'SLOW WAVE' }
+    const startY = 110;
+    const spacing = 44;
+    const shipDetails = [
+        { name: 'X-1 STRIKER', sprite: 'player_0', speed: '240', shield: '100', special: 'SHOCK LANCE', color: '#00ffff' },
+        { name: 'PHANTOM', sprite: 'player_phantom_0', speed: '280', shield: '80', special: 'PHASE SHIFT', color: '#bf55ec' },
+        { name: 'Z-3 BASTION', sprite: 'player_bastion_0', speed: '170', shield: '150', special: 'IRON CURTAIN', color: '#f39c12' },
+        { name: 'Y-2 TEMPEST', sprite: 'player_tempest_0', speed: '220', shield: '110', special: 'OVERLOAD PULSE', color: '#2ecc71' },
+        { name: 'SPECTER', sprite: 'player_specter_0', speed: '260', shield: '90', special: 'SHADOW CLONE', color: '#3498db' },
+        { name: 'WARDEN (NAYA)', sprite: 'player_warden_0', speed: '230', shield: '130', special: 'BIO-SURGE', color: '#e74c3c' }
     ];
     
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < shipDetails.length; i++) {
         const itemY = startY + i * spacing;
         const isSelected = selectedShipIndex === i;
+        const isHovered = hoveredShipIndex === i;
+        const info = shipDetails[i];
         
-        ctx.fillStyle = isSelected ? 'rgba(0, 255, 255, 0.08)' : 'rgba(255, 255, 255, 0.02)';
-        ctx.strokeStyle = isSelected ? '#00ffff' : '#3a3a4a';
+        ctx.fillStyle = isSelected ? 'rgba(0, 255, 255, 0.12)' : (isHovered ? 'rgba(255, 255, 255, 0.05)' : 'rgba(255, 255, 255, 0.02)');
+        ctx.strokeStyle = isSelected ? '#00ffff' : (isHovered ? '#8a8a9f' : '#2a2a3a');
         ctx.lineWidth = isSelected ? 2 : 1;
-        ctx.fillRect(80, itemY - 25, 640, 52);
-        ctx.strokeRect(80, itemY - 25, 640, 52);
+        ctx.fillRect(80, itemY - 18, 640, 38);
+        ctx.strokeRect(80, itemY - 18, 640, 38);
         
-        const spriteKey = i === 0 ? 'scout_0' : (i === 2 ? 'heavy_0' : 'interceptor_0');
-        const sprite = playerSprites[spriteKey];
+        const sprite = playerSprites[info.sprite];
         if (sprite && sprite.complete && sprite.naturalWidth > 0) {
-            ctx.drawImage(sprite, 105, itemY - 20, 40, 40);
+            ctx.drawImage(sprite, 95, itemY - 14, 30, 30);
         } else {
-            ctx.fillStyle = i === 0 ? '#00ffff' : (i === 2 ? '#ff9900' : '#00ffaa');
-            ctx.fillRect(115, itemY - 10, 20, 20);
+            ctx.fillStyle = info.color;
+            ctx.fillRect(100, itemY - 8, 16, 16);
         }
         
         ctx.textAlign = 'left';
-        ctx.font = 'bold 14px monospace';
-        ctx.fillStyle = isSelected ? '#00ffff' : '#8a8a9f';
-        ctx.fillText(shipNames[i], 170, itemY - 5);
+        ctx.font = 'bold 13px monospace';
+        ctx.fillStyle = isSelected ? '#00ffff' : '#dcdde1';
+        ctx.fillText(info.name, 145, itemY - 2);
         
         ctx.font = '10px monospace';
-        ctx.fillStyle = isSelected ? '#ffffff' : '#6a6a7f';
-        ctx.fillText(`SPEED: ${shipStats[i].speed}  |  SHIELD: ${shipStats[i].shield}  |  WEAPON: ${shipStats[i].weapon}`, 170, itemY + 14);
+        ctx.fillStyle = isSelected ? '#ffffff' : '#7f8c8d';
+        ctx.fillText(`SPD: ${info.speed} | SHD: ${info.shield} | SPEC: ${info.special}`, 145, itemY + 12);
         
         if (isSelected) {
-            ctx.font = 'bold 14px monospace';
+            ctx.font = 'bold 12px monospace';
             ctx.fillStyle = '#00ffff';
-            ctx.fillText('SELECTED', 620, itemY + 5);
+            ctx.fillText('SELECTED', 630, itemY + 5);
         }
     }
     
     ctx.textAlign = 'center';
-    ctx.font = 'bold 14px monospace';
+    ctx.font = 'bold 13px monospace';
     ctx.fillStyle = '#ff0055';
-    ctx.fillText('BACK TO MENU', canvas.width / 2, 365);
+    ctx.fillText('BACK TO MENU', canvas.width / 2, 390);
     
     ctx.fillStyle = '#4a4a5f';
     ctx.font = '10px monospace';
-    ctx.fillText('ENTER / CLICK to CHOOSE  |  ESC to RETURN', canvas.width / 2, canvas.height - 25);
+    ctx.fillText('UP/DOWN to Select  |  ENTER / CLICK to Choose  |  ESC to Return', canvas.width / 2, canvas.height - 18);
     ctx.restore();
 }

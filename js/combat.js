@@ -155,18 +155,34 @@
                 ctx.save();
                 ctx.translate(this.x, this.y);
 
-                const color = this.kind === 'W' ? '#ff0055' : '#00ff55';
+                const color = this.kind === 'W' ? '#ff0055' : (this.kind === 'S' ? '#00e5ff' : '#00ff55');
+                const pulse = 1 + Math.sin(this.bob * 2) * 0.2;
+                
+                // Outer rotating aura
+                ctx.save();
+                ctx.translate(8, 8);
+                ctx.rotate(this.bob);
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 1.5;
+                ctx.globalAlpha = 0.6;
+                ctx.strokeRect(-10 * pulse, -10 * pulse, 20 * pulse, 20 * pulse);
+                ctx.restore();
+
+                // Core glowing orb
                 ctx.shadowColor = color;
-                ctx.shadowBlur = 8;
+                ctx.shadowBlur = 12 * pulse;
 
                 ctx.fillStyle = color;
                 ctx.beginPath();
-                ctx.arc(8, 8, 8, 0, Math.PI*2);
+                ctx.arc(8, 8, 8 * pulse, 0, Math.PI * 2);
                 ctx.fill();
 
+                // Core glyph text
                 ctx.fillStyle = '#ffffff';
                 ctx.font = 'bold 10px monospace';
-                ctx.fillText(this.kind, 5, 11);
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(this.kind, 8, 8);
 
                 ctx.restore();
             }

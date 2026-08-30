@@ -157,6 +157,25 @@ const Multiplayer = {
         }
     },
 
+    // GRO-4111: Standard Gamepad API Dual-Motor Haptic Vibration Trigger
+    triggerHapticRumble(intensity = 0.5, durationMs = 200) {
+        if (typeof navigator === 'undefined' || !navigator.getGamepads) return;
+        try {
+            const gamepads = navigator.getGamepads();
+            for (let i = 0; i < gamepads.length; i++) {
+                const gp = gamepads[i];
+                if (gp && gp.vibrationActuator && typeof gp.vibrationActuator.playEffect === 'function') {
+                    gp.vibrationActuator.playEffect('dual-rumble', {
+                        startDelay: 0,
+                        duration: durationMs,
+                        weakMagnitude: Math.min(1.0, intensity),
+                        strongMagnitude: Math.min(1.0, intensity * 0.8)
+                    }).catch(() => {});
+                }
+            }
+        } catch (e) {}
+    },
+
     onPlayerPullOut(playerId) {
         const player = this.getPlayer(playerId);
         if (!player) return null;

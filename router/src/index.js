@@ -3,6 +3,33 @@ export default {
     const url = new URL(request.url);
     const host = url.hostname;
     
+    // Health probe endpoint (GRO-4113)
+    if (url.pathname === '/api/health' || url.pathname === '/darius-star/api/health') {
+      return new Response(JSON.stringify({
+        status: "ok",
+        version: "1.0.0",
+        service: "darius-star-edge-router",
+        timestamp: new Date().toISOString()
+      }), {
+        status: 200,
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+        }
+      });
+    }
+
+    // Telemetry beacon endpoint (GRO-4113)
+    if (request.method === 'POST' && (url.pathname === '/api/telemetry' || url.pathname === '/darius-star/api/telemetry')) {
+      return new Response(JSON.stringify({ received: true, timestamp: Date.now() }), {
+        status: 200,
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+        }
+      });
+    }
+
     // Redirect /darius-star to /darius-star/
     if (url.pathname === '/darius-star') {
       return new Response(null, {

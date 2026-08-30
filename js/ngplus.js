@@ -15,6 +15,7 @@ window.NGPlus = {
         let prevShip = 'striker';
         let prevEnding = null;
         let prevUpgrades = {};
+        let prevFlags = {};
 
         if (typeof prevRunData === 'number') {
             // Called with a save slot number — load the save
@@ -25,12 +26,15 @@ window.NGPlus = {
                     prevShip = save.ship || 'striker';
                     prevEnding = save.ending || null;
                     prevUpgrades = save.upgrades || {};
+                    prevFlags = save.inGameFlags || {};
                 }
             }
         } else if (prevRunData && typeof prevRunData === 'object') {
             prevLevel = prevRunData.ngLevel || 0;
             prevShip = prevRunData.ship || 'striker';
+            prevEnding = prevRunData.ending || null;
             prevUpgrades = prevRunData.upgrades || {};
+            prevFlags = prevRunData.inGameFlags || {};
         }
 
         const nextLevel = prevLevel + 1;
@@ -69,10 +73,19 @@ window.NGPlus = {
                 updatedAt: new Date().toISOString()
             };
 
+        // GRO-4106: Carry forward key narrative flags across NG+ cycles
+        const carriedFlags = {
+            ...prevFlags,
+            ngPlusCyclesCompleted: nextLevel,
+            lyraTrust: prevFlags.lyraTrust || 50,
+            precursorGlyphs: Math.min(10, (prevFlags.precursorGlyphs || 0) + 1)
+        };
+
         return {
             ...base,
             ship: prevShip,
             upgrades: prevUpgrades,
+            inGameFlags: carriedFlags,
             ngLevel: nextLevel,
             scrapMult: scrapMult,
             paradoxRate: Math.min(0.5, 0.1 * nextLevel),

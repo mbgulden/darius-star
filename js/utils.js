@@ -184,6 +184,12 @@ function spawnHitFlash(x, y, enemyType) {
         frameRate: critCfg.frameRate, duration: critCfg.duration,
         color: critCfg.color, life: critCfg.duration, frame: 0, frameTime: 0
     });
+
+    // GRO-4111: Trigger subtle haptic rumble on impact
+    if (typeof Multiplayer !== 'undefined' && typeof Multiplayer.triggerHapticRumble === 'function') {
+        const intensity = enemyType && enemyType.startsWith('boss') ? 0.7 : 0.35;
+        Multiplayer.triggerHapticRumble(intensity, 120);
+    }
 }
 
 function checkCollision(rect1, rect2) {

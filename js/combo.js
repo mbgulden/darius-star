@@ -224,3 +224,6 @@ const Combo = {
         return `${r},${g},${b}`;
     },
 };
+
+window.Combo = Combo;
+window.ComboSystem = Combo;

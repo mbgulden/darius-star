@@ -39,9 +39,13 @@ const VoicePlayback = {
         'low_health': 'low_health',
         'wave_clear': 'wave_clear',
         'level_end': 'level_end',
-        'pull_out': 'level_end',  // fallback: pull_out uses level_end voice pool
+        'pull_out': 'retreat',      // GRO-4101: mapped to synthesized retreat files
+        'squad_save': 'squad_save',
         'tunnel_enter': 'briefing_pre_solo',  // fallback
     },
+
+    _lastPlayTime: 0,
+    DUCKING_COOLDOWN_MS: 300, // 0.3s debounce between rapid voice lines
 
     /**
      * Build a voice file path from biome, trigger, and speaker code.
@@ -51,13 +55,11 @@ const VoicePlayback = {
         const speaker = this.SPEAKER_MAP[speakerCode];
         if (!speaker) return null;
         
-        const voiceTrigger = this.TRIGGER_MAP[trigger];
-        if (!voiceTrigger) return null;
+        const voiceTrigger = this.TRIGGER_MAP[trigger] || trigger;
         
         // Voice files: b{biome}_{trigger}_{speaker}_{variant}.ogg
-        // We'll try variants 01-05 and pick the first that exists
-        // To avoid excessive 404s, we pick a random variant 01-03
-        const variant = String(Math.floor(Math.random() * 3) + 1).padStart(2, '0');
+        // Try exact variant 01, or fallback to random 01-03
+        const variant = String(Math.floor(Math.random() * 2) + 1).padStart(2, '0');
         return `assets/audio/voice/b${biome}_${voiceTrigger}_${speaker}_${variant}.ogg`;
     },
 
@@ -82,6 +84,12 @@ const VoicePlayback = {
         if (!this._isEnabled()) return false;
         if (!biome || !trigger || !speakerCode) return false;
         
+        const now = Date.now();
+        if (now - this._lastPlayTime < this.DUCKING_COOLDOWN_MS) {
+            return false;
+        }
+        this._lastPlayTime = now;
+
         // Stop any currently playing voice
         this.stop();
         
