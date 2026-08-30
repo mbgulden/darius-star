@@ -67,6 +67,10 @@
 - **GRO-4202**: Attempt-Aware Progressive Banter Engine & Dynamic Replay State (`agent:fred`)
 - **GRO-4203**: Canonical Lore Ingestion & 100-Level Sector Intel Master Catalog (`agent:agy`)
 - **GRO-4204**: Precursor Sector Intel Archive Terminal on Level Debriefing Screen (`agent:fred`)
+- **GRO-4206**: Higher-Difficulty & NG+ Classified Lore Unlocks (`agent:fred`)
+- **GRO-4207**: Character-Consistent Holographic Animated Portraits Suite (`agent:agy`)
+- **GRO-4208**: Full Voice Audio Playback & Real-Time BGM Ducking for Hands-Free Comms (`agent:fred`)
 - **GRO-4205**: Automated Narrative Journey & Comms Verification Suite (`agent:fred`)
+
 
 
