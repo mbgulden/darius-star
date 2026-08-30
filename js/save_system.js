@@ -155,7 +155,10 @@
             const attempts = (typeof window !== 'undefined' && window.LevelManager && window.LevelManager.levelAttempts) 
                 ? { ...window.LevelManager.levelAttempts } 
                 : (saveObj.levelAttempts || {});
-            saves[slotIndex] = { ...saveObj, levelAttempts: attempts, updatedAt: new Date().toISOString() };
+            const intelLogs = (typeof window !== 'undefined' && window.LevelManager && window.LevelManager.unlockedIntelLogs)
+                ? { ...window.LevelManager.unlockedIntelLogs }
+                : (saveObj.unlockedIntelLogs || {});
+            saves[slotIndex] = { ...saveObj, levelAttempts: attempts, unlockedIntelLogs: intelLogs, updatedAt: new Date().toISOString() };
         } else {
             saves[slotIndex] = null;
         }

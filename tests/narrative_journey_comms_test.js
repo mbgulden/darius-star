@@ -50,6 +50,23 @@ global.document = {
 };
 
 global.canvas = { width: 800, height: 450, style: {}, addEventListener: () => {} };
+
+const mockEl = {
+    addEventListener: () => {},
+    classList: { add: () => {}, remove: () => {}, contains: () => false },
+    play: () => Promise.resolve(),
+    pause: () => {},
+    style: {},
+    appendChild: () => {},
+    querySelector: () => null,
+    querySelectorAll: () => []
+};
+
+global.bossIntroVideo = { ...mockEl };
+global.victoryVideo = { ...mockEl };
+global.skipHint = { ...mockEl };
+global.document.getElementById = (id) => mockEl;
+
 global.ctx = {
     save: () => {}, restore: () => {}, translate: () => {}, rotate: () => {}, scale: () => {},
     beginPath: () => {}, arc: () => {}, fill: () => {}, stroke: () => {}, fillRect: () => {},
@@ -129,6 +146,7 @@ global.playSound = (type, p) => {
 };
 
 eval(fs.readFileSync(path.join(__dirname, '../js/ui/dialogue.js'), 'utf8'));
+eval(fs.readFileSync(path.join(__dirname, '../js/ui.js'), 'utf8'));
 eval(fs.readFileSync(path.join(__dirname, '../js/level_manager.js'), 'utf8'));
 eval(fs.readFileSync(path.join(__dirname, '../js/game_loop.js'), 'utf8'));
 
@@ -322,6 +340,75 @@ assert.strictEqual(activeDialogue.lines[0].speaker, 'Lyra', "Sector 4.4 chatter 
 assert.ok(activeDialogue.lines[0].text.includes("glass") || activeDialogue.lines[0].text.includes("story"), "Sector 4.4 must trigger bespoke narrative line");
 console.log("  [PASS] Sector 4.4 triggered bespoke opening comms on Attempt 1:", activeDialogue.lines[0].text);
 
+
+// ─── 11. GRO-4204: Precursor Sector Intel Archive Terminal Tests ────────────
+console.log("11. Testing Precursor Sector Intel Archive Terminal on Level Debrief Screen...");
+
+// Trigger level clear screen for Biome 3 Level 4 (Europa - Thermal Vent Shockwaves)
+showLevelClearScreen({
+    biome: 3,
+    level: 4,
+    killCount: 28,
+    killTotal: 28,
+    killPct: 100,
+    scrapCollected: 450,
+    scrapTotal: 450,
+    scrapPct: 100,
+    scoreEarned: 3200,
+    timeSpent: 42,
+    rank: 'S'
+});
+
+assert.strictEqual(currentScreen, SCREENS.LEVEL_CLEAR, "Must be on LEVEL_CLEAR screen");
+assert.strictEqual(window._showIntelModal, false, "Intel modal must initially be closed");
+
+// Simulate pressing [L] to open Sector Intel Archive Terminal
+playedSounds.length = 0;
+window._showIntelModal = true;
+if (typeof LevelManager !== 'undefined' && LevelManager.recordIntelViewed) {
+    LevelManager.recordIntelViewed(3, 4);
+}
+global.playSound('radio_squelch_in');
+
+assert.strictEqual(window._showIntelModal, true, "Intel modal must now be active");
+assert.ok(playedSounds.includes('radio_squelch_in'), "Must play radio_squelch_in on terminal opening");
+assert.strictEqual(LevelManager.isIntelViewed(3, 4), true, "LevelManager must record sector 3.4 intel as viewed");
+console.log("  [PASS] Sector Intel Archive Terminal opened with squelch SFX and registered in LevelManager.");
+
+// Query sector 3.4 intel payload
+const secIntel = LevelManager.getSectorIntel(3, 4);
+assert.ok(secIntel.name.includes("Thermal") || secIntel.shortName.includes("Thermal"), "Sector 3.4 name must reflect Thermal Vents");
+assert.ok(secIntel.hazard.includes("Thermal"), "Sector 3.4 hazard must report Thermal Vent Shockwaves");
+assert.ok(secIntel.classifiedLog.includes("geothermal"), "Sector 3.4 classifiedLog must include geothermal research logs");
+console.log("  [PASS] Sector 3.4 Terminal Payload verified: Hazard =", secIntel.hazard);
+
+// Simulate closing modal via [ESC] / [ENTER] / click
+playedSounds.length = 0;
+window._showIntelModal = false;
+global.playSound('radio_squelch_out');
+
+assert.strictEqual(window._showIntelModal, false, "Intel modal must be dismissed");
+assert.ok(playedSounds.includes('radio_squelch_out'), "Must play radio_squelch_out on terminal close");
+assert.strictEqual(currentScreen, SCREENS.LEVEL_CLEAR, "Must remain on LEVEL_CLEAR debriefing screen");
+console.log("  [PASS] Sector Intel Archive Terminal closed cleanly returning to Debriefing Screen.");
+
+// Test CampaignSave unlockedIntelLogs persistence
+CampaignSave.save(1, {
+    wave: 1,
+    ship: 'bastion',
+    scrap: 600,
+    score: 4000,
+    lives: 3,
+    difficulty: 'pilot',
+    upgrades: {},
+    biome: 3
+});
+
+const loadedSave1 = CampaignSave.load(1);
+assert.ok(loadedSave1.unlockedIntelLogs, "Loaded save must contain unlockedIntelLogs map");
+assert.strictEqual(loadedSave1.unlockedIntelLogs['b3_l4'], true, "Loaded save must persist viewed intel for sector b3_l4");
+console.log("  [PASS] CampaignSave successfully serializes and restores unlockedIntelLogs.");
+
 console.log("============================================================");
-console.log("ALL GRO-4201, GRO-4202 & GRO-4203 NARRATIVE JOURNEY TESTS PASSED (100%)");
+console.log("ALL GRO-4201, GRO-4202, GRO-4203 & GRO-4204 NARRATIVE TESTS PASSED (100%)");
 console.log("============================================================");

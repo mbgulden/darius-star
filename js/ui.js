@@ -16,7 +16,8 @@ function showLevelClearScreen(summary) {
     window._levelClearAnimTimer = 0;
     window._levelClearHitRegions = [];
     window._showIntelModal = false;
-    transitionToScreen(SCREENS.LEVEL_CLEAR);
+    currentScreen = (typeof SCREENS !== 'undefined') ? SCREENS.LEVEL_CLEAR : 'level_clear';
+    targetScreen = null;
     playSound('powerup');
 }
 
@@ -1370,36 +1371,146 @@ function drawMenuScreens() {
             ctx.fillText(bDef.label, bx + btnW / 2, btnY + 28);
         }
 
-        // 5. Sector Intel Modal
+        // 5. Precursor Sector Intel Archive Terminal Modal (GRO-4204)
         if (window._showIntelModal) {
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.88)';
-            ctx.fillRect(50, 50, canvas.width - 100, canvas.height - 100);
+            const modalX = 30;
+            const modalY = 22;
+            const modalW = canvas.width - 60;
+            const modalH = canvas.height - 44;
+
+            // Semi-transparent deep glass backdrop
+            ctx.fillStyle = 'rgba(2, 6, 18, 0.96)';
+            ctx.fillRect(modalX, modalY, modalW, modalH);
+
+            // Glowing cyan tech border
             ctx.strokeStyle = '#00ffff';
             ctx.lineWidth = 2;
-            ctx.strokeRect(50, 50, canvas.width - 100, canvas.height - 100);
+            ctx.strokeRect(modalX, modalY, modalW, modalH);
 
-            ctx.textAlign = 'center';
-            ctx.fillStyle = '#00ffff';
-            ctx.font = 'bold 16px monospace';
-            ctx.fillText(`SECTOR INTEL // ${lvlInfo.name.toUpperCase()}`, canvas.width / 2, 85);
+            // Corner accents
+            const bracketSize = 12;
+            ctx.strokeStyle = '#ffaa00';
+            ctx.lineWidth = 3;
+            ctx.beginPath(); ctx.moveTo(modalX, modalY + bracketSize); ctx.lineTo(modalX, modalY); ctx.lineTo(modalX + bracketSize, modalY); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(modalX + modalW - bracketSize, modalY); ctx.lineTo(modalX + modalW, modalY); ctx.lineTo(modalX + modalW, modalY + bracketSize); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(modalX, modalY + modalH - bracketSize); ctx.lineTo(modalX, modalY + modalH); ctx.lineTo(modalX + bracketSize, modalY + modalH); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(modalX + modalW - bracketSize, modalY + modalH); ctx.lineTo(modalX + modalW, modalY + modalH); ctx.lineTo(modalX + modalW, modalY + modalH - bracketSize); ctx.stroke();
 
-            ctx.fillStyle = '#88aacc';
-            ctx.font = '11px monospace';
-            ctx.fillText(`LANDMARK CLASSIFICATION: ${lvlInfo.landmark.toUpperCase()}`, canvas.width / 2, 110);
+            // Terminal Header Banner
+            ctx.fillStyle = 'rgba(0, 255, 255, 0.12)';
+            ctx.fillRect(modalX + 2, modalY + 2, modalW - 4, 36);
+            ctx.strokeStyle = 'rgba(0, 255, 255, 0.3)';
+            ctx.lineWidth = 1;
+            ctx.strokeRect(modalX + 2, modalY + 2, modalW - 4, 36);
 
             ctx.textAlign = 'left';
+            ctx.fillStyle = '#00ffff';
+            ctx.font = 'bold 12.5px monospace';
+            ctx.shadowColor = '#00ffff';
+            ctx.shadowBlur = 8;
+            ctx.fillText(`PRECURSOR SECTOR INTEL TERMINAL // SECTOR ${lvlInfo.name.toUpperCase()}`, modalX + 16, modalY + 23);
+            ctx.shadowBlur = 0;
+
+            ctx.textAlign = 'right';
+            ctx.fillStyle = '#ffaa00';
+            ctx.font = 'bold 10px monospace';
+            ctx.fillText(`SECURITY CLEARANCE: LEVEL ${b} // UNRESTRICTED`, modalX + modalW - 16, modalY + 23);
+
+            // Two-column layout
+            const colW = (modalW - 36) / 2;
+            const colTopY = modalY + 48;
+            const colH = modalH - 85;
+
+            // Column 1: Tactical & Environmental Reconnaissance
+            ctx.fillStyle = 'rgba(10, 16, 32, 0.75)';
+            ctx.strokeStyle = 'rgba(0, 200, 255, 0.25)';
+            ctx.fillRect(modalX + 12, colTopY, colW, colH);
+            ctx.strokeRect(modalX + 12, colTopY, colW, colH);
+
+            ctx.textAlign = 'left';
+            ctx.fillStyle = '#00ffff';
+            ctx.font = 'bold 11px monospace';
+            ctx.fillText('📡 TACTICAL RECONNAISSANCE & HAZARDS', modalX + 24, colTopY + 24);
+
+            ctx.fillStyle = '#88aacc';
+            ctx.font = 'bold 9.5px monospace';
+            ctx.fillText('LANDMARK TOPOLOGY:', modalX + 24, colTopY + 46);
             ctx.fillStyle = '#ffffff';
-            ctx.font = '12px monospace';
+            ctx.font = '10px monospace';
+            ctx.fillText(`[ ${lvlInfo.landmark.toUpperCase()} ]`, modalX + 24, colTopY + 62);
+
+            ctx.fillStyle = '#ff4455';
+            ctx.font = 'bold 9.5px monospace';
+            ctx.fillText('⚠️ SECTOR HAZARD PROFILE:', modalX + 24, colTopY + 88);
+            ctx.fillStyle = '#ffaaaa';
+            ctx.font = '9.5px monospace';
             if (typeof wrapText === 'function') {
-                wrapText(ctx, lvlInfo.intel || '', 80, 150, canvas.width - 160, 22);
+                wrapText(ctx, lvlInfo.hazard || 'Standard Environmental Hostility', modalX + 24, colTopY + 104, colW - 24, 15);
             } else {
-                ctx.fillText(lvlInfo.intel || '', 80, 150);
+                ctx.fillText(lvlInfo.hazard || 'Standard Environmental Hostility', modalX + 24, colTopY + 104);
             }
 
-            ctx.textAlign = 'center';
+            ctx.fillStyle = '#00ff88';
+            ctx.font = 'bold 9.5px monospace';
+            ctx.fillText('🔍 OPERATIONAL SECTOR INTEL:', modalX + 24, colTopY + 145);
+            ctx.fillStyle = '#e0e8f0';
+            ctx.font = '9.5px monospace';
+            if (typeof wrapText === 'function') {
+                wrapText(ctx, lvlInfo.intel || 'Airspace secured by Vanguard fighters.', modalX + 24, colTopY + 162, colW - 24, 15);
+            } else {
+                ctx.fillText(lvlInfo.intel || 'Airspace secured.', modalX + 24, colTopY + 162);
+            }
+
+            // Column 2: Archival Telemetry & Comms Intercept
+            const col2X = modalX + 12 + colW + 12;
+            ctx.fillStyle = 'rgba(10, 16, 32, 0.75)';
+            ctx.strokeStyle = 'rgba(255, 170, 0, 0.25)';
+            ctx.fillRect(col2X, colTopY, colW, colH);
+            ctx.strokeRect(col2X, colTopY, colW, colH);
+
+            ctx.textAlign = 'left';
             ctx.fillStyle = '#ffaa00';
             ctx.font = 'bold 11px monospace';
-            ctx.fillText('PRESS [L] OR CLICK ANYWHERE TO CLOSE INTEL LOG', canvas.width / 2, canvas.height - 75);
+            ctx.fillText('📜 CLASSIFIED PRECURSOR ARCHIVES & COMMS', col2X + 14, colTopY + 24);
+
+            ctx.fillStyle = '#ffcc88';
+            ctx.font = 'bold 9.5px monospace';
+            ctx.fillText('HAVEN-7 TELEMETRY & SURVEY LOG:', col2X + 14, colTopY + 46);
+            ctx.fillStyle = '#fff0dd';
+            ctx.font = '9px monospace';
+            if (typeof wrapText === 'function') {
+                wrapText(ctx, lvlInfo.classifiedLog || 'Classified Precursor telemetry log decrypted.', col2X + 14, colTopY + 64, colW - 24, 14);
+            } else {
+                ctx.fillText(lvlInfo.classifiedLog || '', col2X + 14, colTopY + 64);
+            }
+
+            // In-flight Audio Intercept
+            ctx.fillStyle = '#00ffff';
+            ctx.font = 'bold 9.5px monospace';
+            ctx.fillText('📻 FLIGHT COMMS TRANSCRIPT:', col2X + 14, colTopY + 145);
+            const speakerCodes = { 'D':'Darius', 'L':'Lyra', 'N':'Naya', 'T':'Thorne', 'C':'Cross', 'S':'Selene', 'A':'Architect', 'O':'Ophion' };
+            const speakerCode = (lvlInfo.commLine && lvlInfo.commLine.s) ? lvlInfo.commLine.s : 'D';
+            const speakerName = speakerCodes[speakerCode] || speakerCode;
+            const commText = (lvlInfo.commLine && lvlInfo.commLine.l) ? `"${lvlInfo.commLine.l}"` : '"Weapons hot. Stay in formation."';
+            ctx.fillStyle = '#88ccff';
+            ctx.font = 'italic 9px monospace';
+            ctx.fillText(`[CALLSIGN: ${speakerName.toUpperCase()}]`, col2X + 14, colTopY + 162);
+            ctx.fillStyle = '#ffffff';
+            ctx.font = '9px monospace';
+            if (typeof wrapText === 'function') {
+                wrapText(ctx, commText, col2X + 14, colTopY + 178, colW - 24, 14);
+            } else {
+                ctx.fillText(commText, col2X + 14, colTopY + 178);
+            }
+
+            // Bottom Footer Prompt
+            ctx.textAlign = 'center';
+            ctx.fillStyle = '#00ff88';
+            ctx.font = 'bold 10.5px monospace';
+            ctx.shadowColor = '#00ff88';
+            ctx.shadowBlur = 6;
+            ctx.fillText('PRESS [L], [ESC], [ENTER] OR CLICK ANYWHERE TO CLOSE ARCHIVE TERMINAL', canvas.width / 2, modalY + modalH - 12);
+            ctx.shadowBlur = 0;
         }
 
         ctx.restore();
@@ -2078,6 +2189,23 @@ window.addEventListener('keydown', e => {
                 deleteSaveSlot(slot);
             }
             e.preventDefault();
+        } else if ((e.key === 'l' || e.key === 'L') && currentScreen === SCREENS.LEVEL_CLEAR) {
+            window._showIntelModal = !window._showIntelModal;
+            if (window._showIntelModal) {
+                playSound('radio_squelch_in');
+                if (typeof window !== 'undefined' && window.LevelManager && window.LevelManager.recordIntelViewed) {
+                    const sum = window._levelClearSummary || {};
+                    window.LevelManager.recordIntelViewed(sum.biome, sum.level);
+                }
+            } else {
+                playSound('radio_squelch_out');
+            }
+            e.preventDefault();
+        } else if ((e.key === 'u' || e.key === 'U') && currentScreen === SCREENS.LEVEL_CLEAR) {
+            window._upgradeReturnScreen = SCREENS.LEVEL_CLEAR;
+            transitionToScreen(SCREENS.UPGRADE_SHOP);
+            playSound('menu_click');
+            e.preventDefault();
         } else if ((e.key === 'u' || e.key === 'U') && (gameOver || gameWon || currentScreen === SCREENS.MENU)) {
             transitionToScreen(SCREENS.UPGRADE_SHOP);
         } else if ((e.key === 'c' || e.key === 'C') && currentScreen === SCREENS.LEADERBOARD) {
@@ -2149,7 +2277,7 @@ canvas.addEventListener('click', function(e) {
     if (currentScreen === SCREENS.LEVEL_CLEAR) {
         if (window._showIntelModal) {
             window._showIntelModal = false;
-            playSound('menu_select');
+            playSound('radio_squelch_out');
             return;
         }
         var lcRegions = window._levelClearHitRegions || [];
@@ -2164,7 +2292,11 @@ canvas.addEventListener('click', function(e) {
                     playSound('menu_click');
                 } else if (reg.key === 'intel') {
                     window._showIntelModal = true;
-                    playSound('menu_select');
+                    playSound('radio_squelch_in');
+                    if (typeof window !== 'undefined' && window.LevelManager && window.LevelManager.recordIntelViewed) {
+                        const sum = window._levelClearSummary || {};
+                        window.LevelManager.recordIntelViewed(sum.biome, sum.level);
+                    }
                 } else if (reg.key === 'menu') {
                     transitionToScreen(SCREENS.MENU);
                     playSound('menu_click');

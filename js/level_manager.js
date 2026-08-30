@@ -213,6 +213,7 @@ const LevelManager = {
     },
     // --- Attempt-Aware Tracking (GRO-4202) ---
     levelAttempts: {},
+    unlockedIntelLogs: {},
 
     getAttemptCount(biome, level) {
         const b = biome || this.biome || 1;
@@ -229,8 +230,23 @@ const LevelManager = {
         return this.levelAttempts[key];
     },
 
+    recordIntelViewed(biome, level) {
+        if (!this.unlockedIntelLogs) this.unlockedIntelLogs = {};
+        const b = biome || this.biome || 1;
+        const l = level || this.level || 1;
+        this.unlockedIntelLogs[`b${b}_l${l}`] = true;
+        return true;
+    },
+
+    isIntelViewed(biome, level) {
+        const b = biome || this.biome || 1;
+        const l = level || this.level || 1;
+        return !!(this.unlockedIntelLogs && this.unlockedIntelLogs[`b${b}_l${l}`]);
+    },
+
     resetLevelAttempts() {
         this.levelAttempts = {};
+        this.unlockedIntelLogs = {};
     },
 
     getSectorIntel(biome, level) {
