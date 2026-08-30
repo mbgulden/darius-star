@@ -1732,6 +1732,7 @@ canvas.addEventListener('click', e => {
     loadPortraitSprites();
     loadEnemySprites();
     loadVFXSprites();
+    preloadBossAssets();
     if (window.LevelManager && !LevelManager.initialized) {
         LevelManager.initialized = true;
         LevelManager.init();

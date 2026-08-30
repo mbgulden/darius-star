@@ -1265,6 +1265,7 @@ window.addEventListener('keydown', e => {
     loadPortraitSprites();
     loadEnemySprites();
     loadVFXSprites();
+    preloadBossAssets();
 
     // Check active dialogue first, on any screen!
     if (typeof activeDialogue !== 'undefined' && activeDialogue) {
@@ -1554,6 +1555,7 @@ function setupTouchButton(elId, key) {
         loadPortraitSprites();
         loadEnemySprites();
         loadVFXSprites();
+        preloadBossAssets();
         keys[key] = true;
         el.classList.add('pressed');
     });
