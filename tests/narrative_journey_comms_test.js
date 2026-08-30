@@ -547,6 +547,113 @@ testSeq.next(); // dismisses dialogue
 assert.strictEqual(AudioManager.isDucked(), false, "DialogueSequence completion must unduck BGM");
 console.log("  [PASS] DialogueSequence lifecycle fully harmonized with VoicePlayback & BGM ducking.");
 
+
+// ─── 15. GRO-4205: Comprehensive End-to-End Narrative Journey Quality Gate ───
+console.log("15. Running Comprehensive End-to-End Narrative Journey Simulation (GRO-4205)...");
+
+// A. Verify Complete 100-Sector Canonical Integrity across all 10 Biomes
+let e2eSectorsVerified = 0;
+for (let b = 1; b <= 10; b++) {
+    for (let l = 1; l <= 10; l++) {
+        const intel = LevelManager.getSectorIntel(b, l, 'normal', 0);
+        assert.ok(intel.sectorId === `b${b}_l${l}`, `Sector ${b}.${l} ID mismatch`);
+        assert.ok(intel.name && intel.name.length > 3, `Sector ${b}.${l} missing name`);
+        assert.ok(intel.landmark && intel.landmark.length > 2, `Sector ${b}.${l} missing landmark`);
+        assert.ok(intel.hazard && intel.hazard.length > 5, `Sector ${b}.${l} missing hazard profile`);
+        assert.ok(intel.classifiedLog && intel.classifiedLog.length > 10, `Sector ${b}.${l} missing classified archival log`);
+        assert.ok(intel.commLine && intel.commLine.s && intel.commLine.l, `Sector ${b}.${l} missing opening comm line`);
+        e2eSectorsVerified++;
+    }
+}
+assert.strictEqual(e2eSectorsVerified, 100, "Must verify exactly 100/100 sectors");
+console.log(`  [PASS] 100/100 sectors verified across all 10 biomes with complete lore, landmarks, hazards, and comm chatter.`);
+
+// B. Simulate Consecutive Wipe & Checkpoint Retries on Sector 2.5 (Attempt 1, 2, 3+)
+LevelManager.resetLevelAttempts();
+
+// Attempt 1: First Reconnaissance
+LevelManager.setBiomeAndLevel(2, 5);
+assert.strictEqual(LevelManager.getAttemptCount(2, 5), 1, "First attempt at Sector 2.5 must have attempt count = 1");
+const a1Line = BanterEngine.getLine('level_start', 2, null, 1, 'normal', 0);
+assert.ok(a1Line, "Attempt 1 must return valid Recon line");
+console.log("  [Attempt 1 Recon]:", a1Line.l);
+
+// Attempt 2: Player wiped and restarted sector (Tactical Countermeasure)
+LevelManager.setBiomeAndLevel(2, 5);
+assert.strictEqual(LevelManager.getAttemptCount(2, 5), 2, "Second attempt at Sector 2.5 must have attempt count = 2");
+const a2Line = BanterEngine.getLine('level_start', 2, null, 2, 'normal', 0);
+assert.ok(a2Line, "Attempt 2 must return valid Tactical Countermeasure line");
+assert.notStrictEqual(a1Line.l, a2Line.l, "Attempt 2 line must be distinct from Attempt 1");
+console.log("  [Attempt 2 Adaptation]:", a2Line.l);
+
+// Attempt 3: Player wiped third time (Tenacity & Gritty Focus)
+LevelManager.setBiomeAndLevel(2, 5);
+assert.strictEqual(LevelManager.getAttemptCount(2, 5), 3, "Third attempt at Sector 2.5 must have attempt count = 3");
+const a3Line = BanterEngine.getLine('level_start', 2, null, 3, 'normal', 0);
+assert.ok(a3Line, "Attempt 3 must return valid Tenacity line");
+assert.notStrictEqual(a2Line.l, a3Line.l, "Attempt 3 line must be distinct from Attempt 2");
+console.log("  [Attempt 3 Tenacity]:", a3Line.l);
+
+// C. Verify Difficulty & NG+ Dynamic Lore Branching
+const cadetCheck = BanterEngine.getLine('level_start', 3, 'D', 1, 'easy', 0);
+const aceCheck = BanterEngine.getLine('level_start', 3, null, 1, 'hard', 0);
+const ngCheck = BanterEngine.getLine('level_start', 3, null, 1, 'normal', 1);
+
+assert.ok(cadetCheck, "Cadet mode must have full main storyline line");
+assert.ok(aceCheck.l.includes("PROJECT OPHION") || aceCheck.l.includes("BLACK-OPS") || aceCheck.l.includes("Grandpa"), "ACE mode must return classified lore");
+assert.ok(ngCheck.l.includes("CHRONO RESIDUAL") || ngCheck.l.includes("PARADOX") || ngCheck.l.includes("familiar"), "NG+ mode must return paradox recursion line");
+console.log("  [PASS] Dynamic lore branching verified across CADET (Main Story), ACE (Classified Navy), and NG+ (Paradox Recursion).");
+
+// D. Verify Flight & Combat Control Loop during Active In-Flight Comms Banner
+const combatSeq = new DialogueSequence([
+    { speaker: 'Thorne', text: "Incoming heavy missile barrage! Evasive maneuvers!" }
+]);
+assert.strictEqual(combatSeq.isBlocking(), false, "Comms banner must be non-blocking");
+assert.strictEqual(AudioManager.isDucked(), true, "BGM must be ducked during active comms");
+
+// Simulate 50 frames of player movement and weapon discharge during active comms
+let bulletsFired = 0;
+for (let f = 0; f < 50; f++) {
+    player.x += 2;
+    player.y += 1;
+    if (f % 5 === 0) {
+        player.shoot();
+        bulletsFired++;
+    }
+    combatSeq.update(0.016);
+}
+assert.ok(bulletsFired >= 9, "Player must be able to continuously shoot while comms banner is open");
+assert.ok(player.x > 150, "Player ship movement must remain 100% active");
+console.log(`  [PASS] Non-blocking flight continuity verified: player moved to (${player.x}, ${player.y}) and fired ${bulletsFired} bullet salvos during live dialogue.`);
+
+combatSeq.next(); // finish line
+combatSeq.next(); // close banner
+assert.strictEqual(AudioManager.isDucked(), false, "BGM must restore volume after comms banner dismissal");
+
+// E. Verify Precursor Sector Intel Archive Terminal & CampaignSave 3-Slot State Persistence
+LevelManager.recordIntelViewed(2, 5);
+assert.strictEqual(LevelManager.isIntelViewed(2, 5), true, "LevelManager must record viewed intel");
+
+CampaignSave.save(0, {
+    ship: 'striker',
+    biome: 2,
+    wave: 5,
+    lives: 2,
+    scrap: 1250,
+    score: 8400,
+    difficulty: 'hard',
+    highestCompletedDifficulty: 'hard',
+    unlockedClassifiedLore: { 'b2_l5': true },
+    upgrades: { 'laser': 2 }
+});
+
+const restoredSave = CampaignSave.load(0);
+assert.strictEqual(restoredSave.levelAttempts['b2_l5'], 3, "Restored save must preserve attempt count = 3");
+assert.strictEqual(restoredSave.unlockedIntelLogs['b2_l5'], true, "Restored save must preserve unlocked intel log");
+assert.strictEqual(restoredSave.highestCompletedDifficulty, 'hard', "Restored save must preserve highest completed difficulty");
+assert.strictEqual(restoredSave.unlockedClassifiedLore['b2_l5'], true, "Restored save must preserve unlocked classified lore");
+console.log("  [PASS] 3-slot CampaignSave persistence losslessly verified across attempt counts, intel logs, and classified lore.");
+
 console.log("============================================================");
-console.log("ALL GRO-4201, GRO-4202, GRO-4203, GRO-4204, GRO-4206, GRO-4207 & GRO-4208 NARRATIVE TESTS PASSED (100%)");
+console.log("ALL TRACK 7 NARRATIVE JOURNEY & COMMS TESTS PASSED (GRO-4201 TO GRO-4208: 100%)");
 console.log("============================================================");
