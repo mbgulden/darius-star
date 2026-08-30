@@ -228,121 +228,161 @@
             }
         }
 
-        /* GRO-2163: Lyra Navigator HUD DOM Overlay styles */
+        /* GRO-4201: Non-Blocking Holographic Comms Banner HUD */
         #lyra-hud {
             position: absolute;
-            bottom: 15px;
-            left: 15px;
-            width: 520px;
-            max-width: calc(100% - 30px);
-            height: 95px;
-            background: rgba(5, 5, 16, 0.95);
-            border: 2px solid #00ffff;
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
+            top: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 540px;
+            max-width: calc(100% - 24px);
+            height: 74px;
+            background: linear-gradient(180deg, rgba(6, 14, 28, 0.95) 0%, rgba(2, 6, 14, 0.92) 100%);
+            border: 1.5px solid #00ffff;
+            box-shadow: 0 0 16px rgba(0, 255, 255, 0.35), inset 0 0 12px rgba(0, 255, 255, 0.08);
             border-radius: 4px;
             display: none;
-            z-index: 15;
+            z-index: 25;
             box-sizing: border-box;
             font-family: 'Courier New', Courier, monospace;
-            padding: 10px;
+            padding: 8px 12px;
             pointer-events: auto;
             user-select: none;
+            overflow: hidden;
+            backdrop-filter: blur(4px);
         }
 
-        @keyframes slide-in-bottom-left {
+        @keyframes slide-in-top-center {
             from {
-                transform: translate3d(-50px, 50px, 0);
+                transform: translate3d(-50%, -80px, 0);
                 opacity: 0;
             }
             to {
-                transform: translate3d(0, 0, 0);
+                transform: translate3d(-50%, 0, 0);
                 opacity: 1;
             }
         }
         
         .lyra-hud-active {
-            animation: slide-in-bottom-left 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation: slide-in-top-center 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
         .lyra-portrait-box {
-            width: 70px;
-            height: 70px;
-            background: #020208;
-            border: 1px solid #2a2a4a;
+            width: 56px;
+            height: 56px;
+            background: #02040a;
+            border: 1.5px solid #00ffff;
+            box-shadow: 0 0 8px rgba(0, 255, 255, 0.25);
             position: absolute;
-            left: 12px;
-            top: 12px;
+            left: 9px;
+            top: 9px;
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
             box-sizing: border-box;
+            border-radius: 2px;
         }
         #lyra-portrait-img {
             width: 100%;
             height: 100%;
             display: none;
             object-fit: cover;
+            image-rendering: pixelated;
         }
         .lyra-no-signal {
-            font-size: 9px;
+            font-size: 8px;
             color: #ff3355;
             text-align: center;
             display: none;
             font-weight: bold;
+            letter-spacing: 0.5px;
         }
         .lyra-content-box {
             position: absolute;
-            left: 95px;
-            top: 10px;
-            right: 12px;
-            bottom: 10px;
+            left: 74px;
+            top: 7px;
+            right: 10px;
+            bottom: 7px;
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
             box-sizing: border-box;
+        }
+        .lyra-header-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2px;
         }
         .lyra-speaker-name {
             font-size: 11px;
             font-weight: bold;
             color: #00ffff;
             text-transform: uppercase;
-            margin-bottom: 4px;
             letter-spacing: 1px;
+        }
+        .lyra-callsign-badge {
+            font-size: 8.5px;
+            color: #88aacc;
+            letter-spacing: 0.5px;
+            margin-left: 6px;
+        }
+        .lyra-waveform {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            height: 10px;
+            margin-right: 4px;
+        }
+        .lyra-waveform-bar {
+            width: 2px;
+            height: 8px;
+            background: #00ffff;
+            border-radius: 1px;
+            opacity: 0.8;
+            transition: height 0.08s ease;
         }
         .lyra-dialogue-text {
             font-size: 10px;
             color: #ffffff;
-            line-height: 1.4;
+            line-height: 1.35;
             white-space: pre-wrap;
             flex-grow: 1;
             font-weight: bold;
+            text-shadow: 0 0 3px rgba(0,0,0,0.8);
         }
         .lyra-choices {
             display: flex;
-            gap: 20px;
-            margin-top: 4px;
+            gap: 12px;
+            margin-top: 2px;
         }
         .lyra-choice-option {
-            font-size: 10px;
+            font-size: 9.5px;
             cursor: pointer;
-            color: #8a8a9f;
-            padding: 2px 4px;
-            border: 1px solid transparent;
-            transition: all 0.15s;
+            color: #aaccff;
+            padding: 1px 6px;
+            border: 1px solid rgba(0, 255, 255, 0.4);
+            border-radius: 2px;
+            background: rgba(0, 255, 255, 0.08);
+            transition: all 0.12s;
         }
         .lyra-choice-option.selected {
             color: #ffd700;
             font-weight: bold;
-            border-color: rgba(255, 215, 0, 0.2);
-            background: rgba(255, 215, 0, 0.05);
+            border-color: #ffd700;
+            background: rgba(255, 215, 0, 0.2);
+            box-shadow: 0 0 6px rgba(255, 215, 0, 0.4);
         }
         .lyra-continue-prompt {
-            font-size: 8px;
-            color: #4a4a5f;
+            font-size: 7.5px;
+            color: #6a7a9f;
             text-align: right;
             position: absolute;
             bottom: 0;
+            right: 2px;
+            letter-spacing: 0.5px;
+        }
             right: 0;
         }
     </style>
@@ -433,10 +473,25 @@
                 <div id="lyra-no-signal" class="lyra-no-signal">NO SIGNAL</div>
             </div>
             <div class="lyra-content-box">
-                <div id="lyra-speaker-name" class="lyra-speaker-name"></div>
+                <div class="lyra-header-row">
+                    <div style="display: flex; align-items: center;">
+                        <span id="lyra-speaker-name" class="lyra-speaker-name"></span>
+                        <span id="lyra-callsign-badge" class="lyra-callsign-badge">[COMMS]</span>
+                    </div>
+                    <div id="lyra-waveform" class="lyra-waveform">
+                        <span class="lyra-waveform-bar" style="height: 4px;"></span>
+                        <span class="lyra-waveform-bar" style="height: 8px;"></span>
+                        <span class="lyra-waveform-bar" style="height: 10px;"></span>
+                        <span class="lyra-waveform-bar" style="height: 6px;"></span>
+                        <span class="lyra-waveform-bar" style="height: 9px;"></span>
+                        <span class="lyra-waveform-bar" style="height: 5px;"></span>
+                        <span class="lyra-waveform-bar" style="height: 10px;"></span>
+                        <span class="lyra-waveform-bar" style="height: 7px;"></span>
+                    </div>
+                </div>
                 <div id="lyra-dialogue-text" class="lyra-dialogue-text"></div>
                 <div id="lyra-choices" class="lyra-choices"></div>
-                <div id="lyra-continue-prompt" class="lyra-continue-prompt">CLICK / ENTER to continue</div>
+                <div id="lyra-continue-prompt" class="lyra-continue-prompt">CLICK / [ENTER] / [1,2]</div>
             </div>
         </div>
         <div id="controls-overlay">

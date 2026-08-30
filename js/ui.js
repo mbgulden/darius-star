@@ -1751,11 +1751,18 @@ window.addEventListener('keydown', e => {
     loadVFXSprites();
     preloadBossAssets();
 
-    // Check active dialogue first, on any screen!
+    // Check active dialogue keys without intercepting flight controls if non-blocking!
     if (typeof activeDialogue !== 'undefined' && activeDialogue) {
-        activeDialogue.handleKey(e.key);
-        e.preventDefault();
-        return;
+        if (activeDialogue.isBlocking()) {
+            activeDialogue.handleKey(e.key);
+            e.preventDefault();
+            return;
+        } else {
+            const isCombatKey = ['w','W','a','A','s','S','d','D','ArrowUp','ArrowDown','ArrowLeft','ArrowRight',' ','Shift','e','E','k','K'].includes(e.key);
+            if (!isCombatKey) {
+                activeDialogue.handleKey(e.key);
+            }
+        }
     }
 
     // GRO-1009: Ending choice keyboard handling

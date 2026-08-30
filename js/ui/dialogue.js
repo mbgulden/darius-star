@@ -49,19 +49,50 @@
             Object.defineProperty(global, 'dialogueCompletedScenes', scenesConfig);
         }
 
+
+        const SPEAKER_CONFIG = {
+            'Lyra':      { color: '#00ffff', callsign: '[NAVIGATOR]', portrait: 'lyra_neutral' },
+            'Darius':    { color: '#ffaa00', callsign: '[SCRAPPER]', portrait: 'darius_neutral' },
+            'Naya':      { color: '#00ff88', callsign: '[TACTICAL PILOT]', portrait: 'naya_neutral' },
+            'Thorne':    { color: '#88aacc', callsign: '[MISSION CONTROL]', portrait: 'thorne_neutral' },
+            'Cross':     { color: '#ff00aa', callsign: '[NAVY SPECIAL OPS]', portrait: 'cross_neutral' },
+            'Selene':    { color: '#ffd700', callsign: '[HAVEN-7 BASE COMMAND]', portrait: 'selene_neutral' },
+            'Architect': { color: '#cc44ff', callsign: '[PRECURSOR FREQUENCY]', portrait: 'architect_ethereal' },
+            'Ophion':    { color: '#cc44ff', callsign: '[AI SYNTHESIS]', portrait: 'architect_ethereal' },
+            'System':    { color: '#00ffff', callsign: '[PRIORITY SCAN]', portrait: 'none' }
+        };
+        if (typeof window !== 'undefined') window.SPEAKER_CONFIG = SPEAKER_CONFIG;
+
+        
+
+        function triggerDialogueSFX(name, vol) {
+            if (typeof window !== 'undefined' && typeof window.playSound === 'function') {
+                try { window.playSound(name, vol); } catch(e) {}
+            } else if (typeof playSound === 'function') {
+                try { playSound(name, vol); } catch(e) {}
+            }
+        }
+
+
         class DialogueSequence {
-            constructor(lines, onChoiceCallback = null, blocking = true) {
-                this.lines = lines;
+            constructor(lines, onChoiceCallback = null, blocking = false) {
+                this.lines = lines || [];
                 this.currentLineIndex = 0;
                 this.typedText = "";
                 this.charIndex = 0;
                 this.typeTimer = 0;
-                this.typeSpeed = 0.025; // seconds per character
+                this.typeSpeed = 0.022; // seconds per character
                 this.onChoice = onChoiceCallback;
                 this.selectedChoiceIndex = 0;
                 this.soundCooldown = 0;
                 this.currentLineText = "";
-                this.blocking = blocking;
+                this.blocking = blocking; // Non-blocking by default
+                this.lineDuration = 4.2;  // Auto-advance duration after typing completes
+                this.lineTimer = this.lineDuration;
+                this.waveformTimer = 0;
+
+                // Play incoming radio squelch chirp
+                triggerDialogueSFX('radio_squelch_in');
 
                 if (typeof document !== 'undefined') {
                     const hud = document.getElementById('lyra-hud');
@@ -69,9 +100,9 @@
                         hud.onclick = (e) => {
                             const l = this.lines[this.currentLineIndex];
                             if (l && l.choices && this.charIndex >= this.currentLineText.length) {
-                                // Wait for choice select click
+                                // Choices handled by choice elements
                             } else {
-                                playSound('menu_select');
+                                triggerDialogueSFX('menu_select');
                                 this.next();
                             }
                         };
@@ -85,16 +116,13 @@
             }
 
             isBlocking() {
-                const line = this.lines[this.currentLineIndex];
-                if (line && line.choices) return true;
                 return this.blocking;
             }
 
             interpolate(text) {
                 if (typeof text !== 'string') return text;
-                return text.replace(/\{\{(\w+)\}\}|\{(\w+)\}/g, (match, p1, p2) => {
-                    const key = p1 || p2;
-                    switch (key) {
+                return text.replace(/\{\{(\w+)\}\}/g, (match, p1) => {
+                    switch (p1) {
                         case 'scrap':
                         case 'runScrap':
                             return (typeof runScrap !== 'undefined') ? runScrap : 0;
@@ -105,23 +133,10 @@
                         case 'weaponLevel':
                             return (typeof player !== 'undefined' && player) ? player.weaponLevel : 1;
                         case 'shield':
-                            return (typeof player !== 'undefined' && player) ? player.shield : 100;
-                        case 'shieldMax':
-                            return (typeof player !== 'undefined' && player) ? player.shieldMax : 100;
+                            return (typeof player !== 'undefined' && player) ? Math.round(player.shield) : 100;
                         case 'ship':
-                            return (typeof player !== 'undefined' && player) ? player.shipType : 'interceptor';
-                        case 'lives':
-                            return (typeof lives !== 'undefined') ? lives : 3;
-                        case 'permanentScrap':
-                        case 'upgradeScrap':
-                            return (window.DS_UpgradeSystem && window.DS_UpgradeSystem.state) ? window.DS_UpgradeSystem.state.scrap : 0;
+                            return (typeof player !== 'undefined' && player) ? player.shipType.toUpperCase() : 'INTERCEPTOR';
                         default:
-                            if (typeof window !== 'undefined' && window[key] !== undefined) {
-                                return window[key];
-                            }
-                            if (typeof global !== 'undefined' && global[key] !== undefined) {
-                                return global[key];
-                            }
                             return match;
                     }
                 });
@@ -132,11 +147,12 @@
                 this.charIndex = 0;
                 this.typeTimer = 0;
                 this.soundCooldown = 0;
+                this.lineTimer = this.lineDuration;
                 const line = this.lines[this.currentLineIndex];
                 if (line) {
                     this.currentLineText = this.interpolate(line.text);
                     if (line.onStart) {
-                        line.onStart();
+                        try { line.onStart(); } catch(e) { console.error(e); }
                     }
                 } else {
                     this.currentLineText = "";
@@ -147,6 +163,24 @@
                 const line = this.lines[this.currentLineIndex];
                 if (!line) return;
 
+                // Waveform animation
+                this.waveformTimer += dt;
+                if (typeof document !== 'undefined') {
+                    const bars = document.querySelectorAll('.lyra-waveform-bar');
+                    if (bars && bars.length > 0) {
+                        const isSpeaking = this.charIndex < this.currentLineText.length;
+                        bars.forEach((bar, idx) => {
+                            if (isSpeaking) {
+                                const h = Math.sin(this.waveformTimer * 18 + idx * 0.8) * 4 + 6;
+                                bar.style.height = `${Math.max(2, Math.min(10, h))}px`;
+                            } else {
+                                bar.style.height = '2px';
+                            }
+                        });
+                    }
+                }
+
+                // Typewriter effect
                 if (this.charIndex < this.currentLineText.length) {
                     this.typeTimer += dt;
                     if (this.typeTimer >= this.typeSpeed) {
@@ -156,8 +190,16 @@
                         
                         this.soundCooldown -= dt;
                         if (this.soundCooldown <= 0) {
-                            playSound('menu_select');
-                            this.soundCooldown = 0.12;
+                            triggerDialogueSFX('menu_select', 0.2);
+                            this.soundCooldown = 0.08;
+                        }
+                    }
+                } else {
+                    // Non-blocking auto-advance when typing finishes
+                    if (!line.choices) {
+                        this.lineTimer -= dt;
+                        if (this.lineTimer <= 0) {
+                            this.next();
                         }
                     }
                 }
@@ -170,57 +212,47 @@
                 if (typeof document !== 'undefined') {
                     const hud = document.getElementById('lyra-hud');
                     if (hud) {
-                        // Show HUD if hidden
                         if (hud.style.display !== 'block') {
                             hud.style.display = 'block';
                         }
 
-                        // Determine theme color based on speaker
-                        let speakerColor = '#ffaa00';
-                        if (line.speaker === 'Lyra') speakerColor = '#00ffff';
-                        else if (line.speaker === 'Cross') speakerColor = '#ff00ff';
-                        else if (line.speaker === 'Thorne') speakerColor = '#00ff55';
+                        // Determine theme color and callsign
+                        const spk = SPEAKER_CONFIG[line.speaker] || { color: '#00ffff', callsign: '[TRANSMISSION]' };
+                        const speakerColor = spk.color;
 
                         hud.style.borderColor = speakerColor;
-                        hud.style.boxShadow = `0 0 15px ${speakerColor}`;
+                        hud.style.boxShadow = `0 0 16px ${speakerColor}55, inset 0 0 10px ${speakerColor}22`;
 
                         const speakerNameEl = document.getElementById('lyra-speaker-name');
                         if (speakerNameEl) {
-                            speakerNameEl.innerText = line.speaker.toUpperCase();
+                            speakerNameEl.innerText = (line.speaker || 'SYSTEM').toUpperCase();
                             speakerNameEl.style.color = speakerColor;
+                        }
+
+                        const callsignEl = document.getElementById('lyra-callsign-badge');
+                        if (callsignEl) {
+                            callsignEl.innerText = spk.callsign || '[COMMS]';
+                            callsignEl.style.color = `${speakerColor}aa`;
                         }
 
                         // Handle portrait
                         const imgEl = document.getElementById('lyra-portrait-img');
                         const noSignalEl = document.getElementById('lyra-no-signal');
-
                         let showPortrait = true;
-                        if (stormActive && line.speaker === 'Lyra') {
-                            showPortrait = false; // Lyra offline / blank during Biomes 7-8 coma
+                        if (typeof stormActive !== 'undefined' && stormActive && line.speaker === 'Lyra') {
+                            showPortrait = false;
                         }
 
-                        if (showPortrait && line.portrait && portraitSprites[line.portrait] && portraitSprites[line.portrait].complete && portraitSprites[line.portrait].naturalWidth > 0) {
+                        const portraitKey = line.portrait || spk.portrait;
+                        if (showPortrait && portraitKey && typeof portraitSprites !== 'undefined' && portraitSprites[portraitKey] && portraitSprites[portraitKey].complete && portraitSprites[portraitKey].naturalWidth > 0) {
                             if (imgEl) {
-                                imgEl.src = portraitSprites[line.portrait].src;
+                                imgEl.src = portraitSprites[portraitKey].src;
                                 imgEl.style.display = 'block';
                             }
                             if (noSignalEl) noSignalEl.style.display = 'none';
                         } else {
                             if (imgEl) imgEl.style.display = 'none';
                             if (noSignalEl) noSignalEl.style.display = 'block';
-                        }
-
-                        // Comms overlay
-                        const commsOverlayEl = document.getElementById('lyra-comms-overlay');
-                        if (showPortrait && line.portrait) {
-                            if (portraitSprites['comms_overlay'] && portraitSprites['comms_overlay'].complete && portraitSprites['comms_overlay'].naturalWidth > 0) {
-                                if (commsOverlayEl) {
-                                    commsOverlayEl.style.display = 'block';
-                                    commsOverlayEl.src = portraitSprites['comms_overlay'].src;
-                                }
-                            }
-                        } else {
-                            if (commsOverlayEl) commsOverlayEl.style.display = 'none';
                         }
 
                         // Dialogue Text
@@ -242,11 +274,12 @@
                                     const isSelected = this.selectedChoiceIndex === idx;
                                     const option = document.createElement('div');
                                     option.className = 'lyra-choice-option' + (isSelected ? ' selected' : '');
-                                    option.innerText = (isSelected ? "> " : "  ") + this.interpolate(choice.text);
+                                    option.innerText = `[${idx+1}] ` + this.interpolate(choice.text);
                                     option.onclick = (e) => {
                                         e.stopPropagation();
                                         this.selectedChoiceIndex = idx;
-                                        playSound('menu_click');
+                                        triggerDialogueSFX('menu_click');
+                                        if (this.onChoice) this.onChoice(choice.value);
                                         this.next();
                                     };
                                     choicesEl.appendChild(option);
@@ -257,14 +290,6 @@
                             if (promptEl) promptEl.style.display = 'block';
                         }
                     }
-                }
-
-                // Call canvas dimming only if blocking dialogue
-                if (this.isBlocking() && typeof ctx !== 'undefined' && ctx.fillRect && typeof canvas !== 'undefined') {
-                    ctx.save();
-                    ctx.fillStyle = 'rgba(0, 0, 0, 0.45)';
-                    ctx.fillRect(0, 0, canvas.width, canvas.height);
-                    ctx.restore();
                 }
             }
 
@@ -287,12 +312,13 @@
                 }
 
                 if (line.onComplete) {
-                    line.onComplete();
+                    try { line.onComplete(); } catch(e) { console.error(e); }
                 }
 
                 this.currentLineIndex++;
                 if (this.currentLineIndex >= this.lines.length) {
                     activeDialogue = null;
+                    triggerDialogueSFX('radio_squelch_out');
                     if (typeof document !== 'undefined') {
                         const hud = document.getElementById('lyra-hud');
                         if (hud) {
@@ -310,19 +336,31 @@
                 if (!line) return;
 
                 if (line.choices && this.charIndex >= this.currentLineText.length) {
-                    if (key === 'ArrowLeft' || key === 'a' || key === 'A') {
+                    if (key === '1' || key === 'Numpad1' || key === 'ArrowLeft' || key === 'a' || key === 'A') {
                         this.selectedChoiceIndex = 0;
-                        playSound('menu_select');
-                    } else if (key === 'ArrowRight' || key === 'd' || key === 'D') {
+                        triggerDialogueSFX('menu_select');
+                        if (key === '1' || key === 'Numpad1') {
+                            const selected = line.choices[0];
+                            if (this.onChoice) this.onChoice(selected.value);
+                            this.next();
+                        }
+                    } else if (key === '2' || key === 'Numpad2' || key === 'ArrowRight' || key === 'd' || key === 'D') {
                         this.selectedChoiceIndex = 1;
-                        playSound('menu_select');
+                        triggerDialogueSFX('menu_select');
+                        if (key === '2' || key === 'Numpad2') {
+                            const selected = line.choices[1];
+                            if (this.onChoice) this.onChoice(selected.value);
+                            this.next();
+                        }
                     } else if (key === 'Enter' || key === ' ') {
-                        playSound('menu_click');
+                        triggerDialogueSFX('menu_click');
+                        const selected = line.choices[this.selectedChoiceIndex];
+                        if (this.onChoice) this.onChoice(selected.value);
                         this.next();
                     }
                 } else {
                     if (key === 'Enter' || key === ' ' || key === 'Escape') {
-                        playSound('menu_select');
+                        triggerDialogueSFX('menu_select');
                         this.next();
                     }
                 }
@@ -336,7 +374,7 @@
             global.DialogueSequence = DialogueSequence;
         }
         if (typeof module !== 'undefined' && module.exports) {
-            module.exports = { DialogueSequence };
+            module.exports = { DialogueSequence, SPEAKER_CONFIG };
         }
 
         const DIALOGUE_SCENES = {

@@ -464,6 +464,71 @@ function playSound(type, params) {
             gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.03);
             osc.start();
             osc.stop(audioCtx.currentTime + 0.03);
+        } else if (type === 'radio_squelch_in') {
+            const osc1 = audioCtx.createOscillator();
+            const osc2 = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            const noise = createNoiseNode(0.06);
+            const noiseGain = audioCtx.createGain();
+            const filter = audioCtx.createBiquadFilter();
+
+            osc1.type = 'sine';
+            osc1.frequency.setValueAtTime(2200, audioCtx.currentTime);
+            osc1.frequency.setValueAtTime(1760, audioCtx.currentTime + 0.025);
+
+            osc2.type = 'triangle';
+            osc2.frequency.setValueAtTime(1100, audioCtx.currentTime);
+            osc2.frequency.setValueAtTime(880, audioCtx.currentTime + 0.025);
+
+            gain.gain.setValueAtTime(0.08 * volMultiplier, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
+
+            filter.type = 'bandpass';
+            filter.frequency.setValueAtTime(3200, audioCtx.currentTime);
+            filter.Q.setValueAtTime(3.0, audioCtx.currentTime);
+
+            noiseGain.gain.setValueAtTime(0.05 * volMultiplier, audioCtx.currentTime);
+            noiseGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.06);
+
+            osc1.connect(gain);
+            osc2.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            noise.connect(filter);
+            filter.connect(noiseGain);
+            noiseGain.connect(audioCtx.destination);
+
+            osc1.start();
+            osc2.start();
+            noise.start();
+            osc1.stop(audioCtx.currentTime + 0.05);
+            osc2.stop(audioCtx.currentTime + 0.05);
+            noise.stop(audioCtx.currentTime + 0.06);
+        } else if (type === 'radio_squelch_out') {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(1200, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(320, audioCtx.currentTime + 0.035);
+            gain.gain.setValueAtTime(0.06 * volMultiplier, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.035);
+
+            const clickOsc = audioCtx.createOscillator();
+            const clickGain = audioCtx.createGain();
+            clickOsc.type = 'square';
+            clickOsc.frequency.setValueAtTime(180, audioCtx.currentTime);
+            clickGain.gain.setValueAtTime(0.07 * volMultiplier, audioCtx.currentTime);
+            clickGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.015);
+
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            clickOsc.connect(clickGain);
+            clickGain.connect(audioCtx.destination);
+
+            osc.start();
+            clickOsc.start();
+            osc.stop(audioCtx.currentTime + 0.035);
+            clickOsc.stop(audioCtx.currentTime + 0.015);
         } else if (type === 'victory_fanfare') {
             const notes = [261.63, 329.63, 392.00, 523.25, 392.00, 523.25, 659.25];
             const durations = [0.12, 0.12, 0.12, 0.24, 0.12, 0.12, 0.48];
