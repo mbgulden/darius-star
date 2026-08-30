@@ -1537,260 +1537,377 @@ function draw() {
 
     if (paused) {
         ctx.save();
-        ctx.fillStyle = 'rgba(5, 5, 15, 0.82)';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        if (typeof CockpitUI !== 'undefined') {
+            CockpitUI.drawCockpitGrid(ctx, canvas.width, canvas.height, (typeof gameTime !== 'undefined' ? gameTime : 0));
+        }
         
         if (pauseSubScreen === 'menu') {
+            const panelW = 480;
+            const panelH = 310;
+            const panelX = (canvas.width - panelW) / 2;
+            const panelY = (canvas.height - panelH) / 2 - 10;
+
+            if (typeof CockpitUI !== 'undefined') {
+                CockpitUI.drawPanel(ctx, panelX, panelY, panelW, panelH, {
+                    chamfer: 8,
+                    borderColor: '#00ffff',
+                    bgColor: 'rgba(6, 14, 28, 0.94)',
+                    bracketColor: '#ffaa00',
+                    headerBar: true,
+                    headerBarHeight: 24
+                });
+
+                ctx.textAlign = 'left';
+                ctx.fillStyle = '#00ffff';
+                ctx.font = 'bold 10.5px monospace';
+                ctx.fillText('⏸ TACTICAL FLIGHT PAUSE // AVIONICS STANDBY', panelX + 14, panelY + 16);
+            }
+            
             // Title
             ctx.fillStyle = '#00ffff';
-            ctx.font = 'bold 36px monospace';
+            ctx.font = 'bold 24px monospace';
             ctx.textAlign = 'center';
             ctx.shadowColor = '#00ffff';
-            ctx.shadowBlur = 12;
-            ctx.fillText('SYSTEM PAUSED', canvas.width / 2, 150);
+            ctx.shadowBlur = 10;
+            ctx.fillText('SYSTEM PAUSED', canvas.width / 2, panelY + 58);
             ctx.shadowBlur = 0;
+
+            ctx.fillStyle = '#88aacc';
+            ctx.font = '10px monospace';
+            ctx.fillText(`CURRENT SECTOR: BIOME ${typeof LevelManager !== 'undefined' ? LevelManager.biome : 1}.${typeof LevelManager !== 'undefined' ? LevelManager.level : 1} — SHIP: ${selectedShip.toUpperCase()}`, canvas.width / 2, panelY + 76);
             
-            // Pause menu options
-            const startY = 240;
-            const spacing = 44;
+            // Pause menu buttons
+            const startY = panelY + 95;
+            const spacing = 38;
+            const btnW = 320;
+            const btnH = 30;
+            const btnX = (canvas.width - btnW) / 2;
+
             for (let i = 0; i < PAUSE_OPTIONS.length; i++) {
                 const itemY = startY + i * spacing;
                 const isSelected = pauseMenuIndex === i;
+                const optKey = i === 0 ? '[P / ESC]' : (i === 1 ? '[O]' : (i === 2 ? '[R]' : '[Q]'));
                 
-                ctx.textAlign = 'center';
-                ctx.font = 'bold ' + (isSelected ? '22' : '18') + 'px monospace';
-                
-                // Selection indicator
-                if (isSelected) {
-                    ctx.fillStyle = 'rgba(0, 255, 255, 0.1)';
-                    ctx.fillRect(canvas.width / 2 - 140, itemY - 18, 280, 36);
-                    ctx.strokeStyle = 'rgba(0, 255, 255, 0.4)';
-                    ctx.strokeRect(canvas.width / 2 - 140, itemY - 18, 280, 36);
+                if (typeof CockpitUI !== 'undefined') {
+                    CockpitUI.drawAvionicsButton(ctx, btnX, itemY, btnW, btnH, PAUSE_OPTIONS[i], optKey, isSelected, false, {
+                        primaryColor: i === 3 ? '#ff3355' : '#00ffff',
+                        font: 'bold 12px monospace'
+                    });
                 }
-                
-                ctx.fillStyle = isSelected ? '#00ffff' : '#8a8a9f';
-                ctx.fillText(PAUSE_OPTIONS[i], canvas.width / 2, itemY + 6);
             }
             
             // Footer hints
-            ctx.fillStyle = '#4a4a5f';
-            ctx.font = '11px monospace';
+            ctx.fillStyle = '#6a7a9a';
+            ctx.font = '10px monospace';
             ctx.textAlign = 'center';
-            ctx.fillText('ARROW KEYS to Navigate  |  ENTER to Select  |  P / ESC to Resume', canvas.width / 2, canvas.height - 40);
+            ctx.fillText('ARROW KEYS to Navigate  |  ENTER to Select  |  P / ESC to Resume', canvas.width / 2, panelY + panelH - 12);
             
         } else if (pauseSubScreen === 'settings') {
-            // Settings sub-screen title
-            ctx.fillStyle = '#ffaa00';
-            ctx.font = 'bold 28px monospace';
-            ctx.textAlign = 'center';
-            ctx.shadowColor = '#ffaa00';
-            ctx.shadowBlur = 10;
-            ctx.fillText('SYSTEM SETTINGS', canvas.width / 2, 100);
-            ctx.shadowBlur = 0;
+            const panelW = 660;
+            const panelH = 340;
+            const panelX = (canvas.width - panelW) / 2;
+            const panelY = (canvas.height - panelH) / 2 - 10;
+
+            if (typeof CockpitUI !== 'undefined') {
+                CockpitUI.drawPanel(ctx, panelX, panelY, panelW, panelH, {
+                    chamfer: 8,
+                    borderColor: '#ffaa00',
+                    bgColor: 'rgba(6, 14, 28, 0.94)',
+                    bracketColor: '#ffaa00',
+                    headerBar: true,
+                    headerBarHeight: 24
+                });
+
+                ctx.textAlign = 'left';
+                ctx.fillStyle = '#ffaa00';
+                ctx.font = 'bold 10.5px monospace';
+                ctx.fillText('⚙️ IN-FLIGHT AVIONICS & SENSORS CONFIGURATION', panelX + 14, panelY + 16);
+            }
             
-            const startY = 190;
-            const spacing = 40;
+            const startY = panelY + 45;
+            const spacing = 32;
             for (let i = 0; i < SETTINGS_OPTIONS.length; i++) {
                 const itemY = startY + i * spacing;
                 const isSelected = selectedSettingsIndex === i;
+                const rowX = panelX + 20;
+                const rowW = panelW - 40;
                 
+                if (isSelected) {
+                    ctx.fillStyle = 'rgba(0, 255, 255, 0.12)';
+                    ctx.fillRect(rowX, itemY - 6, rowW, 26);
+                    ctx.strokeStyle = '#00ffff';
+                    ctx.strokeRect(rowX, itemY - 6, rowW, 26);
+                }
+
                 ctx.textAlign = 'left';
-                ctx.font = 'bold 14px monospace';
-                ctx.fillStyle = isSelected ? '#00ffff' : '#8a8a9f';
+                ctx.font = 'bold 12px monospace';
+                ctx.fillStyle = isSelected ? '#00ffff' : '#88aacc';
                 
                 if (i < 3) {
                     const volVal = i === 0 ? masterVolume : (i === 1 ? sfxVolume : musicVolume);
-                    ctx.fillText(SETTINGS_OPTIONS[i], 220, itemY + 5);
+                    ctx.fillText(SETTINGS_OPTIONS[i], rowX + 10, itemY + 11);
                     
-                    const sliderX = 450;
-                    const sliderWidth = 130;
-                    ctx.fillStyle = '#222';
-                    ctx.fillRect(sliderX, itemY - 6, sliderWidth, 12);
+                    const meterX = rowX + 220;
+                    if (typeof CockpitUI !== 'undefined') {
+                        CockpitUI.drawSegmentedBar(ctx, meterX, itemY - 1, 240, 14, volVal, 1.0, {
+                            segments: 16,
+                            activeColor: isSelected ? '#00ffff' : '#00aaee',
+                            glow: isSelected
+                        });
+                    }
                     
-                    ctx.fillStyle = isSelected ? '#00ffff' : '#ff0055';
-                    ctx.fillRect(sliderX, itemY - 6, sliderWidth * volVal, 12);
-                    
-                    ctx.strokeStyle = '#fff';
-                    ctx.strokeRect(sliderX, itemY - 6, sliderWidth, 12);
-                    
-                    ctx.fillText(Math.round(volVal * 100) + '%', 595, itemY + 5);
+                    ctx.textAlign = 'right';
+                    ctx.fillStyle = isSelected ? '#ffffff' : '#88aacc';
+                    ctx.fillText(Math.round(volVal * 100) + '%', rowX + rowW - 10, itemY + 11);
                 } else if (i === 3) {
-                    ctx.fillText(SETTINGS_OPTIONS[i], 220, itemY + 5);
-                    ctx.fillStyle = isSelected ? '#ffffff' : '#6a6a7f';
-                    ctx.fillText(difficulty.toUpperCase(), 450, itemY + 5);
-                } else if (i >= 4 && i <= 6) {
-                    // Toggle settings: AUDIO TUNNELS, BANTER SYSTEM, STREAMER MODE
-                    ctx.fillText(SETTINGS_OPTIONS[i], 220, itemY + 5);
+                    ctx.fillText(SETTINGS_OPTIONS[i], rowX + 10, itemY + 11);
+                    ctx.fillStyle = isSelected ? '#ffffff' : '#ffaa00';
+                    ctx.fillText(difficulty.toUpperCase(), rowX + 220, itemY + 11);
+                } else if (i >= 4 && i <= 7) {
+                    ctx.fillText(SETTINGS_OPTIONS[i], rowX + 10, itemY + 11);
                     let toggleVal = false;
                     if (i === 4) toggleVal = audioTunnelsEnabled;
                     else if (i === 5) toggleVal = banterEnabled;
                     else if (i === 6) toggleVal = streamerMode;
-                    ctx.fillStyle = toggleVal ? '#00ff88' : '#ff3355';
-                    ctx.fillText(toggleVal ? 'ON' : 'OFF', 470, itemY + 5);
-                    ctx.fillStyle = toggleVal ? '#00ff88' : '#ff3355';
-                    ctx.beginPath();
-                    ctx.arc(445, itemY + 1, 5, 0, Math.PI * 2);
-                    ctx.fill();
-                } else if (i === 7) {
+                    else if (i === 7) toggleVal = subtitlesEnabled;
+
+                    const switchColor = toggleVal ? '#00ff88' : '#ff3355';
+                    ctx.fillStyle = toggleVal ? 'rgba(0, 255, 136, 0.15)' : 'rgba(255, 51, 85, 0.15)';
+                    ctx.fillRect(rowX + 220, itemY - 2, 70, 16);
+                    ctx.strokeStyle = switchColor;
+                    ctx.strokeRect(rowX + 220, itemY - 2, 70, 16);
+
                     ctx.textAlign = 'center';
-                    ctx.fillStyle = isSelected ? '#ff0055' : '#8a8a9f';
-                    ctx.fillText('BACK', canvas.width / 2, itemY + 5);
+                    ctx.fillStyle = switchColor;
+                    ctx.font = 'bold 10px monospace';
+                    ctx.fillText(toggleVal ? 'ONLINE' : 'OFFLINE', rowX + 255, itemY + 10);
+                } else if (i === 8) {
+                    ctx.textAlign = 'center';
+                    ctx.fillStyle = isSelected ? '#ff3355' : '#88aacc';
+                    ctx.font = 'bold 12px monospace';
+                    ctx.fillText('[ESC] RETURN TO PAUSE MENU', panelX + panelW / 2, itemY + 11);
                 }
             }
             
             // Footer hints
-            ctx.fillStyle = '#4a4a5f';
-            ctx.font = '11px monospace';
+            ctx.fillStyle = '#6a7a9a';
+            ctx.font = '10px monospace';
             ctx.textAlign = 'center';
-            ctx.fillText('LEFT/RIGHT to Adjust  |  ENTER to Toggle  |  P / ESC to Return', canvas.width / 2, canvas.height - 40);
+            ctx.fillText('LEFT/RIGHT to Adjust  |  ENTER to Toggle  |  P / ESC to Return', canvas.width / 2, panelY + panelH - 12);
         }
         
         ctx.restore();
     }
 
     if (gameOver) {
-        ctx.fillStyle = 'rgba(15, 5, 5, 0.85)';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        
-        // High Score Celebration
-        if (highScoreBannerTimer > 0 && newHighScoreCelebrated) {
-            const bannerAlpha = Math.min(1, highScoreBannerTimer);
-            const pulse = Math.sin(highScoreBannerTimer * 8) * 0.3 + 0.7;
-            
-            ctx.save();
-            ctx.fillStyle = `rgba(255, 170, 0, ${bannerAlpha * 0.15})`;
-            ctx.fillRect(0, canvas.height / 2 - 100, canvas.width, 200);
-            
-            ctx.font = 'bold 36px monospace';
-            ctx.textAlign = 'center';
-            ctx.fillStyle = `rgba(255, 215, 0, ${bannerAlpha * pulse})`;
-            ctx.shadowColor = '#ffaa00';
-            ctx.shadowBlur = 20 * pulse;
-            ctx.fillText('★ NEW HIGH SCORE! ★', canvas.width / 2, canvas.height / 2 - 68);
-            ctx.shadowBlur = 0;
-            
-            ctx.font = 'bold 16px monospace';
-            ctx.fillStyle = `rgba(255, 255, 255, ${bannerAlpha * 0.9})`;
-            ctx.fillText(score.toLocaleString() + ' POINTS', canvas.width / 2, canvas.height / 2 - 38);
-            
-            // Celebration particles
-            for (const p of highScoreParticles) {
-                ctx.fillStyle = `rgba(${hexToRgb(p.color)}, ${Math.min(1, p.life)})`;
-                ctx.fillRect(p.x - p.size / 2, p.y - p.size / 2, p.size, p.size);
-            }
-            ctx.restore();
+        ctx.save();
+        if (typeof CockpitUI !== 'undefined') {
+            CockpitUI.drawCockpitGrid(ctx, canvas.width, canvas.height, (typeof gameTime !== 'undefined' ? gameTime : 0));
+        }
+
+        const panelW = 720;
+        const panelH = 340;
+        const panelX = (canvas.width - panelW) / 2;
+        const panelY = (canvas.height - panelH) / 2;
+
+        if (typeof CockpitUI !== 'undefined') {
+            CockpitUI.drawPanel(ctx, panelX, panelY, panelW, panelH, {
+                chamfer: 8,
+                borderColor: '#ff2244',
+                bgColor: 'rgba(16, 4, 8, 0.94)',
+                bracketColor: '#ffaa00',
+                glow: true,
+                shadowBlur: 16,
+                headerBar: true,
+                headerBarHeight: 24
+            });
+
+            ctx.textAlign = 'left';
+            ctx.fillStyle = '#ff2244';
+            ctx.font = 'bold 10.5px monospace';
+            ctx.fillText('🚨 CRITICAL HULL COMPROMISE // SQUADRON RECOVERY PROTOCOL', panelX + 14, panelY + 16);
         }
         
-        ctx.fillStyle = '#ff4400';
-        ctx.font = 'bold 36px monospace';
+        ctx.fillStyle = '#ff3344';
+        ctx.font = 'bold 26px monospace';
         ctx.textAlign = 'center';
-        ctx.shadowColor = '#ff4400';
-        ctx.shadowBlur = 16;
-        ctx.fillText('MISSION COMPROMISED // REGROUP AT CHECKPOINT', canvas.width / 2, canvas.height / 2 - 75);
+        ctx.shadowColor = '#ff2244';
+        ctx.shadowBlur = 14;
+        ctx.fillText('MISSION COMPROMISED', canvas.width / 2, panelY + 54);
         ctx.shadowBlur = 0;
 
         ctx.fillStyle = '#ffaa00';
-        ctx.font = 'bold 13px monospace';
-        ctx.fillText('ALL FIGHTERS CRITICALLY DAMAGED — SQUADRON RECOVERY PROTOCOL', canvas.width / 2, canvas.height / 2 - 50);
+        ctx.font = 'bold 11px monospace';
+        ctx.fillText('ALL FIGHTERS CRITICALLY DAMAGED — SQUADRON RECOVERY ENGAGED', canvas.width / 2, panelY + 74);
 
         // Banter dialogue quote
         ctx.fillStyle = '#00ffff';
-        ctx.font = 'italic 12px monospace';
-        ctx.fillText("COMMAND: \"We both need emergency repairs. Let's regroup at checkpoint!\"", canvas.width / 2, canvas.height / 2 - 25);
+        ctx.font = 'italic 11px monospace';
+        ctx.fillText("COMMAND: \"Emergency nanite repair sequence active. Regrouping at checkpoint!\"", canvas.width / 2, panelY + 96);
+
+        // Telemetry Data Box
+        const dataBoxY = panelY + 114;
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+        ctx.fillRect(panelX + 30, dataBoxY, panelW - 60, 110);
+        ctx.strokeStyle = 'rgba(255, 34, 68, 0.3)';
+        ctx.strokeRect(panelX + 30, dataBoxY, panelW - 60, 110);
 
         // Anti-hoarding junk jettison notification
         const jetScrap = window._jettisonedScrapAmount || 0;
         ctx.fillStyle = jetScrap > 0 ? '#ff3344' : '#88aacc';
-        ctx.font = 'bold 12px monospace';
-        ctx.fillText(`⚠️ UNCOMMITTED JUNK JETTISONED: -${jetScrap} SCRAP (Anti-hoarding active)`, canvas.width / 2, canvas.height / 2 + 2);
+        ctx.font = 'bold 11.5px monospace';
+        ctx.fillText(`⚠️ UNCOMMITTED JUNK JETTISONED: -${jetScrap} SCRAP (Anti-hoarding active)`, canvas.width / 2, dataBoxY + 26);
 
         ctx.fillStyle = '#ffcc00';
         ctx.font = 'bold 12px monospace';
-        ctx.fillText(`RETAINED BASELINE SCRAP: 💎 ${runScrap} SCRAP`, canvas.width / 2, canvas.height / 2 + 22);
+        ctx.fillText(`RETAINED BASELINE SCRAP: 💎 ${runScrap.toLocaleString()} SCRAP`, canvas.width / 2, dataBoxY + 52);
 
         ctx.fillStyle = '#ffffff';
-        ctx.font = '12px monospace';
-        ctx.fillText('COMBAT SCORE: ' + score.toLocaleString() + ' PTS', canvas.width / 2, canvas.height / 2 + 42);
+        ctx.font = '11px monospace';
+        ctx.fillText('COMBAT SCORE: ' + score.toLocaleString() + ' PTS', canvas.width / 2, dataBoxY + 76);
+
+        ctx.fillStyle = '#88aacc';
+        ctx.font = '10px monospace';
+        ctx.fillText(`SECTOR POSITION: BIOME ${typeof LevelManager !== 'undefined' ? LevelManager.biome : 1}.${typeof LevelManager !== 'undefined' ? LevelManager.level : 1} — CHECKPOINT READY`, canvas.width / 2, dataBoxY + 96);
 
         // Action options
-        ctx.font = 'bold 12px monospace';
-        ctx.fillStyle = '#00ff88';
-        ctx.fillText('[R] / [ENTER] / [SPACE] RESTART LEVEL AT CHECKPOINT', canvas.width / 2, canvas.height / 2 + 75);
-        ctx.fillStyle = '#00ffff';
-        ctx.fillText('[S] SAVE PROGRESS  |  [U] UPGRADE SHOP', canvas.width / 2, canvas.height / 2 + 95);
-        ctx.fillStyle = '#ff4455';
-        ctx.fillText('[Q] / [ESC] QUIT TO COMMAND BRIDGE', canvas.width / 2, canvas.height / 2 + 115);
+        const btnY = panelY + 240;
+        const btnW = (panelW - 80) / 3;
+        const btnH = 40;
+
+        if (typeof CockpitUI !== 'undefined') {
+            CockpitUI.drawAvionicsButton(ctx, panelX + 30, btnY, btnW, btnH, 'RETRY CHECKPOINT', '[ENTER]', true, false, {
+                primaryColor: '#00ff88',
+                font: 'bold 10px monospace'
+            });
+            CockpitUI.drawAvionicsButton(ctx, panelX + 30 + btnW + 10, btnY, btnW, btnH, 'UPGRADE SHOP', '[U]', false, false, {
+                primaryColor: '#00ffff',
+                font: 'bold 10px monospace'
+            });
+            CockpitUI.drawAvionicsButton(ctx, panelX + 30 + (btnW + 10) * 2, btnY, btnW, btnH, 'COMMAND BRIDGE', '[ESC]', false, false, {
+                primaryColor: '#ff2244',
+                font: 'bold 10px monospace'
+            });
+        }
+
+        ctx.fillStyle = '#6a7a9a';
+        ctx.font = '10px monospace';
+        ctx.textAlign = 'center';
+        ctx.fillText('SPACE / ENTER to Restart Checkpoint  |  U for Upgrades  |  ESC to Bridge', canvas.width / 2, panelY + panelH - 12);
+        ctx.restore();
     }
 
     if (gameWon) {
-        ctx.fillStyle = 'rgba(5, 15, 10, 0.85)';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = '#00ff55';
-        ctx.font = 'bold 42px monospace';
-        ctx.textAlign = 'center';
-        ctx.fillText('VICTORY ACHIEVED', canvas.width / 2, canvas.height / 2 - 55);
-        // GRO-1009: Show ending achieved
+        ctx.save();
+        if (typeof CockpitUI !== 'undefined') {
+            CockpitUI.drawCockpitGrid(ctx, canvas.width, canvas.height, (typeof gameTime !== 'undefined' ? gameTime : 0));
+        }
+
+        const panelW = 720;
+        const panelH = 350;
+        const panelX = (canvas.width - panelW) / 2;
+        const panelY = (canvas.height - panelH) / 2;
+
         const endingName = selectedEnding || 'transcendence';
-        const endingColor = endingName === 'sacrifice' ? '#00ffff' : (endingName === 'transcendence' ? '#ff00ff' : '#ff3300');
+        const endingColor = endingName === 'sacrifice' ? '#00ffff' : (endingName === 'transcendence' ? '#cc44ff' : '#ffaa00');
+
+        if (typeof CockpitUI !== 'undefined') {
+            CockpitUI.drawPanel(ctx, panelX, panelY, panelW, panelH, {
+                chamfer: 8,
+                borderColor: endingColor,
+                bgColor: 'rgba(6, 16, 24, 0.95)',
+                bracketColor: '#ffd700',
+                glow: true,
+                shadowBlur: 18,
+                headerBar: true,
+                headerBarHeight: 24
+            });
+
+            ctx.textAlign = 'left';
+            ctx.fillStyle = '#ffd700';
+            ctx.font = 'bold 10.5px monospace';
+            ctx.fillText('🏆 PRECURSOR OMEGA CONVERGENCE // CAMPAIGN COMPLETE', panelX + 14, panelY + 16);
+        }
+
+        ctx.fillStyle = '#00ff88';
+        ctx.font = 'bold 28px monospace';
+        ctx.textAlign = 'center';
+        ctx.shadowColor = '#00ff88';
+        ctx.shadowBlur = 14;
+        ctx.fillText('VICTORY ACHIEVED', canvas.width / 2, panelY + 54);
+        ctx.shadowBlur = 0;
+
         ctx.fillStyle = endingColor;
-        ctx.font = 'bold 16px monospace';
-        ctx.fillText('ENDING: ' + endingName.toUpperCase(), canvas.width / 2, canvas.height / 2 - 32);
+        ctx.font = 'bold 14px monospace';
+        ctx.fillText('ENDING CANON: ' + endingName.toUpperCase(), canvas.width / 2, panelY + 76);
+
         ctx.fillStyle = '#ffffff';
-        ctx.font = '18px monospace';
-        ctx.fillText('SCORE: ' + score, canvas.width / 2, canvas.height / 2);
-        
-        let yOffsetVal = 18;
+        ctx.font = '14px monospace';
+        ctx.fillText('TOTAL COMBAT SCORE: ' + score.toLocaleString() + ' PTS', canvas.width / 2, panelY + 102);
+
+        ctx.fillStyle = '#ffcc00';
+        ctx.font = 'bold 13px monospace';
+        ctx.fillText('TOTAL SCRAP HARVESTED: 💎 +' + runScrap.toLocaleString() + ' SCRAP', canvas.width / 2, panelY + 124);
+
+        // High Score / Galactic Record Ticker
         const topScrapLord = window.Leaderboard ? Leaderboard.getTop('scrapLord', 1)[0] : null;
-        const topTime = window.Leaderboard ? Leaderboard.getTop('speedrun', 1)[0] : null;
         if (topScrapLord) {
-            ctx.fillStyle = '#ffaa00';
-            ctx.font = '12px monospace';
-            ctx.fillText('★ RECORD SCRAP: ' + topScrapLord.scrapCollected.toLocaleString() + ' — ' + topScrapLord.ship.toUpperCase(), canvas.width / 2, canvas.height / 2 + yOffsetVal);
-            yOffsetVal += 16;
+            ctx.fillStyle = '#88aacc';
+            ctx.font = '10.5px monospace';
+            ctx.fillText(`★ RECORD SCRAP: ${topScrapLord.scrapCollected.toLocaleString()} — ${topScrapLord.ship.toUpperCase()}`, canvas.width / 2, panelY + 150);
         }
-        if (topTime) {
-            const val = topTime.timeSeconds;
-            const m = Math.floor(val / 60);
-            const sec = Math.floor(val % 60);
-            const timeStr = `${m}:${sec.toString().padStart(2, '0')}`;
-            ctx.fillStyle = '#00ffff';
-            ctx.font = '12px monospace';
-            ctx.fillText('⏱ RECORD TIME: ' + timeStr + ' — ' + topTime.ship.toUpperCase(), canvas.width / 2, canvas.height / 2 + yOffsetVal);
-            yOffsetVal += 16;
-        }
-        ctx.fillStyle = '#00ff55';
-        ctx.font = '12px monospace';
-        ctx.fillText('SCRAP EARNED: +' + runScrap, canvas.width / 2, canvas.height / 2 + yOffsetVal);
-        yOffsetVal += 16;
-        ctx.fillStyle = '#00ffff';
-        ctx.font = '12px monospace';
-        ctx.fillText('Cyber Coelacanth eradicated.', canvas.width / 2, canvas.height / 2 + yOffsetVal);
-        yOffsetVal += 24;
-        // NG+ prompt if eligible
+
+        // New Game+ Timeline Loop Badge
         const ngEligible = localStorage.getItem('darius_star_ngplus_eligible');
+        let nextLevel = 1;
+        let mult = 1.2;
         if (ngEligible) {
             try {
                 const ngData = JSON.parse(ngEligible);
                 const shipData = ngData[selectedShip];
                 if (shipData) {
-                    const nextLevel = (shipData.ngLevel || 0) + 1;
-                    const mult = window.NGPlus ? NGPlus.getScrapMult({ ngLevel: nextLevel }) : 1;
-                    ctx.fillStyle = '#cc44ff';
-                    ctx.font = 'bold 16px monospace';
-                    ctx.fillText('⚡ PRESS N: NEW GAME+ Lv' + nextLevel + ' (' + mult.toFixed(1) + 'x SCRAP)', canvas.width / 2, canvas.height / 2 + yOffsetVal);
-                    yOffsetVal += 20;
+                    nextLevel = (shipData.ngLevel || 0) + 1;
+                    mult = window.NGPlus ? NGPlus.getScrapMult({ ngLevel: nextLevel }) : (1 + nextLevel * 0.2);
                 }
             } catch(e) {}
         }
-        ctx.fillStyle = '#8a8a9f';
-        ctx.font = '14px monospace';
-        ctx.fillText('Click screen or press SPACE to replay', canvas.width / 2, canvas.height / 2 + yOffsetVal);
-        yOffsetVal += 20;
-        ctx.fillText('Press U to open Upgrades Shop', canvas.width / 2, canvas.height / 2 + yOffsetVal);
-        ctx.fillText('Press ESC to return to main menu', canvas.width / 2, canvas.height / 2 + 115);
-        ctx.fillStyle = '#ff0055';
-        ctx.font = '11px monospace';
-        ctx.fillText('whatanadventure.games/darius-star', canvas.width / 2, canvas.height / 2 + 138);
+
+        ctx.fillStyle = 'rgba(204, 68, 255, 0.15)';
+        ctx.fillRect(panelX + 40, panelY + 175, panelW - 80, 56);
+        ctx.strokeStyle = '#cc44ff';
+        ctx.strokeRect(panelX + 40, panelY + 175, panelW - 80, 56);
+
+        ctx.fillStyle = '#cc44ff';
+        ctx.font = 'bold 13px monospace';
+        ctx.fillText(`⚡ [N] INITIATE PARADOX LOOP: NEW GAME+ LV${nextLevel} (${mult.toFixed(1)}x SCRAP)`, canvas.width / 2, panelY + 200);
+        ctx.fillStyle = '#88aacc';
+        ctx.font = '10px monospace';
+        ctx.fillText('Carry forward all unlocked upgrades into the corrupted Precursor timeline.', canvas.width / 2, panelY + 218);
+
+        // Action Buttons
+        const btnY = panelY + 250;
+        const btnW = (panelW - 80) / 3;
+        const btnH = 40;
+
+        if (typeof CockpitUI !== 'undefined') {
+            CockpitUI.drawAvionicsButton(ctx, panelX + 30, btnY, btnW, btnH, 'REPLAY CAMPAIGN', '[SPACE]', true, false, {
+                primaryColor: '#00ff88',
+                font: 'bold 10px monospace'
+            });
+            CockpitUI.drawAvionicsButton(ctx, panelX + 30 + btnW + 10, btnY, btnW, btnH, 'UPGRADE SHOP', '[U]', false, false, {
+                primaryColor: '#00ffff',
+                font: 'bold 10px monospace'
+            });
+            CockpitUI.drawAvionicsButton(ctx, panelX + 30 + (btnW + 10) * 2, btnY, btnW, btnH, 'COMMAND BRIDGE', '[ESC]', false, false, {
+                primaryColor: '#ff2244',
+                font: 'bold 10px monospace'
+            });
+        }
+
+        ctx.fillStyle = '#6a7a9a';
+        ctx.font = '10px monospace';
+        ctx.fillText('SPACE to Replay  |  N for NG+ Paradox Loop  |  U for Upgrades  |  ESC to Bridge', canvas.width / 2, panelY + panelH - 12);
+        ctx.restore();
     }
 
 

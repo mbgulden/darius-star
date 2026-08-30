@@ -207,30 +207,101 @@ function updateBriefing(dt) {
  * Called from game_loop.js's draw() when currentScreen === SCREENS.BRIEFING.
  */
 function drawBriefing() {
+    ctx.save();
+    if (typeof CockpitUI !== 'undefined') {
+        CockpitUI.drawCockpitGrid(ctx, canvas.width, canvas.height, (typeof gameTime !== 'undefined' ? gameTime : 0));
+    }
+
+    // Haven-7 Tactical War Room Background
+    const biome = (typeof LevelManager !== 'undefined') ? LevelManager.biome : 1;
+    const biomeName = (typeof BIOME_DATA !== 'undefined' && BIOME_DATA[biome]) ? BIOME_DATA[biome].name : `BIOME ${biome}`;
+
+    // Top Header
+    ctx.textAlign = 'center';
+    ctx.fillStyle = '#00ffff';
+    ctx.font = 'bold 20px monospace';
+    ctx.shadowColor = '#00ffff';
+    ctx.shadowBlur = 10;
+    ctx.fillText('HAVEN-7 TACTICAL WAR ROOM // MISSION DESCENT BRIEFING', canvas.width / 2, 38);
+    ctx.shadowBlur = 0;
+
+    ctx.fillStyle = '#ffaa00';
+    ctx.font = 'bold 11px monospace';
+    ctx.fillText(`OPERATIONAL SECTOR: ${biomeName.toUpperCase()} — DEEP TRENCH ENTRY`, canvas.width / 2, 54);
+
+    // Tactical Descent Depth Profile Panel
+    const panelX = 40;
+    const panelY = 72;
+    const panelW = canvas.width - 80;
+    const panelH = 260;
+
+    if (typeof CockpitUI !== 'undefined') {
+        CockpitUI.drawPanel(ctx, panelX, panelY, panelW, panelH, {
+            borderColor: 'rgba(0, 200, 255, 0.3)',
+            bgColor: 'rgba(4, 10, 22, 0.90)',
+            bracketColor: '#ffaa00',
+            headerBar: true,
+            headerBarHeight: 22
+        });
+
+        ctx.textAlign = 'left';
+        ctx.fillStyle = '#00ffff';
+        ctx.font = 'bold 10px monospace';
+        ctx.fillText('📊 TOPOGRAPHICAL DESCENT PROFILE & THREAT ADVISORY', panelX + 14, panelY + 15);
+    }
+
+    // Depth Profile Line
+    ctx.strokeStyle = 'rgba(0, 255, 255, 0.4)';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(panelX + 20, panelY + 60);
+    ctx.lineTo(panelX + 180, panelY + 110);
+    ctx.lineTo(panelX + 360, panelY + 160);
+    ctx.lineTo(panelX + 540, panelY + 190);
+    ctx.lineTo(panelX + panelW - 40, panelY + 220);
+    ctx.stroke();
+
+    // Waypoints
+    const waypoints = ['WAYPOINT ALPHA (0m)', 'SURFACE BARRIER (-800m)', 'THERMOCLINE (-1,600m)', 'SUB-CRUSTAL CAVERN (-2,400m)', 'PRECURSOR CORE (-3,200m)'];
+    const wayPts = [
+        {x: panelX + 20, y: panelY + 60},
+        {x: panelX + 180, y: panelY + 110},
+        {x: panelX + 360, y: panelY + 160},
+        {x: panelX + 540, y: panelY + 190},
+        {x: panelX + panelW - 40, y: panelY + 220}
+    ];
+
+    for (let i = 0; i < wayPts.length; i++) {
+        const pt = wayPts[i];
+        ctx.fillStyle = i === 0 ? '#00ff88' : '#ffaa00';
+        ctx.beginPath();
+        ctx.arc(pt.x, pt.y, 4, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = '#88aacc';
+        ctx.font = 'bold 8.5px monospace';
+        ctx.textAlign = 'left';
+        ctx.fillText(waypoints[i], pt.x + 8, pt.y + 3);
+    }
+
+    // Threat advisory box
+    ctx.fillStyle = 'rgba(255, 34, 68, 0.12)';
+    ctx.fillRect(panelX + panelW - 200, panelY + 36, 180, 70);
+    ctx.strokeStyle = 'rgba(255, 34, 68, 0.4)';
+    ctx.strokeRect(panelX + panelW - 200, panelY + 36, 180, 70);
+
+    ctx.fillStyle = '#ff2244';
+    ctx.font = 'bold 10px monospace';
+    ctx.textAlign = 'left';
+    ctx.fillText('⚠️ THREAT LEVEL: HIGH', panelX + panelW - 190, panelY + 54);
+    ctx.fillStyle = '#88aacc';
+    ctx.font = '9px monospace';
+    ctx.fillText('Hostile swarms active.', panelX + panelW - 190, panelY + 70);
+    ctx.fillText('Maintain evasive readiness.', panelX + panelW - 190, panelY + 86);
+
+    ctx.restore();
+
     if (activeBriefing) {
         activeBriefing.draw();
-    } else {
-        // Fallback: draw a simple placeholder if no active briefing
-        ctx.save();
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.85)';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-        // Title
-        ctx.fillStyle = '#00ffff';
-        ctx.font = 'bold 20px monospace';
-        ctx.textAlign = 'center';
-        ctx.fillText('MISSION BRIEFING', canvas.width / 2, canvas.height / 2 - 40);
-
-        // Subtitle
-        ctx.fillStyle = '#8a8a9f';
-        ctx.font = '12px monospace';
-        ctx.fillText('Preparing transmission...', canvas.width / 2, canvas.height / 2 + 10);
-
-        // Skip hint
-        ctx.fillStyle = '#4a4a5f';
-        ctx.font = '10px monospace';
-        ctx.fillText('CLICK or ENTER to skip', canvas.width / 2, canvas.height / 2 + 50);
-
-        ctx.restore();
     }
 }

@@ -1,41 +1,14 @@
-// js/ui/menus.js — Main menu rendering (GRO-1062)
-// EXTRACTED from js/ui.js drawMenuScreens()
-// Loaded BEFORE ui.js so drawMainMenu(ctx) is defined when drawMenuScreens() calls it
-// NOTE: CREDITS and CINEMATIC extraction still pending — they remain in ui.js for now
+// js/ui/menus.js — Main menu rendering (Nyxa Command Bridge In-Universe Cockpit UI)
 
 function drawMainMenu(ctx) {
+    if (typeof CockpitUI !== 'undefined') {
+        CockpitUI.drawCockpitGrid(ctx, canvas.width, canvas.height, (typeof gameTime !== 'undefined' ? gameTime : 0));
+    }
     drawTitleLogo();
     
     ctx.save();
-    ctx.textAlign = 'center';
-    ctx.font = 'bold 15px monospace';
     
-    const startY = 210;
-    const spacing = 35;
-    
-    // Draw lifetime scrap balance on the menu screen
-    const lifetimeScrap = window.DS_UpgradeSystem ? window.DS_UpgradeSystem.state.scrap : 0;
-    ctx.fillStyle = '#00ff55';
-    ctx.font = 'bold 12px monospace';
-    ctx.fillText(`⚙️ SCRAP CORE: ${lifetimeScrap.toLocaleString()}`, canvas.width / 2, startY - 45);
-    
-    // Show high score on menu
-    const topScrap = window.Leaderboard ? Leaderboard.getTop('scrapLord', 1)[0] : null;
-    const topTime = window.Leaderboard ? Leaderboard.getTop('speedrun', 1)[0] : null;
-    if (topScrap) {
-        ctx.fillStyle = '#ffaa00';
-        ctx.font = 'bold 12px monospace';
-        let text = `★ RECORD: ${topScrap.scrapCollected.toLocaleString()} SCRAP (${topScrap.ship.toUpperCase()})`;
-        if (topTime) {
-            const val = topTime.timeSeconds;
-            const m = Math.floor(val / 60);
-            const sec = Math.floor(val % 60);
-            text += ` | ⏱ TIME: ${m}:${sec.toString().padStart(2, '0')} (${topTime.ship.toUpperCase()})`;
-        }
-        ctx.fillText(text, canvas.width / 2, startY - 25);
-    }
-    
-    ctx.font = 'bold 15px monospace';
+    // Check save availability
     const hasSaves = (() => {
         try {
             const saves = JSON.parse(localStorage.getItem('darius_star_saves') || 'null');
@@ -43,44 +16,112 @@ function drawMainMenu(ctx) {
             return saves.some(s => s !== null);
         } catch(e) { return false; }
     })();
+
+    // 1. Left Telemetry Panel: PILOT STATUS & SINGULARITY CORE
+    const leftPanelX = 40;
+    const leftPanelY = 160;
+    const leftPanelW = 270;
+    const leftPanelH = 240;
+
+    if (typeof CockpitUI !== 'undefined') {
+        CockpitUI.drawPanel(ctx, leftPanelX, leftPanelY, leftPanelW, leftPanelH, {
+            borderColor: 'rgba(0, 200, 255, 0.35)',
+            bgColor: 'rgba(6, 14, 28, 0.92)',
+            bracketColor: '#ffaa00',
+            headerBar: true,
+            headerBarHeight: 20
+        });
+
+        // Left Panel Header
+        ctx.textAlign = 'left';
+        ctx.fillStyle = '#00ffff';
+        ctx.font = 'bold 10px monospace';
+        ctx.fillText('📡 PILOT TELEMETRY & STATUS', leftPanelX + 12, leftPanelY + 14);
+
+        // Pilot Info
+        const rowStartY = leftPanelY + 38;
+        CockpitUI.drawDataRow(ctx, leftPanelX + 12, rowStartY, 'PILOT:', 'DARIUS STAR', { labelColor: '#88aacc', valueColor: '#ffffff' });
+        CockpitUI.drawDataRow(ctx, leftPanelX + 12, rowStartY + 18, 'CALLSIGN:', "'STAR'", { labelColor: '#88aacc', valueColor: '#00ffff' });
+        CockpitUI.drawDataRow(ctx, leftPanelX + 12, rowStartY + 36, 'NAVIGATOR:', 'LYRA STAR (AI/CO-PILOT)', { labelColor: '#88aacc', valueColor: '#00ff88' });
+        CockpitUI.drawDataRow(ctx, leftPanelX + 12, rowStartY + 54, 'VESSEL:', 'NYXA-CLASS DEEP FIGHTER', { labelColor: '#88aacc', valueColor: '#ffffff' });
+
+        // Scrap Core
+        const lifetimeScrap = window.DS_UpgradeSystem ? window.DS_UpgradeSystem.state.scrap : 0;
+        ctx.fillStyle = 'rgba(255, 200, 0, 0.12)';
+        ctx.fillRect(leftPanelX + 10, rowStartY + 70, leftPanelW - 20, 28);
+        ctx.strokeStyle = 'rgba(255, 170, 0, 0.35)';
+        ctx.strokeRect(leftPanelX + 10, rowStartY + 70, leftPanelW - 20, 28);
+
+        ctx.fillStyle = '#ffcc00';
+        ctx.font = 'bold 11px monospace';
+        ctx.fillText(`💎 QUANTUM SCRAP: ${lifetimeScrap.toLocaleString()}`, leftPanelX + 18, rowStartY + 88);
+
+        // High Score Galactic Archives
+        const topScrap = window.Leaderboard ? Leaderboard.getTop('scrapLord', 1)[0] : null;
+        const topTime = window.Leaderboard ? Leaderboard.getTop('speedrun', 1)[0] : null;
+        
+        ctx.fillStyle = '#88aacc';
+        ctx.font = 'bold 9.5px monospace';
+        ctx.fillText('🏆 SECTOR GALACTIC RECORD:', leftPanelX + 12, rowStartY + 118);
+        
+        if (topScrap) {
+            ctx.fillStyle = '#ffaa00';
+            ctx.font = '9px monospace';
+            ctx.fillText(`SCRAP: ${topScrap.scrapCollected.toLocaleString()} (${topScrap.ship.toUpperCase()})`, leftPanelX + 12, rowStartY + 134);
+            if (topTime) {
+                const val = topTime.timeSeconds;
+                const m = Math.floor(val / 60);
+                const sec = Math.floor(val % 60);
+                ctx.fillText(`TIME: ${m}:${sec.toString().padStart(2, '0')} (${topTime.ship.toUpperCase()})`, leftPanelX + 12, rowStartY + 148);
+            }
+        } else {
+            ctx.fillStyle = '#5a6a8a';
+            ctx.font = '9px monospace';
+            ctx.fillText('NO ARCHIVED RUNS IN DATABASE', leftPanelX + 12, rowStartY + 134);
+        }
+
+        // Precursor Sub-System Status
+        ctx.fillStyle = '#00ff88';
+        ctx.font = 'bold 9.5px monospace';
+        ctx.fillText('● PRECURSOR SENSORS: ONLINE', leftPanelX + 12, rowStartY + 172);
+    }
+
+    // 2. Right Operations Menu Switchboard
+    const rightPanelX = 330;
+    const startY = 160;
+    const btnW = 430;
+    const btnH = 30;
+    const spacing = 35;
+
+    const menuHotkeys = ['[C]', '[SPACE]', '[U]', '[H]', '[O]', '[T]', '[X]'];
+
     for (let i = 0; i < menuOptions.length; i++) {
         const itemY = startY + i * spacing;
         const isSelected = selectedMenuIndex === i;
         const isHovered = hoveredMenuIndex === i && !isSelected;
         const isContinue = (menuOptions[i] === 'CONTINUE');
         const grayedOut = isContinue && !hasSaves;
-        
-        if (isSelected) {
-            ctx.fillStyle = grayedOut ? '#445555' : '#00ffff';
-            ctx.shadowColor = '#00ffff';
-            ctx.shadowBlur = grayedOut ? 2 : 10;
-            ctx.fillText(`>  ${menuOptions[i]}  <`, canvas.width / 2, itemY);
-            ctx.shadowBlur = 0;
-        } else if (isHovered) {
-            ctx.fillStyle = grayedOut ? '#555533' : '#ffaa00';
-            ctx.shadowColor = '#ffaa00';
-            ctx.shadowBlur = 6;
-            ctx.fillText(menuOptions[i], canvas.width / 2, itemY);
-            ctx.shadowBlur = 0;
-        } else {
-            ctx.fillStyle = grayedOut ? '#333344' : '#8a8a9f';
-            ctx.fillText(menuOptions[i], canvas.width / 2, itemY);
+        const hotkey = menuHotkeys[i] || '';
+
+        let label = menuOptions[i];
+        if (isContinue) {
+            label = hasSaves ? 'CONTINUE CAMPAIGN' : 'CONTINUE (NO SAVES)';
         }
-        if (isContinue && hasSaves) {
-            ctx.fillStyle = '#00ff55';
-            ctx.font = '9px monospace';
-            ctx.fillText('● SAVES AVAILABLE', canvas.width / 2, itemY + 15);
-            ctx.font = 'bold 15px monospace';
-        } else if (isContinue && !hasSaves) {
-            ctx.fillStyle = '#666';
-            ctx.font = '9px monospace';
-            ctx.fillText('NO SAVES FOUND', canvas.width / 2, itemY + 15);
-            ctx.font = 'bold 15px monospace';
+
+        if (typeof CockpitUI !== 'undefined') {
+            CockpitUI.drawAvionicsButton(ctx, rightPanelX, itemY, btnW, btnH, label, hotkey, isSelected, isHovered, {
+                primaryColor: '#00ffff',
+                accentColor: '#ffaa00',
+                disabled: grayedOut,
+                font: 'bold 11.5px monospace'
+            });
         }
     }
     
-    ctx.fillStyle = '#4a4a5f';
+    // Bottom Navigation Hint
+    ctx.textAlign = 'center';
+    ctx.fillStyle = '#6a7a9a';
     ctx.font = '10px monospace';
-    ctx.fillText('USE W/S or ARROWS to NAVIGATE | ENTER to SELECT', canvas.width / 2, canvas.height - 25);
+    ctx.fillText('W/S or ARROWS to NAVIGATE  |  ENTER / CLICK to ENGAGE  |  F FULLSCREEN', canvas.width / 2, canvas.height - 14);
     ctx.restore();
 }

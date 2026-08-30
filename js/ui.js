@@ -796,18 +796,23 @@ function drawMenuScreens() {
     } else if (currentScreen === SCREENS.SETTINGS) {
         drawSettings(ctx);
     } else if (currentScreen === SCREENS.LEADERBOARD) {
-        ctx.fillStyle = 'rgba(5, 5, 12, 0.75)';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        if (typeof CockpitUI !== 'undefined') {
+            CockpitUI.drawCockpitGrid(ctx, canvas.width, canvas.height, (typeof gameTime !== 'undefined' ? gameTime : 0));
+        }
         ctx.save();
         ctx.textAlign = 'center';
         
         // Header
-        ctx.fillStyle = '#ffaa00';
-        ctx.font = 'bold 24px monospace';
-        ctx.shadowColor = '#ffaa00';
+        ctx.fillStyle = '#00ffff';
+        ctx.font = 'bold 22px monospace';
+        ctx.shadowColor = '#00ffff';
         ctx.shadowBlur = 12;
-        ctx.fillText('🏆 CYBER LEADERBOARDS', canvas.width / 2, 55);
+        ctx.fillText('EDC NAVY GALACTIC ARCHIVE // COMBAT RANKINGS', canvas.width / 2, 42);
         ctx.shadowBlur = 0;
+
+        ctx.fillStyle = '#ffaa00';
+        ctx.font = 'bold 10.5px monospace';
+        ctx.fillText('CROSS-SECTOR FLIGHT DATA & DEEP DESCENT TELEMETRY', canvas.width / 2, 58);
         
         // Load scores using Leaderboard module
         const scores = window.Leaderboard ? Leaderboard.getTop(leaderboardFilter, 50) : [];
@@ -826,35 +831,46 @@ function drawMenuScreens() {
             } else {
                 topValStr = `${val} DEATHS`;
             }
-            ctx.fillStyle = '#00ffff';
-            ctx.font = 'bold 14px monospace';
-            ctx.fillText(`CATEGORY RECORD: ${topValStr} — ${(categoryTop.ship || 'unknown').toUpperCase()} — ${(categoryTop.difficulty || 'normal').toUpperCase()}`, canvas.width / 2, 90);
+            ctx.fillStyle = '#00ff88';
+            ctx.font = 'bold 11px monospace';
+            ctx.fillText(`★ CURRENT GALACTIC RECORD: ${topValStr} — ${(categoryTop.ship || 'unknown').toUpperCase()} — ${(categoryTop.difficulty || 'normal').toUpperCase()}`, canvas.width / 2, 78);
         } else {
-            ctx.fillStyle = '#8a8a9f';
-            ctx.font = '14px monospace';
-            ctx.fillText('No entries yet in this category. Go fight!', canvas.width / 2, 90);
+            ctx.fillStyle = '#6a7a9a';
+            ctx.font = '11px monospace';
+            ctx.fillText('No recorded flight transmissions in this category archive.', canvas.width / 2, 78);
         }
         
-        // Category bar
-        ctx.font = 'bold 11px monospace';
+        // Category tabs
         const categories = ['speedrun', 'scrapLord', 'survivor'];
-        const categoryLabels = ['⏱ SPEEDRUN', '⚙ SCRAP LORD', '🛡 SURVIVOR'];
-        const filterStartX = 200;
-        const filterY = 115;
-        const gap = 160;
+        const categoryLabels = ['[1] ⏱ SPEEDRUN', '[2] 💎 SCRAP LORD', '[3] 🛡 SURVIVOR'];
+        const filterStartX = 140;
+        const filterY = 92;
+        const tabW = 160;
+        const tabH = 26;
+        const gap = 175;
         
         for (let fi = 0; fi < categories.length; fi++) {
             const fx = filterStartX + fi * gap;
             const isActive = leaderboardFilter === categories[fi];
-            ctx.fillStyle = isActive ? '#ffaa00' : '#4a4a5f';
-            ctx.fillText(categoryLabels[fi], fx, filterY);
-            if (isActive) {
-                ctx.fillRect(fx - 40, filterY + 4, 80, 2);
+            if (typeof CockpitUI !== 'undefined') {
+                CockpitUI.drawAvionicsButton(ctx, fx, filterY, tabW, tabH, categoryLabels[fi], '', isActive, false, {
+                    primaryColor: '#ffaa00',
+                    font: 'bold 10px monospace'
+                });
             }
         }
         
-        ctx.fillStyle = '#3a3a5f';
-        ctx.fillRect(80, 135, 640, 2);
+        // Main Archive Panel
+        if (typeof CockpitUI !== 'undefined') {
+            CockpitUI.drawPanel(ctx, 40, 128, 720, 260, {
+                chamfer: 6,
+                borderColor: 'rgba(0, 200, 255, 0.3)',
+                bgColor: 'rgba(8, 16, 32, 0.90)',
+                bracketColor: '#ffaa00',
+                headerBar: true,
+                headerBarHeight: 22
+            });
+        }
         
         // Entries
         const listStartY = 155;
@@ -953,31 +969,35 @@ function drawMenuScreens() {
         
         ctx.restore();
     } else if (currentScreen === SCREENS.LOAD_GAME) {
-        ctx.fillStyle = 'rgba(5, 5, 12, 0.85)';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        if (typeof CockpitUI !== 'undefined') {
+            CockpitUI.drawCockpitGrid(ctx, canvas.width, canvas.height, (typeof gameTime !== 'undefined' ? gameTime : 0));
+        }
         ctx.save();
-        ctx.textAlign = 'center';
 
+        // 1. Header Banner
+        ctx.textAlign = 'center';
         ctx.fillStyle = '#00ffff';
         ctx.font = 'bold 22px monospace';
         ctx.shadowColor = '#00ffff';
-        ctx.shadowBlur = 10;
-        ctx.fillText('💾 LOAD GAME', canvas.width / 2, 48);
+        ctx.shadowBlur = 12;
+        ctx.fillText('FLIGHT RECORDER // MEMORY PODS ARCHIVE', canvas.width / 2, 42);
         ctx.shadowBlur = 0;
+
+        ctx.fillStyle = '#ffaa00';
+        ctx.font = 'bold 10.5px monospace';
+        ctx.fillText('RESTORE TACTICAL CAMPAIGN STATE FROM SHIP OPTICAL STORAGE', canvas.width / 2, 58);
 
         const saves = window._loadSaves || [];
         const selected = window._loadSelectedSlot || 0;
 
-        // GRO-1160: Responsive sizing for mobile touch targets (min 44px on 375px viewport)
-        const slotW = Math.min(canvas.width - 60, 640);
-        const slotH = 76;  // Taller for touch targets
+        const slotW = Math.min(canvas.width - 60, 680);
+        const slotH = 76;
         const slotX = (canvas.width - slotW) / 2;
-        const slotStartY = 110;
-        const slotSpacing = slotH + 10;
-        const btnW = 80;
-        const btnH = 32;
+        const slotStartY = 85;
+        const slotSpacing = slotH + 14;
+        const btnW = 90;
+        const btnH = 30;
 
-        // Store hit regions for touch/mouse handling
         window._loadHitRegions = [];
 
         for (let i = 0; i < 3; i++) {
@@ -985,94 +1005,94 @@ function drawMenuScreens() {
             const isSelected = i === selected;
             const save = saves[i];
 
-            // Store hit region for this slot
             window._loadHitRegions[i] = { x: slotX, y: y, w: slotW, h: slotH,
                 btnLoad: null, btnDelete: null, isSelected: isSelected };
 
-            // Slot background
-            ctx.fillStyle = isSelected ? 'rgba(0,255,255,0.12)' : 'rgba(255,255,255,0.04)';
-            if (isSelected) {
-                ctx.fillStyle = 'rgba(0,255,255,0.18)';
-            }
-            ctx.fillRect(slotX, y, slotW, slotH);
-            if (isSelected) {
-                ctx.strokeStyle = '#00ffff';
-                ctx.lineWidth = 2;
-                ctx.strokeRect(slotX, y, slotW, slotH);
+            if (typeof CockpitUI !== 'undefined') {
+                CockpitUI.drawPanel(ctx, slotX, y, slotW, slotH, {
+                    chamfer: 6,
+                    borderColor: isSelected ? '#00ffff' : (save ? 'rgba(0, 200, 255, 0.3)' : 'rgba(50, 60, 80, 0.3)'),
+                    bgColor: isSelected ? 'rgba(0, 255, 255, 0.14)' : 'rgba(8, 16, 32, 0.88)',
+                    bracketColor: isSelected ? '#00ffff' : '#ffaa00',
+                    glow: isSelected,
+                    shadowBlur: isSelected ? 12 : 6,
+                    brackets: isSelected
+                });
             }
 
             ctx.textAlign = 'left';
             if (save) {
                 const s = CampaignSave.summarize(i);
                 ctx.fillStyle = isSelected ? '#00ffff' : '#ffffff';
-                ctx.font = 'bold 14px monospace';
+                ctx.font = 'bold 13px monospace';
                 const ngText = (save.ngLevel && save.ngLevel > 0) ? ` [NG+${save.ngLevel}]` : '';
-                ctx.fillText(`SLOT ${i+1}: Biome ${s.biome} — Wave ${s.wave} — ${s.ship.toUpperCase()}${ngText}`, slotX + 16, y + 18);
+                ctx.fillText(`POD ${i+1}: BIOME ${s.biome} — SECTOR ${s.wave} // ${s.ship.toUpperCase()}${ngText}`, slotX + 16, y + 20);
+
+                // Biome Badge
+                ctx.font = 'bold 9.5px monospace';
+                ctx.fillStyle = '#00ff88';
+                ctx.fillText(`● STATUS: NOMINAL // DIFFICULTY: ${s.difficulty.toUpperCase()}`, slotX + 16, y + 36);
 
                 let ngMeta = '';
                 if (save.ngLevel && save.ngLevel > 0 && window.NGPlus) {
                     const ngSummary = NGPlus.summarize(save);
                     if (ngSummary) {
-                        ngMeta = `  |  NG+${ngSummary.level} (Scrap x${ngSummary.scrapMult})`;
+                        ngMeta = ` | NG+${ngSummary.level}`;
                     }
                 }
 
-                ctx.fillStyle = '#aaa';
-                ctx.font = '11px monospace';
-                ctx.fillText(`Scrap: ${s.scrap}  |  Score: ${s.score.toLocaleString()}  |  ${s.date} ${s.time}  |  ${s.playTime}  |  ${s.deaths} deaths${ngMeta}`, slotX + 16, y + 38);
-                ctx.fillStyle = '#888';
-                ctx.fillText(`${s.shipsUnlocked} ships unlocked  |  Difficulty: ${s.difficulty}`, slotX + 16, y + 54);
+                ctx.fillStyle = '#88aacc';
+                ctx.font = '10px monospace';
+                ctx.fillText(`💎 SCRAP: ${s.scrap} | SCORE: ${s.score.toLocaleString()} | TIME: ${s.playTime} | DEATHS: ${s.deaths}${ngMeta}`, slotX + 16, y + 54);
+                ctx.fillStyle = '#5a7a9a';
+                ctx.fillText(`ARCHIVED: ${s.date} ${s.time} | SHIPS UNLOCKED: ${s.shipsUnlocked}`, slotX + 16, y + 68);
 
-                // GRO-1160: Load/Delete buttons for selected slot
+                // Action Buttons for selected slot
                 if (isSelected) {
                     const btnLoadX = slotX + slotW - btnW * 2 - 20;
                     const btnDeleteX = slotX + slotW - btnW - 10;
                     const btnY = y + (slotH - btnH) / 2;
 
-                    // Load button
-                    ctx.fillStyle = '#00aa44';
-                    ctx.fillRect(btnLoadX, btnY, btnW, btnH);
-                    ctx.strokeStyle = '#00ff66';
-                    ctx.lineWidth = 1;
-                    ctx.strokeRect(btnLoadX, btnY, btnW, btnH);
-                    ctx.fillStyle = '#ffffff';
-                    ctx.font = 'bold 12px monospace';
-                    ctx.textAlign = 'center';
-                    ctx.fillText('LOAD', btnLoadX + btnW / 2, btnY + 21);
+                    if (typeof CockpitUI !== 'undefined') {
+                        CockpitUI.drawAvionicsButton(ctx, btnLoadX, btnY, btnW, btnH, 'ENGAGE', '[ENTER]', true, false, {
+                            primaryColor: '#00ff88',
+                            font: 'bold 11px monospace'
+                        });
+                        CockpitUI.drawAvionicsButton(ctx, btnDeleteX, btnY, btnW, btnH, 'PURGE', '[DEL]', false, false, {
+                            primaryColor: '#ff2244',
+                            accentColor: '#ff2244',
+                            font: 'bold 11px monospace'
+                        });
+                    }
 
-                    // Delete button
-                    ctx.fillStyle = '#aa0033';
-                    ctx.fillRect(btnDeleteX, btnY, btnW, btnH);
-                    ctx.strokeStyle = '#ff3355';
-                    ctx.strokeRect(btnDeleteX, btnY, btnW, btnH);
-                    ctx.fillStyle = '#ffffff';
-                    ctx.fillText('DELETE', btnDeleteX + btnW / 2, btnY + 21);
-
-                    // Store button hit regions
                     window._loadHitRegions[i].btnLoad = { x: btnLoadX, y: btnY, w: btnW, h: btnH };
                     window._loadHitRegions[i].btnDelete = { x: btnDeleteX, y: btnY, w: btnW, h: btnH };
                 }
             } else {
-                ctx.fillStyle = isSelected ? '#00ffff' : '#555';
-                ctx.font = 'bold 14px monospace';
-                ctx.fillText(`SLOT ${i+1}: EMPTY`, slotX + 16, y + 18);
-                ctx.fillStyle = '#444';
-                ctx.font = '11px monospace';
-                ctx.fillText('Start a new game to create a save.', slotX + 16, y + 38);
+                ctx.fillStyle = isSelected ? '#00ffff' : '#556677';
+                ctx.font = 'bold 13px monospace';
+                ctx.fillText(`POD ${i+1}: [EMPTY OPTICAL CARTRIDGE]`, slotX + 16, y + 26);
+                ctx.fillStyle = '#445566';
+                ctx.font = '10px monospace';
+                ctx.fillText('No tactical flight records stored. Start a new campaign to initialize.', slotX + 16, y + 48);
             }
         }
 
         ctx.textAlign = 'center';
-        ctx.fillStyle = '#8a8a9f';
-        ctx.font = '11px monospace';
-        ctx.fillText('ENTER to LOAD  |  DEL to DELETE  |  ESC to BACK  |  TAP slot to select', canvas.width / 2, slotStartY + 3 * slotSpacing + 6);
-        ctx.fillText('Long-press slot to delete', canvas.width / 2, slotStartY + 3 * slotSpacing + 22);
+        ctx.fillStyle = '#ff3355';
+        ctx.font = 'bold 12px monospace';
+        ctx.fillText('[ESC] RETURN TO COMMAND BRIDGE', canvas.width / 2, canvas.height - 30);
+
+        ctx.fillStyle = '#6a7a9a';
+        ctx.font = '10px monospace';
+        ctx.fillText('ENTER / CLICK to Load  |  DEL to Purge Memory  |  ESC to Return', canvas.width / 2, canvas.height - 12);
 
         ctx.restore();
     } else if (currentScreen === SCREENS.UPGRADE_SHOP) {
         // Precursor Quantum Fabricator / Scrap Shop UI
-        ctx.fillStyle = 'rgba(4, 6, 14, 0.92)';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        if (typeof CockpitUI !== 'undefined') {
+            CockpitUI.drawCockpitGrid(ctx, canvas.width, canvas.height, (typeof gameTime !== 'undefined' ? gameTime : 0));
+        }
         ctx.save();
 
         const us = window.DS_UpgradeSystem;
@@ -1097,32 +1117,32 @@ function drawMenuScreens() {
         ctx.font = 'bold 22px monospace';
         ctx.shadowColor = '#00ffff';
         ctx.shadowBlur = 12;
-        ctx.fillText('PRECURSOR QUANTUM FABRICATOR', canvas.width / 2, 38);
-
-        ctx.fillStyle = '#8af';
-        ctx.font = '11px monospace';
+        ctx.fillText('PRECURSOR QUANTUM FABRICATOR', canvas.width / 2, 36);
         ctx.shadowBlur = 0;
-        ctx.fillText('TRANSMUTING SALVAGED QUANTUM JUNK INTO DURABLE SHIP SYSTEMS', canvas.width / 2, 56);
 
-        // Scrap Wallet
+        ctx.fillStyle = '#88aacc';
+        ctx.font = '10.5px monospace';
+        ctx.fillText('TRANSMUTING SALVAGED QUANTUM JUNK INTO DURABLE SHIP HARDPOINTS', canvas.width / 2, 52);
+
+        // Scrap Wallet Badge
         ctx.fillStyle = '#ffcc00';
-        ctx.font = 'bold 15px monospace';
+        ctx.font = 'bold 14px monospace';
         ctx.shadowColor = '#ffaa00';
-        ctx.shadowBlur = 10;
-        ctx.fillText(`💎 RECOVERED SCRAP: ${scrap}`, canvas.width / 2, 78);
+        ctx.shadowBlur = 8;
+        ctx.fillText(`💎 RECOVERED QUANTUM SCRAP: ${scrap.toLocaleString()}`, canvas.width / 2, 72);
         ctx.shadowBlur = 0;
 
         // 2. 2-Column Card Grid (4 per column)
         const colW = (canvas.width - 70) / 2;
-        const rowH = 68;
-        const startY = 95;
+        const rowH = 72;
+        const startY = 88;
         window._upgradeHitRegions = [];
 
         for (let i = 0; i < upgradeLabels.length; i++) {
             const col = i >= 4 ? 1 : 0;
             const row = i % 4;
             const cardX = 25 + col * (colW + 20);
-            const cardY = startY + row * (rowH + 10);
+            const cardY = startY + row * (rowH + 8);
 
             const label = upgradeLabels[i];
             const rank = us && us.state ? (us.state.upgrades[label] || 0) : 0;
@@ -1135,22 +1155,18 @@ function drawMenuScreens() {
 
             window._upgradeHitRegions.push({ index: i, x: cardX, y: cardY, w: colW, h: rowH, label: label, canAfford: canAfford });
 
-            // Card background & highlight
-            ctx.save();
-            if (isSelected) {
-                ctx.fillStyle = 'rgba(0, 255, 255, 0.12)';
-                ctx.strokeStyle = '#00ffff';
-                ctx.lineWidth = 1.5;
-                ctx.shadowColor = '#00ffff';
-                ctx.shadowBlur = 8;
-            } else {
-                ctx.fillStyle = 'rgba(15, 20, 35, 0.85)';
-                ctx.strokeStyle = 'rgba(0, 200, 255, 0.25)';
-                ctx.lineWidth = 1;
+            // Card Panel
+            if (typeof CockpitUI !== 'undefined') {
+                CockpitUI.drawPanel(ctx, cardX, cardY, colW, rowH, {
+                    chamfer: 6,
+                    borderColor: isSelected ? '#00ffff' : 'rgba(0, 200, 255, 0.22)',
+                    bgColor: isSelected ? 'rgba(0, 255, 255, 0.14)' : 'rgba(10, 18, 34, 0.88)',
+                    bracketColor: isSelected ? '#00ffff' : '#ffaa00',
+                    glow: isSelected,
+                    shadowBlur: isSelected ? 10 : 4,
+                    brackets: isSelected
+                });
             }
-            ctx.fillRect(cardX, cardY, colW, rowH);
-            ctx.strokeRect(cardX, cardY, colW, rowH);
-            ctx.restore();
 
             // Title
             ctx.textAlign = 'left';
@@ -1161,58 +1177,75 @@ function drawMenuScreens() {
             // Cost / Status Badge
             ctx.textAlign = 'right';
             if (isMaxed) {
-                ctx.fillStyle = '#00ff55';
+                ctx.fillStyle = '#00ff88';
                 ctx.font = 'bold 11px monospace';
-                ctx.fillText('MAXED', cardX + colW - 12, cardY + 18);
+                ctx.fillText('✔ MAXED', cardX + colW - 12, cardY + 18);
             } else {
-                ctx.fillStyle = canAfford ? '#ffcc00' : '#ff4455';
+                ctx.fillStyle = canAfford ? '#ffcc00' : '#ff3355';
                 ctx.font = 'bold 11px monospace';
                 ctx.fillText(`${cost} SCRAP`, cardX + colW - 12, cardY + 18);
             }
 
-            // Rank Meter
+            // Segmented Rank Meter
             const meterX = cardX + 12;
             const meterY = cardY + 26;
-            const meterW = colW - 120;
-            const rankPct = isMaxed ? 1.0 : (rank / maxRank);
-
-            ctx.fillStyle = '#0a1020';
-            ctx.fillRect(meterX, meterY, meterW, 8);
-            ctx.fillStyle = isMaxed ? '#00ff55' : (isSelected ? '#00ffff' : '#00aaff');
-            ctx.fillRect(meterX, meterY, meterW * rankPct, 8);
-            ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
-            ctx.strokeRect(meterX, meterY, meterW, 8);
+            const meterW = colW - 130;
+            if (typeof CockpitUI !== 'undefined') {
+                CockpitUI.drawSegmentedBar(ctx, meterX, meterY, meterW, 8, rank, maxRank, {
+                    segments: maxRank,
+                    activeColor: isMaxed ? '#00ff88' : (isSelected ? '#00ffff' : '#00aaee')
+                });
+            }
 
             // Rank text
             ctx.textAlign = 'left';
             ctx.fillStyle = '#88aacc';
-            ctx.font = '10px monospace';
+            ctx.font = 'bold 10px monospace';
             ctx.fillText(`LV ${rank}/${maxRank}`, meterX + meterW + 8, meterY + 7);
 
-            // Dynamic Description
+            // Real-Time Stat Delta Preview
+            let statDelta = '';
+            if (label === 'weapons') {
+                statDelta = `Dmg +${rank*5}% → +${(rank+1)*5}% | Bullet Speed +${rank*5}%`;
+            } else if (label === 'shields') {
+                statDelta = `Shield ${100 + rank*10}HP → ${100 + (rank+1)*10}HP (+10 HP)`;
+            } else if (label === 'rockets') {
+                statDelta = `Missile Dmg +${rank*10}% | Blast +${rank*12}px`;
+            } else if (label === 'magnetism') {
+                statDelta = `Tractor Radius: ${45 + rank*28}px → ${45 + (rank+1)*28}px (+28px)`;
+            } else if (label === 'engines') {
+                statDelta = `Speed +${rank*3}% | Dodge CD: ${Math.round((3.5 * Math.max(0.4, 1-rank*0.05))*10)/10}s`;
+            } else if (label === 'specials') {
+                statDelta = `Special Duration: +${Math.round(rank*0.35*100)/100}s | CD: -${rank*5}%`;
+            } else if (label === 'addons') {
+                const curDrones = rank >= 10 ? 4 : (rank >= 7 ? 3 : (rank >= 4 ? 2 : (rank >= 1 ? 1 : 0)));
+                statDelta = `Companion Combat Drones Active: ${curDrones} / 4`;
+            } else {
+                statDelta = `Chrono Plating Colors (Cyan, Mag, Gold, Void), FX`;
+            }
+
             ctx.fillStyle = isSelected ? '#ffffff' : '#8899aa';
-            ctx.font = '9.5px monospace';
-            const desc = label === 'weapons' ? 'Dmg +5%, fire rate +3%, bullet speed +5%/rank' :
-                         label === 'shields' ? 'Shield +10, regen +0.15/s, invuln +0.05s/rank' :
-                         label === 'rockets' ? 'Missile dmg +10%, AOE blast +12px, recharge +6%' :
-                         label === 'magnetism' ? 'Tractor radius 45->325px, pull +35, scrap yield +3%' :
-                         label === 'engines' ? 'Speed +3%, boost duration +6%, cooldown -5%' :
-                         label === 'specials' ? 'Special duration +0.35s, cooldown -5%/rank' :
-                         label === 'addons' ? 'Combat Drones: 1->4 orbiting helper gunships' :
-                         'Chrono Hull Colors (Cyan, Mag, Gold, Void), FX';
-            ctx.fillText(desc, cardX + 12, cardY + 54);
+            ctx.font = '9px monospace';
+            ctx.fillText(statDelta, cardX + 12, cardY + 48);
+
+            // Dynamic Sub-Description
+            ctx.fillStyle = isSelected ? '#00ff88' : '#5a6a7a';
+            ctx.font = 'italic 8.5px monospace';
+            const subDesc = isMaxed ? 'Maximum hardpoint efficiency achieved.' : (canAfford ? '▶ READY TO TRANSMUTE [ENTER]' : '⚠️ INSUFFICIENT SCRAP SALVAGE');
+            ctx.fillText(subDesc, cardX + 12, cardY + 62);
         }
 
         // Footer instructions
         ctx.textAlign = 'center';
-        ctx.fillStyle = '#8a8a9f';
-        ctx.font = '11px monospace';
-        ctx.fillText('↑↓←→ SELECT  |  ENTER / CLICK TO PURCHASE  |  ESC RETURN TO BRIDGE', canvas.width / 2, canvas.height - 20);
+        ctx.fillStyle = '#6a7a9a';
+        ctx.font = '10px monospace';
+        ctx.fillText('↑↓←→ SELECT  |  ENTER / CLICK TO TRANSMUTE  |  ESC RETURN TO BRIDGE', canvas.width / 2, canvas.height - 12);
 
         ctx.restore();
     } else if (currentScreen === SCREENS.LEVEL_CLEAR) {
-        ctx.fillStyle = 'rgba(5, 8, 18, 0.94)';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        if (typeof CockpitUI !== 'undefined') {
+            CockpitUI.drawCockpitGrid(ctx, canvas.width, canvas.height, (typeof gameTime !== 'undefined' ? gameTime : 0));
+        }
         ctx.save();
 
         window._levelClearAnimTimer = (window._levelClearAnimTimer || 0) + 0.016;
@@ -1229,27 +1262,35 @@ function drawMenuScreens() {
         ctx.fillStyle = '#00ffff';
         ctx.font = 'bold 22px monospace';
         ctx.shadowColor = '#00ffff';
-        ctx.shadowBlur = 14;
-        ctx.fillText('SECTOR DEBRIEFING // LEVEL COMPLETE', canvas.width / 2, 38);
+        ctx.shadowBlur = 12;
+        ctx.fillText('SECTOR COMBAT DEBRIEFING // AIRSPACE SECURED', canvas.width / 2, 38);
+        ctx.shadowBlur = 0;
 
         ctx.fillStyle = '#ffaa00';
-        ctx.font = 'bold 14px monospace';
-        ctx.shadowColor = '#ffaa00';
-        ctx.shadowBlur = 8;
-        ctx.fillText(`SECTOR ${lvlInfo.name.toUpperCase()}`, canvas.width / 2, 60);
-        ctx.shadowBlur = 0;
+        ctx.font = 'bold 12px monospace';
+        ctx.fillText(`SECTOR ${lvlInfo.name.toUpperCase()}`, canvas.width / 2, 56);
 
         // 2. Metrics & Tally Box (Left Column)
         const leftX = 40;
-        const topY = 78;
+        const topY = 74;
         const boxW = (canvas.width - 100) / 2;
-        const boxH = 220;
+        const boxH = 230;
 
-        ctx.fillStyle = 'rgba(12, 18, 32, 0.85)';
-        ctx.strokeStyle = 'rgba(0, 200, 255, 0.3)';
-        ctx.lineWidth = 1.5;
-        ctx.fillRect(leftX, topY, boxW, boxH);
-        ctx.strokeRect(leftX, topY, boxW, boxH);
+        if (typeof CockpitUI !== 'undefined') {
+            CockpitUI.drawPanel(ctx, leftX, topY, boxW, boxH, {
+                chamfer: 6,
+                borderColor: 'rgba(0, 200, 255, 0.35)',
+                bgColor: 'rgba(8, 16, 32, 0.90)',
+                bracketColor: '#00ffff',
+                headerBar: true,
+                headerBarHeight: 22
+            });
+
+            ctx.textAlign = 'left';
+            ctx.fillStyle = '#00ffff';
+            ctx.font = 'bold 10px monospace';
+            ctx.fillText('📡 COMBAT TELEMETRY METRICS', leftX + 14, topY + 15);
+        }
 
         const killRatio = Math.min(1.0, anim / 0.8);
         const scrapRatio = Math.min(1.0, Math.max(0, (anim - 0.4) / 0.8));
@@ -1265,53 +1306,64 @@ function drawMenuScreens() {
 
         // Hostiles
         ctx.fillStyle = '#88ccff';
-        ctx.fillText(`🎯 HOSTILES DESTROYED:`, leftX + 18, topY + 28);
+        ctx.fillText(`🎯 HOSTILES DESTROYED:`, leftX + 18, topY + 44);
         ctx.fillStyle = '#ffffff';
-        ctx.fillText(`${curKills} / ${sum.killTotal || sum.killCount || 0} (${Math.round((sum.killPct || 100) * killRatio)}%)`, leftX + 18, topY + 46);
+        ctx.fillText(`${curKills} / ${sum.killTotal || sum.killCount || 0} (${Math.round((sum.killPct || 100) * killRatio)}%)`, leftX + 18, topY + 60);
 
         // Scrap
         ctx.fillStyle = '#ffcc00';
-        ctx.fillText(`💎 QUANTUM SCRAP SALVAGED:`, leftX + 18, topY + 76);
+        ctx.fillText(`💎 QUANTUM SCRAP SALVAGED:`, leftX + 18, topY + 90);
         ctx.fillStyle = '#ffffff';
-        ctx.fillText(`+${curScrap} SCRAP (${Math.round(scrapPct * scrapRatio)}% EFFICIENCY)`, leftX + 18, topY + 94);
+        ctx.fillText(`+${curScrap} SCRAP (${Math.round(scrapPct * scrapRatio)}% EFFICIENCY)`, leftX + 18, topY + 106);
 
         // Scrap Efficiency Badge
         if (anim > 1.0) {
             ctx.fillStyle = scrapPct >= 85 ? '#00ff88' : (scrapPct >= 50 ? '#ffaa00' : '#ff4455');
-            ctx.font = 'bold 9.5px monospace';
+            ctx.font = 'bold 9px monospace';
             const effText = scrapPct >= 85 ? '⭐ PERFECT SALVAGE (ALL CRITICAL JUNK SECURED)' :
                             scrapPct >= 50 ? '⚠️ PARTIAL SALVAGE (SOME JUNK DRIFTED AWAY)' :
                             '❌ LOW SALVAGE (UPGRADE QUANTUM TRACTOR BEAM!)';
-            ctx.fillText(effText, leftX + 18, topY + 112);
+            ctx.fillText(effText, leftX + 18, topY + 124);
         }
 
         // Score
         ctx.fillStyle = '#00ffff';
         ctx.font = 'bold 11px monospace';
-        ctx.fillText(`⭐ SECTOR COMBAT SCORE:`, leftX + 18, topY + 142);
+        ctx.fillText(`⭐ SECTOR COMBAT SCORE:`, leftX + 18, topY + 154);
         ctx.fillStyle = '#ffffff';
-        ctx.fillText(`+${curScore.toLocaleString()} PTS`, leftX + 18, topY + 160);
+        ctx.fillText(`+${curScore.toLocaleString()} PTS`, leftX + 18, topY + 170);
 
         // Time
         const m = Math.floor((sum.timeSpent || 0) / 60);
         const s = Math.floor((sum.timeSpent || 0) % 60);
-        ctx.fillStyle = '#8899aa';
-        ctx.font = '9.5px monospace';
-        ctx.fillText(`⏱️ TRANSIT TIME: ${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`, leftX + 18, topY + 195);
+        ctx.fillStyle = '#88aacc';
+        ctx.font = '10px monospace';
+        ctx.fillText(`⏱️ TRANSIT TIME: ${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`, leftX + 18, topY + 205);
 
         // 3. Grade & Autosave Box (Right Column)
         const rightX = leftX + boxW + 20;
-        ctx.fillStyle = 'rgba(12, 18, 32, 0.85)';
-        ctx.strokeStyle = 'rgba(0, 200, 255, 0.3)';
-        ctx.fillRect(rightX, topY, boxW, boxH);
-        ctx.strokeRect(rightX, topY, boxW, boxH);
+        if (typeof CockpitUI !== 'undefined') {
+            CockpitUI.drawPanel(ctx, rightX, topY, boxW, boxH, {
+                chamfer: 6,
+                borderColor: 'rgba(255, 170, 0, 0.35)',
+                bgColor: 'rgba(8, 16, 32, 0.90)',
+                bracketColor: '#ffaa00',
+                headerBar: true,
+                headerBarHeight: 22
+            });
+
+            ctx.textAlign = 'left';
+            ctx.fillStyle = '#ffaa00';
+            ctx.font = 'bold 10px monospace';
+            ctx.fillText('🏆 PERFORMANCE RATING & ARCHIVES', rightX + 14, topY + 15);
+        }
 
         const rank = sum.rank || 'S';
         const rankColor = rank === 'S' ? '#ffd700' : (rank === 'A' ? '#00ffff' : (rank === 'B' ? '#00ff88' : '#ff4455'));
         ctx.textAlign = 'center';
         ctx.fillStyle = '#88aacc';
         ctx.font = 'bold 11px monospace';
-        ctx.fillText('MISSION PERFORMANCE GRADE', rightX + boxW / 2, topY + 28);
+        ctx.fillText('MISSION PERFORMANCE GRADE', rightX + boxW / 2, topY + 46);
 
         if (anim > 1.2) {
             const stampScale = Math.max(1.0, 2.5 - (anim - 1.2) * 6);
@@ -1331,7 +1383,7 @@ function drawMenuScreens() {
         ctx.font = 'bold 11px monospace';
         ctx.shadowColor = '#00ff88';
         ctx.shadowBlur = 6;
-        ctx.fillText('💾 CAMPAIGN PROGRESS AUTOSAVED', rightX + boxW / 2, topY + 145);
+        ctx.fillText('💾 CAMPAIGN PROGRESS AUTOSAVED', rightX + boxW / 2, topY + 155);
         ctx.shadowBlur = 0;
 
         // Current Scrap Wallet
@@ -1339,19 +1391,19 @@ function drawMenuScreens() {
         const totalScrap = us && us.state ? us.state.scrap : (window.runScrap || 0);
         ctx.fillStyle = '#ffcc00';
         ctx.font = 'bold 11px monospace';
-        ctx.fillText(`TOTAL SCRAP BALANCE: 💎 ${totalScrap}`, rightX + boxW / 2, topY + 180);
+        ctx.fillText(`TOTAL SCRAP BALANCE: 💎 ${totalScrap.toLocaleString()}`, rightX + boxW / 2, topY + 190);
 
         // 4. Action Buttons Grid
         window._levelClearHitRegions = [];
-        const btnY = topY + boxH + 16;
+        const btnY = topY + boxH + 14;
         const btnW = (canvas.width - 100 - 30) / 4;
         const btnH = 46;
 
         const btns = [
-            { key: 'next', label: '[ENTER] NEXT SECTOR', color: '#00ff88', bg: 'rgba(0, 255, 136, 0.15)' },
-            { key: 'upgrade', label: '[U] QUANTUM DODAD', color: '#00ffff', bg: 'rgba(0, 255, 255, 0.15)' },
-            { key: 'intel', label: '[L] SECTOR INTEL LOG', color: '#ffaa00', bg: 'rgba(255, 170, 0, 0.15)' },
-            { key: 'menu', label: '[ESC] COMMAND BRIDGE', color: '#ff4455', bg: 'rgba(255, 68, 85, 0.15)' }
+            { key: 'next', label: 'NEXT SECTOR', hint: '[ENTER]', color: '#00ff88', accent: '#00ff88' },
+            { key: 'upgrade', label: 'QUANTUM DODAD', hint: '[U]', color: '#00ffff', accent: '#00ffff' },
+            { key: 'intel', label: 'SECTOR INTEL', hint: '[L]', color: '#ffaa00', accent: '#ffaa00' },
+            { key: 'menu', label: 'COMMAND BRIDGE', hint: '[ESC]', color: '#ff4455', accent: '#ff4455' }
         ];
 
         for (let i = 0; i < btns.length; i++) {
@@ -1359,16 +1411,13 @@ function drawMenuScreens() {
             const bDef = btns[i];
             window._levelClearHitRegions.push({ key: bDef.key, x: bx, y: btnY, w: btnW, h: btnH });
 
-            ctx.fillStyle = bDef.bg;
-            ctx.strokeStyle = bDef.color;
-            ctx.lineWidth = 1.5;
-            ctx.fillRect(bx, btnY, btnW, btnH);
-            ctx.strokeRect(bx, btnY, btnW, btnH);
-
-            ctx.textAlign = 'center';
-            ctx.fillStyle = bDef.color;
-            ctx.font = 'bold 9.5px monospace';
-            ctx.fillText(bDef.label, bx + btnW / 2, btnY + 28);
+            if (typeof CockpitUI !== 'undefined') {
+                CockpitUI.drawAvionicsButton(ctx, bx, btnY, btnW, btnH, bDef.label, bDef.hint, false, false, {
+                    primaryColor: bDef.color,
+                    accentColor: bDef.accent,
+                    font: 'bold 10px monospace'
+                });
+            }
         }
 
         // 5. Precursor Sector Intel Archive Terminal Modal (GRO-4204)
