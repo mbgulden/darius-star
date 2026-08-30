@@ -80,6 +80,14 @@ const VoicePlayback = {
      * @param {object} line — {speaker, text} for subtitle display
      * @returns {boolean} true if playback started
      */
+    /**
+     * Play a voice line. Called by BanterEngine, AudioTunnel, or DialogueSequence.
+     * @param {number} biome — current biome (1-10)
+     * @param {string} trigger — event trigger (e.g., 'level_start', 'boss_entrance')
+     * @param {string} speakerCode — BanterEngine speaker code ('D', 'L', 'T', 'N', ...)
+     * @param {object} line — {speaker, text} for subtitle display
+     * @returns {boolean} true if playback started
+     */
     play(biome, trigger, speakerCode, line) {
         if (!this._isEnabled()) return false;
         if (!biome || !trigger || !speakerCode) return false;
@@ -94,7 +102,6 @@ const VoicePlayback = {
         this.stop();
         
         const path = this._buildPath(biome, trigger, speakerCode);
-        if (!path) return false;
         
         // Set active line for subtitle sync
         if (line) {
@@ -103,9 +110,126 @@ const VoicePlayback = {
                 text: line.l || line.text || '',
             };
         }
+
+        // Trigger real-time BGM ducking (-35% / 0.65x) during character speech
+        this.duckBGM(0.65, 0.25);
         
-        this._playFile(path);
+        if (path) {
+            this._playFile(path, speakerCode, line ? (line.l || line.text) : '');
+        } else {
+            this._synthesizeVoiceSpeech(speakerCode, line ? (line.l || line.text) : '');
+        }
         return true;
+    },
+
+    /**
+     * Speak arbitrary character dialogue line with dynamic voice & BGM ducking (GRO-4208).
+     * @param {string} speaker — character name ('Darius', 'Lyra', etc.) or code ('D', 'L')
+     * @param {string} text — spoken dialogue text
+     */
+    speak(speaker, text) {
+        if (!this._isEnabled()) return false;
+        this.stop();
+        
+        const speakerMap = {
+            'Darius': 'D', 'Lyra': 'L', 'Thorne': 'T', 'Naya': 'N',
+            'Cross': 'C', 'Ophion': 'O', 'Selene': 'S', 'Architect': 'A',
+            'D': 'D', 'L': 'L', 'T': 'T', 'N': 'N', 'C': 'C', 'O': 'O', 'S': 'S', 'A': 'A'
+        };
+        const code = speakerMap[speaker] || 'L';
+        this._activeLine = { speaker: speaker || 'Lyra', text: text || '' };
+
+        // Duck BGM during active voice
+        this.duckBGM(0.65, 0.25);
+        this._synthesizeVoiceSpeech(code, text);
+        return true;
+    },
+
+    /**
+     * Duck BGM volume via AudioManager (GRO-4208).
+     */
+    duckBGM(multiplier = 0.65, fadeTime = 0.25) {
+        if (typeof AudioManager !== 'undefined' && AudioManager && typeof AudioManager.duckMusic === 'function') {
+            AudioManager.duckMusic(multiplier, fadeTime);
+        }
+    },
+
+    /**
+     * Restore BGM volume via AudioManager (GRO-4208).
+     */
+    unduckBGM(fadeTime = 0.4) {
+        if (typeof AudioManager !== 'undefined' && AudioManager && typeof AudioManager.unduckMusic === 'function') {
+            AudioManager.unduckMusic(fadeTime);
+        }
+    },
+
+    /**
+     * Procedural synthesized voice speech generator for character radio chatter.
+     */
+    _synthesizeVoiceSpeech(speakerCode, text) {
+        if (typeof audioCtx === 'undefined' || !audioCtx) return;
+        
+        const voicePresets = {
+            'D': { freq: 135, type: 'sawtooth', filter: 800, q: 3.5 }, // Darius: low gravelly
+            'L': { freq: 440, type: 'sine', filter: 1800, q: 2.0 },     // Lyra: high crystalline
+            'N': { freq: 280, type: 'triangle', filter: 1200, q: 3.0 }, // Naya: sharp melodic
+            'T': { freq: 110, type: 'sawtooth', filter: 650, q: 4.0 },  // Thorne: deep gruff
+            'C': { freq: 210, type: 'square', filter: 1000, q: 5.0 },   // Cross: robotic vocoder
+            'S': { freq: 580, type: 'sine', filter: 2200, q: 1.5 },     // Selene: ethereal
+            'A': { freq: 85, type: 'sawtooth', filter: 500, q: 6.0 },   // Architect: deep sub-bass
+            'O': { freq: 95, type: 'sawtooth', filter: 550, q: 5.5 },   // Ophion: AI synthesis
+        };
+        
+        const code = this.SPEAKER_MAP[speakerCode] ? speakerCode : (speakerCode ? speakerCode[0].toUpperCase() : 'L');
+        const preset = voicePresets[code] || voicePresets['L'];
+        
+        const now = audioCtx.currentTime;
+        const dur = Math.min(2.5, Math.max(0.8, (text ? text.length : 20) * 0.035));
+        
+        try {
+            const osc = audioCtx.createOscillator();
+            const filter = audioCtx.createBiquadFilter();
+            const gain = audioCtx.createGain();
+            
+            osc.type = preset.type;
+            osc.frequency.setValueAtTime(preset.freq, now);
+            osc.frequency.linearRampToValueAtTime(preset.freq * 1.08, now + dur * 0.3);
+            osc.frequency.linearRampToValueAtTime(preset.freq * 0.94, now + dur * 0.7);
+            osc.frequency.linearRampToValueAtTime(preset.freq, now + dur);
+            
+            filter.type = 'bandpass';
+            filter.frequency.setValueAtTime(preset.filter, now);
+            filter.Q.setValueAtTime(preset.q, now);
+            
+            const baseVol = (typeof masterVolume !== 'undefined' ? masterVolume : 0.8) * 0.12;
+            gain.gain.setValueAtTime(0.001, now);
+            gain.gain.linearRampToValueAtTime(baseVol, now + 0.04);
+            
+            const pulseCount = Math.min(8, Math.max(3, Math.floor(dur * 4)));
+            for (let i = 1; i < pulseCount; i++) {
+                const pTime = now + (i / pulseCount) * dur;
+                gain.gain.setValueAtTime(baseVol * 0.4, pTime - 0.02);
+                gain.gain.setValueAtTime(baseVol, pTime);
+            }
+            gain.gain.linearRampToValueAtTime(0.0001, now + dur);
+            
+            osc.connect(filter);
+            filter.connect(gain);
+            gain.connect(audioCtx.destination);
+            
+            osc.start(now);
+            osc.stop(now + dur);
+            
+            this._synthActive = true;
+            setTimeout(() => {
+                this._synthActive = false;
+                if (!this.isPlaying()) {
+                    this.unduckBGM(0.4);
+                }
+            }, dur * 1000);
+        } catch(e) {
+            // Silently handle audio context errors
+        }
     },
 
     /**
@@ -117,7 +241,6 @@ const VoicePlayback = {
     playTunnel(biome, speaker, text) {
         if (!this._isEnabled()) return false;
         
-        // Map full speaker name to code
         const speakerMap = {
             'Darius': 'D', 'Lyra': 'L', 'Thorne': 'T', 'Naya': 'N',
             'Cross': 'C', 'Ophion': 'O', 'Selene': 'S',
@@ -125,25 +248,26 @@ const VoicePlayback = {
         const code = speakerMap[speaker] || 'N';
         
         this._activeLine = { speaker, text };
+        this.duckBGM(0.65, 0.25);
         
-        // Use 'briefing_pre_solo' trigger for tunnel dialogue (closest match)
         const path = this._buildPath(biome, 'tunnel_enter', code);
         if (path) {
             this.stop();
-            this._playFile(path);
+            this._playFile(path, code, text);
+            return true;
+        } else {
+            this._synthesizeVoiceSpeech(code, text);
             return true;
         }
-        return false;
     },
 
     /**
      * Internal: load and play an audio file.
      */
-    _playFile(path) {
+    _playFile(path, speakerCode = 'L', text = '') {
         // Check cache first
         let audio = this._cache[path];
         if (!audio) {
-            // Evict LRU if cache is full
             while (this._cacheOrder.length >= this._maxCache) {
                 const oldPath = this._cacheOrder.shift();
                 if (this._cache[oldPath]) {
@@ -157,31 +281,33 @@ const VoicePlayback = {
             audio.preload = 'auto';
             audio.src = path;
             
-            // Handle load errors gracefully
             audio.addEventListener('error', () => {
-                // File not found — try next variant silently
-                // Don't spam console; voice files may not exist for all combos
+                // If audio file is missing on disk, fallback to procedural radio synth
+                this._synthesizeVoiceSpeech(speakerCode, text);
+            });
+
+            audio.addEventListener('ended', () => {
+                this.unduckBGM(0.4);
             });
             
             this._cache[path] = audio;
             this._cacheOrder.push(path);
         }
         
-        // Move to end of LRU
         const idx = this._cacheOrder.indexOf(path);
         if (idx >= 0) {
             this._cacheOrder.splice(idx, 1);
             this._cacheOrder.push(path);
         }
         
-        // Reset and play
         audio.currentTime = 0;
         audio.volume = typeof masterVolume !== 'undefined' ? masterVolume : 0.7;
         
         const playPromise = audio.play();
         if (playPromise) {
             playPromise.catch(() => {
-                // Autoplay blocked or other error — silently ignore
+                // If autoplay blocked or error, fallback to procedural speech synth
+                this._synthesizeVoiceSpeech(speakerCode, text);
             });
         }
         
@@ -200,6 +326,7 @@ const VoicePlayback = {
             this._activeAudio = null;
         }
         this._activeLine = null;
+        this.unduckBGM(0.4);
     },
 
     /**

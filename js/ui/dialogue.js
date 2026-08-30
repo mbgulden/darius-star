@@ -318,6 +318,9 @@
                 const line = this.lines[this.currentLineIndex];
                 if (line) {
                     this.currentLineText = this.interpolate(line.text);
+                    if (typeof VoicePlayback !== 'undefined' && VoicePlayback && typeof VoicePlayback.speak === 'function') {
+                        VoicePlayback.speak(line.speaker, this.currentLineText);
+                    }
                     if (line.onStart) {
                         try { line.onStart(); } catch(e) { console.error(e); }
                     }
@@ -493,6 +496,9 @@
                 this.currentLineIndex++;
                 if (this.currentLineIndex >= this.lines.length) {
                     activeDialogue = null;
+                    if (typeof VoicePlayback !== 'undefined' && VoicePlayback && typeof VoicePlayback.stop === 'function') {
+                        VoicePlayback.stop();
+                    }
                     triggerDialogueSFX('radio_squelch_out');
                     if (typeof document !== 'undefined') {
                         const hud = document.getElementById('lyra-hud');

@@ -139,6 +139,8 @@ eval(fs.readFileSync(path.join(__dirname, '../js/combat.js'), 'utf8'));
 eval(fs.readFileSync(path.join(__dirname, '../js/renderer/parallax.js'), 'utf8'));
 eval(fs.readFileSync(path.join(__dirname, '../js/utils.js'), 'utf8'));
 eval(fs.readFileSync(path.join(__dirname, '../js/audio.js'), 'utf8'));
+eval(fs.readFileSync(path.join(__dirname, '../js/audio_manager.js'), 'utf8'));
+eval(fs.readFileSync(path.join(__dirname, '../js/voice_playback.js'), 'utf8'));
 
 const _origPlaySound = global.playSound;
 global.playSound = (type, p) => {
@@ -505,6 +507,46 @@ characters.forEach(char => {
 });
 console.log("  [PASS] Holographic animated portrait rendering verified for all 7 story characters with CRT scanlines & mouth animation.");
 
+
+// ─── 14. GRO-4208: Voice Playback & Real-Time Dynamic BGM Ducking Tests ─────
+console.log("14. Testing Voice Playback & Real-Time BGM Ducking (GRO-4208)...");
+
+VoicePlayback.stop();
+AudioManager.unduckMusic(0);
+
+// 1. Verify AudioManager Ducking & Unducking API
+assert.strictEqual(AudioManager.isDucked(), false, "AudioManager must not be ducked initially");
+AudioManager.duckMusic(0.65, 0.25);
+assert.strictEqual(AudioManager.isDucked(), true, "AudioManager must be ducked after duckMusic call");
+assert.strictEqual(AudioManager.getDuckingMultiplier(), 0.65, "Gain multiplier must reflect -35% (0.65x) ducking");
+
+AudioManager.unduckMusic(0.4);
+assert.strictEqual(AudioManager.isDucked(), false, "AudioManager must restore volume after unduckMusic call");
+assert.strictEqual(AudioManager.getDuckingMultiplier(), 1.0, "Gain multiplier must restore to 1.0x");
+console.log("  [PASS] AudioManager duckMusic (0.65x) & unduckMusic (1.0x) verified cleanly.");
+
+// 2. Verify VoicePlayback.speak and Stop Integration
+VoicePlayback.speak('Lyra', "Watch out, Daddy! Chrono torpedo incoming!");
+const activeLine = VoicePlayback.getActiveLine();
+assert.ok(activeLine, "VoicePlayback must track active spoken dialogue line");
+assert.strictEqual(activeLine.speaker, 'Lyra', "Spoken line speaker must match Lyra");
+assert.strictEqual(AudioManager.isDucked(), true, "VoicePlayback.speak must automatically duck BGM");
+
+VoicePlayback.stop();
+assert.strictEqual(VoicePlayback.getActiveLine(), null, "VoicePlayback.stop must clear active line");
+assert.strictEqual(AudioManager.isDucked(), false, "VoicePlayback.stop must restore BGM volume");
+console.log("  [PASS] VoicePlayback.speak & stop verified with real-time dynamic BGM ducking.");
+
+// 3. Verify DialogueSequence Speech & Squelch Lifecycle
+const testSeq = new DialogueSequence([
+    { speaker: 'Darius', text: "Shields holding. Commencing attack run." }
+]);
+assert.strictEqual(AudioManager.isDucked(), true, "DialogueSequence must trigger voice speech and duck BGM on line start");
+testSeq.next(); // completes typing
+testSeq.next(); // dismisses dialogue
+assert.strictEqual(AudioManager.isDucked(), false, "DialogueSequence completion must unduck BGM");
+console.log("  [PASS] DialogueSequence lifecycle fully harmonized with VoicePlayback & BGM ducking.");
+
 console.log("============================================================");
-console.log("ALL GRO-4201, GRO-4202, GRO-4203, GRO-4204, GRO-4206 & GRO-4207 NARRATIVE TESTS PASSED (100%)");
+console.log("ALL GRO-4201, GRO-4202, GRO-4203, GRO-4204, GRO-4206, GRO-4207 & GRO-4208 NARRATIVE TESTS PASSED (100%)");
 console.log("============================================================");

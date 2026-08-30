@@ -36,6 +36,7 @@ const AudioManager = (function() {
     let _wasPaused = false;
     let _lowHealthTensionActive = false;
     let _activeGainTarget = 1.0;  // multiplier applied to track gain (1.0 = normal)
+    let _speechDuckingMult = 1.0; // GRO-4208: speech ducking multiplier (0.65 = -35%)
 
     // --- Biome name suffix mapping for victory tracks ---
     const BIOME_SUFFIX = {
@@ -348,6 +349,11 @@ const AudioManager = (function() {
             mult *= 0.50;
         }
 
+        // Speech ducking (GRO-4208): reduce volume by 35% during character comms
+        if (_speechDuckingMult < 1.0) {
+            mult *= _speechDuckingMult;
+        }
+
         return mult;
     }
 
@@ -640,6 +646,50 @@ const AudioManager = (function() {
         }
     }
 
+    /**
+     * Duck BGM volume during active character speech (GRO-4208).
+     * @param {number} multiplier — gain target (default 0.65 = -35%)
+     * @param {number} fadeTime — transition duration in seconds (default 0.25)
+     */
+    function duckMusic(multiplier, fadeTime) {
+        const target = (typeof multiplier === 'number') ? multiplier : 0.65;
+        const dur = (typeof fadeTime === 'number') ? fadeTime : 0.25;
+        _speechDuckingMult = target;
+
+        if (typeof audioCtx !== 'undefined' && audioCtx && _activeGains.length > 0) {
+            const now = audioCtx.currentTime;
+            const effectiveVol = _getEffectiveVolume();
+            _activeGains.forEach(function(gain) {
+                if (gain && gain.gain) {
+                    const currentVal = gain.gain.value;
+                    gain.gain.setValueAtTime(currentVal, now);
+                    gain.gain.linearRampToValueAtTime(effectiveVol, now + dur);
+                }
+            });
+        }
+    }
+
+    /**
+     * Restore BGM volume after character speech completes (GRO-4208).
+     * @param {number} fadeTime — transition duration in seconds (default 0.4)
+     */
+    function unduckMusic(fadeTime) {
+        const dur = (typeof fadeTime === 'number') ? fadeTime : 0.4;
+        _speechDuckingMult = 1.0;
+
+        if (typeof audioCtx !== 'undefined' && audioCtx && _activeGains.length > 0) {
+            const now = audioCtx.currentTime;
+            const effectiveVol = _getEffectiveVolume();
+            _activeGains.forEach(function(gain) {
+                if (gain && gain.gain) {
+                    const currentVal = gain.gain.value;
+                    gain.gain.setValueAtTime(currentVal, now);
+                    gain.gain.linearRampToValueAtTime(effectiveVol, now + dur);
+                }
+            });
+        }
+    }
+
     // --- Public API ---
     return {
         init: _init,
@@ -655,7 +705,11 @@ const AudioManager = (function() {
         getCurrentTrack: function() { return _currentTrack; },
         getManifest: function() { return _manifest; },
         getCurrentBiome: _getCurrentBiome,
-        isInitialized: function() { return _initialized; }
+        isInitialized: function() { return _initialized; },
+        duckMusic: duckMusic,
+        unduckMusic: unduckMusic,
+        isDucked: function() { return _speechDuckingMult < 1.0; },
+        getDuckingMultiplier: function() { return _speechDuckingMult; }
     };
 })();
 
