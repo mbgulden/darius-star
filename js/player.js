@@ -285,8 +285,63 @@ class Player {
         // Apply permanent upgrades modifiers in update loop
         const mods = window.DS_UpgradeSystem ? window.DS_UpgradeSystem.getGameplayModifiers() : null;
         if (mods) {
+            // Recalculate shieldMax with permanent upgrade bonus
+            this.shieldMax = 100 + (mods.shieldMaxHPBonus || 0);
+
             // Shield Passive Regeneration
-            this.shield = Math.min(this.shieldMax, this.shield + mods.shieldRegenRate * dt);
+            this.shield = Math.min(this.shieldMax, this.shield + (mods.shieldRegenRate || 0) * dt);
+
+            // Quantum Combat Drones (addons upgrade)
+            if (mods.droneCount > 0 && !this.isPulledOut) {
+                this.droneAngle = (this.droneAngle || 0) + dt * 2.2;
+                this.droneShootTimer = (this.droneShootTimer || 0) - dt;
+
+                // Drones fire helper plasma darts at nearest enemy
+                if (this.droneShootTimer <= 0 && typeof enemies !== 'undefined' && enemies.length > 0) {
+                    this.droneShootTimer = 1.2 / (mods.droneFireRate || 1.0);
+                    let nearest = null;
+                    let nearestDist = Infinity;
+                    for (let k = 0; k < enemies.length; k++) {
+                        const e = enemies[k];
+                        if (e.x > this.x && e.hp > 0) {
+                            const d = Math.hypot(e.x - this.x, e.y - this.y);
+                            if (d < nearestDist) {
+                                nearestDist = d;
+                                nearest = e;
+                            }
+                        }
+                    }
+                    if (nearest) {
+                        const droneIdx = Math.floor(Math.random() * mods.droneCount);
+                        const ang = this.droneAngle + (droneIdx * Math.PI * 2 / mods.droneCount);
+                        const drX = this.x + 24 + Math.cos(ang) * 45;
+                        const drY = this.y + this.height / 2 + Math.sin(ang) * 35;
+                        const aimAng = Math.atan2((nearest.y + nearest.height / 2) - drY, (nearest.x + nearest.width / 2) - drX);
+                        const dart = new Bullet(drX, drY, Math.cos(aimAng) * 600, Math.sin(aimAng) * 600, '#00ffff', 3);
+                        dart.damage = 2 * (mods.weaponDamageMultiplier || 1.0);
+                        bullets.push(dart);
+                        playSound('shoot', { weaponLevel: 1 });
+                    }
+                }
+
+                // Drones intercept enemy projectiles close to them
+                if (typeof enemyBullets !== 'undefined' && enemyBullets.length > 0) {
+                    for (let d = 0; d < mods.droneCount; d++) {
+                        const ang = this.droneAngle + (d * Math.PI * 2 / mods.droneCount);
+                        const drX = this.x + 24 + Math.cos(ang) * 45;
+                        const drY = this.y + this.height / 2 + Math.sin(ang) * 35;
+                        for (let b = enemyBullets.length - 1; b >= 0; b--) {
+                            const eb = enemyBullets[b];
+                            if (Math.hypot(eb.x - drX, eb.y - drY) < 22) {
+                                enemyBullets.splice(b, 1);
+                                createExplosion(drX, drY, '#00ffff', 4, 'shield_hit');
+                                playSound('hit');
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
             
             // Engine Afterburner Boost
             const canBoost = this.isKeyPressed('boost') && this.boostCooldown <= 0 && this.boostFuel > 0;
@@ -509,8 +564,11 @@ class Player {
 
     addSecondaryCharge(amount, label = '') {
         if (!Number.isFinite(amount) || amount <= 0) return;
+        const mods = window.DS_UpgradeSystem ? window.DS_UpgradeSystem.getGameplayModifiers() : null;
+        const mult = mods ? (mods.rocketRechargeMultiplier || 1.0) : 1.0;
+        const scaledAmt = amount * mult;
         const before = this.secondaryMeter;
-        this.secondaryMeter = Math.min(this.secondaryMeterMax, this.secondaryMeter + amount);
+        this.secondaryMeter = Math.min(this.secondaryMeterMax, this.secondaryMeter + scaledAmt);
         if (this.secondaryMeter >= this.secondaryMeterMax && before < this.secondaryMeterMax) {
             this.secondaryFlashTimer = 1.2;
             playSound('powerup');
@@ -532,7 +590,7 @@ class Player {
                 }
             });
         } else if (label) {
-            floatingTexts.push(new FloatingText(this.x + this.width / 2, this.y - 18, `+${amount} ${label}`, '#b026ff'));
+            floatingTexts.push(new FloatingText(this.x + this.width / 2, this.y - 18, `+${Math.round(scaledAmt)} ${label}`, '#b026ff'));
         }
     }
 
@@ -624,13 +682,17 @@ class Player {
     fireHomingMissiles() {
         if (!this.consumeSecondaryCharge(30)) return;
         playSound('shoot', {weaponLevel: this.weaponLevel});
+        const mods = window.DS_UpgradeSystem ? window.DS_UpgradeSystem.getGameplayModifiers() : null;
+        const rocketDmgMult = mods ? (mods.rocketDamageMultiplier || 1.0) : 1.0;
+        const aoeBonus = mods ? (mods.rocketAoeRadiusBonus || 0) : 0;
         const candidates = enemies.slice().sort((a, b) => Math.hypot(a.x - this.x, a.y - this.y) - Math.hypot(b.x - this.x, b.y - this.y));
         for (let i = 0; i < 3; i++) {
             const target = candidates[i] || boss || null;
             const missile = new Bullet(this.x + this.width, this.y + 4 + i * 6, 430, (i - 1) * 80, '#ffaa00', 7, true);
             missile.homingTarget = target;
             missile.homingStrength = 5.5;
-            missile.damage = 6;
+            missile.damage = 6 * rocketDmgMult;
+            missile.aoeRadiusBonus = aoeBonus;
             missile.secondaryType = 'missile';
             bullets.push(missile);
         }
@@ -1219,6 +1281,43 @@ class Player {
             ctx.arc(20, this.height / 2, 26, 0, Math.PI * 2);
             ctx.stroke();
             ctx.setLineDash([]);
+        }
+        // Draw Orbiting Combat Drones
+        if (mods && mods.droneCount > 0 && !this.isPulledOut) {
+            for (let d = 0; d < mods.droneCount; d++) {
+                const ang = (this.droneAngle || 0) + (d * Math.PI * 2 / mods.droneCount);
+                const drX = 24 + Math.cos(ang) * 45;
+                const drY = this.height / 2 + Math.sin(ang) * 35;
+
+                // Connecting energy tether
+                ctx.save();
+                ctx.strokeStyle = 'rgba(0, 255, 255, 0.28)';
+                ctx.lineWidth = 1;
+                ctx.setLineDash([2, 4]);
+                ctx.beginPath();
+                ctx.moveTo(24, this.height / 2);
+                ctx.lineTo(drX, drY);
+                ctx.stroke();
+                ctx.setLineDash([]);
+
+                // Drone chassis
+                ctx.shadowColor = '#00ffff';
+                ctx.shadowBlur = 8;
+                ctx.fillStyle = '#0f1828';
+                ctx.strokeStyle = '#00ffff';
+                ctx.lineWidth = 1.5;
+                ctx.beginPath();
+                ctx.arc(drX, drY, 6, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.stroke();
+
+                // Core glowing micro-orb
+                ctx.fillStyle = '#00ffff';
+                ctx.beginPath();
+                ctx.arc(drX, drY, 2.5, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            }
         }
 
         ctx.restore();

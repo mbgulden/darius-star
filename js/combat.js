@@ -164,6 +164,10 @@
                     spriteKey = 'powerup_shield';
                     themeColor = '#00e5ff';
                     label = 'S';
+                } else if (k === 'SR' || k === 'SHIELD_REGEN' || k === 'REPAIR') {
+                    spriteKey = 'powerup_shield_regen';
+                    themeColor = '#00ffaa';
+                    label = 'REG';
                 } else if (k === 'B' || k === 'BOMB') {
                     spriteKey = 'powerup_bomb';
                     themeColor = '#ffaa00';
@@ -180,6 +184,14 @@
 
                 const pulse = 1.0 + Math.sin(this.bob * 3) * 0.12;
                 ctx.scale(pulse, pulse);
+
+                // High-Contrast Dark Rim Backdrop so items pop on ANY background
+                ctx.save();
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+                ctx.beginPath();
+                ctx.arc(0, 0, 18, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
 
                 // 1. Animated Vector Containment Rings & Spark Orbiters
                 ctx.save();
@@ -564,18 +576,19 @@
             }
         }
 
-        // --- ScrapDrop Class --- (moved from renderer.js by Ned, GRO-1163)
+        // --- ScrapDrop Class (High-Contrast Sprites, Rare Item VFX & Upgradable Magnetism) ---
         class ScrapDrop {
             constructor(x, y, type, value = null) {
                 this.x = x;
                 this.y = y;
                 this.type = type; // 'metal', 'alloy', 'cell', 'core', 'essence', 'fragment'
-                this.width = 12;
-                this.height = 12;
-                this.vx = (Math.random() - 0.5) * 60 - 50; // drifting left
-                this.vy = (Math.random() - 0.5) * 80;
-                this.spin = Math.random() * Math.PI;
-                this.spinSpeed = 2 + Math.random() * 4;
+                this.width = 16;
+                this.height = 16;
+                this.vx = (Math.random() - 0.5) * 60 - 45; // drifting left
+                this.vy = (Math.random() - 0.5) * 70;
+                this.spin = Math.random() * Math.PI * 2;
+                this.spinSpeed = 1.5 + Math.random() * 3.0;
+                this.pulseTime = Math.random() * Math.PI * 2;
                 
                 if (value !== null && value !== undefined) {
                     this.value = value;
@@ -595,94 +608,132 @@
                 
                 if (type === 'metal') {
                     this.color = '#c0c0c0'; // silver/grey
+                    this.glowColor = '#ffffff';
                 } else if (type === 'alloy') {
                     this.color = '#4A90D9'; // blue alloy
+                    this.glowColor = '#00e5ff';
                 } else if (type === 'cell') {
                     this.color = '#00ffff'; // neon cyan
+                    this.glowColor = '#00ffff';
                 } else if (type === 'core') {
                     this.color = '#FFD700'; // gold
+                    this.glowColor = '#ffea70';
                 } else if (type === 'essence') {
                     this.color = '#FF44CC'; // pink/purple
+                    this.glowColor = '#ff00aa';
                 } else if (type === 'fragment') {
-                    this.color = '#ff00ff'; // neon purple
+                    this.color = '#b026ff'; // neon quantum purple
+                    this.glowColor = '#e056fd';
                 }
             }
+
             update(dt) {
-                // Apply magnetic pull toward player
-                const dx = player.x + player.width/2 - this.x;
-                const dy = player.y + player.height/2 - this.y;
-                const dist = Math.sqrt(dx*dx + dy*dy);
-                
-                const magnetRadius = 100;
-                if (dist < magnetRadius) {
-                    const pullForce = 350 * (1 - dist / magnetRadius);
-                    this.vx += (dx / dist) * pullForce * dt;
-                    this.vy += (dy / dist) * pullForce * dt;
+                this.pulseTime += dt * 4;
+
+                // Apply Upgradable Quantum Magnet pull toward player
+                if (typeof player !== 'undefined' && player && !player.isPulledOut) {
+                    const dx = (player.x + player.width / 2) - this.x;
+                    const dy = (player.y + player.height / 2) - this.y;
+                    const dist = Math.hypot(dx, dy);
+                    
+                    const mods = window.DS_UpgradeSystem ? window.DS_UpgradeSystem.getGameplayModifiers() : null;
+                    // Base unupgraded radius is 45px (super close), upgraded reaches up to 325px
+                    const magnetRadius = mods ? (mods.magnetRadius || 45) : 45;
+                    const basePull = mods ? (mods.magnetPullForce || 280) : 280;
+
+                    if (dist < magnetRadius && dist > 1) {
+                        const pullForce = basePull * (1 - dist / magnetRadius) + 80;
+                        this.vx += (dx / dist) * pullForce * dt;
+                        this.vy += (dy / dist) * pullForce * dt;
+                    } else {
+                        this.vx = this.vx * 0.97;
+                        this.vy = this.vy * 0.97;
+                        this.x -= 35 * dt;
+                    }
                 } else {
                     this.vx = this.vx * 0.98;
                     this.vy = this.vy * 0.98;
-                    this.x -= 40 * dt;
+                    this.x -= 35 * dt;
                 }
                 
                 this.x += this.vx * dt;
                 this.y += this.vy * dt;
                 this.spin += this.spinSpeed * dt;
             }
+
             draw() {
                 ctx.save();
                 ctx.translate(this.x, this.y);
+
+                const pulse = 1.0 + Math.sin(this.pulseTime) * 0.15;
+                const isRare = (this.type === 'core' || this.type === 'essence' || this.type === 'fragment');
+
+                // 1. High-Contrast Dark Rim Outline / Halo so items pop on ANY background
+                ctx.save();
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.75)';
+                ctx.beginPath();
+                ctx.arc(0, 0, (isRare ? 14 : 11) * pulse, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+
+                // 2. Ambient Color Glow Backdrop
+                ctx.shadowColor = this.glowColor;
+                ctx.shadowBlur = isRare ? (16 * pulse) : 8;
+
+                // 3. Render Dedicated Pre-Composited Sprite
+                const spriteKey = 'scrap_' + this.type;
+                const sprite = vfxSprites[spriteKey];
+                const isImage = sprite && sprite.tagName !== 'CANVAS' && sprite.complete && sprite.naturalWidth > 0;
+                const isCanvas = sprite && sprite.tagName === 'CANVAS' && sprite.width > 0;
+
                 ctx.rotate(this.spin);
-                
-                ctx.shadowColor = this.color;
-                ctx.shadowBlur = 8;
-                ctx.fillStyle = this.color;
-                
-                if (this.type === 'metal') {
-                    ctx.beginPath();
-                    for(let i=0; i<6; i++) {
-                        const angle = i * Math.PI / 3;
-                        ctx.lineTo(Math.cos(angle)*6, Math.sin(angle)*6);
+
+                if (isImage || isCanvas) {
+                    const renderSize = (isRare ? 22 : 18) * pulse;
+                    if (isImage) ctx.globalCompositeOperation = 'lighter';
+                    ctx.drawImage(sprite, -renderSize / 2, -renderSize / 2, renderSize, renderSize);
+                    if (isImage) ctx.globalCompositeOperation = 'source-over';
+                } else {
+                    // Geometric vector fallback
+                    ctx.fillStyle = this.color;
+                    if (this.type === 'metal') {
+                        ctx.beginPath();
+                        for (let i = 0; i < 6; i++) {
+                            const angle = i * Math.PI / 3;
+                            ctx.lineTo(Math.cos(angle) * 7, Math.sin(angle) * 7);
+                        }
+                        ctx.closePath();
+                        ctx.fill();
+                    } else if (this.type === 'alloy') {
+                        ctx.fillRect(-7, -5, 14, 10);
+                        ctx.fillStyle = '#ffffff';
+                        ctx.fillRect(-2, -2, 4, 4);
+                    } else if (this.type === 'cell') {
+                        ctx.fillRect(-4, -7, 8, 14);
+                        ctx.fillStyle = '#ffffff';
+                        ctx.fillRect(-2, -4, 4, 8);
+                    } else {
+                        ctx.beginPath();
+                        ctx.arc(0, 0, 8 * pulse, 0, Math.PI * 2);
+                        ctx.fill();
                     }
-                    ctx.closePath();
-                    ctx.fill();
-                } else if (this.type === 'alloy') {
-                    // Blue alloy plate with circuit traces
-                    ctx.fillRect(-7, -5, 14, 10);
-                    ctx.fillStyle = '#2266AA';
-                    ctx.fillRect(-3, -3, 6, 6);
-                } else if (this.type === 'cell') {
-                    ctx.fillRect(-3, -6, 6, 12);
-                    ctx.fillStyle = '#ffffff';
-                    ctx.fillRect(-1, -4, 2, 8);
-                } else if (this.type === 'core') {
-                    // Gold precursor core with pulsing glow
-                    ctx.shadowBlur = 14;
-                    ctx.beginPath();
-                    ctx.arc(0, 0, 8, 0, Math.PI * 2);
-                    ctx.fill();
-                    ctx.fillStyle = '#ffffff';
-                    ctx.shadowBlur = 0;
-                    ctx.beginPath();
-                    ctx.arc(0, 0, 3, 0, Math.PI * 2);
-                    ctx.fill();
-                } else if (this.type === 'essence') {
-                    // Pink/purple Dreamer essence orb
-                    ctx.shadowBlur = 16;
-                    ctx.beginPath();
-                    ctx.arc(0, 0, 9, 0, Math.PI * 2);
-                    ctx.fill();
-                    ctx.fillStyle = '#ffffff';
-                    ctx.shadowBlur = 0;
-                    ctx.beginPath();
-                    ctx.arc(0, 0, 4, 0, Math.PI * 2);
-                    ctx.fill();
-                } else if (this.type === 'fragment') {
-                    ctx.fillRect(-5, -5, 10, 10);
-                    ctx.strokeStyle = '#ffffff';
-                    ctx.lineWidth = 1;
-                    ctx.strokeRect(-5, -5, 10, 10);
                 }
-                
+
+                // 4. Subtle Specular Sparkle / Orbiters for Rare / Epic / Legendary Scrap
+                if (isRare) {
+                    ctx.shadowBlur = 0;
+                    const numOrbiters = this.type === 'fragment' ? 4 : 2;
+                    for (let i = 0; i < numOrbiters; i++) {
+                        const orbAng = this.pulseTime * 2.0 + (i * Math.PI * 2 / numOrbiters);
+                        const ox = Math.cos(orbAng) * 14;
+                        const oy = Math.sin(orbAng) * 14;
+                        ctx.fillStyle = '#ffffff';
+                        ctx.beginPath();
+                        ctx.arc(ox, oy, 1.5, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                }
+
                 ctx.restore();
             }
         }

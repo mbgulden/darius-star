@@ -10,8 +10,11 @@
         upgrades: {
             weapons: 0,
             shields: 0,
+            rockets: 0,
+            magnetism: 0,
             engines: 0,
             specials: 0,
+            addons: 0,
             cosmetics: 0
         },
         selections: {
@@ -21,44 +24,70 @@
         }
     };
 
-    // Metadata for each upgrade category
+    // Metadata for each upgrade category (Precursor Quantum Fabricator)
     const UPGRADE_CONFIG = {
         weapons: {
-            name: 'Weapon Systems',
+            name: 'Quantum Main Cannons',
             maxRank: 10,
             descriptions: [
                 'Base projectile damage: +5% per rank',
                 'Fire rate: +3% per rank (cooldown reduced)',
-                'Projectile speed: +5% per rank'
+                'Projectile velocity: +5% per rank'
             ]
         },
         shields: {
-            name: 'Shield Generators',
+            name: 'Aegis Shield & Nanite Matrix',
             maxRank: 10,
             descriptions: [
                 'Max HP/Shield: +10 per rank (up to 200 total)',
-                'Passive Shield Regen: +0.1 HP/s per rank',
+                'Passive Shield Regen: +0.15 HP/s per rank',
                 'Invulnerability frames: +0.05s on hit'
             ]
         },
-        engines: {
-            name: 'Engines & Thrusters',
+        rockets: {
+            name: 'Valkyrie Missile Pods',
             maxRank: 10,
             descriptions: [
-                'Movement speed: +3% per rank',
-                'Afterburner Boost: Increases duration and recharge rate (press Shift to boost)'
+                'Missile payload damage: +10% per rank',
+                'Area of Effect (AOE) blast radius: +12px per rank (up to +120px)',
+                'Secondary missile charge rate: +6% per rank'
+            ]
+        },
+        magnetism: {
+            name: 'Quantum Tractor Beam',
+            maxRank: 10,
+            descriptions: [
+                'Scrap attraction radius: +28px per rank (45px -> 325px)',
+                'Magnetic pull acceleration: +35px/s² per rank',
+                'Scavenger salvage yield: +3% bonus scrap value per rank'
+            ]
+        },
+        engines: {
+            name: 'Hyper-Drive & Thrusters',
+            maxRank: 10,
+            descriptions: [
+                'Ship movement speed: +3% per rank',
+                'Afterburner Boost: +6% duration, -5% recharge cooldown per rank'
             ]
         },
         specials: {
-            name: 'Cyber Overload',
+            name: 'Precursor Cyber Overload',
             maxRank: 10,
             descriptions: [
-                'Ability duration: +0.3s per rank (base 4.0s)',
-                'Ability cooldown: -5% per rank (base 15s, press K to activate)'
+                'Special ability duration: +0.35s per rank',
+                'Special ability cooldown: -5% per rank (down to 50% cooldown)'
+            ]
+        },
+        addons: {
+            name: 'Quantum Combat Drones',
+            maxRank: 10,
+            descriptions: [
+                'Deploys orbiting companion drones (1 at Rank 1, 2 at Rank 4, 3 at Rank 7, 4 at Rank 10)',
+                'Drones fire helper plasma darts and intercept enemy missiles'
             ]
         },
         cosmetics: {
-            name: 'Ship Customization',
+            name: 'Chrono-Holo Plating & FX',
             maxRank: 5,
             descriptions: [
                 'Rank 1: Unlocks Neon Cyan ship & Electric Blue trail',
@@ -199,8 +228,11 @@
         getGameplayModifiers() {
             const wpRank = this.state.upgrades.weapons || 0;
             const shRank = this.state.upgrades.shields || 0;
+            const rkRank = this.state.upgrades.rockets || 0;
+            const mgRank = this.state.upgrades.magnetism || 0;
             const enRank = this.state.upgrades.engines || 0;
             const spRank = this.state.upgrades.specials || 0;
+            const adRank = this.state.upgrades.addons || 0;
 
             return {
                 // Weapons: Base damage +5% per rank, fire rate +3% per rank, projectile speed +5% per rank
@@ -208,19 +240,35 @@
                 weaponFireRateMultiplier: 1 + wpRank * 0.03, // reduces cooldown duration
                 weaponProjSpeedMultiplier: 1 + wpRank * 0.05,
 
-                // Shields: Max HP +10 per rank, regen rate (+0.1 HP/sec per rank), invuln duration (+0.05s)
+                // Shields: Max HP +10 per rank, regen rate (+0.15 HP/sec per rank), invuln duration (+0.05s)
                 shieldMaxHPBonus: shRank * 10,
-                shieldRegenRate: shRank * 0.1, // HP per second
+                shieldRegenRate: shRank * 0.15, // HP per second
                 shieldInvulnBonus: shRank * 0.05, // seconds
+
+                // Rockets: Missile payload damage +10%/rank, AOE blast radius +12px/rank, recharge rate +6%/rank
+                rocketDamageMultiplier: 1 + rkRank * 0.10,
+                rocketAoeRadiusBonus: rkRank * 12,
+                rocketRechargeMultiplier: 1 + rkRank * 0.06,
+
+                // Magnetism: Attraction radius (base 45px, +28px/rank up to 325px), pull force (+35/rank), scrap value bonus (+3%/rank)
+                magnetismRank: mgRank,
+                magnetRadius: 45 + mgRank * 28,
+                magnetPullForce: 280 + mgRank * 35,
+                scrapValueMultiplier: 1 + mgRank * 0.03,
 
                 // Engines: Movement speed +3% per rank, thruster efficiency
                 engineSpeedMultiplier: 1 + enRank * 0.03,
-                engineBoostDurationMultiplier: 1 + enRank * 0.05,
-                engineBoostCooldownMultiplier: 1 - enRank * 0.04, // reduces cooldown duration
+                engineBoostDurationMultiplier: 1 + enRank * 0.06,
+                engineBoostCooldownMultiplier: Math.max(0.4, 1 - enRank * 0.05),
 
-                // Specials: Ship-specific ability cooldown reduction (-5% per rank), duration increase (+0.3s per rank)
-                specialCooldownMultiplier: 1 - spRank * 0.05,
-                specialDurationBonus: spRank * 0.3, // seconds
+                // Specials: Ship-specific ability cooldown reduction (-5% per rank), duration increase (+0.35s per rank)
+                specialCooldownMultiplier: Math.max(0.5, 1 - spRank * 0.05),
+                specialDurationBonus: spRank * 0.35,
+
+                // Addons: Orbiting combat drone count (1 at rank 1, 2 at rank 4, 3 at rank 7, 4 at rank 10) & fire rate
+                addonRank: adRank,
+                droneCount: adRank >= 10 ? 4 : (adRank >= 7 ? 3 : (adRank >= 4 ? 2 : (adRank >= 1 ? 1 : 0))),
+                droneFireRate: 1.0 + adRank * 0.1,
 
                 // Cosmetics selections
                 cosmetics: {

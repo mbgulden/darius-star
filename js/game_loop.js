@@ -770,13 +770,19 @@ function update(dt) {
                     const difficultyConfig = getCurrentDifficultyConfig();
                     const powerupScale = difficultyConfig.powerupDropMultiplier;
                     if (powerupScale > 0) {
-                        const weaponDropThreshold = 0.15 * powerupScale;
-                        const shieldDropThreshold = weaponDropThreshold + (0.08 * powerupScale);
                         const dropChance = Math.random();
-                        if (dropChance < weaponDropThreshold) {
+                        if (dropChance < 0.12 * powerupScale) {
                             powerups.push(new PowerUp(e.x, e.y, 'W'));
-                        } else if (dropChance < shieldDropThreshold) {
+                        } else if (dropChance < 0.20 * powerupScale) {
                             powerups.push(new PowerUp(e.x, e.y, 'S'));
+                        } else if (dropChance < 0.24 * powerupScale) {
+                            powerups.push(new PowerUp(e.x, e.y, 'SR'));
+                        } else if (dropChance < 0.28 * powerupScale) {
+                            powerups.push(new PowerUp(e.x, e.y, 'B'));
+                        } else if (dropChance < 0.32 * powerupScale) {
+                            powerups.push(new PowerUp(e.x, e.y, 'SP'));
+                        } else if (dropChance < 0.35 * powerupScale) {
+                            powerups.push(new PowerUp(e.x, e.y, 'M'));
                         }
                     }
 
@@ -808,17 +814,17 @@ function update(dt) {
                 let style = isDirect ? 'blue_laser' : 'indirect_glance';
                 if (b.secondaryType === 'missile') {
                     style = 'missile_aoe';
+                    const aoeR = 140 + (b.aoeRadiusBonus || 0);
                     createExplosion(b.x, b.y, '#ff4400', 25, 'missile_aoe');
                     
                     // Knock back nearby minions on missile impact
-                    const aoeRadius = 140;
                     for (let k = 0; k < enemies.length; k++) {
                         const otherE = enemies[k];
                         const dist = Math.hypot((otherE.x + otherE.width/2) - b.x, (otherE.y + otherE.height/2) - b.y);
-                        if (dist < aoeRadius) {
-                            otherE.hp -= Math.max(1, Math.round(baseDmg * (1 - dist / aoeRadius) * 0.8));
+                        if (dist < aoeR) {
+                            otherE.hp -= Math.max(1, Math.round(baseDmg * (1 - dist / aoeR) * 0.8));
                             const pushAng = Math.atan2((otherE.y + otherE.height/2) - b.y, (otherE.x + otherE.width/2) - b.x);
-                            const pushMag = 280 * (1 - dist / aoeRadius);
+                            const pushMag = 280 * (1 - dist / aoeR);
                             otherE.x += Math.cos(pushAng) * pushMag * 0.12;
                             otherE.y += Math.sin(pushAng) * pushMag * 0.12;
                         }
@@ -866,6 +872,7 @@ function update(dt) {
         }
     }
 
+    // PowerUp collection
     for (let i = powerups.length - 1; i >= 0; i--) {
         const pu = powerups[i];
         pu.update(dt);
@@ -884,13 +891,34 @@ function update(dt) {
 
         if (collectingPlayer) {
             playSound('powerup');
-            if (pu.kind === 'W') {
+            const k = (pu.kind || 'W').toUpperCase();
+            if (k === 'W' || k === 'WEAPON') {
                 collectingPlayer.weaponLevel = Math.min(5, collectingPlayer.weaponLevel + 1);
                 playSound('weapon_upgrade', {newLevel: collectingPlayer.weaponLevel});
-            } else if (pu.kind === 'S') {
-                collectingPlayer.shield = Math.min(collectingPlayer.shieldMax, collectingPlayer.shield + 30);
+                floatingTexts.push(new FloatingText(pu.x, pu.y, `WEAPON LV ${collectingPlayer.weaponLevel}`, '#ff0055'));
+            } else if (k === 'S' || k === 'SHIELD') {
+                collectingPlayer.shield = Math.min(collectingPlayer.shieldMax, collectingPlayer.shield + 35);
+                floatingTexts.push(new FloatingText(pu.x, pu.y, '+35 SHIELD', '#00e5ff'));
+            } else if (k === 'SR' || k === 'SHIELD_REGEN' || k === 'REPAIR') {
+                collectingPlayer.shield = collectingPlayer.shieldMax;
+                collectingPlayer.invulnerable = Math.max(collectingPlayer.invulnerable, 2.5);
+                createExplosion(pu.x, pu.y, '#00ffaa', 16, 'shield_hit');
+                floatingTexts.push(new FloatingText(pu.x, pu.y, 'MAX SHIELD REGEN', '#00ffaa'));
+            } else if (k === 'B' || k === 'BOMB') {
+                if (collectingPlayer.addSecondaryCharge) collectingPlayer.addSecondaryCharge(50, 'BOMB');
+                floatingTexts.push(new FloatingText(pu.x, pu.y, '+50 BOMB CHARGE', '#ffaa00'));
+            } else if (k === 'SP' || k === 'SPEED') {
+                collectingPlayer.boostFuel = collectingPlayer.boostMaxFuel;
+                collectingPlayer.boostCooldown = 0;
+                floatingTexts.push(new FloatingText(pu.x, pu.y, 'BOOST OVERDRIVE', '#00ff66'));
+            } else if (k === 'M' || k === 'MATERIA') {
+                const bonus = 150;
+                runScrap += bonus;
+                if (window.DS_UpgradeSystem) window.DS_UpgradeSystem.addScrap(bonus);
+                floatingTexts.push(new FloatingText(pu.x, pu.y, '+150 QUANTUM MATERIA', '#b026ff'));
             }
-            if (collectingPlayer.addSecondaryCharge) collectingPlayer.addSecondaryCharge(25, 'METER');
+            if (collectingPlayer.addSecondaryCharge) collectingPlayer.addSecondaryCharge(20, 'METER');
+            createExplosion(pu.x, pu.y, '#ffffff', 8, 'blue_laser');
             powerups.splice(i, 1);
             continue;
         }
@@ -900,6 +928,7 @@ function update(dt) {
         }
     }
 
+    // Scrap collection
     for (let i = scrapDrops.length - 1; i >= 0; i--) {
         const sd = scrapDrops[i];
         sd.update(dt);
@@ -918,18 +947,27 @@ function update(dt) {
 
         if (collectingPlayer) {
             playSound('powerup');
-            let collectedVal = sd.value;
+            const mods = window.DS_UpgradeSystem ? window.DS_UpgradeSystem.getGameplayModifiers() : null;
+            let collectedVal = sd.value * (mods ? (mods.scrapValueMultiplier || 1.0) : 1.0);
             if (collectingPlayer.shipType === 'warden') {
                 collectedVal = Math.round(collectedVal * 1.20);
             }
+            collectedVal = Math.round(collectedVal);
             runScrap += collectedVal;
+            if (window.DS_UpgradeSystem) {
+                window.DS_UpgradeSystem.addScrap(collectedVal);
+            }
             // NG+ scrap multiplier: double+ scrap in NG+ runs
             if (ngPlusRun && currentNGLevel > 0 && window.NGPlus) {
-                const bonus = collectedVal * (NGPlus.getScrapMult({ ngLevel: currentNGLevel }) - 1);
-                runScrap += Math.round(bonus);
-                collectedVal += Math.round(bonus);
+                const bonus = Math.round(collectedVal * (NGPlus.getScrapMult({ ngLevel: currentNGLevel }) - 1));
+                runScrap += bonus;
+                collectedVal += bonus;
+                if (window.DS_UpgradeSystem) {
+                    window.DS_UpgradeSystem.addScrap(bonus);
+                }
             }
-            floatingTexts.push(new FloatingText(sd.x, sd.y, `+⚙️${collectedVal}`, '#00ff55'));
+            createExplosion(sd.x, sd.y, sd.glowColor || '#00ff55', 6, 'indirect_glance');
+            floatingTexts.push(new FloatingText(sd.x, sd.y, `+💎${collectedVal}`, sd.glowColor || '#00ff55'));
             // GRO-1054: Bridge scrap collection to story events
             if (window.ScrapEvents && ScrapEvents.onScrapCollected) {
                 ScrapEvents.onScrapCollected(collectedVal, sd.type);

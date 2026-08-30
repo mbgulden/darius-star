@@ -820,31 +820,60 @@ function drawMenuScreens() {
 
         ctx.restore();
     } else if (currentScreen === SCREENS.UPGRADE_SHOP) {
-        // GRO-1056: In-canvas upgrade flow
-        ctx.fillStyle = 'rgba(5, 5, 12, 0.85)';
+        // Precursor Quantum Fabricator / Scrap Shop UI
+        ctx.fillStyle = 'rgba(4, 6, 14, 0.92)';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         ctx.save();
 
         const us = window.DS_UpgradeSystem;
-        const upgradeLabels = ['weapons', 'shields', 'engines', 'specials', 'cosmetics'];
-        const upgradeNames = ['Weapon Systems', 'Shield Generators', 'Engines & Thrusters', 'Cyber Overload', 'Ship Customization'];
+        const upgradeLabels = ['weapons', 'shields', 'rockets', 'magnetism', 'engines', 'specials', 'addons', 'cosmetics'];
+        const upgradeNames = [
+            '1. Quantum Main Cannons',
+            '2. Aegis Shield & Nanites',
+            '3. Valkyrie Missile Pods',
+            '4. Quantum Tractor Beam',
+            '5. Hyper-Drive Thrusters',
+            '6. Cyber Overload Special',
+            '7. Quantum Combat Drones',
+            '8. Chrono Plating & FX'
+        ];
         const maxRanks = upgradeLabels.map(label => us ? us.getMaxRank(label) : 10);
         const selected = window._upgradeSelected || 0;
-        const startY = 80, spacing = 75;
+        const scrap = us && us.state ? us.state.scrap : 0;
 
-        // Title
+        // 1. Header & Quantum Dodad Lore Subtitle
         ctx.textAlign = 'center';
         ctx.fillStyle = '#00ffff';
         ctx.font = 'bold 22px monospace';
-        ctx.fillText('UPGRADE TERMINAL', canvas.width / 2, 45);
+        ctx.shadowColor = '#00ffff';
+        ctx.shadowBlur = 12;
+        ctx.fillText('PRECURSOR QUANTUM FABRICATOR', canvas.width / 2, 38);
 
-        // Scrap balance
-        const scrap = us && us.state ? us.state.scrap : 0;
+        ctx.fillStyle = '#8af';
+        ctx.font = '11px monospace';
+        ctx.shadowBlur = 0;
+        ctx.fillText('TRANSMUTING SALVAGED QUANTUM JUNK INTO DURABLE SHIP SYSTEMS', canvas.width / 2, 56);
+
+        // Scrap Wallet
         ctx.fillStyle = '#ffcc00';
-        ctx.font = '14px monospace';
-        ctx.fillText('SCRAP: ' + scrap, canvas.width / 2, 65);
+        ctx.font = 'bold 15px monospace';
+        ctx.shadowColor = '#ffaa00';
+        ctx.shadowBlur = 10;
+        ctx.fillText(`💎 RECOVERED SCRAP: ${scrap}`, canvas.width / 2, 78);
+        ctx.shadowBlur = 0;
+
+        // 2. 2-Column Card Grid (4 per column)
+        const colW = (canvas.width - 70) / 2;
+        const rowH = 68;
+        const startY = 95;
+        window._upgradeHitRegions = [];
 
         for (let i = 0; i < upgradeLabels.length; i++) {
+            const col = i >= 4 ? 1 : 0;
+            const row = i % 4;
+            const cardX = 25 + col * (colW + 20);
+            const cardY = startY + row * (rowH + 10);
+
             const label = upgradeLabels[i];
             const rank = us && us.state ? (us.state.upgrades[label] || 0) : 0;
             const maxRank = maxRanks[i];
@@ -854,70 +883,81 @@ function drawMenuScreens() {
             const canAfford = !isMaxed && scrap >= cost;
             const isSelected = i === selected;
 
-            const y = startY + i * spacing;
-            const barY = y + 12;
+            window._upgradeHitRegions.push({ index: i, x: cardX, y: cardY, w: colW, h: rowH, label: label, canAfford: canAfford });
 
-            // Selection highlight
+            // Card background & highlight
+            ctx.save();
             if (isSelected) {
-                ctx.fillStyle = 'rgba(0, 255, 255, 0.08)';
-                ctx.fillRect(20, y - 5, canvas.width - 40, spacing - 4);
+                ctx.fillStyle = 'rgba(0, 255, 255, 0.12)';
                 ctx.strokeStyle = '#00ffff';
-                ctx.strokeRect(20, y - 5, canvas.width - 40, spacing - 4);
+                ctx.lineWidth = 1.5;
+                ctx.shadowColor = '#00ffff';
+                ctx.shadowBlur = 8;
+            } else {
+                ctx.fillStyle = 'rgba(15, 20, 35, 0.85)';
+                ctx.strokeStyle = 'rgba(0, 200, 255, 0.25)';
+                ctx.lineWidth = 1;
             }
+            ctx.fillRect(cardX, cardY, colW, rowH);
+            ctx.strokeRect(cardX, cardY, colW, rowH);
+            ctx.restore();
 
-            // Category name
+            // Title
             ctx.textAlign = 'left';
-            ctx.fillStyle = isSelected ? '#00ffff' : '#ccc';
-            ctx.font = 'bold 14px monospace';
-            ctx.fillText(upgradeNames[i], 35, y + 5);
+            ctx.fillStyle = isSelected ? '#00ffff' : '#ffffff';
+            ctx.font = 'bold 12px monospace';
+            ctx.fillText(upgradeNames[i], cardX + 12, cardY + 18);
 
-            // Rank bar
-            const barW = Math.min(180, canvas.width - 300);
-            const rankPct = isMaxed ? 1 : rank / maxRank;
-            ctx.fillStyle = '#1a1a3a';
-            ctx.fillRect(35, barY, barW, 8);
-            ctx.fillStyle = isMaxed ? '#00ff55' : '#00aaff';
-            ctx.fillRect(35, barY, barW * rankPct, 8);
-            ctx.strokeStyle = '#333';
-            ctx.strokeRect(35, barY, barW, 8);
-
-            // Rank text
-            ctx.fillStyle = '#8af';
-            ctx.font = '11px monospace';
-            ctx.fillText('RANK ' + rank + '/' + maxRank, 35 + barW + 10, barY + 8);
-
-            // Cost / MAX
-            const costX = canvas.width - 200;
+            // Cost / Status Badge
+            ctx.textAlign = 'right';
             if (isMaxed) {
                 ctx.fillStyle = '#00ff55';
-                ctx.fillText('MAXED', costX, y + 20);
+                ctx.font = 'bold 11px monospace';
+                ctx.fillText('MAXED', cardX + colW - 12, cardY + 18);
             } else {
-                ctx.fillStyle = canAfford ? '#ffcc00' : '#ff3355';
-                ctx.fillText(cost + ' SCRAP', costX, y + 15);
-                if (isSelected) {
-                    ctx.fillStyle = '#8af';
-                    ctx.font = '10px monospace';
-                    ctx.fillText('[ENTER] to purchase', costX, y + 32);
-                }
+                ctx.fillStyle = canAfford ? '#ffcc00' : '#ff4455';
+                ctx.font = 'bold 11px monospace';
+                ctx.fillText(`${cost} SCRAP`, cardX + colW - 12, cardY + 18);
             }
 
-            // Description
-            if (isSelected) {
-                ctx.fillStyle = '#889';
-                ctx.font = '10px monospace';
-                const desc = label === 'weapons' ? 'Damage +5%, fire rate +3%, projectile speed +5% per rank' :
-                             label === 'shields' ? 'Max HP +10, regen +0.1/s, invuln +0.05s per rank' :
-                             label === 'engines' ? 'Speed +3%, boost duration & recharge per rank' :
-                             label === 'specials' ? 'Ability duration +0.3s, cooldown -5% per rank' :
-                             'Ship color, thruster trail, explosion style';
-                ctx.fillText(desc, 35, barY + 28);
-            }
+            // Rank Meter
+            const meterX = cardX + 12;
+            const meterY = cardY + 26;
+            const meterW = colW - 120;
+            const rankPct = isMaxed ? 1.0 : (rank / maxRank);
+
+            ctx.fillStyle = '#0a1020';
+            ctx.fillRect(meterX, meterY, meterW, 8);
+            ctx.fillStyle = isMaxed ? '#00ff55' : (isSelected ? '#00ffff' : '#00aaff');
+            ctx.fillRect(meterX, meterY, meterW * rankPct, 8);
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+            ctx.strokeRect(meterX, meterY, meterW, 8);
+
+            // Rank text
+            ctx.textAlign = 'left';
+            ctx.fillStyle = '#88aacc';
+            ctx.font = '10px monospace';
+            ctx.fillText(`LV ${rank}/${maxRank}`, meterX + meterW + 8, meterY + 7);
+
+            // Dynamic Description
+            ctx.fillStyle = isSelected ? '#ffffff' : '#8899aa';
+            ctx.font = '9.5px monospace';
+            const desc = label === 'weapons' ? 'Dmg +5%, fire rate +3%, bullet speed +5%/rank' :
+                         label === 'shields' ? 'Shield +10, regen +0.15/s, invuln +0.05s/rank' :
+                         label === 'rockets' ? 'Missile dmg +10%, AOE blast +12px, recharge +6%' :
+                         label === 'magnetism' ? 'Tractor radius 45->325px, pull +35, scrap yield +3%' :
+                         label === 'engines' ? 'Speed +3%, boost duration +6%, cooldown -5%' :
+                         label === 'specials' ? 'Special duration +0.35s, cooldown -5%/rank' :
+                         label === 'addons' ? 'Combat Drones: 1->4 orbiting helper gunships' :
+                         'Chrono Hull Colors (Cyan, Mag, Gold, Void), FX';
+            ctx.fillText(desc, cardX + 12, cardY + 54);
         }
 
+        // Footer instructions
         ctx.textAlign = 'center';
         ctx.fillStyle = '#8a8a9f';
         ctx.font = '11px monospace';
-        ctx.fillText('\u2191\u2193 SELECT  |  ENTER BUY  |  ESC BACK', canvas.width / 2, startY + upgradeLabels.length * spacing + 10);
+        ctx.fillText('↑↓←→ SELECT  |  ENTER / CLICK TO PURCHASE  |  ESC RETURN TO BRIDGE', canvas.width / 2, canvas.height - 20);
 
         ctx.restore();
     } else if (currentScreen === SCREENS.CREDITS) {
@@ -1417,8 +1457,10 @@ window.addEventListener('keydown', e => {
             } else if (currentScreen === SCREENS.LOAD_GAME) {
                 window._loadSelectedSlot = Math.max(0, (window._loadSelectedSlot || 0) - 1);
             } else if (currentScreen === SCREENS.UPGRADE_SHOP) {
-                const labels = ['weapons','shields','engines','specials','cosmetics'];
-                window._upgradeSelected = Math.max(0, ((window._upgradeSelected || 0) - 1 + labels.length) % labels.length);
+                const labels = ['weapons', 'shields', 'rockets', 'magnetism', 'engines', 'specials', 'addons', 'cosmetics'];
+                const cur = window._upgradeSelected || 0;
+                if (cur % 4 === 0) window._upgradeSelected = cur + 3;
+                else window._upgradeSelected = cur - 1;
             }
             e.preventDefault();
         } else if (e.key === 'ArrowDown' || e.key === 's' || e.key === 'S') {
@@ -1436,8 +1478,10 @@ window.addEventListener('keydown', e => {
                 const saves = window._loadSaves || [];
                 window._loadSelectedSlot = Math.min(2, (window._loadSelectedSlot || 0) + 1);
             } else if (currentScreen === SCREENS.UPGRADE_SHOP) {
-                const labels = ['weapons','shields','engines','specials','cosmetics'];
-                window._upgradeSelected = ((window._upgradeSelected || 0) + 1) % labels.length;
+                const labels = ['weapons', 'shields', 'rockets', 'magnetism', 'engines', 'specials', 'addons', 'cosmetics'];
+                const cur = window._upgradeSelected || 0;
+                if (cur % 4 === 3) window._upgradeSelected = cur - 3;
+                else window._upgradeSelected = cur + 1;
             }
             e.preventDefault();
         } else if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') {
@@ -1453,6 +1497,11 @@ window.addEventListener('keydown', e => {
                 const idx = categories.indexOf(leaderboardFilter);
                 leaderboardFilter = categories[(idx - 1 + categories.length) % categories.length];
                 leaderboardScrollOffset = 0;
+            } else if (currentScreen === SCREENS.UPGRADE_SHOP) {
+                playSound('menu_select');
+                const cur = window._upgradeSelected || 0;
+                if (cur >= 4) window._upgradeSelected = cur - 4;
+                else window._upgradeSelected = cur + 4;
             }
             e.preventDefault();
         } else if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') {
@@ -1468,6 +1517,11 @@ window.addEventListener('keydown', e => {
                 const idx = categories.indexOf(leaderboardFilter);
                 leaderboardFilter = categories[(idx + 1) % categories.length];
                 leaderboardScrollOffset = 0;
+            } else if (currentScreen === SCREENS.UPGRADE_SHOP) {
+                playSound('menu_select');
+                const cur = window._upgradeSelected || 0;
+                if (cur < 4) window._upgradeSelected = cur + 4;
+                else window._upgradeSelected = cur - 4;
             }
             e.preventDefault();
         } else if (e.key === 'Enter' || e.key === ' ') {
@@ -1480,7 +1534,7 @@ window.addEventListener('keydown', e => {
             } else if (currentScreen === SCREENS.LOAD_GAME) {
                 confirmLoadGame();
             } else if (currentScreen === SCREENS.UPGRADE_SHOP) {
-                const labels = ['weapons','shields','engines','specials','cosmetics'];
+                const labels = ['weapons', 'shields', 'rockets', 'magnetism', 'engines', 'specials', 'addons', 'cosmetics'];
                 const i = window._upgradeSelected || 0;
                 const us = window.DS_UpgradeSystem;
                 if (us) {
@@ -1589,44 +1643,77 @@ window.STATUS_EXPANDED = false;
 
 // toggleStatusPanel() and DOMContentLoaded handler extracted to js/ui/hud.js (GRO-1062)
 
-// GRO-1160: Touch/click handler for LOAD_GAME screen
+// Touch/click handler for SCREENS (LOAD_GAME, UPGRADE_SHOP)
 canvas.addEventListener('click', function(e) {
-    if (typeof currentScreen === 'undefined' || currentScreen !== SCREENS.LOAD_GAME) return;
+    if (typeof currentScreen === 'undefined') return;
     var rect = canvas.getBoundingClientRect();
     var scaleX = canvas.width / rect.width;
     var scaleY = canvas.height / rect.height;
     var cx = (e.clientX - rect.left) * scaleX;
     var cy = (e.clientY - rect.top) * scaleY;
-    var regions = window._loadHitRegions || [];
-    var saves = window._loadSaves || [];
-    for (var i = 0; i < regions.length; i++) {
-var r = regions[i];
-// Check slot selection area
-if (cx >= r.x && cx <= r.x + r.w && cy >= r.y && cy <= r.y + r.h) {
-    window._loadSelectedSlot = i;
-    // Double-tap to load
-    if (window._lastSlotTap === i && Date.now() - (window._lastSlotTapTime || 0) < 400) {
-        confirmLoadGame();
-        window._lastSlotTap = -1;
-    } else {
-        window._lastSlotTap = i;
-        window._lastSlotTapTime = Date.now();
+
+    if (currentScreen === SCREENS.UPGRADE_SHOP) {
+        var uRegions = window._upgradeHitRegions || [];
+        var us = window.DS_UpgradeSystem;
+        for (var k = 0; k < uRegions.length; k++) {
+            var reg = uRegions[k];
+            if (cx >= reg.x && cx <= reg.x + reg.w && cy >= reg.y && cy <= reg.y + reg.h) {
+                window._upgradeSelected = reg.index;
+                if (us) {
+                    var cost = us.getUpgradeCost(reg.label);
+                    if (us.state && us.state.scrap >= cost) {
+                        us.buyUpgrade(reg.label);
+                        playSound('menu_click');
+                        if (window.CampaignSave) {
+                            var activeSlot = parseInt(localStorage.getItem('dariusStar_activeSlot') || '0');
+                            var saveData = CampaignSave.load(activeSlot);
+                            if (saveData) {
+                                saveData.upgrades = { ...us.state.upgrades };
+                                saveData.scrap = us.state.scrap;
+                                CampaignSave.save(activeSlot, saveData);
+                            }
+                        }
+                    } else {
+                        playSound('menu_select');
+                    }
+                }
+                return;
+            }
+        }
+        return;
     }
-    return;
-}
-// Check LOAD button
-if (r.btnLoad && cx >= r.btnLoad.x && cx <= r.btnLoad.x + r.btnLoad.w && cy >= r.btnLoad.y && cy <= r.btnLoad.y + r.btnLoad.h) {
-    window._loadSelectedSlot = i;
-    confirmLoadGame();
-    return;
-}
-// Check DELETE button
-if (r.btnDelete && cx >= r.btnDelete.x && cx <= r.btnDelete.x + r.btnDelete.w && cy >= r.btnDelete.y && cy <= r.btnDelete.y + r.btnDelete.h) {
-    if (confirm('Delete save in Slot ' + (i+1) + '?')) {
-        CampaignSave.delete(i);
-        loadGameScreen();
-    }
-    return;
-}
+
+    if (currentScreen === SCREENS.LOAD_GAME) {
+        var regions = window._loadHitRegions || [];
+        for (var i = 0; i < regions.length; i++) {
+            var r = regions[i];
+            // Check slot selection area
+            if (cx >= r.x && cx <= r.x + r.w && cy >= r.y && cy <= r.y + r.h) {
+                window._loadSelectedSlot = i;
+                // Double-tap to load
+                if (window._lastSlotTap === i && Date.now() - (window._lastSlotTapTime || 0) < 400) {
+                    confirmLoadGame();
+                    window._lastSlotTap = -1;
+                } else {
+                    window._lastSlotTap = i;
+                    window._lastSlotTapTime = Date.now();
+                }
+                return;
+            }
+            // Check LOAD button
+            if (r.btnLoad && cx >= r.btnLoad.x && cx <= r.btnLoad.x + r.btnLoad.w && cy >= r.btnLoad.y && cy <= r.btnLoad.y + r.btnLoad.h) {
+                window._loadSelectedSlot = i;
+                confirmLoadGame();
+                return;
+            }
+            // Check DELETE button
+            if (r.btnDelete && cx >= r.btnDelete.x && cx <= r.btnDelete.x + r.btnDelete.w && cy >= r.btnDelete.y && cy <= r.btnDelete.y + r.btnDelete.h) {
+                if (confirm('Delete save in Slot ' + (i+1) + '?')) {
+                    CampaignSave.delete(i);
+                    loadGameScreen();
+                }
+                return;
+            }
+        }
     }
 });

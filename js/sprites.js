@@ -180,9 +180,16 @@
             _loadVFX('thruster_1', 'assets/sprites/thruster_1.png');
             _loadVFX('powerup_weapon', 'assets/sprites/powerup_weapon.png');
             _loadVFX('powerup_shield', 'assets/sprites/powerup_shield.png');
+            _loadVFX('powerup_shield_regen', 'assets/sprites/powerup_shield_regen.png');
             _loadVFX('powerup_bomb', 'assets/sprites/powerup_bomb.png');
             _loadVFX('powerup_speed', 'assets/sprites/powerup_speed.png');
             _loadVFX('powerup_materia', 'assets/sprites/powerup_materia.png');
+            _loadVFX('scrap_metal', 'assets/sprites/scrap_metal.png');
+            _loadVFX('scrap_alloy', 'assets/sprites/scrap_alloy.png');
+            _loadVFX('scrap_cell', 'assets/sprites/scrap_cell.png');
+            _loadVFX('scrap_core', 'assets/sprites/scrap_core.png');
+            _loadVFX('scrap_essence', 'assets/sprites/scrap_essence.png');
+            _loadVFX('scrap_fragment', 'assets/sprites/scrap_fragment.png');
         }
 
         // --- GRO-1141: Pre-composite additive sprites ---

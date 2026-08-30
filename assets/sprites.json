@@ -5239,6 +5239,125 @@
       "width": 256,
       "height": 256,
       "is_valid_power_of_two": true
+    },
+    "scrap_metal": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "scrap_metal.png",
+          "path": "assets/sprites/scrap_metal.png",
+          "width": 256,
+          "height": 256,
+          "is_power_of_two": true,
+          "sha256": "5a6367b3dd18519ee220bb54f9e0031fd9e0de51c6d10f295c0088d9910ddf7d"
+        }
+      ],
+      "frame_count": 1,
+      "width": 256,
+      "height": 256,
+      "is_valid_power_of_two": true
+    },
+    "scrap_alloy": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "scrap_alloy.png",
+          "path": "assets/sprites/scrap_alloy.png",
+          "width": 256,
+          "height": 256,
+          "is_power_of_two": true,
+          "sha256": "ecc926bddc874f221deead775ab55387889ef0e6b969a719ea77b4ba773c83cc"
+        }
+      ],
+      "frame_count": 1,
+      "width": 256,
+      "height": 256,
+      "is_valid_power_of_two": true
+    },
+    "scrap_cell": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "scrap_cell.png",
+          "path": "assets/sprites/scrap_cell.png",
+          "width": 256,
+          "height": 256,
+          "is_power_of_two": true,
+          "sha256": "9c0e5e0e73b7eba7c888bc604c898a63a2ad27d47bcdd0ab80124cb9e4481e7d"
+        }
+      ],
+      "frame_count": 1,
+      "width": 256,
+      "height": 256,
+      "is_valid_power_of_two": true
+    },
+    "scrap_core": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "scrap_core.png",
+          "path": "assets/sprites/scrap_core.png",
+          "width": 256,
+          "height": 256,
+          "is_power_of_two": true,
+          "sha256": "9e763f6904dba9dc6f995f9e5a1fb49f6d53c5015d9ee85db141d9ae0efb7c3c"
+        }
+      ],
+      "frame_count": 1,
+      "width": 256,
+      "height": 256,
+      "is_valid_power_of_two": true
+    },
+    "scrap_essence": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "scrap_essence.png",
+          "path": "assets/sprites/scrap_essence.png",
+          "width": 256,
+          "height": 256,
+          "is_power_of_two": true,
+          "sha256": "7b1e75791b6af74ad37a0d966cf8b73eecacf2963b1977abfd06929da9f036b9"
+        }
+      ],
+      "frame_count": 1,
+      "width": 256,
+      "height": 256,
+      "is_valid_power_of_two": true
+    },
+    "scrap_fragment": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "scrap_fragment.png",
+          "path": "assets/sprites/scrap_fragment.png",
+          "width": 256,
+          "height": 256,
+          "is_power_of_two": true,
+          "sha256": "9e245518a1c884696471c5c3c2eb633b3f0d85d2035798f2a4f1b7446e4bb525"
+        }
+      ],
+      "frame_count": 1,
+      "width": 256,
+      "height": 256,
+      "is_valid_power_of_two": true
+    },
+    "powerup_shield_regen": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "powerup_shield_regen.png",
+          "path": "assets/sprites/powerup_shield_regen.png",
+          "width": 256,
+          "height": 256,
+          "is_power_of_two": true,
+          "sha256": "9dbeebe91b01ca31907f5a32b02caa929c6715e8bd62121a0359491a67727ddf"
+        }
+      ],
+      "frame_count": 1,
+      "width": 256,
+      "height": 256,
+      "is_valid_power_of_two": true
     }
   },
   "validation": {
