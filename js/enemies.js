@@ -363,7 +363,7 @@
             }
         }
 
-        // --- Boss Fighter Class (Multi-Stage & Stratum Variety) ---
+        // --- Boss Fighter Class (Interactive Target Points & Dynamic Flight) ---
         class Boss {
             constructor() {
                 this.id = ++enemyIdCounter;
@@ -375,6 +375,9 @@
                 this.bobTimer = 0;
                 this.chargeProgress = 0;
                 this.altAttackToggle = false;
+                this.ambushDir = 'RIGHT';
+                this.ambushVx = -700;
+                this.ambushVy = 0;
                 this._victoryTimeout = null;
                 this._advanceTimeout = null;
                 this._explosionTimers = [];
@@ -400,7 +403,7 @@
                 this.hpMax = Math.round(baseHp * difficultyConfig.bossHpMultiplier * coOpMultiplier);
                 this.hp = this.hpMax;
 
-                // Dynamic Boss Names & Themes per Biome
+                // Dynamic Boss Names per Biome
                 const midBossNames = {
                     1: "TRENCH NAUTILUS", 2: "CALCIFIED SCORPION", 3: "CRYO MANTIS",
                     4: "WARP STRIKER", 5: "FROST BEHEMOTH", 6: "MAGMA DRAKE",
@@ -416,13 +419,26 @@
                 this.bossName = this.isMidBoss ? (midBossNames[biomeLevel] || "SUB-GUARDIAN") : (biomeBossNames[biomeLevel] || "BIOME OVERLORD");
                 this.spriteKey = this.isMidBoss ? `boss_b${biomeLevel}_mid_0` : `boss_b${biomeLevel}_0`;
 
-                // Multi-Stage & Destructible Hardpoint System
+                // Multi-Stage & Discrete Interactive Target Points
                 if (this.isMidBoss) {
+                    const subHp = Math.round(this.hpMax * 0.5);
+                    this.targetPoints = [
+                        { id: 'part1', name: 'Armor Shell', relX: 15, relY: 15, width: 80, height: 45, maxHp: subHp, hp: subHp, destroyed: false, hitTimer: 0 },
+                        { id: 'part2', name: 'Bio-Plasma Maw', relX: 55, relY: 45, width: 70, height: 50, maxHp: subHp, hp: subHp, destroyed: false, hitTimer: 0 }
+                    ];
                     this.stages = [
-                        { name: 'Armor Shell', hpRatio: 0.50, destroyed: false, hardpoint: 'Armor Plating' },
-                        { name: 'Exposed Core', hpRatio: 0.00, destroyed: false, hardpoint: 'Bio-Core' }
+                        { name: 'Armor Shell', hpRatio: 0.50, destroyed: false, hardpoint: 'Armor Shell' },
+                        { name: 'Exposed Bio-Core', hpRatio: 0.00, destroyed: false, hardpoint: 'Bio-Core' }
                     ];
                 } else if (biomeLevel === 10) {
+                    const p1 = Math.round(this.hpMax * 0.34);
+                    const p2 = Math.round(this.hpMax * 0.33);
+                    const p3 = Math.round(this.hpMax * 0.33);
+                    this.targetPoints = [
+                        { id: 'railgun', name: 'Dorsal Chrono Railgun', relX: 20, relY: 10, width: 85, height: 40, maxHp: p1, hp: p1, destroyed: false, hitTimer: 0 },
+                        { id: 'singularity', name: 'Singularity Launchers', relX: 20, relY: 90, width: 85, height: 40, maxHp: p2, hp: p2, destroyed: false, hitTimer: 0 },
+                        { id: 'chrono_core', name: 'Unbound Chrono Core', relX: 55, relY: 45, width: 80, height: 55, maxHp: p3, hp: p3, destroyed: false, hitTimer: 0 }
+                    ];
                     this.stages = [
                         { name: 'Dorsal Heavy Railgun', hpRatio: 0.66, destroyed: false, hardpoint: 'Railgun Cannon' },
                         { name: 'Singularity Launchers', hpRatio: 0.33, destroyed: false, hardpoint: 'Ventral Pods' },
@@ -434,6 +450,12 @@
                         4: 'Quantum Shield Prisms', 5: 'Icebreaker Titanium Plating', 6: 'Solar Prominence Wings',
                         7: 'Twin Tesla Pylons', 8: 'Battleship Quad Turrets', 9: 'Synaptic Neuro-Nodes'
                     };
+                    const hp1 = Math.round(this.hpMax * 0.50);
+                    const hp2 = Math.round(this.hpMax * 0.50);
+                    this.targetPoints = [
+                        { id: 'hardpoint1', name: hardpoints[biomeLevel] || 'Weapon Array', relX: 25, relY: 15, width: 85, height: 45, maxHp: hp1, hp: hp1, destroyed: false, hitTimer: 0 },
+                        { id: 'core', name: 'Exposed Bio-Core', relX: 60, relY: 45, width: 75, height: 50, maxHp: hp2, hp: hp2, destroyed: false, hitTimer: 0 }
+                    ];
                     this.stages = [
                         { name: hardpoints[biomeLevel] || 'Weapon Array', hpRatio: 0.50, destroyed: false, hardpoint: hardpoints[biomeLevel] || 'Hardpoint' },
                         { name: 'Exposed Bio/Chrono Core', hpRatio: 0.00, destroyed: false, hardpoint: 'Core' }
@@ -481,62 +503,151 @@
             update(dt) {
                 this.bobTimer += dt;
 
-                // Entrance glide
+                // Update target point mini health bar decay
+                for (const tp of this.targetPoints) {
+                    if (tp.hitTimer > 0) {
+                        tp.hitTimer -= dt;
+                    }
+                }
+
+                // ─── STATE MACHINE & 2D FLIGHT / AMBUSH MANEUVERS ───────────
                 if (this.state === 'intro') {
-                    this.x -= 45 * dt;
+                    this.x -= 55 * dt;
                     if (this.x <= canvas.width - 210) {
                         this.x = canvas.width - 210;
-                        this.state = 'idle';
-                        this.stateTimer = 2.8;
+                        this.state = 'hover_patrol';
+                        this.stateTimer = 3.0;
                     }
                     return;
                 }
 
-                // Vertical hover
-                const hoverAmp = this.currentStage > 0 ? 30 : 20;
-                const hoverFreq = this.currentStage > 0 ? 2.8 : 2.0;
-                this.y += Math.sin(this.bobTimer * hoverFreq) * hoverAmp * dt;
+                if (this.state === 'hover_patrol' || this.state === 'idle') {
+                    // Dynamic 2D multi-directional flight
+                    const targetX = canvas.width - 230 + Math.cos(this.bobTimer * 1.6) * 55;
+                    const targetY = canvas.height / 2 - 30 + Math.sin(this.bobTimer * 2.2) * (canvas.height * 0.28);
+                    this.x += (targetX - this.x) * 2.5 * dt;
+                    this.y += (targetY - this.y) * 2.5 * dt;
 
-                // State cycle timer
-                this.stateTimer -= dt;
-                if (this.stateTimer <= 0) {
-                    if (this.state === 'idle') {
-                        // Switch to Alternating attack or Charged attack
-                        if (Math.random() < 0.45) {
+                    this.stateTimer -= dt;
+                    if (this.stateTimer <= 0) {
+                        const roll = Math.random();
+                        if (roll < 0.30) {
+                            // Forward player lunge
+                            this.state = 'target_lunge';
+                            this.stateTimer = 1.4;
+                        } else if (roll < 0.60) {
+                            // Alternating weapon sweep
                             this.state = 'alternating';
-                            this.stateTimer = 3.0;
-                        } else {
+                            this.stateTimer = 2.8;
+                        } else if (roll < 0.82) {
+                            // Charged energy pulse
                             this.state = 'charge_up';
                             this.stateTimer = 1.8;
                             this.chargeProgress = 0;
                             playSound('laser_charge');
+                        } else {
+                            // Off-screen ambush dive
+                            this.state = 'offscreen_dive';
+                            this.stateTimer = 1.2;
                         }
-                    } else if (this.state === 'alternating') {
-                        this.state = 'idle';
+                    }
+                } else if (this.state === 'target_lunge') {
+                    // Aggressive forward thrust towards player
+                    const targetPlayer = (typeof player !== 'undefined') ? player : { x: 100, y: canvas.height / 2 };
+                    this.x -= 340 * dt;
+                    this.y += Math.sign(targetPlayer.y - (this.y + 70)) * 100 * dt;
+                    this.stateTimer -= dt;
+                    if (this.x < canvas.width * 0.45 || this.stateTimer <= 0) {
+                        this.state = 'retreat_bank';
+                        this.stateTimer = 1.2;
+                    }
+                } else if (this.state === 'retreat_bank') {
+                    // Smooth backward banking
+                    this.x += (canvas.width - 220 - this.x) * 3.5 * dt;
+                    this.stateTimer -= dt;
+                    if (this.stateTimer <= 0) {
+                        this.state = 'hover_patrol';
                         this.stateTimer = 2.5;
-                    } else if (this.state === 'charge_up') {
+                    }
+                } else if (this.state === 'alternating') {
+                    this.y += Math.sin(this.bobTimer * 3.0) * 40 * dt;
+                    this.stateTimer -= dt;
+                    if (this.stateTimer <= 0) {
+                        this.state = 'hover_patrol';
+                        this.stateTimer = 2.5;
+                    }
+                } else if (this.state === 'charge_up') {
+                    this.chargeProgress = Math.min(1.0, 1.0 - (this.stateTimer / 1.8));
+                    if (Math.random() < 0.6) {
+                        createExplosion(this.x + 30 + Math.random() * 80, this.y + 40 + Math.random() * 60, this.pulseColor, 4);
+                    }
+                    this.stateTimer -= dt;
+                    if (this.stateTimer <= 0) {
                         this.state = 'charge_blast';
                         this.stateTimer = 1.6;
                         this.fireChargedBlast();
                         playSound('laser_fire');
-                    } else if (this.state === 'charge_blast' || this.state === 'rage') {
-                        this.state = 'idle';
+                    }
+                } else if (this.state === 'charge_blast' || this.state === 'rage') {
+                    this.stateTimer -= dt;
+                    if (this.stateTimer <= 0) {
+                        this.state = 'hover_patrol';
                         this.stateTimer = 2.2;
                     }
-                }
-
-                // Charge-up particle & pulse updates
-                if (this.state === 'charge_up') {
-                    this.chargeProgress = Math.min(1.0, 1.0 - (this.stateTimer / 1.8));
-                    if (Math.random() < 0.6) {
-                        createExplosion(this.x + 30 + Math.random() * 80, this.y + 40 + Math.random() * 60, this.pulseColor, 4);
+                } else if (this.state === 'offscreen_dive') {
+                    // Accelerate rapidly off the screen
+                    this.x += 650 * dt;
+                    if (this.x > canvas.width + 120) {
+                        this.state = 'ambush_warning';
+                        this.stateTimer = 1.5;
+                        this.ambushDir = ['RIGHT', 'TOP', 'BOTTOM'][Math.floor(Math.random() * 3)];
+                        playSound('siren');
+                    }
+                } else if (this.state === 'ambush_warning') {
+                    this.stateTimer -= dt;
+                    if (this.stateTimer <= 0) {
+                        this.state = 'ambush_charge';
+                        this.stateTimer = 1.8;
+                        if (this.ambushDir === 'TOP') {
+                            this.x = canvas.width - 240;
+                            this.y = -150;
+                            this.ambushVx = -250;
+                            this.ambushVy = 650;
+                        } else if (this.ambushDir === 'BOTTOM') {
+                            this.x = canvas.width - 240;
+                            this.y = canvas.height + 150;
+                            this.ambushVx = -250;
+                            this.ambushVy = -650;
+                        } else {
+                            this.x = canvas.width + 150;
+                            const targetPlayer = (typeof player !== 'undefined') ? player : { y: canvas.height / 2 };
+                            this.y = targetPlayer.y - 70;
+                            this.ambushVx = -750;
+                            this.ambushVy = 0;
+                        }
+                        playSound('laser_fire');
+                    }
+                } else if (this.state === 'ambush_charge') {
+                    this.x += this.ambushVx * dt;
+                    this.y += this.ambushVy * dt;
+                    createExplosion(this.x + 80, this.y + 70, this.pulseColor, 10);
+                    this.shootTimer -= dt;
+                    if (this.shootTimer <= 0) {
+                        this.attackNormal();
+                        this.shootTimer = 0.25;
+                    }
+                    if (this.x < -200 || this.y < -200 || this.y > canvas.height + 200 || this.stateTimer <= 0) {
+                        this.x = canvas.width + 80;
+                        this.y = canvas.height / 2 - 70;
+                        this.state = 'intro';
+                        this.stateTimer = 1.5;
                     }
                 }
 
                 // Continuous weapon firing
                 this.shootTimer -= dt;
                 if (this.shootTimer <= 0) {
-                    if (this.state === 'idle') {
+                    if (this.state === 'hover_patrol' || this.state === 'idle' || this.state === 'target_lunge') {
                         this.attackNormal();
                         this.shootTimer = (this.currentStage > 0 ? 0.55 : 0.85);
                     } else if (this.state === 'alternating') {
@@ -557,52 +668,42 @@
                 const ty = this.y + 70;
 
                 if (b === 1) {
-                    // Abyssal Trident salvo
                     enemyBullets.push(new EnemyBullet(tx, ty - 30, -280, -60));
                     enemyBullets.push(new EnemyBullet(tx, ty, -300, 0, 'missile'));
                     enemyBullets.push(new EnemyBullet(tx, ty + 30, -280, 60));
                 } else if (b === 2) {
-                    // Calcified bone needle fan
                     for (let i = -2; i <= 2; i++) {
                         enemyBullets.push(new EnemyBullet(tx, ty, -250, i * 45));
                     }
                 } else if (b === 3) {
-                    // Cryo ice-lance needles
                     enemyBullets.push(new EnemyBullet(tx, ty - 25, -340, 0));
                     enemyBullets.push(new EnemyBullet(tx, ty, -360, 0, 'missile'));
                     enemyBullets.push(new EnemyBullet(tx, ty + 25, -340, 0));
                 } else if (b === 4) {
-                    // Ethereal curving wisps
                     enemyBullets.push(new EnemyBullet(tx, ty - 35, -270, -90));
                     enemyBullets.push(new EnemyBullet(tx, ty, -290, 0));
                     enemyBullets.push(new EnemyBullet(tx, ty + 35, -270, 90));
                 } else if (b === 5) {
-                    // Sub-zero frost flak + homing missile
                     enemyBullets.push(new EnemyBullet(tx, ty - 40, -260, -70, 'missile'));
                     enemyBullets.push(new EnemyBullet(tx, ty + 40, -260, 70, 'missile'));
                     enemyBullets.push(new EnemyBullet(tx, ty, -310, 0));
                 } else if (b === 6) {
-                    // Magma flare radial burst
                     for (let i = -2; i <= 2; i++) {
                         enemyBullets.push(new EnemyBullet(tx, ty, -270, i * 65));
                     }
                 } else if (b === 7) {
-                    // High-voltage lightning needles
                     enemyBullets.push(new EnemyBullet(tx, ty - 30, -440, 0));
                     enemyBullets.push(new EnemyBullet(tx, ty, -460, 0));
                     enemyBullets.push(new EnemyBullet(tx, ty + 30, -440, 0));
                 } else if (b === 8) {
-                    // Naval battleship battery flak
                     enemyBullets.push(new EnemyBullet(tx, ty - 35, -330, -80));
                     enemyBullets.push(new EnemyBullet(tx, ty, -350, 0, 'missile'));
                     enemyBullets.push(new EnemyBullet(tx, ty + 35, -330, 80));
                 } else if (b === 9) {
-                    // Synaptic bio-plasma spray
                     for (let i = -1; i <= 1; i++) {
                         enemyBullets.push(new EnemyBullet(tx, ty, -260, i * 80));
                     }
                 } else {
-                    // Chrono tachyon stream
                     enemyBullets.push(new EnemyBullet(tx, ty - 30, -320, -70));
                     enemyBullets.push(new EnemyBullet(tx, ty, -350, 0, 'missile'));
                     enemyBullets.push(new EnemyBullet(tx, ty + 30, -320, 70));
@@ -620,12 +721,10 @@
                 const dist = Math.max(1, Math.sqrt(dx*dx + dy*dy));
 
                 if (this.altAttackToggle) {
-                    // Upper hardpoint barrage
                     const upY = this.y + 25;
                     enemyBullets.push(new EnemyBullet(this.x + 20, upY, -290, -90));
                     enemyBullets.push(new EnemyBullet(this.x + 20, upY, (dx/dist) * 310, (dy/dist) * 310));
                 } else {
-                    // Lower hardpoint barrage
                     const lowY = this.y + 115;
                     enemyBullets.push(new EnemyBullet(this.x + 20, lowY, -290, 90));
                     enemyBullets.push(new EnemyBullet(this.x + 20, lowY, (dx/dist) * 310, (dy/dist) * 310));
@@ -641,14 +740,12 @@
                 createExplosion(tx, ty, this.pulseColor, 20);
 
                 if (b === 2 || b === 4 || b === 6 || b === 9) {
-                    // 16-Direction Super-Nova Radial Barrage
                     const count = 16;
                     for (let i = 0; i < count; i++) {
                         const ang = i * (Math.PI * 2 / count) + this.bobTimer;
                         enemyBullets.push(new EnemyBullet(tx, ty, Math.cos(ang) * 260, Math.sin(ang) * 260));
                     }
                 } else {
-                    // Multi-Beam Heavy Laser Salvo
                     for (let o = -60; o <= 60; o += 30) {
                         enemyBullets.push(new EnemyBullet(tx, ty + o, -400, o * 1.5));
                         enemyBullets.push(new EnemyBullet(tx, ty + o, -360, o * 0.8, 'missile'));
@@ -656,35 +753,58 @@
                 }
             }
 
-            takeDamage(amt) {
+            // ─── INTERACTIVE TARGET POINT HIT RESOLUTION ─────────────────────
+            takeDamage(amt, hitX, hitY) {
                 if (this.hp <= 0) return;
                 this.hp -= amt;
                 playSound('hit');
-                createExplosion(this.x + Math.random() * 140, this.y + Math.random() * 100, '#ffffff', 5);
 
-                // Multi-Stage & Destructible Hardpoint Check
-                const currentRatio = this.hp / this.hpMax;
-                for (let i = 0; i < this.stages.length - 1; i++) {
-                    const st = this.stages[i];
-                    if (!st.destroyed && currentRatio <= st.hpRatio) {
-                        st.destroyed = true;
-                        this.currentStage = i + 1;
-                        
-                        // Hardpoint Destruction VFX & Event
-                        playSound('explosion');
-                        for (let k = 0; k < 12; k++) {
-                            createExplosion(this.x + 40 + Math.random() * 100, this.y + 20 + Math.random() * 90, '#ff3300', 12);
+                // Determine which target point was hit based on collision coordinates
+                let targetHit = null;
+                if (typeof hitX === 'number' && typeof hitY === 'number') {
+                    const localX = hitX - this.x;
+                    const localY = hitY - this.y;
+                    
+                    for (const tp of this.targetPoints) {
+                        if (!tp.destroyed) {
+                            if (localX >= tp.relX - 20 && localX <= tp.relX + tp.width + 20 &&
+                                localY >= tp.relY - 20 && localY <= tp.relY + tp.height + 20) {
+                                targetHit = tp;
+                                break;
+                            }
                         }
-                        spawnHitFlash(this.x + this.width / 2, this.y + this.height / 2, 'boss_vulnerable');
-                        
+                    }
+                }
+
+                if (!targetHit) {
+                    targetHit = this.targetPoints.find(tp => !tp.destroyed) || this.targetPoints[this.targetPoints.length - 1];
+                }
+
+                if (targetHit) {
+                    targetHit.hp = Math.max(0, targetHit.hp - amt);
+                    targetHit.hitTimer = 2.0; // Display mini health bar for 2 seconds
+
+                    const sparkX = this.x + targetHit.relX + targetHit.width / 2;
+                    const sparkY = this.y + targetHit.relY + targetHit.height / 2;
+                    createExplosion(sparkX, sparkY, '#ffffff', 4);
+
+                    if (targetHit.hp <= 0 && !targetHit.destroyed) {
+                        targetHit.destroyed = true;
+                        this.currentStage++;
+                        playSound('explosion');
+
+                        for (let k = 0; k < 12; k++) {
+                            createExplosion(sparkX + (Math.random() - 0.5) * 40, sparkY + (Math.random() - 0.5) * 40, '#ff3300', 12);
+                        }
+                        spawnHitFlash(sparkX, sparkY, 'boss_vulnerable');
+
                         if (typeof floatingTexts !== 'undefined') {
                             floatingTexts.push(new FloatingText(canvas.width / 2, canvas.height / 3, 
-                                `${st.hardpoint.toUpperCase()} DESTROYED!`, '#ff4757'));
+                                `${targetHit.name.toUpperCase()} DESTROYED!`, '#ff4757'));
                         }
-                        
+
                         this.state = 'rage';
-                        this.stateTimer = 3.5;
-                        break;
+                        this.stateTimer = 3.2;
                     }
                 }
 
@@ -706,7 +826,6 @@
 
                     playSound('explosion');
 
-                    // Scrap drops on defeat
                     if (typeof scrapDrops !== 'undefined' && window.Economy) {
                         const dropCount = this.isMidBoss ? 3 : (getCurrentDifficultyConfig().id === 'insane' ? 1 : 5);
                         for (let k = 0; k < dropCount; k++) {
@@ -728,11 +847,9 @@
                     }
 
                     if (this.isMidBoss) {
-                        // Mid-boss clear: advance to level 6 after explosions
                         if (this._advanceTimeout) clearTimeout(this._advanceTimeout);
                         this._advanceTimeout = setTimeout(() => { advanceSubLevel(); }, 2500);
                     } else if (biomeLevel >= 10) {
-                        // Final boss victory cinematic
                         _winTransition = true;
                         determineEnding();
                         if (typeof saveTotalScrapOnBiomeCompletion === 'function') {
@@ -741,7 +858,6 @@
                         if (this._victoryTimeout) clearTimeout(this._victoryTimeout);
                         this._victoryTimeout = setTimeout(() => { playVictoryCinematic(); }, 3500);
                     } else {
-                        // Biome clear: advance to next biome
                         if (this._advanceTimeout) clearTimeout(this._advanceTimeout);
                         this._advanceTimeout = setTimeout(() => { advanceToNextBiome(); }, 3000);
                     }
@@ -749,13 +865,35 @@
             }
 
             draw() {
+                // ─── AMBUSH WARNING INDICATOR (Drawn across screen edge) ─────
+                if (this.state === 'ambush_warning') {
+                    ctx.save();
+                    const flash = Math.sin(this.bobTimer * 12) > 0;
+                    ctx.fillStyle = flash ? 'rgba(255, 0, 80, 0.35)' : 'rgba(255, 230, 0, 0.20)';
+                    
+                    if (this.ambushDir === 'TOP') {
+                        ctx.fillRect(0, 0, canvas.width, 30);
+                    } else if (this.ambushDir === 'BOTTOM') {
+                        ctx.fillRect(0, canvas.height - 30, canvas.width, 30);
+                    } else {
+                        ctx.fillRect(canvas.width - 40, 0, 40, canvas.height);
+                    }
+
+                    ctx.fillStyle = '#ffffff';
+                    ctx.font = 'bold 12px monospace';
+                    ctx.textAlign = 'center';
+                    ctx.shadowColor = '#ff0055';
+                    ctx.shadowBlur = 15;
+                    ctx.fillText(`⚠️ WARNING: ${this.bossName} AMBUSH FROM ${this.ambushDir} ⚠️`, canvas.width / 2, 22);
+                    ctx.restore();
+                }
+
                 ctx.save();
-                
                 const cx = this.x + this.width / 2;
                 const cy = this.y + this.height / 2;
                 ctx.translate(cx, cy);
 
-                // Breathing and mechanical vibration
+                // Dynamic breathing and mechanical tilt
                 const pulseX = 1 + Math.sin(this.bobTimer * 4) * 0.03;
                 const pulseY = 1 + Math.cos(this.bobTimer * 4) * 0.03;
                 ctx.scale(pulseX, pulseY);
@@ -790,7 +928,6 @@
                     ctx.drawImage(sprite, -renderW / 2, -renderH / 2, renderW, renderH);
                     if (isImage) ctx.globalCompositeOperation = 'source-over';
                 } else {
-                    // Geometric fallback
                     ctx.fillStyle = this.themeColor;
                     ctx.beginPath();
                     ctx.ellipse(0, 0, renderW / 2, renderH / 2, 0, 0, Math.PI * 2);
@@ -812,12 +949,10 @@
                     ctx.arc(0, 0, Math.max(10, ringRadius), 0, Math.PI * 2);
                     ctx.stroke();
 
-                    // Inner contracting energy ripples
                     ctx.beginPath();
                     ctx.arc(0, 0, Math.max(5, ringRadius * 0.5), 0, Math.PI * 2);
                     ctx.stroke();
 
-                    // Core energy condensation flare
                     ctx.fillStyle = '#ffffff';
                     ctx.beginPath();
                     ctx.arc(-renderW / 4, 0, 8 + p * 14, 0, Math.PI * 2);
@@ -842,7 +977,6 @@
                     const endX = -this.x - renderW;
                     ctx.fillRect(endX, -30, -endX - renderW / 2, 60);
 
-                    // Muzzle flare
                     ctx.fillStyle = '#ffffff';
                     ctx.beginPath();
                     ctx.arc(-renderW / 2, 0, 35, 0, Math.PI * 2);
@@ -850,7 +984,7 @@
                     ctx.restore();
                 }
 
-                // ─── BOSS NAME & HARDPOINT / STAGE HUD ───────────────────────
+                // ─── BOSS NAME & STAGE HUD ───────────────────────────────────
                 ctx.shadowBlur = 0;
                 ctx.font = 'bold 10px monospace';
                 ctx.textAlign = 'center';
@@ -862,16 +996,41 @@
                 ctx.strokeText(nameTag, 0, -renderH / 2 - 10);
                 ctx.fillText(nameTag, 0, -renderH / 2 - 10);
 
-                // Destructible hardpoint status
-                if (this.stages[this.currentStage] && !this.isMidBoss) {
-                    ctx.font = '8px monospace';
-                    ctx.fillStyle = '#ffffff';
-                    const partTag = `TARGET: ${this.stages[this.currentStage].name}`;
-                    ctx.strokeText(partTag, 0, -renderH / 2 - 22);
-                    ctx.fillText(partTag, 0, -renderH / 2 - 22);
-                }
-
                 ctx.restore();
+
+                // ─── ACTIVE TARGET POINT FLOATING MINI-HEALTH BARS ──────────
+                for (const tp of this.targetPoints) {
+                    if (tp.hitTimer > 0 && !tp.destroyed) {
+                        ctx.save();
+                        const alpha = Math.min(1.0, tp.hitTimer / 0.4);
+                        ctx.globalAlpha = alpha;
+
+                        const barX = this.x + tp.relX + tp.width / 2;
+                        const barY = this.y + tp.relY - 14;
+                        const barW = 68;
+                        const barH = 5;
+
+                        // Background
+                        ctx.fillStyle = 'rgba(0, 0, 0, 0.85)';
+                        ctx.fillRect(barX - barW / 2 - 2, barY - 2, barW + 4, barH + 4);
+
+                        // Health fill
+                        const ratio = Math.max(0, tp.hp / tp.maxHp);
+                        ctx.fillStyle = ratio > 0.5 ? '#2ecc71' : (ratio > 0.25 ? '#f1c40f' : '#e74c3c');
+                        ctx.fillRect(barX - barW / 2, barY, barW * ratio, barH);
+
+                        // Hardpoint label
+                        ctx.font = 'bold 7px monospace';
+                        ctx.textAlign = 'center';
+                        ctx.fillStyle = '#ffffff';
+                        ctx.strokeStyle = '#000000';
+                        ctx.lineWidth = 2;
+                        ctx.strokeText(tp.name, barX, barY - 4);
+                        ctx.fillText(tp.name, barX, barY - 4);
+
+                        ctx.restore();
+                    }
+                }
             }
         }
 

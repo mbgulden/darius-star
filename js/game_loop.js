@@ -768,7 +768,7 @@ function update(dt) {
             if (checkCollision(bBox, boss)) {
                 const mods = window.DS_UpgradeSystem ? window.DS_UpgradeSystem.getGameplayModifiers() : null;
                 const dmg = b.damage || ((player.weaponLevel >= 4 ? 2 : 1) * (mods ? mods.weaponDamageMultiplier : 1.0));
-                boss.takeDamage(dmg);
+                boss.takeDamage(dmg, b.x, b.y);
 
                 // Map projectile type to varied explosion/impact VFX
                 let style = 'blue_laser';

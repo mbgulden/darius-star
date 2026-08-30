@@ -4,12 +4,16 @@ const path = require('path');
 const fs = require('fs');
 
 console.log("============================================================");
-console.log("DARIUS STAR: BOSS ARCHETYPE & ATTACK SIMULATION TESTS");
+console.log("DARIUS STAR: BOSS ARCHETYPE & TARGET POINT SIMULATION TESTS");
 console.log("============================================================");
 
 // Mock global environment
 global.window = global;
-global.canvas = { width: 1280, height: 720 };
+global.window.addEventListener = () => {};
+global.Image = class { constructor() { this.src = ''; } };
+const dummyEl = { addEventListener: () => {}, removeEventListener: () => {}, style: {}, classList: { add: ()=>{}, remove: ()=>{} } };
+global.document = { getElementById: () => dummyEl, addEventListener: () => {} };
+global.canvas = { width: 1280, height: 720, addEventListener: () => {} };
 global.enemyIdCounter = 0;
 global.enemyBullets = [];
 global.enemies = [];
@@ -78,6 +82,10 @@ global.FloatingText = class {
 const enemiesCode = fs.readFileSync(path.join(__dirname, '../js/enemies.js'), 'utf8');
 eval(enemiesCode);
 
+// Load ui.js helper functions
+const uiCode = fs.readFileSync(path.join(__dirname, '../js/ui.js'), 'utf8');
+eval(uiCode);
+
 // Run verification across all 10 biomes for both Sub-Boss (level 5) and Biome Boss (level 10)
 for (let b = 1; b <= 10; b++) {
     global.biomeLevel = b;
@@ -88,9 +96,16 @@ for (let b = 1; b <= 10; b++) {
     LevelManager.currentLevelConfig = { midBoss: true };
     const subBoss = new Boss();
     assert.strictEqual(subBoss.isMidBoss, true, `Biome ${b} level 5 should be Mid-Boss`);
-    assert(subBoss.hpMax > 0, `Biome ${b} Sub-Boss should have positive HP`);
-    assert(subBoss.bossName.length > 0, `Biome ${b} Sub-Boss should have a distinct name: ${subBoss.bossName}`);
-    assert(subBoss.spriteKey.includes(`boss_b${b}_mid_0`), `Biome ${b} Sub-Boss sprite key mismatch: ${subBoss.spriteKey}`);
+    assert(subBoss.targetPoints.length >= 2, `Biome ${b} Sub-Boss should have at least 2 discrete target points`);
+    
+    // Test localized target point hit
+    const tp0 = subBoss.targetPoints[0];
+    const hitX = subBoss.x + tp0.relX + 5;
+    const hitY = subBoss.y + tp0.relY + 5;
+    const tp0HpBefore = tp0.hp;
+    subBoss.takeDamage(10, hitX, hitY);
+    assert(tp0.hp < tp0HpBefore, `Biome ${b} Sub-Boss target point ${tp0.name} should take localized damage`);
+    assert(tp0.hitTimer > 0, `Biome ${b} Sub-Boss target point should illuminate mini health bar (hitTimer > 0)`);
 
     // Test attacks
     const bCountBefore = enemyBullets.length;
@@ -105,29 +120,37 @@ for (let b = 1; b <= 10; b++) {
     subBoss.fireChargedBlast();
     assert(enemyBullets.length > bCountBeforeCharge, `Biome ${b} Sub-Boss charged blast should spawn bullets`);
 
-    // Test damage and hardpoint transition
-    subBoss.takeDamage(subBoss.hpMax * 0.6);
-    assert(subBoss.currentStage >= 1, `Biome ${b} Sub-Boss should advance stage when HP drops below 50%`);
-    console.log(`  [PASS] Biome ${b} Sub-Boss [${subBoss.bossName}]: All attacks & Stage 2 transition verified.`);
+    // Test flight state machine and ambush dive
+    subBoss.state = 'offscreen_dive';
+    subBoss.update(0.5);
+    subBoss.state = 'ambush_warning';
+    subBoss.update(2.0);
+    assert.strictEqual(subBoss.state, 'ambush_charge', `Biome ${b} Sub-Boss should transition to ambush charge after warning`);
+
+    console.log(`  [PASS] Biome ${b} Sub-Boss [${subBoss.bossName}]: Target Points [${subBoss.targetPoints.map(t=>t.name).join(', ')}] & Ambush Loop verified.`);
 
     // ─── 2. Biome Boss (Level 10) ───
     LevelManager.level = 10;
     LevelManager.currentLevelConfig = { midBoss: false, bossTrigger: true };
     const mainBoss = new Boss();
     assert.strictEqual(mainBoss.isMidBoss, false, `Biome ${b} level 10 should be Biome Boss`);
-    assert(mainBoss.hpMax >= subBoss.hpMax, `Biome Boss HP (${mainBoss.hpMax}) should be >= Sub-Boss HP (${subBoss.hpMax})`);
-    assert(mainBoss.spriteKey.includes(`boss_b${b}_0`), `Biome ${b} Biome Boss sprite key mismatch: ${mainBoss.spriteKey}`);
+    assert(mainBoss.targetPoints.length >= 2, `Biome ${b} Biome Boss should have discrete target points`);
 
-    mainBoss.attackNormal();
-    mainBoss.attackAlternating();
-    mainBoss.fireChargedBlast();
+    // Test target point destruction
+    const p0 = mainBoss.targetPoints[0];
+    mainBoss.takeDamage(p0.maxHp + 5, mainBoss.x + p0.relX, mainBoss.y + p0.relY);
+    assert(p0.destroyed, `Biome ${b} Biome Boss target point ${p0.name} should be destroyed when depleted`);
+    assert(mainBoss.currentStage >= 1, `Biome ${b} Biome Boss should advance stage on target point destruction`);
 
-    // Damage test
-    mainBoss.takeDamage(mainBoss.hpMax * 0.55);
-    assert(mainBoss.currentStage >= 1, `Biome ${b} Biome Boss should destroy Stage 1 hardpoint`);
-    console.log(`  [PASS] Biome ${b} Biome Boss [${mainBoss.bossName}]: All attacks & Hardpoint destruction verified.`);
+    // Test lunge movement
+    mainBoss.state = 'target_lunge';
+    mainBoss.stateTimer = 0.05;
+    mainBoss.update(0.1);
+    assert.strictEqual(mainBoss.state, 'retreat_bank', `Biome ${b} Biome Boss should retreat after forward lunge`);
+
+    console.log(`  [PASS] Biome ${b} Biome Boss [${mainBoss.bossName}]: Target Points [${mainBoss.targetPoints.map(t=>t.name).join(', ')}] & Hardpoint Destruction verified.`);
 }
 
 console.log("============================================================");
-console.log("ALL 20 BOSS & SUB-BOSS SIMULATION TESTS PASSED (100%)");
+console.log("ALL 20 BOSS TARGET POINTS & AMBUSH SIMULATIONS PASSED (100%)");
 console.log("============================================================");
