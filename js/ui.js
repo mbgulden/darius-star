@@ -2309,12 +2309,24 @@ window.addEventListener('keydown', e => {
             window._showIntelModal = !window._showIntelModal;
             if (window._showIntelModal) {
                 playSound('radio_squelch_in');
+                const sum = window._levelClearSummary || {};
                 if (typeof window !== 'undefined' && window.LevelManager && window.LevelManager.recordIntelViewed) {
-                    const sum = window._levelClearSummary || {};
                     window.LevelManager.recordIntelViewed(sum.biome, sum.level);
+                }
+                if (typeof VoicePipeline !== 'undefined') {
+                    const lvlInfo = (typeof LevelManager !== 'undefined' && LevelManager.getSectorIntel) 
+                        ? LevelManager.getSectorIntel(sum.biome || 1, sum.level || 1) 
+                        : null;
+                    if (lvlInfo && lvlInfo.classifiedLog) {
+                        const lineId = `log_b${sum.biome || 1}_l${sum.level || 1}`;
+                        VoicePipeline.speak(lvlInfo.classifiedLog, 'Selene', { lineId: lineId });
+                    }
                 }
             } else {
                 playSound('radio_squelch_out');
+                if (typeof VoicePipeline !== 'undefined') {
+                    VoicePipeline.stop();
+                }
             }
             e.preventDefault();
         } else if ((e.key === 'u' || e.key === 'U') && currentScreen === SCREENS.LEVEL_CLEAR) {
@@ -2394,6 +2406,9 @@ canvas.addEventListener('click', function(e) {
         if (window._showIntelModal) {
             window._showIntelModal = false;
             playSound('radio_squelch_out');
+            if (typeof VoicePipeline !== 'undefined') {
+                VoicePipeline.stop();
+            }
             return;
         }
         var lcRegions = window._levelClearHitRegions || [];
@@ -2409,9 +2424,18 @@ canvas.addEventListener('click', function(e) {
                 } else if (reg.key === 'intel') {
                     window._showIntelModal = true;
                     playSound('radio_squelch_in');
+                    const sum = window._levelClearSummary || {};
                     if (typeof window !== 'undefined' && window.LevelManager && window.LevelManager.recordIntelViewed) {
-                        const sum = window._levelClearSummary || {};
                         window.LevelManager.recordIntelViewed(sum.biome, sum.level);
+                    }
+                    if (typeof VoicePipeline !== 'undefined') {
+                        const lvlInfo = (typeof LevelManager !== 'undefined' && LevelManager.getSectorIntel) 
+                            ? LevelManager.getSectorIntel(sum.biome || 1, sum.level || 1) 
+                            : null;
+                        if (lvlInfo && lvlInfo.classifiedLog) {
+                            const lineId = `log_b${sum.biome || 1}_l${sum.level || 1}`;
+                            VoicePipeline.speak(lvlInfo.classifiedLog, 'Selene', { lineId: lineId });
+                        }
                     }
                 } else if (reg.key === 'menu') {
                     transitionToScreen(SCREENS.MENU);
