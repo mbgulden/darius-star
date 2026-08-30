@@ -221,7 +221,8 @@ class Player {
         this.secondaryDecoys = [];
         this.secondaryKeyLatch = { bomb: false, missile: false, special: false };
         
-        // GRO-1003: Pull-out system — replaces death
+        // Pull-out system — replaces death
+        this.alive = true;
         this.isPulledOut = false;       // Ship disabled, auto-repairing
         this.pullOutTimer = 0;          // Seconds until auto-repair completes
         this.pullOutReturnInvuln = 0;   // 3s invulnerability after return
@@ -237,28 +238,51 @@ class Player {
     }
 
     update(dt) {
-        // GRO-1003: Pull-out system — disable during repair, auto-return
+        // Pull-out system — retreat to bottom-left staging area, auto-repair
         if (this.isPulledOut) {
+            this.canShoot = false;
+            this.isFiring = false;
+            
+            // Retreat to bottom-left corner of the screen
+            const slotIdx = this.playerId ? (this.playerId - 1) : 0;
+            const targetX = 55 + slotIdx * 45;
+            const targetY = (typeof canvas !== 'undefined' ? canvas.height : 450) - 75;
+            this.x += (targetX - this.x) * Math.min(1.0, 2.2 * dt);
+            this.y += (targetY - this.y) * Math.min(1.0, 2.2 * dt);
+
+            this.pullOutTimer -= dt;
             if (this.pullOutTimer > 0) {
-                this.pullOutTimer -= dt;
-                // Drift slowly during pull-out (disabled, not totally frozen)
-                this.x -= 30 * dt; // Drift left as if recoiling
-                this.y += Math.sin(this.pullOutTimer * 3) * 20 * dt; // Gentle bob
-                return; // No input, no shooting, no abilities while pulled out
+                return; // No input or firing while repairing
             }
-            // Auto-repair complete: return to battle
-            this.isPulledOut = false;
-            this.shield = this.shieldMax;
-            this.pullOutReturnInvuln = 3.0; // 3s invulnerability on return
-            this.invulnerable = Math.max(this.invulnerable, 3.0);
-            playSound('powerup');
-            createExplosion(this.x + this.width/2, this.y + this.height/2, '#00ff88', 20);
-            // Return flash text
-            if (typeof FloatingText !== 'undefined') {
-                floatingTexts.push(new FloatingText(this.x + this.width/2, this.y - 30, 'REPAIRED', '#00ff88'));
-            } else {
-                floatingTexts.push({ text: 'REPAIRED', x: this.x + this.width/2, y: this.y - 30, life: 2.0, color: '#00ff88' });
+
+            // Auto-repair complete: check if other players remain active or single player
+            let canRejoin = true;
+            if (typeof remotePlayers !== 'undefined' && remotePlayers.length > 0) {
+                if (this === (typeof player !== 'undefined' ? player : null)) {
+                    canRejoin = remotePlayers.some(rp => !rp.isPulledOut && rp.alive !== false);
+                } else if (typeof player !== 'undefined') {
+                    canRejoin = (!player.isPulledOut && player.alive !== false) ||
+                        remotePlayers.some(rp => rp !== this && !rp.isPulledOut && rp.alive !== false);
+                }
             }
+
+            if (canRejoin) {
+                this.isPulledOut = false;
+                this.shield = this.shieldMax;
+                this.pullOutReturnInvuln = 3.0;
+                this.invulnerable = Math.max(this.invulnerable, 3.0);
+                if (typeof playSound === 'function') playSound('powerup');
+                if (typeof createExplosion === 'function') createExplosion(this.x + this.width/2, this.y + this.height/2, '#00ff88', 25, 'shield_hit');
+                
+                if (typeof FloatingText !== 'undefined' && typeof floatingTexts !== 'undefined') {
+                    floatingTexts.push(new FloatingText(this.x + this.width/2, this.y - 30, 'FIELD REPAIRS COMPLETE', '#00ff88'));
+                }
+
+                if (window.Multiplayer && this.playerId) {
+                    Multiplayer.updatePlayerState(this.playerId, { alive: true, status: "active", _wasPulledOut: false, shield: this.shield });
+                }
+            }
+            return;
         }
         
         if (this.invulnerable > 0) {
@@ -498,6 +522,7 @@ class Player {
     }
 
     shoot() {
+        if (this.isPulledOut) return;
         playSound('shoot', {weaponLevel: this.weaponLevel});
         const mods = window.DS_UpgradeSystem ? window.DS_UpgradeSystem.getGameplayModifiers() : null;
         const speedMultiplier = mods ? mods.weaponProjSpeedMultiplier : 1.0;
@@ -871,55 +896,56 @@ class Player {
             
             if (!this.isPulledOut) {
                 this.isPulledOut = true;
-                // Repair time: 15s base + up to 15s based on overkill damage
-                this.pullOutTimer = 15 + Math.min(15, overkill * 0.8);
-                playSound('explosion');
-                createExplosion(this.x, this.y, '#ff6600', 30);
+                this.canShoot = false;
+                this.isFiring = false;
+                this.pullOutMaxTimer = 15 + Math.min(10, overkill * 0.5);
+                this.pullOutTimer = this.pullOutMaxTimer;
+                if (typeof playSound === 'function') playSound('explosion');
+                if (typeof createExplosion === 'function') createExplosion(this.x, this.y, '#ff6600', 30);
                 
-                // Trigger pull-out banter — use the assigned player character, not ship type
+                // Trigger character audio and dialogue line explaining their repair
                 const bLevel = typeof biomeLevel !== 'undefined' ? biomeLevel : (typeof LevelManager !== 'undefined' ? LevelManager.biome : 1);
-                if (window.BanterEngine && bLevel > 0 && banterEnabled && !streamerMode) {
-                    const character = this.character || 'D';
+                const character = this.character || (this.playerId === 2 ? 'L' : (this.playerId === 3 ? 'T' : 'D'));
+                
+                if (window.VoicePlayback && typeof VoicePlayback.play === 'function') {
+                    VoicePlayback.play(bLevel, 'pull_out', character);
+                }
+                
+                if (window.BanterEngine && bLevel > 0 && typeof banterEnabled !== 'undefined' && banterEnabled) {
                     const line = BanterEngine.getLine('pull_out', bLevel, character);
-                    if (line && window.activeDialogue === undefined) {
-                        // Queue pull-out line as floating text (non-blocking)
-                        if (typeof FloatingText !== 'undefined') {
-                            floatingTexts.push(new FloatingText(this.x + this.width/2, this.y - 20, line.l, '#ff6600'));
-                        } else {
-                            floatingTexts.push({ text: line.l, x: this.x + this.width/2, y: this.y - 20, life: 3.0, color: '#ff6600' });
+                    if (line) {
+                        const lineText = (typeof line === 'object' && line.l) ? line.l : line;
+                        if (typeof FloatingText !== 'undefined' && typeof floatingTexts !== 'undefined') {
+                            floatingTexts.push(new FloatingText(this.x + this.width/2, this.y - 25, lineText, '#ff9900'));
                         }
                     }
                 }
                 
-                // Check if ALL players are pulled out (multiplayer check)
-                let allPulledOut = true;
-                if (window.Multiplayer && Multiplayer.players.length > 1) {
-                    for (const mp of Multiplayer.players) {
-                        if (mp.alive && !mp.isHost) allPulledOut = false;
-                    }
-                    if (allPulledOut) {
-                        gameOver = true;
-                        Multiplayer.onPlayerPullOut(this.id || 1);
-                    }
+                if (window.Multiplayer && typeof Multiplayer.onPlayerPullOut === 'function' && this.playerId) {
+                    Multiplayer.onPlayerPullOut(this.playerId);
                 }
-                // Single player: no gameOver, auto-repair will handle return
+
+                // Check mutual knockout
+                if (typeof checkMultiplayerRegroupCheckpoint === 'function') {
+                    checkMultiplayerRegroupCheckpoint(0);
+                }
             }
         }
     }
 
     draw() {
-        // GRO-1003: Pull-out visual — damaged ship with repair indicator
+        // Pull-out visual — partially opaque ship retreating to bottom-left with repair bar
         if (this.isPulledOut) {
             ctx.save();
             ctx.translate(this.x, this.y);
             
-            // Pulsing red-orange glow behind ship
-            const pulse = Math.sin(this.pullOutTimer * 4) * 0.4 + 0.6;
-            ctx.shadowColor = `rgba(255, 100, 0, ${pulse})`;
-            ctx.shadowBlur = 20 * pulse;
+            // Pulsing nanite repair glow
+            const pulse = Math.sin(this.pullOutTimer * 5) * 0.35 + 0.65;
+            ctx.shadowColor = `rgba(0, 220, 255, ${pulse * 0.8})`;
+            ctx.shadowBlur = 18 * pulse;
             
-            // Draw ship at reduced opacity
-            ctx.globalAlpha = 0.5 + Math.sin(this.pullOutTimer * 8) * 0.2;
+            // Partially opaque ship (0.45)
+            ctx.globalAlpha = 0.45 + Math.sin(this.pullOutTimer * 8) * 0.15;
             
             let sprite;
             const frameIdx = (Math.floor(gameTime * 6) % 2 === 0) ? '0' : '1';
@@ -938,7 +964,7 @@ class Player {
             if (isRepImg || isRepCvs) {
                 drawSpriteFrame(ctx, sprite, 0, 0, SPRITE_FRAME, SPRITE_FRAME, 0, 0, 48, 48);
             } else {
-                ctx.fillStyle = '#ff4400';
+                ctx.fillStyle = '#00aacc';
                 ctx.beginPath();
                 ctx.moveTo(40, 10); ctx.lineTo(0, 0); ctx.lineTo(0, 20); ctx.closePath();
                 ctx.fill();
@@ -946,15 +972,37 @@ class Player {
             
             ctx.restore();
             
-            // Repair timer text above ship
+            // High-Contrast Cybernetic Repair Progress Bar
             ctx.save();
-            ctx.font = 'bold 12px monospace';
+            const totalRepTime = this.pullOutMaxTimer || 15;
+            const repairPct = Math.max(0, Math.min(1.0, 1.0 - (this.pullOutTimer / totalRepTime)));
+            const barW = 74;
+            const barH = 7;
+            const barX = this.x + this.width / 2 - barW / 2;
+            const barY = this.y + this.height + 6;
+
+            // Background & cybernetic border
+            ctx.fillStyle = 'rgba(6, 12, 24, 0.92)';
+            ctx.fillRect(barX, barY, barW, barH);
+            ctx.strokeStyle = '#00ffff';
+            ctx.lineWidth = 1.2;
+            ctx.strokeRect(barX, barY, barW, barH);
+
+            // Progress fill
+            const barColor = repairPct > 0.85 ? '#00ff88' : (repairPct > 0.4 ? '#00e5ff' : '#ff9900');
+            ctx.fillStyle = barColor;
+            ctx.fillRect(barX + 1, barY + 1, Math.max(0, (barW - 2) * repairPct), barH - 2);
+
+            // Text
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 8.5px monospace';
             ctx.textAlign = 'center';
-            ctx.fillStyle = `rgba(255, 136, 0, ${0.7 + pulse * 0.3})`;
-            ctx.fillText(`REPAIRING ${Math.ceil(this.pullOutTimer)}s`, this.x + this.width/2, this.y - 15);
+            ctx.shadowColor = '#000000';
+            ctx.shadowBlur = 4;
+            ctx.fillText(`REPAIRING: ${Math.floor(repairPct * 100)}%`, this.x + this.width / 2, barY + barH + 9);
             ctx.restore();
             
-            return; // Skip normal draw
+            return;
         }
         
         if (this.invulnerable > 0 && Math.floor(this.invulnerable * 15) % 2 === 0) {

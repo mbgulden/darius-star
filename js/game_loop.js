@@ -1,3 +1,64 @@
+
+function jettisonUncommittedScrap() {
+    const baseline = (typeof LevelManager !== 'undefined' && LevelManager.stats)
+        ? (LevelManager.stats.startScrap || 0)
+        : 0;
+    const current = (typeof runScrap !== 'undefined') ? runScrap : 0;
+    window._jettisonedScrapAmount = Math.max(0, current - baseline);
+    
+    runScrap = baseline;
+    if (window.DS_UpgradeSystem && window.DS_UpgradeSystem.state) {
+        window.DS_UpgradeSystem.state.scrap = baseline;
+        if (typeof window.DS_UpgradeSystem.save === 'function') {
+            window.DS_UpgradeSystem.save();
+        }
+    }
+}
+
+function checkMultiplayerRegroupCheckpoint(dt) {
+    const hasMultiplayer = (window.Multiplayer && Multiplayer.players.length > 1) || (typeof remotePlayers !== 'undefined' && remotePlayers.length > 0);
+    
+    if (hasMultiplayer) {
+        const p1Down = player.isPulledOut || player.shield <= 0;
+        const allRemotesDown = remotePlayers.length > 0 && remotePlayers.every(rp => rp.isPulledOut || rp.shield <= 0);
+        
+        if (p1Down && allRemotesDown && !gameOver && !gameWon) {
+            triggerMutualRegroupCheckpoint();
+        }
+    } else {
+        if (player.isPulledOut) {
+            singlePlayerPullOutTimer += dt;
+            if (singlePlayerPullOutTimer >= 30.0 && !gameOver && !gameWon) {
+                triggerMutualRegroupCheckpoint();
+                singlePlayerPullOutTimer = 0;
+            }
+        } else {
+            singlePlayerPullOutTimer = 0;
+        }
+    }
+}
+
+function triggerMutualRegroupCheckpoint() {
+    gameOver = true;
+    window._isRegroupCheckpoint = true;
+    
+    // Jettison uncommitted scrap (anti-hoarding protocol)
+    jettisonUncommittedScrap();
+    
+    // Voice / banter line
+    const bLevel = (typeof LevelManager !== 'undefined') ? LevelManager.biome : 1;
+    if (window.VoicePlayback && typeof VoicePlayback.play === 'function') {
+        VoicePlayback.play(bLevel, 'pull_out', 'S');
+    }
+    if (typeof playSound === 'function') playSound('explosion');
+}
+
+if (typeof window !== 'undefined') {
+    window.jettisonUncommittedScrap = jettisonUncommittedScrap;
+    window.checkMultiplayerRegroupCheckpoint = checkMultiplayerRegroupCheckpoint;
+    window.triggerMutualRegroupCheckpoint = triggerMutualRegroupCheckpoint;
+}
+
 // game_loop.js — Core game orchestrator
 // Extracted from index.html by Ned (GRO-1100)
 // Contains: game setup, state, entity pools, collision,
@@ -109,6 +170,15 @@ resizeCanvas();
 // Game state variables
 let score = 0;
 let gameOver = false;
+if (typeof window !== 'undefined') {
+    try {
+        Object.defineProperty(window, 'gameOver', {
+            get() { return gameOver; },
+            set(v) { gameOver = v; },
+            configurable: true
+        });
+    } catch(e) {}
+}
 let singlePlayerPullOutTimer = 0; // GRO-1469: 30s gameOver fallback for stuck pull-out
 let gameWon = false;
 let paused = false;
@@ -165,6 +235,20 @@ try {
 } catch(e) {}
 let player = new Player(initialShip);
 let remotePlayers = [];  // P2-P4 ship instances (GRO-958 multiplayer)
+if (typeof window !== 'undefined') {
+    try {
+        Object.defineProperty(window, 'player', {
+            get() { return player; },
+            set(v) { player = v; },
+            configurable: true
+        });
+        Object.defineProperty(window, 'remotePlayers', {
+            get() { return remotePlayers; },
+            set(v) { remotePlayers = v; },
+            configurable: true
+        });
+    } catch(e) {}
+}
 const bullets = [];
 const enemyBullets = [];
 const enemies = [];
@@ -173,6 +257,15 @@ const particles = [];
 const scrapDrops = [];
 const floatingTexts = [];
 let runScrap = 0;
+if (typeof window !== 'undefined') {
+    try {
+        Object.defineProperty(window, 'runScrap', {
+            get() { return runScrap; },
+            set(v) { runScrap = v; },
+            configurable: true
+        });
+    } catch(e) {}
+}
 let runScrapSaved = false;
 let runEndTelemetryLogged = false;
 const scrapNarrativeMilestonesPlayed = new Set();
@@ -1093,19 +1186,8 @@ function update(dt) {
         }
     }
 
-    // GRO-1469: 30s gameOver fallback for single-player stuck pull-out
-    if (player.isPulledOut) {
-        singlePlayerPullOutTimer += dt;
-        // Check if single-player (no Multiplayer active or only 1 player)
-        const isSinglePlayer = !window.Multiplayer || Multiplayer.players.length <= 1;
-        if (isSinglePlayer && singlePlayerPullOutTimer >= 30.0) {
-            gameOver = true;
-            singlePlayerPullOutTimer = 0;
-        }
-    } else if (singlePlayerPullOutTimer > 0) {
-        // Reset on recovery if timer hasn't tripped
-        singlePlayerPullOutTimer = 0;
-    }
+    // Check multiplayer mutual repair knockout / regroup condition
+    checkMultiplayerRegroupCheckpoint(dt);
 
     if (player.isPulledOut) {
         uiShield.innerText = 'REPAIR ' + Math.ceil(player.pullOutTimer) + 's';
@@ -1599,35 +1681,45 @@ function draw() {
             ctx.restore();
         }
         
-        ctx.fillStyle = '#ff6600';
-        ctx.font = 'bold 42px monospace';
+        ctx.fillStyle = '#ff4400';
+        ctx.font = 'bold 36px monospace';
         ctx.textAlign = 'center';
-        ctx.fillText('SQUADRON WIPED', canvas.width / 2, canvas.height / 2 - 30);
+        ctx.shadowColor = '#ff4400';
+        ctx.shadowBlur = 16;
+        ctx.fillText('MISSION COMPROMISED // REGROUP AT CHECKPOINT', canvas.width / 2, canvas.height / 2 - 75);
+        ctx.shadowBlur = 0;
+
+        ctx.fillStyle = '#ffaa00';
+        ctx.font = 'bold 13px monospace';
+        ctx.fillText('ALL FIGHTERS CRITICALLY DAMAGED — SQUADRON RECOVERY PROTOCOL', canvas.width / 2, canvas.height / 2 - 50);
+
+        // Banter dialogue quote
+        ctx.fillStyle = '#00ffff';
+        ctx.font = 'italic 12px monospace';
+        ctx.fillText("COMMAND: \"We both need emergency repairs. Let's regroup at checkpoint!\"", canvas.width / 2, canvas.height / 2 - 25);
+
+        // Anti-hoarding junk jettison notification
+        const jetScrap = window._jettisonedScrapAmount || 0;
+        ctx.fillStyle = jetScrap > 0 ? '#ff3344' : '#88aacc';
+        ctx.font = 'bold 12px monospace';
+        ctx.fillText(`⚠️ UNCOMMITTED JUNK JETTISONED: -${jetScrap} SCRAP (Anti-hoarding active)`, canvas.width / 2, canvas.height / 2 + 2);
+
+        ctx.fillStyle = '#ffcc00';
+        ctx.font = 'bold 12px monospace';
+        ctx.fillText(`RETAINED BASELINE SCRAP: 💎 ${runScrap} SCRAP`, canvas.width / 2, canvas.height / 2 + 22);
+
         ctx.fillStyle = '#ffffff';
-        ctx.font = '14px monospace';
-        ctx.fillText('All ships pulled out — no one left to cover.', canvas.width / 2, canvas.height / 2 - 5);
-        ctx.fillText('SCORE: ' + score, canvas.width / 2, canvas.height / 2 + 20);
-        
-        let yOffset = 38;
-        const topScrap = window.Leaderboard ? Leaderboard.getTop('scrapLord', 1)[0] : null;
-        if (topScrap) {
-            ctx.fillStyle = '#ffaa00';
-            ctx.font = '12px monospace';
-            ctx.fillText('★ RECORD SCRAP: ' + topScrap.scrapCollected.toLocaleString() + ' — ' + topScrap.ship.toUpperCase(), canvas.width / 2, canvas.height / 2 + yOffset);
-            yOffset += 16;
-        }
-        ctx.fillStyle = '#00ff55';
         ctx.font = '12px monospace';
-        ctx.fillText('SCRAP EARNED: +' + runScrap, canvas.width / 2, canvas.height / 2 + yOffset);
-        
-        ctx.font = '14px monospace';
-        ctx.fillStyle = '#8a8a9f';
-        ctx.fillText('Click screen or press SPACE to retry', canvas.width / 2, canvas.height / 2 + 55);
-        ctx.fillText('Press U to open Upgrades Shop', canvas.width / 2, canvas.height / 2 + 75);
-        ctx.fillText('Press ESC to return to main menu', canvas.width / 2, canvas.height / 2 + 95);
-        ctx.fillStyle = '#ff0055';
-        ctx.font = '11px monospace';
-        ctx.fillText('whatanadventure.games/darius-star', canvas.width / 2, canvas.height / 2 + 118);
+        ctx.fillText('COMBAT SCORE: ' + score.toLocaleString() + ' PTS', canvas.width / 2, canvas.height / 2 + 42);
+
+        // Action options
+        ctx.font = 'bold 12px monospace';
+        ctx.fillStyle = '#00ff88';
+        ctx.fillText('[R] / [ENTER] / [SPACE] RESTART LEVEL AT CHECKPOINT', canvas.width / 2, canvas.height / 2 + 75);
+        ctx.fillStyle = '#00ffff';
+        ctx.fillText('[S] SAVE PROGRESS  |  [U] UPGRADE SHOP', canvas.width / 2, canvas.height / 2 + 95);
+        ctx.fillStyle = '#ff4455';
+        ctx.fillText('[Q] / [ESC] QUIT TO COMMAND BRIDGE', canvas.width / 2, canvas.height / 2 + 115);
     }
 
     if (gameWon) {

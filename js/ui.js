@@ -1863,6 +1863,25 @@ window.addEventListener('keydown', e => {
         if (e.key === ' ' && (gameOver || gameWon)) {
             handleDeathOrVictoryRestart();
         }
+        if ((e.key === 'r' || e.key === 'R' || e.key === 'Enter') && gameOver) {
+            handleDeathOrVictoryRestart();
+        }
+        if ((e.key === 's' || e.key === 'S') && gameOver) {
+            const activeSlot = parseInt(localStorage.getItem('dariusStar_activeSlot') || '0');
+            if (window.CampaignSave) {
+                const us = window.DS_UpgradeSystem;
+                const saveData = {
+                    biome: window.LevelManager ? LevelManager.biome : 1,
+                    level: window.LevelManager ? LevelManager.level : 1,
+                    score: typeof score !== 'undefined' ? score : 0,
+                    scrap: us && us.state ? us.state.scrap : (window.runScrap || 0),
+                    upgrades: us && us.state ? us.state.upgrades : {},
+                    timestamp: Date.now()
+                };
+                CampaignSave.save(activeSlot, saveData);
+                playSound('powerup');
+            }
+        }
         if ((e.key === 'n' || e.key === 'N') && gameWon) {
             const ngData = localStorage.getItem('darius_star_ngplus_eligible');
             if (ngData) {
@@ -1881,7 +1900,7 @@ window.addEventListener('keydown', e => {
                 } catch(ex) {}
             }
         }
-        if (e.key === 'Escape' && (gameOver || gameWon)) {
+        if ((e.key === 'Escape' || e.key === 'q' || e.key === 'Q') && (gameOver || gameWon)) {
             playSound('menu_click');
             transitionToScreen(SCREENS.MENU);
         }

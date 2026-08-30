@@ -472,6 +472,33 @@ function resetGame() {
     for (let i = 0; i < 30; i++) envParticles.push(new EnvironmentParticle(seedType));
     if (typeof envBuffer !== 'undefined' && envBuffer) envBuffer.markDirty();
 
+    if (typeof jettisonUncommittedScrap === 'function') {
+        jettisonUncommittedScrap();
+    }
+    gameOver = false;
+    window._isRegroupCheckpoint = false;
+    if (typeof player !== 'undefined' && player) {
+        player.isPulledOut = false;
+        player.shield = player.shieldMax;
+        player.invulnerable = 3.0;
+    }
+    if (typeof remotePlayers !== 'undefined') {
+        for (const rp of remotePlayers) {
+            rp.isPulledOut = false;
+            rp.shield = rp.shieldMax;
+            rp.invulnerable = 3.0;
+        }
+    }
+    if (typeof Multiplayer !== 'undefined') {
+        for (const p of Multiplayer.players) {
+            p.alive = true;
+            p.status = 'active';
+            p._wasPulledOut = false;
+            p.shield = 100;
+        }
+        Multiplayer.count = Multiplayer.getActivePlayers().length;
+    }
+
     Combo.init();
     // Preserve looted segments across restarts (prevents checkpoint farming)
     const savedLooted = {};
