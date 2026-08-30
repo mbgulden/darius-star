@@ -466,6 +466,17 @@ function update(dt) {
         updateAudioStoryBeat(dt);
     }
 
+    if (typeof CinematicsEngine !== 'undefined') {
+        CinematicsEngine.update(dt);
+    }
+    if (typeof NetworkClient !== 'undefined') {
+        NetworkClient.update(dt, player);
+    }
+    if (typeof MicroAudioEngine !== 'undefined') {
+        MicroAudioEngine.setShipType(selectedShip);
+        MicroAudioEngine.update(dt, player, typeof LevelManager !== 'undefined' ? LevelManager.biome : 1);
+    }
+
     if (activeDialogue) {
         activeDialogue.update(dt);
         if (activeDialogue.isBlocking()) {
@@ -1910,6 +1921,10 @@ function draw() {
         ctx.restore();
     }
 
+    // Cinematics Overlay
+    if (typeof CinematicsEngine !== 'undefined') {
+        CinematicsEngine.draw(ctx, canvas.width, canvas.height);
+    }
 
     if (screenFadeAlpha > 0) {
         ctx.save();

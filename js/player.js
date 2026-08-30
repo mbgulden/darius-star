@@ -875,6 +875,10 @@ class Player {
         if (shieldBefore > 0) {
             this.shieldHitFlash = 0.35;
         }
+
+        if (typeof AdaptiveDirector !== 'undefined') {
+            AdaptiveDirector.recordDamageTaken(finalDmg, this.shield, this.shieldMax);
+        }
         
         const mods = window.DS_UpgradeSystem ? window.DS_UpgradeSystem.getGameplayModifiers() : null;
         this.invulnerable = 0.8 + (mods ? mods.shieldInvulnBonus : 0);

@@ -93,5 +93,1167 @@
         "somber": "assets/sprites/portraits_motion/architect_somber.mp4"
       }
     }
+  },
+  "lines": {
+    "sector_1_1": {
+      "id": "sector_1_1",
+      "biome": 1,
+      "level": 1,
+      "sectorName": "1.1 Sunlit Atoll Crest",
+      "speaker": "darius",
+      "file": "darius/sector_1_1.mp3",
+      "text": "Sunlight's fading fast. The trench mouth opens ahead.",
+      "duration": 3.2
+    },
+    "sector_1_2": {
+      "id": "sector_1_2",
+      "biome": 1,
+      "level": 2,
+      "sectorName": "1.2 Coral Gardens Approach",
+      "speaker": "lyra",
+      "file": "lyra/sector_1_2.mp3",
+      "text": "Daddy, the reef is lighting up... it's calling for defenders.",
+      "duration": 4
+    },
+    "sector_1_3": {
+      "id": "sector_1_3",
+      "biome": 1,
+      "level": 3,
+      "sectorName": "1.3 Derelict Scout Wreckage",
+      "speaker": "naya",
+      "file": "naya/sector_1_3.mp3",
+      "text": "Old Terran wreckage detected. Useful alloys for the quantum fabricator.",
+      "duration": 4
+    },
+    "sector_1_4": {
+      "id": "sector_1_4",
+      "biome": 1,
+      "level": 4,
+      "sectorName": "1.4 Turquoise Atoll Chasm",
+      "speaker": "darius",
+      "file": "darius/sector_1_4.mp3",
+      "text": "Hold on to your thrusters. The bottom just dropped out.",
+      "duration": 4
+    },
+    "sector_1_5": {
+      "id": "sector_1_5",
+      "biome": 1,
+      "level": 5,
+      "sectorName": "1.5 Precursor Sensor Buoy",
+      "speaker": "thorne",
+      "file": "thorne/sector_1_5.mp3",
+      "text": "That sensor buoy is pinging our location. Blast it before it calls the fleet.",
+      "duration": 5.6000000000000005
+    },
+    "sector_1_6": {
+      "id": "sector_1_6",
+      "biome": 1,
+      "level": 6,
+      "sectorName": "1.6 Sunken Aqueduct Shallows",
+      "speaker": "naya",
+      "file": "naya/sector_1_6.mp3",
+      "text": "These ancient stone channels were built to nurture prototypes.",
+      "duration": 3.6
+    },
+    "sector_1_7": {
+      "id": "sector_1_7",
+      "biome": 1,
+      "level": 7,
+      "sectorName": "1.7 Bioluminescent Kelp Wall",
+      "speaker": "lyra",
+      "file": "lyra/sector_1_7.mp3",
+      "text": "The green light is dancing across the cockpit. I can hear distant humming.",
+      "duration": 5.2
+    },
+    "sector_1_8": {
+      "id": "sector_1_8",
+      "biome": 1,
+      "level": 8,
+      "sectorName": "1.8 Hydrothermal Chimney Field",
+      "speaker": "darius",
+      "file": "darius/sector_1_8.mp3",
+      "text": "Thermal chimneys blowing black smoke! Watch your temperature gauges.",
+      "duration": 3.6
+    },
+    "sector_1_9": {
+      "id": "sector_1_9",
+      "biome": 1,
+      "level": 9,
+      "sectorName": "1.9 Submerged Fortress Approach",
+      "speaker": "naya",
+      "file": "naya/sector_1_9.mp3",
+      "text": "Fortress gate perimeter sighted. Heavy defensive resistance inbound.",
+      "duration": 3.2
+    },
+    "sector_1_10": {
+      "id": "sector_1_10",
+      "biome": 1,
+      "level": 10,
+      "sectorName": "1.10 Guardian Reef Stronghold",
+      "speaker": "darius",
+      "file": "darius/sector_1_10.mp3",
+      "text": "Guardian signature confirmed on radar. Time to earn our passage.",
+      "duration": 4
+    },
+    "sector_2_1": {
+      "id": "sector_2_1",
+      "biome": 2,
+      "level": 1,
+      "sectorName": "2.1 Bleached Reef Shallows",
+      "speaker": "darius",
+      "file": "darius/sector_2_1.mp3",
+      "text": "Bleached coral as far as the eye can see. Pure silence.",
+      "duration": 4.4
+    },
+    "sector_2_2": {
+      "id": "sector_2_2",
+      "biome": 2,
+      "level": 2,
+      "sectorName": "2.2 Leviathan Ribcage Basin",
+      "speaker": "naya",
+      "file": "naya/sector_2_2.mp3",
+      "text": "Flying between ancient rib arches. Sensors picking up residual marrow radiation.",
+      "duration": 4.4
+    },
+    "sector_2_3": {
+      "id": "sector_2_3",
+      "biome": 2,
+      "level": 3,
+      "sectorName": "2.3 Spectral Frigate Hulks",
+      "speaker": "cross",
+      "file": "cross/sector_2_3.mp3",
+      "text": "I recognize those hull numbers. Old Navy brothers trapped in the reef.",
+      "duration": 4.800000000000001
+    },
+    "sector_2_4": {
+      "id": "sector_2_4",
+      "biome": 2,
+      "level": 4,
+      "sectorName": "2.4 Ghost Polyp Thicket",
+      "speaker": "lyra",
+      "file": "lyra/sector_2_4.mp3",
+      "text": "The purple flowers... they're trying to put my mind to sleep, Daddy.",
+      "duration": 4.800000000000001
+    },
+    "sector_2_5": {
+      "id": "sector_2_5",
+      "biome": 2,
+      "level": 5,
+      "sectorName": "2.5 Crystalline Monolith Ridge",
+      "speaker": "darius",
+      "file": "darius/sector_2_5.mp3",
+      "text": "I hear music from home. Stay sharp, it's just crystal resonance.",
+      "duration": 4.4
+    },
+    "sector_2_6": {
+      "id": "sector_2_6",
+      "biome": 2,
+      "level": 6,
+      "sectorName": "2.6 Sunken Amphitheater Ruins",
+      "speaker": "thorne",
+      "file": "thorne/sector_2_6.mp3",
+      "text": "Stone amphitheater ahead. Prepare for an ambush in the center ring.",
+      "duration": 4.4
+    },
+    "sector_2_7": {
+      "id": "sector_2_7",
+      "biome": 2,
+      "level": 7,
+      "sectorName": "2.7 Prismatic Spire Labyrinth",
+      "speaker": "naya",
+      "file": "naya/sector_2_7.mp3",
+      "text": "Prismatic glare is splitting our HUD crosshairs. Fire on physical telemetry.",
+      "duration": 4.4
+    },
+    "sector_2_8": {
+      "id": "sector_2_8",
+      "biome": 2,
+      "level": 8,
+      "sectorName": "2.8 Ancestral Ossuary Trench",
+      "speaker": "darius",
+      "file": "darius/sector_2_8.mp3",
+      "text": "Scrap signals lighting up the board. Harvest what we can on the fly.",
+      "duration": 5.2
+    },
+    "sector_2_9": {
+      "id": "sector_2_9",
+      "biome": 2,
+      "level": 9,
+      "sectorName": "2.9 Memory Vault Gatehouse",
+      "speaker": "lyra",
+      "file": "lyra/sector_2_9.mp3",
+      "text": "The vault doors are opening, Daddy... they're crying out for release.",
+      "duration": 4.4
+    },
+    "sector_2_10": {
+      "id": "sector_2_10",
+      "biome": 2,
+      "level": 10,
+      "sectorName": "2.10 Vault Golem Sanctum",
+      "speaker": "darius",
+      "file": "darius/sector_2_10.mp3",
+      "text": "Vault Golem is assembling! Break its crystal armor before it fires!",
+      "duration": 4.4
+    },
+    "sector_3_1": {
+      "id": "sector_3_1",
+      "biome": 3,
+      "level": 1,
+      "sectorName": "3.1 Sub-Glacial Trench Entry",
+      "speaker": "darius",
+      "file": "darius/sector_3_1.mp3",
+      "text": "Europa's sub-glacial ocean. The cradle of the Coelacanths.",
+      "duration": 3.2
+    },
+    "sector_3_2": {
+      "id": "sector_3_2",
+      "biome": 3,
+      "level": 2,
+      "sectorName": "3.2 Cryogenic Geyser Valley",
+      "speaker": "thorne",
+      "file": "thorne/sector_3_2.mp3",
+      "text": "Geysers blowing from the ice floor! Keep your elevation high!",
+      "duration": 4
+    },
+    "sector_3_3": {
+      "id": "sector_3_3",
+      "biome": 3,
+      "level": 3,
+      "sectorName": "3.3 Bio-Fabrication Hatchery",
+      "speaker": "naya",
+      "file": "naya/sector_3_3.mp3",
+      "text": "Unfinished Coelacanth prototypes detected. They're drawn to our engines.",
+      "duration": 3.6
+    },
+    "sector_3_4": {
+      "id": "sector_3_4",
+      "biome": 3,
+      "level": 4,
+      "sectorName": "3.4 Thermal Vent Fissure",
+      "speaker": "darius",
+      "file": "darius/sector_3_4.mp3",
+      "text": "Ride the warm updrafts from the fissure. It'll restore engine efficiency.",
+      "duration": 4.4
+    },
+    "sector_3_5": {
+      "id": "sector_3_5",
+      "biome": 3,
+      "level": 5,
+      "sectorName": "3.5 Incubator Pylon Array",
+      "speaker": "lyra",
+      "file": "lyra/sector_3_5.mp3",
+      "text": "The incubator eggs are pulsing in rhythm with my heartbeat...",
+      "duration": 4
+    },
+    "sector_3_6": {
+      "id": "sector_3_6",
+      "biome": 3,
+      "level": 6,
+      "sectorName": "3.6 Fractured Ice Shelf Cavern",
+      "speaker": "thorne",
+      "file": "thorne/sector_3_6.mp3",
+      "text": "Ice ceiling is coming down! Throttle up and clear the corridor!",
+      "duration": 4.4
+    },
+    "sector_3_7": {
+      "id": "sector_3_7",
+      "biome": 3,
+      "level": 7,
+      "sectorName": "3.7 Prototype Discard Trench",
+      "speaker": "naya",
+      "file": "naya/sector_3_7.mp3",
+      "text": "This was Ophion's graveyard before he found Haven-7. A heavy price was paid.",
+      "duration": 5.2
+    },
+    "sector_3_8": {
+      "id": "sector_3_8",
+      "biome": 3,
+      "level": 8,
+      "sectorName": "3.8 Stasis Chamber Vaults",
+      "speaker": "cross",
+      "file": "cross/sector_3_8.mp3",
+      "text": "Navy survey team was wiped here in '62. The sentry turrets are still hot.",
+      "duration": 5.6000000000000005
+    },
+    "sector_3_9": {
+      "id": "sector_3_9",
+      "biome": 3,
+      "level": 9,
+      "sectorName": "3.9 Nursery Sanctum Gateway",
+      "speaker": "lyra",
+      "file": "lyra/sector_3_9.mp3",
+      "text": "The Queen knows we're outside, Daddy. She's humming a lullaby.",
+      "duration": 4
+    },
+    "sector_3_10": {
+      "id": "sector_3_10",
+      "biome": 3,
+      "level": 10,
+      "sectorName": "3.10 Hatchery Queen Nest",
+      "speaker": "darius",
+      "file": "darius/sector_3_10.mp3",
+      "text": "Queen Coelacanth has surfaced! Focus all heat ordnance on her core!",
+      "duration": 4.4
+    },
+    "sector_4_1": {
+      "id": "sector_4_1",
+      "biome": 4,
+      "level": 1,
+      "sectorName": "4.1 Veil Nebula Ingress",
+      "speaker": "darius",
+      "file": "darius/sector_4_1.mp3",
+      "text": "The Veil Nebula. The stars look like they're melting into water.",
+      "duration": 4.4
+    },
+    "sector_4_2": {
+      "id": "sector_4_2",
+      "biome": 4,
+      "level": 2,
+      "sectorName": "4.2 Chromatic Distortion Belt",
+      "speaker": "naya",
+      "file": "naya/sector_4_2.mp3",
+      "text": "Sensors showing three targets for every drone. Shoot the one with engine wake.",
+      "duration": 5.2
+    },
+    "sector_4_3": {
+      "id": "sector_4_3",
+      "biome": 4,
+      "level": 3,
+      "sectorName": "4.3 Accretion Dust Stream",
+      "speaker": "thorne",
+      "file": "thorne/sector_4_3.mp3",
+      "text": "Stardust is scraping the paint clean off my armor. Watch your speed.",
+      "duration": 4.800000000000001
+    },
+    "sector_4_4": {
+      "id": "sector_4_4",
+      "biome": 4,
+      "level": 4,
+      "sectorName": "4.4 Thought-Form Anomalies",
+      "speaker": "lyra",
+      "file": "lyra/sector_4_4.mp3",
+      "text": "The nebula wants to tell us a story, Daddy. It's about a world made of glass.",
+      "duration": 6.4
+    },
+    "sector_4_5": {
+      "id": "sector_4_5",
+      "biome": 4,
+      "level": 5,
+      "sectorName": "4.5 Plasma Squall Corridor",
+      "speaker": "darius",
+      "file": "darius/sector_4_5.mp3",
+      "text": "Plasma squall ahead! Dive into the magnetic channel to stay stable.",
+      "duration": 4.4
+    },
+    "sector_4_6": {
+      "id": "sector_4_6",
+      "biome": 4,
+      "level": 6,
+      "sectorName": "4.6 Prismatic Dust Pillars",
+      "speaker": "naya",
+      "file": "naya/sector_4_6.mp3",
+      "text": "Protostar flare warning! Shield deflectors to 100%.",
+      "duration": 2.8000000000000003
+    },
+    "sector_4_7": {
+      "id": "sector_4_7",
+      "biome": 4,
+      "level": 7,
+      "sectorName": "4.7 Tachyon Eddy Trench",
+      "speaker": "thorne",
+      "file": "thorne/sector_4_7.mp3",
+      "text": "I'm hearing my own callout on the radio before I say it. Disorienting.",
+      "duration": 5.2
+    },
+    "sector_4_8": {
+      "id": "sector_4_8",
+      "biome": 4,
+      "level": 8,
+      "sectorName": "4.8 Phantom Cruiser Graveyard",
+      "speaker": "cross",
+      "file": "cross/sector_4_8.mp3",
+      "text": "My old flight academy training cruiser is drifting in that cloud. Eerie.",
+      "duration": 4.800000000000001
+    },
+    "sector_4_9": {
+      "id": "sector_4_9",
+      "biome": 4,
+      "level": 9,
+      "sectorName": "4.9 Dreamer Conduit Threshold",
+      "speaker": "lyra",
+      "file": "lyra/sector_4_9.mp3",
+      "text": "We're almost at the heart of the dream. Don't let go of what is real, Daddy.",
+      "duration": 6.4
+    },
+    "sector_4_10": {
+      "id": "sector_4_10",
+      "biome": 4,
+      "level": 10,
+      "sectorName": "4.10 Dreamer Golem Singularity",
+      "speaker": "darius",
+      "file": "darius/sector_4_10.mp3",
+      "text": "The Dreamer Golem is manifesting! Fire across its anchor points!",
+      "duration": 4
+    },
+    "sector_5_1": {
+      "id": "sector_5_1",
+      "biome": 5,
+      "level": 1,
+      "sectorName": "5.1 Saturn B-Ring Boundary",
+      "speaker": "darius",
+      "file": "darius/sector_5_1.mp3",
+      "text": "Saturn's rings. Trillions of tons of frozen shrapnel spinning at orbital speed.",
+      "duration": 4.800000000000001
+    },
+    "sector_5_2": {
+      "id": "sector_5_2",
+      "biome": 5,
+      "level": 2,
+      "sectorName": "5.2 Umbra Shadow Corridor",
+      "speaker": "cross",
+      "file": "cross/sector_5_2.mp3",
+      "text": "My former squadron is lurking in the ice shadows. Watch your six.",
+      "duration": 4.800000000000001
+    },
+    "sector_5_3": {
+      "id": "sector_5_3",
+      "biome": 5,
+      "level": 3,
+      "sectorName": "5.3 Orbital Railgun Battery",
+      "speaker": "thorne",
+      "file": "thorne/sector_5_3.mp3",
+      "text": "Heavy railgun batteries mounted on the icebergs. Knock out their power generators.",
+      "duration": 4.800000000000001
+    },
+    "sector_5_4": {
+      "id": "sector_5_4",
+      "biome": 5,
+      "level": 4,
+      "sectorName": "5.4 Sub-Zero Geyser Drift",
+      "speaker": "naya",
+      "file": "naya/sector_5_4.mp3",
+      "text": "Nitrogen geysers venting across our flight path. Bank left to clear the vapor.",
+      "duration": 5.2
+    },
+    "sector_5_5": {
+      "id": "sector_5_5",
+      "biome": 5,
+      "level": 5,
+      "sectorName": "5.5 Diamond Dust Expanse",
+      "speaker": "darius",
+      "file": "darius/sector_5_5.mp3",
+      "text": "Lasers diffusing in the diamond dust! Switch to kinetic rockets!",
+      "duration": 4
+    },
+    "sector_5_6": {
+      "id": "sector_5_6",
+      "biome": 5,
+      "level": 6,
+      "sectorName": "5.6 Destroyer Graveyard Alley",
+      "speaker": "darius",
+      "file": "darius/sector_5_6.mp3",
+      "text": "Dozens of Navy destroyers smashed together like frozen scrap cars.",
+      "duration": 4
+    },
+    "sector_5_7": {
+      "id": "sector_5_7",
+      "biome": 5,
+      "level": 7,
+      "sectorName": "5.7 Military Jamming Corridor",
+      "speaker": "thorne",
+      "file": "thorne/sector_5_7.mp3",
+      "text": "Comms are jammed with military noise! Switch to Haven-7 direct laser link!",
+      "duration": 4.800000000000001
+    },
+    "sector_5_8": {
+      "id": "sector_5_8",
+      "biome": 5,
+      "level": 8,
+      "sectorName": "5.8 Absolute Zero Abyss",
+      "speaker": "naya",
+      "file": "naya/sector_5_8.mp3",
+      "text": "Entering the dark side of the ring. Hull heaters on standby.",
+      "duration": 4.4
+    },
+    "sector_5_9": {
+      "id": "sector_5_9",
+      "biome": 5,
+      "level": 9,
+      "sectorName": "5.9 Fortress Kraken Approach",
+      "speaker": "cross",
+      "file": "cross/sector_5_9.mp3",
+      "text": "Kraken Fortress sighted. This was Crane's master weapon. Time to tear it apart.",
+      "duration": 5.2
+    },
+    "sector_5_10": {
+      "id": "sector_5_10",
+      "biome": 5,
+      "level": 10,
+      "sectorName": "5.10 Kraken Mobile Fortress",
+      "speaker": "darius",
+      "file": "darius/sector_5_10.mp3",
+      "text": "Kraken is opening all torpedo tubes! Evade the volley and hit the bridge!",
+      "duration": 5.2
+    },
+    "sector_6_1": {
+      "id": "sector_6_1",
+      "biome": 6,
+      "level": 1,
+      "sectorName": "6.1 Supernova Slag Field",
+      "speaker": "darius",
+      "file": "darius/sector_6_1.mp3",
+      "text": "Fire nebula. Everything out here has been cooked to molten slag.",
+      "duration": 4.4
+    },
+    "sector_6_2": {
+      "id": "sector_6_2",
+      "biome": 6,
+      "level": 2,
+      "sectorName": "6.2 Magma Column Archipelago",
+      "speaker": "naya",
+      "file": "naya/sector_6_2.mp3",
+      "text": "Magma plumes arcing across the sector like burning bridges. Fly under the arc.",
+      "duration": 5.2
+    },
+    "sector_6_3": {
+      "id": "sector_6_3",
+      "biome": 6,
+      "level": 3,
+      "sectorName": "6.3 Autonomous Smelter Belt",
+      "speaker": "thorne",
+      "file": "thorne/sector_6_3.mp3",
+      "text": "Smelter drones are harvesting the asteroid belt. Break up their convoy.",
+      "duration": 4.4
+    },
+    "sector_6_4": {
+      "id": "sector_6_4",
+      "biome": 6,
+      "level": 4,
+      "sectorName": "6.4 Solar Flare Sweeps",
+      "speaker": "darius",
+      "file": "darius/sector_6_4.mp3",
+      "text": "Solar flare incoming! Tuck behind that iron asteroid for cover!",
+      "duration": 4
+    },
+    "sector_6_5": {
+      "id": "sector_6_5",
+      "biome": 6,
+      "level": 5,
+      "sectorName": "6.5 Obsidian Basalt Canyon",
+      "speaker": "lyra",
+      "file": "lyra/sector_6_5.mp3",
+      "text": "The glass is glowing red in the dark... it looks like burning veins.",
+      "duration": 5.2
+    },
+    "sector_6_6": {
+      "id": "sector_6_6",
+      "biome": 6,
+      "level": 6,
+      "sectorName": "6.6 Crucible Containment Vats",
+      "speaker": "naya",
+      "file": "naya/sector_6_6.mp3",
+      "text": "Crucible vats ahead. If they rupture, the whole corridor will be flooded with slag.",
+      "duration": 5.6000000000000005
+    },
+    "sector_6_7": {
+      "id": "sector_6_7",
+      "biome": 6,
+      "level": 7,
+      "sectorName": "6.7 Plasma Overheat Trench",
+      "speaker": "thorne",
+      "file": "thorne/sector_6_7.mp3",
+      "text": "Pace your shots, Darius! The ambient heat is redlining our weapon radiators.",
+      "duration": 4.800000000000001
+    },
+    "sector_6_8": {
+      "id": "sector_6_8",
+      "biome": 6,
+      "level": 8,
+      "sectorName": "6.8 Molten Conduit Raceway",
+      "speaker": "darius",
+      "file": "darius/sector_6_8.mp3",
+      "text": "I see the power conduits. Blow the cooling lines to force an emergency shutdown.",
+      "duration": 5.6000000000000005
+    },
+    "sector_6_9": {
+      "id": "sector_6_9",
+      "biome": 6,
+      "level": 9,
+      "sectorName": "6.9 Master Forge Portals",
+      "speaker": "cross",
+      "file": "cross/sector_6_9.mp3",
+      "text": "The main foundry gates are opening. Automated guardians are rolling out.",
+      "duration": 4.4
+    },
+    "sector_6_10": {
+      "id": "sector_6_10",
+      "biome": 6,
+      "level": 10,
+      "sectorName": "6.10 Forge-Mind Leviathan",
+      "speaker": "darius",
+      "file": "darius/sector_6_10.mp3",
+      "text": "Forge-Mind is engaging! Strike the crucible coolers and shatter its frame!",
+      "duration": 4.4
+    },
+    "sector_7_1": {
+      "id": "sector_7_1",
+      "biome": 7,
+      "level": 1,
+      "sectorName": "7.1 Jovian Gale Ingress",
+      "speaker": "darius",
+      "file": "darius/sector_7_1.mp3",
+      "text": "Jupiter's Storm Belt. Five thousand mile-an-hour gale winds slamming into the hull.",
+      "duration": 4.800000000000001
+    },
+    "sector_7_2": {
+      "id": "sector_7_2",
+      "biome": 7,
+      "level": 2,
+      "sectorName": "7.2 Conductive Lightning Grid",
+      "speaker": "naya",
+      "file": "naya/sector_7_2.mp3",
+      "text": "Static building on the cockpit canopy. Disperse shields before the lightning strikes!",
+      "duration": 4.800000000000001
+    },
+    "sector_7_3": {
+      "id": "sector_7_3",
+      "biome": 7,
+      "level": 3,
+      "sectorName": "7.3 Predator Storm-Hawk Roost",
+      "speaker": "thorne",
+      "file": "thorne/sector_7_3.mp3",
+      "text": "Predator drones diving out of the storm clouds! Flak burst on my mark!",
+      "duration": 5.2
+    },
+    "sector_7_4": {
+      "id": "sector_7_4",
+      "biome": 7,
+      "level": 4,
+      "sectorName": "7.4 Static Cloud Pillars",
+      "speaker": "lyra",
+      "file": "lyra/sector_7_4.mp3",
+      "text": "The lightning is so bright... but behind it, I can hear a voice singing.",
+      "duration": 5.6000000000000005
+    },
+    "sector_7_5": {
+      "id": "sector_7_5",
+      "biome": 7,
+      "level": 5,
+      "sectorName": "7.6 Atmospheric Pressure Sink",
+      "speaker": "darius",
+      "file": "darius/sector_7_5.mp3",
+      "text": "Downdraft pulling us down! Boost engines to escape the atmospheric sink!",
+      "duration": 4.4
+    },
+    "sector_7_6": {
+      "id": "sector_7_6",
+      "biome": 7,
+      "level": 6,
+      "sectorName": "7.6 Atmospheric Pressure Choke",
+      "speaker": "naya",
+      "file": "naya/sector_7_6.mp3",
+      "text": "Hull groaning under atmospheric pressure. We need to reach the eye of the storm.",
+      "duration": 5.6000000000000005
+    },
+    "sector_7_7": {
+      "id": "sector_7_7",
+      "biome": 7,
+      "level": 7,
+      "sectorName": "7.7 Ball Lightning Swarms",
+      "speaker": "thorne",
+      "file": "thorne/sector_7_7.mp3",
+      "text": "Ball lightning drifting toward our engines! Cut power for two seconds to break lock!",
+      "duration": 5.6000000000000005
+    },
+    "sector_7_8": {
+      "id": "sector_7_8",
+      "biome": 7,
+      "level": 8,
+      "sectorName": "7.8 Great Red Eye Wall",
+      "speaker": "darius",
+      "file": "darius/sector_7_8.mp3",
+      "text": "Punching through the eye wall! Hold the flight stick with both hands!",
+      "duration": 4.800000000000001
+    },
+    "sector_7_9": {
+      "id": "sector_7_9",
+      "biome": 7,
+      "level": 9,
+      "sectorName": "7.9 Storm-Singer Sanctuary",
+      "speaker": "lyra",
+      "file": "lyra/sector_7_9.mp3",
+      "text": "We made it to the quiet center. The Storm-Singer is right in front of us.",
+      "duration": 6
+    },
+    "sector_7_10": {
+      "id": "sector_7_10",
+      "biome": 7,
+      "level": 10,
+      "sectorName": "7.10 Storm-Singer Colossus",
+      "speaker": "darius",
+      "file": "darius/sector_7_10.mp3",
+      "text": "Storm-Singer is charging its lightning vortex! Evade the funnel and attack the core!",
+      "duration": 5.2
+    },
+    "sector_8_1": {
+      "id": "sector_8_1",
+      "biome": 8,
+      "level": 1,
+      "sectorName": "8.1 Ghost Flotilla Perimeter",
+      "speaker": "darius",
+      "file": "darius/sector_8_1.mp3",
+      "text": "The ghost fleet. Hundreds of battleships floating dead in the black.",
+      "duration": 4.4
+    },
+    "sector_8_2": {
+      "id": "sector_8_2",
+      "biome": 8,
+      "level": 2,
+      "sectorName": "8.2 Automated Defense Grid",
+      "speaker": "cross",
+      "file": "cross/sector_8_2.mp3",
+      "text": "Those point-defense turrets are still hunting on Admiral Crane's orders.",
+      "duration": 4
+    },
+    "sector_8_3": {
+      "id": "sector_8_3",
+      "biome": 8,
+      "level": 3,
+      "sectorName": "8.3 Carrier Hangar Breaches",
+      "speaker": "thorne",
+      "file": "thorne/sector_8_3.mp3",
+      "text": "Boarding pods launching from the carrier wrecks! Shoot them down before they attach!",
+      "duration": 5.2
+    },
+    "sector_8_4": {
+      "id": "sector_8_4",
+      "biome": 8,
+      "level": 4,
+      "sectorName": "8.4 Leaking Reactor Corridor",
+      "speaker": "naya",
+      "file": "naya/sector_8_4.mp3",
+      "text": "Radiation spiking in sector four. Keep distance from the cracked reactor cores.",
+      "duration": 4.800000000000001
+    },
+    "sector_8_5": {
+      "id": "sector_8_5",
+      "biome": 8,
+      "level": 5,
+      "sectorName": "8.5 Armor Plate Labyrinth",
+      "speaker": "darius",
+      "file": "darius/sector_8_5.mp3",
+      "text": "Weaving through shattered battlecruiser hulls. Watch the protruding superstructure.",
+      "duration": 3.6
+    },
+    "sector_8_6": {
+      "id": "sector_8_6",
+      "biome": 8,
+      "level": 6,
+      "sectorName": "8.6 Autonomous Cruiser Patrol",
+      "speaker": "cross",
+      "file": "cross/sector_8_6.mp3",
+      "text": "Heavy automated dreadnought on patrol. It hasn't received a stand-down order in 30 years.",
+      "duration": 5.6000000000000005
+    },
+    "sector_8_7": {
+      "id": "sector_8_7",
+      "biome": 8,
+      "level": 7,
+      "sectorName": "8.7 Tactical Decoy Cloud",
+      "speaker": "thorne",
+      "file": "thorne/sector_8_7.mp3",
+      "text": "Don't trust the radar blips. Verify targets through the optical scope.",
+      "duration": 4.4
+    },
+    "sector_8_8": {
+      "id": "sector_8_8",
+      "biome": 8,
+      "level": 8,
+      "sectorName": "8.8 Escort Ring Defense Net",
+      "speaker": "naya",
+      "file": "naya/sector_8_8.mp3",
+      "text": "Synchronized particle lance batteries sighted. We need to disable the relay ships.",
+      "duration": 4.800000000000001
+    },
+    "sector_8_9": {
+      "id": "sector_8_9",
+      "biome": 8,
+      "level": 9,
+      "sectorName": "8.9 Flagship Goliath Sanctum",
+      "speaker": "darius",
+      "file": "darius/sector_8_9.mp3",
+      "text": "Flagship Goliath dead ahead. Crane's automated ghost is waiting on the bridge.",
+      "duration": 4.800000000000001
+    },
+    "sector_8_10": {
+      "id": "sector_8_10",
+      "biome": 8,
+      "level": 10,
+      "sectorName": "8.10 Admiral Crane AI Flagship",
+      "speaker": "darius",
+      "file": "darius/sector_8_10.mp3",
+      "text": "Goliath main batteries powering up! Break its shield generator arrays!",
+      "duration": 4
+    },
+    "sector_9_1": {
+      "id": "sector_9_1",
+      "biome": 9,
+      "level": 1,
+      "sectorName": "9.1 Synaptic Spore Boundary",
+      "speaker": "darius",
+      "file": "darius/sector_9_1.mp3",
+      "text": "The Xenomorph Hive. The planet itself is breathing and watching us.",
+      "duration": 4.4
+    },
+    "sector_9_2": {
+      "id": "sector_9_2",
+      "biome": 9,
+      "level": 2,
+      "sectorName": "9.2 Acidic Spitter Nest",
+      "speaker": "naya",
+      "file": "naya/sector_9_2.mp3",
+      "text": "Acid spitters firing from the bio-towers! Dodge laterally to avoid the splash!",
+      "duration": 4.800000000000001
+    },
+    "sector_9_3": {
+      "id": "sector_9_3",
+      "biome": 9,
+      "level": 3,
+      "sectorName": "9.3 Regenerating Chitin Walls",
+      "speaker": "thorne",
+      "file": "thorne/sector_9_3.mp3",
+      "text": "Chitin walls are closing the tunnel! Blast a hole through the membrane!",
+      "duration": 4.800000000000001
+    },
+    "sector_9_4": {
+      "id": "sector_9_4",
+      "biome": 9,
+      "level": 4,
+      "sectorName": "9.4 Neural Hallucination Maze",
+      "speaker": "lyra",
+      "file": "lyra/sector_9_4.mp3",
+      "text": "Daddy... the walls are whispering in Mom's voice. Don't listen to them!",
+      "duration": 4.800000000000001
+    },
+    "sector_9_5": {
+      "id": "sector_9_5",
+      "biome": 9,
+      "level": 5,
+      "sectorName": "9.5 Bio-Construct Hatchery",
+      "speaker": "naya",
+      "file": "naya/sector_9_5.mp3",
+      "text": "Nursery sector. Wipe out the egg clusters before they hatch into interceptors.",
+      "duration": 4.800000000000001
+    },
+    "sector_9_6": {
+      "id": "sector_9_6",
+      "biome": 9,
+      "level": 6,
+      "sectorName": "9.6 Bio-Acidic Waterfalls",
+      "speaker": "darius",
+      "file": "darius/sector_9_6.mp3",
+      "text": "Bio-acid dripping from the ceiling. Keep flight trim tight and centered.",
+      "duration": 4.4
+    },
+    "sector_9_7": {
+      "id": "sector_9_7",
+      "biome": 9,
+      "level": 7,
+      "sectorName": "9.7 Synaptic Bridge Relays",
+      "speaker": "thorne",
+      "file": "thorne/sector_9_7.mp3",
+      "text": "Destroy the neural bridge nodes. It'll blind their defensive coordination.",
+      "duration": 4
+    },
+    "sector_9_8": {
+      "id": "sector_9_8",
+      "biome": 9,
+      "level": 8,
+      "sectorName": "9.8 Chitin Brute Vanguard",
+      "speaker": "naya",
+      "file": "naya/sector_9_8.mp3",
+      "text": "Chitin Brute charging down the corridor! Aim for the soft joints under its carapace!",
+      "duration": 5.6000000000000005
+    },
+    "sector_9_9": {
+      "id": "sector_9_9",
+      "biome": 9,
+      "level": 9,
+      "sectorName": "9.9 Hive Mother Throne Chamber",
+      "speaker": "lyra",
+      "file": "lyra/sector_9_9.mp3",
+      "text": "She's waiting for us in the center of the web. Her thoughts are overwhelming.",
+      "duration": 5.6000000000000005
+    },
+    "sector_9_10": {
+      "id": "sector_9_10",
+      "biome": 9,
+      "level": 10,
+      "sectorName": "9.10 Hive Mother Bio-Nexus",
+      "speaker": "darius",
+      "file": "darius/sector_9_10.mp3",
+      "text": "Hive Mother has uncoiled! Sever her neural tentacles and break her crown!",
+      "duration": 4.800000000000001
+    },
+    "sector_10_1": {
+      "id": "sector_10_1",
+      "biome": 10,
+      "level": 1,
+      "sectorName": "10.1 Event Horizon Ingress",
+      "speaker": "darius",
+      "file": "darius/sector_10_1.mp3",
+      "text": "The Core Rift. The edge of reality itself. We made it, Lyra.",
+      "duration": 4.800000000000001
+    },
+    "sector_10_2": {
+      "id": "sector_10_2",
+      "biome": 10,
+      "level": 2,
+      "sectorName": "10.2 Temporal Loop Fractures",
+      "speaker": "naya",
+      "file": "naya/sector_10_2.mp3",
+      "text": "Enemies are rewinding their attack vectors! Anticipate the temporal loop!",
+      "duration": 4
+    },
+    "sector_10_3": {
+      "id": "sector_10_3",
+      "biome": 10,
+      "level": 3,
+      "sectorName": "10.3 Singularity Code Cascade",
+      "speaker": "lyra",
+      "file": "lyra/sector_10_3.mp3",
+      "text": "I can read the code in the dark, Daddy. It says... everything is connected.",
+      "duration": 5.6000000000000005
+    },
+    "sector_10_4": {
+      "id": "sector_10_4",
+      "biome": 10,
+      "level": 4,
+      "sectorName": "10.4 Null-Space Void Chasm",
+      "speaker": "thorne",
+      "file": "thorne/sector_10_4.mp3",
+      "text": "Null-space rifts opening ahead! Steer clear of the black voids!",
+      "duration": 4
+    },
+    "sector_10_5": {
+      "id": "sector_10_5",
+      "biome": 10,
+      "level": 5,
+      "sectorName": "10.5 Paradox Phantom Corridor",
+      "speaker": "naya",
+      "file": "naya/sector_10_5.mp3",
+      "text": "Paradox fighters are phased across timelines. Hit them when they fully materialize.",
+      "duration": 4.800000000000001
+    },
+    "sector_10_6": {
+      "id": "sector_10_6",
+      "biome": 10,
+      "level": 6,
+      "sectorName": "10.6 Tachyon Mirror Shards",
+      "speaker": "darius",
+      "file": "darius/sector_10_6.mp3",
+      "text": "I see ships from every timeline flying alongside us. We're not alone.",
+      "duration": 4.800000000000001
+    },
+    "sector_10_7": {
+      "id": "sector_10_7",
+      "biome": 10,
+      "level": 7,
+      "sectorName": "10.7 Singularity Overdrive Trench",
+      "speaker": "thorne",
+      "file": "thorne/sector_10_7.mp3",
+      "text": "Engines at 110%! Keep forward velocity or get pulled into the core!",
+      "duration": 4.800000000000001
+    },
+    "sector_10_8": {
+      "id": "sector_10_8",
+      "biome": 10,
+      "level": 8,
+      "sectorName": "10.8 Precursor Throne Spires",
+      "speaker": "lyra",
+      "file": "lyra/sector_10_8.mp3",
+      "text": "The spires are singing the first song of creation. We're almost at the throne.",
+      "duration": 5.6000000000000005
+    },
+    "sector_10_9": {
+      "id": "sector_10_9",
+      "biome": 10,
+      "level": 9,
+      "sectorName": "10.9 Architect Prime Threshold",
+      "speaker": "architect",
+      "file": "architect/sector_10_9.mp3",
+      "text": "You who travel through time and sorrow... approach the final threshold...",
+      "duration": 4.4
+    },
+    "sector_10_10": {
+      "id": "sector_10_10",
+      "biome": 10,
+      "level": 10,
+      "sectorName": "10.10 The Cyber Coelacanth Singularity",
+      "speaker": "darius",
+      "file": "darius/sector_10_10.mp3",
+      "text": "The Cyber Coelacanth has awakened! All weapons, all hearts, full burn!",
+      "duration": 4.4
+    },
+    "briefing_b1_thorne": {
+      "id": "briefing_b1_thorne",
+      "biome": 1,
+      "speaker": "thorne",
+      "file": "thorne/briefing_b1_01.mp3",
+      "text": "Commander Thorne, Mission Control. Situation: Sector 1. Threat level high. Good hunting.",
+      "duration": 4.5
+    },
+    "briefing_b1_lyra": {
+      "id": "briefing_b1_lyra",
+      "biome": 1,
+      "speaker": "lyra",
+      "file": "lyra/briefing_b1_01.mp3",
+      "text": "Daddy, I can sense the precursor energy in this trench. Stay close to the navigation beacon.",
+      "duration": 4.2
+    },
+    "briefing_b2_thorne": {
+      "id": "briefing_b2_thorne",
+      "biome": 2,
+      "speaker": "thorne",
+      "file": "thorne/briefing_b2_01.mp3",
+      "text": "Commander Thorne, Mission Control. Situation: Sector 2. Threat level high. Good hunting.",
+      "duration": 4.5
+    },
+    "briefing_b2_lyra": {
+      "id": "briefing_b2_lyra",
+      "biome": 2,
+      "speaker": "lyra",
+      "file": "lyra/briefing_b2_01.mp3",
+      "text": "Daddy, I can sense the precursor energy in this trench. Stay close to the navigation beacon.",
+      "duration": 4.2
+    },
+    "briefing_b3_thorne": {
+      "id": "briefing_b3_thorne",
+      "biome": 3,
+      "speaker": "thorne",
+      "file": "thorne/briefing_b3_01.mp3",
+      "text": "Commander Thorne, Mission Control. Situation: Sector 3. Threat level high. Good hunting.",
+      "duration": 4.5
+    },
+    "briefing_b3_lyra": {
+      "id": "briefing_b3_lyra",
+      "biome": 3,
+      "speaker": "lyra",
+      "file": "lyra/briefing_b3_01.mp3",
+      "text": "Daddy, I can sense the precursor energy in this trench. Stay close to the navigation beacon.",
+      "duration": 4.2
+    },
+    "briefing_b4_thorne": {
+      "id": "briefing_b4_thorne",
+      "biome": 4,
+      "speaker": "thorne",
+      "file": "thorne/briefing_b4_01.mp3",
+      "text": "Commander Thorne, Mission Control. Situation: Sector 4. Threat level high. Good hunting.",
+      "duration": 4.5
+    },
+    "briefing_b4_lyra": {
+      "id": "briefing_b4_lyra",
+      "biome": 4,
+      "speaker": "lyra",
+      "file": "lyra/briefing_b4_01.mp3",
+      "text": "Daddy, I can sense the precursor energy in this trench. Stay close to the navigation beacon.",
+      "duration": 4.2
+    },
+    "briefing_b5_thorne": {
+      "id": "briefing_b5_thorne",
+      "biome": 5,
+      "speaker": "thorne",
+      "file": "thorne/briefing_b5_01.mp3",
+      "text": "Commander Thorne, Mission Control. Situation: Sector 5. Threat level high. Good hunting.",
+      "duration": 4.5
+    },
+    "briefing_b5_lyra": {
+      "id": "briefing_b5_lyra",
+      "biome": 5,
+      "speaker": "lyra",
+      "file": "lyra/briefing_b5_01.mp3",
+      "text": "Daddy, I can sense the precursor energy in this trench. Stay close to the navigation beacon.",
+      "duration": 4.2
+    },
+    "briefing_b6_thorne": {
+      "id": "briefing_b6_thorne",
+      "biome": 6,
+      "speaker": "thorne",
+      "file": "thorne/briefing_b6_01.mp3",
+      "text": "Commander Thorne, Mission Control. Situation: Sector 6. Threat level high. Good hunting.",
+      "duration": 4.5
+    },
+    "briefing_b6_lyra": {
+      "id": "briefing_b6_lyra",
+      "biome": 6,
+      "speaker": "lyra",
+      "file": "lyra/briefing_b6_01.mp3",
+      "text": "Daddy, I can sense the precursor energy in this trench. Stay close to the navigation beacon.",
+      "duration": 4.2
+    },
+    "briefing_b7_thorne": {
+      "id": "briefing_b7_thorne",
+      "biome": 7,
+      "speaker": "thorne",
+      "file": "thorne/briefing_b7_01.mp3",
+      "text": "Commander Thorne, Mission Control. Situation: Sector 7. Threat level high. Good hunting.",
+      "duration": 4.5
+    },
+    "briefing_b7_lyra": {
+      "id": "briefing_b7_lyra",
+      "biome": 7,
+      "speaker": "lyra",
+      "file": "lyra/briefing_b7_01.mp3",
+      "text": "Daddy, I can sense the precursor energy in this trench. Stay close to the navigation beacon.",
+      "duration": 4.2
+    },
+    "briefing_b8_thorne": {
+      "id": "briefing_b8_thorne",
+      "biome": 8,
+      "speaker": "thorne",
+      "file": "thorne/briefing_b8_01.mp3",
+      "text": "Commander Thorne, Mission Control. Situation: Sector 8. Threat level high. Good hunting.",
+      "duration": 4.5
+    },
+    "briefing_b8_lyra": {
+      "id": "briefing_b8_lyra",
+      "biome": 8,
+      "speaker": "lyra",
+      "file": "lyra/briefing_b8_01.mp3",
+      "text": "Daddy, I can sense the precursor energy in this trench. Stay close to the navigation beacon.",
+      "duration": 4.2
+    },
+    "briefing_b9_thorne": {
+      "id": "briefing_b9_thorne",
+      "biome": 9,
+      "speaker": "thorne",
+      "file": "thorne/briefing_b9_01.mp3",
+      "text": "Commander Thorne, Mission Control. Situation: Sector 9. Threat level high. Good hunting.",
+      "duration": 4.5
+    },
+    "briefing_b9_lyra": {
+      "id": "briefing_b9_lyra",
+      "biome": 9,
+      "speaker": "lyra",
+      "file": "lyra/briefing_b9_01.mp3",
+      "text": "Daddy, I can sense the precursor energy in this trench. Stay close to the navigation beacon.",
+      "duration": 4.2
+    },
+    "briefing_b10_thorne": {
+      "id": "briefing_b10_thorne",
+      "biome": 10,
+      "speaker": "thorne",
+      "file": "thorne/briefing_b10_01.mp3",
+      "text": "Commander Thorne, Mission Control. Situation: Sector 10. Threat level high. Good hunting.",
+      "duration": 4.5
+    },
+    "briefing_b10_lyra": {
+      "id": "briefing_b10_lyra",
+      "biome": 10,
+      "speaker": "lyra",
+      "file": "lyra/briefing_b10_01.mp3",
+      "text": "Daddy, I can sense the precursor energy in this trench. Stay close to the navigation beacon.",
+      "duration": 4.2
+    }
   }
 }

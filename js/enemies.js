@@ -837,6 +837,13 @@
                             );
                             scrapDrops.push(new ScrapDrop(ecoDrop.x, ecoDrop.y, ecoDrop.type, drop.amount));
                         }
+
+                        if (typeof AdaptiveDirector !== 'undefined') {
+                            const qNode = AdaptiveDirector.getHighYieldNodeDrop(biomeLevel);
+                            if (qNode && typeof ScrapDrop !== 'undefined') {
+                                scrapDrops.push(new ScrapDrop(this.x + 80, this.y + 60, 'scrap_large', qNode.scrapValue));
+                            }
+                        }
                     }
 
                     for (let i = 0; i < (this.isMidBoss ? 18 : 35); i++) {

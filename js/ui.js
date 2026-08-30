@@ -172,33 +172,60 @@ function transitionToScreen(newScreen) {
 function playBossIntro() {
     if (bossIntroPlaying) return;
     bossIntroPlaying = true;
-    bossIntroVideo.muted = false; // audio allowed after user interaction (START GAME click)
-    bossIntroVideo.classList.add('active');
-    skipHint.classList.add('active');
-    bossIntroVideo.currentTime = 0;
-    bossIntroVideo.play().catch(() => {
-        // Autoplay blocked — try again on next user interaction
-        bossIntroPlaying = false;
-        bossIntroVideo.classList.remove('active');
-        skipHint.classList.remove('active');
-        spawnBossNow();
-        return;
-    });
-    bossIntroVideo.onended = () => {
-        bossIntroVideo.classList.remove('active');
-        skipHint.classList.remove('active');
-        bossIntroPlaying = false;
-        spawnBossNow();
-    };
+
+    const isMid = (typeof LevelManager !== 'undefined' && LevelManager.level === 5);
+    const biome = (typeof LevelManager !== 'undefined') ? LevelManager.biome : 1;
+    const cinKey = (typeof CinematicsEngine !== 'undefined') 
+        ? CinematicsEngine.getBossCinematicKey(biome, isMid)
+        : 'boss_b1_boss';
+
+    if (typeof CinematicsEngine !== 'undefined') {
+        CinematicsEngine.play(cinKey, {
+            onStart: () => {
+                if (skipHint) skipHint.classList.add('active');
+            },
+            onComplete: () => {
+                if (skipHint) skipHint.classList.remove('active');
+                bossIntroPlaying = false;
+                spawnBossNow();
+            },
+            onFallback: () => {
+                if (skipHint) skipHint.classList.remove('active');
+                bossIntroPlaying = false;
+                spawnBossNow();
+            }
+        });
+    } else {
+        bossIntroVideo.muted = false;
+        bossIntroVideo.classList.add('active');
+        skipHint.classList.add('active');
+        bossIntroVideo.currentTime = 0;
+        bossIntroVideo.play().catch(() => {
+            bossIntroPlaying = false;
+            bossIntroVideo.classList.remove('active');
+            skipHint.classList.remove('active');
+            spawnBossNow();
+        });
+        bossIntroVideo.onended = () => {
+            bossIntroVideo.classList.remove('active');
+            skipHint.classList.remove('active');
+            bossIntroPlaying = false;
+            spawnBossNow();
+        };
+    }
 }
 
 function skipBossIntro() {
     if (!bossIntroPlaying) return;
-    bossIntroVideo.pause();
-    bossIntroVideo.classList.remove('active');
-    skipHint.classList.remove('active');
-    bossIntroPlaying = false;
-    spawnBossNow();
+    if (typeof CinematicsEngine !== 'undefined' && CinematicsEngine.isPlaying()) {
+        CinematicsEngine.skip();
+    } else {
+        bossIntroVideo.pause();
+        bossIntroVideo.classList.remove('active');
+        skipHint.classList.remove('active');
+        bossIntroPlaying = false;
+        spawnBossNow();
+    }
 }
 
 function spawnBossNow() {
@@ -210,32 +237,54 @@ function spawnBossNow() {
 function playVictoryCinematic() {
     if (victoryVideoPlaying) return;
     victoryVideoPlaying = true;
-    victoryVideo.muted = false; // audio allowed after user interaction (START GAME click)
-    victoryVideo.classList.add('active');
-    skipHint.classList.add('active');
-    victoryVideo.currentTime = 0;
-    victoryVideo.play().catch(() => {
-        victoryVideoPlaying = false;
-        victoryVideo.classList.remove('active');
-        skipHint.classList.remove('active');
-        transitionToScreen(SCREENS.CINEMATIC);
-        return;
-    });
-    victoryVideo.onended = () => {
-        victoryVideo.classList.remove('active');
-        skipHint.classList.remove('active');
-        victoryVideoPlaying = false;
-        transitionToScreen(SCREENS.CINEMATIC);
-    };
+
+    if (typeof CinematicsEngine !== 'undefined') {
+        CinematicsEngine.play('victory', {
+            onStart: () => {
+                if (skipHint) skipHint.classList.add('active');
+            },
+            onComplete: () => {
+                if (skipHint) skipHint.classList.remove('active');
+                victoryVideoPlaying = false;
+                transitionToScreen(SCREENS.CINEMATIC);
+            },
+            onFallback: () => {
+                if (skipHint) skipHint.classList.remove('active');
+                victoryVideoPlaying = false;
+                transitionToScreen(SCREENS.CINEMATIC);
+            }
+        });
+    } else {
+        victoryVideo.muted = false;
+        victoryVideo.classList.add('active');
+        skipHint.classList.add('active');
+        victoryVideo.currentTime = 0;
+        victoryVideo.play().catch(() => {
+            victoryVideoPlaying = false;
+            victoryVideo.classList.remove('active');
+            skipHint.classList.remove('active');
+            transitionToScreen(SCREENS.CINEMATIC);
+        });
+        victoryVideo.onended = () => {
+            victoryVideo.classList.remove('active');
+            skipHint.classList.remove('active');
+            victoryVideoPlaying = false;
+            transitionToScreen(SCREENS.CINEMATIC);
+        };
+    }
 }
 
 function skipVictoryCinematic() {
     if (!victoryVideoPlaying) return;
-    victoryVideo.pause();
-    victoryVideo.classList.remove('active');
-    skipHint.classList.remove('active');
-    victoryVideoPlaying = false;
-    transitionToScreen(SCREENS.CINEMATIC);
+    if (typeof CinematicsEngine !== 'undefined' && CinematicsEngine.isPlaying()) {
+        CinematicsEngine.skip();
+    } else {
+        victoryVideo.pause();
+        victoryVideo.classList.remove('active');
+        skipHint.classList.remove('active');
+        victoryVideoPlaying = false;
+        transitionToScreen(SCREENS.CINEMATIC);
+    }
 }
 
 function advanceSubLevel() {

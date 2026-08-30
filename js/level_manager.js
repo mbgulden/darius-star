@@ -287,6 +287,10 @@ const LevelManager = {
 
         // Record sector attempt and trigger progressive attempt banter
         const attempts = this.recordAttempt(this.biome, this.level);
+        if (typeof AdaptiveDirector !== 'undefined') {
+            AdaptiveDirector.resetSectorMetrics(attempts);
+        }
+
         const sectorIntel = this.getSectorIntel(this.biome, this.level);
         if (typeof BanterEngine !== 'undefined' && BanterEngine.trigger) {
             if (attempts === 1 && sectorIntel && sectorIntel.commLine) {
