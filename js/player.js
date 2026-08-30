@@ -871,7 +871,9 @@ class Player {
             else if (this.shipType === 'interceptor') sprite = playerSprites['interceptor_0'];
             else sprite = playerSprites[`player_${frameIdx}`];
             
-            if (sprite && sprite.complete && sprite.naturalWidth > 0) {
+            const isRepImg = sprite && sprite.tagName !== 'CANVAS' && sprite.complete && sprite.naturalWidth > 0;
+            const isRepCvs = sprite && sprite.tagName === 'CANVAS' && sprite.width > 0;
+            if (isRepImg || isRepCvs) {
                 drawSpriteFrame(ctx, sprite, 0, 0, SPRITE_FRAME, SPRITE_FRAME, 0, 0, 48, 48);
             } else {
                 ctx.fillStyle = '#ff4400';
@@ -945,13 +947,14 @@ class Player {
             sprite = playerSprites['scout_0'];
         } else if (this.shipType === 'heavy') {
             sprite = playerSprites['heavy_0'];
-        } else if (this.shipType === 'interceptor') {
-            sprite = playerSprites['interceptor_0'];
         } else {
             sprite = playerSprites[`player_${frameIdx}`];
         }
 
-        if (sprite && sprite.complete && sprite.naturalWidth > 0) {
+        const isImage = sprite && sprite.tagName !== 'CANVAS' && sprite.complete && sprite.naturalWidth > 0;
+        const isCanvas = sprite && sprite.tagName === 'CANVAS' && sprite.width > 0;
+
+        if (isImage || isCanvas) {
             // Render sprite scaled to 48x48 (ship area ~40x20, sprite is 1024x1024)
             const spriteSize = 48;
             drawSpriteFrame(ctx, sprite, 0, 0, SPRITE_FRAME, SPRITE_FRAME, 0, 0, spriteSize, spriteSize);

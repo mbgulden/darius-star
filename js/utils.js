@@ -141,6 +141,12 @@ function createExplosion(x, y, color, count = 12, style = null) {
     } else if (style === 'shield_hit') {
         particleCount = 12;
         particleColor = '#0088FF';
+    } else if (style === 'missile_aoe') {
+        particleCount = 20;
+        particleColor = '#FF4400';
+    } else if (style === 'indirect_glance') {
+        particleCount = 6;
+        particleColor = '#FFCC00';
     }
 
     for (let i = 0; i < particleCount; i++) {
@@ -156,6 +162,18 @@ function createExplosion(x, y, color, count = 12, style = null) {
             p.vy = (Math.random() - 0.5) * 150 - 50;
             p.size = Math.random() * 5 + 2;
             p.decay = Math.random() * 1.2 + 0.6;
+        } else if (style === 'missile_aoe') {
+            // High-velocity outward blast shockwave debris
+            p.vx = (Math.random() - 0.5) * 420;
+            p.vy = (Math.random() - 0.5) * 420;
+            p.size = Math.random() * 6 + 2.5;
+            p.decay = Math.random() * 1.6 + 0.8;
+        } else if (style === 'indirect_glance') {
+            // Glancing deflection sparks
+            p.vx = (Math.random() - 0.5) * 200;
+            p.vy = (Math.random() - 0.5) * 200;
+            p.size = Math.random() * 3 + 1;
+            p.decay = Math.random() * 2.8 + 1.2;
         }
         particles.push(p);
     }

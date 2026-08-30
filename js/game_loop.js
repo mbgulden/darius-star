@@ -697,37 +697,67 @@ function update(dt) {
             const bBox = { x: b.x - b.size, y: b.y - 2, width: b.size*2, height: 4 };
             if (checkCollision(bBox, e)) {
                 const mods = window.DS_UpgradeSystem ? window.DS_UpgradeSystem.getGameplayModifiers() : null;
-                const dmg = b.damage || ((player.weaponLevel >= 4 ? 2 : 1) * (mods ? mods.weaponDamageMultiplier : 1.0));
+                const baseDmg = b.damage || ((player.weaponLevel >= 4 ? 2 : 1) * (mods ? mods.weaponDamageMultiplier : 1.0));
+                
+                // Direct vs Indirect Glancing hit calculation
+                const distToCenter = Math.hypot(b.x - (e.x + e.width/2), b.y - (e.y + e.height/2));
+                const isDirect = distToCenter < 14;
+                const dmg = isDirect ? baseDmg : Math.max(1, Math.round(baseDmg * 0.85));
                 e.hp -= dmg;
 
-                // Map projectile type to varied explosion/impact VFX
-                let style = 'blue_laser';
+                // Map projectile type to varied explosion/impact VFX & Materia height
+                let style = isDirect ? 'blue_laser' : 'indirect_glance';
                 if (b.secondaryType === 'missile') {
-                    style = 'missile';
+                    style = 'missile_aoe';
+                    
+                    // --- Area of Effect (AOE) Physics Knockback & Splash Damage ---
+                    const aoeRadius = 140;
+                    createExplosion(b.x, b.y, '#ff4400', 24, 'missile_aoe');
+
+                    for (let k = 0; k < enemies.length; k++) {
+                        const otherE = enemies[k];
+                        const dist = Math.hypot((otherE.x + otherE.width/2) - b.x, (otherE.y + otherE.height/2) - b.y);
+                        if (dist < aoeRadius) {
+                            if (otherE !== e) {
+                                const splashDmg = Math.max(1, Math.round(baseDmg * (1 - dist / aoeRadius) * 0.8));
+                                otherE.hp -= splashDmg;
+                            }
+                            // Physics knockback impulse pushing surrounding ships away
+                            const pushAng = Math.atan2((otherE.y + otherE.height/2) - b.y, (otherE.x + otherE.width/2) - b.x);
+                            const pushMag = 280 * (1 - dist / aoeRadius);
+                            otherE.x += Math.cos(pushAng) * pushMag * 0.12;
+                            otherE.y += Math.sin(pushAng) * pushMag * 0.12;
+                            createExplosion(otherE.x + otherE.width/2, otherE.y + otherE.height/2, '#ffaa00', 5, 'indirect_glance');
+                        }
+                    }
+
+                    if (boss) {
+                        const bDist = Math.hypot((boss.x + boss.width/2) - b.x, (boss.y + boss.height/2) - b.y);
+                        if (bDist < aoeRadius) {
+                            const bossSplash = Math.max(1, Math.round(baseDmg * (1 - bDist / aoeRadius) * 0.65));
+                            boss.takeDamage(bossSplash, b.x, b.y);
+                        }
+                    }
                 } else {
                     const wl = b.weaponLevel || player.weaponLevel;
-                    if (wl === 1 || wl === 2) {
-                        style = 'blue_laser';
-                    } else if (wl === 3) {
-                        style = 'green_laser';
-                    } else if (wl === 4) {
-                        style = 'purple_laser';
-                    } else if (wl >= 5) {
-                        style = 'white_laser';
+                    if (isDirect) {
+                        if (wl === 1 || wl === 2) style = 'blue_laser';
+                        else if (wl === 3) style = 'green_laser';
+                        else if (wl === 4) style = 'purple_laser';
+                        else if (wl >= 5) style = 'white_laser';
                     }
+                    createExplosion(b.x, b.y, b.color, isDirect ? 8 : 4, style);
                 }
-                createExplosion(b.x, b.y, b.color, 8, style);
 
                 bullets.splice(j, 1);
                 playSound('hit');
-                // Spawn hit-flash (§6.2) at impact point
                 spawnHitFlash(e.x + e.width/2, e.y + e.height/2, e.enemyType);
 
                 if (e.hp <= 0) {
                     createExplosion(e.x + e.width/2, e.y + e.height/2, e.color, 12);
                     playSound('explosion');
                     const comboMult = Combo.onKill();
-                    score += Math.floor(e.scoreValue * comboMult);
+                    score += Math.floor(e.scoreValue * comboMult * (isDirect ? 1.15 : 1.0));
                     if (player.addSecondaryCharge) player.addSecondaryCharge(5);
 
                     // Economy-based scrap drops (prevents checkpoint farming)
@@ -767,26 +797,42 @@ function update(dt) {
             const bBox = { x: b.x - b.size, y: b.y - 2, width: b.size*2, height: 4 };
             if (checkCollision(bBox, boss)) {
                 const mods = window.DS_UpgradeSystem ? window.DS_UpgradeSystem.getGameplayModifiers() : null;
-                const dmg = b.damage || ((player.weaponLevel >= 4 ? 2 : 1) * (mods ? mods.weaponDamageMultiplier : 1.0));
+                const baseDmg = b.damage || ((player.weaponLevel >= 4 ? 2 : 1) * (mods ? mods.weaponDamageMultiplier : 1.0));
+                
+                // Direct vs Indirect Glancing hit calculation
+                const distToCenter = Math.hypot(b.x - (boss.x + boss.width/2), b.y - (boss.y + boss.height/2));
+                const isDirect = distToCenter < 40;
+                const dmg = isDirect ? baseDmg : Math.max(1, Math.round(baseDmg * 0.85));
                 boss.takeDamage(dmg, b.x, b.y);
 
-                // Map projectile type to varied explosion/impact VFX
-                let style = 'blue_laser';
+                let style = isDirect ? 'blue_laser' : 'indirect_glance';
                 if (b.secondaryType === 'missile') {
-                    style = 'missile';
+                    style = 'missile_aoe';
+                    createExplosion(b.x, b.y, '#ff4400', 25, 'missile_aoe');
+                    
+                    // Knock back nearby minions on missile impact
+                    const aoeRadius = 140;
+                    for (let k = 0; k < enemies.length; k++) {
+                        const otherE = enemies[k];
+                        const dist = Math.hypot((otherE.x + otherE.width/2) - b.x, (otherE.y + otherE.height/2) - b.y);
+                        if (dist < aoeRadius) {
+                            otherE.hp -= Math.max(1, Math.round(baseDmg * (1 - dist / aoeRadius) * 0.8));
+                            const pushAng = Math.atan2((otherE.y + otherE.height/2) - b.y, (otherE.x + otherE.width/2) - b.x);
+                            const pushMag = 280 * (1 - dist / aoeRadius);
+                            otherE.x += Math.cos(pushAng) * pushMag * 0.12;
+                            otherE.y += Math.sin(pushAng) * pushMag * 0.12;
+                        }
+                    }
                 } else {
                     const wl = b.weaponLevel || player.weaponLevel;
-                    if (wl === 1 || wl === 2) {
-                        style = 'blue_laser';
-                    } else if (wl === 3) {
-                        style = 'green_laser';
-                    } else if (wl === 4) {
-                        style = 'purple_laser';
-                    } else if (wl >= 5) {
-                        style = 'white_laser';
+                    if (isDirect) {
+                        if (wl === 1 || wl === 2) style = 'blue_laser';
+                        else if (wl === 3) style = 'green_laser';
+                        else if (wl === 4) style = 'purple_laser';
+                        else if (wl >= 5) style = 'white_laser';
                     }
+                    createExplosion(b.x, b.y, b.color, isDirect ? 8 : 4, style);
                 }
-                createExplosion(b.x, b.y, b.color, 8, style);
 
                 if (player.addSecondaryCharge) player.addSecondaryCharge(10);
                 bullets.splice(j, 1);

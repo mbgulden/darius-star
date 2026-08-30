@@ -5154,6 +5154,91 @@
       "width": 512,
       "height": 512,
       "is_valid_power_of_two": true
+    },
+    "powerup_weapon": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "powerup_weapon.png",
+          "path": "assets/sprites/powerup_weapon.png",
+          "width": 256,
+          "height": 256,
+          "is_power_of_two": true,
+          "sha256": "c7cb728b68f40d6d7af54cc4d80a9c313a3cc2c0f9dcee53adffc313189aa232"
+        }
+      ],
+      "frame_count": 1,
+      "width": 256,
+      "height": 256,
+      "is_valid_power_of_two": true
+    },
+    "powerup_shield": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "powerup_shield.png",
+          "path": "assets/sprites/powerup_shield.png",
+          "width": 256,
+          "height": 256,
+          "is_power_of_two": true,
+          "sha256": "64a81a413520915ad4da283cd1f06eb5953d07431bb0d75770f8ad06a071e839"
+        }
+      ],
+      "frame_count": 1,
+      "width": 256,
+      "height": 256,
+      "is_valid_power_of_two": true
+    },
+    "powerup_bomb": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "powerup_bomb.png",
+          "path": "assets/sprites/powerup_bomb.png",
+          "width": 256,
+          "height": 256,
+          "is_power_of_two": true,
+          "sha256": "2fe7a08992c736c46341860d890fe832cefa81d25f0b3c492ad1f6411508fb7c"
+        }
+      ],
+      "frame_count": 1,
+      "width": 256,
+      "height": 256,
+      "is_valid_power_of_two": true
+    },
+    "powerup_speed": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "powerup_speed.png",
+          "path": "assets/sprites/powerup_speed.png",
+          "width": 256,
+          "height": 256,
+          "is_power_of_two": true,
+          "sha256": "559a19adcbbe4fb5efab65e13649a8bc23463a1abbda2e4e50ca3420ad2ffd4f"
+        }
+      ],
+      "frame_count": 1,
+      "width": 256,
+      "height": 256,
+      "is_valid_power_of_two": true
+    },
+    "powerup_materia": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "powerup_materia.png",
+          "path": "assets/sprites/powerup_materia.png",
+          "width": 256,
+          "height": 256,
+          "is_power_of_two": true,
+          "sha256": "a542765e70f748cffa64d282e61b4cb7b8c7dd95189e829b96c6e81266799883"
+        }
+      ],
+      "frame_count": 1,
+      "width": 256,
+      "height": 256,
+      "is_valid_power_of_two": true
     }
   },
   "validation": {

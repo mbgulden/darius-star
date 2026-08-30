@@ -178,6 +178,11 @@
             _loadVFX('shield', 'assets/sprites/shield_0.png');
             _loadVFX('thruster_0', 'assets/sprites/thruster_0.png');
             _loadVFX('thruster_1', 'assets/sprites/thruster_1.png');
+            _loadVFX('powerup_weapon', 'assets/sprites/powerup_weapon.png');
+            _loadVFX('powerup_shield', 'assets/sprites/powerup_shield.png');
+            _loadVFX('powerup_bomb', 'assets/sprites/powerup_bomb.png');
+            _loadVFX('powerup_speed', 'assets/sprites/powerup_speed.png');
+            _loadVFX('powerup_materia', 'assets/sprites/powerup_materia.png');
         }
 
         // --- GRO-1141: Pre-composite additive sprites ---
