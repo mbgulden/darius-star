@@ -190,6 +190,37 @@
             _loadVFX('scrap_core', 'assets/sprites/scrap_core.png');
             _loadVFX('scrap_essence', 'assets/sprites/scrap_essence.png');
             _loadVFX('scrap_fragment', 'assets/sprites/scrap_fragment.png');
+            loadLandmarkSprites();
+        }
+
+        // --- Landmark Sprites Loading (100-Level Journey Landmarks) ---
+        const landmarkSprites = {};
+        function loadLandmarkSprites() {
+            const list = [
+                'landmark_coral_spire',
+                'landmark_kelp_canopy',
+                'landmark_frigate_wreck',
+                'landmark_atoll_chasm',
+                'landmark_sensor_buoy',
+                'landmark_sunken_aqueduct',
+                'landmark_magma_chimney',
+                'landmark_ice_berg',
+                'landmark_leviathan_bones',
+                'landmark_bio_cluster',
+                'landmark_chrono_cube',
+                'landmark_chrono_singularity'
+            ];
+            list.forEach(name => {
+                if (!landmarkSprites[name]) {
+                    const img = new Image();
+                    img.src = `assets/sprites/landmarks/${name}.png`;
+                    landmarkSprites[name] = img;
+                }
+            });
+        }
+        if (typeof window !== 'undefined') {
+            window.landmarkSprites = landmarkSprites;
+            window.loadLandmarkSprites = loadLandmarkSprites;
         }
 
         // --- GRO-1141: Pre-composite additive sprites ---

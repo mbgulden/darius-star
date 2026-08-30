@@ -83,6 +83,11 @@ eval(upgradeCode);
 const saveCode = fs.readFileSync(path.join(__dirname, '../js/save_system.js'), 'utf8');
 eval(saveCode);
 
+
+// Load sprites.js
+const spritesCode = fs.readFileSync(path.join(__dirname, '../js/sprites.js'), 'utf8');
+eval(spritesCode);
+
 // Load ui.js
 const uiCode = fs.readFileSync(path.join(__dirname, '../js/ui.js'), 'utf8');
 eval(uiCode);
@@ -180,5 +185,41 @@ assert.strictEqual(LevelManager.biome, 2, "Biome should remain Biome 2");
 console.log("  [PASS] Debriefing transition to next level (2.4) verified.");
 
 console.log("============================================================");
+
+// ─── 5. Generated Landmark Sprites & Parallax Background Assets on Disk ─────────
+console.log("5. Testing Generated Landmark Sprites and Biome Parallax Images on Disk...");
+const manifest = JSON.parse(fs.readFileSync(path.join(__dirname, '../assets/sprites.json'), 'utf8'));
+
+const landmarkNames = [
+    'landmark_coral_spire', 'landmark_kelp_canopy', 'landmark_frigate_wreck',
+    'landmark_atoll_chasm', 'landmark_sensor_buoy', 'landmark_sunken_aqueduct',
+    'landmark_magma_chimney', 'landmark_ice_berg', 'landmark_leviathan_bones',
+    'landmark_bio_cluster', 'landmark_chrono_cube', 'landmark_chrono_singularity'
+];
+
+loadLandmarkSprites();
+for (const lname of landmarkNames) {
+    assert(manifest.sprites[lname], `Manifest must contain ${lname}`);
+    const filePath = path.join(__dirname, '../', manifest.sprites[lname].frames[0].path);
+    assert(fs.existsSync(filePath), `Landmark sprite file must exist: ${filePath}`);
+    assert(window.landmarkSprites[lname], `landmarkSprites must load ${lname}`);
+}
+
+const biomeNames = [
+    'abyssal_trench', 'coral_graveyard', 'coelacanth_lair', 'nebula_drift',
+    'ice_rings', 'inferno_core', 'storm_belt', 'derelict_fleet',
+    'xenomorph_hive', 'core_rift'
+];
+
+for (const bname of biomeNames) {
+    const farP = path.join(__dirname, `../assets/sprites/backgrounds/bg_${bname}_far.png`);
+    const nearP = path.join(__dirname, `../assets/sprites/backgrounds/bg_${bname}_near.png`);
+    const stripP = path.join(__dirname, `../assets/sprites/backgrounds/bg_${bname}_strip.png`);
+    assert(fs.existsSync(farP), `Far background must exist: ${farP}`);
+    assert(fs.existsSync(nearP), `Near background must exist: ${nearP}`);
+    assert(fs.existsSync(stripP), `Strip background must exist: ${stripP}`);
+}
+console.log("  [PASS] All 12 landmark sprites and all 10 biome background layers (far, near, strip) verified on disk.");
+
 console.log("ALL 100-LEVEL JOURNEY & DEBRIEFING TESTS PASSED (100%)");
 console.log("============================================================");

@@ -255,6 +255,21 @@ class JourneyLandmark {
         const accent = this.info.accentColor || '#00ffff';
         const pulse = 1.0 + Math.sin(this.time) * 0.12;
 
+        const spriteKey = 'landmark_' + type;
+        const spriteImg = (typeof landmarkSprites !== 'undefined' && landmarkSprites[spriteKey])
+            ? landmarkSprites[spriteKey]
+            : ((typeof window !== 'undefined' && window.landmarkSprites) ? window.landmarkSprites[spriteKey] : null);
+
+        if (spriteImg && spriteImg.complete && spriteImg.naturalWidth > 0) {
+            c.shadowColor = accent;
+            c.shadowBlur = 18 * pulse;
+            const drawW = 280 * pulse;
+            const drawH = 280 * pulse;
+            c.drawImage(spriteImg, -drawW / 2, -drawH / 2, drawW, drawH);
+            c.restore();
+            return;
+        }
+
         c.shadowColor = accent;
         c.shadowBlur = 12;
 

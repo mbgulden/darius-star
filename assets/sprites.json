@@ -5358,6 +5358,198 @@
       "width": 256,
       "height": 256,
       "is_valid_power_of_two": true
+    },
+    "landmark_atoll_chasm": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "landmark_atoll_chasm.png",
+          "path": "assets/sprites/landmarks/landmark_atoll_chasm.png",
+          "width": 512,
+          "height": 512,
+          "is_power_of_two": true
+        }
+      ],
+      "frame_count": 1,
+      "frame_width": 512,
+      "frame_height": 512,
+      "sha256": "1fc24b28e59a3a1a91c04014ddc50ef97952e3ede7dfb1473caace31189e0eb4"
+    },
+    "landmark_bio_cluster": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "landmark_bio_cluster.png",
+          "path": "assets/sprites/landmarks/landmark_bio_cluster.png",
+          "width": 512,
+          "height": 512,
+          "is_power_of_two": true
+        }
+      ],
+      "frame_count": 1,
+      "frame_width": 512,
+      "frame_height": 512,
+      "sha256": "06ea3c4017db8731c3111bff6f1383db7a488a3c378c742601de4b1dd73ba818"
+    },
+    "landmark_chrono_cube": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "landmark_chrono_cube.png",
+          "path": "assets/sprites/landmarks/landmark_chrono_cube.png",
+          "width": 512,
+          "height": 512,
+          "is_power_of_two": true
+        }
+      ],
+      "frame_count": 1,
+      "frame_width": 512,
+      "frame_height": 512,
+      "sha256": "97fc004bf03e18b4304bc1484fb34a5be491ffb0fad9e1a4fe35b5a7995aba59"
+    },
+    "landmark_chrono_singularity": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "landmark_chrono_singularity.png",
+          "path": "assets/sprites/landmarks/landmark_chrono_singularity.png",
+          "width": 512,
+          "height": 512,
+          "is_power_of_two": true
+        }
+      ],
+      "frame_count": 1,
+      "frame_width": 512,
+      "frame_height": 512,
+      "sha256": "1a434f61af888c93d7fcb9457c4708e8bd02644491c540ed622979bb1c73e823"
+    },
+    "landmark_coral_spire": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "landmark_coral_spire.png",
+          "path": "assets/sprites/landmarks/landmark_coral_spire.png",
+          "width": 512,
+          "height": 512,
+          "is_power_of_two": true
+        }
+      ],
+      "frame_count": 1,
+      "frame_width": 512,
+      "frame_height": 512,
+      "sha256": "8a4b02ce69f7b587bf6e2948fa0c32148384076c7716d75670b1edd85844794d"
+    },
+    "landmark_frigate_wreck": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "landmark_frigate_wreck.png",
+          "path": "assets/sprites/landmarks/landmark_frigate_wreck.png",
+          "width": 512,
+          "height": 512,
+          "is_power_of_two": true
+        }
+      ],
+      "frame_count": 1,
+      "frame_width": 512,
+      "frame_height": 512,
+      "sha256": "8f065d4eb6f7aca74d7b0bceae6fb979788f932cb7952fb79d2200870be414a5"
+    },
+    "landmark_ice_berg": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "landmark_ice_berg.png",
+          "path": "assets/sprites/landmarks/landmark_ice_berg.png",
+          "width": 512,
+          "height": 512,
+          "is_power_of_two": true
+        }
+      ],
+      "frame_count": 1,
+      "frame_width": 512,
+      "frame_height": 512,
+      "sha256": "57f260f5db9fe91eea7f62749d8bb47ab1589b6bdd855ab3882d2872237f8d0f"
+    },
+    "landmark_kelp_canopy": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "landmark_kelp_canopy.png",
+          "path": "assets/sprites/landmarks/landmark_kelp_canopy.png",
+          "width": 512,
+          "height": 512,
+          "is_power_of_two": true
+        }
+      ],
+      "frame_count": 1,
+      "frame_width": 512,
+      "frame_height": 512,
+      "sha256": "971aac9ab60f4dfc03aaa84494f784940eb6691d6c4b21f16ecd7c5c3aa7511a"
+    },
+    "landmark_leviathan_bones": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "landmark_leviathan_bones.png",
+          "path": "assets/sprites/landmarks/landmark_leviathan_bones.png",
+          "width": 512,
+          "height": 512,
+          "is_power_of_two": true
+        }
+      ],
+      "frame_count": 1,
+      "frame_width": 512,
+      "frame_height": 512,
+      "sha256": "24dd9e59ac85ff5d27bedfb20b1e4f1fee30978d53cda6d4e12a47a0a139a307"
+    },
+    "landmark_magma_chimney": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "landmark_magma_chimney.png",
+          "path": "assets/sprites/landmarks/landmark_magma_chimney.png",
+          "width": 512,
+          "height": 512,
+          "is_power_of_two": true
+        }
+      ],
+      "frame_count": 1,
+      "frame_width": 512,
+      "frame_height": 512,
+      "sha256": "0405478fcf3ace62f5199716be0200a3bbaf85440661de8a04b38acc36dc0d9a"
+    },
+    "landmark_sensor_buoy": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "landmark_sensor_buoy.png",
+          "path": "assets/sprites/landmarks/landmark_sensor_buoy.png",
+          "width": 512,
+          "height": 512,
+          "is_power_of_two": true
+        }
+      ],
+      "frame_count": 1,
+      "frame_width": 512,
+      "frame_height": 512,
+      "sha256": "df651a0c570c7058ba3e025208a7ebaaaed614d4559e4352d3ca801782f1545d"
+    },
+    "landmark_sunken_aqueduct": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "landmark_sunken_aqueduct.png",
+          "path": "assets/sprites/landmarks/landmark_sunken_aqueduct.png",
+          "width": 512,
+          "height": 512,
+          "is_power_of_two": true
+        }
+      ],
+      "frame_count": 1,
+      "frame_width": 512,
+      "frame_height": 512,
+      "sha256": "4d0d1479b81a2b73c15e38367a75197e105a9ed54fc4086296f7ff37cb8fffd8"
     }
   },
   "validation": {
