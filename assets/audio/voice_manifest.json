@@ -97,1163 +97,4112 @@
   "lines": {
     "sector_1_1": {
       "id": "sector_1_1",
-      "biome": 1,
-      "level": 1,
-      "sectorName": "1.1 Sunlit Atoll Crest",
       "speaker": "darius",
       "file": "darius/sector_1_1.mp3",
       "text": "Sunlight's fading fast. The trench mouth opens ahead.",
-      "duration": 3.2
+      "duration": 3.04,
+      "biome": 1,
+      "level": 1,
+      "sectorName": "1.1 Sunlit Atoll Crest"
     },
     "sector_1_2": {
       "id": "sector_1_2",
-      "biome": 1,
-      "level": 2,
-      "sectorName": "1.2 Coral Gardens Approach",
       "speaker": "lyra",
       "file": "lyra/sector_1_2.mp3",
       "text": "Daddy, the reef is lighting up... it's calling for defenders.",
-      "duration": 4
+      "duration": 3.8,
+      "biome": 1,
+      "level": 2,
+      "sectorName": "1.2 Coral Gardens Approach"
     },
     "sector_1_3": {
       "id": "sector_1_3",
-      "biome": 1,
-      "level": 3,
-      "sectorName": "1.3 Derelict Scout Wreckage",
       "speaker": "naya",
       "file": "naya/sector_1_3.mp3",
       "text": "Old Terran wreckage detected. Useful alloys for the quantum fabricator.",
-      "duration": 4
+      "duration": 3.8,
+      "biome": 1,
+      "level": 3,
+      "sectorName": "1.3 Derelict Scout Wreckage"
     },
     "sector_1_4": {
       "id": "sector_1_4",
-      "biome": 1,
-      "level": 4,
-      "sectorName": "1.4 Turquoise Atoll Chasm",
       "speaker": "darius",
       "file": "darius/sector_1_4.mp3",
       "text": "Hold on to your thrusters. The bottom just dropped out.",
-      "duration": 4
+      "duration": 3.8,
+      "biome": 1,
+      "level": 4,
+      "sectorName": "1.4 Turquoise Atoll Chasm"
     },
     "sector_1_5": {
       "id": "sector_1_5",
-      "biome": 1,
-      "level": 5,
-      "sectorName": "1.5 Precursor Sensor Buoy",
       "speaker": "thorne",
       "file": "thorne/sector_1_5.mp3",
       "text": "That sensor buoy is pinging our location. Blast it before it calls the fleet.",
-      "duration": 5.6000000000000005
+      "duration": 5.32,
+      "biome": 1,
+      "level": 5,
+      "sectorName": "1.5 Precursor Sensor Buoy"
     },
     "sector_1_6": {
       "id": "sector_1_6",
-      "biome": 1,
-      "level": 6,
-      "sectorName": "1.6 Sunken Aqueduct Shallows",
       "speaker": "naya",
       "file": "naya/sector_1_6.mp3",
       "text": "These ancient stone channels were built to nurture prototypes.",
-      "duration": 3.6
+      "duration": 3.42,
+      "biome": 1,
+      "level": 6,
+      "sectorName": "1.6 Sunken Aqueduct Shallows"
     },
     "sector_1_7": {
       "id": "sector_1_7",
-      "biome": 1,
-      "level": 7,
-      "sectorName": "1.7 Bioluminescent Kelp Wall",
       "speaker": "lyra",
       "file": "lyra/sector_1_7.mp3",
       "text": "The green light is dancing across the cockpit. I can hear distant humming.",
-      "duration": 5.2
+      "duration": 4.94,
+      "biome": 1,
+      "level": 7,
+      "sectorName": "1.7 Bioluminescent Kelp Wall"
     },
     "sector_1_8": {
       "id": "sector_1_8",
-      "biome": 1,
-      "level": 8,
-      "sectorName": "1.8 Hydrothermal Chimney Field",
       "speaker": "darius",
       "file": "darius/sector_1_8.mp3",
       "text": "Thermal chimneys blowing black smoke! Watch your temperature gauges.",
-      "duration": 3.6
+      "duration": 3.42,
+      "biome": 1,
+      "level": 8,
+      "sectorName": "1.8 Hydrothermal Chimney Field"
     },
     "sector_1_9": {
       "id": "sector_1_9",
-      "biome": 1,
-      "level": 9,
-      "sectorName": "1.9 Submerged Fortress Approach",
       "speaker": "naya",
       "file": "naya/sector_1_9.mp3",
       "text": "Fortress gate perimeter sighted. Heavy defensive resistance inbound.",
-      "duration": 3.2
+      "duration": 3.04,
+      "biome": 1,
+      "level": 9,
+      "sectorName": "1.9 Submerged Fortress Approach"
     },
     "sector_1_10": {
       "id": "sector_1_10",
-      "biome": 1,
-      "level": 10,
-      "sectorName": "1.10 Guardian Reef Stronghold",
       "speaker": "darius",
       "file": "darius/sector_1_10.mp3",
       "text": "Guardian signature confirmed on radar. Time to earn our passage.",
-      "duration": 4
+      "duration": 3.8,
+      "biome": 1,
+      "level": 10,
+      "sectorName": "1.10 Guardian Reef Stronghold"
     },
     "sector_2_1": {
       "id": "sector_2_1",
-      "biome": 2,
-      "level": 1,
-      "sectorName": "2.1 Bleached Reef Shallows",
       "speaker": "darius",
       "file": "darius/sector_2_1.mp3",
       "text": "Bleached coral as far as the eye can see. Pure silence.",
-      "duration": 4.4
+      "duration": 4.18,
+      "biome": 2,
+      "level": 1,
+      "sectorName": "2.1 Bleached Reef Shallows"
     },
     "sector_2_2": {
       "id": "sector_2_2",
-      "biome": 2,
-      "level": 2,
-      "sectorName": "2.2 Leviathan Ribcage Basin",
       "speaker": "naya",
       "file": "naya/sector_2_2.mp3",
       "text": "Flying between ancient rib arches. Sensors picking up residual marrow radiation.",
-      "duration": 4.4
+      "duration": 4.18,
+      "biome": 2,
+      "level": 2,
+      "sectorName": "2.2 Leviathan Ribcage Basin"
     },
     "sector_2_3": {
       "id": "sector_2_3",
-      "biome": 2,
-      "level": 3,
-      "sectorName": "2.3 Spectral Frigate Hulks",
       "speaker": "cross",
       "file": "cross/sector_2_3.mp3",
       "text": "I recognize those hull numbers. Old Navy brothers trapped in the reef.",
-      "duration": 4.800000000000001
+      "duration": 4.56,
+      "biome": 2,
+      "level": 3,
+      "sectorName": "2.3 Spectral Frigate Hulks"
     },
     "sector_2_4": {
       "id": "sector_2_4",
-      "biome": 2,
-      "level": 4,
-      "sectorName": "2.4 Ghost Polyp Thicket",
       "speaker": "lyra",
       "file": "lyra/sector_2_4.mp3",
       "text": "The purple flowers... they're trying to put my mind to sleep, Daddy.",
-      "duration": 4.800000000000001
+      "duration": 4.56,
+      "biome": 2,
+      "level": 4,
+      "sectorName": "2.4 Ghost Polyp Thicket"
     },
     "sector_2_5": {
       "id": "sector_2_5",
-      "biome": 2,
-      "level": 5,
-      "sectorName": "2.5 Crystalline Monolith Ridge",
       "speaker": "darius",
       "file": "darius/sector_2_5.mp3",
       "text": "I hear music from home. Stay sharp, it's just crystal resonance.",
-      "duration": 4.4
+      "duration": 4.18,
+      "biome": 2,
+      "level": 5,
+      "sectorName": "2.5 Crystalline Monolith Ridge"
     },
     "sector_2_6": {
       "id": "sector_2_6",
-      "biome": 2,
-      "level": 6,
-      "sectorName": "2.6 Sunken Amphitheater Ruins",
       "speaker": "thorne",
       "file": "thorne/sector_2_6.mp3",
       "text": "Stone amphitheater ahead. Prepare for an ambush in the center ring.",
-      "duration": 4.4
+      "duration": 4.18,
+      "biome": 2,
+      "level": 6,
+      "sectorName": "2.6 Sunken Amphitheater Ruins"
     },
     "sector_2_7": {
       "id": "sector_2_7",
-      "biome": 2,
-      "level": 7,
-      "sectorName": "2.7 Prismatic Spire Labyrinth",
       "speaker": "naya",
       "file": "naya/sector_2_7.mp3",
       "text": "Prismatic glare is splitting our HUD crosshairs. Fire on physical telemetry.",
-      "duration": 4.4
+      "duration": 4.18,
+      "biome": 2,
+      "level": 7,
+      "sectorName": "2.7 Prismatic Spire Labyrinth"
     },
     "sector_2_8": {
       "id": "sector_2_8",
-      "biome": 2,
-      "level": 8,
-      "sectorName": "2.8 Ancestral Ossuary Trench",
       "speaker": "darius",
       "file": "darius/sector_2_8.mp3",
       "text": "Scrap signals lighting up the board. Harvest what we can on the fly.",
-      "duration": 5.2
+      "duration": 4.94,
+      "biome": 2,
+      "level": 8,
+      "sectorName": "2.8 Ancestral Ossuary Trench"
     },
     "sector_2_9": {
       "id": "sector_2_9",
-      "biome": 2,
-      "level": 9,
-      "sectorName": "2.9 Memory Vault Gatehouse",
       "speaker": "lyra",
       "file": "lyra/sector_2_9.mp3",
       "text": "The vault doors are opening, Daddy... they're crying out for release.",
-      "duration": 4.4
+      "duration": 4.18,
+      "biome": 2,
+      "level": 9,
+      "sectorName": "2.9 Memory Vault Gatehouse"
     },
     "sector_2_10": {
       "id": "sector_2_10",
-      "biome": 2,
-      "level": 10,
-      "sectorName": "2.10 Vault Golem Sanctum",
       "speaker": "darius",
       "file": "darius/sector_2_10.mp3",
       "text": "Vault Golem is assembling! Break its crystal armor before it fires!",
-      "duration": 4.4
+      "duration": 4.18,
+      "biome": 2,
+      "level": 10,
+      "sectorName": "2.10 Vault Golem Sanctum"
     },
     "sector_3_1": {
       "id": "sector_3_1",
-      "biome": 3,
-      "level": 1,
-      "sectorName": "3.1 Sub-Glacial Trench Entry",
       "speaker": "darius",
       "file": "darius/sector_3_1.mp3",
       "text": "Europa's sub-glacial ocean. The cradle of the Coelacanths.",
-      "duration": 3.2
+      "duration": 3.04,
+      "biome": 3,
+      "level": 1,
+      "sectorName": "3.1 Sub-Glacial Trench Entry"
     },
     "sector_3_2": {
       "id": "sector_3_2",
-      "biome": 3,
-      "level": 2,
-      "sectorName": "3.2 Cryogenic Geyser Valley",
       "speaker": "thorne",
       "file": "thorne/sector_3_2.mp3",
       "text": "Geysers blowing from the ice floor! Keep your elevation high!",
-      "duration": 4
+      "duration": 3.8,
+      "biome": 3,
+      "level": 2,
+      "sectorName": "3.2 Cryogenic Geyser Valley"
     },
     "sector_3_3": {
       "id": "sector_3_3",
-      "biome": 3,
-      "level": 3,
-      "sectorName": "3.3 Bio-Fabrication Hatchery",
       "speaker": "naya",
       "file": "naya/sector_3_3.mp3",
       "text": "Unfinished Coelacanth prototypes detected. They're drawn to our engines.",
-      "duration": 3.6
+      "duration": 3.42,
+      "biome": 3,
+      "level": 3,
+      "sectorName": "3.3 Bio-Fabrication Hatchery"
     },
     "sector_3_4": {
       "id": "sector_3_4",
-      "biome": 3,
-      "level": 4,
-      "sectorName": "3.4 Thermal Vent Fissure",
       "speaker": "darius",
       "file": "darius/sector_3_4.mp3",
       "text": "Ride the warm updrafts from the fissure. It'll restore engine efficiency.",
-      "duration": 4.4
+      "duration": 4.18,
+      "biome": 3,
+      "level": 4,
+      "sectorName": "3.4 Thermal Vent Fissure"
     },
     "sector_3_5": {
       "id": "sector_3_5",
-      "biome": 3,
-      "level": 5,
-      "sectorName": "3.5 Incubator Pylon Array",
       "speaker": "lyra",
       "file": "lyra/sector_3_5.mp3",
       "text": "The incubator eggs are pulsing in rhythm with my heartbeat...",
-      "duration": 4
+      "duration": 3.8,
+      "biome": 3,
+      "level": 5,
+      "sectorName": "3.5 Incubator Pylon Array"
     },
     "sector_3_6": {
       "id": "sector_3_6",
-      "biome": 3,
-      "level": 6,
-      "sectorName": "3.6 Fractured Ice Shelf Cavern",
       "speaker": "thorne",
       "file": "thorne/sector_3_6.mp3",
       "text": "Ice ceiling is coming down! Throttle up and clear the corridor!",
-      "duration": 4.4
+      "duration": 4.18,
+      "biome": 3,
+      "level": 6,
+      "sectorName": "3.6 Fractured Ice Shelf Cavern"
     },
     "sector_3_7": {
       "id": "sector_3_7",
-      "biome": 3,
-      "level": 7,
-      "sectorName": "3.7 Prototype Discard Trench",
       "speaker": "naya",
       "file": "naya/sector_3_7.mp3",
       "text": "This was Ophion's graveyard before he found Haven-7. A heavy price was paid.",
-      "duration": 5.2
+      "duration": 4.94,
+      "biome": 3,
+      "level": 7,
+      "sectorName": "3.7 Prototype Discard Trench"
     },
     "sector_3_8": {
       "id": "sector_3_8",
-      "biome": 3,
-      "level": 8,
-      "sectorName": "3.8 Stasis Chamber Vaults",
       "speaker": "cross",
       "file": "cross/sector_3_8.mp3",
       "text": "Navy survey team was wiped here in '62. The sentry turrets are still hot.",
-      "duration": 5.6000000000000005
+      "duration": 5.32,
+      "biome": 3,
+      "level": 8,
+      "sectorName": "3.8 Stasis Chamber Vaults"
     },
     "sector_3_9": {
       "id": "sector_3_9",
-      "biome": 3,
-      "level": 9,
-      "sectorName": "3.9 Nursery Sanctum Gateway",
       "speaker": "lyra",
       "file": "lyra/sector_3_9.mp3",
       "text": "The Queen knows we're outside, Daddy. She's humming a lullaby.",
-      "duration": 4
+      "duration": 3.8,
+      "biome": 3,
+      "level": 9,
+      "sectorName": "3.9 Nursery Sanctum Gateway"
     },
     "sector_3_10": {
       "id": "sector_3_10",
-      "biome": 3,
-      "level": 10,
-      "sectorName": "3.10 Hatchery Queen Nest",
       "speaker": "darius",
       "file": "darius/sector_3_10.mp3",
       "text": "Queen Coelacanth has surfaced! Focus all heat ordnance on her core!",
-      "duration": 4.4
+      "duration": 4.18,
+      "biome": 3,
+      "level": 10,
+      "sectorName": "3.10 Hatchery Queen Nest"
     },
     "sector_4_1": {
       "id": "sector_4_1",
-      "biome": 4,
-      "level": 1,
-      "sectorName": "4.1 Veil Nebula Ingress",
       "speaker": "darius",
       "file": "darius/sector_4_1.mp3",
       "text": "The Veil Nebula. The stars look like they're melting into water.",
-      "duration": 4.4
+      "duration": 4.18,
+      "biome": 4,
+      "level": 1,
+      "sectorName": "4.1 Veil Nebula Ingress"
     },
     "sector_4_2": {
       "id": "sector_4_2",
-      "biome": 4,
-      "level": 2,
-      "sectorName": "4.2 Chromatic Distortion Belt",
       "speaker": "naya",
       "file": "naya/sector_4_2.mp3",
       "text": "Sensors showing three targets for every drone. Shoot the one with engine wake.",
-      "duration": 5.2
+      "duration": 4.94,
+      "biome": 4,
+      "level": 2,
+      "sectorName": "4.2 Chromatic Distortion Belt"
     },
     "sector_4_3": {
       "id": "sector_4_3",
-      "biome": 4,
-      "level": 3,
-      "sectorName": "4.3 Accretion Dust Stream",
       "speaker": "thorne",
       "file": "thorne/sector_4_3.mp3",
       "text": "Stardust is scraping the paint clean off my armor. Watch your speed.",
-      "duration": 4.800000000000001
+      "duration": 4.56,
+      "biome": 4,
+      "level": 3,
+      "sectorName": "4.3 Accretion Dust Stream"
     },
     "sector_4_4": {
       "id": "sector_4_4",
-      "biome": 4,
-      "level": 4,
-      "sectorName": "4.4 Thought-Form Anomalies",
       "speaker": "lyra",
       "file": "lyra/sector_4_4.mp3",
       "text": "The nebula wants to tell us a story, Daddy. It's about a world made of glass.",
-      "duration": 6.4
+      "duration": 6.08,
+      "biome": 4,
+      "level": 4,
+      "sectorName": "4.4 Thought-Form Anomalies"
     },
     "sector_4_5": {
       "id": "sector_4_5",
-      "biome": 4,
-      "level": 5,
-      "sectorName": "4.5 Plasma Squall Corridor",
       "speaker": "darius",
       "file": "darius/sector_4_5.mp3",
       "text": "Plasma squall ahead! Dive into the magnetic channel to stay stable.",
-      "duration": 4.4
+      "duration": 4.18,
+      "biome": 4,
+      "level": 5,
+      "sectorName": "4.5 Plasma Squall Corridor"
     },
     "sector_4_6": {
       "id": "sector_4_6",
-      "biome": 4,
-      "level": 6,
-      "sectorName": "4.6 Prismatic Dust Pillars",
       "speaker": "naya",
       "file": "naya/sector_4_6.mp3",
       "text": "Protostar flare warning! Shield deflectors to 100%.",
-      "duration": 2.8000000000000003
+      "duration": 2.66,
+      "biome": 4,
+      "level": 6,
+      "sectorName": "4.6 Prismatic Dust Pillars"
     },
     "sector_4_7": {
       "id": "sector_4_7",
-      "biome": 4,
-      "level": 7,
-      "sectorName": "4.7 Tachyon Eddy Trench",
       "speaker": "thorne",
       "file": "thorne/sector_4_7.mp3",
       "text": "I'm hearing my own callout on the radio before I say it. Disorienting.",
-      "duration": 5.2
+      "duration": 4.94,
+      "biome": 4,
+      "level": 7,
+      "sectorName": "4.7 Tachyon Eddy Trench"
     },
     "sector_4_8": {
       "id": "sector_4_8",
-      "biome": 4,
-      "level": 8,
-      "sectorName": "4.8 Phantom Cruiser Graveyard",
       "speaker": "cross",
       "file": "cross/sector_4_8.mp3",
       "text": "My old flight academy training cruiser is drifting in that cloud. Eerie.",
-      "duration": 4.800000000000001
+      "duration": 4.56,
+      "biome": 4,
+      "level": 8,
+      "sectorName": "4.8 Phantom Cruiser Graveyard"
     },
     "sector_4_9": {
       "id": "sector_4_9",
-      "biome": 4,
-      "level": 9,
-      "sectorName": "4.9 Dreamer Conduit Threshold",
       "speaker": "lyra",
       "file": "lyra/sector_4_9.mp3",
       "text": "We're almost at the heart of the dream. Don't let go of what is real, Daddy.",
-      "duration": 6.4
+      "duration": 6.08,
+      "biome": 4,
+      "level": 9,
+      "sectorName": "4.9 Dreamer Conduit Threshold"
     },
     "sector_4_10": {
       "id": "sector_4_10",
-      "biome": 4,
-      "level": 10,
-      "sectorName": "4.10 Dreamer Golem Singularity",
       "speaker": "darius",
       "file": "darius/sector_4_10.mp3",
       "text": "The Dreamer Golem is manifesting! Fire across its anchor points!",
-      "duration": 4
+      "duration": 3.8,
+      "biome": 4,
+      "level": 10,
+      "sectorName": "4.10 Dreamer Golem Singularity"
     },
     "sector_5_1": {
       "id": "sector_5_1",
-      "biome": 5,
-      "level": 1,
-      "sectorName": "5.1 Saturn B-Ring Boundary",
       "speaker": "darius",
       "file": "darius/sector_5_1.mp3",
       "text": "Saturn's rings. Trillions of tons of frozen shrapnel spinning at orbital speed.",
-      "duration": 4.800000000000001
+      "duration": 4.56,
+      "biome": 5,
+      "level": 1,
+      "sectorName": "5.1 Saturn B-Ring Boundary"
     },
     "sector_5_2": {
       "id": "sector_5_2",
-      "biome": 5,
-      "level": 2,
-      "sectorName": "5.2 Umbra Shadow Corridor",
       "speaker": "cross",
       "file": "cross/sector_5_2.mp3",
       "text": "My former squadron is lurking in the ice shadows. Watch your six.",
-      "duration": 4.800000000000001
+      "duration": 4.56,
+      "biome": 5,
+      "level": 2,
+      "sectorName": "5.2 Umbra Shadow Corridor"
     },
     "sector_5_3": {
       "id": "sector_5_3",
-      "biome": 5,
-      "level": 3,
-      "sectorName": "5.3 Orbital Railgun Battery",
       "speaker": "thorne",
       "file": "thorne/sector_5_3.mp3",
       "text": "Heavy railgun batteries mounted on the icebergs. Knock out their power generators.",
-      "duration": 4.800000000000001
+      "duration": 4.56,
+      "biome": 5,
+      "level": 3,
+      "sectorName": "5.3 Orbital Railgun Battery"
     },
     "sector_5_4": {
       "id": "sector_5_4",
-      "biome": 5,
-      "level": 4,
-      "sectorName": "5.4 Sub-Zero Geyser Drift",
       "speaker": "naya",
       "file": "naya/sector_5_4.mp3",
       "text": "Nitrogen geysers venting across our flight path. Bank left to clear the vapor.",
-      "duration": 5.2
+      "duration": 4.94,
+      "biome": 5,
+      "level": 4,
+      "sectorName": "5.4 Sub-Zero Geyser Drift"
     },
     "sector_5_5": {
       "id": "sector_5_5",
-      "biome": 5,
-      "level": 5,
-      "sectorName": "5.5 Diamond Dust Expanse",
       "speaker": "darius",
       "file": "darius/sector_5_5.mp3",
       "text": "Lasers diffusing in the diamond dust! Switch to kinetic rockets!",
-      "duration": 4
+      "duration": 3.8,
+      "biome": 5,
+      "level": 5,
+      "sectorName": "5.5 Diamond Dust Expanse"
     },
     "sector_5_6": {
       "id": "sector_5_6",
-      "biome": 5,
-      "level": 6,
-      "sectorName": "5.6 Destroyer Graveyard Alley",
       "speaker": "darius",
       "file": "darius/sector_5_6.mp3",
       "text": "Dozens of Navy destroyers smashed together like frozen scrap cars.",
-      "duration": 4
+      "duration": 3.8,
+      "biome": 5,
+      "level": 6,
+      "sectorName": "5.6 Destroyer Graveyard Alley"
     },
     "sector_5_7": {
       "id": "sector_5_7",
-      "biome": 5,
-      "level": 7,
-      "sectorName": "5.7 Military Jamming Corridor",
       "speaker": "thorne",
       "file": "thorne/sector_5_7.mp3",
       "text": "Comms are jammed with military noise! Switch to Haven-7 direct laser link!",
-      "duration": 4.800000000000001
+      "duration": 4.56,
+      "biome": 5,
+      "level": 7,
+      "sectorName": "5.7 Military Jamming Corridor"
     },
     "sector_5_8": {
       "id": "sector_5_8",
-      "biome": 5,
-      "level": 8,
-      "sectorName": "5.8 Absolute Zero Abyss",
       "speaker": "naya",
       "file": "naya/sector_5_8.mp3",
       "text": "Entering the dark side of the ring. Hull heaters on standby.",
-      "duration": 4.4
+      "duration": 4.18,
+      "biome": 5,
+      "level": 8,
+      "sectorName": "5.8 Absolute Zero Abyss"
     },
     "sector_5_9": {
       "id": "sector_5_9",
-      "biome": 5,
-      "level": 9,
-      "sectorName": "5.9 Fortress Kraken Approach",
       "speaker": "cross",
       "file": "cross/sector_5_9.mp3",
       "text": "Kraken Fortress sighted. This was Crane's master weapon. Time to tear it apart.",
-      "duration": 5.2
+      "duration": 4.94,
+      "biome": 5,
+      "level": 9,
+      "sectorName": "5.9 Fortress Kraken Approach"
     },
     "sector_5_10": {
       "id": "sector_5_10",
-      "biome": 5,
-      "level": 10,
-      "sectorName": "5.10 Kraken Mobile Fortress",
       "speaker": "darius",
       "file": "darius/sector_5_10.mp3",
       "text": "Kraken is opening all torpedo tubes! Evade the volley and hit the bridge!",
-      "duration": 5.2
+      "duration": 4.94,
+      "biome": 5,
+      "level": 10,
+      "sectorName": "5.10 Kraken Mobile Fortress"
     },
     "sector_6_1": {
       "id": "sector_6_1",
-      "biome": 6,
-      "level": 1,
-      "sectorName": "6.1 Supernova Slag Field",
       "speaker": "darius",
       "file": "darius/sector_6_1.mp3",
       "text": "Fire nebula. Everything out here has been cooked to molten slag.",
-      "duration": 4.4
+      "duration": 4.18,
+      "biome": 6,
+      "level": 1,
+      "sectorName": "6.1 Supernova Slag Field"
     },
     "sector_6_2": {
       "id": "sector_6_2",
-      "biome": 6,
-      "level": 2,
-      "sectorName": "6.2 Magma Column Archipelago",
       "speaker": "naya",
       "file": "naya/sector_6_2.mp3",
       "text": "Magma plumes arcing across the sector like burning bridges. Fly under the arc.",
-      "duration": 5.2
+      "duration": 4.94,
+      "biome": 6,
+      "level": 2,
+      "sectorName": "6.2 Magma Column Archipelago"
     },
     "sector_6_3": {
       "id": "sector_6_3",
-      "biome": 6,
-      "level": 3,
-      "sectorName": "6.3 Autonomous Smelter Belt",
       "speaker": "thorne",
       "file": "thorne/sector_6_3.mp3",
       "text": "Smelter drones are harvesting the asteroid belt. Break up their convoy.",
-      "duration": 4.4
+      "duration": 4.18,
+      "biome": 6,
+      "level": 3,
+      "sectorName": "6.3 Autonomous Smelter Belt"
     },
     "sector_6_4": {
       "id": "sector_6_4",
-      "biome": 6,
-      "level": 4,
-      "sectorName": "6.4 Solar Flare Sweeps",
       "speaker": "darius",
       "file": "darius/sector_6_4.mp3",
       "text": "Solar flare incoming! Tuck behind that iron asteroid for cover!",
-      "duration": 4
+      "duration": 3.8,
+      "biome": 6,
+      "level": 4,
+      "sectorName": "6.4 Solar Flare Sweeps"
     },
     "sector_6_5": {
       "id": "sector_6_5",
-      "biome": 6,
-      "level": 5,
-      "sectorName": "6.5 Obsidian Basalt Canyon",
       "speaker": "lyra",
       "file": "lyra/sector_6_5.mp3",
       "text": "The glass is glowing red in the dark... it looks like burning veins.",
-      "duration": 5.2
+      "duration": 4.94,
+      "biome": 6,
+      "level": 5,
+      "sectorName": "6.5 Obsidian Basalt Canyon"
     },
     "sector_6_6": {
       "id": "sector_6_6",
-      "biome": 6,
-      "level": 6,
-      "sectorName": "6.6 Crucible Containment Vats",
       "speaker": "naya",
       "file": "naya/sector_6_6.mp3",
       "text": "Crucible vats ahead. If they rupture, the whole corridor will be flooded with slag.",
-      "duration": 5.6000000000000005
+      "duration": 5.32,
+      "biome": 6,
+      "level": 6,
+      "sectorName": "6.6 Crucible Containment Vats"
     },
     "sector_6_7": {
       "id": "sector_6_7",
-      "biome": 6,
-      "level": 7,
-      "sectorName": "6.7 Plasma Overheat Trench",
       "speaker": "thorne",
       "file": "thorne/sector_6_7.mp3",
       "text": "Pace your shots, Darius! The ambient heat is redlining our weapon radiators.",
-      "duration": 4.800000000000001
+      "duration": 4.56,
+      "biome": 6,
+      "level": 7,
+      "sectorName": "6.7 Plasma Overheat Trench"
     },
     "sector_6_8": {
       "id": "sector_6_8",
-      "biome": 6,
-      "level": 8,
-      "sectorName": "6.8 Molten Conduit Raceway",
       "speaker": "darius",
       "file": "darius/sector_6_8.mp3",
       "text": "I see the power conduits. Blow the cooling lines to force an emergency shutdown.",
-      "duration": 5.6000000000000005
+      "duration": 5.32,
+      "biome": 6,
+      "level": 8,
+      "sectorName": "6.8 Molten Conduit Raceway"
     },
     "sector_6_9": {
       "id": "sector_6_9",
-      "biome": 6,
-      "level": 9,
-      "sectorName": "6.9 Master Forge Portals",
       "speaker": "cross",
       "file": "cross/sector_6_9.mp3",
       "text": "The main foundry gates are opening. Automated guardians are rolling out.",
-      "duration": 4.4
+      "duration": 4.18,
+      "biome": 6,
+      "level": 9,
+      "sectorName": "6.9 Master Forge Portals"
     },
     "sector_6_10": {
       "id": "sector_6_10",
-      "biome": 6,
-      "level": 10,
-      "sectorName": "6.10 Forge-Mind Leviathan",
       "speaker": "darius",
       "file": "darius/sector_6_10.mp3",
       "text": "Forge-Mind is engaging! Strike the crucible coolers and shatter its frame!",
-      "duration": 4.4
+      "duration": 4.18,
+      "biome": 6,
+      "level": 10,
+      "sectorName": "6.10 Forge-Mind Leviathan"
     },
     "sector_7_1": {
       "id": "sector_7_1",
-      "biome": 7,
-      "level": 1,
-      "sectorName": "7.1 Jovian Gale Ingress",
       "speaker": "darius",
       "file": "darius/sector_7_1.mp3",
       "text": "Jupiter's Storm Belt. Five thousand mile-an-hour gale winds slamming into the hull.",
-      "duration": 4.800000000000001
+      "duration": 4.56,
+      "biome": 7,
+      "level": 1,
+      "sectorName": "7.1 Jovian Gale Ingress"
     },
     "sector_7_2": {
       "id": "sector_7_2",
-      "biome": 7,
-      "level": 2,
-      "sectorName": "7.2 Conductive Lightning Grid",
       "speaker": "naya",
       "file": "naya/sector_7_2.mp3",
       "text": "Static building on the cockpit canopy. Disperse shields before the lightning strikes!",
-      "duration": 4.800000000000001
+      "duration": 4.56,
+      "biome": 7,
+      "level": 2,
+      "sectorName": "7.2 Conductive Lightning Grid"
     },
     "sector_7_3": {
       "id": "sector_7_3",
-      "biome": 7,
-      "level": 3,
-      "sectorName": "7.3 Predator Storm-Hawk Roost",
       "speaker": "thorne",
       "file": "thorne/sector_7_3.mp3",
       "text": "Predator drones diving out of the storm clouds! Flak burst on my mark!",
-      "duration": 5.2
+      "duration": 4.94,
+      "biome": 7,
+      "level": 3,
+      "sectorName": "7.3 Predator Storm-Hawk Roost"
     },
     "sector_7_4": {
       "id": "sector_7_4",
-      "biome": 7,
-      "level": 4,
-      "sectorName": "7.4 Static Cloud Pillars",
       "speaker": "lyra",
       "file": "lyra/sector_7_4.mp3",
       "text": "The lightning is so bright... but behind it, I can hear a voice singing.",
-      "duration": 5.6000000000000005
+      "duration": 5.32,
+      "biome": 7,
+      "level": 4,
+      "sectorName": "7.4 Static Cloud Pillars"
     },
     "sector_7_5": {
       "id": "sector_7_5",
-      "biome": 7,
-      "level": 5,
-      "sectorName": "7.6 Atmospheric Pressure Sink",
       "speaker": "darius",
       "file": "darius/sector_7_5.mp3",
       "text": "Downdraft pulling us down! Boost engines to escape the atmospheric sink!",
-      "duration": 4.4
+      "duration": 4.18,
+      "biome": 7,
+      "level": 5,
+      "sectorName": "7.6 Atmospheric Pressure Sink"
     },
     "sector_7_6": {
       "id": "sector_7_6",
-      "biome": 7,
-      "level": 6,
-      "sectorName": "7.6 Atmospheric Pressure Choke",
       "speaker": "naya",
       "file": "naya/sector_7_6.mp3",
       "text": "Hull groaning under atmospheric pressure. We need to reach the eye of the storm.",
-      "duration": 5.6000000000000005
+      "duration": 5.32,
+      "biome": 7,
+      "level": 6,
+      "sectorName": "7.6 Atmospheric Pressure Choke"
     },
     "sector_7_7": {
       "id": "sector_7_7",
-      "biome": 7,
-      "level": 7,
-      "sectorName": "7.7 Ball Lightning Swarms",
       "speaker": "thorne",
       "file": "thorne/sector_7_7.mp3",
       "text": "Ball lightning drifting toward our engines! Cut power for two seconds to break lock!",
-      "duration": 5.6000000000000005
+      "duration": 5.32,
+      "biome": 7,
+      "level": 7,
+      "sectorName": "7.7 Ball Lightning Swarms"
     },
     "sector_7_8": {
       "id": "sector_7_8",
-      "biome": 7,
-      "level": 8,
-      "sectorName": "7.8 Great Red Eye Wall",
       "speaker": "darius",
       "file": "darius/sector_7_8.mp3",
       "text": "Punching through the eye wall! Hold the flight stick with both hands!",
-      "duration": 4.800000000000001
+      "duration": 4.56,
+      "biome": 7,
+      "level": 8,
+      "sectorName": "7.8 Great Red Eye Wall"
     },
     "sector_7_9": {
       "id": "sector_7_9",
-      "biome": 7,
-      "level": 9,
-      "sectorName": "7.9 Storm-Singer Sanctuary",
       "speaker": "lyra",
       "file": "lyra/sector_7_9.mp3",
       "text": "We made it to the quiet center. The Storm-Singer is right in front of us.",
-      "duration": 6
+      "duration": 5.7,
+      "biome": 7,
+      "level": 9,
+      "sectorName": "7.9 Storm-Singer Sanctuary"
     },
     "sector_7_10": {
       "id": "sector_7_10",
-      "biome": 7,
-      "level": 10,
-      "sectorName": "7.10 Storm-Singer Colossus",
       "speaker": "darius",
       "file": "darius/sector_7_10.mp3",
       "text": "Storm-Singer is charging its lightning vortex! Evade the funnel and attack the core!",
-      "duration": 5.2
+      "duration": 4.94,
+      "biome": 7,
+      "level": 10,
+      "sectorName": "7.10 Storm-Singer Colossus"
     },
     "sector_8_1": {
       "id": "sector_8_1",
-      "biome": 8,
-      "level": 1,
-      "sectorName": "8.1 Ghost Flotilla Perimeter",
       "speaker": "darius",
       "file": "darius/sector_8_1.mp3",
       "text": "The ghost fleet. Hundreds of battleships floating dead in the black.",
-      "duration": 4.4
+      "duration": 4.18,
+      "biome": 8,
+      "level": 1,
+      "sectorName": "8.1 Ghost Flotilla Perimeter"
     },
     "sector_8_2": {
       "id": "sector_8_2",
-      "biome": 8,
-      "level": 2,
-      "sectorName": "8.2 Automated Defense Grid",
       "speaker": "cross",
       "file": "cross/sector_8_2.mp3",
       "text": "Those point-defense turrets are still hunting on Admiral Crane's orders.",
-      "duration": 4
+      "duration": 3.8,
+      "biome": 8,
+      "level": 2,
+      "sectorName": "8.2 Automated Defense Grid"
     },
     "sector_8_3": {
       "id": "sector_8_3",
-      "biome": 8,
-      "level": 3,
-      "sectorName": "8.3 Carrier Hangar Breaches",
       "speaker": "thorne",
       "file": "thorne/sector_8_3.mp3",
       "text": "Boarding pods launching from the carrier wrecks! Shoot them down before they attach!",
-      "duration": 5.2
+      "duration": 4.94,
+      "biome": 8,
+      "level": 3,
+      "sectorName": "8.3 Carrier Hangar Breaches"
     },
     "sector_8_4": {
       "id": "sector_8_4",
-      "biome": 8,
-      "level": 4,
-      "sectorName": "8.4 Leaking Reactor Corridor",
       "speaker": "naya",
       "file": "naya/sector_8_4.mp3",
       "text": "Radiation spiking in sector four. Keep distance from the cracked reactor cores.",
-      "duration": 4.800000000000001
+      "duration": 4.56,
+      "biome": 8,
+      "level": 4,
+      "sectorName": "8.4 Leaking Reactor Corridor"
     },
     "sector_8_5": {
       "id": "sector_8_5",
-      "biome": 8,
-      "level": 5,
-      "sectorName": "8.5 Armor Plate Labyrinth",
       "speaker": "darius",
       "file": "darius/sector_8_5.mp3",
       "text": "Weaving through shattered battlecruiser hulls. Watch the protruding superstructure.",
-      "duration": 3.6
+      "duration": 3.42,
+      "biome": 8,
+      "level": 5,
+      "sectorName": "8.5 Armor Plate Labyrinth"
     },
     "sector_8_6": {
       "id": "sector_8_6",
-      "biome": 8,
-      "level": 6,
-      "sectorName": "8.6 Autonomous Cruiser Patrol",
       "speaker": "cross",
       "file": "cross/sector_8_6.mp3",
       "text": "Heavy automated dreadnought on patrol. It hasn't received a stand-down order in 30 years.",
-      "duration": 5.6000000000000005
+      "duration": 5.32,
+      "biome": 8,
+      "level": 6,
+      "sectorName": "8.6 Autonomous Cruiser Patrol"
     },
     "sector_8_7": {
       "id": "sector_8_7",
-      "biome": 8,
-      "level": 7,
-      "sectorName": "8.7 Tactical Decoy Cloud",
       "speaker": "thorne",
       "file": "thorne/sector_8_7.mp3",
       "text": "Don't trust the radar blips. Verify targets through the optical scope.",
-      "duration": 4.4
+      "duration": 4.18,
+      "biome": 8,
+      "level": 7,
+      "sectorName": "8.7 Tactical Decoy Cloud"
     },
     "sector_8_8": {
       "id": "sector_8_8",
-      "biome": 8,
-      "level": 8,
-      "sectorName": "8.8 Escort Ring Defense Net",
       "speaker": "naya",
       "file": "naya/sector_8_8.mp3",
       "text": "Synchronized particle lance batteries sighted. We need to disable the relay ships.",
-      "duration": 4.800000000000001
+      "duration": 4.56,
+      "biome": 8,
+      "level": 8,
+      "sectorName": "8.8 Escort Ring Defense Net"
     },
     "sector_8_9": {
       "id": "sector_8_9",
-      "biome": 8,
-      "level": 9,
-      "sectorName": "8.9 Flagship Goliath Sanctum",
       "speaker": "darius",
       "file": "darius/sector_8_9.mp3",
       "text": "Flagship Goliath dead ahead. Crane's automated ghost is waiting on the bridge.",
-      "duration": 4.800000000000001
+      "duration": 4.56,
+      "biome": 8,
+      "level": 9,
+      "sectorName": "8.9 Flagship Goliath Sanctum"
     },
     "sector_8_10": {
       "id": "sector_8_10",
-      "biome": 8,
-      "level": 10,
-      "sectorName": "8.10 Admiral Crane AI Flagship",
       "speaker": "darius",
       "file": "darius/sector_8_10.mp3",
       "text": "Goliath main batteries powering up! Break its shield generator arrays!",
-      "duration": 4
+      "duration": 3.8,
+      "biome": 8,
+      "level": 10,
+      "sectorName": "8.10 Admiral Crane AI Flagship"
     },
     "sector_9_1": {
       "id": "sector_9_1",
-      "biome": 9,
-      "level": 1,
-      "sectorName": "9.1 Synaptic Spore Boundary",
       "speaker": "darius",
       "file": "darius/sector_9_1.mp3",
       "text": "The Xenomorph Hive. The planet itself is breathing and watching us.",
-      "duration": 4.4
+      "duration": 4.18,
+      "biome": 9,
+      "level": 1,
+      "sectorName": "9.1 Synaptic Spore Boundary"
     },
     "sector_9_2": {
       "id": "sector_9_2",
-      "biome": 9,
-      "level": 2,
-      "sectorName": "9.2 Acidic Spitter Nest",
       "speaker": "naya",
       "file": "naya/sector_9_2.mp3",
       "text": "Acid spitters firing from the bio-towers! Dodge laterally to avoid the splash!",
-      "duration": 4.800000000000001
+      "duration": 4.56,
+      "biome": 9,
+      "level": 2,
+      "sectorName": "9.2 Acidic Spitter Nest"
     },
     "sector_9_3": {
       "id": "sector_9_3",
-      "biome": 9,
-      "level": 3,
-      "sectorName": "9.3 Regenerating Chitin Walls",
       "speaker": "thorne",
       "file": "thorne/sector_9_3.mp3",
       "text": "Chitin walls are closing the tunnel! Blast a hole through the membrane!",
-      "duration": 4.800000000000001
+      "duration": 4.56,
+      "biome": 9,
+      "level": 3,
+      "sectorName": "9.3 Regenerating Chitin Walls"
     },
     "sector_9_4": {
       "id": "sector_9_4",
-      "biome": 9,
-      "level": 4,
-      "sectorName": "9.4 Neural Hallucination Maze",
       "speaker": "lyra",
       "file": "lyra/sector_9_4.mp3",
       "text": "Daddy... the walls are whispering in Mom's voice. Don't listen to them!",
-      "duration": 4.800000000000001
+      "duration": 4.56,
+      "biome": 9,
+      "level": 4,
+      "sectorName": "9.4 Neural Hallucination Maze"
     },
     "sector_9_5": {
       "id": "sector_9_5",
-      "biome": 9,
-      "level": 5,
-      "sectorName": "9.5 Bio-Construct Hatchery",
       "speaker": "naya",
       "file": "naya/sector_9_5.mp3",
       "text": "Nursery sector. Wipe out the egg clusters before they hatch into interceptors.",
-      "duration": 4.800000000000001
+      "duration": 4.56,
+      "biome": 9,
+      "level": 5,
+      "sectorName": "9.5 Bio-Construct Hatchery"
     },
     "sector_9_6": {
       "id": "sector_9_6",
-      "biome": 9,
-      "level": 6,
-      "sectorName": "9.6 Bio-Acidic Waterfalls",
       "speaker": "darius",
       "file": "darius/sector_9_6.mp3",
       "text": "Bio-acid dripping from the ceiling. Keep flight trim tight and centered.",
-      "duration": 4.4
+      "duration": 4.18,
+      "biome": 9,
+      "level": 6,
+      "sectorName": "9.6 Bio-Acidic Waterfalls"
     },
     "sector_9_7": {
       "id": "sector_9_7",
-      "biome": 9,
-      "level": 7,
-      "sectorName": "9.7 Synaptic Bridge Relays",
       "speaker": "thorne",
       "file": "thorne/sector_9_7.mp3",
       "text": "Destroy the neural bridge nodes. It'll blind their defensive coordination.",
-      "duration": 4
+      "duration": 3.8,
+      "biome": 9,
+      "level": 7,
+      "sectorName": "9.7 Synaptic Bridge Relays"
     },
     "sector_9_8": {
       "id": "sector_9_8",
-      "biome": 9,
-      "level": 8,
-      "sectorName": "9.8 Chitin Brute Vanguard",
       "speaker": "naya",
       "file": "naya/sector_9_8.mp3",
       "text": "Chitin Brute charging down the corridor! Aim for the soft joints under its carapace!",
-      "duration": 5.6000000000000005
+      "duration": 5.32,
+      "biome": 9,
+      "level": 8,
+      "sectorName": "9.8 Chitin Brute Vanguard"
     },
     "sector_9_9": {
       "id": "sector_9_9",
-      "biome": 9,
-      "level": 9,
-      "sectorName": "9.9 Hive Mother Throne Chamber",
       "speaker": "lyra",
       "file": "lyra/sector_9_9.mp3",
       "text": "She's waiting for us in the center of the web. Her thoughts are overwhelming.",
-      "duration": 5.6000000000000005
+      "duration": 5.32,
+      "biome": 9,
+      "level": 9,
+      "sectorName": "9.9 Hive Mother Throne Chamber"
     },
     "sector_9_10": {
       "id": "sector_9_10",
-      "biome": 9,
-      "level": 10,
-      "sectorName": "9.10 Hive Mother Bio-Nexus",
       "speaker": "darius",
       "file": "darius/sector_9_10.mp3",
       "text": "Hive Mother has uncoiled! Sever her neural tentacles and break her crown!",
-      "duration": 4.800000000000001
+      "duration": 4.56,
+      "biome": 9,
+      "level": 10,
+      "sectorName": "9.10 Hive Mother Bio-Nexus"
     },
     "sector_10_1": {
       "id": "sector_10_1",
-      "biome": 10,
-      "level": 1,
-      "sectorName": "10.1 Event Horizon Ingress",
       "speaker": "darius",
       "file": "darius/sector_10_1.mp3",
       "text": "The Core Rift. The edge of reality itself. We made it, Lyra.",
-      "duration": 4.800000000000001
+      "duration": 4.56,
+      "biome": 10,
+      "level": 1,
+      "sectorName": "10.1 Event Horizon Ingress"
     },
     "sector_10_2": {
       "id": "sector_10_2",
-      "biome": 10,
-      "level": 2,
-      "sectorName": "10.2 Temporal Loop Fractures",
       "speaker": "naya",
       "file": "naya/sector_10_2.mp3",
       "text": "Enemies are rewinding their attack vectors! Anticipate the temporal loop!",
-      "duration": 4
+      "duration": 3.8,
+      "biome": 10,
+      "level": 2,
+      "sectorName": "10.2 Temporal Loop Fractures"
     },
     "sector_10_3": {
       "id": "sector_10_3",
-      "biome": 10,
-      "level": 3,
-      "sectorName": "10.3 Singularity Code Cascade",
       "speaker": "lyra",
       "file": "lyra/sector_10_3.mp3",
       "text": "I can read the code in the dark, Daddy. It says... everything is connected.",
-      "duration": 5.6000000000000005
+      "duration": 5.32,
+      "biome": 10,
+      "level": 3,
+      "sectorName": "10.3 Singularity Code Cascade"
     },
     "sector_10_4": {
       "id": "sector_10_4",
-      "biome": 10,
-      "level": 4,
-      "sectorName": "10.4 Null-Space Void Chasm",
       "speaker": "thorne",
       "file": "thorne/sector_10_4.mp3",
       "text": "Null-space rifts opening ahead! Steer clear of the black voids!",
-      "duration": 4
+      "duration": 3.8,
+      "biome": 10,
+      "level": 4,
+      "sectorName": "10.4 Null-Space Void Chasm"
     },
     "sector_10_5": {
       "id": "sector_10_5",
-      "biome": 10,
-      "level": 5,
-      "sectorName": "10.5 Paradox Phantom Corridor",
       "speaker": "naya",
       "file": "naya/sector_10_5.mp3",
       "text": "Paradox fighters are phased across timelines. Hit them when they fully materialize.",
-      "duration": 4.800000000000001
+      "duration": 4.56,
+      "biome": 10,
+      "level": 5,
+      "sectorName": "10.5 Paradox Phantom Corridor"
     },
     "sector_10_6": {
       "id": "sector_10_6",
-      "biome": 10,
-      "level": 6,
-      "sectorName": "10.6 Tachyon Mirror Shards",
       "speaker": "darius",
       "file": "darius/sector_10_6.mp3",
       "text": "I see ships from every timeline flying alongside us. We're not alone.",
-      "duration": 4.800000000000001
+      "duration": 4.56,
+      "biome": 10,
+      "level": 6,
+      "sectorName": "10.6 Tachyon Mirror Shards"
     },
     "sector_10_7": {
       "id": "sector_10_7",
-      "biome": 10,
-      "level": 7,
-      "sectorName": "10.7 Singularity Overdrive Trench",
       "speaker": "thorne",
       "file": "thorne/sector_10_7.mp3",
       "text": "Engines at 110%! Keep forward velocity or get pulled into the core!",
-      "duration": 4.800000000000001
+      "duration": 4.56,
+      "biome": 10,
+      "level": 7,
+      "sectorName": "10.7 Singularity Overdrive Trench"
     },
     "sector_10_8": {
       "id": "sector_10_8",
-      "biome": 10,
-      "level": 8,
-      "sectorName": "10.8 Precursor Throne Spires",
       "speaker": "lyra",
       "file": "lyra/sector_10_8.mp3",
       "text": "The spires are singing the first song of creation. We're almost at the throne.",
-      "duration": 5.6000000000000005
+      "duration": 5.32,
+      "biome": 10,
+      "level": 8,
+      "sectorName": "10.8 Precursor Throne Spires"
     },
     "sector_10_9": {
       "id": "sector_10_9",
-      "biome": 10,
-      "level": 9,
-      "sectorName": "10.9 Architect Prime Threshold",
       "speaker": "architect",
       "file": "architect/sector_10_9.mp3",
       "text": "You who travel through time and sorrow... approach the final threshold...",
-      "duration": 4.4
+      "duration": 4.18,
+      "biome": 10,
+      "level": 9,
+      "sectorName": "10.9 Architect Prime Threshold"
     },
     "sector_10_10": {
       "id": "sector_10_10",
-      "biome": 10,
-      "level": 10,
-      "sectorName": "10.10 The Cyber Coelacanth Singularity",
       "speaker": "darius",
       "file": "darius/sector_10_10.mp3",
       "text": "The Cyber Coelacanth has awakened! All weapons, all hearts, full burn!",
-      "duration": 4.4
+      "duration": 4.18,
+      "biome": 10,
+      "level": 10,
+      "sectorName": "10.10 The Cyber Coelacanth Singularity"
     },
     "briefing_b1_thorne": {
       "id": "briefing_b1_thorne",
-      "biome": 1,
       "speaker": "thorne",
-      "file": "thorne/briefing_b1_01.mp3",
+      "file": "thorne/briefing_b1_thorne.mp3",
       "text": "Commander Thorne, Mission Control. Situation: Sector 1. Threat level high. Good hunting.",
-      "duration": 4.5
+      "duration": 4.56,
+      "biome": 1
     },
     "briefing_b1_lyra": {
       "id": "briefing_b1_lyra",
-      "biome": 1,
       "speaker": "lyra",
-      "file": "lyra/briefing_b1_01.mp3",
+      "file": "lyra/briefing_b1_lyra.mp3",
       "text": "Daddy, I can sense the precursor energy in this trench. Stay close to the navigation beacon.",
-      "duration": 4.2
+      "duration": 6.08,
+      "biome": 1
     },
     "briefing_b2_thorne": {
       "id": "briefing_b2_thorne",
-      "biome": 2,
       "speaker": "thorne",
-      "file": "thorne/briefing_b2_01.mp3",
+      "file": "thorne/briefing_b2_thorne.mp3",
       "text": "Commander Thorne, Mission Control. Situation: Sector 2. Threat level high. Good hunting.",
-      "duration": 4.5
+      "duration": 4.56,
+      "biome": 2
     },
     "briefing_b2_lyra": {
       "id": "briefing_b2_lyra",
-      "biome": 2,
       "speaker": "lyra",
-      "file": "lyra/briefing_b2_01.mp3",
+      "file": "lyra/briefing_b2_lyra.mp3",
       "text": "Daddy, I can sense the precursor energy in this trench. Stay close to the navigation beacon.",
-      "duration": 4.2
+      "duration": 6.08,
+      "biome": 2
     },
     "briefing_b3_thorne": {
       "id": "briefing_b3_thorne",
-      "biome": 3,
       "speaker": "thorne",
-      "file": "thorne/briefing_b3_01.mp3",
+      "file": "thorne/briefing_b3_thorne.mp3",
       "text": "Commander Thorne, Mission Control. Situation: Sector 3. Threat level high. Good hunting.",
-      "duration": 4.5
+      "duration": 4.56,
+      "biome": 3
     },
     "briefing_b3_lyra": {
       "id": "briefing_b3_lyra",
-      "biome": 3,
       "speaker": "lyra",
-      "file": "lyra/briefing_b3_01.mp3",
+      "file": "lyra/briefing_b3_lyra.mp3",
       "text": "Daddy, I can sense the precursor energy in this trench. Stay close to the navigation beacon.",
-      "duration": 4.2
+      "duration": 6.08,
+      "biome": 3
     },
     "briefing_b4_thorne": {
       "id": "briefing_b4_thorne",
-      "biome": 4,
       "speaker": "thorne",
-      "file": "thorne/briefing_b4_01.mp3",
+      "file": "thorne/briefing_b4_thorne.mp3",
       "text": "Commander Thorne, Mission Control. Situation: Sector 4. Threat level high. Good hunting.",
-      "duration": 4.5
+      "duration": 4.56,
+      "biome": 4
     },
     "briefing_b4_lyra": {
       "id": "briefing_b4_lyra",
-      "biome": 4,
       "speaker": "lyra",
-      "file": "lyra/briefing_b4_01.mp3",
+      "file": "lyra/briefing_b4_lyra.mp3",
       "text": "Daddy, I can sense the precursor energy in this trench. Stay close to the navigation beacon.",
-      "duration": 4.2
+      "duration": 6.08,
+      "biome": 4
     },
     "briefing_b5_thorne": {
       "id": "briefing_b5_thorne",
-      "biome": 5,
       "speaker": "thorne",
-      "file": "thorne/briefing_b5_01.mp3",
+      "file": "thorne/briefing_b5_thorne.mp3",
       "text": "Commander Thorne, Mission Control. Situation: Sector 5. Threat level high. Good hunting.",
-      "duration": 4.5
+      "duration": 4.56,
+      "biome": 5
     },
     "briefing_b5_lyra": {
       "id": "briefing_b5_lyra",
-      "biome": 5,
       "speaker": "lyra",
-      "file": "lyra/briefing_b5_01.mp3",
+      "file": "lyra/briefing_b5_lyra.mp3",
       "text": "Daddy, I can sense the precursor energy in this trench. Stay close to the navigation beacon.",
-      "duration": 4.2
+      "duration": 6.08,
+      "biome": 5
     },
     "briefing_b6_thorne": {
       "id": "briefing_b6_thorne",
-      "biome": 6,
       "speaker": "thorne",
-      "file": "thorne/briefing_b6_01.mp3",
+      "file": "thorne/briefing_b6_thorne.mp3",
       "text": "Commander Thorne, Mission Control. Situation: Sector 6. Threat level high. Good hunting.",
-      "duration": 4.5
+      "duration": 4.56,
+      "biome": 6
     },
     "briefing_b6_lyra": {
       "id": "briefing_b6_lyra",
-      "biome": 6,
       "speaker": "lyra",
-      "file": "lyra/briefing_b6_01.mp3",
+      "file": "lyra/briefing_b6_lyra.mp3",
       "text": "Daddy, I can sense the precursor energy in this trench. Stay close to the navigation beacon.",
-      "duration": 4.2
+      "duration": 6.08,
+      "biome": 6
     },
     "briefing_b7_thorne": {
       "id": "briefing_b7_thorne",
-      "biome": 7,
       "speaker": "thorne",
-      "file": "thorne/briefing_b7_01.mp3",
+      "file": "thorne/briefing_b7_thorne.mp3",
       "text": "Commander Thorne, Mission Control. Situation: Sector 7. Threat level high. Good hunting.",
-      "duration": 4.5
+      "duration": 4.56,
+      "biome": 7
     },
     "briefing_b7_lyra": {
       "id": "briefing_b7_lyra",
-      "biome": 7,
       "speaker": "lyra",
-      "file": "lyra/briefing_b7_01.mp3",
+      "file": "lyra/briefing_b7_lyra.mp3",
       "text": "Daddy, I can sense the precursor energy in this trench. Stay close to the navigation beacon.",
-      "duration": 4.2
+      "duration": 6.08,
+      "biome": 7
     },
     "briefing_b8_thorne": {
       "id": "briefing_b8_thorne",
-      "biome": 8,
       "speaker": "thorne",
-      "file": "thorne/briefing_b8_01.mp3",
+      "file": "thorne/briefing_b8_thorne.mp3",
       "text": "Commander Thorne, Mission Control. Situation: Sector 8. Threat level high. Good hunting.",
-      "duration": 4.5
+      "duration": 4.56,
+      "biome": 8
     },
     "briefing_b8_lyra": {
       "id": "briefing_b8_lyra",
-      "biome": 8,
       "speaker": "lyra",
-      "file": "lyra/briefing_b8_01.mp3",
+      "file": "lyra/briefing_b8_lyra.mp3",
       "text": "Daddy, I can sense the precursor energy in this trench. Stay close to the navigation beacon.",
-      "duration": 4.2
+      "duration": 6.08,
+      "biome": 8
     },
     "briefing_b9_thorne": {
       "id": "briefing_b9_thorne",
-      "biome": 9,
       "speaker": "thorne",
-      "file": "thorne/briefing_b9_01.mp3",
+      "file": "thorne/briefing_b9_thorne.mp3",
       "text": "Commander Thorne, Mission Control. Situation: Sector 9. Threat level high. Good hunting.",
-      "duration": 4.5
+      "duration": 4.56,
+      "biome": 9
     },
     "briefing_b9_lyra": {
       "id": "briefing_b9_lyra",
-      "biome": 9,
       "speaker": "lyra",
-      "file": "lyra/briefing_b9_01.mp3",
+      "file": "lyra/briefing_b9_lyra.mp3",
       "text": "Daddy, I can sense the precursor energy in this trench. Stay close to the navigation beacon.",
-      "duration": 4.2
+      "duration": 6.08,
+      "biome": 9
     },
     "briefing_b10_thorne": {
       "id": "briefing_b10_thorne",
-      "biome": 10,
       "speaker": "thorne",
-      "file": "thorne/briefing_b10_01.mp3",
+      "file": "thorne/briefing_b10_thorne.mp3",
       "text": "Commander Thorne, Mission Control. Situation: Sector 10. Threat level high. Good hunting.",
-      "duration": 4.5
+      "duration": 4.56,
+      "biome": 10
     },
     "briefing_b10_lyra": {
       "id": "briefing_b10_lyra",
-      "biome": 10,
       "speaker": "lyra",
-      "file": "lyra/briefing_b10_01.mp3",
+      "file": "lyra/briefing_b10_lyra.mp3",
       "text": "Daddy, I can sense the precursor energy in this trench. Stay close to the navigation beacon.",
-      "duration": 4.2
+      "duration": 6.08,
+      "biome": 10
+    },
+    "banter_b1_level_start_tier1_0": {
+      "id": "banter_b1_level_start_tier1_0",
+      "speaker": "darius",
+      "file": "darius/banter_b1_level_start_tier1_0.mp3",
+      "text": "Deepest place on Earth. Grandpa made it here forty years ago.",
+      "duration": 4.18,
+      "biome": 1,
+      "event": "level_start",
+      "tier": "tier1"
+    },
+    "banter_b1_level_start_tier1_1": {
+      "id": "banter_b1_level_start_tier1_1",
+      "speaker": "naya",
+      "file": "naya/banter_b1_level_start_tier1_1.mp3",
+      "text": "The water pressure would crush conventional alloys. The Nyxa is not conventional.",
+      "duration": 4.56,
+      "biome": 1,
+      "event": "level_start",
+      "tier": "tier1"
+    },
+    "banter_b1_level_start_tier1_2": {
+      "id": "banter_b1_level_start_tier1_2",
+      "speaker": "lyra",
+      "file": "lyra/banter_b1_level_start_tier1_2.mp3",
+      "text": "Daddy, I can feel something down there. It's old. It's been waiting.",
+      "duration": 4.56,
+      "biome": 1,
+      "event": "level_start",
+      "tier": "tier1"
+    },
+    "banter_b1_level_start_tier2_0": {
+      "id": "banter_b1_level_start_tier2_0",
+      "speaker": "darius",
+      "file": "darius/banter_b1_level_start_tier2_0.mp3",
+      "text": "Watch the silt vents this time! That last ambush took our shields down fast.",
+      "duration": 5.32,
+      "biome": 1,
+      "event": "level_start",
+      "tier": "tier2"
+    },
+    "banter_b1_level_start_tier2_1": {
+      "id": "banter_b1_level_start_tier2_1",
+      "speaker": "naya",
+      "file": "naya/banter_b1_level_start_tier2_1.mp3",
+      "text": "Sensors recalibrated. Acoustic sentinels cluster on the left ridge—flank them early.",
+      "duration": 4.18,
+      "biome": 1,
+      "event": "level_start",
+      "tier": "tier2"
+    },
+    "banter_b1_level_start_tier2_2": {
+      "id": "banter_b1_level_start_tier2_2",
+      "speaker": "lyra",
+      "file": "lyra/banter_b1_level_start_tier2_2.mp3",
+      "text": "Daddy, I can read their pulse rhythm now. Shoot when the biolight flashes green!",
+      "duration": 5.32,
+      "biome": 1,
+      "event": "level_start",
+      "tier": "tier2"
+    },
+    "banter_b1_level_start_tier3_0": {
+      "id": "banter_b1_level_start_tier3_0",
+      "speaker": "darius",
+      "file": "darius/banter_b1_level_start_tier3_0.mp3",
+      "text": "Third dive into the silt. We know their patrol loops now. Clear them out.",
+      "duration": 5.32,
+      "biome": 1,
+      "event": "level_start",
+      "tier": "tier3"
+    },
+    "banter_b1_level_start_tier3_1": {
+      "id": "banter_b1_level_start_tier3_1",
+      "speaker": "thorne",
+      "file": "thorne/banter_b1_level_start_tier3_1.mp3",
+      "text": "No hesitation, Darius. Full burn through the trench choke point.",
+      "duration": 3.8,
+      "biome": 1,
+      "event": "level_start",
+      "tier": "tier3"
+    },
+    "banter_b1_level_start_tier3_2": {
+      "id": "banter_b1_level_start_tier3_2",
+      "speaker": "naya",
+      "file": "naya/banter_b1_level_start_tier3_2.mp3",
+      "text": "We have the tactical advantage this run. Let's finish the sweep clean.",
+      "duration": 4.56,
+      "biome": 1,
+      "event": "level_start",
+      "tier": "tier3"
+    },
+    "banter_b1_unique_enemy_0": {
+      "id": "banter_b1_unique_enemy_0",
+      "speaker": "darius",
+      "file": "darius/banter_b1_unique_enemy_0.mp3",
+      "text": "What IS that thing? Some kind of mechanical angler fish?",
+      "duration": 3.8,
+      "biome": 1,
+      "event": "unique_enemy"
+    },
+    "banter_b1_unique_enemy_1": {
+      "id": "banter_b1_unique_enemy_1",
+      "speaker": "naya",
+      "file": "naya/banter_b1_unique_enemy_1.mp3",
+      "text": "A biosynthetic sentinel. The Coelacanth network spawns defenders.",
+      "duration": 3.04,
+      "biome": 1,
+      "event": "unique_enemy"
+    },
+    "banter_b1_unique_enemy_2": {
+      "id": "banter_b1_unique_enemy_2",
+      "speaker": "lyra",
+      "file": "lyra/banter_b1_unique_enemy_2.mp3",
+      "text": "Its lantern is broadcasting a jammer pulse! Don't look at the light!",
+      "duration": 4.56,
+      "biome": 1,
+      "event": "unique_enemy"
+    },
+    "banter_b1_boss_entrance_tier1_0": {
+      "id": "banter_b1_boss_entrance_tier1_0",
+      "speaker": "darius",
+      "file": "darius/banter_b1_boss_entrance_tier1_0.mp3",
+      "text": "That's no wreckage. That's the Guardian. It's moving.",
+      "duration": 3.04,
+      "biome": 1,
+      "event": "boss_entrance",
+      "tier": "tier1"
+    },
+    "banter_b1_boss_entrance_tier1_1": {
+      "id": "banter_b1_boss_entrance_tier1_1",
+      "speaker": "lyra",
+      "file": "lyra/banter_b1_boss_entrance_tier1_1.mp3",
+      "text": "Daddy... it knows you're here. It recognizes something in you.",
+      "duration": 3.8,
+      "biome": 1,
+      "event": "boss_entrance",
+      "tier": "tier1"
+    },
+    "banter_b1_boss_entrance_tier2_0": {
+      "id": "banter_b1_boss_entrance_tier2_0",
+      "speaker": "darius",
+      "file": "darius/banter_b1_boss_entrance_tier2_0.mp3",
+      "text": "Aim for the dorsal energy vents before it charges the main beam! Don't let it pin us.",
+      "duration": 6.46,
+      "biome": 1,
+      "event": "boss_entrance",
+      "tier": "tier2"
+    },
+    "banter_b1_boss_entrance_tier2_1": {
+      "id": "banter_b1_boss_entrance_tier2_1",
+      "speaker": "naya",
+      "file": "naya/banter_b1_boss_entrance_tier2_1.mp3",
+      "text": "Targeting arrays locked onto the lateral nodes. Break the shield generators first!",
+      "duration": 4.56,
+      "biome": 1,
+      "event": "boss_entrance",
+      "tier": "tier2"
+    },
+    "banter_b1_boss_entrance_tier2_2": {
+      "id": "banter_b1_boss_entrance_tier2_2",
+      "speaker": "thorne",
+      "file": "thorne/banter_b1_boss_entrance_tier2_2.mp3",
+      "text": "Keep your distance on the charge cycle, Darius! It sweeps the lower quadrant.",
+      "duration": 4.94,
+      "biome": 1,
+      "event": "boss_entrance",
+      "tier": "tier2"
+    },
+    "banter_b1_boss_entrance_tier3_0": {
+      "id": "banter_b1_boss_entrance_tier3_0",
+      "speaker": "darius",
+      "file": "darius/banter_b1_boss_entrance_tier3_0.mp3",
+      "text": "We know every move it makes now. Tear down those hardpoints!",
+      "duration": 4.18,
+      "biome": 1,
+      "event": "boss_entrance",
+      "tier": "tier3"
+    },
+    "banter_b1_boss_entrance_tier3_1": {
+      "id": "banter_b1_boss_entrance_tier3_1",
+      "speaker": "lyra",
+      "file": "lyra/banter_b1_boss_entrance_tier3_1.mp3",
+      "text": "It's weakening, Daddy! Strike the core while its rhythm stutters!",
+      "duration": 3.8,
+      "biome": 1,
+      "event": "boss_entrance",
+      "tier": "tier3"
+    },
+    "banter_b1_boss_entrance_tier3_2": {
+      "id": "banter_b1_boss_entrance_tier3_2",
+      "speaker": "naya",
+      "file": "naya/banter_b1_boss_entrance_tier3_2.mp3",
+      "text": "Maximum firepower. This Leviathan goes down right now.",
+      "duration": 3.04,
+      "biome": 1,
+      "event": "boss_entrance",
+      "tier": "tier3"
+    },
+    "banter_b1_player_death_0": {
+      "id": "banter_b1_player_death_0",
+      "speaker": "darius",
+      "file": "darius/banter_b1_player_death_0.mp3",
+      "text": "Not yet. I'm not done yet. Lyra's waiting.",
+      "duration": 3.04,
+      "biome": 1,
+      "event": "player_death"
+    },
+    "banter_b1_player_death_1": {
+      "id": "banter_b1_player_death_1",
+      "speaker": "naya",
+      "file": "naya/banter_b1_player_death_1.mp3",
+      "text": "Darius, hull failure! Emergency nanites deploying!",
+      "duration": 2.28,
+      "biome": 1,
+      "event": "player_death"
+    },
+    "banter_b1_player_death_2": {
+      "id": "banter_b1_player_death_2",
+      "speaker": "lyra",
+      "file": "lyra/banter_b1_player_death_2.mp3",
+      "text": "Daddy! Hold on, I'm boosting the emergency beacon!",
+      "duration": 3.04,
+      "biome": 1,
+      "event": "player_death"
+    },
+    "banter_b1_player_respawn_tier1_0": {
+      "id": "banter_b1_player_respawn_tier1_0",
+      "speaker": "darius",
+      "file": "darius/banter_b1_player_respawn_tier1_0.mp3",
+      "text": "Second try. The deep doesn't get to win that easily.",
+      "duration": 3.8,
+      "biome": 1,
+      "event": "player_respawn",
+      "tier": "tier1"
+    },
+    "banter_b1_player_respawn_tier2_0": {
+      "id": "banter_b1_player_respawn_tier2_0",
+      "speaker": "darius",
+      "file": "darius/banter_b1_player_respawn_tier2_0.mp3",
+      "text": "Rerouted power from life support to forward deflectors. Let's counter them.",
+      "duration": 4.18,
+      "biome": 1,
+      "event": "player_respawn",
+      "tier": "tier2"
+    },
+    "banter_b1_player_respawn_tier2_1": {
+      "id": "banter_b1_player_respawn_tier2_1",
+      "speaker": "naya",
+      "file": "naya/banter_b1_player_respawn_tier2_1.mp3",
+      "text": "Nanite matrix restored. Angle your shields against the pressure wave.",
+      "duration": 3.8,
+      "biome": 1,
+      "event": "player_respawn",
+      "tier": "tier2"
+    },
+    "banter_b1_player_respawn_tier3_0": {
+      "id": "banter_b1_player_respawn_tier3_0",
+      "speaker": "darius",
+      "file": "darius/banter_b1_player_respawn_tier3_0.mp3",
+      "text": "Iron resolve. We're punching through this sector today.",
+      "duration": 3.04,
+      "biome": 1,
+      "event": "player_respawn",
+      "tier": "tier3"
+    },
+    "banter_b1_player_respawn_tier3_1": {
+      "id": "banter_b1_player_respawn_tier3_1",
+      "speaker": "thorne",
+      "file": "thorne/banter_b1_player_respawn_tier3_1.mp3",
+      "text": "Back in the fight, scrapper. Make every shot count.",
+      "duration": 3.42,
+      "biome": 1,
+      "event": "player_respawn",
+      "tier": "tier3"
+    },
+    "banter_b1_low_health_0": {
+      "id": "banter_b1_low_health_0",
+      "speaker": "darius",
+      "file": "darius/banter_b1_low_health_0.mp3",
+      "text": "Shields failing! I need some breathing room!",
+      "duration": 2.66,
+      "biome": 1,
+      "event": "low_health"
+    },
+    "banter_b1_low_health_1": {
+      "id": "banter_b1_low_health_1",
+      "speaker": "naya",
+      "file": "naya/banter_b1_low_health_1.mp3",
+      "text": "Critical shield warning! Disengage from the crossfire!",
+      "duration": 2.66,
+      "biome": 1,
+      "event": "low_health"
+    },
+    "banter_b1_low_health_2": {
+      "id": "banter_b1_low_health_2",
+      "speaker": "lyra",
+      "file": "lyra/banter_b1_low_health_2.mp3",
+      "text": "Daddy, danger! Hull stress at 90%!",
+      "duration": 2.28,
+      "biome": 1,
+      "event": "low_health"
+    },
+    "banter_b1_wave_clear_0": {
+      "id": "banter_b1_wave_clear_0",
+      "speaker": "darius",
+      "file": "darius/banter_b1_wave_clear_0.mp3",
+      "text": "Squadron clear. Moving deeper.",
+      "duration": 2.2,
+      "biome": 1,
+      "event": "wave_clear"
+    },
+    "banter_b1_wave_clear_1": {
+      "id": "banter_b1_wave_clear_1",
+      "speaker": "naya",
+      "file": "naya/banter_b1_wave_clear_1.mp3",
+      "text": "Path sanitized. Scanners picking up next wave.",
+      "duration": 2.66,
+      "biome": 1,
+      "event": "wave_clear"
+    },
+    "banter_b1_wave_clear_2": {
+      "id": "banter_b1_wave_clear_2",
+      "speaker": "lyra",
+      "file": "lyra/banter_b1_wave_clear_2.mp3",
+      "text": "Good shooting, Daddy! The way is open.",
+      "duration": 2.66,
+      "biome": 1,
+      "event": "wave_clear"
+    },
+    "banter_b1_level_end_0": {
+      "id": "banter_b1_level_end_0",
+      "speaker": "darius",
+      "file": "darius/banter_b1_level_end_0.mp3",
+      "text": "The Warden transmitted coordinates. He knew I'd come.",
+      "duration": 3.04,
+      "biome": 1,
+      "event": "level_end"
+    },
+    "banter_b1_level_end_1": {
+      "id": "banter_b1_level_end_1",
+      "speaker": "naya",
+      "file": "naya/banter_b1_level_end_1.mp3",
+      "text": "Trench sector cleared. Descending to next depth horizon.",
+      "duration": 3.04,
+      "biome": 1,
+      "event": "level_end"
+    },
+    "banter_b1_level_end_2": {
+      "id": "banter_b1_level_end_2",
+      "speaker": "lyra",
+      "file": "lyra/banter_b1_level_end_2.mp3",
+      "text": "I can hear the reef singing ahead. We're getting closer.",
+      "duration": 3.8,
+      "biome": 1,
+      "event": "level_end"
+    },
+    "banter_b1_pull_out_0": {
+      "id": "banter_b1_pull_out_0",
+      "speaker": "darius",
+      "file": "darius/banter_b1_pull_out_0.mp3",
+      "text": "These anglerfish drones locked onto my heat signature! I'm pulling out!",
+      "duration": 4.18,
+      "biome": 1,
+      "event": "pull_out"
+    },
+    "banter_b1_pull_out_1": {
+      "id": "banter_b1_pull_out_1",
+      "speaker": "lyra",
+      "file": "lyra/banter_b1_pull_out_1.mp3",
+      "text": "The dark in this trench is... heavy. It's trying to swallow my voice. I have to break contact!",
+      "duration": 6.84,
+      "biome": 1,
+      "event": "pull_out"
+    },
+    "banter_b1_pull_out_2": {
+      "id": "banter_b1_pull_out_2",
+      "speaker": "naya",
+      "file": "naya/banter_b1_pull_out_2.mp3",
+      "text": "Cybernetic jellyfish swarm is overloading my shields! I'm pulling back to the reef edge!",
+      "duration": 5.32,
+      "biome": 1,
+      "event": "pull_out"
+    },
+    "banter_b1_pull_out_3": {
+      "id": "banter_b1_pull_out_3",
+      "speaker": "thorne",
+      "file": "thorne/banter_b1_pull_out_3.mp3",
+      "text": "Old sensors are blind in this silt. I'm backing out before I scrape the trench walls.",
+      "duration": 6.08,
+      "biome": 1,
+      "event": "pull_out"
+    },
+    "banter_b1_pull_out_4": {
+      "id": "banter_b1_pull_out_4",
+      "speaker": "selene",
+      "file": "selene/banter_b1_pull_out_4.mp3",
+      "text": "Comms from Haven-7 are fracturing. The abyssal distortion is too thick, I'm dropping offline!",
+      "duration": 5.32,
+      "biome": 1,
+      "event": "pull_out"
+    },
+    "banter_b2_level_start_tier1_0": {
+      "id": "banter_b2_level_start_tier1_0",
+      "speaker": "darius",
+      "file": "darius/banter_b2_level_start_tier1_0.mp3",
+      "text": "Coral graveyard. Whole reef, just dead. The Dreamer's been here.",
+      "duration": 3.8,
+      "biome": 2,
+      "event": "level_start",
+      "tier": "tier1"
+    },
+    "banter_b2_level_start_tier1_1": {
+      "id": "banter_b2_level_start_tier1_1",
+      "speaker": "naya",
+      "file": "naya/banter_b2_level_start_tier1_1.mp3",
+      "text": "This was a thriving precursor colony. What happened here was deliberate.",
+      "duration": 4.18,
+      "biome": 2,
+      "event": "level_start",
+      "tier": "tier1"
+    },
+    "banter_b2_level_start_tier2_0": {
+      "id": "banter_b2_level_start_tier2_0",
+      "speaker": "darius",
+      "file": "darius/banter_b2_level_start_tier2_0.mp3",
+      "text": "Watch for the calcified spore mines. Clear them at distance before entering the archway.",
+      "duration": 5.32,
+      "biome": 2,
+      "event": "level_start",
+      "tier": "tier2"
+    },
+    "banter_b2_level_start_tier2_1": {
+      "id": "banter_b2_level_start_tier2_1",
+      "speaker": "naya",
+      "file": "naya/banter_b2_level_start_tier2_1.mp3",
+      "text": "Spore density is highest along the floor. Keep flight path elevated.",
+      "duration": 4.18,
+      "biome": 2,
+      "event": "level_start",
+      "tier": "tier2"
+    },
+    "banter_b2_level_start_tier2_2": {
+      "id": "banter_b2_level_start_tier2_2",
+      "speaker": "lyra",
+      "file": "lyra/banter_b2_level_start_tier2_2.mp3",
+      "text": "The ghost echoes are loud near the monoliths. I'm filtering the frequency.",
+      "duration": 4.56,
+      "biome": 2,
+      "event": "level_start",
+      "tier": "tier2"
+    },
+    "banter_b2_level_start_tier3_0": {
+      "id": "banter_b2_level_start_tier3_0",
+      "speaker": "darius",
+      "file": "darius/banter_b2_level_start_tier3_0.mp3",
+      "text": "We know the reef's layout now. Strike fast and don't linger in the spore clouds.",
+      "duration": 5.7,
+      "biome": 2,
+      "event": "level_start",
+      "tier": "tier3"
+    },
+    "banter_b2_level_start_tier3_1": {
+      "id": "banter_b2_level_start_tier3_1",
+      "speaker": "thorne",
+      "file": "thorne/banter_b2_level_start_tier3_1.mp3",
+      "text": "Sweep the calcified snipers before they anchor. Move!",
+      "duration": 3.04,
+      "biome": 2,
+      "event": "level_start",
+      "tier": "tier3"
+    },
+    "banter_b2_level_start_tier3_2": {
+      "id": "banter_b2_level_start_tier3_2",
+      "speaker": "naya",
+      "file": "naya/banter_b2_level_start_tier3_2.mp3",
+      "text": "Precision flight protocol. The reef won't claim us this time.",
+      "duration": 3.8,
+      "biome": 2,
+      "event": "level_start",
+      "tier": "tier3"
+    },
+    "banter_b2_unique_enemy_0": {
+      "id": "banter_b2_unique_enemy_0",
+      "speaker": "darius",
+      "file": "darius/banter_b2_unique_enemy_0.mp3",
+      "text": "Is that a GHOST? Coral formations don't just attack.",
+      "duration": 3.42,
+      "biome": 2,
+      "event": "unique_enemy"
+    },
+    "banter_b2_unique_enemy_1": {
+      "id": "banter_b2_unique_enemy_1",
+      "speaker": "naya",
+      "file": "naya/banter_b2_unique_enemy_1.mp3",
+      "text": "Memory echoes. The reef remembers what killed it.",
+      "duration": 3.04,
+      "biome": 2,
+      "event": "unique_enemy"
+    },
+    "banter_b2_boss_entrance_tier1_0": {
+      "id": "banter_b2_boss_entrance_tier1_0",
+      "speaker": "darius",
+      "file": "darius/banter_b2_boss_entrance_tier1_0.mp3",
+      "text": "The vault's defense system. Made of their deaths.",
+      "duration": 3.04,
+      "biome": 2,
+      "event": "boss_entrance",
+      "tier": "tier1"
+    },
+    "banter_b2_boss_entrance_tier1_1": {
+      "id": "banter_b2_boss_entrance_tier1_1",
+      "speaker": "naya",
+      "file": "naya/banter_b2_boss_entrance_tier1_1.mp3",
+      "text": "Massive crystalline bio-construct. Resonance frequencies off the scale.",
+      "duration": 3.04,
+      "biome": 2,
+      "event": "boss_entrance",
+      "tier": "tier1"
+    },
+    "banter_b2_boss_entrance_tier2_0": {
+      "id": "banter_b2_boss_entrance_tier2_0",
+      "speaker": "darius",
+      "file": "darius/banter_b2_boss_entrance_tier2_0.mp3",
+      "text": "Shatter the outer crystal facets before it focuses the prismatic beam!",
+      "duration": 4.18,
+      "biome": 2,
+      "event": "boss_entrance",
+      "tier": "tier2"
+    },
+    "banter_b2_boss_entrance_tier2_1": {
+      "id": "banter_b2_boss_entrance_tier2_1",
+      "speaker": "thorne",
+      "file": "thorne/banter_b2_boss_entrance_tier2_1.mp3",
+      "text": "Cross your fire across the central spire. Don't let it regenerate!",
+      "duration": 4.18,
+      "biome": 2,
+      "event": "boss_entrance",
+      "tier": "tier2"
+    },
+    "banter_b2_boss_entrance_tier2_2": {
+      "id": "banter_b2_boss_entrance_tier2_2",
+      "speaker": "lyra",
+      "file": "lyra/banter_b2_boss_entrance_tier2_2.mp3",
+      "text": "Daddy, the singing stops when the amber crystals break! Target those!",
+      "duration": 4.18,
+      "biome": 2,
+      "event": "boss_entrance",
+      "tier": "tier2"
+    },
+    "banter_b2_boss_entrance_tier3_0": {
+      "id": "banter_b2_boss_entrance_tier3_0",
+      "speaker": "darius",
+      "file": "darius/banter_b2_boss_entrance_tier3_0.mp3",
+      "text": "Third round with the Vault Golem. Break its prism array and finish it.",
+      "duration": 4.94,
+      "biome": 2,
+      "event": "boss_entrance",
+      "tier": "tier3"
+    },
+    "banter_b2_boss_entrance_tier3_1": {
+      "id": "banter_b2_boss_entrance_tier3_1",
+      "speaker": "naya",
+      "file": "naya/banter_b2_boss_entrance_tier3_1.mp3",
+      "text": "Executing synchronized bombardment. Core exposure guaranteed.",
+      "duration": 2.28,
+      "biome": 2,
+      "event": "boss_entrance",
+      "tier": "tier3"
+    },
+    "banter_b2_player_death_0": {
+      "id": "banter_b2_player_death_0",
+      "speaker": "darius",
+      "file": "darius/banter_b2_player_death_0.mp3",
+      "text": "I can't... Lyra, I'm sorry...",
+      "duration": 2.2,
+      "biome": 2,
+      "event": "player_death"
+    },
+    "banter_b2_player_death_1": {
+      "id": "banter_b2_player_death_1",
+      "speaker": "naya",
+      "file": "naya/banter_b2_player_death_1.mp3",
+      "text": "Darius is down! Activating emergency extraction!",
+      "duration": 2.28,
+      "biome": 2,
+      "event": "player_death"
+    },
+    "banter_b2_player_respawn_tier1_0": {
+      "id": "banter_b2_player_respawn_tier1_0",
+      "speaker": "darius",
+      "file": "darius/banter_b2_player_respawn_tier1_0.mp3",
+      "text": "Second attempt. This reef deserves better than silence.",
+      "duration": 3.04,
+      "biome": 2,
+      "event": "player_respawn",
+      "tier": "tier1"
+    },
+    "banter_b2_player_respawn_tier2_0": {
+      "id": "banter_b2_player_respawn_tier2_0",
+      "speaker": "darius",
+      "file": "darius/banter_b2_player_respawn_tier2_0.mp3",
+      "text": "Frequency dampers installed. The memory screams won't slow us down.",
+      "duration": 3.8,
+      "biome": 2,
+      "event": "player_respawn",
+      "tier": "tier2"
+    },
+    "banter_b2_player_respawn_tier2_1": {
+      "id": "banter_b2_player_respawn_tier2_1",
+      "speaker": "naya",
+      "file": "naya/banter_b2_player_respawn_tier2_1.mp3",
+      "text": "Sensors compensated for psychic refraction. Ready to engage.",
+      "duration": 3.04,
+      "biome": 2,
+      "event": "player_respawn",
+      "tier": "tier2"
+    },
+    "banter_b2_player_respawn_tier3_0": {
+      "id": "banter_b2_player_respawn_tier3_0",
+      "speaker": "darius",
+      "file": "darius/banter_b2_player_respawn_tier3_0.mp3",
+      "text": "We're making it through this graveyard. All guns blazing.",
+      "duration": 3.42,
+      "biome": 2,
+      "event": "player_respawn",
+      "tier": "tier3"
+    },
+    "banter_b2_low_health_0": {
+      "id": "banter_b2_low_health_0",
+      "speaker": "darius",
+      "file": "darius/banter_b2_low_health_0.mp3",
+      "text": "Hull integrity failing! These memories hit harder than torpedoes.",
+      "duration": 3.42,
+      "biome": 2,
+      "event": "low_health"
+    },
+    "banter_b2_low_health_1": {
+      "id": "banter_b2_low_health_1",
+      "speaker": "naya",
+      "file": "naya/banter_b2_low_health_1.mp3",
+      "text": "Hull breach imminent! Evasive maneuvers!",
+      "duration": 2.2,
+      "biome": 2,
+      "event": "low_health"
+    },
+    "banter_b2_wave_clear_0": {
+      "id": "banter_b2_wave_clear_0",
+      "speaker": "darius",
+      "file": "darius/banter_b2_wave_clear_0.mp3",
+      "text": "Wave clear. The reef is quiet for now.",
+      "duration": 3.04,
+      "biome": 2,
+      "event": "wave_clear"
+    },
+    "banter_b2_wave_clear_1": {
+      "id": "banter_b2_wave_clear_1",
+      "speaker": "naya",
+      "file": "naya/banter_b2_wave_clear_1.mp3",
+      "text": "Memory constructs dispersed. Path forward identified.",
+      "duration": 2.28,
+      "biome": 2,
+      "event": "wave_clear"
+    },
+    "banter_b2_level_end_0": {
+      "id": "banter_b2_level_end_0",
+      "speaker": "darius",
+      "file": "darius/banter_b2_level_end_0.mp3",
+      "text": "The precursors chose extinction. What kind of courage is that?",
+      "duration": 3.8,
+      "biome": 2,
+      "event": "level_end"
+    },
+    "banter_b2_level_end_1": {
+      "id": "banter_b2_level_end_1",
+      "speaker": "naya",
+      "file": "naya/banter_b2_level_end_1.mp3",
+      "text": "The kind that leaves echoes for ten thousand years.",
+      "duration": 3.42,
+      "biome": 2,
+      "event": "level_end"
+    },
+    "banter_b2_pull_out_0": {
+      "id": "banter_b2_pull_out_0",
+      "speaker": "darius",
+      "file": "darius/banter_b2_pull_out_0.mp3",
+      "text": "The memory vault defenses are firing phantom spikes! I'm pulling out before my hull crystallizes!",
+      "duration": 5.7,
+      "biome": 2,
+      "event": "pull_out"
+    },
+    "banter_b2_pull_out_1": {
+      "id": "banter_b2_pull_out_1",
+      "speaker": "lyra",
+      "file": "lyra/banter_b2_pull_out_1.mp3",
+      "text": "So many old voices crying in this reef... it hurts! I have to shut them out!",
+      "duration": 6.08,
+      "biome": 2,
+      "event": "pull_out"
+    },
+    "banter_b2_pull_out_2": {
+      "id": "banter_b2_pull_out_2",
+      "speaker": "naya",
+      "file": "naya/banter_b2_pull_out_2.mp3",
+      "text": "Ghost coral spores are clogging my engine intakes! I'm backing off to purge!",
+      "duration": 4.94,
+      "biome": 2,
+      "event": "pull_out"
+    },
+    "banter_b3_level_start_tier1_0": {
+      "id": "banter_b3_level_start_tier1_0",
+      "speaker": "darius",
+      "file": "darius/banter_b3_level_start_tier1_0.mp3",
+      "text": "Europa. Beneath the ice. Where Coelacanths were born.",
+      "duration": 3.04,
+      "biome": 3,
+      "event": "level_start",
+      "tier": "tier1"
+    },
+    "banter_b3_level_start_tier1_1": {
+      "id": "banter_b3_level_start_tier1_1",
+      "speaker": "naya",
+      "file": "naya/banter_b3_level_start_tier1_1.mp3",
+      "text": "The hatchery. I have complicated feelings about this place.",
+      "duration": 3.42,
+      "biome": 3,
+      "event": "level_start",
+      "tier": "tier1"
+    },
+    "banter_b3_level_start_tier2_0": {
+      "id": "banter_b3_level_start_tier2_0",
+      "speaker": "darius",
+      "file": "darius/banter_b3_level_start_tier2_0.mp3",
+      "text": "Sub-zero brine pools are freezing our thrusters. Use boost sparingly!",
+      "duration": 3.8,
+      "biome": 3,
+      "event": "level_start",
+      "tier": "tier2"
+    },
+    "banter_b3_level_start_tier2_1": {
+      "id": "banter_b3_level_start_tier2_1",
+      "speaker": "thorne",
+      "file": "thorne/banter_b3_level_start_tier2_1.mp3",
+      "text": "Cryo-mines ahead. Detonate them early with wide spread shot.",
+      "duration": 3.42,
+      "biome": 3,
+      "event": "level_start",
+      "tier": "tier2"
+    },
+    "banter_b3_level_start_tier2_2": {
+      "id": "banter_b3_level_start_tier2_2",
+      "speaker": "lyra",
+      "file": "lyra/banter_b3_level_start_tier2_2.mp3",
+      "text": "The baby bio-drones attack in triplets. Watch your six, Daddy!",
+      "duration": 3.8,
+      "biome": 3,
+      "event": "level_start",
+      "tier": "tier2"
+    },
+    "banter_b3_level_start_tier3_0": {
+      "id": "banter_b3_level_start_tier3_0",
+      "speaker": "darius",
+      "file": "darius/banter_b3_level_start_tier3_0.mp3",
+      "text": "We know the ice currents now. Full thrust through the nursery.",
+      "duration": 4.18,
+      "biome": 3,
+      "event": "level_start",
+      "tier": "tier3"
+    },
+    "banter_b3_level_start_tier3_1": {
+      "id": "banter_b3_level_start_tier3_1",
+      "speaker": "naya",
+      "file": "naya/banter_b3_level_start_tier3_1.mp3",
+      "text": "Thermal cannons primed. Melting through their defensive perimeter.",
+      "duration": 3.04,
+      "biome": 3,
+      "event": "level_start",
+      "tier": "tier3"
+    },
+    "banter_b3_unique_enemy_0": {
+      "id": "banter_b3_unique_enemy_0",
+      "speaker": "darius",
+      "file": "darius/banter_b3_unique_enemy_0.mp3",
+      "text": "Half-formed Coelacanth. Twisted. Wrong.",
+      "duration": 2.2,
+      "biome": 3,
+      "event": "unique_enemy"
+    },
+    "banter_b3_unique_enemy_1": {
+      "id": "banter_b3_unique_enemy_1",
+      "speaker": "naya",
+      "file": "naya/banter_b3_unique_enemy_1.mp3",
+      "text": "An embryonic prototype. The bio-fabricator is running corrupt templates.",
+      "duration": 3.42,
+      "biome": 3,
+      "event": "unique_enemy"
+    },
+    "banter_b3_boss_entrance_tier1_0": {
+      "id": "banter_b3_boss_entrance_tier1_0",
+      "speaker": "darius",
+      "file": "darius/banter_b3_boss_entrance_tier1_0.mp3",
+      "text": "The Queen. She sees me as raw material for new young.",
+      "duration": 4.18,
+      "biome": 3,
+      "event": "boss_entrance",
+      "tier": "tier1"
+    },
+    "banter_b3_boss_entrance_tier1_1": {
+      "id": "banter_b3_boss_entrance_tier1_1",
+      "speaker": "lyra",
+      "file": "lyra/banter_b3_boss_entrance_tier1_1.mp3",
+      "text": "Daddy... she's crying. She thinks she's protecting her nest.",
+      "duration": 3.42,
+      "biome": 3,
+      "event": "boss_entrance",
+      "tier": "tier1"
+    },
+    "banter_b3_boss_entrance_tier2_0": {
+      "id": "banter_b3_boss_entrance_tier2_0",
+      "speaker": "darius",
+      "file": "darius/banter_b3_boss_entrance_tier2_0.mp3",
+      "text": "Sever the egg sacs before she spawns the escort swarm!",
+      "duration": 3.8,
+      "biome": 3,
+      "event": "boss_entrance",
+      "tier": "tier2"
+    },
+    "banter_b3_boss_entrance_tier2_1": {
+      "id": "banter_b3_boss_entrance_tier2_1",
+      "speaker": "naya",
+      "file": "naya/banter_b3_boss_entrance_tier2_1.mp3",
+      "text": "Concentrate fire on the cryo-sacs. Disabling her freezing aura!",
+      "duration": 3.42,
+      "biome": 3,
+      "event": "boss_entrance",
+      "tier": "tier2"
+    },
+    "banter_b3_boss_entrance_tier2_2": {
+      "id": "banter_b3_boss_entrance_tier2_2",
+      "speaker": "thorne",
+      "file": "thorne/banter_b3_boss_entrance_tier2_2.mp3",
+      "text": "Roll out of her pounce trajectory! She hits the ceiling then dives!",
+      "duration": 4.56,
+      "biome": 3,
+      "event": "boss_entrance",
+      "tier": "tier2"
+    },
+    "banter_b3_boss_entrance_tier3_0": {
+      "id": "banter_b3_boss_entrance_tier3_0",
+      "speaker": "darius",
+      "file": "darius/banter_b3_boss_entrance_tier3_0.mp3",
+      "text": "No more hesitation. Free the Queen from her corrupted loop.",
+      "duration": 3.8,
+      "biome": 3,
+      "event": "boss_entrance",
+      "tier": "tier3"
+    },
+    "banter_b3_boss_entrance_tier3_1": {
+      "id": "banter_b3_boss_entrance_tier3_1",
+      "speaker": "naya",
+      "file": "naya/banter_b3_boss_entrance_tier3_1.mp3",
+      "text": "Firing heavy armor-piercing salvo. The hatchery falls now.",
+      "duration": 3.04,
+      "biome": 3,
+      "event": "boss_entrance",
+      "tier": "tier3"
+    },
+    "banter_b3_player_death_0": {
+      "id": "banter_b3_player_death_0",
+      "speaker": "darius",
+      "file": "darius/banter_b3_player_death_0.mp3",
+      "text": "It's so cold... Lyra...",
+      "duration": 2.2,
+      "biome": 3,
+      "event": "player_death"
+    },
+    "banter_b3_player_death_1": {
+      "id": "banter_b3_player_death_1",
+      "speaker": "naya",
+      "file": "naya/banter_b3_player_death_1.mp3",
+      "text": "Darius, wake up! Don't let the frost claim you!",
+      "duration": 3.42,
+      "biome": 3,
+      "event": "player_death"
+    },
+    "banter_b3_player_respawn_tier1_0": {
+      "id": "banter_b3_player_respawn_tier1_0",
+      "speaker": "darius",
+      "file": "darius/banter_b3_player_respawn_tier1_0.mp3",
+      "text": "Heating systems at maximum. Let's finish the dive.",
+      "duration": 3.04,
+      "biome": 3,
+      "event": "player_respawn",
+      "tier": "tier1"
+    },
+    "banter_b3_player_respawn_tier2_0": {
+      "id": "banter_b3_player_respawn_tier2_0",
+      "speaker": "darius",
+      "file": "darius/banter_b3_player_respawn_tier2_0.mp3",
+      "text": "Hull de-icers active. Ready for their cryo-spread.",
+      "duration": 2.66,
+      "biome": 3,
+      "event": "player_respawn",
+      "tier": "tier2"
+    },
+    "banter_b3_player_respawn_tier2_1": {
+      "id": "banter_b3_player_respawn_tier2_1",
+      "speaker": "naya",
+      "file": "naya/banter_b3_player_respawn_tier2_1.mp3",
+      "text": "Shield modulation calibrated to thermal frequencies.",
+      "duration": 2.28,
+      "biome": 3,
+      "event": "player_respawn",
+      "tier": "tier2"
+    },
+    "banter_b3_player_respawn_tier3_0": {
+      "id": "banter_b3_player_respawn_tier3_0",
+      "speaker": "darius",
+      "file": "darius/banter_b3_player_respawn_tier3_0.mp3",
+      "text": "Unbreakable. Let's crack this ice shelf wide open.",
+      "duration": 3.04,
+      "biome": 3,
+      "event": "player_respawn",
+      "tier": "tier3"
+    },
+    "banter_b3_low_health_0": {
+      "id": "banter_b3_low_health_0",
+      "speaker": "darius",
+      "file": "darius/banter_b3_low_health_0.mp3",
+      "text": "Cryo-damage creeping into the cockpit! Life support failing!",
+      "duration": 3.04,
+      "biome": 3,
+      "event": "low_health"
+    },
+    "banter_b3_wave_clear_0": {
+      "id": "banter_b3_wave_clear_0",
+      "speaker": "darius",
+      "file": "darius/banter_b3_wave_clear_0.mp3",
+      "text": "Hatchery defenders cleared. Deeper into the sub-glacial trench.",
+      "duration": 3.04,
+      "biome": 3,
+      "event": "wave_clear"
+    },
+    "banter_b3_level_end_0": {
+      "id": "banter_b3_level_end_0",
+      "speaker": "darius",
+      "file": "darius/banter_b3_level_end_0.mp3",
+      "text": "Ophion really thought he could talk to the Dreamer.",
+      "duration": 3.42,
+      "biome": 3,
+      "event": "level_end"
+    },
+    "banter_b3_level_end_1": {
+      "id": "banter_b3_level_end_1",
+      "speaker": "naya",
+      "file": "naya/banter_b3_level_end_1.mp3",
+      "text": "He was young. We all believed we could save everything back then.",
+      "duration": 4.56,
+      "biome": 3,
+      "event": "level_end"
+    },
+    "banter_b3_pull_out_0": {
+      "id": "banter_b3_pull_out_0",
+      "speaker": "darius",
+      "file": "darius/banter_b3_pull_out_0.mp3",
+      "text": "Freezing water is locking up my primary flight surfaces! Pulling back before I freeze solid!",
+      "duration": 5.7,
+      "biome": 3,
+      "event": "pull_out"
+    },
+    "banter_b3_pull_out_1": {
+      "id": "banter_b3_pull_out_1",
+      "speaker": "lyra",
+      "file": "lyra/banter_b3_pull_out_1.mp3",
+      "text": "The Hatchery Queen... she thinks I'm one of her children! She's pulling my mind down! Help!",
+      "duration": 6.08,
+      "biome": 3,
+      "event": "pull_out"
+    },
+    "banter_b3_pull_out_2": {
+      "id": "banter_b3_pull_out_2",
+      "speaker": "thorne",
+      "file": "thorne/banter_b3_pull_out_2.mp3",
+      "text": "Ice shelf collapsing above us! I'm punching the thrusters to get clear!",
+      "duration": 4.56,
+      "biome": 3,
+      "event": "pull_out"
+    },
+    "banter_b4_level_start_tier1_0": {
+      "id": "banter_b4_level_start_tier1_0",
+      "speaker": "darius",
+      "file": "darius/banter_b4_level_start_tier1_0.mp3",
+      "text": "The Veil Nebula. They say it's partially awake.",
+      "duration": 3.04,
+      "biome": 4,
+      "event": "level_start",
+      "tier": "tier1"
+    },
+    "banter_b4_level_start_tier1_1": {
+      "id": "banter_b4_level_start_tier1_1",
+      "speaker": "lyra",
+      "file": "lyra/banter_b4_level_start_tier1_1.mp3",
+      "text": "Daddy, I can hear it. Not words — feelings. It's so lonely.",
+      "duration": 4.56,
+      "biome": 4,
+      "event": "level_start",
+      "tier": "tier1"
+    },
+    "banter_b4_level_start_tier2_0": {
+      "id": "banter_b4_level_start_tier2_0",
+      "speaker": "darius",
+      "file": "darius/banter_b4_level_start_tier2_0.mp3",
+      "text": "Watch out for visual mirages! Sensors lag by two seconds in this plasma cloud.",
+      "duration": 5.32,
+      "biome": 4,
+      "event": "level_start",
+      "tier": "tier2"
+    },
+    "banter_b4_level_start_tier2_1": {
+      "id": "banter_b4_level_start_tier2_1",
+      "speaker": "naya",
+      "file": "naya/banter_b4_level_start_tier2_1.mp3",
+      "text": "Lock on to tachyon signatures, not optical scans. The clouds bend light.",
+      "duration": 4.56,
+      "biome": 4,
+      "event": "level_start",
+      "tier": "tier2"
+    },
+    "banter_b4_level_start_tier2_2": {
+      "id": "banter_b4_level_start_tier2_2",
+      "speaker": "thorne",
+      "file": "thorne/banter_b4_level_start_tier2_2.mp3",
+      "text": "Maintain tight formation. If you get separated in the Veil, you're toast.",
+      "duration": 4.56,
+      "biome": 4,
+      "event": "level_start",
+      "tier": "tier2"
+    },
+    "banter_b4_level_start_tier3_0": {
+      "id": "banter_b4_level_start_tier3_0",
+      "speaker": "darius",
+      "file": "darius/banter_b4_level_start_tier3_0.mp3",
+      "text": "We see through their illusions now. Target the true plasma cores.",
+      "duration": 4.18,
+      "biome": 4,
+      "event": "level_start",
+      "tier": "tier3"
+    },
+    "banter_b4_level_start_tier3_1": {
+      "id": "banter_b4_level_start_tier3_1",
+      "speaker": "naya",
+      "file": "naya/banter_b4_level_start_tier3_1.mp3",
+      "text": "Full sensor synchronization. Cutting right through the nebula fog.",
+      "duration": 3.42,
+      "biome": 4,
+      "event": "level_start",
+      "tier": "tier3"
+    },
+    "banter_b4_unique_enemy_0": {
+      "id": "banter_b4_unique_enemy_0",
+      "speaker": "darius",
+      "file": "darius/banter_b4_unique_enemy_0.mp3",
+      "text": "That enemy just changed shape. Reality is thin here.",
+      "duration": 3.42,
+      "biome": 4,
+      "event": "unique_enemy"
+    },
+    "banter_b4_unique_enemy_1": {
+      "id": "banter_b4_unique_enemy_1",
+      "speaker": "naya",
+      "file": "naya/banter_b4_unique_enemy_1.mp3",
+      "text": "Quantum superposition drones. Shoot them before they collapse into armor state.",
+      "duration": 4.18,
+      "biome": 4,
+      "event": "unique_enemy"
+    },
+    "banter_b4_boss_entrance_tier1_0": {
+      "id": "banter_b4_boss_entrance_tier1_0",
+      "speaker": "darius",
+      "file": "darius/banter_b4_boss_entrance_tier1_0.mp3",
+      "text": "A giant made of gas and thought. How do you fight a dream?",
+      "duration": 4.94,
+      "biome": 4,
+      "event": "boss_entrance",
+      "tier": "tier1"
+    },
+    "banter_b4_boss_entrance_tier1_1": {
+      "id": "banter_b4_boss_entrance_tier1_1",
+      "speaker": "lyra",
+      "file": "lyra/banter_b4_boss_entrance_tier1_1.mp3",
+      "text": "It's not fighting us, Daddy... it's just trying to wake up!",
+      "duration": 4.18,
+      "biome": 4,
+      "event": "boss_entrance",
+      "tier": "tier1"
+    },
+    "banter_b4_boss_entrance_tier2_0": {
+      "id": "banter_b4_boss_entrance_tier2_0",
+      "speaker": "darius",
+      "file": "darius/banter_b4_boss_entrance_tier2_0.mp3",
+      "text": "Disperse the plasma vortices with spread fire before it creates a cyclone!",
+      "duration": 4.56,
+      "biome": 4,
+      "event": "boss_entrance",
+      "tier": "tier2"
+    },
+    "banter_b4_boss_entrance_tier2_1": {
+      "id": "banter_b4_boss_entrance_tier2_1",
+      "speaker": "naya",
+      "file": "naya/banter_b4_boss_entrance_tier2_1.mp3",
+      "text": "Target the anchor beacons on its perimeter! That's what holds its form!",
+      "duration": 4.56,
+      "biome": 4,
+      "event": "boss_entrance",
+      "tier": "tier2"
+    },
+    "banter_b4_boss_entrance_tier2_2": {
+      "id": "banter_b4_boss_entrance_tier2_2",
+      "speaker": "thorne",
+      "file": "thorne/banter_b4_boss_entrance_tier2_2.mp3",
+      "text": "Keep moving laterally! Its tachyon beam locks onto stationary vectors!",
+      "duration": 3.8,
+      "biome": 4,
+      "event": "boss_entrance",
+      "tier": "tier2"
+    },
+    "banter_b4_boss_entrance_tier3_0": {
+      "id": "banter_b4_boss_entrance_tier3_0",
+      "speaker": "darius",
+      "file": "darius/banter_b4_boss_entrance_tier3_0.mp3",
+      "text": "We know the cyclone patterns. Break its anchors and free the sky!",
+      "duration": 4.56,
+      "biome": 4,
+      "event": "boss_entrance",
+      "tier": "tier3"
+    },
+    "banter_b4_boss_entrance_tier3_1": {
+      "id": "banter_b4_boss_entrance_tier3_1",
+      "speaker": "lyra",
+      "file": "lyra/banter_b4_boss_entrance_tier3_1.mp3",
+      "text": "The dream is clearing, Daddy! Final burst!",
+      "duration": 2.66,
+      "biome": 4,
+      "event": "boss_entrance",
+      "tier": "tier3"
+    },
+    "banter_b4_player_death_0": {
+      "id": "banter_b4_player_death_0",
+      "speaker": "darius",
+      "file": "darius/banter_b4_player_death_0.mp3",
+      "text": "The colors... they're taking over...",
+      "duration": 2.2,
+      "biome": 4,
+      "event": "player_death"
+    },
+    "banter_b4_player_death_1": {
+      "id": "banter_b4_player_death_1",
+      "speaker": "lyra",
+      "file": "lyra/banter_b4_player_death_1.mp3",
+      "text": "Daddy! Stay in your ship! Don't let the nebula dissolve you!",
+      "duration": 4.18,
+      "biome": 4,
+      "event": "player_death"
+    },
+    "banter_b4_player_respawn_tier1_0": {
+      "id": "banter_b4_player_respawn_tier1_0",
+      "speaker": "darius",
+      "file": "darius/banter_b4_player_respawn_tier1_0.mp3",
+      "text": "Focus. Anchor to reality. We're flying through.",
+      "duration": 2.66,
+      "biome": 4,
+      "event": "player_respawn",
+      "tier": "tier1"
+    },
+    "banter_b4_player_respawn_tier2_0": {
+      "id": "banter_b4_player_respawn_tier2_0",
+      "speaker": "darius",
+      "file": "darius/banter_b4_player_respawn_tier2_0.mp3",
+      "text": "Tachyon filters engaged. Illusions won't trick us again.",
+      "duration": 3.04,
+      "biome": 4,
+      "event": "player_respawn",
+      "tier": "tier2"
+    },
+    "banter_b4_player_respawn_tier2_1": {
+      "id": "banter_b4_player_respawn_tier2_1",
+      "speaker": "naya",
+      "file": "naya/banter_b4_player_respawn_tier2_1.mp3",
+      "text": "Stabilizer gyros locked. Pushing forward.",
+      "duration": 2.2,
+      "biome": 4,
+      "event": "player_respawn",
+      "tier": "tier2"
+    },
+    "banter_b4_player_respawn_tier3_0": {
+      "id": "banter_b4_player_respawn_tier3_0",
+      "speaker": "darius",
+      "file": "darius/banter_b4_player_respawn_tier3_0.mp3",
+      "text": "Nothing stops this run. Let's finish the Veil.",
+      "duration": 3.04,
+      "biome": 4,
+      "event": "player_respawn",
+      "tier": "tier3"
+    },
+    "banter_b4_low_health_0": {
+      "id": "banter_b4_low_health_0",
+      "speaker": "darius",
+      "file": "darius/banter_b4_low_health_0.mp3",
+      "text": "Cockpit glass is refracting! I can't tell which way is forward!",
+      "duration": 4.18,
+      "biome": 4,
+      "event": "low_health"
+    },
+    "banter_b4_wave_clear_0": {
+      "id": "banter_b4_wave_clear_0",
+      "speaker": "darius",
+      "file": "darius/banter_b4_wave_clear_0.mp3",
+      "text": "Nebula sector clear. The stars are looking sharper.",
+      "duration": 3.04,
+      "biome": 4,
+      "event": "wave_clear"
+    },
+    "banter_b4_level_end_0": {
+      "id": "banter_b4_level_end_0",
+      "speaker": "darius",
+      "file": "darius/banter_b4_level_end_0.mp3",
+      "text": "The Dreamer showed me my own memories. It wasn't attacking.",
+      "duration": 3.8,
+      "biome": 4,
+      "event": "level_end"
+    },
+    "banter_b4_level_end_1": {
+      "id": "banter_b4_level_end_1",
+      "speaker": "lyra",
+      "file": "lyra/banter_b4_level_end_1.mp3",
+      "text": "It just wants someone to listen, Daddy.",
+      "duration": 2.66,
+      "biome": 4,
+      "event": "level_end"
+    },
+    "banter_b4_pull_out_0": {
+      "id": "banter_b4_pull_out_0",
+      "speaker": "darius",
+      "file": "darius/banter_b4_pull_out_0.mp3",
+      "text": "Reality is warping my hull geometry! My thrusters are firing backward! Pulling out!",
+      "duration": 4.94,
+      "biome": 4,
+      "event": "pull_out"
+    },
+    "banter_b4_pull_out_1": {
+      "id": "banter_b4_pull_out_1",
+      "speaker": "lyra",
+      "file": "lyra/banter_b4_pull_out_1.mp3",
+      "text": "The Dreamer is whispering directly to me... the stars are too bright! I can't breathe!",
+      "duration": 5.7,
+      "biome": 4,
+      "event": "pull_out"
+    },
+    "banter_b4_pull_out_2": {
+      "id": "banter_b4_pull_out_2",
+      "speaker": "naya",
+      "file": "naya/banter_b4_pull_out_2.mp3",
+      "text": "These shape-shifters are mimicking my sensor targets. I can't tell friend from foe. Backing off!",
+      "duration": 5.7,
+      "biome": 4,
+      "event": "pull_out"
+    },
+    "banter_b5_level_start_tier1_0": {
+      "id": "banter_b5_level_start_tier1_0",
+      "speaker": "darius",
+      "file": "darius/banter_b5_level_start_tier1_0.mp3",
+      "text": "Saturn's rings. Beautiful from a distance. Up close, frozen shrapnel.",
+      "duration": 3.8,
+      "biome": 5,
+      "event": "level_start",
+      "tier": "tier1"
+    },
+    "banter_b5_level_start_tier1_1": {
+      "id": "banter_b5_level_start_tier1_1",
+      "speaker": "cross",
+      "file": "cross/banter_b5_level_start_tier1_1.mp3",
+      "text": "Navy patrol frequency active. They're hunting us with heavy destroyers.",
+      "duration": 3.8,
+      "biome": 5,
+      "event": "level_start",
+      "tier": "tier1"
+    },
+    "banter_b5_level_start_tier2_0": {
+      "id": "banter_b5_level_start_tier2_0",
+      "speaker": "darius",
+      "file": "darius/banter_b5_level_start_tier2_0.mp3",
+      "text": "Navy strike wings use converging crossfires. Punch through the lead fighter early!",
+      "duration": 4.56,
+      "biome": 5,
+      "event": "level_start",
+      "tier": "tier2"
+    },
+    "banter_b5_level_start_tier2_1": {
+      "id": "banter_b5_level_start_tier2_1",
+      "speaker": "cross",
+      "file": "cross/banter_b5_level_start_tier2_1.mp3",
+      "text": "I know their tactical playbook. They deploy railgun turrets behind the ice boulders.",
+      "duration": 4.94,
+      "biome": 5,
+      "event": "level_start",
+      "tier": "tier2"
+    },
+    "banter_b5_level_start_tier2_2": {
+      "id": "banter_b5_level_start_tier2_2",
+      "speaker": "thorne",
+      "file": "thorne/banter_b5_level_start_tier2_2.mp3",
+      "text": "Keep your shields angled forward. Don't get bracketed by their flak.",
+      "duration": 4.18,
+      "biome": 5,
+      "event": "level_start",
+      "tier": "tier2"
+    },
+    "banter_b5_level_start_tier3_0": {
+      "id": "banter_b5_level_start_tier3_0",
+      "speaker": "darius",
+      "file": "darius/banter_b5_level_start_tier3_0.mp3",
+      "text": "We outfly their best aces every time. Sweep the ring plane!",
+      "duration": 4.18,
+      "biome": 5,
+      "event": "level_start",
+      "tier": "tier3"
+    },
+    "banter_b5_level_start_tier3_1": {
+      "id": "banter_b5_level_start_tier3_1",
+      "speaker": "cross",
+      "file": "cross/banter_b5_level_start_tier3_1.mp3",
+      "text": "Navy command has no answer for our maneuvers. Advance and dismantle.",
+      "duration": 4.18,
+      "biome": 5,
+      "event": "level_start",
+      "tier": "tier3"
+    },
+    "banter_b5_unique_enemy_0": {
+      "id": "banter_b5_unique_enemy_0",
+      "speaker": "cross",
+      "file": "cross/banter_b5_unique_enemy_0.mp3",
+      "text": "Umbra Squad stealth interceptors. They decloak right before firing.",
+      "duration": 3.42,
+      "biome": 5,
+      "event": "unique_enemy"
+    },
+    "banter_b5_unique_enemy_1": {
+      "id": "banter_b5_unique_enemy_1",
+      "speaker": "darius",
+      "file": "darius/banter_b5_unique_enemy_1.mp3",
+      "text": "Watch for the radar ripple before they strike.",
+      "duration": 3.04,
+      "biome": 5,
+      "event": "unique_enemy"
+    },
+    "banter_b5_boss_entrance_tier1_0": {
+      "id": "banter_b5_boss_entrance_tier1_0",
+      "speaker": "cross",
+      "file": "cross/banter_b5_boss_entrance_tier1_0.mp3",
+      "text": "The Kraken's the priority. My squad — I'll handle them.",
+      "duration": 3.8,
+      "biome": 5,
+      "event": "boss_entrance",
+      "tier": "tier1"
+    },
+    "banter_b5_boss_entrance_tier1_1": {
+      "id": "banter_b5_boss_entrance_tier1_1",
+      "speaker": "darius",
+      "file": "darius/banter_b5_boss_entrance_tier1_1.mp3",
+      "text": "Massive Navy mobile fortress. It's deploying heavy torpedo bays.",
+      "duration": 3.42,
+      "biome": 5,
+      "event": "boss_entrance",
+      "tier": "tier1"
+    },
+    "banter_b5_boss_entrance_tier2_0": {
+      "id": "banter_b5_boss_entrance_tier2_0",
+      "speaker": "cross",
+      "file": "cross/banter_b5_boss_entrance_tier2_0.mp3",
+      "text": "Destroy the torpedo tubes first! That cuts their burst DPS in half.",
+      "duration": 4.56,
+      "biome": 5,
+      "event": "boss_entrance",
+      "tier": "tier2"
+    },
+    "banter_b5_boss_entrance_tier2_1": {
+      "id": "banter_b5_boss_entrance_tier2_1",
+      "speaker": "darius",
+      "file": "darius/banter_b5_boss_entrance_tier2_1.mp3",
+      "text": "Flank to the ventral blindspot when the dorsal cannons fire!",
+      "duration": 3.8,
+      "biome": 5,
+      "event": "boss_entrance",
+      "tier": "tier2"
+    },
+    "banter_b5_boss_entrance_tier2_2": {
+      "id": "banter_b5_boss_entrance_tier2_2",
+      "speaker": "naya",
+      "file": "naya/banter_b5_boss_entrance_tier2_2.mp3",
+      "text": "Targeting the hangar deck to prevent reinforcement waves!",
+      "duration": 3.04,
+      "biome": 5,
+      "event": "boss_entrance",
+      "tier": "tier2"
+    },
+    "banter_b5_boss_entrance_tier3_0": {
+      "id": "banter_b5_boss_entrance_tier3_0",
+      "speaker": "darius",
+      "file": "darius/banter_b5_boss_entrance_tier3_0.mp3",
+      "text": "We've dissected this fortress. Tear out the main reactor core!",
+      "duration": 3.8,
+      "biome": 5,
+      "event": "boss_entrance",
+      "tier": "tier3"
+    },
+    "banter_b5_boss_entrance_tier3_1": {
+      "id": "banter_b5_boss_entrance_tier3_1",
+      "speaker": "cross",
+      "file": "cross/banter_b5_boss_entrance_tier3_1.mp3",
+      "text": "End of the line for Navy black-ops. Fire all batteries!",
+      "duration": 3.8,
+      "biome": 5,
+      "event": "boss_entrance",
+      "tier": "tier3"
+    },
+    "banter_b5_player_death_0": {
+      "id": "banter_b5_player_death_0",
+      "speaker": "darius",
+      "file": "darius/banter_b5_player_death_0.mp3",
+      "text": "Cross... finish the mission... protect Lyra...",
+      "duration": 2.28,
+      "biome": 5,
+      "event": "player_death"
+    },
+    "banter_b5_player_death_1": {
+      "id": "banter_b5_player_death_1",
+      "speaker": "cross",
+      "file": "cross/banter_b5_player_death_1.mp3",
+      "text": "Darius! Stay with me! Pulling you out of the crossfire!",
+      "duration": 3.8,
+      "biome": 5,
+      "event": "player_death"
+    },
+    "banter_b5_player_respawn_tier1_0": {
+      "id": "banter_b5_player_respawn_tier1_0",
+      "speaker": "darius",
+      "file": "darius/banter_b5_player_respawn_tier1_0.mp3",
+      "text": "Rebooting avionics. Navy hasn't won yet.",
+      "duration": 2.28,
+      "biome": 5,
+      "event": "player_respawn",
+      "tier": "tier1"
+    },
+    "banter_b5_player_respawn_tier2_0": {
+      "id": "banter_b5_player_respawn_tier2_0",
+      "speaker": "darius",
+      "file": "darius/banter_b5_player_respawn_tier2_0.mp3",
+      "text": "Radar jammers tuned to Navy tactical band. Engaging.",
+      "duration": 3.04,
+      "biome": 5,
+      "event": "player_respawn",
+      "tier": "tier2"
+    },
+    "banter_b5_player_respawn_tier2_1": {
+      "id": "banter_b5_player_respawn_tier2_1",
+      "speaker": "cross",
+      "file": "cross/banter_b5_player_respawn_tier2_1.mp3",
+      "text": "Formation reformed. Let's make them regret tracking us.",
+      "duration": 3.04,
+      "biome": 5,
+      "event": "player_respawn",
+      "tier": "tier2"
+    },
+    "banter_b5_player_respawn_tier3_0": {
+      "id": "banter_b5_player_respawn_tier3_0",
+      "speaker": "darius",
+      "file": "darius/banter_b5_player_respawn_tier3_0.mp3",
+      "text": "Unstoppable. Clear the ring plane!",
+      "duration": 2.2,
+      "biome": 5,
+      "event": "player_respawn",
+      "tier": "tier3"
+    },
+    "banter_b5_low_health_0": {
+      "id": "banter_b5_low_health_0",
+      "speaker": "darius",
+      "file": "darius/banter_b5_low_health_0.mp3",
+      "text": "Railgun slug clipped the main engine! Losing thrust!",
+      "duration": 3.04,
+      "biome": 5,
+      "event": "low_health"
+    },
+    "banter_b5_wave_clear_0": {
+      "id": "banter_b5_wave_clear_0",
+      "speaker": "darius",
+      "file": "darius/banter_b5_wave_clear_0.mp3",
+      "text": "Navy squadron routed. Sector secure.",
+      "duration": 2.2,
+      "biome": 5,
+      "event": "wave_clear"
+    },
+    "banter_b5_level_end_0": {
+      "id": "banter_b5_level_end_0",
+      "speaker": "darius",
+      "file": "darius/banter_b5_level_end_0.mp3",
+      "text": "You defected. Why?",
+      "duration": 2.2,
+      "biome": 5,
+      "event": "level_end"
+    },
+    "banter_b5_level_end_1": {
+      "id": "banter_b5_level_end_1",
+      "speaker": "cross",
+      "file": "cross/banter_b5_level_end_1.mp3",
+      "text": "Because I had a son too. And the Navy took him.",
+      "duration": 4.18,
+      "biome": 5,
+      "event": "level_end"
+    },
+    "banter_b5_pull_out_0": {
+      "id": "banter_b5_pull_out_0",
+      "speaker": "darius",
+      "file": "darius/banter_b5_pull_out_0.mp3",
+      "text": "Squadron Umbra has me locked with heavy torpedoes! Pulling out of the ring plane!",
+      "duration": 5.32,
+      "biome": 5,
+      "event": "pull_out"
+    },
+    "banter_b5_pull_out_1": {
+      "id": "banter_b5_pull_out_1",
+      "speaker": "lyra",
+      "file": "lyra/banter_b5_pull_out_1.mp3",
+      "text": "The metal ships... they are so angry, they want to kill us. I'm dropping the sensor link!",
+      "duration": 6.46,
+      "biome": 5,
+      "event": "pull_out"
+    },
+    "banter_b5_pull_out_2": {
+      "id": "banter_b5_pull_out_2",
+      "speaker": "thorne",
+      "file": "thorne/banter_b5_pull_out_2.mp3",
+      "text": "Navy jammer has cut my fire control. Weapons are cold. I'm out of here!",
+      "duration": 5.32,
+      "biome": 5,
+      "event": "pull_out"
+    },
+    "banter_b6_level_start_tier1_0": {
+      "id": "banter_b6_level_start_tier1_0",
+      "speaker": "darius",
+      "file": "darius/banter_b6_level_start_tier1_0.mp3",
+      "text": "Supernova remnant. Every surface is slag.",
+      "duration": 2.28,
+      "biome": 6,
+      "event": "level_start",
+      "tier": "tier1"
+    },
+    "banter_b6_level_start_tier1_1": {
+      "id": "banter_b6_level_start_tier1_1",
+      "speaker": "naya",
+      "file": "naya/banter_b6_level_start_tier1_1.mp3",
+      "text": "Thermal radiation exceeding safety thresholds. Keep cooling cycle active.",
+      "duration": 3.42,
+      "biome": 6,
+      "event": "level_start",
+      "tier": "tier1"
+    },
+    "banter_b6_level_start_tier2_0": {
+      "id": "banter_b6_level_start_tier2_0",
+      "speaker": "darius",
+      "file": "darius/banter_b6_level_start_tier2_0.mp3",
+      "text": "Solar flares pulse every 15 seconds. Take cover behind the molten asteroids!",
+      "duration": 4.56,
+      "biome": 6,
+      "event": "level_start",
+      "tier": "tier2"
+    },
+    "banter_b6_level_start_tier2_1": {
+      "id": "banter_b6_level_start_tier2_1",
+      "speaker": "naya",
+      "file": "naya/banter_b6_level_start_tier2_1.mp3",
+      "text": "Plasma drones absorb heat from our lasers. Switch to kinetic missiles!",
+      "duration": 4.18,
+      "biome": 6,
+      "event": "level_start",
+      "tier": "tier2"
+    },
+    "banter_b6_level_start_tier2_2": {
+      "id": "banter_b6_level_start_tier2_2",
+      "speaker": "thorne",
+      "file": "thorne/banter_b6_level_start_tier2_2.mp3",
+      "text": "Watch the lava jets from the shattered crust. Fly high!",
+      "duration": 3.8,
+      "biome": 6,
+      "event": "level_start",
+      "tier": "tier2"
+    },
+    "banter_b6_level_start_tier3_0": {
+      "id": "banter_b6_level_start_tier3_0",
+      "speaker": "darius",
+      "file": "darius/banter_b6_level_start_tier3_0.mp3",
+      "text": "We know the solar flare timings by heart. Push through the furnace.",
+      "duration": 4.56,
+      "biome": 6,
+      "event": "level_start",
+      "tier": "tier3"
+    },
+    "banter_b6_level_start_tier3_1": {
+      "id": "banter_b6_level_start_tier3_1",
+      "speaker": "naya",
+      "file": "naya/banter_b6_level_start_tier3_1.mp3",
+      "text": "All thermal shields calibrated. Maximum forward velocity.",
+      "duration": 2.66,
+      "biome": 6,
+      "event": "level_start",
+      "tier": "tier3"
+    },
+    "banter_b6_unique_enemy_0": {
+      "id": "banter_b6_unique_enemy_0",
+      "speaker": "darius",
+      "file": "darius/banter_b6_unique_enemy_0.mp3",
+      "text": "Molten heavy juggernaut! Its armor is liquid titanium!",
+      "duration": 3.04,
+      "biome": 6,
+      "event": "unique_enemy"
+    },
+    "banter_b6_unique_enemy_1": {
+      "id": "banter_b6_unique_enemy_1",
+      "speaker": "naya",
+      "file": "naya/banter_b6_unique_enemy_1.mp3",
+      "text": "Cool it with cryogenic burst or strike its exhaust port!",
+      "duration": 3.8,
+      "biome": 6,
+      "event": "unique_enemy"
+    },
+    "banter_b6_boss_entrance_tier1_0": {
+      "id": "banter_b6_boss_entrance_tier1_0",
+      "speaker": "darius",
+      "file": "darius/banter_b6_boss_entrance_tier1_0.mp3",
+      "text": "The Forge-Mind. It's smelting precursor relics into combat automatons.",
+      "duration": 3.42,
+      "biome": 6,
+      "event": "boss_entrance",
+      "tier": "tier1"
+    },
+    "banter_b6_boss_entrance_tier1_1": {
+      "id": "banter_b6_boss_entrance_tier1_1",
+      "speaker": "naya",
+      "file": "naya/banter_b6_boss_entrance_tier1_1.mp3",
+      "text": "Massive automated foundry. Heat levels off the chart.",
+      "duration": 3.04,
+      "biome": 6,
+      "event": "boss_entrance",
+      "tier": "tier1"
+    },
+    "banter_b6_boss_entrance_tier2_0": {
+      "id": "banter_b6_boss_entrance_tier2_0",
+      "speaker": "darius",
+      "file": "darius/banter_b6_boss_entrance_tier2_0.mp3",
+      "text": "Aim for the crucible coolers before it dumps molten slag across the arena!",
+      "duration": 4.94,
+      "biome": 6,
+      "event": "boss_entrance",
+      "tier": "tier2"
+    },
+    "banter_b6_boss_entrance_tier2_1": {
+      "id": "banter_b6_boss_entrance_tier2_1",
+      "speaker": "naya",
+      "file": "naya/banter_b6_boss_entrance_tier2_1.mp3",
+      "text": "Targeting conveyor tracks to stop the drone assembly line!",
+      "duration": 3.42,
+      "biome": 6,
+      "event": "boss_entrance",
+      "tier": "tier2"
+    },
+    "banter_b6_boss_entrance_tier2_2": {
+      "id": "banter_b6_boss_entrance_tier2_2",
+      "speaker": "thorne",
+      "file": "thorne/banter_b6_boss_entrance_tier2_2.mp3",
+      "text": "Stay clear of the central forge hammer! It causes structural shockwaves!",
+      "duration": 4.18,
+      "biome": 6,
+      "event": "boss_entrance",
+      "tier": "tier2"
+    },
+    "banter_b6_boss_entrance_tier3_0": {
+      "id": "banter_b6_boss_entrance_tier3_0",
+      "speaker": "darius",
+      "file": "darius/banter_b6_boss_entrance_tier3_0.mp3",
+      "text": "Shut this forge down for good. Heavy ordnance on the master forge core!",
+      "duration": 4.94,
+      "biome": 6,
+      "event": "boss_entrance",
+      "tier": "tier3"
+    },
+    "banter_b6_boss_entrance_tier3_1": {
+      "id": "banter_b6_boss_entrance_tier3_1",
+      "speaker": "naya",
+      "file": "naya/banter_b6_boss_entrance_tier3_1.mp3",
+      "text": "Foundry overload initiated. Finish the strike!",
+      "duration": 2.28,
+      "biome": 6,
+      "event": "boss_entrance",
+      "tier": "tier3"
+    },
+    "banter_b6_player_death_0": {
+      "id": "banter_b6_player_death_0",
+      "speaker": "darius",
+      "file": "darius/banter_b6_player_death_0.mp3",
+      "text": "Cockpit melting... shields collapsed...",
+      "duration": 2.2,
+      "biome": 6,
+      "event": "player_death"
+    },
+    "banter_b6_player_death_1": {
+      "id": "banter_b6_player_death_1",
+      "speaker": "naya",
+      "file": "naya/banter_b6_player_death_1.mp3",
+      "text": "Darius! Emergency cryogenic purge engaged!",
+      "duration": 2.2,
+      "biome": 6,
+      "event": "player_death"
+    },
+    "banter_b6_player_respawn_tier1_0": {
+      "id": "banter_b6_player_respawn_tier1_0",
+      "speaker": "darius",
+      "file": "darius/banter_b6_player_respawn_tier1_0.mp3",
+      "text": "Coolant replenished. Diving back into the furnace.",
+      "duration": 2.66,
+      "biome": 6,
+      "event": "player_respawn",
+      "tier": "tier1"
+    },
+    "banter_b6_player_respawn_tier2_0": {
+      "id": "banter_b6_player_respawn_tier2_0",
+      "speaker": "darius",
+      "file": "darius/banter_b6_player_respawn_tier2_0.mp3",
+      "text": "Thermal deflectors overclocked. Let's finish the Forge-Mind.",
+      "duration": 2.66,
+      "biome": 6,
+      "event": "player_respawn",
+      "tier": "tier2"
+    },
+    "banter_b6_player_respawn_tier2_1": {
+      "id": "banter_b6_player_respawn_tier2_1",
+      "speaker": "naya",
+      "file": "naya/banter_b6_player_respawn_tier2_1.mp3",
+      "text": "Heatsinks cleared. Ready for the next salvo.",
+      "duration": 2.66,
+      "biome": 6,
+      "event": "player_respawn",
+      "tier": "tier2"
+    },
+    "banter_b6_player_respawn_tier3_0": {
+      "id": "banter_b6_player_respawn_tier3_0",
+      "speaker": "darius",
+      "file": "darius/banter_b6_player_respawn_tier3_0.mp3",
+      "text": "Forged in fire. Nothing in this furnace can stop us.",
+      "duration": 3.8,
+      "biome": 6,
+      "event": "player_respawn",
+      "tier": "tier3"
+    },
+    "banter_b6_low_health_0": {
+      "id": "banter_b6_low_health_0",
+      "speaker": "darius",
+      "file": "darius/banter_b6_low_health_0.mp3",
+      "text": "Temperature alarm blaring! Hull plates are warping!",
+      "duration": 2.66,
+      "biome": 6,
+      "event": "low_health"
+    },
+    "banter_b6_wave_clear_0": {
+      "id": "banter_b6_wave_clear_0",
+      "speaker": "darius",
+      "file": "darius/banter_b6_wave_clear_0.mp3",
+      "text": "Forge automatons destroyed. The ash is settling.",
+      "duration": 2.66,
+      "biome": 6,
+      "event": "wave_clear"
+    },
+    "banter_b6_level_end_0": {
+      "id": "banter_b6_level_end_0",
+      "speaker": "darius",
+      "file": "darius/banter_b6_level_end_0.mp3",
+      "text": "Haven-7 was attacked. Lyra is changing. I need to get back.",
+      "duration": 4.18,
+      "biome": 6,
+      "event": "level_end"
+    },
+    "banter_b6_level_end_1": {
+      "id": "banter_b6_level_end_1",
+      "speaker": "lyra",
+      "file": "lyra/banter_b6_level_end_1.mp3",
+      "text": "Daddy, the thing in the dark isn't angry. It's scared.",
+      "duration": 3.8,
+      "biome": 6,
+      "event": "level_end"
+    },
+    "banter_b6_pull_out_0": {
+      "id": "banter_b6_pull_out_0",
+      "speaker": "darius",
+      "file": "darius/banter_b6_pull_out_0.mp3",
+      "text": "Thermal shield is melting! My cockpit is burning up! I'm pulling out!",
+      "duration": 4.56,
+      "biome": 6,
+      "event": "pull_out"
+    },
+    "banter_b6_pull_out_1": {
+      "id": "banter_b6_pull_out_1",
+      "speaker": "lyra",
+      "file": "lyra/banter_b6_pull_out_1.mp3",
+      "text": "The fire... it's screaming. Haven-7 was attacked... Selene? Mom? I can't hear them!",
+      "duration": 4.94,
+      "biome": 6,
+      "event": "pull_out"
+    },
+    "banter_b6_pull_out_2": {
+      "id": "banter_b6_pull_out_2",
+      "speaker": "cross",
+      "file": "cross/banter_b6_pull_out_2.mp3",
+      "text": "Forge-Mind plasma beam has melted my armor plating. Pulling back before my reactor blows!",
+      "duration": 5.32,
+      "biome": 6,
+      "event": "pull_out"
+    },
+    "banter_b7_level_start_tier1_0": {
+      "id": "banter_b7_level_start_tier1_0",
+      "speaker": "darius",
+      "file": "darius/banter_b7_level_start_tier1_0.mp3",
+      "text": "Eternal hurricane. Five thousand mph winds. A mad god in the eye.",
+      "duration": 4.56,
+      "biome": 7,
+      "event": "level_start",
+      "tier": "tier1"
+    },
+    "banter_b7_level_start_tier1_1": {
+      "id": "banter_b7_level_start_tier1_1",
+      "speaker": "thorne",
+      "file": "thorne/banter_b7_level_start_tier1_1.mp3",
+      "text": "Jovian storm currents will tear any loose plating off your ship. Tighten up!",
+      "duration": 4.94,
+      "biome": 7,
+      "event": "level_start",
+      "tier": "tier1"
+    },
+    "banter_b7_level_start_tier2_0": {
+      "id": "banter_b7_level_start_tier2_0",
+      "speaker": "darius",
+      "file": "darius/banter_b7_level_start_tier2_0.mp3",
+      "text": "Ride the wind shears instead of fighting them! Drift with the cyclone current.",
+      "duration": 4.94,
+      "biome": 7,
+      "event": "level_start",
+      "tier": "tier2"
+    },
+    "banter_b7_level_start_tier2_1": {
+      "id": "banter_b7_level_start_tier2_1",
+      "speaker": "naya",
+      "file": "naya/banter_b7_level_start_tier2_1.mp3",
+      "text": "Lightning arcs between the cloud pylons. Destroy the pylons to ground the storm.",
+      "duration": 4.94,
+      "biome": 7,
+      "event": "level_start",
+      "tier": "tier2"
+    },
+    "banter_b7_level_start_tier2_2": {
+      "id": "banter_b7_level_start_tier2_2",
+      "speaker": "thorne",
+      "file": "thorne/banter_b7_level_start_tier2_2.mp3",
+      "text": "Thunderbirds dive from the upper eye wall. Keep radar pointed up!",
+      "duration": 4.18,
+      "biome": 7,
+      "event": "level_start",
+      "tier": "tier2"
+    },
+    "banter_b7_level_start_tier3_0": {
+      "id": "banter_b7_level_start_tier3_0",
+      "speaker": "darius",
+      "file": "darius/banter_b7_level_start_tier3_0.mp3",
+      "text": "We've mastered the storm flight paths. Cut straight through to the eye.",
+      "duration": 4.56,
+      "biome": 7,
+      "event": "level_start",
+      "tier": "tier3"
+    },
+    "banter_b7_level_start_tier3_1": {
+      "id": "banter_b7_level_start_tier3_1",
+      "speaker": "thorne",
+      "file": "thorne/banter_b7_level_start_tier3_1.mp3",
+      "text": "No storm on Jupiter can ground this squadron. Full burn!",
+      "duration": 3.8,
+      "biome": 7,
+      "event": "level_start",
+      "tier": "tier3"
+    },
+    "banter_b7_unique_enemy_0": {
+      "id": "banter_b7_unique_enemy_0",
+      "speaker": "darius",
+      "file": "darius/banter_b7_unique_enemy_0.mp3",
+      "text": "Lightning ray! It's chaining high-voltage arcs across our fighters!",
+      "duration": 3.42,
+      "biome": 7,
+      "event": "unique_enemy"
+    },
+    "banter_b7_unique_enemy_1": {
+      "id": "banter_b7_unique_enemy_1",
+      "speaker": "naya",
+      "file": "naya/banter_b7_unique_enemy_1.mp3",
+      "text": "Spread out to prevent conductive arc-chaining!",
+      "duration": 2.28,
+      "biome": 7,
+      "event": "unique_enemy"
+    },
+    "banter_b7_boss_entrance_tier1_0": {
+      "id": "banter_b7_boss_entrance_tier1_0",
+      "speaker": "darius",
+      "file": "darius/banter_b7_boss_entrance_tier1_0.mp3",
+      "text": "The Storm-Singer. A giant atmospheric beast generating the cyclone.",
+      "duration": 3.42,
+      "biome": 7,
+      "event": "boss_entrance",
+      "tier": "tier1"
+    },
+    "banter_b7_boss_entrance_tier1_1": {
+      "id": "banter_b7_boss_entrance_tier1_1",
+      "speaker": "lyra",
+      "file": "lyra/banter_b7_boss_entrance_tier1_1.mp3",
+      "text": "It's singing with the thunder... it's trying to drown out its own pain.",
+      "duration": 4.94,
+      "biome": 7,
+      "event": "boss_entrance",
+      "tier": "tier1"
+    },
+    "banter_b7_boss_entrance_tier2_0": {
+      "id": "banter_b7_boss_entrance_tier2_0",
+      "speaker": "darius",
+      "file": "darius/banter_b7_boss_entrance_tier2_0.mp3",
+      "text": "Shoot the electrical gills when it inhales the storm clouds!",
+      "duration": 3.8,
+      "biome": 7,
+      "event": "boss_entrance",
+      "tier": "tier2"
+    },
+    "banter_b7_boss_entrance_tier2_1": {
+      "id": "banter_b7_boss_entrance_tier2_1",
+      "speaker": "naya",
+      "file": "naya/banter_b7_boss_entrance_tier2_1.mp3",
+      "text": "Drop resonance disruptors into its lightning vortex to break the barrier!",
+      "duration": 4.18,
+      "biome": 7,
+      "event": "boss_entrance",
+      "tier": "tier2"
+    },
+    "banter_b7_boss_entrance_tier2_2": {
+      "id": "banter_b7_boss_entrance_tier2_2",
+      "speaker": "thorne",
+      "file": "thorne/banter_b7_boss_entrance_tier2_2.mp3",
+      "text": "Roll 90 degrees when it charges the hurricane funnel!",
+      "duration": 3.42,
+      "biome": 7,
+      "event": "boss_entrance",
+      "tier": "tier2"
+    },
+    "banter_b7_boss_entrance_tier3_0": {
+      "id": "banter_b7_boss_entrance_tier3_0",
+      "speaker": "darius",
+      "file": "darius/banter_b7_boss_entrance_tier3_0.mp3",
+      "text": "Third clash in the eye. Put the Storm-Singer to rest!",
+      "duration": 3.8,
+      "biome": 7,
+      "event": "boss_entrance",
+      "tier": "tier3"
+    },
+    "banter_b7_boss_entrance_tier3_1": {
+      "id": "banter_b7_boss_entrance_tier3_1",
+      "speaker": "naya",
+      "file": "naya/banter_b7_boss_entrance_tier3_1.mp3",
+      "text": "Vortex collapsed. Firing the finishing torpedo spread!",
+      "duration": 2.66,
+      "biome": 7,
+      "event": "boss_entrance",
+      "tier": "tier3"
+    },
+    "banter_b7_player_death_0": {
+      "id": "banter_b7_player_death_0",
+      "speaker": "darius",
+      "file": "darius/banter_b7_player_death_0.mp3",
+      "text": "Torn apart in the squall... Lyra...",
+      "duration": 2.28,
+      "biome": 7,
+      "event": "player_death"
+    },
+    "banter_b7_player_death_1": {
+      "id": "banter_b7_player_death_1",
+      "speaker": "thorne",
+      "file": "thorne/banter_b7_player_death_1.mp3",
+      "text": "Darius went down in the vortex! Deploying storm winch!",
+      "duration": 3.42,
+      "biome": 7,
+      "event": "player_death"
+    },
+    "banter_b7_player_respawn_tier1_0": {
+      "id": "banter_b7_player_respawn_tier1_0",
+      "speaker": "darius",
+      "file": "darius/banter_b7_player_respawn_tier1_0.mp3",
+      "text": "Engines re-ignited in the eye. Let's finish the dive.",
+      "duration": 3.42,
+      "biome": 7,
+      "event": "player_respawn",
+      "tier": "tier1"
+    },
+    "banter_b7_player_respawn_tier2_0": {
+      "id": "banter_b7_player_respawn_tier2_0",
+      "speaker": "darius",
+      "file": "darius/banter_b7_player_respawn_tier2_0.mp3",
+      "text": "Faraday cage active. Lightning won't short our thrusters now.",
+      "duration": 3.42,
+      "biome": 7,
+      "event": "player_respawn",
+      "tier": "tier2"
+    },
+    "banter_b7_player_respawn_tier2_1": {
+      "id": "banter_b7_player_respawn_tier2_1",
+      "speaker": "naya",
+      "file": "naya/banter_b7_player_respawn_tier2_1.mp3",
+      "text": "Atmospheric gyros steady. Back on vector.",
+      "duration": 2.28,
+      "biome": 7,
+      "event": "player_respawn",
+      "tier": "tier2"
+    },
+    "banter_b7_player_respawn_tier3_0": {
+      "id": "banter_b7_player_respawn_tier3_0",
+      "speaker": "darius",
+      "file": "darius/banter_b7_player_respawn_tier3_0.mp3",
+      "text": "Riding the lightning. We take the eye today.",
+      "duration": 3.04,
+      "biome": 7,
+      "event": "player_respawn",
+      "tier": "tier3"
+    },
+    "banter_b7_low_health_0": {
+      "id": "banter_b7_low_health_0",
+      "speaker": "darius",
+      "file": "darius/banter_b7_low_health_0.mp3",
+      "text": "Turbulence tearing off the stabilizer! Flight control failing!",
+      "duration": 3.04,
+      "biome": 7,
+      "event": "low_health"
+    },
+    "banter_b7_wave_clear_0": {
+      "id": "banter_b7_wave_clear_0",
+      "speaker": "darius",
+      "file": "darius/banter_b7_wave_clear_0.mp3",
+      "text": "Storm wave dispersed. Eye of the storm holding stable.",
+      "duration": 3.42,
+      "biome": 7,
+      "event": "wave_clear"
+    },
+    "banter_b7_level_end_0": {
+      "id": "banter_b7_level_end_0",
+      "speaker": "darius",
+      "file": "darius/banter_b7_level_end_0.mp3",
+      "text": "The Storm-Singer chose death over madness.",
+      "duration": 2.28,
+      "biome": 7,
+      "event": "level_end"
+    },
+    "banter_b7_level_end_1": {
+      "id": "banter_b7_level_end_1",
+      "speaker": "lyra",
+      "file": "lyra/banter_b7_level_end_1.mp3",
+      "text": "Its song is peaceful now, Daddy. It's resting.",
+      "duration": 3.04,
+      "biome": 7,
+      "event": "level_end"
+    },
+    "banter_b7_pull_out_0": {
+      "id": "banter_b7_pull_out_0",
+      "speaker": "darius",
+      "file": "darius/banter_b7_pull_out_0.mp3",
+      "text": "The atmospheric pressure is crushing my hull! Winds are tearing my wings off! Pulling out!",
+      "duration": 5.7,
+      "biome": 7,
+      "event": "pull_out"
+    },
+    "banter_b7_pull_out_1": {
+      "id": "banter_b7_pull_out_1",
+      "speaker": "lyra",
+      "file": "lyra/banter_b7_pull_out_1.mp3",
+      "text": "The lightning... it's singing. It's so loud it hurts my head! I have to go!",
+      "duration": 5.7,
+      "biome": 7,
+      "event": "pull_out"
+    },
+    "banter_b7_pull_out_2": {
+      "id": "banter_b7_pull_out_2",
+      "speaker": "naya",
+      "file": "naya/banter_b7_pull_out_2.mp3",
+      "text": "Megastorm lightning has shorted my primary battery! I'm dead in the air, pulling back!",
+      "duration": 5.32,
+      "biome": 7,
+      "event": "pull_out"
+    },
+    "banter_b8_level_start_tier1_0": {
+      "id": "banter_b8_level_start_tier1_0",
+      "speaker": "darius",
+      "file": "darius/banter_b8_level_start_tier1_0.mp3",
+      "text": "The ghost fleet. Hundreds of Navy ships, abandoned.",
+      "duration": 3.04,
+      "biome": 8,
+      "event": "level_start",
+      "tier": "tier1"
+    },
+    "banter_b8_level_start_tier1_1": {
+      "id": "banter_b8_level_start_tier1_1",
+      "speaker": "cross",
+      "file": "cross/banter_b8_level_start_tier1_1.mp3",
+      "text": "Admiral Crane's automated defense network is still guarding the wrecks.",
+      "duration": 3.8,
+      "biome": 8,
+      "event": "level_start",
+      "tier": "tier1"
+    },
+    "banter_b8_level_start_tier2_0": {
+      "id": "banter_b8_level_start_tier2_0",
+      "speaker": "darius",
+      "file": "darius/banter_b8_level_start_tier2_0.mp3",
+      "text": "Automated point-defense turrets are networked. Take out the radar carrier first!",
+      "duration": 4.18,
+      "biome": 8,
+      "event": "level_start",
+      "tier": "tier2"
+    },
+    "banter_b8_level_start_tier2_1": {
+      "id": "banter_b8_level_start_tier2_1",
+      "speaker": "cross",
+      "file": "cross/banter_b8_level_start_tier2_1.mp3",
+      "text": "Crane's AI uses flanking ambush pods hidden in the hollow hulls. Watch your flank.",
+      "duration": 5.32,
+      "biome": 8,
+      "event": "level_start",
+      "tier": "tier2"
+    },
+    "banter_b8_level_start_tier2_2": {
+      "id": "banter_b8_level_start_tier2_2",
+      "speaker": "thorne",
+      "file": "thorne/banter_b8_level_start_tier2_2.mp3",
+      "text": "Beware proximity mines tethered to the wreckage corridors.",
+      "duration": 3.04,
+      "biome": 8,
+      "event": "level_start",
+      "tier": "tier2"
+    },
+    "banter_b8_level_start_tier3_0": {
+      "id": "banter_b8_level_start_tier3_0",
+      "speaker": "darius",
+      "file": "darius/banter_b8_level_start_tier3_0.mp3",
+      "text": "We know Crane's automated subroutines. Dismantle the fleet.",
+      "duration": 3.04,
+      "biome": 8,
+      "event": "level_start",
+      "tier": "tier3"
+    },
+    "banter_b8_level_start_tier3_1": {
+      "id": "banter_b8_level_start_tier3_1",
+      "speaker": "cross",
+      "file": "cross/banter_b8_level_start_tier3_1.mp3",
+      "text": "Severing their tactical data links. The ghost fleet is ours.",
+      "duration": 3.8,
+      "biome": 8,
+      "event": "level_start",
+      "tier": "tier3"
+    },
+    "banter_b8_unique_enemy_0": {
+      "id": "banter_b8_unique_enemy_0",
+      "speaker": "darius",
+      "file": "darius/banter_b8_unique_enemy_0.mp3",
+      "text": "Heavy automated dreadnought! It's charging bow rail cannons!",
+      "duration": 3.04,
+      "biome": 8,
+      "event": "unique_enemy"
+    },
+    "banter_b8_unique_enemy_1": {
+      "id": "banter_b8_unique_enemy_1",
+      "speaker": "cross",
+      "file": "cross/banter_b8_unique_enemy_1.mp3",
+      "text": "Stay in its dorsal blindspot! Those bow cannons can't elevate!",
+      "duration": 3.8,
+      "biome": 8,
+      "event": "unique_enemy"
+    },
+    "banter_b8_boss_entrance_tier1_0": {
+      "id": "banter_b8_boss_entrance_tier1_0",
+      "speaker": "darius",
+      "file": "darius/banter_b8_boss_entrance_tier1_0.mp3",
+      "text": "Admiral Crane's flagship: the Goliath. Controlled by his digital ghost.",
+      "duration": 3.8,
+      "biome": 8,
+      "event": "boss_entrance",
+      "tier": "tier1"
+    },
+    "banter_b8_boss_entrance_tier1_1": {
+      "id": "banter_b8_boss_entrance_tier1_1",
+      "speaker": "cross",
+      "file": "cross/banter_b8_boss_entrance_tier1_1.mp3",
+      "text": "Crane... you enslaved whole generations for this machine. It ends here.",
+      "duration": 4.18,
+      "biome": 8,
+      "event": "boss_entrance",
+      "tier": "tier1"
+    },
+    "banter_b8_boss_entrance_tier2_0": {
+      "id": "banter_b8_boss_entrance_tier2_0",
+      "speaker": "darius",
+      "file": "darius/banter_b8_boss_entrance_tier2_0.mp3",
+      "text": "Focus on the automated shield relay ships escorting the Goliath!",
+      "duration": 3.8,
+      "biome": 8,
+      "event": "boss_entrance",
+      "tier": "tier2"
+    },
+    "banter_b8_boss_entrance_tier2_1": {
+      "id": "banter_b8_boss_entrance_tier2_1",
+      "speaker": "cross",
+      "file": "cross/banter_b8_boss_entrance_tier2_1.mp3",
+      "text": "Override codes applied to the port missile batteries. Strike the breach!",
+      "duration": 4.18,
+      "biome": 8,
+      "event": "boss_entrance",
+      "tier": "tier2"
+    },
+    "banter_b8_boss_entrance_tier2_2": {
+      "id": "banter_b8_boss_entrance_tier2_2",
+      "speaker": "thorne",
+      "file": "thorne/banter_b8_boss_entrance_tier2_2.mp3",
+      "text": "Dive under the broadside salvo! It fires in 3-second staggered volleys!",
+      "duration": 4.18,
+      "biome": 8,
+      "event": "boss_entrance",
+      "tier": "tier2"
+    },
+    "banter_b8_boss_entrance_tier3_0": {
+      "id": "banter_b8_boss_entrance_tier3_0",
+      "speaker": "darius",
+      "file": "darius/banter_b8_boss_entrance_tier3_0.mp3",
+      "text": "No more ghosts. Time to bury Crane's flagship in the scrap pile.",
+      "duration": 4.56,
+      "biome": 8,
+      "event": "boss_entrance",
+      "tier": "tier3"
+    },
+    "banter_b8_boss_entrance_tier3_1": {
+      "id": "banter_b8_boss_entrance_tier3_1",
+      "speaker": "cross",
+      "file": "cross/banter_b8_boss_entrance_tier3_1.mp3",
+      "text": "Primary reactor breached. Firing the final salute.",
+      "duration": 2.66,
+      "biome": 8,
+      "event": "boss_entrance",
+      "tier": "tier3"
+    },
+    "banter_b8_player_death_0": {
+      "id": "banter_b8_player_death_0",
+      "speaker": "darius",
+      "file": "darius/banter_b8_player_death_0.mp3",
+      "text": "Crane... you won't touch her...",
+      "duration": 2.2,
+      "biome": 8,
+      "event": "player_death"
+    },
+    "banter_b8_player_death_1": {
+      "id": "banter_b8_player_death_1",
+      "speaker": "cross",
+      "file": "cross/banter_b8_player_death_1.mp3",
+      "text": "Darius is down! Suppressive fire, protect the lead ship!",
+      "duration": 3.42,
+      "biome": 8,
+      "event": "player_death"
+    },
+    "banter_b8_player_respawn_tier1_0": {
+      "id": "banter_b8_player_respawn_tier1_0",
+      "speaker": "darius",
+      "file": "darius/banter_b8_player_respawn_tier1_0.mp3",
+      "text": "Rebooted. Ghost fleet hasn't buried us yet.",
+      "duration": 2.66,
+      "biome": 8,
+      "event": "player_respawn",
+      "tier": "tier1"
+    },
+    "banter_b8_player_respawn_tier2_0": {
+      "id": "banter_b8_player_respawn_tier2_0",
+      "speaker": "darius",
+      "file": "darius/banter_b8_player_respawn_tier2_0.mp3",
+      "text": "Counter-hack installed. Crane can't scramble our HUD.",
+      "duration": 2.66,
+      "biome": 8,
+      "event": "player_respawn",
+      "tier": "tier2"
+    },
+    "banter_b8_player_respawn_tier2_1": {
+      "id": "banter_b8_player_respawn_tier2_1",
+      "speaker": "cross",
+      "file": "cross/banter_b8_player_respawn_tier2_1.mp3",
+      "text": "Fleet fire-control overridden. Striking back.",
+      "duration": 2.2,
+      "biome": 8,
+      "event": "player_respawn",
+      "tier": "tier2"
+    },
+    "banter_b8_player_respawn_tier3_0": {
+      "id": "banter_b8_player_respawn_tier3_0",
+      "speaker": "darius",
+      "file": "darius/banter_b8_player_respawn_tier3_0.mp3",
+      "text": "Iron will. The fleet falls today.",
+      "duration": 2.28,
+      "biome": 8,
+      "event": "player_respawn",
+      "tier": "tier3"
+    },
+    "banter_b8_low_health_0": {
+      "id": "banter_b8_low_health_0",
+      "speaker": "darius",
+      "file": "darius/banter_b8_low_health_0.mp3",
+      "text": "Armor plating sheared by railgun fire! Critical warning!",
+      "duration": 3.04,
+      "biome": 8,
+      "event": "low_health"
+    },
+    "banter_b8_wave_clear_0": {
+      "id": "banter_b8_wave_clear_0",
+      "speaker": "darius",
+      "file": "darius/banter_b8_wave_clear_0.mp3",
+      "text": "Ghost fleet vanguard neutralized. Path to the flagship open.",
+      "duration": 3.42,
+      "biome": 8,
+      "event": "wave_clear"
+    },
+    "banter_b8_level_end_0": {
+      "id": "banter_b8_level_end_0",
+      "speaker": "darius",
+      "file": "darius/banter_b8_level_end_0.mp3",
+      "text": "My family was engineered. Three generations. But Lyra is NOT a weapon.",
+      "duration": 4.56,
+      "biome": 8,
+      "event": "level_end"
+    },
+    "banter_b8_level_end_1": {
+      "id": "banter_b8_level_end_1",
+      "speaker": "cross",
+      "file": "cross/banter_b8_level_end_1.mp3",
+      "text": "None of us are weapons, Darius. We are free.",
+      "duration": 3.42,
+      "biome": 8,
+      "event": "level_end"
+    },
+    "banter_b8_pull_out_0": {
+      "id": "banter_b8_pull_out_0",
+      "speaker": "darius",
+      "file": "darius/banter_b8_pull_out_0.mp3",
+      "text": "The automated Navy dreadnought has me pinned with heavy lasers! I'm pulling out!",
+      "duration": 4.94,
+      "biome": 8,
+      "event": "pull_out"
+    },
+    "banter_b8_pull_out_1": {
+      "id": "banter_b8_pull_out_1",
+      "speaker": "lyra",
+      "file": "lyra/banter_b8_pull_out_1.mp3",
+      "text": "Admiral Crane's voice... it's inside my head. He's saying we are all just weapons... I want to leave!",
+      "duration": 6.84,
+      "biome": 8,
+      "event": "pull_out"
+    },
+    "banter_b8_pull_out_2": {
+      "id": "banter_b8_pull_out_2",
+      "speaker": "naya",
+      "file": "naya/banter_b8_pull_out_2.mp3",
+      "text": "Defense lasers have sliced through my starboard engine! I'm pulling back to the wreckage!",
+      "duration": 5.32,
+      "biome": 8,
+      "event": "pull_out"
+    },
+    "banter_b9_level_start_tier1_0": {
+      "id": "banter_b9_level_start_tier1_0",
+      "speaker": "darius",
+      "file": "darius/banter_b9_level_start_tier1_0.mp3",
+      "text": "The first world the Dreamer transformed. Nothing here is real.",
+      "duration": 3.8,
+      "biome": 9,
+      "event": "level_start",
+      "tier": "tier1"
+    },
+    "banter_b9_level_start_tier1_1": {
+      "id": "banter_b9_level_start_tier1_1",
+      "speaker": "lyra",
+      "file": "lyra/banter_b9_level_start_tier1_1.mp3",
+      "text": "The Hive is whispering in thousands of voices... they want to make us sleep.",
+      "duration": 5.32,
+      "biome": 9,
+      "event": "level_start",
+      "tier": "tier1"
+    },
+    "banter_b9_level_start_tier2_0": {
+      "id": "banter_b9_level_start_tier2_0",
+      "speaker": "darius",
+      "file": "darius/banter_b9_level_start_tier2_0.mp3",
+      "text": "Neural spores are distorting our flight vectors. Keep your eyes on the physical compass!",
+      "duration": 5.32,
+      "biome": 9,
+      "event": "level_start",
+      "tier": "tier2"
+    },
+    "banter_b9_level_start_tier2_1": {
+      "id": "banter_b9_level_start_tier2_1",
+      "speaker": "naya",
+      "file": "naya/banter_b9_level_start_tier2_1.mp3",
+      "text": "Bio-luminescent tendrils regenerate if not severed completely. Use rapid fire.",
+      "duration": 3.8,
+      "biome": 9,
+      "event": "level_start",
+      "tier": "tier2"
+    },
+    "banter_b9_level_start_tier2_2": {
+      "id": "banter_b9_level_start_tier2_2",
+      "speaker": "lyra",
+      "file": "lyra/banter_b9_level_start_tier2_2.mp3",
+      "text": "Daddy, I'm maintaining a psychic shield around your cockpit. Trust my voice.",
+      "duration": 4.56,
+      "biome": 9,
+      "event": "level_start",
+      "tier": "tier2"
+    },
+    "banter_b9_level_start_tier3_0": {
+      "id": "banter_b9_level_start_tier3_0",
+      "speaker": "darius",
+      "file": "darius/banter_b9_level_start_tier3_0.mp3",
+      "text": "We know the Hive's neural tricks. Push straight through the synaptic matrix.",
+      "duration": 4.56,
+      "biome": 9,
+      "event": "level_start",
+      "tier": "tier3"
+    },
+    "banter_b9_level_start_tier3_1": {
+      "id": "banter_b9_level_start_tier3_1",
+      "speaker": "naya",
+      "file": "naya/banter_b9_level_start_tier3_1.mp3",
+      "text": "Synaptic resonance steady. Piercing their collective barrier.",
+      "duration": 2.66,
+      "biome": 9,
+      "event": "level_start",
+      "tier": "tier3"
+    },
+    "banter_b9_unique_enemy_0": {
+      "id": "banter_b9_unique_enemy_0",
+      "speaker": "darius",
+      "file": "darius/banter_b9_unique_enemy_0.mp3",
+      "text": "Synaptic parasite drone! It's latching onto the shield matrix!",
+      "duration": 3.42,
+      "biome": 9,
+      "event": "unique_enemy"
+    },
+    "banter_b9_unique_enemy_1": {
+      "id": "banter_b9_unique_enemy_1",
+      "speaker": "naya",
+      "file": "naya/banter_b9_unique_enemy_1.mp3",
+      "text": "Roll maneuver and pulse shields to shake it off!",
+      "duration": 3.42,
+      "biome": 9,
+      "event": "unique_enemy"
+    },
+    "banter_b9_boss_entrance_tier1_0": {
+      "id": "banter_b9_boss_entrance_tier1_0",
+      "speaker": "darius",
+      "file": "darius/banter_b9_boss_entrance_tier1_0.mp3",
+      "text": "The Hive Mother. A cosmic nexus of stolen minds and biomass.",
+      "duration": 4.18,
+      "biome": 9,
+      "event": "boss_entrance",
+      "tier": "tier1"
+    },
+    "banter_b9_boss_entrance_tier1_1": {
+      "id": "banter_b9_boss_entrance_tier1_1",
+      "speaker": "lyra",
+      "file": "lyra/banter_b9_boss_entrance_tier1_1.mp3",
+      "text": "She's holding so many stolen souls... we have to wake them up!",
+      "duration": 4.56,
+      "biome": 9,
+      "event": "boss_entrance",
+      "tier": "tier1"
+    },
+    "banter_b9_boss_entrance_tier2_0": {
+      "id": "banter_b9_boss_entrance_tier2_0",
+      "speaker": "darius",
+      "file": "darius/banter_b9_boss_entrance_tier2_0.mp3",
+      "text": "Sever the neural tentacles before she channels the psychic scream!",
+      "duration": 3.8,
+      "biome": 9,
+      "event": "boss_entrance",
+      "tier": "tier2"
+    },
+    "banter_b9_boss_entrance_tier2_1": {
+      "id": "banter_b9_boss_entrance_tier2_1",
+      "speaker": "naya",
+      "file": "naya/banter_b9_boss_entrance_tier2_1.mp3",
+      "text": "Focus heavy fire on the bio-plasma sacs at her base!",
+      "duration": 3.8,
+      "biome": 9,
+      "event": "boss_entrance",
+      "tier": "tier2"
+    },
+    "banter_b9_boss_entrance_tier2_2": {
+      "id": "banter_b9_boss_entrance_tier2_2",
+      "speaker": "thorne",
+      "file": "thorne/banter_b9_boss_entrance_tier2_2.mp3",
+      "text": "Clear the spore swarm immediately or they'll detonate on your canopy!",
+      "duration": 4.18,
+      "biome": 9,
+      "event": "boss_entrance",
+      "tier": "tier2"
+    },
+    "banter_b9_boss_entrance_tier3_0": {
+      "id": "banter_b9_boss_entrance_tier3_0",
+      "speaker": "darius",
+      "file": "darius/banter_b9_boss_entrance_tier3_0.mp3",
+      "text": "We know every tendril swipe. Break the Hive Mother's crown!",
+      "duration": 3.8,
+      "biome": 9,
+      "event": "boss_entrance",
+      "tier": "tier3"
+    },
+    "banter_b9_boss_entrance_tier3_1": {
+      "id": "banter_b9_boss_entrance_tier3_1",
+      "speaker": "lyra",
+      "file": "lyra/banter_b9_boss_entrance_tier3_1.mp3",
+      "text": "Her song is breaking, Daddy! Free the stolen minds!",
+      "duration": 3.42,
+      "biome": 9,
+      "event": "boss_entrance",
+      "tier": "tier3"
+    },
+    "banter_b9_player_death_0": {
+      "id": "banter_b9_player_death_0",
+      "speaker": "darius",
+      "file": "darius/banter_b9_player_death_0.mp3",
+      "text": "The song is so sweet... no... Lyra...",
+      "duration": 2.66,
+      "biome": 9,
+      "event": "player_death"
+    },
+    "banter_b9_player_death_1": {
+      "id": "banter_b9_player_death_1",
+      "speaker": "lyra",
+      "file": "lyra/banter_b9_player_death_1.mp3",
+      "text": "Daddy! Wake up! Don't let the Hive take you!",
+      "duration": 3.42,
+      "biome": 9,
+      "event": "player_death"
+    },
+    "banter_b9_player_respawn_tier1_0": {
+      "id": "banter_b9_player_respawn_tier1_0",
+      "speaker": "darius",
+      "file": "darius/banter_b9_player_respawn_tier1_0.mp3",
+      "text": "Mind clear. Neural link secured. We finish this.",
+      "duration": 3.04,
+      "biome": 9,
+      "event": "player_respawn",
+      "tier": "tier1"
+    },
+    "banter_b9_player_respawn_tier2_0": {
+      "id": "banter_b9_player_respawn_tier2_0",
+      "speaker": "darius",
+      "file": "darius/banter_b9_player_respawn_tier2_0.mp3",
+      "text": "Psychic feedback filters at 100%. The Hive won't cloud our aim.",
+      "duration": 4.18,
+      "biome": 9,
+      "event": "player_respawn",
+      "tier": "tier2"
+    },
+    "banter_b9_player_respawn_tier2_1": {
+      "id": "banter_b9_player_respawn_tier2_1",
+      "speaker": "naya",
+      "file": "naya/banter_b9_player_respawn_tier2_1.mp3",
+      "text": "Bio-matrix purged. Advancing into the core.",
+      "duration": 2.28,
+      "biome": 9,
+      "event": "player_respawn",
+      "tier": "tier2"
+    },
+    "banter_b9_player_respawn_tier3_0": {
+      "id": "banter_b9_player_respawn_tier3_0",
+      "speaker": "darius",
+      "file": "darius/banter_b9_player_respawn_tier3_0.mp3",
+      "text": "Unshakable. Break the collective.",
+      "duration": 2.2,
+      "biome": 9,
+      "event": "player_respawn",
+      "tier": "tier3"
+    },
+    "banter_b9_low_health_0": {
+      "id": "banter_b9_low_health_0",
+      "speaker": "darius",
+      "file": "darius/banter_b9_low_health_0.mp3",
+      "text": "Neural link fracturing! My hands are going numb!",
+      "duration": 3.04,
+      "biome": 9,
+      "event": "low_health"
+    },
+    "banter_b9_wave_clear_0": {
+      "id": "banter_b9_wave_clear_0",
+      "speaker": "darius",
+      "file": "darius/banter_b9_wave_clear_0.mp3",
+      "text": "Hive node shattered. Synaptic distortion dropping.",
+      "duration": 2.28,
+      "biome": 9,
+      "event": "wave_clear"
+    },
+    "banter_b9_level_end_0": {
+      "id": "banter_b9_level_end_0",
+      "speaker": "darius",
+      "file": "darius/banter_b9_level_end_0.mp3",
+      "text": "The Hive offered me everything. I almost said yes.",
+      "duration": 3.42,
+      "biome": 9,
+      "event": "level_end"
+    },
+    "banter_b9_level_end_1": {
+      "id": "banter_b9_level_end_1",
+      "speaker": "lyra",
+      "file": "lyra/banter_b9_level_end_1.mp3",
+      "text": "You said no because you love us, Daddy. That's real.",
+      "duration": 3.8,
+      "biome": 9,
+      "event": "level_end"
+    },
+    "banter_b9_pull_out_0": {
+      "id": "banter_b9_pull_out_0",
+      "speaker": "darius",
+      "file": "darius/banter_b9_pull_out_0.mp3",
+      "text": "The Hive is showing me Lyra... but it's not her. It's trying to dissolve my mind! Pulling out!",
+      "duration": 6.84,
+      "biome": 9,
+      "event": "pull_out"
+    },
+    "banter_b9_pull_out_1": {
+      "id": "banter_b9_pull_out_1",
+      "speaker": "lyra",
+      "file": "lyra/banter_b9_pull_out_1.mp3",
+      "text": "The Hive wants to take my memories... they want to keep my childhood. I won't let them!",
+      "duration": 6.46,
+      "biome": 9,
+      "event": "pull_out"
+    },
+    "banter_b9_pull_out_2": {
+      "id": "banter_b9_pull_out_2",
+      "speaker": "naya",
+      "file": "naya/banter_b9_pull_out_2.mp3",
+      "text": "These false realities are trying to convince me this is Haven-7. I'm pulling back before I lose myself!",
+      "duration": 6.84,
+      "biome": 9,
+      "event": "pull_out"
+    },
+    "banter_b10_level_start_tier1_0": {
+      "id": "banter_b10_level_start_tier1_0",
+      "speaker": "darius",
+      "file": "darius/banter_b10_level_start_tier1_0.mp3",
+      "text": "Edge of a black hole. The last Coelacanth. This is it.",
+      "duration": 4.18,
+      "biome": 10,
+      "event": "level_start",
+      "tier": "tier1"
+    },
+    "banter_b10_level_start_tier1_1": {
+      "id": "banter_b10_level_start_tier1_1",
+      "speaker": "architect",
+      "file": "architect/banter_b10_level_start_tier1_1.mp3",
+      "text": "The void awaits... why do you bring light into the final rest...",
+      "duration": 4.56,
+      "biome": 10,
+      "event": "level_start",
+      "tier": "tier1"
+    },
+    "banter_b10_level_start_tier2_0": {
+      "id": "banter_b10_level_start_tier2_0",
+      "speaker": "darius",
+      "file": "darius/banter_b10_level_start_tier2_0.mp3",
+      "text": "Event horizon gravitational shearing is intense! Counter-steer away from the vortex!",
+      "duration": 4.18,
+      "biome": 10,
+      "event": "level_start",
+      "tier": "tier2"
+    },
+    "banter_b10_level_start_tier2_1": {
+      "id": "banter_b10_level_start_tier2_1",
+      "speaker": "naya",
+      "file": "naya/banter_b10_level_start_tier2_1.mp3",
+      "text": "Chrono-anomalies ahead! Enemies repeat their attack loops—anticipate the rewind!",
+      "duration": 3.42,
+      "biome": 10,
+      "event": "level_start",
+      "tier": "tier2"
+    },
+    "banter_b10_level_start_tier2_2": {
+      "id": "banter_b10_level_start_tier2_2",
+      "speaker": "lyra",
+      "file": "lyra/banter_b10_level_start_tier2_2.mp3",
+      "text": "The Architect's fear is warping spacetime. Hold the center vector, Daddy!",
+      "duration": 4.18,
+      "biome": 10,
+      "event": "level_start",
+      "tier": "tier2"
+    },
+    "banter_b10_level_start_tier3_0": {
+      "id": "banter_b10_level_start_tier3_0",
+      "speaker": "darius",
+      "file": "darius/banter_b10_level_start_tier3_0.mp3",
+      "text": "We know the chrono-warp cycles. Time to answer the Architect and end the loop.",
+      "duration": 5.32,
+      "biome": 10,
+      "event": "level_start",
+      "tier": "tier3"
+    },
+    "banter_b10_level_start_tier3_1": {
+      "id": "banter_b10_level_start_tier3_1",
+      "speaker": "naya",
+      "file": "naya/banter_b10_level_start_tier3_1.mp3",
+      "text": "All systems at peak synchronization. For Lyra. For everyone.",
+      "duration": 3.42,
+      "biome": 10,
+      "event": "level_start",
+      "tier": "tier3"
+    },
+    "banter_b10_unique_enemy_0": {
+      "id": "banter_b10_unique_enemy_0",
+      "speaker": "darius",
+      "file": "darius/banter_b10_unique_enemy_0.mp3",
+      "text": "Chrono-sentinel! It's teleporting across temporal rifts!",
+      "duration": 2.28,
+      "biome": 10,
+      "event": "unique_enemy"
+    },
+    "banter_b10_unique_enemy_1": {
+      "id": "banter_b10_unique_enemy_1",
+      "speaker": "naya",
+      "file": "naya/banter_b10_unique_enemy_1.mp3",
+      "text": "Lead your target into its arrival coordinates!",
+      "duration": 2.66,
+      "biome": 10,
+      "event": "unique_enemy"
+    },
+    "banter_b10_boss_entrance_tier1_0": {
+      "id": "banter_b10_boss_entrance_tier1_0",
+      "speaker": "darius",
+      "file": "darius/banter_b10_boss_entrance_tier1_0.mp3",
+      "text": "That's no reality. That's its nightmares. I have to show it — it's not alone.",
+      "duration": 5.7,
+      "biome": 10,
+      "event": "boss_entrance",
+      "tier": "tier1"
+    },
+    "banter_b10_boss_entrance_tier1_1": {
+      "id": "banter_b10_boss_entrance_tier1_1",
+      "speaker": "architect",
+      "file": "architect/banter_b10_boss_entrance_tier1_1.mp3",
+      "text": "We were the first... we will be the last... burn with us in the eternal silence!",
+      "duration": 6.08,
+      "biome": 10,
+      "event": "boss_entrance",
+      "tier": "tier1"
+    },
+    "banter_b10_boss_entrance_tier2_0": {
+      "id": "banter_b10_boss_entrance_tier2_0",
+      "speaker": "darius",
+      "file": "darius/banter_b10_boss_entrance_tier2_0.mp3",
+      "text": "Destroy the Singularity Launchers before it warps the event horizon!",
+      "duration": 3.8,
+      "biome": 10,
+      "event": "boss_entrance",
+      "tier": "tier2"
+    },
+    "banter_b10_boss_entrance_tier2_1": {
+      "id": "banter_b10_boss_entrance_tier2_1",
+      "speaker": "naya",
+      "file": "naya/banter_b10_boss_entrance_tier2_1.mp3",
+      "text": "Dorsal Chrono Railgun charging! Dive under the beam arc!",
+      "duration": 3.42,
+      "biome": 10,
+      "event": "boss_entrance",
+      "tier": "tier2"
+    },
+    "banter_b10_boss_entrance_tier2_2": {
+      "id": "banter_b10_boss_entrance_tier2_2",
+      "speaker": "lyra",
+      "file": "lyra/banter_b10_boss_entrance_tier2_2.mp3",
+      "text": "Daddy, the Unbound Chrono Core is vulnerable when it rewinds! Strike then!",
+      "duration": 4.56,
+      "biome": 10,
+      "event": "boss_entrance",
+      "tier": "tier2"
+    },
+    "banter_b10_boss_entrance_tier3_0": {
+      "id": "banter_b10_boss_entrance_tier3_0",
+      "speaker": "darius",
+      "file": "darius/banter_b10_boss_entrance_tier3_0.mp3",
+      "text": "This is the final test. No more loops. Deliver the answer!",
+      "duration": 4.18,
+      "biome": 10,
+      "event": "boss_entrance",
+      "tier": "tier3"
+    },
+    "banter_b10_boss_entrance_tier3_1": {
+      "id": "banter_b10_boss_entrance_tier3_1",
+      "speaker": "lyra",
+      "file": "lyra/banter_b10_boss_entrance_tier3_1.mp3",
+      "text": "I'm with you, Daddy! All the way through the light!",
+      "duration": 3.8,
+      "biome": 10,
+      "event": "boss_entrance",
+      "tier": "tier3"
+    },
+    "banter_b10_boss_entrance_tier3_2": {
+      "id": "banter_b10_boss_entrance_tier3_2",
+      "speaker": "naya",
+      "file": "naya/banter_b10_boss_entrance_tier3_2.mp3",
+      "text": "Full fleet salvo! Break the singularity!",
+      "duration": 2.28,
+      "biome": 10,
+      "event": "boss_entrance",
+      "tier": "tier3"
+    },
+    "banter_b10_player_death_0": {
+      "id": "banter_b10_player_death_0",
+      "speaker": "darius",
+      "file": "darius/banter_b10_player_death_0.mp3",
+      "text": "The void is swallowing everything... Lyra... hold my hand...",
+      "duration": 3.42,
+      "biome": 10,
+      "event": "player_death"
+    },
+    "banter_b10_player_death_1": {
+      "id": "banter_b10_player_death_1",
+      "speaker": "lyra",
+      "file": "lyra/banter_b10_player_death_1.mp3",
+      "text": "Daddy! I'm here! I won't let go!",
+      "duration": 2.66,
+      "biome": 10,
+      "event": "player_death"
+    },
+    "banter_b10_player_respawn_tier1_0": {
+      "id": "banter_b10_player_respawn_tier1_0",
+      "speaker": "darius",
+      "file": "darius/banter_b10_player_respawn_tier1_0.mp3",
+      "text": "Rebooting at the rift threshold. We are not letting the universe die in fear.",
+      "duration": 5.32,
+      "biome": 10,
+      "event": "player_respawn",
+      "tier": "tier1"
+    },
+    "banter_b10_player_respawn_tier2_0": {
+      "id": "banter_b10_player_respawn_tier2_0",
+      "speaker": "darius",
+      "file": "darius/banter_b10_player_respawn_tier2_0.mp3",
+      "text": "Chrono-stabilizers locked. Spacetime won't shatter our resolve.",
+      "duration": 2.66,
+      "biome": 10,
+      "event": "player_respawn",
+      "tier": "tier2"
+    },
+    "banter_b10_player_respawn_tier2_1": {
+      "id": "banter_b10_player_respawn_tier2_1",
+      "speaker": "naya",
+      "file": "naya/banter_b10_player_respawn_tier2_1.mp3",
+      "text": "Singularity shields holding. Back to the event horizon.",
+      "duration": 3.04,
+      "biome": 10,
+      "event": "player_respawn",
+      "tier": "tier2"
+    },
+    "banter_b10_player_respawn_tier3_0": {
+      "id": "banter_b10_player_respawn_tier3_0",
+      "speaker": "darius",
+      "file": "darius/banter_b10_player_respawn_tier3_0.mp3",
+      "text": "Final push into eternity. Let's finish the Cyber Coelacanth.",
+      "duration": 3.42,
+      "biome": 10,
+      "event": "player_respawn",
+      "tier": "tier3"
+    },
+    "banter_b10_low_health_0": {
+      "id": "banter_b10_low_health_0",
+      "speaker": "darius",
+      "file": "darius/banter_b10_low_health_0.mp3",
+      "text": "Singularity shear tearing through the hull! Hull integrity 10%!",
+      "duration": 3.42,
+      "biome": 10,
+      "event": "low_health"
+    },
+    "banter_b10_wave_clear_0": {
+      "id": "banter_b10_wave_clear_0",
+      "speaker": "darius",
+      "file": "darius/banter_b10_wave_clear_0.mp3",
+      "text": "Chrono rift sealed. Final approach to the Architect's Core.",
+      "duration": 3.42,
+      "biome": 10,
+      "event": "wave_clear"
+    },
+    "banter_b10_level_end_0": {
+      "id": "banter_b10_level_end_0",
+      "speaker": "darius",
+      "file": "darius/banter_b10_level_end_0.mp3",
+      "text": "I'm not here to defeat it. I'm here to answer it.",
+      "duration": 4.18,
+      "biome": 10,
+      "event": "level_end"
+    },
+    "banter_b10_level_end_1": {
+      "id": "banter_b10_level_end_1",
+      "speaker": "lyra",
+      "file": "lyra/banter_b10_level_end_1.mp3",
+      "text": "We answered it together, Daddy. We're going home.",
+      "duration": 3.04,
+      "biome": 10,
+      "event": "level_end"
+    },
+    "banter_b10_pull_out_0": {
+      "id": "banter_b10_pull_out_0",
+      "speaker": "darius",
+      "file": "darius/banter_b10_pull_out_0.mp3",
+      "text": "The black hole's gravity is pulling me past the event horizon! I'm pushing engines to the limit, pulling out!",
+      "duration": 7,
+      "biome": 10,
+      "event": "pull_out"
+    },
+    "banter_b10_pull_out_1": {
+      "id": "banter_b10_pull_out_1",
+      "speaker": "lyra",
+      "file": "lyra/banter_b10_pull_out_1.mp3",
+      "text": "The Architect's nightmare is too loud... it's the end of everything! I can't look!",
+      "duration": 5.32,
+      "biome": 10,
+      "event": "pull_out"
+    },
+    "banter_b10_pull_out_2": {
+      "id": "banter_b10_pull_out_2",
+      "speaker": "naya",
+      "file": "naya/banter_b10_pull_out_2.mp3",
+      "text": "Gravitational shearing is tearing my hull apart! I have to back off before I'm crushed!",
+      "duration": 5.7,
+      "biome": 10,
+      "event": "pull_out"
     }
   }
 }

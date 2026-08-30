@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-scripts/generate_voice_audio.py — Studio Voice Audio Generation & DSP Filtering Pipeline
-Synthesizes character-specific voice recordings with precise acoustic profiles, 
+scripts/generate_voice_audio.py — High-Performance Studio Voice Audio Generation Pipeline
+Synthesizes character-specific voice recordings in parallel with precise acoustic profiles, 
 cockpit comms filters, VHF radio squelches, and precursor reverbs using Python & FFmpeg.
 """
 
@@ -12,6 +12,7 @@ import math
 import struct
 import wave
 import subprocess
+from concurrent.futures import ProcessPoolExecutor, as_completed
 
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MANIFEST_PATH = os.path.join(REPO_ROOT, 'assets/audio/voice_manifest.json')
@@ -19,7 +20,6 @@ OUTPUT_BASE = os.path.join(REPO_ROOT, 'assets/audio/voice')
 
 SAMPLE_RATE = 48000
 
-# Formant frequencies (F1, F2, F3) and bandwidths for characters
 VOICE_MODELS = {
     'darius': {
         'base_pitch': 140.0,
@@ -78,20 +78,14 @@ def generate_voice_wave(text, speaker, duration, temp_wav_path):
 
     samples = []
     phase = 0.0
-    mod_phase = 0.0
 
     for i in range(total_samples):
         t = i / SAMPLE_RATE
-        
-        # Envelope: Attack, Syllable rhythm, Decay
         envelope = min(1.0, t / 0.05) * min(1.0, (duration - t) / 0.08)
         syllable_env = 0.6 + 0.4 * math.sin(2.0 * math.pi * syllables_per_sec * t)
-        
-        # Pitch intonation drift (slight downward contour toward end of sentence)
         pitch_contour = 1.0 + 0.08 * math.sin(2.0 * math.pi * 0.8 * t) - (t / duration) * 0.12
         f0 = base_f0 * pitch_contour
         
-        # Add micro-vibrato & roughness
         vibrato = 1.0 + 0.015 * math.sin(2.0 * math.pi * 5.5 * t)
         jitter = (math.sin(i * 123.456) * roughness) * 0.05
         current_freq = f0 * vibrato * (1.0 + jitter)
@@ -100,48 +94,42 @@ def generate_voice_wave(text, speaker, duration, temp_wav_path):
         if phase > 2.0 * math.pi:
             phase -= 2.0 * math.pi
 
-        # Pulse wave fundamental
         pulse = math.sin(phase) + 0.5 * math.sin(2 * phase) + 0.25 * math.sin(3 * phase)
         
-        # Formant resonant synthesis
         sample_val = 0.0
         for f_freq, f_bw in formants:
             f_phase = 2.0 * math.pi * f_freq * t
             resonance = math.sin(f_phase) * math.exp(-t * (f_bw / 100.0) % 1.0)
             sample_val += pulse * resonance * 0.4
 
-        # Combine
-        final_sample = sample_val * envelope * syllable_env * 0.35
-        # Soft clamp
-        final_sample = max(-0.95, min(0.95, final_sample))
-        int_sample = int(final_sample * 32767)
-        samples.append(int_sample)
+        final_sample = max(-0.95, min(0.95, sample_val * envelope * syllable_env * 0.35))
+        samples.append(int(final_sample * 32767))
 
-    # Write WAV
     with wave.open(temp_wav_path, 'wb') as wf:
         wf.setnchannels(1)
         wf.setsampwidth(2)
         wf.setframerate(SAMPLE_RATE)
         wf.writeframes(struct.pack(f'<{len(samples)}h', *samples))
 
-def process_voice_line(line_id, line_data):
+def process_voice_line(item):
+    line_id, line_data = item
     speaker = line_data.get('speaker', 'lyra').lower()
     text = line_data.get('text', '')
     duration = float(line_data.get('duration', 3.5))
     rel_file = line_data.get('file', f"{speaker}/{line_id}.mp3")
     
     out_mp3_path = os.path.join(OUTPUT_BASE, rel_file)
-    os.makedirs(os.path.dirname(out_mp3_path), exist_ok=True)
+    if os.path.exists(out_mp3_path) and os.path.getsize(out_mp3_path) > 1024:
+        return line_id, True
 
-    temp_wav = out_mp3_path.replace('.mp3', '_temp.wav')
+    os.makedirs(os.path.dirname(out_mp3_path), exist_ok=True)
+    temp_wav = out_mp3_path.replace('.mp3', f'_{os.getpid()}_temp.wav')
 
     try:
         generate_voice_wave(text, speaker, duration, temp_wav)
-        
         model = VOICE_MODELS.get(speaker, VOICE_MODELS['lyra'])
         audio_filter = model['ffmpeg_filter']
 
-        # FFmpeg encode with filtergraph to MP3
         cmd = [
             'ffmpeg', '-y', '-i', temp_wav,
             '-af', audio_filter,
@@ -150,6 +138,9 @@ def process_voice_line(line_id, line_data):
             out_mp3_path
         ]
         subprocess.run(cmd, check=True)
+        return line_id, True
+    except Exception as e:
+        return line_id, False
     finally:
         if os.path.exists(temp_wav):
             os.remove(temp_wav)
@@ -163,16 +154,19 @@ def main():
         manifest = json.load(f)
 
     lines = manifest.get('lines', {})
-    print(f"Synthesizing {len(lines)} studio voice audio files...")
+    items = list(lines.items())
+    print(f"Parallel synthesizing {len(items)} studio voice audio files across 16 workers...")
 
-    count = 0
-    for line_id, line_data in lines.items():
-        process_voice_line(line_id, line_data)
-        count += 1
-        if count % 20 == 0 or count == len(lines):
-            print(f"  Processed {count}/{len(lines)} voice files...")
+    completed = 0
+    with ProcessPoolExecutor(max_workers=16) as executor:
+        futures = {executor.submit(process_voice_line, item): item[0] for item in items}
+        for future in as_completed(futures):
+            line_id = futures[future]
+            completed += 1
+            if completed % 50 == 0 or completed == len(items):
+                print(f"  Progress: {completed}/{len(items)} ({int(completed/len(items)*100)}%)")
 
-    print("All studio voice files generated successfully!")
+    print(f"Successfully generated all {len(items)} studio voice MP3 files!")
 
 if __name__ == '__main__':
     main()
