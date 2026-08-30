@@ -1,3 +1,5 @@
+export { MultiplayerRoom } from "./multiplayer_room.js";
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
@@ -9,6 +11,7 @@ export default {
         status: "ok",
         version: "1.0.0",
         service: "darius-star-edge-router",
+        multiplayer: "enabled",
         timestamp: new Date().toISOString()
       }), {
         status: 200,
@@ -17,6 +20,17 @@ export default {
           'Access-Control-Allow-Origin': '*'
         }
       });
+    }
+
+    // Multiplayer WebSocket room endpoint (GRO-4303)
+    if (url.pathname.startsWith('/api/multiplayer/room/') || url.pathname.startsWith('/darius-star/api/multiplayer/room/')) {
+      const parts = url.pathname.split('/');
+      const roomId = parts[parts.length - 1] || 'default-squadron';
+      if (env && env.MULTIPLAYER_ROOMS) {
+        const id = env.MULTIPLAYER_ROOMS.idFromName(roomId);
+        const obj = env.MULTIPLAYER_ROOMS.get(id);
+        return obj.fetch(request);
+      }
     }
 
     // Telemetry beacon endpoint (GRO-4113)
@@ -64,4 +78,4 @@ export default {
     
     return fetch(request);
   }
-}
+};

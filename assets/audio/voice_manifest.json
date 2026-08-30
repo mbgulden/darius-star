@@ -1,0 +1,97 @@
+{
+  "version": "1.0.0",
+  "generatedWith": "Google Lyria / Omni Antigravity Audio Pipeline",
+  "characters": {
+    "darius": {
+      "name": "Darius Star",
+      "callsign": "STAR",
+      "pitchHz": 140,
+      "style": "Gritty, determined, veteran scrapper baritone",
+      "filter": "Cockpit helmet comms mic with dynamic compression",
+      "motionPortraits": {
+        "neutral": "assets/sprites/portraits_motion/darius_neutral.mp4",
+        "determined": "assets/sprites/portraits_motion/darius_determined.mp4",
+        "reactive": "assets/sprites/portraits_motion/darius_reactive.mp4",
+        "somber": "assets/sprites/portraits_motion/darius_somber.mp4"
+      }
+    },
+    "lyra": {
+      "name": "Lyra Star",
+      "callsign": "NAVIGATOR",
+      "pitchHz": 440,
+      "style": "Youthful, ethereal, harmonic AI / daughter resonance",
+      "filter": "Precursor phase overtone echo with harmonic side-tone",
+      "motionPortraits": {
+        "neutral": "assets/sprites/portraits_motion/lyra_neutral.mp4",
+        "determined": "assets/sprites/portraits_motion/lyra_determined.mp4",
+        "reactive": "assets/sprites/portraits_motion/lyra_reactive.mp4",
+        "somber": "assets/sprites/portraits_motion/lyra_somber.mp4"
+      }
+    },
+    "thorne": {
+      "name": "Commander Thorne",
+      "callsign": "MISSION CONTROL",
+      "pitchHz": 110,
+      "style": "Deep, authoritative military veteran baritone",
+      "filter": "High-pass 300Hz tactical radio transponder with squelch clicks",
+      "motionPortraits": {
+        "neutral": "assets/sprites/portraits_motion/thorne_neutral.mp4",
+        "determined": "assets/sprites/portraits_motion/thorne_determined.mp4",
+        "reactive": "assets/sprites/portraits_motion/thorne_reactive.mp4",
+        "somber": "assets/sprites/portraits_motion/thorne_somber.mp4"
+      }
+    },
+    "naya": {
+      "name": "Naya Thorne",
+      "callsign": "WARDEN LEAD",
+      "pitchHz": 280,
+      "style": "Focused, crisp, tactical wingman alto",
+      "filter": "Navy wingman frequency channel with subtle background engine hum",
+      "motionPortraits": {
+        "neutral": "assets/sprites/portraits_motion/naya_neutral.mp4",
+        "determined": "assets/sprites/portraits_motion/naya_determined.mp4",
+        "reactive": "assets/sprites/portraits_motion/naya_reactive.mp4",
+        "somber": "assets/sprites/portraits_motion/naya_somber.mp4"
+      }
+    },
+    "cross": {
+      "name": "Cross",
+      "callsign": "SPEC-OPS",
+      "pitchHz": 210,
+      "style": "Mechanized, phased cyborg infiltrator bass",
+      "filter": "Phase vocoder ring modulation",
+      "motionPortraits": {
+        "neutral": "assets/sprites/portraits_motion/cross_neutral.mp4",
+        "determined": "assets/sprites/portraits_motion/cross_determined.mp4",
+        "reactive": "assets/sprites/portraits_motion/cross_reactive.mp4",
+        "somber": "assets/sprites/portraits_motion/cross_somber.mp4"
+      }
+    },
+    "selene": {
+      "name": "Selene",
+      "callsign": "BASE COMMAND",
+      "pitchHz": 580,
+      "style": "Calm, clear, maternal base commander soprano",
+      "filter": "Wideband command bridge acoustics",
+      "motionPortraits": {
+        "neutral": "assets/sprites/portraits_motion/selene_neutral.mp4",
+        "determined": "assets/sprites/portraits_motion/selene_determined.mp4",
+        "reactive": "assets/sprites/portraits_motion/selene_reactive.mp4",
+        "somber": "assets/sprites/portraits_motion/selene_somber.mp4"
+      }
+    },
+    "architect": {
+      "name": "The Architect",
+      "callsign": "PRECURSOR CORE",
+      "pitchHz": 85,
+      "style": "Ancient singularity intelligence, multi-layered choral reverb",
+      "filter": "Sub-harmonic spatial octave delay and cosmic resonance",
+      "motionPortraits": {
+        "neutral": "assets/sprites/portraits_motion/architect_neutral.mp4",
+        "determined": "assets/sprites/portraits_motion/architect_determined.mp4",
+        "reactive": "assets/sprites/portraits_motion/architect_reactive.mp4",
+        "somber": "assets/sprites/portraits_motion/architect_somber.mp4"
+      }
+    }
+  }
+}

@@ -1,0 +1,228 @@
+{
+  "version": "1.0.0",
+  "generatedWith": "Google Omni / Veo Antigravity Media Pipeline",
+  "videoSpecs": {
+    "resolution": "1280x720",
+    "framerate": 60,
+    "codec": "H.264 High Profile / WebM VP9",
+    "audio": "AAC 48kHz Stereo"
+  },
+  "cinematics": {
+    "prologue": {
+      "id": "prologue",
+      "title": "Haven-7 Launch & Descent",
+      "duration": 18.0,
+      "path": "assets/cinematics/cinematic_prologue.mp4",
+      "fallbackImage": "assets/cinematics/ending_sunrise.png",
+      "description": "Fighter deployment from the Haven-7 naval platform down into the Mariana Trench opening."
+    },
+    "boss_b1_mid": {
+      "id": "boss_b1_mid",
+      "biome": 1,
+      "type": "midBoss",
+      "name": "TRENCH NAUTILUS",
+      "superpower": "Spiral Armored Shell Deflection & Bio-Plasma Maw Vortex",
+      "duration": 6.5,
+      "path": "assets/cinematics/cinematic_boss_intro.mp4",
+      "themeColor": "#00d2ff"
+    },
+    "boss_b1_boss": {
+      "id": "boss_b1_boss",
+      "biome": 1,
+      "type": "biomeBoss",
+      "name": "ABYSSAL GUARDIAN",
+      "superpower": "Dorsal Heavy Railgun & Seismic Oceanic Shockwave",
+      "duration": 8.0,
+      "path": "assets/cinematics/cinematic_boss_intro.mp4",
+      "themeColor": "#00ffff"
+    },
+    "boss_b2_mid": {
+      "id": "boss_b2_mid",
+      "biome": 2,
+      "type": "midBoss",
+      "name": "CALCIFIED SCORPION",
+      "superpower": "Tri-Segmented Spore Tail & Calcifying Needle Barrage",
+      "duration": 6.5,
+      "path": "assets/cinematics/cinematic_boss_intro.mp4",
+      "themeColor": "#ffaa00"
+    },
+    "boss_b2_boss": {
+      "id": "boss_b2_boss",
+      "biome": 2,
+      "type": "biomeBoss",
+      "name": "CORAL COLOSSUS",
+      "superpower": "Dual Coral Flak Cannons & Calcifying Laser Grid",
+      "duration": 8.0,
+      "path": "assets/cinematics/cinematic_boss_intro.mp4",
+      "themeColor": "#00ff88"
+    },
+    "boss_b3_mid": {
+      "id": "boss_b3_mid",
+      "biome": 3,
+      "type": "midBoss",
+      "name": "CRYO MANTIS",
+      "superpower": "Flash-Freeze Hyper-Scythes & Sub-Zero Cone",
+      "duration": 6.5,
+      "path": "assets/cinematics/cinematic_boss_intro.mp4",
+      "themeColor": "#00e5ff"
+    },
+    "boss_b3_boss": {
+      "id": "boss_b3_boss",
+      "biome": 3,
+      "type": "biomeBoss",
+      "name": "HATCHERY QUEEN",
+      "superpower": "Cryo Brood Sac & Swarm Hive Infestation",
+      "duration": 8.0,
+      "path": "assets/cinematics/cinematic_boss_intro.mp4",
+      "themeColor": "#b026ff"
+    },
+    "boss_b4_mid": {
+      "id": "boss_b4_mid",
+      "biome": 4,
+      "type": "midBoss",
+      "name": "WARP STRIKER",
+      "superpower": "Tachyon Phase Blink & Afterimage Ambush",
+      "duration": 6.5,
+      "path": "assets/cinematics/cinematic_boss_intro.mp4",
+      "themeColor": "#cc44ff"
+    },
+    "boss_b4_boss": {
+      "id": "boss_b4_boss",
+      "biome": 4,
+      "type": "biomeBoss",
+      "name": "NEBULA WRAITH",
+      "superpower": "Quantum Shield Prisms & Triple Holographic Mirage Clones",
+      "duration": 8.0,
+      "path": "assets/cinematics/cinematic_boss_intro.mp4",
+      "themeColor": "#ff00aa"
+    },
+    "boss_b5_mid": {
+      "id": "boss_b5_mid",
+      "biome": 5,
+      "type": "midBoss",
+      "name": "FROST BEHEMOTH",
+      "superpower": "Glacial Ramming Horn & Absolute Zero Gravity Sink",
+      "duration": 6.5,
+      "path": "assets/cinematics/cinematic_boss_intro.mp4",
+      "themeColor": "#a0e0ff"
+    },
+    "boss_b5_boss": {
+      "id": "boss_b5_boss",
+      "biome": 5,
+      "type": "biomeBoss",
+      "name": "KRAKEN UMBRA",
+      "superpower": "Icebreaker Titanium Tentacles & Sub-Zero Vortex",
+      "duration": 8.0,
+      "path": "assets/cinematics/cinematic_boss_intro.mp4",
+      "themeColor": "#0088ff"
+    },
+    "boss_b6_mid": {
+      "id": "boss_b6_mid",
+      "biome": 6,
+      "type": "midBoss",
+      "name": "MAGMA DRAKE",
+      "superpower": "Liquid Basalt Breath & Thermal Plume Shockwave",
+      "duration": 6.5,
+      "path": "assets/cinematics/cinematic_boss_intro.mp4",
+      "themeColor": "#ff6600"
+    },
+    "boss_b6_boss": {
+      "id": "boss_b6_boss",
+      "biome": 6,
+      "type": "biomeBoss",
+      "name": "EMBER OVERLORD",
+      "superpower": "Solar Prominence Wings & Magma Vortex Eruption",
+      "duration": 8.0,
+      "path": "assets/cinematics/cinematic_boss_intro.mp4",
+      "themeColor": "#ff2200"
+    },
+    "boss_b7_mid": {
+      "id": "boss_b7_mid",
+      "biome": 7,
+      "type": "midBoss",
+      "name": "VOLT WYVERN",
+      "superpower": "Chain Lightning Tail & Magnetic Induction Stun",
+      "duration": 6.5,
+      "path": "assets/cinematics/cinematic_boss_intro.mp4",
+      "themeColor": "#ffff00"
+    },
+    "boss_b7_boss": {
+      "id": "boss_b7_boss",
+      "biome": 7,
+      "type": "biomeBoss",
+      "name": "STORM SENTINEL",
+      "superpower": "Ion Storm Disruption Array & EMP Singularity Pulse",
+      "duration": 8.0,
+      "path": "assets/cinematics/cinematic_boss_intro.mp4",
+      "themeColor": "#00ffff"
+    },
+    "boss_b8_mid": {
+      "id": "boss_b8_mid",
+      "biome": 8,
+      "type": "midBoss",
+      "name": "GHOST FRIGATE",
+      "superpower": "Phased Broadside Artillery & Ghostly Torpedo Swarm",
+      "duration": 6.5,
+      "path": "assets/cinematics/cinematic_boss_intro.mp4",
+      "themeColor": "#88aacc"
+    },
+    "boss_b8_boss": {
+      "id": "boss_b8_boss",
+      "biome": 8,
+      "type": "biomeBoss",
+      "name": "NAVY DREADNOUGHT",
+      "superpower": "Heavy Plasma Siege Cannons & Automated Drone Swarms",
+      "duration": 8.0,
+      "path": "assets/cinematics/cinematic_boss_intro.mp4",
+      "themeColor": "#ff0055"
+    },
+    "boss_b9_mid": {
+      "id": "boss_b9_mid",
+      "biome": 9,
+      "type": "midBoss",
+      "name": "HIVE CRUSHER",
+      "superpower": "Acidic Mandibles & Bio-Armor Reactive Carapace",
+      "duration": 6.5,
+      "path": "assets/cinematics/cinematic_boss_intro.mp4",
+      "themeColor": "#00ff44"
+    },
+    "boss_b9_boss": {
+      "id": "boss_b9_boss",
+      "biome": 9,
+      "type": "biomeBoss",
+      "name": "HIVE MIND NODE",
+      "superpower": "Bio-Synaptic Neural Blast & Infinite Organic Swarm Wave",
+      "duration": 8.0,
+      "path": "assets/cinematics/cinematic_boss_intro.mp4",
+      "themeColor": "#aa00ff"
+    },
+    "boss_b10_mid": {
+      "id": "boss_b10_mid",
+      "biome": 10,
+      "type": "midBoss",
+      "name": "PARADOX HARBINGER",
+      "superpower": "Timeline Echo Glitch & Spatial Slice Beams",
+      "duration": 7.0,
+      "path": "assets/cinematics/cinematic_boss_intro.mp4",
+      "themeColor": "#ff00ea"
+    },
+    "boss_b10_boss": {
+      "id": "boss_b10_boss",
+      "biome": 10,
+      "type": "biomeBoss",
+      "name": "CYBER COELACANTH",
+      "superpower": "Dorsal Chrono Railgun, Singularity Cannons & Unbound Chrono Core Omega Convergence",
+      "duration": 12.0,
+      "path": "assets/cinematics/cinematic_boss_intro.mp4",
+      "themeColor": "#ff2244"
+    },
+    "victory": {
+      "id": "victory",
+      "title": "Omega Convergence Victory",
+      "duration": 16.0,
+      "path": "assets/cinematics/cinematic_victory.mp4",
+      "fallbackImage": "assets/cinematics/ending_sunrise.png",
+      "description": "Precursor Singularity collapse and Nyxa full-burn surface sunrise ascent."
+    }
+  }
+}
