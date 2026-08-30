@@ -238,7 +238,7 @@ const AudioManager = (function() {
         if (typeof gameOver !== 'undefined' && gameOver) {
             if (_manifest.tracks['game_over_cinematic']) return 'game_over_cinematic';
             if (_manifest.tracks['game_over']) return 'game_over';
-            return 'game_over_cinematic'; // try to load even if not in manifest
+            return 'game_over_cinematic';
         }
 
         // --- VICTORY (gameWon or bossDefeated) → branch ending or biome victory track ---
@@ -262,12 +262,13 @@ const AudioManager = (function() {
             var suffix = BIOME_SUFFIX[biome] || 'abyssal';
             var victoryId = 'victory_b' + biome + '_' + suffix;
             if (_manifest.tracks[victoryId]) return victoryId;
+            if (_manifest.tracks['relief_post_boss']) return 'relief_post_boss';
             if (_manifest.tracks['victory_cinematic']) return 'victory_cinematic';
             if (_manifest.tracks['victory']) return 'victory';
             return 'victory_cinematic';
         }
 
-        // --- CREDITS → ending suite or victory cinematic ---
+        // --- CREDITS / LEADERBOARD → ending suite or victory cinematic ---
         if (currentScreen === SCREENS.CREDITS || currentScreen === SCREENS.LEADERBOARD) {
             var ending = (typeof selectedEnding !== 'undefined' && selectedEnding) ? selectedEnding : 'transcendence';
             var endingTrackId = 'ending_' + ending;
@@ -277,9 +278,41 @@ const AudioManager = (function() {
             return 'title_cinematic';
         }
 
-        // --- MENU / non-playing screens → title cinematic ---
+        // --- LEVEL CLEAR / DEBRIEFING SCREEN ---
+        if (currentScreen === SCREENS.LEVEL_CLEAR) {
+            var biome = _getCurrentBiome();
+            var suffix = BIOME_SUFFIX[biome] || 'abyssal';
+            var victoryId = 'victory_b' + biome + '_' + suffix;
+            if (_manifest.tracks[victoryId]) return victoryId;
+            if (_manifest.tracks['relief_aftermath']) return 'relief_aftermath';
+            if (_manifest.tracks['relief_checkpoint']) return 'relief_checkpoint';
+            if (_manifest.tracks['victory_cinematic']) return 'victory_cinematic';
+            return 'victory';
+        }
+
+        // --- BRIEFING / SECTOR INTEL SCREEN ---
+        if (currentScreen === SCREENS.BRIEFING || currentScreen === SCREENS.SECTOR_INTEL) {
+            if (_manifest.tracks['relief_home_base']) return 'relief_home_base';
+            if (_manifest.tracks['relief_interlude']) return 'relief_interlude';
+            if (_manifest.tracks['mystery_biome_reveal']) return 'mystery_biome_reveal';
+            if (_manifest.tracks['ambient_deep_space']) return 'ambient_deep_space';
+            return 'title_cinematic';
+        }
+
+        // --- UPGRADE SHOP / HANGAR SCREEN ---
+        if (currentScreen === SCREENS.UPGRADE_SHOP) {
+            if (_manifest.tracks['relief_checkpoint']) return 'relief_checkpoint';
+            if (_manifest.tracks['relief_companion']) return 'relief_companion';
+            if (_manifest.tracks['relief_bonding']) return 'relief_bonding';
+            if (_manifest.tracks['ambient_deep_space']) return 'ambient_deep_space';
+            return 'title_cinematic';
+        }
+
+        // --- MENU / SHIP SELECT / SETTINGS / LOAD GAME ---
         if (currentScreen !== SCREENS.PLAYING) {
             if (_manifest.tracks['title_cinematic']) return 'title_cinematic';
+            if (_manifest.tracks['title-screen']) return 'title-screen';
+            if (_manifest.tracks['main-theme-heroic']) return 'main-theme-heroic';
             if (_manifest.tracks['ambient_deep_space']) return 'ambient_deep_space';
             return 'title';
         }
@@ -287,34 +320,69 @@ const AudioManager = (function() {
         // --- PLAYING STATE ---
         if (currentScreen === SCREENS.PLAYING) {
             var biome = _getCurrentBiome();
+            var suffix = BIOME_SUFFIX[biome] || 'abyssal';
 
-            // Check if boss is active
+            // Check if boss or midboss is active
             var bossActive = false;
-            if (typeof bossSpawned !== 'undefined' && bossSpawned) bossActive = true;
-            if (typeof bossIntroPlaying !== 'undefined' && bossIntroPlaying) bossActive = true;
-            // Also check LevelManager
-            if (!bossActive && typeof LevelManager !== 'undefined' &&
-                LevelManager.currentLevelConfig &&
-                LevelManager.currentLevelConfig.bossTrigger) {
-                bossActive = LevelManager.currentLevelConfig.bossTrigger;
+            var isMidBossActive = false;
+
+            if (typeof bossSpawned !== 'undefined' && bossSpawned) {
+                bossActive = true;
+            }
+            if (typeof bossIntroPlaying !== 'undefined' && bossIntroPlaying) {
+                bossActive = true;
             }
 
-            // BOSS ACTIVE → suspense track (most intense)
-            if (bossActive) {
-                var suspenseId = 'suspense_b' + biome + '_preboss';
-                if (_manifest.tracks[suspenseId]) return suspenseId;
-                // Fallback: generic boss_loop
+            if (typeof LevelManager !== 'undefined') {
+                if (LevelManager.currentLevelConfig && LevelManager.currentLevelConfig.bossTrigger) {
+                    bossActive = true;
+                }
+                if (LevelManager.level === 5 || (LevelManager.currentLevelConfig && LevelManager.currentLevelConfig.midBoss)) {
+                    isMidBossActive = true;
+                }
+            }
+
+            // Check enemy boss instance if available
+            if (typeof enemies !== 'undefined' && Array.isArray(enemies)) {
+                for (var i = 0; i < enemies.length; i++) {
+                    if (enemies[i] && enemies[i].isBoss) {
+                        bossActive = true;
+                        if (enemies[i].isMidBoss) {
+                            isMidBossActive = true;
+                        }
+                        break;
+                    }
+                }
+            }
+
+            // 1. MID-BOSS ACTIVE (Level 5 encounter)
+            if (bossActive && isMidBossActive) {
+                var midbossId = 'suspense_b' + biome + '_preboss';
+                if (_manifest.tracks[midbossId]) return midbossId;
                 if (_manifest.tracks['boss_loop']) return 'boss_loop';
             }
 
-            // COMBAT ACTIVE → suspense track
-            if (_isCombatActive()) {
-                var suspenseId = 'suspense_b' + biome + '_preboss';
-                if (_manifest.tracks[suspenseId]) return suspenseId;
+            // 2. BIOME BOSS ACTIVE (Level 10 encounter)
+            if (bossActive && !isMidBossActive) {
+                if (_manifest.tracks['boss_loop']) return 'boss_loop';
+                var bossSuspenseId = 'suspense_b' + biome + '_preboss';
+                if (_manifest.tracks[bossSuspenseId]) return bossSuspenseId;
             }
 
-            // EXPLORATION (no enemies, no boss) → biome ambient
-            var ambientId = 'biome_b' + biome + '_' + (BIOME_SUFFIX[biome] || 'abyssal');
+            // 3. COMBAT ACTIVE (Enemies present)
+            if (_isCombatActive()) {
+                // If player is at low health, heighten tension
+                if (_isLowHealth()) {
+                    var tensionId = 'suspense_b' + biome + '_preboss';
+                    if (_manifest.tracks[tensionId]) return tensionId;
+                }
+                // Exploration/biome track during combat
+                var biomeCombatId = 'biome_b' + biome + '_' + suffix;
+                if (_manifest.tracks[biomeCombatId]) return biomeCombatId;
+            }
+
+            // 4. EXPLORATION / AMBIENT (Normal wave progression)
+            var ambientId = 'biome_b' + biome + '_' + suffix;
             if (_manifest.tracks[ambientId]) return ambientId;
 
             // Fallback to old phase-based system
@@ -510,21 +578,22 @@ const AudioManager = (function() {
 
         var biome = _getCurrentBiome();
         var targetTrack = _getTrackForState();
+        var screenChanged = (_lastScreen !== null && typeof currentScreen !== 'undefined' && currentScreen !== _lastScreen);
 
         // Detect biome transition (crossfade to new biome's ambient)
         var biomeChanged = (_lastBiome > 0 && biome !== _lastBiome);
         if (biomeChanged && typeof currentScreen !== 'undefined' && currentScreen === SCREENS.PLAYING) {
-            // On biome change, force crossfade to new biome's ambient
             console.log('[AudioManager] Biome transition:', _lastBiome, '→', biome);
             _lastBiome = biome;
             var suffix = BIOME_SUFFIX[biome] || 'abyssal';
             var ambientId = 'biome_b' + biome + '_' + suffix;
             if (_manifest.tracks[ambientId]) {
-                play(ambientId, 1.0, undefined); // longer crossfade for biome transitions
+                play(ambientId, 1.2, undefined); // 1.2s smooth crossfade for biome transitions
                 _wasBossActive = false;
                 _wasBossDefeated = false;
                 _wasGameOver = false;
                 _wasGameWon = false;
+                _lastScreen = (typeof currentScreen !== 'undefined') ? currentScreen : null;
                 return;
             }
         }
@@ -533,9 +602,9 @@ const AudioManager = (function() {
         var bossDefeatedNow = (typeof bossDefeated !== 'undefined' && bossDefeated);
         if (bossDefeatedNow && !_wasBossDefeated) {
             _wasBossDefeated = true;
-            // Force immediate switch to victory track
             if (targetTrack && targetTrack !== _currentTrack) {
-                play(targetTrack, 0.3, false); // short crossfade, one-shot
+                play(targetTrack, 0.35, false); // smooth celebratory crossfade, one-shot
+                _lastScreen = (typeof currentScreen !== 'undefined') ? currentScreen : null;
                 return;
             }
         }
@@ -545,7 +614,8 @@ const AudioManager = (function() {
         if (gameOverNow && !_wasGameOver) {
             _wasGameOver = true;
             if (targetTrack && targetTrack !== _currentTrack) {
-                play(targetTrack, 0.3, false); // short crossfade, one-shot
+                play(targetTrack, 0.4, false); // smooth somber crossfade, one-shot
+                _lastScreen = (typeof currentScreen !== 'undefined') ? currentScreen : null;
                 return;
             }
         }
@@ -555,12 +625,13 @@ const AudioManager = (function() {
         if (gameWonNow && !_wasGameWon) {
             _wasGameWon = true;
             if (targetTrack && targetTrack !== _currentTrack) {
-                play(targetTrack, 0.3, false); // short crossfade, one-shot
+                play(targetTrack, 0.4, false); // smooth victory crossfade
+                _lastScreen = (typeof currentScreen !== 'undefined') ? currentScreen : null;
                 return;
             }
         }
 
-        // Detect boss spawn transition (ambient → suspense)
+        // Detect boss spawn transition (ambient → suspense/boss)
         var bossActiveNow = false;
         if (typeof bossSpawned !== 'undefined' && bossSpawned) bossActiveNow = true;
         if (typeof bossIntroPlaying !== 'undefined' && bossIntroPlaying) bossActiveNow = true;
@@ -572,16 +643,20 @@ const AudioManager = (function() {
         if (bossActiveNow && !_wasBossActive) {
             _wasBossActive = true;
             if (targetTrack && targetTrack !== _currentTrack) {
-                play(targetTrack, 0.4, undefined);
+                play(targetTrack, 0.5, undefined); // 0.5s dramatic crossfade into boss combat
+                _lastScreen = (typeof currentScreen !== 'undefined') ? currentScreen : null;
                 return;
             }
         } else if (!bossActiveNow && _wasBossActive && !bossDefeatedNow) {
             _wasBossActive = false;
         }
 
-        // Regular track switching
+        // Regular or Screen-change track switching
         if (targetTrack && targetTrack !== _currentTrack) {
-            play(targetTrack, CROSSFADE_SEC, undefined);
+            var crossfadeTime = screenChanged ? 0.75 : CROSSFADE_SEC;
+            play(targetTrack, crossfadeTime, undefined);
+            _lastBiome = biome;
+            _lastScreen = (typeof currentScreen !== 'undefined') ? currentScreen : null;
             return;
         }
 

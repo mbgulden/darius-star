@@ -412,13 +412,13 @@ function update(dt) {
                     playSound('victory_fanfare');
                 } else {
                     stopCreditsMusic();
-                    // Stop cinematic music when leaving gameplay (GRO-865)
-                    if (typeof AudioManager !== 'undefined') {
-                        AudioManager.stop();
-                    }
                     // Stop engine hum (GRO-866)
                     stopEngineHum();
-                    startMenuMusic();
+                    if (typeof AudioManager !== 'undefined' && AudioManager.isInitialized && AudioManager.isInitialized()) {
+                        AudioManager.tick();
+                    } else {
+                        startMenuMusic();
+                    }
                 }
             }
             screenFadeAlpha = 1 - (transitionTimer - halfDuration) / halfDuration;
@@ -427,6 +427,11 @@ function update(dt) {
             targetScreen = null;
             screenFadeAlpha = 0;
         }
+    }
+
+    // GRO-865 & GRO-869: Universal audio state tick across all screens
+    if (typeof AudioManager !== 'undefined') {
+        AudioManager.tick();
     }
 
     if (currentScreen !== SCREENS.PLAYING) {
@@ -452,11 +457,6 @@ function update(dt) {
     }
 
     updateActiveBiome(dt, score);
-    
-    // GRO-865: Cinematic music track switching (score thresholds, boss detection)
-    if (typeof AudioManager !== 'undefined') {
-        AudioManager.tick();
-    }
     
     // GRO-1028: Audio drama systems — biome ambient loop & story beats
     // GRO-1040: Respect audioTunnelsEnabled toggle
