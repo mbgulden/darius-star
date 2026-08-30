@@ -470,7 +470,7 @@ function resetGame() {
     // Seed initial particles for current biome
     const seedType = biomeLevel === 1 ? 'mote' : (biomeLevel === 2 ? 'rust_flake' : 'mote');
     for (let i = 0; i < 30; i++) envParticles.push(new EnvironmentParticle(seedType));
-    envBuffer.markDirty();
+    if (typeof envBuffer !== 'undefined' && envBuffer) envBuffer.markDirty();
 
     Combo.init();
     // Preserve looted segments across restarts (prevents checkpoint farming)

@@ -377,6 +377,7 @@ function update(dt) {
         activeDialogue.update(dt);
         if (activeDialogue.isBlocking()) {
             bgLayers.forEach(layer => layer.update(dt));
+    if (typeof JourneyBackgroundRenderer !== 'undefined') JourneyBackgroundRenderer.update(dt);
             stars.forEach(star => star.update(dt));
             for (let i = envParticles.length - 1; i >= 0; i--) {
                 envParticles[i].update(dt);
@@ -423,6 +424,7 @@ function update(dt) {
 
     if (bossDefeated) {
         bgLayers.forEach(layer => layer.update(dt));
+    if (typeof JourneyBackgroundRenderer !== 'undefined') JourneyBackgroundRenderer.update(dt);
         stars.forEach(star => star.update(dt));
         for (let i = envParticles.length - 1; i >= 0; i--) {
             envParticles[i].update(dt);
@@ -446,6 +448,7 @@ function update(dt) {
     }
 
     bgLayers.forEach(layer => layer.update(dt));
+    if (typeof JourneyBackgroundRenderer !== 'undefined') JourneyBackgroundRenderer.update(dt);
     stars.forEach(star => star.update(dt));
     for (let i = envParticles.length - 1; i >= 0; i--) {
         envParticles[i].update(dt);
@@ -759,12 +762,14 @@ function update(dt) {
                     const comboMult = Combo.onKill();
                     score += Math.floor(e.scoreValue * comboMult * (isDirect ? 1.15 : 1.0));
                     if (player.addSecondaryCharge) player.addSecondaryCharge(5);
+                    if (typeof LevelManager !== 'undefined' && LevelManager.onEnemyKilled) LevelManager.onEnemyKilled();
 
                     // Economy-based scrap drops (prevents checkpoint farming)
                     if (window.Economy && Economy.shouldDrop(e.id, e.enemyType)) {
                         const drop = Economy.rollDrop(e.enemyType, biomeLevel);
                         const ecoDrop = Economy.createDrop(e.x + e.width/2, e.y + e.height/2, drop.type, drop.amount);
                         scrapDrops.push(new ScrapDrop(ecoDrop.x, ecoDrop.y, ecoDrop.type, drop.amount));
+                        if (typeof LevelManager !== 'undefined' && LevelManager.onScrapDropped) LevelManager.onScrapDropped(drop.amount);
                     }
 
                     const difficultyConfig = getCurrentDifficultyConfig();
@@ -956,6 +961,9 @@ function update(dt) {
             runScrap += collectedVal;
             if (window.DS_UpgradeSystem) {
                 window.DS_UpgradeSystem.addScrap(collectedVal);
+            }
+            if (typeof LevelManager !== 'undefined' && LevelManager.onScrapCollected) {
+                LevelManager.onScrapCollected(collectedVal);
             }
             // NG+ scrap multiplier: double+ scrap in NG+ runs
             if (ngPlusRun && currentNGLevel > 0 && window.NGPlus) {
@@ -1248,6 +1256,7 @@ function draw() {
 
     // Render parallax layers back-to-front (image-based, drawn directly)
     bgLayers.forEach(layer => layer.draw());
+    if (typeof JourneyBackgroundRenderer !== 'undefined') JourneyBackgroundRenderer.draw(ctx);
 
     // Blit offscreen buffers (lazy-rendered every 200-250ms)
     // First frame: force-build buffers if not yet rendered

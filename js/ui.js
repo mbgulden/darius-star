@@ -1,3 +1,45 @@
+
+function showLevelClearScreen(summary) {
+    window._levelClearSummary = summary || {
+        biome: (typeof LevelManager !== 'undefined') ? LevelManager.biome : 1,
+        level: (typeof LevelManager !== 'undefined') ? LevelManager.level : 1,
+        killCount: 20,
+        killTotal: 20,
+        killPct: 100,
+        scrapCollected: 350,
+        scrapTotal: 350,
+        scrapPct: 100,
+        scoreEarned: 2400,
+        timeSpent: 45,
+        rank: 'S'
+    };
+    window._levelClearAnimTimer = 0;
+    window._levelClearHitRegions = [];
+    window._showIntelModal = false;
+    transitionToScreen(SCREENS.LEVEL_CLEAR);
+    playSound('powerup');
+}
+
+function advanceToNextLevelFromDebriefing() {
+    playSound('menu_click');
+    if (typeof LevelManager !== 'undefined' && LevelManager.advanceLevel) {
+        LevelManager.advanceLevel();
+        if (typeof setBiomeBackgrounds === 'function') {
+            setBiomeBackgrounds(LevelManager.biome, LevelManager.level);
+        }
+    }
+    if (typeof enemies !== 'undefined') enemies.length = 0;
+    if (typeof enemyBullets !== 'undefined') enemyBullets.length = 0;
+    if (typeof powerups !== 'undefined') powerups.length = 0;
+    currentScreen = (typeof SCREENS !== 'undefined') ? SCREENS.PLAYING : 'playing';
+    targetScreen = null;
+}
+
+if (typeof window !== 'undefined') {
+    window.showLevelClearScreen = showLevelClearScreen;
+    window.advanceToNextLevelFromDebriefing = advanceToNextLevelFromDebriefing;
+}
+
 // --- Menu & Settings State Variables ---
 const SCREENS = {
     MENU: 'menu',
@@ -9,8 +51,20 @@ const SCREENS = {
     CINEMATIC: 'cinematic',
     BRIEFING: 'briefing',       // GRO-936: Pre-mission story briefing screen
     LOAD_GAME: 'load_game',
-    UPGRADE_SHOP: 'upgrade_shop'  // GRO-1056: In-canvas upgrade flow
+    UPGRADE_SHOP: 'upgrade_shop',
+    LEVEL_CLEAR: 'level_clear',
+    SECTOR_INTEL: 'sector_intel'  // GRO-1056: In-canvas upgrade flow
 };
+if (typeof window !== 'undefined') {
+    window.SCREENS = SCREENS;
+    try {
+        Object.defineProperty(window, 'currentScreen', {
+            get() { return currentScreen; },
+            set(v) { currentScreen = v; },
+            configurable: true
+        });
+    } catch(e) {}
+}
 let currentScreen = SCREENS.MENU;
 let selectedMenuIndex = 0;
 let hoveredMenuIndex = -1; // distinct from selected for hover state
@@ -524,6 +578,201 @@ function handleMenuConfirm() {
         if (selectedSettingsIndex === 7) { // BACK
             transitionToScreen(SCREENS.MENU);
         }
+    } else if (currentScreen === SCREENS.LEVEL_CLEAR) {
+        ctx.fillStyle = 'rgba(5, 8, 18, 0.94)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.save();
+
+        window._levelClearAnimTimer = (window._levelClearAnimTimer || 0) + 0.016;
+        const anim = window._levelClearAnimTimer;
+        const sum = window._levelClearSummary || {};
+        const b = sum.biome || ((typeof LevelManager !== 'undefined') ? LevelManager.biome : 1);
+        const l = sum.level || ((typeof LevelManager !== 'undefined') ? LevelManager.level : 1);
+        const lvlInfo = (typeof BIOME_DATA !== 'undefined' && BIOME_DATA.getLevelInfo)
+            ? BIOME_DATA.getLevelInfo(b, l)
+            : { name: `Sector ${b}.${l}`, landmark: 'coral_spire', intel: 'Sector airspace cleared.' };
+
+        // 1. Header Banner
+        ctx.textAlign = 'center';
+        ctx.fillStyle = '#00ffff';
+        ctx.font = 'bold 22px monospace';
+        ctx.shadowColor = '#00ffff';
+        ctx.shadowBlur = 14;
+        ctx.fillText('SECTOR DEBRIEFING // LEVEL COMPLETE', canvas.width / 2, 38);
+
+        ctx.fillStyle = '#ffaa00';
+        ctx.font = 'bold 14px monospace';
+        ctx.shadowColor = '#ffaa00';
+        ctx.shadowBlur = 8;
+        ctx.fillText(`SECTOR ${lvlInfo.name.toUpperCase()}`, canvas.width / 2, 60);
+        ctx.shadowBlur = 0;
+
+        // 2. Metrics & Tally Box (Left Column)
+        const leftX = 40;
+        const topY = 78;
+        const boxW = (canvas.width - 100) / 2;
+        const boxH = 220;
+
+        ctx.fillStyle = 'rgba(12, 18, 32, 0.85)';
+        ctx.strokeStyle = 'rgba(0, 200, 255, 0.3)';
+        ctx.lineWidth = 1.5;
+        ctx.fillRect(leftX, topY, boxW, boxH);
+        ctx.strokeRect(leftX, topY, boxW, boxH);
+
+        const killRatio = Math.min(1.0, anim / 0.8);
+        const scrapRatio = Math.min(1.0, Math.max(0, (anim - 0.4) / 0.8));
+        const scoreRatio = Math.min(1.0, Math.max(0, (anim - 0.8) / 0.8));
+
+        const curKills = Math.floor((sum.killCount || 0) * killRatio);
+        const curScrap = Math.floor((sum.scrapCollected || 0) * scrapRatio);
+        const curScore = Math.floor((sum.scoreEarned || 0) * scoreRatio);
+        const scrapPct = sum.scrapPct !== undefined ? sum.scrapPct : 100;
+
+        ctx.textAlign = 'left';
+        ctx.font = 'bold 11px monospace';
+
+        // Hostiles
+        ctx.fillStyle = '#88ccff';
+        ctx.fillText(`🎯 HOSTILES DESTROYED:`, leftX + 18, topY + 28);
+        ctx.fillStyle = '#ffffff';
+        ctx.fillText(`${curKills} / ${sum.killTotal || sum.killCount || 0} (${Math.round((sum.killPct || 100) * killRatio)}%)`, leftX + 18, topY + 46);
+
+        // Scrap
+        ctx.fillStyle = '#ffcc00';
+        ctx.fillText(`💎 QUANTUM SCRAP SALVAGED:`, leftX + 18, topY + 76);
+        ctx.fillStyle = '#ffffff';
+        ctx.fillText(`+${curScrap} SCRAP (${Math.round(scrapPct * scrapRatio)}% EFFICIENCY)`, leftX + 18, topY + 94);
+
+        // Scrap Efficiency Badge
+        if (anim > 1.0) {
+            ctx.fillStyle = scrapPct >= 85 ? '#00ff88' : (scrapPct >= 50 ? '#ffaa00' : '#ff4455');
+            ctx.font = 'bold 9.5px monospace';
+            const effText = scrapPct >= 85 ? '⭐ PERFECT SALVAGE (ALL CRITICAL JUNK SECURED)' :
+                            scrapPct >= 50 ? '⚠️ PARTIAL SALVAGE (SOME JUNK DRIFTED AWAY)' :
+                            '❌ LOW SALVAGE (UPGRADE QUANTUM TRACTOR BEAM!)';
+            ctx.fillText(effText, leftX + 18, topY + 112);
+        }
+
+        // Score
+        ctx.fillStyle = '#00ffff';
+        ctx.font = 'bold 11px monospace';
+        ctx.fillText(`⭐ SECTOR COMBAT SCORE:`, leftX + 18, topY + 142);
+        ctx.fillStyle = '#ffffff';
+        ctx.fillText(`+${curScore.toLocaleString()} PTS`, leftX + 18, topY + 160);
+
+        // Time
+        const m = Math.floor((sum.timeSpent || 0) / 60);
+        const s = Math.floor((sum.timeSpent || 0) % 60);
+        ctx.fillStyle = '#8899aa';
+        ctx.font = '9.5px monospace';
+        ctx.fillText(`⏱️ TRANSIT TIME: ${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`, leftX + 18, topY + 195);
+
+        // 3. Grade & Autosave Box (Right Column)
+        const rightX = leftX + boxW + 20;
+        ctx.fillStyle = 'rgba(12, 18, 32, 0.85)';
+        ctx.strokeStyle = 'rgba(0, 200, 255, 0.3)';
+        ctx.fillRect(rightX, topY, boxW, boxH);
+        ctx.strokeRect(rightX, topY, boxW, boxH);
+
+        const rank = sum.rank || 'S';
+        const rankColor = rank === 'S' ? '#ffd700' : (rank === 'A' ? '#00ffff' : (rank === 'B' ? '#00ff88' : '#ff4455'));
+        ctx.textAlign = 'center';
+        ctx.fillStyle = '#88aacc';
+        ctx.font = 'bold 11px monospace';
+        ctx.fillText('MISSION PERFORMANCE GRADE', rightX + boxW / 2, topY + 28);
+
+        if (anim > 1.2) {
+            const stampScale = Math.max(1.0, 2.5 - (anim - 1.2) * 6);
+            ctx.save();
+            ctx.translate(rightX + boxW / 2, topY + 75);
+            ctx.scale(stampScale, stampScale);
+            ctx.fillStyle = rankColor;
+            ctx.font = 'bold 36px monospace';
+            ctx.shadowColor = rankColor;
+            ctx.shadowBlur = 18;
+            ctx.fillText(`[ ${rank}-RANK ]`, 0, 10);
+            ctx.restore();
+        }
+
+        // Autosave Confirmation
+        ctx.fillStyle = '#00ff88';
+        ctx.font = 'bold 11px monospace';
+        ctx.shadowColor = '#00ff88';
+        ctx.shadowBlur = 6;
+        ctx.fillText('💾 CAMPAIGN PROGRESS AUTOSAVED', rightX + boxW / 2, topY + 145);
+        ctx.shadowBlur = 0;
+
+        // Current Scrap Wallet
+        const us = window.DS_UpgradeSystem;
+        const totalScrap = us && us.state ? us.state.scrap : (window.runScrap || 0);
+        ctx.fillStyle = '#ffcc00';
+        ctx.font = 'bold 11px monospace';
+        ctx.fillText(`TOTAL SCRAP BALANCE: 💎 ${totalScrap}`, rightX + boxW / 2, topY + 180);
+
+        // 4. Action Buttons Grid
+        window._levelClearHitRegions = [];
+        const btnY = topY + boxH + 16;
+        const btnW = (canvas.width - 100 - 30) / 4;
+        const btnH = 46;
+
+        const btns = [
+            { key: 'next', label: '[ENTER] NEXT SECTOR', color: '#00ff88', bg: 'rgba(0, 255, 136, 0.15)' },
+            { key: 'upgrade', label: '[U] QUANTUM DODAD', color: '#00ffff', bg: 'rgba(0, 255, 255, 0.15)' },
+            { key: 'intel', label: '[L] SECTOR INTEL LOG', color: '#ffaa00', bg: 'rgba(255, 170, 0, 0.15)' },
+            { key: 'menu', label: '[ESC] COMMAND BRIDGE', color: '#ff4455', bg: 'rgba(255, 68, 85, 0.15)' }
+        ];
+
+        for (let i = 0; i < btns.length; i++) {
+            const bx = leftX + i * (btnW + 10);
+            const bDef = btns[i];
+            window._levelClearHitRegions.push({ key: bDef.key, x: bx, y: btnY, w: btnW, h: btnH });
+
+            ctx.fillStyle = bDef.bg;
+            ctx.strokeStyle = bDef.color;
+            ctx.lineWidth = 1.5;
+            ctx.fillRect(bx, btnY, btnW, btnH);
+            ctx.strokeRect(bx, btnY, btnW, btnH);
+
+            ctx.textAlign = 'center';
+            ctx.fillStyle = bDef.color;
+            ctx.font = 'bold 9.5px monospace';
+            ctx.fillText(bDef.label, bx + btnW / 2, btnY + 28);
+        }
+
+        // 5. Sector Intel Modal
+        if (window._showIntelModal) {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.88)';
+            ctx.fillRect(50, 50, canvas.width - 100, canvas.height - 100);
+            ctx.strokeStyle = '#00ffff';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(50, 50, canvas.width - 100, canvas.height - 100);
+
+            ctx.textAlign = 'center';
+            ctx.fillStyle = '#00ffff';
+            ctx.font = 'bold 16px monospace';
+            ctx.fillText(`SECTOR INTEL // ${lvlInfo.name.toUpperCase()}`, canvas.width / 2, 85);
+
+            ctx.fillStyle = '#88aacc';
+            ctx.font = '11px monospace';
+            ctx.fillText(`LANDMARK CLASSIFICATION: ${lvlInfo.landmark.toUpperCase()}`, canvas.width / 2, 110);
+
+            ctx.textAlign = 'left';
+            ctx.fillStyle = '#ffffff';
+            ctx.font = '12px monospace';
+            if (typeof wrapText === 'function') {
+                wrapText(ctx, lvlInfo.intel || '', 80, 150, canvas.width - 160, 22);
+            } else {
+                ctx.fillText(lvlInfo.intel || '', 80, 150);
+            }
+
+            ctx.textAlign = 'center';
+            ctx.fillStyle = '#ffaa00';
+            ctx.font = 'bold 11px monospace';
+            ctx.fillText('PRESS [L] OR CLICK ANYWHERE TO CLOSE INTEL LOG', canvas.width / 2, canvas.height - 75);
+        }
+
+        ctx.restore();
+
     } else if (currentScreen === SCREENS.CREDITS) {
         transitionToScreen(SCREENS.MENU);
     }
@@ -960,6 +1209,201 @@ function drawMenuScreens() {
         ctx.fillText('↑↓←→ SELECT  |  ENTER / CLICK TO PURCHASE  |  ESC RETURN TO BRIDGE', canvas.width / 2, canvas.height - 20);
 
         ctx.restore();
+    } else if (currentScreen === SCREENS.LEVEL_CLEAR) {
+        ctx.fillStyle = 'rgba(5, 8, 18, 0.94)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.save();
+
+        window._levelClearAnimTimer = (window._levelClearAnimTimer || 0) + 0.016;
+        const anim = window._levelClearAnimTimer;
+        const sum = window._levelClearSummary || {};
+        const b = sum.biome || ((typeof LevelManager !== 'undefined') ? LevelManager.biome : 1);
+        const l = sum.level || ((typeof LevelManager !== 'undefined') ? LevelManager.level : 1);
+        const lvlInfo = (typeof BIOME_DATA !== 'undefined' && BIOME_DATA.getLevelInfo)
+            ? BIOME_DATA.getLevelInfo(b, l)
+            : { name: `Sector ${b}.${l}`, landmark: 'coral_spire', intel: 'Sector airspace cleared.' };
+
+        // 1. Header Banner
+        ctx.textAlign = 'center';
+        ctx.fillStyle = '#00ffff';
+        ctx.font = 'bold 22px monospace';
+        ctx.shadowColor = '#00ffff';
+        ctx.shadowBlur = 14;
+        ctx.fillText('SECTOR DEBRIEFING // LEVEL COMPLETE', canvas.width / 2, 38);
+
+        ctx.fillStyle = '#ffaa00';
+        ctx.font = 'bold 14px monospace';
+        ctx.shadowColor = '#ffaa00';
+        ctx.shadowBlur = 8;
+        ctx.fillText(`SECTOR ${lvlInfo.name.toUpperCase()}`, canvas.width / 2, 60);
+        ctx.shadowBlur = 0;
+
+        // 2. Metrics & Tally Box (Left Column)
+        const leftX = 40;
+        const topY = 78;
+        const boxW = (canvas.width - 100) / 2;
+        const boxH = 220;
+
+        ctx.fillStyle = 'rgba(12, 18, 32, 0.85)';
+        ctx.strokeStyle = 'rgba(0, 200, 255, 0.3)';
+        ctx.lineWidth = 1.5;
+        ctx.fillRect(leftX, topY, boxW, boxH);
+        ctx.strokeRect(leftX, topY, boxW, boxH);
+
+        const killRatio = Math.min(1.0, anim / 0.8);
+        const scrapRatio = Math.min(1.0, Math.max(0, (anim - 0.4) / 0.8));
+        const scoreRatio = Math.min(1.0, Math.max(0, (anim - 0.8) / 0.8));
+
+        const curKills = Math.floor((sum.killCount || 0) * killRatio);
+        const curScrap = Math.floor((sum.scrapCollected || 0) * scrapRatio);
+        const curScore = Math.floor((sum.scoreEarned || 0) * scoreRatio);
+        const scrapPct = sum.scrapPct !== undefined ? sum.scrapPct : 100;
+
+        ctx.textAlign = 'left';
+        ctx.font = 'bold 11px monospace';
+
+        // Hostiles
+        ctx.fillStyle = '#88ccff';
+        ctx.fillText(`🎯 HOSTILES DESTROYED:`, leftX + 18, topY + 28);
+        ctx.fillStyle = '#ffffff';
+        ctx.fillText(`${curKills} / ${sum.killTotal || sum.killCount || 0} (${Math.round((sum.killPct || 100) * killRatio)}%)`, leftX + 18, topY + 46);
+
+        // Scrap
+        ctx.fillStyle = '#ffcc00';
+        ctx.fillText(`💎 QUANTUM SCRAP SALVAGED:`, leftX + 18, topY + 76);
+        ctx.fillStyle = '#ffffff';
+        ctx.fillText(`+${curScrap} SCRAP (${Math.round(scrapPct * scrapRatio)}% EFFICIENCY)`, leftX + 18, topY + 94);
+
+        // Scrap Efficiency Badge
+        if (anim > 1.0) {
+            ctx.fillStyle = scrapPct >= 85 ? '#00ff88' : (scrapPct >= 50 ? '#ffaa00' : '#ff4455');
+            ctx.font = 'bold 9.5px monospace';
+            const effText = scrapPct >= 85 ? '⭐ PERFECT SALVAGE (ALL CRITICAL JUNK SECURED)' :
+                            scrapPct >= 50 ? '⚠️ PARTIAL SALVAGE (SOME JUNK DRIFTED AWAY)' :
+                            '❌ LOW SALVAGE (UPGRADE QUANTUM TRACTOR BEAM!)';
+            ctx.fillText(effText, leftX + 18, topY + 112);
+        }
+
+        // Score
+        ctx.fillStyle = '#00ffff';
+        ctx.font = 'bold 11px monospace';
+        ctx.fillText(`⭐ SECTOR COMBAT SCORE:`, leftX + 18, topY + 142);
+        ctx.fillStyle = '#ffffff';
+        ctx.fillText(`+${curScore.toLocaleString()} PTS`, leftX + 18, topY + 160);
+
+        // Time
+        const m = Math.floor((sum.timeSpent || 0) / 60);
+        const s = Math.floor((sum.timeSpent || 0) % 60);
+        ctx.fillStyle = '#8899aa';
+        ctx.font = '9.5px monospace';
+        ctx.fillText(`⏱️ TRANSIT TIME: ${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`, leftX + 18, topY + 195);
+
+        // 3. Grade & Autosave Box (Right Column)
+        const rightX = leftX + boxW + 20;
+        ctx.fillStyle = 'rgba(12, 18, 32, 0.85)';
+        ctx.strokeStyle = 'rgba(0, 200, 255, 0.3)';
+        ctx.fillRect(rightX, topY, boxW, boxH);
+        ctx.strokeRect(rightX, topY, boxW, boxH);
+
+        const rank = sum.rank || 'S';
+        const rankColor = rank === 'S' ? '#ffd700' : (rank === 'A' ? '#00ffff' : (rank === 'B' ? '#00ff88' : '#ff4455'));
+        ctx.textAlign = 'center';
+        ctx.fillStyle = '#88aacc';
+        ctx.font = 'bold 11px monospace';
+        ctx.fillText('MISSION PERFORMANCE GRADE', rightX + boxW / 2, topY + 28);
+
+        if (anim > 1.2) {
+            const stampScale = Math.max(1.0, 2.5 - (anim - 1.2) * 6);
+            ctx.save();
+            ctx.translate(rightX + boxW / 2, topY + 75);
+            ctx.scale(stampScale, stampScale);
+            ctx.fillStyle = rankColor;
+            ctx.font = 'bold 36px monospace';
+            ctx.shadowColor = rankColor;
+            ctx.shadowBlur = 18;
+            ctx.fillText(`[ ${rank}-RANK ]`, 0, 10);
+            ctx.restore();
+        }
+
+        // Autosave Confirmation
+        ctx.fillStyle = '#00ff88';
+        ctx.font = 'bold 11px monospace';
+        ctx.shadowColor = '#00ff88';
+        ctx.shadowBlur = 6;
+        ctx.fillText('💾 CAMPAIGN PROGRESS AUTOSAVED', rightX + boxW / 2, topY + 145);
+        ctx.shadowBlur = 0;
+
+        // Current Scrap Wallet
+        const us = window.DS_UpgradeSystem;
+        const totalScrap = us && us.state ? us.state.scrap : (window.runScrap || 0);
+        ctx.fillStyle = '#ffcc00';
+        ctx.font = 'bold 11px monospace';
+        ctx.fillText(`TOTAL SCRAP BALANCE: 💎 ${totalScrap}`, rightX + boxW / 2, topY + 180);
+
+        // 4. Action Buttons Grid
+        window._levelClearHitRegions = [];
+        const btnY = topY + boxH + 16;
+        const btnW = (canvas.width - 100 - 30) / 4;
+        const btnH = 46;
+
+        const btns = [
+            { key: 'next', label: '[ENTER] NEXT SECTOR', color: '#00ff88', bg: 'rgba(0, 255, 136, 0.15)' },
+            { key: 'upgrade', label: '[U] QUANTUM DODAD', color: '#00ffff', bg: 'rgba(0, 255, 255, 0.15)' },
+            { key: 'intel', label: '[L] SECTOR INTEL LOG', color: '#ffaa00', bg: 'rgba(255, 170, 0, 0.15)' },
+            { key: 'menu', label: '[ESC] COMMAND BRIDGE', color: '#ff4455', bg: 'rgba(255, 68, 85, 0.15)' }
+        ];
+
+        for (let i = 0; i < btns.length; i++) {
+            const bx = leftX + i * (btnW + 10);
+            const bDef = btns[i];
+            window._levelClearHitRegions.push({ key: bDef.key, x: bx, y: btnY, w: btnW, h: btnH });
+
+            ctx.fillStyle = bDef.bg;
+            ctx.strokeStyle = bDef.color;
+            ctx.lineWidth = 1.5;
+            ctx.fillRect(bx, btnY, btnW, btnH);
+            ctx.strokeRect(bx, btnY, btnW, btnH);
+
+            ctx.textAlign = 'center';
+            ctx.fillStyle = bDef.color;
+            ctx.font = 'bold 9.5px monospace';
+            ctx.fillText(bDef.label, bx + btnW / 2, btnY + 28);
+        }
+
+        // 5. Sector Intel Modal
+        if (window._showIntelModal) {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.88)';
+            ctx.fillRect(50, 50, canvas.width - 100, canvas.height - 100);
+            ctx.strokeStyle = '#00ffff';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(50, 50, canvas.width - 100, canvas.height - 100);
+
+            ctx.textAlign = 'center';
+            ctx.fillStyle = '#00ffff';
+            ctx.font = 'bold 16px monospace';
+            ctx.fillText(`SECTOR INTEL // ${lvlInfo.name.toUpperCase()}`, canvas.width / 2, 85);
+
+            ctx.fillStyle = '#88aacc';
+            ctx.font = '11px monospace';
+            ctx.fillText(`LANDMARK CLASSIFICATION: ${lvlInfo.landmark.toUpperCase()}`, canvas.width / 2, 110);
+
+            ctx.textAlign = 'left';
+            ctx.fillStyle = '#ffffff';
+            ctx.font = '12px monospace';
+            if (typeof wrapText === 'function') {
+                wrapText(ctx, lvlInfo.intel || '', 80, 150, canvas.width - 160, 22);
+            } else {
+                ctx.fillText(lvlInfo.intel || '', 80, 150);
+            }
+
+            ctx.textAlign = 'center';
+            ctx.fillStyle = '#ffaa00';
+            ctx.font = 'bold 11px monospace';
+            ctx.fillText('PRESS [L] OR CLICK ANYWHERE TO CLOSE INTEL LOG', canvas.width / 2, canvas.height - 75);
+        }
+
+        ctx.restore();
+
     } else if (currentScreen === SCREENS.CREDITS) {
         // Dim the title loop background for legibility
         ctx.fillStyle = 'rgba(5, 5, 12, 0.75)';
@@ -1454,6 +1898,12 @@ window.addEventListener('keydown', e => {
                 selectedShipIndex = (selectedShipIndex - 1 + SHIP_OPTIONS.length) % SHIP_OPTIONS.length;
             } else if (currentScreen === SCREENS.LEADERBOARD) {
                 if (leaderboardScrollOffset > 0) leaderboardScrollOffset--;
+            } else if (currentScreen === SCREENS.LEVEL_CLEAR) {
+                if (window._showIntelModal) {
+                    window._showIntelModal = false;
+                } else {
+                    advanceToNextLevelFromDebriefing();
+                }
             } else if (currentScreen === SCREENS.LOAD_GAME) {
                 window._loadSelectedSlot = Math.max(0, (window._loadSelectedSlot || 0) - 1);
             } else if (currentScreen === SCREENS.UPGRADE_SHOP) {
@@ -1474,6 +1924,12 @@ window.addEventListener('keydown', e => {
             } else if (currentScreen === SCREENS.LEADERBOARD) {
                 const scores = window.Leaderboard ? Leaderboard.getTop(leaderboardFilter, 50) : [];
                 if (leaderboardScrollOffset + 10 < scores.length) leaderboardScrollOffset++;
+            } else if (currentScreen === SCREENS.LEVEL_CLEAR) {
+                if (window._showIntelModal) {
+                    window._showIntelModal = false;
+                } else {
+                    advanceToNextLevelFromDebriefing();
+                }
             } else if (currentScreen === SCREENS.LOAD_GAME) {
                 const saves = window._loadSaves || [];
                 window._loadSelectedSlot = Math.min(2, (window._loadSelectedSlot || 0) + 1);
@@ -1531,6 +1987,12 @@ window.addEventListener('keydown', e => {
             } else if (currentScreen === SCREENS.BRIEFING) {
                 // GRO-936: Advance/skip briefing on Enter/Space
                 handleBriefingKey(e.key);
+            } else if (currentScreen === SCREENS.LEVEL_CLEAR) {
+                if (window._showIntelModal) {
+                    window._showIntelModal = false;
+                } else {
+                    advanceToNextLevelFromDebriefing();
+                }
             } else if (currentScreen === SCREENS.LOAD_GAME) {
                 confirmLoadGame();
             } else if (currentScreen === SCREENS.UPGRADE_SHOP) {
@@ -1566,6 +2028,12 @@ window.addEventListener('keydown', e => {
             } else if (currentScreen === SCREENS.BRIEFING) {
                 // GRO-936: Skip briefing on Escape
                 handleBriefingKey(e.key);
+            } else if (currentScreen === SCREENS.LEVEL_CLEAR) {
+                if (window._showIntelModal) {
+                    window._showIntelModal = false;
+                } else {
+                    advanceToNextLevelFromDebriefing();
+                }
             } else if (currentScreen === SCREENS.LOAD_GAME) {
                 transitionToScreen(SCREENS.MENU);
             } else if (currentScreen === SCREENS.UPGRADE_SHOP) {
@@ -1651,6 +2119,35 @@ canvas.addEventListener('click', function(e) {
     var scaleY = canvas.height / rect.height;
     var cx = (e.clientX - rect.left) * scaleX;
     var cy = (e.clientY - rect.top) * scaleY;
+
+    if (currentScreen === SCREENS.LEVEL_CLEAR) {
+        if (window._showIntelModal) {
+            window._showIntelModal = false;
+            playSound('menu_select');
+            return;
+        }
+        var lcRegions = window._levelClearHitRegions || [];
+        for (var k = 0; k < lcRegions.length; k++) {
+            var reg = lcRegions[k];
+            if (cx >= reg.x && cx <= reg.x + reg.w && cy >= reg.y && cy <= reg.y + reg.h) {
+                if (reg.key === 'next') {
+                    advanceToNextLevelFromDebriefing();
+                } else if (reg.key === 'upgrade') {
+                    window._upgradeReturnScreen = SCREENS.LEVEL_CLEAR;
+                    transitionToScreen(SCREENS.UPGRADE_SHOP);
+                    playSound('menu_click');
+                } else if (reg.key === 'intel') {
+                    window._showIntelModal = true;
+                    playSound('menu_select');
+                } else if (reg.key === 'menu') {
+                    transitionToScreen(SCREENS.MENU);
+                    playSound('menu_click');
+                }
+                return;
+            }
+        }
+        return;
+    }
 
     if (currentScreen === SCREENS.UPGRADE_SHOP) {
         var uRegions = window._upgradeHitRegions || [];

@@ -106,7 +106,115 @@ const LevelManager = {
     },
 
     // --- Initialization ---
+    // Per-level stats tracker
+    stats: {
+        enemiesSpawned: 0,
+        enemiesKilled: 0,
+        scrapDropped: 0,
+        scrapCollected: 0,
+        startScore: 0,
+        startScrap: 0,
+        startTime: 0
+    },
+
+    resetLevelStats() {
+        this.stats = {
+            enemiesSpawned: 0,
+            enemiesKilled: 0,
+            scrapDropped: 0,
+            scrapCollected: 0,
+            startScore: (typeof score !== 'undefined') ? score : 0,
+            startScrap: (typeof runScrap !== 'undefined') ? runScrap : 0,
+            startTime: (typeof gameTime !== 'undefined') ? gameTime : 0
+        };
+    },
+
+    onEnemySpawned() {
+        if (!this.stats) this.resetLevelStats();
+        this.stats.enemiesSpawned++;
+    },
+
+    onEnemyKilled() {
+        if (!this.stats) this.resetLevelStats();
+        this.stats.enemiesKilled++;
+    },
+
+    onScrapDropped(val = 1) {
+        if (!this.stats) this.resetLevelStats();
+        this.stats.scrapDropped += val;
+    },
+
+    onScrapCollected(val = 1) {
+        if (!this.stats) this.resetLevelStats();
+        this.stats.scrapCollected += val;
+    },
+
+    triggerLevelClear() {
+        this.waveActive = false;
+
+        const curScore = (typeof score !== 'undefined') ? score : 0;
+        const curScrap = (typeof runScrap !== 'undefined') ? runScrap : 0;
+        const curTime = (typeof gameTime !== 'undefined') ? gameTime : 0;
+
+        const killCount = (this.stats && this.stats.enemiesKilled) ? this.stats.enemiesKilled : this.enemiesSpawnedThisWave;
+        const killTotal = Math.max(killCount, (this.stats && this.stats.enemiesSpawned) ? this.stats.enemiesSpawned : this.totalEnemiesSpawned || 1);
+        const killPct = Math.min(100, Math.round((killCount / Math.max(1, killTotal)) * 100));
+
+        const scrapColl = (this.stats && this.stats.scrapCollected) ? this.stats.scrapCollected : Math.max(0, curScrap - ((this.stats && this.stats.startScrap) || 0));
+        const scrapDrop = Math.max(scrapColl, (this.stats && this.stats.scrapDropped) || scrapColl || 1);
+        const scrapPct = scrapDrop > 0 ? Math.min(100, Math.round((scrapColl / scrapDrop) * 100)) : 100;
+
+        const scoreEarned = Math.max(0, curScore - ((this.stats && this.stats.startScore) || 0));
+        const timeSpent = Math.max(1, Math.round(curTime - ((this.stats && this.stats.startTime) || 0)));
+
+        let rank = 'B';
+        if (killPct >= 85 && scrapPct >= 75) rank = 'S';
+        else if (killPct >= 70 && scrapPct >= 50) rank = 'A';
+        else if (killPct < 40) rank = 'C';
+
+        const summary = {
+            biome: this.biome,
+            level: this.level,
+            killCount: killCount,
+            killTotal: killTotal,
+            killPct: killPct,
+            scrapCollected: scrapColl,
+            scrapTotal: scrapDrop,
+            scrapPct: scrapPct,
+            scoreEarned: scoreEarned,
+            timeSpent: timeSpent,
+            rank: rank
+        };
+
+        // Autosave campaign progress
+        if (typeof window !== 'undefined' && window.CampaignSave) {
+            const activeSlot = parseInt(localStorage.getItem('dariusStar_activeSlot') || '0');
+            const us = window.DS_UpgradeSystem;
+            const saveData = {
+                biome: this.level >= 10 ? Math.min(10, this.biome + 1) : this.biome,
+                level: this.level >= 10 ? 1 : this.level + 1,
+                score: curScore,
+                scrap: us && us.state ? us.state.scrap : curScrap,
+                upgrades: us && us.state ? us.state.upgrades : {},
+                timestamp: Date.now()
+            };
+            CampaignSave.save(activeSlot, saveData);
+        }
+
+        if (typeof window !== 'undefined' && typeof window.showLevelClearScreen === 'function') {
+            window.showLevelClearScreen(summary);
+        } else if (typeof showLevelClearScreen === 'function') {
+            showLevelClearScreen(summary);
+        } else if (typeof window !== 'undefined' && typeof window.advanceToNextLevelFromDebriefing === 'function') {
+            window.advanceToNextLevelFromDebriefing();
+        } else {
+            this.advanceLevel();
+        }
+    },
+
     setBiomeAndLevel(biome, level) {
+        this.resetLevelStats();
+        if (typeof setBiomeBackgrounds === 'function') setBiomeBackgrounds(biome, level);
         this.biome = Math.max(1, Math.min(10, biome));
         this.level = Math.max(1, Math.min(10, level));
         this.wave = 1;
@@ -118,6 +226,8 @@ const LevelManager = {
         this.totalEnemiesSpawned = 0;
         this.lastSpawnTime = 0;
 
+        this.resetLevelStats();
+        if (typeof setBiomeBackgrounds === 'function') setBiomeBackgrounds(this.biome, this.level);
         this._refreshLevelConfig(false);
 
         // Set initial wave
@@ -336,7 +446,7 @@ const LevelManager = {
                     const interval = Math.max(1.0, 2.0 - (this.biome - 1) * 0.1);
                     this.waveTimer = -interval; // offset so first enemy appears after interval
                 } else {
-                    this.advanceLevel();
+                    this.triggerLevelClear();
                 }
             }
         }
@@ -395,6 +505,7 @@ const LevelManager = {
         enemy._waveDmg = Math.ceil(baseDmg * mb * ml);
 
         enemies.push(enemy);
+        this.onEnemySpawned();
         this.enemiesSpawnedThisWave++;
         this.totalEnemiesSpawned++;
 
@@ -433,6 +544,8 @@ const LevelManager = {
         this.spawnQueue = [];
         this.enemiesSpawnedThisWave = 0;
 
+        this.resetLevelStats();
+        if (typeof setBiomeBackgrounds === 'function') setBiomeBackgrounds(this.biome, this.level);
         this._refreshLevelConfig(false);
 
         this._queueWave();
