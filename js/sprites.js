@@ -226,14 +226,35 @@ const _preCompositeCache = new Set();
             console.log("[BOSS] Starting preloading of boss assets...");
 
             const toLoad = [
-                // Biome-specific boss sheets
+                // 10 Sub-Bosses (Level 5) and 10 Biome Bosses (Level 10)
+                { key: 'boss_b1_mid_0',     src: 'assets/sprites/boss_b1_mid_0.png' },
+                { key: 'boss_b1_0',         src: 'assets/sprites/boss_b1_0.png' },
+                { key: 'boss_b2_mid_0',     src: 'assets/sprites/boss_b2_mid_0.png' },
+                { key: 'boss_b2_0',         src: 'assets/sprites/boss_b2_0.png' },
+                { key: 'boss_b3_mid_0',     src: 'assets/sprites/boss_b3_mid_0.png' },
+                { key: 'boss_b3_0',         src: 'assets/sprites/boss_b3_0.png' },
+                { key: 'boss_b4_mid_0',     src: 'assets/sprites/boss_b4_mid_0.png' },
+                { key: 'boss_b4_0',         src: 'assets/sprites/boss_b4_0.png' },
+                { key: 'boss_b5_mid_0',     src: 'assets/sprites/boss_b5_mid_0.png' },
+                { key: 'boss_b5_0',         src: 'assets/sprites/boss_b5_0.png' },
+                { key: 'boss_b6_mid_0',     src: 'assets/sprites/boss_b6_mid_0.png' },
+                { key: 'boss_b6_0',         src: 'assets/sprites/boss_b6_0.png' },
+                { key: 'boss_b7_mid_0',     src: 'assets/sprites/boss_b7_mid_0.png' },
+                { key: 'boss_b7_0',         src: 'assets/sprites/boss_b7_0.png' },
+                { key: 'boss_b8_mid_0',     src: 'assets/sprites/boss_b8_mid_0.png' },
+                { key: 'boss_b8_0',         src: 'assets/sprites/boss_b8_0.png' },
+                { key: 'boss_b9_mid_0',     src: 'assets/sprites/boss_b9_mid_0.png' },
+                { key: 'boss_b9_0',         src: 'assets/sprites/boss_b9_0.png' },
+                { key: 'boss_b10_mid_0',    src: 'assets/sprites/boss_b10_mid_0.png' },
+                { key: 'boss_b10_0',        src: 'assets/sprites/boss_b10_0.png' },
+
+                // Legacy fallbacks and minions
                 { key: 'boss_0',            src: 'assets/sprites/boss_0.png' },
                 { key: 'boss_1',            src: 'assets/sprites/boss_1.png' },
                 { key: 'boss_2',            src: 'assets/sprites/boss_2.png' },
                 { key: 'boss_3',            src: 'assets/sprites/boss_3.png' },
                 { key: 'bossMinion',        src: 'assets/sprites/boss_minion_0.png' },
                 { key: 'boss_minion_0',     src: 'assets/sprites/boss_minion_0.png' },
-                // Legacy state-specific sheets (retained as backup fallbacks)
                 { key: 'boss',              src: 'assets/sprites/boss_idle.png' },
                 { key: 'boss_idle',         src: 'assets/sprites/boss_idle.png' },
                 { key: 'boss_rage',         src: 'assets/sprites/boss_rage.png' },

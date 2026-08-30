@@ -4814,6 +4814,346 @@
       "width": 512,
       "height": 512,
       "is_valid_power_of_two": true
+    },
+    "boss_b1_mid_0": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "boss_b1_mid_0.png",
+          "path": "assets/sprites/boss_b1_mid_0.png",
+          "width": 512,
+          "height": 512,
+          "is_power_of_two": true,
+          "sha256": "a5e94c467c8bfe5b51d418294340f01c0196aa79589c13867d298983f27aaf22"
+        }
+      ],
+      "frame_count": 1,
+      "width": 512,
+      "height": 512,
+      "is_valid_power_of_two": true
+    },
+    "boss_b1_0": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "boss_b1_0.png",
+          "path": "assets/sprites/boss_b1_0.png",
+          "width": 512,
+          "height": 512,
+          "is_power_of_two": true,
+          "sha256": "5d3018db9dd9b303d5ce27d6236224fc5ef84256d1924a778f21886c72604146"
+        }
+      ],
+      "frame_count": 1,
+      "width": 512,
+      "height": 512,
+      "is_valid_power_of_two": true
+    },
+    "boss_b2_mid_0": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "boss_b2_mid_0.png",
+          "path": "assets/sprites/boss_b2_mid_0.png",
+          "width": 512,
+          "height": 512,
+          "is_power_of_two": true,
+          "sha256": "11938e4d2f1cfb221d98437ea1a2ff193f8a2eabbea56eeb06e06406c0865d52"
+        }
+      ],
+      "frame_count": 1,
+      "width": 512,
+      "height": 512,
+      "is_valid_power_of_two": true
+    },
+    "boss_b2_0": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "boss_b2_0.png",
+          "path": "assets/sprites/boss_b2_0.png",
+          "width": 512,
+          "height": 512,
+          "is_power_of_two": true,
+          "sha256": "5c27a4bc0b3c5b89a24f72076e7be69852442bb342734ba9afe8782aaacc1b62"
+        }
+      ],
+      "frame_count": 1,
+      "width": 512,
+      "height": 512,
+      "is_valid_power_of_two": true
+    },
+    "boss_b3_mid_0": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "boss_b3_mid_0.png",
+          "path": "assets/sprites/boss_b3_mid_0.png",
+          "width": 512,
+          "height": 512,
+          "is_power_of_two": true,
+          "sha256": "98847ab5a35d14bd6e13d0fd31804ecfff92ce292b08791f65323ea03f9e7f39"
+        }
+      ],
+      "frame_count": 1,
+      "width": 512,
+      "height": 512,
+      "is_valid_power_of_two": true
+    },
+    "boss_b3_0": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "boss_b3_0.png",
+          "path": "assets/sprites/boss_b3_0.png",
+          "width": 512,
+          "height": 512,
+          "is_power_of_two": true,
+          "sha256": "cd47a763da74d594d5b0952038e8fa775d85c239bd9ba7858c360f03dc519479"
+        }
+      ],
+      "frame_count": 1,
+      "width": 512,
+      "height": 512,
+      "is_valid_power_of_two": true
+    },
+    "boss_b4_mid_0": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "boss_b4_mid_0.png",
+          "path": "assets/sprites/boss_b4_mid_0.png",
+          "width": 512,
+          "height": 512,
+          "is_power_of_two": true,
+          "sha256": "2a46c33116a5c5b40d441b8d2f99ad2d6a4e32b342fa9d828129fa94bfa20624"
+        }
+      ],
+      "frame_count": 1,
+      "width": 512,
+      "height": 512,
+      "is_valid_power_of_two": true
+    },
+    "boss_b4_0": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "boss_b4_0.png",
+          "path": "assets/sprites/boss_b4_0.png",
+          "width": 512,
+          "height": 512,
+          "is_power_of_two": true,
+          "sha256": "699f6ffcda32e2795f5cc0c1b3ec92a27ff8acaeea4802df4c615d37e342ce1a"
+        }
+      ],
+      "frame_count": 1,
+      "width": 512,
+      "height": 512,
+      "is_valid_power_of_two": true
+    },
+    "boss_b5_mid_0": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "boss_b5_mid_0.png",
+          "path": "assets/sprites/boss_b5_mid_0.png",
+          "width": 512,
+          "height": 512,
+          "is_power_of_two": true,
+          "sha256": "a618a42f88c4e8260c3d52e1628223941bfeb8b2d464fa5caafdae607c264d75"
+        }
+      ],
+      "frame_count": 1,
+      "width": 512,
+      "height": 512,
+      "is_valid_power_of_two": true
+    },
+    "boss_b5_0": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "boss_b5_0.png",
+          "path": "assets/sprites/boss_b5_0.png",
+          "width": 512,
+          "height": 512,
+          "is_power_of_two": true,
+          "sha256": "ff04514fa120293e245b68518799cf347a25f2f583e63732cf2da06b535ea4a2"
+        }
+      ],
+      "frame_count": 1,
+      "width": 512,
+      "height": 512,
+      "is_valid_power_of_two": true
+    },
+    "boss_b6_mid_0": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "boss_b6_mid_0.png",
+          "path": "assets/sprites/boss_b6_mid_0.png",
+          "width": 512,
+          "height": 512,
+          "is_power_of_two": true,
+          "sha256": "b2eee35c69b896f3d934dbc164aad3447c81cb4fd743512400083166bd424270"
+        }
+      ],
+      "frame_count": 1,
+      "width": 512,
+      "height": 512,
+      "is_valid_power_of_two": true
+    },
+    "boss_b6_0": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "boss_b6_0.png",
+          "path": "assets/sprites/boss_b6_0.png",
+          "width": 512,
+          "height": 512,
+          "is_power_of_two": true,
+          "sha256": "80879d02a52b141f0f295c7a1c7b3dd1f7a9d64a9855ad1e63525e5592b8c5a2"
+        }
+      ],
+      "frame_count": 1,
+      "width": 512,
+      "height": 512,
+      "is_valid_power_of_two": true
+    },
+    "boss_b7_mid_0": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "boss_b7_mid_0.png",
+          "path": "assets/sprites/boss_b7_mid_0.png",
+          "width": 512,
+          "height": 512,
+          "is_power_of_two": true,
+          "sha256": "37206936f1534c40282969720c0f0f8363779f118e9f1249d03150d844d69f8c"
+        }
+      ],
+      "frame_count": 1,
+      "width": 512,
+      "height": 512,
+      "is_valid_power_of_two": true
+    },
+    "boss_b7_0": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "boss_b7_0.png",
+          "path": "assets/sprites/boss_b7_0.png",
+          "width": 512,
+          "height": 512,
+          "is_power_of_two": true,
+          "sha256": "1fd1ff12baa45c3aebbe6d5a43f990b1482f7f3912d8a681fbad43fdbdab7f8d"
+        }
+      ],
+      "frame_count": 1,
+      "width": 512,
+      "height": 512,
+      "is_valid_power_of_two": true
+    },
+    "boss_b8_mid_0": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "boss_b8_mid_0.png",
+          "path": "assets/sprites/boss_b8_mid_0.png",
+          "width": 512,
+          "height": 512,
+          "is_power_of_two": true,
+          "sha256": "abe4bd0f1927aaa9eecb3677865762552c5345a7e52a29c0ab4dd948c4539695"
+        }
+      ],
+      "frame_count": 1,
+      "width": 512,
+      "height": 512,
+      "is_valid_power_of_two": true
+    },
+    "boss_b8_0": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "boss_b8_0.png",
+          "path": "assets/sprites/boss_b8_0.png",
+          "width": 512,
+          "height": 512,
+          "is_power_of_two": true,
+          "sha256": "454df3662e5e47c302dc7b04383c3d906a80229e27df360c0f2259c7267faca1"
+        }
+      ],
+      "frame_count": 1,
+      "width": 512,
+      "height": 512,
+      "is_valid_power_of_two": true
+    },
+    "boss_b9_mid_0": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "boss_b9_mid_0.png",
+          "path": "assets/sprites/boss_b9_mid_0.png",
+          "width": 512,
+          "height": 512,
+          "is_power_of_two": true,
+          "sha256": "5aea4771fb6e38a77f8cff96fbfbc0b9855cb591a4bacf4f3b26a7348731a30e"
+        }
+      ],
+      "frame_count": 1,
+      "width": 512,
+      "height": 512,
+      "is_valid_power_of_two": true
+    },
+    "boss_b9_0": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "boss_b9_0.png",
+          "path": "assets/sprites/boss_b9_0.png",
+          "width": 512,
+          "height": 512,
+          "is_power_of_two": true,
+          "sha256": "de3e42b19971742a1017d58dc3be294fab8fd634d5320f8f6fac55e5ccddf0c9"
+        }
+      ],
+      "frame_count": 1,
+      "width": 512,
+      "height": 512,
+      "is_valid_power_of_two": true
+    },
+    "boss_b10_mid_0": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "boss_b10_mid_0.png",
+          "path": "assets/sprites/boss_b10_mid_0.png",
+          "width": 512,
+          "height": 512,
+          "is_power_of_two": true,
+          "sha256": "33e8848060fcfdd349e2c6ac7ff806377314c0b6f0b9751055b2de6945a1aabb"
+        }
+      ],
+      "frame_count": 1,
+      "width": 512,
+      "height": 512,
+      "is_valid_power_of_two": true
+    },
+    "boss_b10_0": {
+      "frames": [
+        {
+          "index": 0,
+          "filename": "boss_b10_0.png",
+          "path": "assets/sprites/boss_b10_0.png",
+          "width": 512,
+          "height": 512,
+          "is_power_of_two": true,
+          "sha256": "0b16c71b95c75fcb78fb27b2dfe00709811b5bf00bb41ccfb72c30271404caff"
+        }
+      ],
+      "frame_count": 1,
+      "width": 512,
+      "height": 512,
+      "is_valid_power_of_two": true
     }
   },
   "validation": {

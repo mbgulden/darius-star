@@ -183,6 +183,28 @@ function skipVictoryCinematic() {
     transitionToScreen(SCREENS.CINEMATIC);
 }
 
+function advanceSubLevel() {
+    // Called after Sub-Boss defeat at Level 5
+    floatingTexts.push(new FloatingText(canvas.width / 2, canvas.height / 3, 'SUB-BOSS DESTROYED!', '#fed330'));
+    
+    // Reset boss tracking variables
+    boss = null;
+    bossDefeated = false;
+    bossSpawned = false;
+    bossIntroPlaying = false;
+    sirenTimer = 0;
+
+    // Clear remaining bullets and enemy stragglers
+    enemyBullets.length = 0;
+    
+    // Advance LevelManager to Level 6
+    if (window.LevelManager) {
+        LevelManager.advanceLevel();
+    }
+    
+    enemySpawnTimer = 1.0;
+}
+
 function advanceToNextBiome() {
     // Called after boss defeat in biomes 1-9
     // Advances the game to the next biome without resetting player progress
