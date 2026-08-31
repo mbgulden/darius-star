@@ -234,23 +234,33 @@
         },
 
         /**
-         * Draw subtle cockpit radar grid lines and rolling CRT scanline raster.
+         * Draw unified cosmic deep space background, radial nebula glow, radar grid,
+         * animated twinkling starfield, and rolling CRT scanline raster.
          */
         drawCockpitGrid(ctx, w, h, timer = 0) {
             ctx.save();
-            ctx.strokeStyle = 'rgba(0, 200, 255, 0.035)';
-            ctx.lineWidth = 1;
 
-            // Vertical grid lines
-            const gridSpacing = 40;
+            // 1. Deep Space Base
+            ctx.fillStyle = '#020208';
+            ctx.fillRect(0, 0, w, h);
+
+            // 2. Cosmic Radial Nebula Glow
+            const radGrad = ctx.createRadialGradient(w * 0.5, h * 0.2, 0, w * 0.5, h * 0.2, w * 0.6);
+            radGrad.addColorStop(0, 'rgba(20, 20, 60, 0.45)');
+            radGrad.addColorStop(1, 'rgba(2, 2, 8, 0)');
+            ctx.fillStyle = radGrad;
+            ctx.fillRect(0, 0, w, h);
+
+            // 3. Grid Lines (30px spacing)
+            ctx.strokeStyle = 'rgba(18, 18, 30, 0.35)';
+            ctx.lineWidth = 1;
+            const gridSpacing = 30;
             for (let gx = 0; gx < w; gx += gridSpacing) {
                 ctx.beginPath();
                 ctx.moveTo(gx, 0);
                 ctx.lineTo(gx, h);
                 ctx.stroke();
             }
-
-            // Horizontal grid lines
             for (let gy = 0; gy < h; gy += gridSpacing) {
                 ctx.beginPath();
                 ctx.moveTo(0, gy);
@@ -258,7 +268,34 @@
                 ctx.stroke();
             }
 
-            // Subtle rolling scanline
+            // 4. Animated Twinkling Starfield
+            if (!CockpitUI._stars || CockpitUI._starsW !== w || CockpitUI._starsH !== h) {
+                CockpitUI._starsW = w;
+                CockpitUI._starsH = h;
+                CockpitUI._stars = [];
+                const count = Math.floor((w * h) / 1200);
+                for (let i = 0; i < count; i++) {
+                    CockpitUI._stars.push({
+                        x: Math.random() * w,
+                        y: Math.random() * h,
+                        r: Math.random() * 1.5 + 0.3,
+                        twinkle: Math.random() * Math.PI * 2,
+                        speed: Math.random() * 0.02 + 0.005
+                    });
+                }
+            }
+
+            for (let i = 0; i < CockpitUI._stars.length; i++) {
+                const s = CockpitUI._stars[i];
+                s.twinkle += s.speed;
+                const alpha = 0.3 + 0.7 * Math.abs(Math.sin(s.twinkle));
+                ctx.beginPath();
+                ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(180, 200, 255, ${alpha})`;
+                ctx.fill();
+            }
+
+            // 5. Subtle rolling scanline
             const scanY = (timer * 60) % h;
             const grad = ctx.createLinearGradient(0, scanY - 30, 0, scanY + 30);
             grad.addColorStop(0, 'rgba(0, 255, 255, 0)');
