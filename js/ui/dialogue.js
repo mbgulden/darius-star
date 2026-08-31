@@ -323,7 +323,13 @@
                 if (line) {
                     this.currentLineText = this.interpolate(line.text);
                     if (typeof VoicePipeline !== 'undefined' && VoicePipeline && typeof VoicePipeline.speak === 'function') {
-                        VoicePipeline.speak(this.currentLineText, line.speaker || 'Lyra', { mood: line.mood, lineId: line.id });
+                        const biomeNum = (typeof LevelManager !== 'undefined' && LevelManager.biome) ? LevelManager.biome : 1;
+                        VoicePipeline.speak(this.currentLineText, line.speaker || 'Lyra', { 
+                            mood: line.mood, 
+                            lineId: line.id,
+                            biome: biomeNum,
+                            trigger: line.trigger || 'story'
+                        });
                     } else if (typeof VoicePlayback !== 'undefined' && VoicePlayback && typeof VoicePlayback.speak === 'function') {
                         VoicePlayback.speak(line.speaker, this.currentLineText);
                     }

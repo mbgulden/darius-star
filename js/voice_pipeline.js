@@ -122,6 +122,33 @@ const VoicePipeline = {
             }
         }
 
+        // Guaranteed voice line fallback for any character dialogue
+        if (!audioFile) {
+            const biome = options.biome || (typeof LevelManager !== 'undefined' ? LevelManager.biome : 1);
+            if (this._manifest && this._manifest.lines) {
+                const candidate = Object.values(this._manifest.lines).find(item => 
+                    item && item.speaker === charKey && item.biome === biome && item.file
+                );
+                if (candidate) {
+                    audioFile = candidate.file;
+                }
+            }
+            if (!audioFile) {
+                const defaultFiles = {
+                    'thorne': `thorne/briefing_b${biome}_01.mp3`,
+                    'lyra': `lyra/briefing_b${biome}_01.mp3`,
+                    'darius': `darius/banter_b${biome}_level_start_tier1_0.mp3`,
+                    'naya': `naya/banter_b${biome}_level_start_tier1_1.mp3`,
+                    'cross': `cross/banter_b${biome}_level_start_tier1_1.mp3`,
+                    'selene': `selene/briefing_b${biome}_selene.mp3`,
+                    'architect': `architect/banter_b10_level_start_tier1_1.mp3`
+                };
+                if (defaultFiles[charKey]) {
+                    audioFile = defaultFiles[charKey];
+                }
+            }
+        }
+
         if (audioFile) {
             this._playStudioAudio(audioFile, options);
         } else {
@@ -129,43 +156,106 @@ const VoicePipeline = {
         }
     },
 
+    _audioBufferCache: new Map(),
+    _activeSource: null,
+
     _playStudioAudio(fileUrl, options) {
         // Duck BGM
         if (typeof AudioManager !== 'undefined' && typeof AudioManager.duckMusic === 'function') {
             AudioManager.duckMusic(0.5);
+        } else if (typeof VoicePlayback !== 'undefined' && typeof VoicePlayback.duckBGM === 'function') {
+            VoicePlayback.duckBGM(0.65, 0.25);
         }
 
         const path = fileUrl.startsWith('assets/') ? fileUrl : `assets/audio/voice/${fileUrl}`;
+
+        const onFinish = () => {
+            this._isPlaying = false;
+            this._activeSource = null;
+            this._currentAudio = null;
+            if (typeof AudioManager !== 'undefined' && typeof AudioManager.unduckMusic === 'function') {
+                AudioManager.unduckMusic();
+            } else if (typeof VoicePlayback !== 'undefined' && typeof VoicePlayback.unduckBGM === 'function') {
+                VoicePlayback.unduckBGM(0.4);
+            }
+            if (options.onEnd) options.onEnd();
+        };
+
+        // Try playing via Web Audio API audioCtx (guaranteed unlocked and volume-controlled)
+        const ctx = (typeof audioCtx !== 'undefined' && audioCtx) ? audioCtx : this._audioContext;
+        if (ctx && ctx.state !== 'closed') {
+            if (ctx.state === 'suspended') {
+                try { ctx.resume(); } catch(e) {}
+            }
+
+            const playDecodedBuffer = (buffer) => {
+                try {
+                    const source = ctx.createBufferSource();
+                    source.buffer = buffer;
+                    const gain = ctx.createGain();
+                    const vol = (typeof sfxVolume !== 'undefined' ? sfxVolume : 0.8) * (typeof masterVolume !== 'undefined' ? masterVolume : 1.0);
+                    gain.gain.setValueAtTime(vol, ctx.currentTime);
+                    source.connect(gain);
+                    gain.connect(ctx.destination);
+                    
+                    source.onended = onFinish;
+                    source.start(0);
+                    this._activeSource = source;
+                    if (options.onStart) options.onStart();
+                    return true;
+                } catch(err) {
+                    console.warn('[VoicePipeline] Web Audio buffer source start failed:', err);
+                    return false;
+                }
+            };
+
+            if (this._audioBufferCache.has(path)) {
+                playDecodedBuffer(this._audioBufferCache.get(path));
+                return;
+            }
+
+            fetch(path)
+                .then(r => {
+                    if (!r.ok) throw new Error('HTTP ' + r.status);
+                    return r.arrayBuffer();
+                })
+                .then(buf => ctx.decodeAudioData(buf))
+                .then(audioBuffer => {
+                    this._audioBufferCache.set(path, audioBuffer);
+                    playDecodedBuffer(audioBuffer);
+                })
+                .catch(err => {
+                    console.warn('[VoicePipeline] Buffer load failed, falling back to HTML5 Audio:', path, err);
+                    this._playHtml5Audio(path, options, onFinish);
+                });
+            return;
+        }
+
+        this._playHtml5Audio(path, options, onFinish);
+    },
+
+    _playHtml5Audio(path, options, onFinish) {
         const audio = new Audio(path);
-        audio.volume = typeof sfxVolume !== 'undefined' ? sfxVolume : 0.8;
+        audio.volume = (typeof sfxVolume !== 'undefined' ? sfxVolume : 0.8) * (typeof masterVolume !== 'undefined' ? masterVolume : 1.0);
         this._currentAudio = audio;
 
         audio.onplay = () => {
             if (options.onStart) options.onStart();
         };
 
-        const handleFinish = () => {
-            this._isPlaying = false;
-            this._currentAudio = null;
-            if (typeof AudioManager !== 'undefined' && typeof AudioManager.unduckMusic === 'function') {
-                AudioManager.unduckMusic();
-            }
-            if (options.onEnd) options.onEnd();
+        audio.onended = onFinish;
+        audio.onerror = (e) => {
+            console.log('[VoicePipeline] Audio element error:', path, e);
+            onFinish();
         };
 
-        audio.onended = handleFinish;
-        audio.onerror = () => {
-            console.log('[VoicePipeline] Audio file missing or load failed:', path);
-            this._playProceduralFallback(options.text || '', this._currentSpeaker, options);
-        };
-
-        audio.play().catch(() => {
-            this._playProceduralFallback(options.text || '', this._currentSpeaker, options);
+        audio.play().catch(err => {
+            console.log('[VoicePipeline] Audio autoplay prevented:', path, err);
+            onFinish();
         });
     },
 
     _playProceduralFallback(text, speaker, options) {
-        // Subtle radio click rather than harsh beeps for unvoiced dynamic lines
         if (typeof playSound === 'function') {
             try { playSound('ui_select'); } catch(e) {}
         }
@@ -176,6 +266,13 @@ const VoicePipeline = {
 
     stop() {
         this._isPlaying = false;
+        if (this._activeSource) {
+            try {
+                this._activeSource.stop();
+                this._activeSource.disconnect();
+            } catch(e) {}
+            this._activeSource = null;
+        }
         if (this._currentAudio) {
             try {
                 this._currentAudio.pause();
