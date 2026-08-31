@@ -1700,13 +1700,19 @@ function draw() {
                     ctx.fillText(SETTINGS_OPTIONS[i], rowX + 10, itemY + 11);
                     ctx.fillStyle = isSelected ? '#ffffff' : '#ffaa00';
                     ctx.fillText(difficulty.toUpperCase(), rowX + 220, itemY + 11);
-                } else if (i >= 4 && i <= 7) {
+                } else if (i === 4) {
+                    ctx.fillText(SETTINGS_OPTIONS[i], rowX + 10, itemY + 11);
+                    const curLang = typeof currentLanguage !== 'undefined' ? currentLanguage : 'en';
+                    const langNames = { en: 'ENGLISH', ja: '日本語', de: 'DEUTSCH', es: 'ESPAÑOL' };
+                    ctx.fillStyle = isSelected ? '#00ffff' : '#ffaa00';
+                    ctx.fillText(`[ ${langNames[curLang] || curLang.toUpperCase()} ]`, rowX + 220, itemY + 11);
+                } else if (i >= 5 && i <= 8) {
                     ctx.fillText(SETTINGS_OPTIONS[i], rowX + 10, itemY + 11);
                     let toggleVal = false;
-                    if (i === 4) toggleVal = audioTunnelsEnabled;
-                    else if (i === 5) toggleVal = banterEnabled;
-                    else if (i === 6) toggleVal = streamerMode;
-                    else if (i === 7) toggleVal = subtitlesEnabled;
+                    if (i === 5) toggleVal = audioTunnelsEnabled;
+                    else if (i === 6) toggleVal = banterEnabled;
+                    else if (i === 7) toggleVal = streamerMode;
+                    else if (i === 8) toggleVal = subtitlesEnabled;
 
                     const switchColor = toggleVal ? '#00ff88' : '#ff3355';
                     ctx.fillStyle = toggleVal ? 'rgba(0, 255, 136, 0.15)' : 'rgba(255, 51, 85, 0.15)';
@@ -1718,7 +1724,7 @@ function draw() {
                     ctx.fillStyle = switchColor;
                     ctx.font = 'bold 10px monospace';
                     ctx.fillText(toggleVal ? 'ONLINE' : 'OFFLINE', rowX + 255, itemY + 10);
-                } else if (i === 8) {
+                } else if (i === 9) {
                     ctx.textAlign = 'center';
                     ctx.fillStyle = isSelected ? '#ff3355' : '#88aacc';
                     ctx.font = 'bold 12px monospace';

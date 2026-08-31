@@ -99,14 +99,30 @@ function drawSettings(ctx) {
             const multText = cfg.id === 'easy' ? 'Damage x0.75 | 5 Lives' : (cfg.id === 'normal' ? 'Damage x1.0 | 3 Lives' : (cfg.id === 'hard' ? 'Damage x1.5 | 2 Lives (ACE)' : 'Damage x2.0 | 1 Life (CYBER)'));
             ctx.fillText(multText, rowX + rowW - 14, itemY + 11);
 
-        } else if (i >= 4 && i <= 7) {
+        } else if (i === 4) {
+            // Language Selection
+            ctx.fillText(SETTINGS_OPTIONS[i], rowX + 12, itemY + 11);
+            const curLang = typeof currentLanguage !== 'undefined' ? currentLanguage : 'en';
+            const langNames = { en: 'ENGLISH', ja: '日本語', de: 'DEUTSCH', es: 'ESPAÑOL' };
+            const langColors = { en: '#00ffff', ja: '#ff00aa', de: '#ffaa00', es: '#00ff88' };
+            
+            ctx.fillStyle = langColors[curLang] || '#00ffff';
+            ctx.font = 'bold 12px monospace';
+            ctx.fillText(`[ ${langNames[curLang] || curLang.toUpperCase()} ]`, rowX + 240, itemY + 11);
+
+            ctx.textAlign = 'right';
+            ctx.fillStyle = '#88aacc';
+            ctx.font = 'italic 9.5px monospace';
+            ctx.fillText('◄ / ► to Switch Avionics Language', rowX + rowW - 14, itemY + 11);
+
+        } else if (i >= 5 && i <= 8) {
             // Narrative and Accessibility Hardware Switches
             ctx.fillText(SETTINGS_OPTIONS[i], rowX + 12, itemY + 11);
             let toggleVal = false;
-            if (i === 4) toggleVal = audioTunnelsEnabled;
-            else if (i === 5) toggleVal = banterEnabled;
-            else if (i === 6) toggleVal = streamerMode;
-            else if (i === 7) toggleVal = subtitlesEnabled;
+            if (i === 5) toggleVal = audioTunnelsEnabled;
+            else if (i === 6) toggleVal = banterEnabled;
+            else if (i === 7) toggleVal = streamerMode;
+            else if (i === 8) toggleVal = subtitlesEnabled;
 
             const switchColor = toggleVal ? '#00ff88' : '#ff3355';
             
@@ -125,13 +141,13 @@ function drawSettings(ctx) {
             ctx.textAlign = 'right';
             ctx.fillStyle = '#6a7a9a';
             ctx.font = 'italic 9.5px monospace';
-            const toggleDesc = i === 4 ? 'Between-Sector Radio Tunnels' :
-                               i === 5 ? 'Contextual In-Flight Character Comms' :
-                               i === 6 ? 'Mute Spoken Voice for Content Streamers' :
+            const toggleDesc = i === 5 ? 'Between-Sector Radio Tunnels' :
+                               i === 6 ? 'Contextual In-Flight Character Comms' :
+                               i === 7 ? 'Mute Spoken Voice for Content Streamers' :
                                'High-Visibility Comms Subtitles';
             ctx.fillText(toggleDesc, rowX + rowW - 14, itemY + 11);
 
-        } else if (i === 8) {
+        } else if (i === 9) {
             // Return to Bridge
             ctx.textAlign = 'center';
             ctx.fillStyle = isSelected ? '#ff3355' : '#88aacc';

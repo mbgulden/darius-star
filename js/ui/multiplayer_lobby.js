@@ -1,16 +1,42 @@
 /**
  * js/ui/multiplayer_lobby.js — Nyxa Tactical Squadron Link Room Lobby (GRO-4303)
  * Renders in-universe cockpit room creation, squadron joining via 4-digit code,
- * live telemetry ping, and readiness status.
+ * live telemetry ping, copy invite link, and readiness status.
  * 
  * Load order: after js/ui.js, before js/game_loop.js
  */
 
-let squadronRoomCode = 'STAR-77';
-let squadronPilots = [
+var squadronRoomCode = 'STAR-77';
+var squadronPilots = [
     { name: 'Darius Star [HOST]', ship: 'X-1 Striker', ready: true, ping: 12 },
     { name: 'Naya Thorne', ship: 'Warden Support', ready: true, ping: 24 }
 ];
+var squadronCopyFeedbackTimer = 0;
+
+function generateNewRoomCode() {
+    const prefixes = ['STAR', 'NOVA', 'CYBR', 'DRAK', 'VOID', 'APEX', 'NEBL', 'SOLR'];
+    const prefix = prefixes[Math.floor(Math.random() * prefixes.length)];
+    const num = Math.floor(10 + Math.random() * 90);
+    squadronRoomCode = `${prefix}-${num}`;
+    if (typeof NetworkClient !== 'undefined' && NetworkClient.connect) {
+        NetworkClient.connect(squadronRoomCode);
+    }
+    playSound('ui_select');
+}
+
+function copySquadronInviteLink() {
+    try {
+        const url = new URL(window.location.href);
+        url.searchParams.set('room', squadronRoomCode);
+        if (navigator && navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(url.toString());
+        }
+        squadronCopyFeedbackTimer = 2.5;
+        playSound('powerup');
+    } catch (e) {
+        squadronCopyFeedbackTimer = 2.5;
+    }
+}
 
 function drawMultiplayerLobby(ctx) {
     if (typeof CockpitUI !== 'undefined') {
@@ -38,23 +64,30 @@ function drawMultiplayerLobby(ctx) {
         ctx.fillText('📡 NYXA SQUADRON TACTICAL LINK // CO-OP LOBBY', panelX + 14, panelY + 16);
     }
 
-    // Room Code Banner
+    // Room Code Banner & Copy Link Status
     ctx.textAlign = 'center';
     ctx.fillStyle = '#ffaa00';
     ctx.font = 'bold 22px monospace';
     ctx.shadowColor = '#ffaa00';
     ctx.shadowBlur = 10;
-    ctx.fillText(`TACTICAL ROOM CODE: [ ${squadronRoomCode} ]`, canvas.width / 2, panelY + 54);
+    ctx.fillText(`TACTICAL ROOM CODE: [ ${squadronRoomCode} ]`, canvas.width / 2, panelY + 50);
     ctx.shadowBlur = 0;
 
-    ctx.fillStyle = '#88aacc';
-    ctx.font = '10px monospace';
-    ctx.fillText('CLOUDFLARE EDGE WEBSOCKET RELAY // SUB-30MS TICK SYNC', canvas.width / 2, panelY + 70);
+    if (squadronCopyFeedbackTimer > 0) {
+        squadronCopyFeedbackTimer -= 0.016;
+        ctx.fillStyle = '#00ff88';
+        ctx.font = 'bold 11px monospace';
+        ctx.fillText('✔ INVITE LINK COPIED TO CLIPBOARD!', canvas.width / 2, panelY + 68);
+    } else {
+        ctx.fillStyle = '#88aacc';
+        ctx.font = '10px monospace';
+        ctx.fillText('CLOUDFLARE EDGE WEBSOCKET RELAY // SUB-30MS TICK SYNC  |  PRESS [C] TO COPY LINK', canvas.width / 2, panelY + 68);
+    }
 
     // Pilots Roster Box
-    const rosterY = panelY + 86;
+    const rosterY = panelY + 80;
     const rosterW = panelW - 40;
-    const rosterH = 150;
+    const rosterH = 140;
     const rosterX = panelX + 20;
 
     ctx.fillStyle = 'rgba(0, 0, 0, 0.4)';
@@ -66,18 +99,19 @@ function drawMultiplayerLobby(ctx) {
     ctx.textAlign = 'left';
     ctx.fillStyle = '#ffaa00';
     ctx.font = 'bold 10px monospace';
-    ctx.fillText('PILOT CALLSIGN', rosterX + 15, rosterY + 20);
-    ctx.fillText('VESSEL CHASSIS', rosterX + 220, rosterY + 20);
-    ctx.fillText('LINK LATENCY', rosterX + 420, rosterY + 20);
-    ctx.fillText('STATUS', rosterX + 560, rosterY + 20);
+    ctx.fillText('PILOT CALLSIGN', rosterX + 15, rosterY + 18);
+    ctx.fillText('VESSEL CHASSIS', rosterX + 220, rosterY + 18);
+    ctx.fillText('LINK LATENCY', rosterX + 420, rosterY + 18);
+    ctx.fillText('STATUS', rosterX + 560, rosterY + 18);
 
     // Pilot Rows
-    const pilots = (typeof NetworkClient !== 'undefined' && NetworkClient.isConnected()) 
-        ? [{ name: 'You [LOCAL PILOT]', ship: selectedShip.toUpperCase(), ready: true, ping: NetworkClient.getPing() }]
+    const isNetConnected = (typeof NetworkClient !== 'undefined' && NetworkClient.isConnected && NetworkClient.isConnected());
+    const pilots = isNetConnected
+        ? [{ name: 'You [LOCAL PILOT]', ship: (typeof selectedShip !== 'undefined' ? selectedShip : 'striker').toUpperCase(), ready: true, ping: (NetworkClient.getPing ? NetworkClient.getPing() : 16) }]
         : squadronPilots;
 
     for (let i = 0; i < 4; i++) {
-        const ry = rosterY + 45 + i * 26;
+        const ry = rosterY + 40 + i * 24;
         const p = pilots[i];
 
         if (p) {
@@ -101,22 +135,36 @@ function drawMultiplayerLobby(ctx) {
     }
 
     // Action Buttons
-    const btnY = panelY + 252;
-    const btnW = (panelW - 60) / 2;
-    const btnH = 40;
+    const btnY = panelY + 235;
+    const btnW = (panelW - 60) / 3;
+    const btnH = 36;
 
     if (typeof CockpitUI !== 'undefined') {
-        CockpitUI.drawAvionicsButton(ctx, panelX + 20, btnY, btnW, btnH, 'LAUNCH SQUADRON SORTIE', '[SPACE / ENTER]', true, false, {
+        CockpitUI.drawAvionicsButton(ctx, panelX + 20, btnY, btnW, btnH, 'LAUNCH SORTIE', '[SPACE / ENTER]', true, false, {
             primaryColor: '#00ff88',
-            font: 'bold 10.5px monospace'
+            font: 'bold 10px monospace'
         });
-        CockpitUI.drawAvionicsButton(ctx, panelX + 20 + btnW + 20, btnY, btnW, btnH, 'RETURN TO COMMAND BRIDGE', '[ESC]', false, false, {
-            primaryColor: '#ff2244',
-            font: 'bold 10.5px monospace'
+        CockpitUI.drawAvionicsButton(ctx, panelX + 20 + btnW + 10, btnY, btnW, btnH, 'COPY INVITE LINK', '[C / CLICK]', false, false, {
+            primaryColor: '#00ffff',
+            font: 'bold 10px monospace'
+        });
+        CockpitUI.drawAvionicsButton(ctx, panelX + 20 + (btnW + 10) * 2, btnY, btnW, btnH, 'NEW ROOM CODE', '[R / CLICK]', false, false, {
+            primaryColor: '#ffaa00',
+            font: 'bold 10px monospace'
         });
     }
+
+    // Footer Hint
+    ctx.textAlign = 'center';
+    ctx.fillStyle = '#6a7a9a';
+    ctx.font = '10px monospace';
+    ctx.fillText('SPACE to Launch Sortie  |  [C] Copy Invite Link  |  [R] New Room  |  [ESC] Return to Bridge', canvas.width / 2, panelY + panelH - 12);
 }
 
 if (typeof window !== 'undefined') {
+    window.squadronRoomCode = squadronRoomCode;
+    window.squadronPilots = squadronPilots;
+    window.generateNewRoomCode = generateNewRoomCode;
+    window.copySquadronInviteLink = copySquadronInviteLink;
     window.drawMultiplayerLobby = drawMultiplayerLobby;
 }

@@ -74,7 +74,7 @@ var pauseSubScreen = 'menu'; // 'menu' or 'settings'
 var selectedSettingsIndex = 0;
 var hoveredSettingsIndex = -1;
 var prevHoveredSettingsIndex = -1; // GRO-1294
-var SETTINGS_OPTIONS = ['MASTER VOLUME', 'SFX VOLUME', 'MUSIC VOLUME', 'DIFFICULTY', 'AUDIO TUNNELS', 'BANTER SYSTEM', 'STREAMER MODE', 'SUBTITLES', 'BACK'];
+var SETTINGS_OPTIONS = ['MASTER VOLUME', 'SFX VOLUME', 'MUSIC VOLUME', 'DIFFICULTY', 'LANGUAGE', 'AUDIO TUNNELS', 'BANTER SYSTEM', 'STREAMER MODE', 'SUBTITLES', 'BACK'];
 
 var selectedShipIndex = 0; // 0=scout, 1=interceptor, 2=heavy
 var hoveredShipIndex = -1;
@@ -460,11 +460,19 @@ function adjustSetting(index, dir) {
         if (currentIdx < 0) currentIdx = 1;
         currentIdx = (currentIdx + dir + diffs.length) % diffs.length;
         difficulty = diffs[currentIdx];
-    } else if (index === 4) { // Audio Tunnels — toggle
+    } else if (index === 4) { // Language selector
+        if (typeof setLanguage === 'function' && typeof I18N_CONFIG !== 'undefined') {
+            const langs = I18N_CONFIG.supportedLanguages || ['en', 'ja', 'de', 'es'];
+            let cur = langs.indexOf(typeof currentLanguage !== 'undefined' ? currentLanguage : 'en');
+            if (cur < 0) cur = 0;
+            cur = (cur + dir + langs.length) % langs.length;
+            setLanguage(langs[cur]);
+        }
+    } else if (index === 5) { // Audio Tunnels — toggle
         audioTunnelsEnabled = !audioTunnelsEnabled;
-    } else if (index === 5) { // Banter System — toggle
+    } else if (index === 6) { // Banter System — toggle
         banterEnabled = !banterEnabled;
-    } else if (index === 6) { // Streamer Mode — toggle (disables both voice channels)
+    } else if (index === 7) { // Streamer Mode — toggle (disables both voice channels)
         streamerMode = !streamerMode;
         if (streamerMode) {
             // Save previous states for restoration when streamer mode is turned off
@@ -479,7 +487,7 @@ function adjustSetting(index, dir) {
                 audioTunnelsEnabled = window._preStreamerAudioTunnels;
             }
         }
-    } else if (index === 7) { // GRO-940: Accessibility Subtitles — toggle
+    } else if (index === 8) { // GRO-940: Accessibility Subtitles — toggle
         subtitlesEnabled = !subtitlesEnabled;
     }
 }
@@ -518,36 +526,15 @@ function confirmLoadGame() {
             score: cp.score,
             scrap: cp.scrap,
             weaponLevel: cp.weaponLevel,
-            shield: cp.shield,
             lives: cp.lives,
-            lootedSegments: cp.lootedSegments,
-            currentSegment: cp.currentSegment
+            difficulty: save.difficulty || 'normal',
+            updatedAt: new Date().toISOString()
         });
-        // Re-read the saved state we just updated
-        const reloaded = CampaignSave.load(slot);
-        if (reloaded) {
-            window._loadSaves[slot] = reloaded;
-        }
     }
 
-    // Restore settings
-    difficulty = save.difficulty || 'normal';
-    masterVolume = save.masterVolume || 0.8;
-    sfxVolume = save.sfxVolume || 0.8;
-    musicVolume = save.musicVolume || 0.6;
-    banterEnabled = save.banterEnabled !== undefined ? save.banterEnabled : true;
-    audioTunnelsEnabled = save.audioTunnelsEnabled !== undefined ? save.audioTunnelsEnabled : true;
-    streamerMode = save.streamerMode || false;
-    subtitlesEnabled = save.subtitlesEnabled !== undefined ? save.subtitlesEnabled : true;
-
-    // Restore ship
-    selectedShipIndex = SHIP_OPTIONS.indexOf(save.ship);
-    if (selectedShipIndex < 0) selectedShipIndex = 0;
-
-    // Set run state
-    window._resumeSave = save;
-    window._resumeSlot = slot;
-    window.location.href = 'ship_select.html?continue=' + slot;
+    CampaignSave.setCurrentSlot(slot);
+    CampaignSave.load(slot);
+    transitionToScreen(SCREENS.PLAYING);
 }
 
 function deleteSaveSlot(slot) {
@@ -575,7 +562,7 @@ function handlePauseMenuSelect() {
             transitionToScreen(SCREENS.MENU);
         }
     } else if (pauseSubScreen === 'settings') {
-        if (selectedSettingsIndex === 8) { // BACK
+        if (selectedSettingsIndex === 9) { // BACK
             pauseSubScreen = 'menu';
         }
     }
@@ -622,7 +609,7 @@ function handleMenuConfirm() {
             transitionToScreen(SCREENS.MENU);
         }
     } else if (currentScreen === SCREENS.SETTINGS) {
-        if (selectedSettingsIndex === 7) { // BACK
+        if (selectedSettingsIndex === 9) { // BACK
             transitionToScreen(SCREENS.MENU);
         }
     } else if (currentScreen === SCREENS.LEVEL_CLEAR) {
@@ -893,13 +880,13 @@ function drawMenuScreens() {
         }
         
         // Category tabs
-        const categories = ['speedrun', 'scrapLord', 'survivor'];
-        const categoryLabels = ['[1] ⏱ SPEEDRUN', '[2] 💎 SCRAP LORD', '[3] 🛡 SURVIVOR'];
-        const filterStartX = 140;
+        const categories = ['speedrun', 'scrapLord', 'survivor', 'dailyChallenge', 'hardcoreScrapper'];
+        const categoryLabels = ['[1] ⏱ SPEED', '[2] 💎 SCRAP', '[3] 🛡 SURVIVE', '[4] 📅 DAILY', '[5] 💀 HARDCORE'];
+        const filterStartX = 60;
         const filterY = 92;
-        const tabW = 160;
+        const tabW = 125;
         const tabH = 26;
-        const gap = 175;
+        const gap = 135;
         
         for (let fi = 0; fi < categories.length; fi++) {
             const fx = filterStartX + fi * gap;
@@ -907,7 +894,7 @@ function drawMenuScreens() {
             if (typeof CockpitUI !== 'undefined') {
                 CockpitUI.drawAvionicsButton(ctx, fx, filterY, tabW, tabH, categoryLabels[fi], '', isActive, false, {
                     primaryColor: '#ffaa00',
-                    font: 'bold 10px monospace'
+                    font: 'bold 9px monospace'
                 });
             }
         }
@@ -940,7 +927,7 @@ function drawMenuScreens() {
             ctx.fillStyle = '#5a5a7f';
             ctx.textAlign = 'left';
             ctx.fillText('#', 100, listStartY - 8);
-            ctx.fillText(leaderboardFilter === 'speedrun' ? 'TIME' : (leaderboardFilter === 'scrapLord' ? 'SCRAP' : 'DEATHS'), 140, listStartY - 8);
+            ctx.fillText(leaderboardFilter === 'speedrun' ? 'TIME' : (leaderboardFilter === 'scrapLord' ? 'SCRAP' : (leaderboardFilter === 'dailyChallenge' ? 'SCORE' : (leaderboardFilter === 'hardcoreScrapper' ? 'SCRAP EXT' : 'DEATHS'))), 140, listStartY - 8);
             ctx.fillText('SHIP', 260, listStartY - 8);
             ctx.fillText('TIER', 360, listStartY - 8);
             ctx.fillText('DIFF', 480, listStartY - 8);
@@ -969,14 +956,16 @@ function drawMenuScreens() {
                 // Formatted Value
                 ctx.fillStyle = '#ffffff';
                 let displayValue = "";
-                if (window.Leaderboard) {
+                if (window.Leaderboard && Leaderboard.categories[leaderboardFilter]) {
                     const val = Leaderboard.categories[leaderboardFilter].getValue(s);
                     if (leaderboardFilter === 'speedrun') {
                         const m = Math.floor(val / 60);
                         const sec = Math.floor(val % 60);
                         displayValue = `${m}:${sec.toString().padStart(2, '0')}`;
-                    } else if (leaderboardFilter === 'scrapLord') {
-                        displayValue = val.toLocaleString();
+                    } else if (leaderboardFilter === 'scrapLord' || leaderboardFilter === 'hardcoreScrapper') {
+                        displayValue = Number(val || 0).toLocaleString() + ' ⚙';
+                    } else if (leaderboardFilter === 'dailyChallenge') {
+                        displayValue = Number(val || 0).toLocaleString() + ' pts';
                     } else {
                         displayValue = val + (val === 1 ? ' death' : ' deaths');
                     }

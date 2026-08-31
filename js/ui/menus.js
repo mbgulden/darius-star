@@ -80,10 +80,22 @@ function drawMainMenu(ctx) {
             ctx.fillText('NO ARCHIVED RUNS IN DATABASE', leftPanelX + 12, rowStartY + 134);
         }
 
-        // Precursor Sub-System Status
-        ctx.fillStyle = '#00ff88';
-        ctx.font = 'bold 9.5px monospace';
-        ctx.fillText('● PRECURSOR SENSORS: ONLINE', leftPanelX + 12, rowStartY + 172);
+        // Daily Challenge Telemetry
+        const now = new Date();
+        const dateStr = now.toISOString().slice(0, 10);
+        const mutators = [
+            'SOLAR SURGE (+50% Spd / 2x Scrap)',
+            'ION SILT (Shield Regen / Heavy Lasers)',
+            'QUANTUM OVERCLOCK (Rapid Fire / Swift Swarm)',
+            'TACHYON RIFT (Double Power / Swift Bosses)'
+        ];
+        const dayIdx = (now.getUTCDate() + now.getUTCMonth() * 31) % mutators.length;
+        ctx.fillStyle = '#00ffff';
+        ctx.font = 'bold 9px monospace';
+        ctx.fillText(`📅 DAILY SEED: ${dateStr}`, leftPanelX + 12, rowStartY + 164);
+        ctx.fillStyle = '#ffaa00';
+        ctx.font = 'italic 8.5px monospace';
+        ctx.fillText(`⚡ ${mutators[dayIdx]}`, leftPanelX + 12, rowStartY + 178);
     }
 
     // 2. Right Operations Menu Switchboard

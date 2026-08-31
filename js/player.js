@@ -80,7 +80,7 @@ class Player {
             },
             3: { up:'Gamepad1U', down:'Gamepad1D', left:'Gamepad1L', right:'Gamepad1R', fire:'Gamepad1A', special:'Gamepad1B', dodge:'Gamepad1X', boost:'Gamepad1LB' },
             4: { up:'Gamepad2U', down:'Gamepad2D', left:'Gamepad2L', right:'Gamepad2R', fire:'Gamepad2A', special:'Gamepad2B', dodge:'Gamepad2X', boost:'Gamepad2LB' },
-        }[playerId];
+        }[playerId || 1] || { up: ['w', 'W'], down: ['s', 'S'], left: ['a', 'A'], right: ['d', 'D'], fire: [' '], special: ['k', 'K'], dodge: ['e', 'E'], boost: ['Shift'] };
         this.width = 40;
         this.height = 20;
         this.shipType = shipType;
@@ -189,6 +189,11 @@ class Player {
             this.dodgeInvulnTimer = 0;
             this.dodgeMaxInvuln = 0.25;
         }
+
+        // Thermal Weapon Overheat state (GDD §2.2 Supreme Nova)
+        this.weaponHeat = 0;
+        this.isOverheated = false;
+        this.overheatTimer = 0;
         
         // Apply custom ship color from localStorage
         try {
@@ -515,14 +520,51 @@ class Player {
             this.shootTimer -= dt;
         }
 
-        if (this.isKeyPressed('fire') && this.shootTimer <= 0) {
+        // Weapon Heat & Overheat cooling loop (GDD §2.2)
+        if (this.isOverheated) {
+            this.overheatTimer -= dt;
+            this.weaponHeat = Math.max(0, this.weaponHeat - 50 * dt);
+            if (Math.random() < 0.25 && typeof particles !== 'undefined') {
+                particles.push(new Particle(this.x + Math.random() * this.width, this.y + Math.random() * this.height, '#ff4400'));
+            }
+            if (this.overheatTimer <= 0 && this.weaponHeat <= 0) {
+                this.isOverheated = false;
+                if (typeof floatingTexts !== 'undefined') {
+                    floatingTexts.push(new FloatingText(this.x + this.width / 2, this.y - 20, 'WEAPONS COOLED', '#00ff88'));
+                }
+            }
+        } else {
+            const mods = window.DS_UpgradeSystem ? window.DS_UpgradeSystem.getGameplayModifiers() : null;
+            const coolRate = 42 * (mods ? mods.weaponFireRateMultiplier : 1.0);
+            if (!this.isKeyPressed('fire') || this.weaponLevel < 5) {
+                this.weaponHeat = Math.max(0, this.weaponHeat - coolRate * dt);
+            }
+        }
+
+        if (this.isKeyPressed('fire') && this.shootTimer <= 0 && !this.isOverheated) {
             this.shoot();
             this.shootTimer = currentShootCooldown;
         }
     }
 
     shoot() {
-        if (this.isPulledOut) return;
+        if (this.isPulledOut || this.isOverheated) return;
+
+        // Supreme Nova Heat Accumulation
+        if (this.weaponLevel >= 5 && !this.isSpecialActive) {
+            this.weaponHeat += 5.5;
+            if (this.weaponHeat >= 100) {
+                this.weaponHeat = 100;
+                this.isOverheated = true;
+                this.overheatTimer = 1.8;
+                if (typeof playSound === 'function') playSound('explosion', { volume: 0.4 });
+                if (typeof floatingTexts !== 'undefined') {
+                    floatingTexts.push(new FloatingText(this.x + this.width / 2, this.y - 26, '⚠️ WEAPON OVERHEAT', '#ff0055'));
+                }
+                return;
+            }
+        }
+
         playSound('shoot', {weaponLevel: this.weaponLevel});
         const mods = window.DS_UpgradeSystem ? window.DS_UpgradeSystem.getGameplayModifiers() : null;
         const speedMultiplier = mods ? mods.weaponProjSpeedMultiplier : 1.0;
@@ -1370,6 +1412,22 @@ class Player {
                 ctx.fill();
                 ctx.restore();
             }
+        }
+
+        // Thermal Weapon Overheat HUD Gauge (GDD §2.2 Supreme Nova)
+        if (this.weaponHeat > 0) {
+            const heatPct = Math.min(1.0, this.weaponHeat / 100);
+            const barW = 36;
+            const barH = 3;
+            const bx = (this.width - barW) / 2;
+            const by = this.height + 6;
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+            ctx.fillRect(bx, by, barW, barH);
+            ctx.fillStyle = this.isOverheated ? '#ff0033' : (heatPct > 0.75 ? '#ff6600' : '#ffcc00');
+            ctx.fillRect(bx, by, barW * heatPct, barH);
+            ctx.strokeStyle = this.isOverheated ? '#ff0033' : 'rgba(255, 255, 255, 0.3)';
+            ctx.lineWidth = 0.8;
+            ctx.strokeRect(bx, by, barW, barH);
         }
 
         ctx.restore();

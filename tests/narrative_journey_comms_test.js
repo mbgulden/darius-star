@@ -337,7 +337,10 @@ console.log(`  [PASS] All 100/100 sectors verified with unique names, landmarks,
 
 // Test LevelManager sector start chatter trigger on attempt 1
 LevelManager.resetLevelAttempts();
+global.currentScreen = SCREENS.PLAYING;
+currentScreen = SCREENS.PLAYING;
 LevelManager.setBiomeAndLevel(4, 4); // The Veil Nebula - Sector 4.4 Thought-Form Anomalies
+activeDialogue = window.activeDialogue;
 assert.ok(activeDialogue, "Sector 4.4 entry must trigger activeDialogue");
 assert.strictEqual(activeDialogue.lines[0].speaker, 'Lyra', "Sector 4.4 chatter should be spoken by Lyra");
 assert.ok(activeDialogue.lines[0].text.includes("glass") || activeDialogue.lines[0].text.includes("story"), "Sector 4.4 must trigger bespoke narrative line");

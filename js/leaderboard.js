@@ -38,6 +38,28 @@ window.Leaderboard = {
                 { name: 'Untouchable',  min: 25,  color: '#ff00ff' }
             ],
             getValue(entry) { return entry.deaths || 0; }
+        },
+        dailyChallenge: {
+            name: 'Daily Challenge',
+            sortDir: 'desc', // higher score = better
+            tiers: [
+                { name: 'Contender',   min: 0,     color: '#888888' },
+                { name: 'Ace Pilot',   min: 15000, color: '#00ffff' },
+                { name: 'Grandmaster', min: 35000, color: '#ffaa00' },
+                { name: 'Singularity', min: 60000, color: '#ff00aa' }
+            ],
+            getValue(entry) { return entry.score || entry.value || 0; }
+        },
+        hardcoreScrapper: {
+            name: 'Hardcore Scrapper',
+            sortDir: 'desc', // higher scrap recovered = better
+            tiers: [
+                { name: 'Drifter',         min: 0,     color: '#888888' },
+                { name: 'Trench Veteran',  min: 1000,  color: '#00ff88' },
+                { name: 'Iron Coelacanth', min: 5000,  color: '#ffd700' },
+                { name: 'Abyss Legend',    min: 12000, color: '#b026ff' }
+            ],
+            getValue(entry) { return entry.scrap || entry.value || 0; }
         }
     },
 

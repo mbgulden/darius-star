@@ -20,6 +20,17 @@ const NetworkClient = {
     init() {
         if (typeof window !== 'undefined') {
             window.NetworkClient = this;
+            try {
+                const params = new URLSearchParams(window.location.search);
+                const room = params.get('room') || params.get('join');
+                if (room) {
+                    this._roomCode = room.toUpperCase();
+                    if (typeof squadronRoomCode !== 'undefined') {
+                        squadronRoomCode = this._roomCode;
+                    }
+                    this.connect(this._roomCode);
+                }
+            } catch (e) {}
         }
     },
 
@@ -29,8 +40,8 @@ const NetworkClient = {
         }
 
         this._roomCode = roomCode;
-        const protocol = (typeof window !== 'undefined' && window.location.protocol === 'https:') ? 'wss:' : 'ws:';
-        const host = (typeof window !== 'undefined' && window.location.host) ? window.location.host : 'localhost:8099';
+        const protocol = (typeof window !== 'undefined' && window.location && window.location.protocol === 'https:') ? 'wss:' : 'ws:';
+        const host = (typeof window !== 'undefined' && window.location && window.location.host) ? window.location.host : 'localhost:8099';
         const wsUrl = `${protocol}//${host}/api/multiplayer/room/${roomCode}`;
 
         try {
