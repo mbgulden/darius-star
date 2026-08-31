@@ -75,6 +75,9 @@
         .briefing-header {
             text-align: center;
             margin-bottom: 8px;
+            position: relative;
+            width: 100%;
+            max-width: 800px;
             animation: headerEntry 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
@@ -110,6 +113,26 @@
             text-transform: uppercase;
             margin-top: 2px;
             font-family: var(--font-display);
+        }
+
+        .sound-btn {
+            position: absolute;
+            right: 0;
+            top: 5px;
+            background: rgba(0, 255, 255, 0.1);
+            border: 1px solid var(--accent-cyan);
+            color: var(--accent-cyan);
+            font-family: var(--font-mono);
+            font-size: 11px;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .sound-btn:hover {
+            background: rgba(0, 255, 255, 0.25);
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.4);
         }
 
         /* ── MAIN CONTAINER ── */
@@ -248,17 +271,17 @@
         .comms-header .waveform {
             display: inline-flex;
             align-items: center;
-            gap: 2px;
+            gap: 3px;
             height: 14px;
             margin-left: 8px;
         }
 
         .comms-header .wave-bar {
-            width: 2px;
+            width: 3px;
             height: 4px;
             background: var(--accent-cyan);
             border-radius: 1px;
-            transition: height 0.1s ease;
+            transition: height 0.08s ease;
         }
 
         .comms-header .channel {
@@ -439,26 +462,28 @@
         /* ── AUDIO UNMUTE BANNER ── */
         .audio-unmute-prompt {
             position: fixed;
-            bottom: 20px;
-            background: rgba(4, 10, 22, 0.92);
-            border: 1px solid var(--accent-cyan);
-            border-radius: 20px;
-            padding: 8px 18px;
+            bottom: 24px;
+            background: rgba(4, 10, 24, 0.95);
+            border: 1.5px solid var(--accent-cyan);
+            border-radius: 24px;
+            padding: 10px 22px;
             font-family: var(--font-display);
-            font-size: 11px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1px;
             color: var(--accent-cyan);
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
             cursor: pointer;
             z-index: 1000;
             animation: pulse 1.5s infinite;
         }
 
         @keyframes pulse {
-            0%, 100% { opacity: 0.85; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.03); }
+            0%, 100% { opacity: 0.9; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.03); box-shadow: 0 0 30px rgba(0, 255, 255, 0.7); }
         }
 
         @media (max-width: 600px) {
@@ -470,6 +495,7 @@
             .action-bar { flex-direction: column; width: 100%; }
             .btn { width: 100%; justify-content: center; }
             .btn-launch { margin-left: 0; }
+            .sound-btn { position: relative; top: 0; right: 0; margin-top: 8px; }
         }
     </style>
 </head>
@@ -477,6 +503,7 @@
     <div class="interference-overlay"></div>
 
     <div class="briefing-header">
+        <button class="sound-btn" id="soundToggleBtn" onclick="toggleMute()">🔊 SOUND: ON</button>
         <div class="classification">★ TOP SECRET // EYES ONLY ★</div>
         <h1 id="biomeName">ABYSSAL TRENCH</h1>
         <div class="codename" id="codename">OPERATION: ABYSSAL TRENCH</div>
@@ -551,7 +578,7 @@
     </div>
 
     <div class="audio-unmute-prompt" id="audioPrompt" onclick="unlockAudioPrompt()">
-        🔊 Click anywhere to enable tactical voice comms
+        🔊 Click anywhere to activate tactical voice comms & soundtrack
     </div>
 
     <script>
@@ -581,26 +608,70 @@
         { pct: 100, text: 'EXISTENTIAL', color: 'var(--accent-red)' },
     ];
 
-    // ── AUDIO & TYPEWRITER ENGINE ──
+    // ── FULL AUDIO SYSTEM (BGM + VOICE + SFX + DUCKING) ──
     let dialogueLines = [];
     let currentLineIdx = -1;
     let typewriterInterval = null;
     let briefingComplete = false;
     let briefingSkipped = false;
     let currentAudio = null;
+    let bgmAudio = null;
     let audioUnlocked = false;
+    let isMuted = false;
     let waveInterval = null;
+
+    // Biome Ambient Soundtracks
+    const BIOME_BGM = {
+        1: 'assets/audio/ambient_abyssal_trench.mp3',
+        2: 'assets/audio/biome_b2_coral.mp3',
+        3: 'assets/audio/biome_b3_lair.mp3',
+        4: 'assets/audio/biome_b4_nebula.mp3',
+        5: 'assets/audio/biome_b5_ice.mp3',
+        6: 'assets/audio/biome_b6_fire.mp3',
+        7: 'assets/audio/biome_b7_storm.mp3',
+        8: 'assets/audio/biome_b8_derelict.mp3',
+        9: 'assets/audio/biome_b9_hive.mp3',
+        10: 'assets/audio/biome_b10_core.mp3'
+    };
+
+    function initBGM() {
+        const bgmPath = BIOME_BGM[biomeId] || 'assets/audio/ambient_abyssal_trench.mp3';
+        bgmAudio = new Audio(bgmPath);
+        bgmAudio.loop = true;
+        bgmAudio.volume = 0.35;
+    }
 
     function unlockAudioPrompt() {
         audioUnlocked = true;
         const prompt = document.getElementById('audioPrompt');
         if (prompt) prompt.style.display = 'none';
-        if (currentAudio) {
+
+        if (!isMuted && bgmAudio && bgmAudio.paused) {
+            bgmAudio.play().catch(() => {});
+        }
+        if (!isMuted && currentAudio && currentAudio.paused) {
             currentAudio.play().catch(() => {});
         }
     }
 
+    function toggleMute() {
+        isMuted = !isMuted;
+        const btn = document.getElementById('soundToggleBtn');
+        if (isMuted) {
+            if (bgmAudio) bgmAudio.pause();
+            if (currentAudio) currentAudio.pause();
+            if (btn) btn.innerHTML = '🔇 SOUND: MUTED';
+        } else {
+            if (btn) btn.innerHTML = '🔊 SOUND: ON';
+            unlockAudioPrompt();
+        }
+    }
+
     document.addEventListener('click', () => {
+        if (!audioUnlocked) unlockAudioPrompt();
+    }, { once: false });
+
+    document.addEventListener('keydown', () => {
         if (!audioUnlocked) unlockAudioPrompt();
     }, { once: false });
 
@@ -640,6 +711,7 @@
 
     // ── LOAD BRIEFING DATA ──
     async function loadBriefing() {
+        initBGM();
         try {
             const resp = await fetch('assets/mission-briefings.json');
             if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
@@ -710,6 +782,7 @@
         if (currentLineIdx >= dialogueLines.length) {
             briefingComplete = true;
             setWaveformActive(false);
+            if (bgmAudio && !isMuted) bgmAudio.volume = 0.35;
             enableLaunch();
             return;
         }
@@ -723,7 +796,6 @@
         const container = document.getElementById('commsContent');
         const cls = speakerClass(line.speaker);
 
-        // Stop previous line audio
         if (currentAudio) {
             try { currentAudio.pause(); } catch(e) {}
             currentAudio = null;
@@ -743,14 +815,18 @@
         const cursor = lineEl.querySelector('.cursor');
         const fullText = line.text;
 
-        // Determine audio track URL
         const modeKey = mode === 'coop2' ? 'coop2' : (mode === 'coop4' ? 'coop4' : 'solo');
         const audioUrl = `assets/audio/voice/thorne/pre_b${biomeId}_${modeKey}_${currentLineIdx + 1}.mp3`;
         
         let audioDurationSec = 8.0;
         const audio = new Audio(audioUrl);
         currentAudio = audio;
-        audio.volume = 0.9;
+        audio.volume = 0.95;
+
+        // Duck BGM
+        if (bgmAudio && !isMuted && !bgmAudio.paused) {
+            bgmAudio.volume = 0.12;
+        }
 
         audio.onloadedmetadata = () => {
             if (audio.duration && !isNaN(audio.duration)) {
@@ -758,25 +834,27 @@
             }
         };
 
-        const playPromise = audio.play();
-        if (playPromise !== undefined) {
-            playPromise.then(() => {
-                audioUnlocked = true;
-                const prompt = document.getElementById('audioPrompt');
-                if (prompt) prompt.style.display = 'none';
-                setWaveformActive(true);
-            }).catch(() => {
-                // Autoplay blocked: user hasn't clicked yet
-                const prompt = document.getElementById('audioPrompt');
-                if (prompt) prompt.style.display = 'flex';
-                setWaveformActive(false);
-            });
+        if (!isMuted) {
+            const playPromise = audio.play();
+            if (playPromise !== undefined) {
+                playPromise.then(() => {
+                    audioUnlocked = true;
+                    const prompt = document.getElementById('audioPrompt');
+                    if (prompt) prompt.style.display = 'none';
+                    setWaveformActive(true);
+                    if (bgmAudio && bgmAudio.paused && !isMuted) {
+                        bgmAudio.play().catch(() => {});
+                    }
+                }).catch(() => {
+                    const prompt = document.getElementById('audioPrompt');
+                    if (prompt) prompt.style.display = 'flex';
+                    setWaveformActive(false);
+                });
+            }
         }
 
-        // Typewriter speed dynamically calculated to match spoken audio duration
         let charIdx = 0;
         clearInterval(typewriterInterval);
-        
         const estSpeed = Math.max(20, Math.min(60, (audioDurationSec * 900) / Math.max(1, fullText.length)));
 
         typewriterInterval = setInterval(() => {
@@ -796,6 +874,8 @@
 
         audio.onended = () => {
             setWaveformActive(false);
+            // Unduck BGM
+            if (bgmAudio && !isMuted) bgmAudio.volume = 0.35;
             if (!briefingSkipped && !briefingComplete) {
                 setTimeout(advanceDialogue, 800);
             }
@@ -803,6 +883,7 @@
 
         audio.onerror = () => {
             setWaveformActive(false);
+            if (bgmAudio && !isMuted) bgmAudio.volume = 0.35;
             if (!briefingSkipped && !briefingComplete) {
                 const fallbackTime = Math.max(4000, fullText.length * 50);
                 setTimeout(advanceDialogue, fallbackTime);
@@ -845,6 +926,7 @@
             try { currentAudio.pause(); } catch(e) {}
             currentAudio = null;
         }
+        if (bgmAudio && !isMuted) bgmAudio.volume = 0.35;
 
         const container = document.getElementById('commsContent');
         container.innerHTML = dialogueLines.map((line, i) => {
@@ -870,6 +952,10 @@
         if (currentAudio) {
             try { currentAudio.pause(); } catch(e) {}
             currentAudio = null;
+        }
+        if (bgmAudio) {
+            try { bgmAudio.pause(); } catch(e) {}
+            bgmAudio = null;
         }
         const params = new URLSearchParams();
         params.set('biome', biomeId);

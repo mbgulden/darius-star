@@ -747,6 +747,7 @@
     <header>
         <h1>Fighter Selection</h1>
         <div class="subtitle">Choose Your Ship · Cyber Coelacanth</div>
+        <button id="soundToggleBtn" onclick="SoundEngine.toggleMute()" style="position:absolute; right:15px; top:15px; background:rgba(0,255,255,0.1); border:1px solid var(--accent-cyan); color:var(--accent-cyan); font-family:var(--font-mono); font-size:11px; padding:6px 12px; border-radius:4px; cursor:pointer;">🔊 SOUND: ON</button>
     </header>
 
     <!-- Dual Player Select Panels -->
@@ -967,22 +968,96 @@
             { name: 'Blue', value: '#0088ff' }
         ];
 
-        // --- Audio Manager ---
-        const selectSfx = new Audio('assets/audio/sfx/sfx_menu_select.wav');
-        const launchSfx = new Audio('assets/audio/sfx/sfx_game_start.wav');
+        // --- Full Ship Select Audio Engine (BGM + SFX + Pilot Voice Chatter) ---
+        const SoundEngine = {
+            bgm: null,
+            bgmPlaying: false,
+            voiceAudio: null,
+            muted: false,
+            sfx: {
+                select: new Audio('assets/audio/sfx/ui_select.mp3'),
+                click: new Audio('assets/audio/sfx/ui_click.mp3'),
+                color: new Audio('assets/audio/sfx/transition_click.wav'),
+                launch: new Audio('assets/audio/sfx/laser_fire.mp3'),
+                charge: new Audio('assets/audio/sfx/laser_charge.mp3')
+            },
+            shipVoices: {
+                striker: 'assets/audio/voice/darius/banter_b1_level_start_tier1_0.mp3',
+                interceptor: 'assets/audio/voice/darius/banter_b1_level_start_tier1_0.mp3',
+                valkyrie: 'assets/audio/voice/naya/banter_b1_level_start_tier1_1.mp3',
+                bastion: 'assets/audio/voice/cross/banter_b5_level_start_tier1_1.mp3',
+                phantom: 'assets/audio/voice/selene/avionics_quantum_ready.mp3',
+                nova: 'assets/audio/voice/lyra/banter_b1_level_start_tier1_2.mp3',
+                warden: 'assets/audio/voice/architect/banter_b10_level_start_tier1_1.mp3'
+            },
+            init() {
+                this.bgm = new Audio('assets/audio/relief_home_base.mp3');
+                this.bgm.loop = true;
+                this.bgm.volume = 0.35;
+                
+                const unlock = () => {
+                    if (!this.bgmPlaying && !this.muted) {
+                        this.playBgm();
+                    }
+                };
+                document.addEventListener('click', unlock, { once: false });
+                document.addEventListener('keydown', unlock, { once: false });
+                document.addEventListener('touchstart', unlock, { once: false });
+            },
+            playBgm() {
+                if (this.muted || !this.bgm) return;
+                this.bgm.play().then(() => {
+                    this.bgmPlaying = true;
+                    const btn = document.getElementById('soundToggleBtn');
+                    if (btn) btn.innerHTML = '🔊 SOUND: ON';
+                }).catch(() => {});
+            },
+            toggleMute() {
+                this.muted = !this.muted;
+                if (this.muted) {
+                    if (this.bgm) this.bgm.pause();
+                    if (this.voiceAudio) this.voiceAudio.pause();
+                    const btn = document.getElementById('soundToggleBtn');
+                    if (btn) btn.innerHTML = '🔇 SOUND: MUTED';
+                } else {
+                    this.playBgm();
+                }
+            },
+            playSfx(type) {
+                if (this.muted) return;
+                try {
+                    const snd = this.sfx[type] || this.sfx.select;
+                    snd.currentTime = 0;
+                    snd.volume = 0.75;
+                    snd.play().catch(() => {});
+                } catch(e) {}
+            },
+            playShipVoice(shipId) {
+                if (this.muted) return;
+                try {
+                    if (this.voiceAudio) {
+                        this.voiceAudio.pause();
+                        this.voiceAudio = null;
+                    }
+                    const voiceUrl = this.shipVoices[shipId];
+                    if (voiceUrl) {
+                        if (this.bgm && this.bgmPlaying) this.bgm.volume = 0.12;
+                        const voice = new Audio(voiceUrl);
+                        this.voiceAudio = voice;
+                        voice.volume = 0.95;
+                        voice.onended = () => {
+                            if (this.bgm && this.bgmPlaying) this.bgm.volume = 0.35;
+                        };
+                        voice.play().catch(() => {});
+                    }
+                } catch(e) {}
+            }
+        };
+
+        SoundEngine.init();
 
         function playSfx(type) {
-            try {
-                if (type === 'select') {
-                    selectSfx.currentTime = 0;
-                    selectSfx.play();
-                } else if (type === 'launch') {
-                    launchSfx.currentTime = 0;
-                    launchSfx.play();
-                }
-            } catch (e) {
-                // Autoplay policy blocker catches
-            }
+            SoundEngine.playSfx(type);
         }
 
         // --- Unlock System ---
@@ -1038,11 +1113,13 @@
                 p1SelectedIndex = index;
                 p1Color = ship.color; // reset to default ship color upon selection change
                 updatePlayerPanel(1);
+                SoundEngine.playShipVoice(ship.id);
             } else {
                 if (!p2Active) return;
                 p2SelectedIndex = index;
                 p2Color = ship.color; // reset to default ship color upon selection change
                 updatePlayerPanel(2);
+                SoundEngine.playShipVoice(ship.id);
             }
             renderCards();
         }
