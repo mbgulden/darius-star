@@ -363,10 +363,12 @@ function resetGame() {
     bossDefeated = false;
     bossIntroPlaying = false;
     bossesDefeated = 0;
-    victoryVideoPlaying = false;
-    if (bossIntroVideo) { bossIntroVideo.pause(); bossIntroVideo.classList.remove('active'); bossIntroVideo.muted = true; }
-    if (victoryVideo) { victoryVideo.pause(); victoryVideo.classList.remove('active'); victoryVideo.muted = true; }
-    skipHint.classList.remove('active');
+    const bIntro = typeof bossIntroVideo !== 'undefined' ? bossIntroVideo : (typeof document !== 'undefined' ? document.getElementById('boss-intro-video') : null);
+    if (bIntro) { try { bIntro.pause(); bIntro.classList.remove('active'); bIntro.muted = true; } catch(e) {} }
+    const vVid = typeof victoryVideo !== 'undefined' ? victoryVideo : (typeof document !== 'undefined' ? document.getElementById('victory-video') : null);
+    if (vVid) { try { vVid.pause(); vVid.classList.remove('active'); vVid.muted = true; } catch(e) {} }
+    const sHint = typeof skipHint !== 'undefined' ? skipHint : (typeof document !== 'undefined' ? document.getElementById('skip-hint') : null);
+    if (sHint) { try { sHint.classList.remove('active'); } catch(e) {} }
     
     runScrap = 0;
     runScrapSaved = false;
@@ -378,15 +380,22 @@ function resetGame() {
     highScoreParticles = [];
     
     // Lock difficulty before constructing players so ship stats/lives use the save or ship-select choice.
-    if (campaignSave) {
-        difficulty = campaignSave.difficulty || 'normal';
+    let targetDiff = 'normal';
+    if (typeof campaignSave !== 'undefined' && campaignSave) {
+        targetDiff = campaignSave.difficulty || 'normal';
     } else {
         try {
             const shipSel = JSON.parse(localStorage.getItem('dariusStar_shipSelection') || 'null');
-            difficulty = (shipSel && shipSel.difficulty) || localStorage.getItem('dariusStar_difficulty') || difficulty || 'normal';
+            targetDiff = (shipSel && shipSel.difficulty) || localStorage.getItem('dariusStar_difficulty') || 'normal';
         } catch (e) {
-            difficulty = localStorage.getItem('dariusStar_difficulty') || difficulty || 'normal';
+            targetDiff = localStorage.getItem('dariusStar_difficulty') || 'normal';
         }
+    }
+    if (typeof difficulty !== 'undefined') {
+        difficulty = targetDiff;
+    }
+    if (typeof window !== 'undefined') {
+        window.difficulty = targetDiff;
     }
 
     if (window.Multiplayer) Multiplayer.init();
@@ -406,10 +415,14 @@ function resetGame() {
                     activeShip = parsed.shipId;
                 }
             } else {
-                activeShip = SHIP_OPTIONS[selectedShipIndex];
+                const opts = typeof SHIP_OPTIONS !== 'undefined' ? SHIP_OPTIONS : ['interceptor', 'valkyrie', 'bastion'];
+                const idx = typeof selectedShipIndex !== 'undefined' ? selectedShipIndex : 0;
+                activeShip = opts[idx] || 'interceptor';
             }
         } catch (e) {
-            activeShip = SHIP_OPTIONS[selectedShipIndex];
+            const opts = typeof SHIP_OPTIONS !== 'undefined' ? SHIP_OPTIONS : ['interceptor', 'valkyrie', 'bastion'];
+            const idx = typeof selectedShipIndex !== 'undefined' ? selectedShipIndex : 0;
+            activeShip = opts[idx] || 'interceptor';
         }
     }
     player = new Player(activeShip);

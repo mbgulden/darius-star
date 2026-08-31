@@ -288,7 +288,7 @@
 
             interpolate(text) {
                 if (typeof text !== 'string') return text;
-                return text.replace(/\{\{(\w+)\}\}/g, (match, p1) => {
+                return text.replace(/\{{1,2}\s*(\w+)\s*\}{1,2}/g, (match, p1) => {
                     switch (p1) {
                         case 'scrap':
                         case 'runScrap':
@@ -300,9 +300,13 @@
                         case 'weaponLevel':
                             return (typeof player !== 'undefined' && player) ? player.weaponLevel : 1;
                         case 'shield':
-                            return (typeof player !== 'undefined' && player) ? Math.round(player.shield) : 100;
+                            return (typeof player !== 'undefined' && player && player.shield !== undefined) ? Math.round(player.shield) : 100;
+                        case 'shieldMax':
+                            return (typeof player !== 'undefined' && player && player.shieldMax !== undefined) ? Math.round(player.shieldMax) : 100;
+                        case 'lives':
+                            return (typeof lives !== 'undefined') ? lives : 3;
                         case 'ship':
-                            return (typeof player !== 'undefined' && player) ? player.shipType.toUpperCase() : 'INTERCEPTOR';
+                            return (typeof player !== 'undefined' && player && player.shipType) ? player.shipType : 'interceptor';
                         default:
                             return match;
                     }

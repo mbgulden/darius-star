@@ -89,6 +89,18 @@ const VoicePlayback = {
 
         // Stop any currently playing voice
         this.stop();
+
+        const speakerName = this.SPEAKER_MAP[speakerCode] || speakerCode;
+        const lineText = line ? (line.l || line.text || '') : '';
+
+        if (typeof VoicePipeline !== 'undefined' && VoicePipeline && typeof VoicePipeline.speak === 'function') {
+            VoicePipeline.speak(lineText, speakerName, {
+                lineId: line ? (line.id || line.lineId) : null,
+                trigger: trigger,
+                biome: biome
+            });
+            return true;
+        }
         
         const path = this._buildPath(biome, trigger, speakerCode);
         
@@ -96,7 +108,7 @@ const VoicePlayback = {
         if (line) {
             this._activeLine = {
                 speaker: line.s || line.speaker || speakerCode,
-                text: line.l || line.text || '',
+                text: lineText,
             };
         }
 
@@ -104,9 +116,9 @@ const VoicePlayback = {
         this.duckBGM(0.65, 0.25);
         
         if (path) {
-            this._playFile(path, speakerCode, line ? (line.l || line.text) : '');
+            this._playFile(path, speakerCode, lineText);
         } else {
-            this._synthesizeVoiceSpeech(speakerCode, line ? (line.l || line.text) : '');
+            this._synthesizeVoiceSpeech(speakerCode, lineText);
         }
         return true;
     },

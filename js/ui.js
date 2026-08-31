@@ -42,7 +42,7 @@ if (typeof window !== 'undefined') {
 }
 
 // --- Menu & Settings State Variables ---
-const SCREENS = {
+var SCREENS = {
     MENU: 'menu',
     SHIP_SELECT: 'ship_select',
     SETTINGS: 'settings',
@@ -58,62 +58,55 @@ const SCREENS = {
 };
 if (typeof window !== 'undefined') {
     window.SCREENS = SCREENS;
-    try {
-        Object.defineProperty(window, 'currentScreen', {
-            get() { return currentScreen; },
-            set(v) { currentScreen = v; },
-            configurable: true
-        });
-    } catch(e) {}
 }
-let currentScreen = SCREENS.MENU;
-let selectedMenuIndex = 0;
-let hoveredMenuIndex = -1; // distinct from selected for hover state
-let prevHoveredMenuIndex = -1;   // GRO-1294: track previous for hover-sound debounce
-const menuOptions = ['CONTINUE', 'START GAME', 'UPGRADE SHOP', 'SHIP SELECT', 'SETTINGS', 'LEADERBOARD', 'CREDITS'];
-let shipSelectSource = 'menu'; // 'menu' or 'start'
+var currentScreen = SCREENS.MENU;
+var selectedMenuIndex = 0;
+var hoveredMenuIndex = -1; // distinct from selected for hover state
+var prevHoveredMenuIndex = -1;   // GRO-1294: track previous for hover-sound debounce
+var menuOptions = ['CONTINUE', 'START GAME', 'UPGRADE SHOP', 'SHIP SELECT', 'SETTINGS', 'LEADERBOARD', 'CREDITS'];
+var shipSelectSource = 'menu'; // 'menu' or 'start'
 
-let pauseMenuIndex = 0;
-const PAUSE_OPTIONS = ['RESUME', 'SETTINGS', 'QUIT TO MENU'];
-let pauseSubScreen = 'menu'; // 'menu' or 'settings'
+var pauseMenuIndex = 0;
+var PAUSE_OPTIONS = ['RESUME', 'SETTINGS', 'QUIT TO MENU'];
+var pauseSubScreen = 'menu'; // 'menu' or 'settings'
 
-let selectedSettingsIndex = 0;
-let hoveredSettingsIndex = -1;
-let prevHoveredSettingsIndex = -1; // GRO-1294
-const SETTINGS_OPTIONS = ['MASTER VOLUME', 'SFX VOLUME', 'MUSIC VOLUME', 'DIFFICULTY', 'AUDIO TUNNELS', 'BANTER SYSTEM', 'STREAMER MODE', 'SUBTITLES', 'BACK'];
+var selectedSettingsIndex = 0;
+var hoveredSettingsIndex = -1;
+var prevHoveredSettingsIndex = -1; // GRO-1294
+var SETTINGS_OPTIONS = ['MASTER VOLUME', 'SFX VOLUME', 'MUSIC VOLUME', 'DIFFICULTY', 'AUDIO TUNNELS', 'BANTER SYSTEM', 'STREAMER MODE', 'SUBTITLES', 'BACK'];
 
-let selectedShipIndex = 0; // 0=scout, 1=interceptor, 2=heavy
-let hoveredShipIndex = -1;
-let prevHoveredShipIndex = -1;   // GRO-1294
-let hoveredUpgradeIndex = -1;     // GRO-1294: upgrade shop hover
-let prevHoveredUpgradeIndex = -1; // GRO-1294
-const SHIP_OPTIONS = ['striker', 'phantom', 'bastion', 'tempest', 'specter', 'warden'];
-let selectedShip = 'striker';
+var selectedShipIndex = 0; // 0=scout, 1=interceptor, 2=heavy
+var hoveredShipIndex = -1;
+var prevHoveredShipIndex = -1;   // GRO-1294
+var hoveredUpgradeIndex = -1;     // GRO-1294: upgrade shop hover
+var prevHoveredUpgradeIndex = -1; // GRO-1294
+var SHIP_OPTIONS = ['striker', 'phantom', 'bastion', 'tempest', 'specter', 'warden'];
+var selectedShip = 'striker';
 
 // Unified Leaderboard state
-let leaderboardFilter = 'speedrun'; // 'speedrun' | 'scrapLord' | 'survivor'
-let leaderboardScrollOffset = 0;
-let newHighScoreCelebrated = false;
-let highScoreBannerTimer = 0;
-let highScoreParticles = [];
+var leaderboardFilter = 'speedrun'; // 'speedrun' | 'scrapLord' | 'survivor'
+var leaderboardScrollOffset = 0;
+var newHighScoreCelebrated = false;
+var highScoreBannerTimer = 0;
+var highScoreParticles = [];
 
 // Cinematic & Credits Scroll variables
-let cinematicTime = 0;
-let creditsScrollY = 0;
-let creditsHoldTimer = 0;
-let maxCreditsScroll = 1050;
-let bossDefeated = false;
-let bossIntroPlaying = false;
-let victoryVideoPlaying = false;
+var cinematicTime = 0;
+var creditsScrollY = 0;
+var creditsHoldTimer = 0;
+var maxCreditsScroll = 1050;
+var bossDefeated = false;
+var bossIntroPlaying = false;
+var victoryVideoPlaying = false;
 
 // Video elements for cinematics
-const bossIntroVideo = document.getElementById('boss-intro-video');
-const victoryVideo = document.getElementById('victory-video');
-const skipHint = document.getElementById('skip-cinematic-hint');
+var bossIntroVideo = typeof document !== 'undefined' ? document.getElementById('boss-intro-video') : null;
+var victoryVideo = typeof document !== 'undefined' ? document.getElementById('victory-video') : null;
+var skipHint = typeof document !== 'undefined' ? document.getElementById('skip-cinematic-hint') : null;
 
 // Click/touch to skip cinematic videos
-bossIntroVideo.addEventListener('click', () => { if (bossIntroPlaying) skipBossIntro(); });
-victoryVideo.addEventListener('click', () => { if (victoryVideoPlaying) skipVictoryCinematic(); });
+if (bossIntroVideo) bossIntroVideo.addEventListener('click', () => { if (bossIntroPlaying) skipBossIntro(); });
+if (victoryVideo) victoryVideo.addEventListener('click', () => { if (victoryVideoPlaying) skipVictoryCinematic(); });
 
 // Ending cinematic assets
 const endingSunriseImg = new Image();
@@ -126,20 +119,20 @@ let studioLogoLoaded = false;
 studioLogoImg.onload = () => { studioLogoLoaded = true; };
 studioLogoImg.src = 'assets/sprites/studio_logo.png';
 
-let masterVolume = 0.8;
-let sfxVolume = 0.8;
-let musicVolume = 0.6;
-let difficulty = 'normal'; // 'easy', 'normal', 'hard', 'insane'
+var masterVolume = 0.8;
+var sfxVolume = 0.8;
+var musicVolume = 0.6;
+var difficulty = 'normal'; // 'easy', 'normal', 'hard', 'insane'
 
 // Content channel toggles — "Go Big or Go Home" immersion settings
-let banterEnabled = true;       // Banter System — character dialogue during gameplay
-let audioTunnelsEnabled = true; // Audio Tunnels — between-stage immersive audio
-let streamerMode = false;       // Streamer Mode — disables all voice content
-let subtitlesEnabled = true;    // GRO-940: Accessibility subtitles — high-visibility voice captions
+var banterEnabled = true;       // Banter System — character dialogue during gameplay
+var audioTunnelsEnabled = true; // Audio Tunnels — between-stage immersive audio
+var streamerMode = false;       // Streamer Mode — disables all voice content
+var subtitlesEnabled = true;    // GRO-940: Accessibility subtitles — high-visibility voice captions
 
-let screenFadeAlpha = 0;
-let targetScreen = null;
-let transitionTimer = 0;
+var screenFadeAlpha = 0;
+var targetScreen = null;
+var transitionTimer = 0;
 const TRANSITION_DURATION = 0.3; // 300ms transition fade
 
 // Background title loop strip assets
@@ -1979,8 +1972,8 @@ window.addEventListener('keydown', e => {
     preloadBossAssets();
 
     // Check active dialogue keys without intercepting flight controls if non-blocking!
-    if (typeof activeDialogue !== 'undefined' && activeDialogue) {
-        if (activeDialogue.isBlocking()) {
+    if (typeof activeDialogue !== 'undefined' && activeDialogue && typeof activeDialogue.handleKey === 'function') {
+        if (typeof activeDialogue.isBlocking === 'function' && activeDialogue.isBlocking()) {
             activeDialogue.handleKey(e.key);
             e.preventDefault();
             return;

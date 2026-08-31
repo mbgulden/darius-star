@@ -1,6 +1,9 @@
 // --- Web Audio Synthesizer ---
 let audioCtx = null;
 let masterCompressor = null;
+var masterVolume = typeof masterVolume !== 'undefined' ? masterVolume : 0.8;
+var sfxVolume = typeof sfxVolume !== 'undefined' ? sfxVolume : 0.8;
+var musicVolume = typeof musicVolume !== 'undefined' ? musicVolume : 0.8;
 
 // Intercept AudioNode.prototype.connect to route all output through a safety compressor
 if (typeof AudioNode !== 'undefined') {

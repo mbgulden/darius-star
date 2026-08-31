@@ -8,7 +8,10 @@ const melody = [
 ];
 
 function playMenuMusicStep() {
-    if (!audioCtx || currentScreen === 'playing' || currentScreen === SCREENS.CINEMATIC || currentScreen === SCREENS.CREDITS) return;
+    if (!audioCtx) return;
+    if (typeof currentScreen !== 'undefined' && typeof SCREENS !== 'undefined') {
+        if (currentScreen === 'playing' || currentScreen === SCREENS.CINEMATIC || currentScreen === SCREENS.CREDITS) return;
+    }
     const now = audioCtx.currentTime;
     
     // Play bass note

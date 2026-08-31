@@ -477,9 +477,12 @@ function update(dt) {
         MicroAudioEngine.update(dt, player, typeof LevelManager !== 'undefined' ? LevelManager.biome : 1);
     }
 
-    if (activeDialogue) {
-        activeDialogue.update(dt);
-        if (activeDialogue.isBlocking()) {
+    if (typeof activeDialogue !== 'undefined' && activeDialogue) {
+        const dlg = activeDialogue;
+        if (typeof dlg.update === 'function') {
+            dlg.update(dt);
+        }
+        if (typeof activeDialogue !== 'undefined' && activeDialogue && typeof activeDialogue.isBlocking === 'function' && activeDialogue.isBlocking()) {
             bgLayers.forEach(layer => layer.update(dt));
     if (typeof JourneyBackgroundRenderer !== 'undefined') JourneyBackgroundRenderer.update(dt);
             stars.forEach(star => star.update(dt));
@@ -516,7 +519,8 @@ function update(dt) {
             }
             return;
         }
-    } else {
+    }
+    if (typeof activeDialogue === 'undefined' || !activeDialogue) {
         if (typeof document !== 'undefined') {
             const hud = document.getElementById('lyra-hud');
             if (hud && hud.style.display !== 'none') {
