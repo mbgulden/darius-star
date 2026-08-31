@@ -46,6 +46,7 @@ directory preserves the broader design history.
 | [naya-warden-ship.md](naya-warden-ship.md) | Darius Star — Naya Warden Ship | `darius-star/docs/naya-warden-ship.md` | current (14KB) |
 | [studio-site-concept.md](studio-site-concept.md) | Darius Star — Studio Site Concept | `darius-star/docs/studio-site-concept.md` | current (17KB) |
 | [unified-style-spec.md](unified-style-spec.md) | Darius Star — Unified Style Spec | `darius-star/docs/UNIFIED-STYLE-SPEC.md` | current (5KB) |
+| [voice-asset-registry-and-locations.md](voice-asset-registry-and-locations.md) | Darius Star — Voice Asset Registry & Locations | `assets/audio/voice/` & `voice_manifest.json` | current (937 lines) |
 
 ### Google Drive (planning docs)
 
