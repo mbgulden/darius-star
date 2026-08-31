@@ -6922,6 +6922,1693 @@
       "biome": 10,
       "mode": "coop4",
       "type": "pre_level_briefing"
+    },
+    "banter_db_lyra_daddy_i_can_feel_something_down": {
+      "id": "banter_db_lyra_daddy_i_can_feel_something_down",
+      "speaker": "lyra",
+      "file": "lyra/banter_db_lyra_daddy_i_can_feel_something_down.mp3",
+      "text": "Daddy, I can feel something down there. It",
+      "duration": 4.78
+    },
+    "banter_db_naya_we_have_the_tactical_advantage_t": {
+      "id": "banter_db_naya_we_have_the_tactical_advantage_t",
+      "speaker": "naya",
+      "file": "naya/banter_db_naya_we_have_the_tactical_advantage_t.mp3",
+      "text": "We have the tactical advantage this run. Let",
+      "duration": 3.38
+    },
+    "banter_db_lyra_its_lantern_is_broadcasting_a_ja": {
+      "id": "banter_db_lyra_its_lantern_is_broadcasting_a_ja",
+      "speaker": "lyra",
+      "file": "lyra/banter_db_lyra_its_lantern_is_broadcasting_a_ja.mp3",
+      "text": "Its lantern is broadcasting a jammer pulse! Don",
+      "duration": 5.26
+    },
+    "banter_db_darius_that": {
+      "id": "banter_db_darius_that",
+      "speaker": "darius",
+      "file": "darius/banter_db_darius_that.mp3",
+      "text": "That",
+      "duration": 2.02
+    },
+    "banter_db_lyra_daddy_it_knows_you": {
+      "id": "banter_db_lyra_daddy_it_knows_you",
+      "speaker": "lyra",
+      "file": "lyra/banter_db_lyra_daddy_it_knows_you.mp3",
+      "text": "Daddy... it knows you",
+      "duration": 2.66
+    },
+    "banter_db_darius_aim_for_the_dorsal_energy_vents": {
+      "id": "banter_db_darius_aim_for_the_dorsal_energy_vents",
+      "speaker": "darius",
+      "file": "darius/banter_db_darius_aim_for_the_dorsal_energy_vents.mp3",
+      "text": "Aim for the dorsal energy vents before it charges the main beam! Don",
+      "duration": 5.76
+    },
+    "banter_db_lyra_it": {
+      "id": "banter_db_lyra_it",
+      "speaker": "lyra",
+      "file": "lyra/banter_db_lyra_it.mp3",
+      "text": "It",
+      "duration": 1.87
+    },
+    "banter_db_darius_not_yet_i": {
+      "id": "banter_db_darius_not_yet_i",
+      "speaker": "darius",
+      "file": "darius/banter_db_darius_not_yet_i.mp3",
+      "text": "Not yet. I",
+      "duration": 3.0
+    },
+    "banter_db_lyra_daddy_hold_on_i": {
+      "id": "banter_db_lyra_daddy_hold_on_i",
+      "speaker": "lyra",
+      "file": "lyra/banter_db_lyra_daddy_hold_on_i.mp3",
+      "text": "Daddy! Hold on, I",
+      "duration": 3.6
+    },
+    "banter_db_darius_second_try_the_deep_doesn": {
+      "id": "banter_db_darius_second_try_the_deep_doesn",
+      "speaker": "darius",
+      "file": "darius/banter_db_darius_second_try_the_deep_doesn.mp3",
+      "text": "Second try. The deep doesn",
+      "duration": 3.82
+    },
+    "banter_db_darius_rerouted_power_from_life_support": {
+      "id": "banter_db_darius_rerouted_power_from_life_support",
+      "speaker": "darius",
+      "file": "darius/banter_db_darius_rerouted_power_from_life_support.mp3",
+      "text": "Rerouted power from life support to forward deflectors. Let",
+      "duration": 5.45
+    },
+    "banter_db_darius_iron_resolve_we": {
+      "id": "banter_db_darius_iron_resolve_we",
+      "speaker": "darius",
+      "file": "darius/banter_db_darius_iron_resolve_we.mp3",
+      "text": "Iron resolve. We",
+      "duration": 3.41
+    },
+    "banter_db_darius_the_warden_transmitted_coordinat": {
+      "id": "banter_db_darius_the_warden_transmitted_coordinat",
+      "speaker": "darius",
+      "file": "darius/banter_db_darius_the_warden_transmitted_coordinat.mp3",
+      "text": "The Warden transmitted coordinates. He knew I",
+      "duration": 4.61
+    },
+    "banter_db_lyra_i_can_hear_the_reef_singing_ahea": {
+      "id": "banter_db_lyra_i_can_hear_the_reef_singing_ahea",
+      "speaker": "lyra",
+      "file": "lyra/banter_db_lyra_i_can_hear_the_reef_singing_ahea.mp3",
+      "text": "I can hear the reef singing ahead. We",
+      "duration": 4.22
+    },
+    "banter_db_darius_these_anglerfish_drones_locked_o": {
+      "id": "banter_db_darius_these_anglerfish_drones_locked_o",
+      "speaker": "darius",
+      "file": "darius/banter_db_darius_these_anglerfish_drones_locked_o.mp3",
+      "text": "These anglerfish drones locked onto my heat signature! I",
+      "duration": 5.26
+    },
+    "banter_db_naya_thrusters_to_maximum_darius_the": {
+      "id": "banter_db_naya_thrusters_to_maximum_darius_the",
+      "speaker": "naya",
+      "file": "naya/banter_db_naya_thrusters_to_maximum_darius_the.mp3",
+      "text": "Thrusters to maximum, Darius. The trench pressure is compounding the damage!",
+      "duration": 5.28
+    },
+    "banter_db_lyra_the_dark_in_this_trench_is_heavy": {
+      "id": "banter_db_lyra_the_dark_in_this_trench_is_heavy",
+      "speaker": "lyra",
+      "file": "lyra/banter_db_lyra_the_dark_in_this_trench_is_heavy.mp3",
+      "text": "The dark in this trench is... heavy. It",
+      "duration": 4.56
+    },
+    "banter_db_darius_lyra_hold_on_i": {
+      "id": "banter_db_darius_lyra_hold_on_i",
+      "speaker": "darius",
+      "file": "darius/banter_db_darius_lyra_hold_on_i.mp3",
+      "text": "Lyra! Hold on, I",
+      "duration": 3.7
+    },
+    "banter_db_naya_cybernetic_jellyfish_swarm_is_ov": {
+      "id": "banter_db_naya_cybernetic_jellyfish_swarm_is_ov",
+      "speaker": "naya",
+      "file": "naya/banter_db_naya_cybernetic_jellyfish_swarm_is_ov.mp3",
+      "text": "Cybernetic jellyfish swarm is overloading my shields! I",
+      "duration": 4.34
+    },
+    "banter_db_thorne_old_sensors_are_blind_in_this_si": {
+      "id": "banter_db_thorne_old_sensors_are_blind_in_this_si",
+      "speaker": "thorne",
+      "file": "thorne/banter_db_thorne_old_sensors_are_blind_in_this_si.mp3",
+      "text": "Old sensors are blind in this silt. I",
+      "duration": 3.55
+    },
+    "banter_db_naya_thorne_watch_your_depth_the_curr": {
+      "id": "banter_db_naya_thorne_watch_your_depth_the_curr",
+      "speaker": "naya",
+      "file": "naya/banter_db_naya_thorne_watch_your_depth_the_curr.mp3",
+      "text": "Thorne, watch your depth. The current is rising. Regroup!",
+      "duration": 4.82
+    },
+    "banter_db_selene_comms_from_haven_7_are_fracturin": {
+      "id": "banter_db_selene_comms_from_haven_7_are_fracturin",
+      "speaker": "selene",
+      "file": "selene/banter_db_selene_comms_from_haven_7_are_fracturin.mp3",
+      "text": "Comms from Haven-7 are fracturing. The abyssal distortion is too thick, I",
+      "duration": 6.48
+    },
+    "banter_db_lyra_grandma_i_can_still_hear_you_in": {
+      "id": "banter_db_lyra_grandma_i_can_still_hear_you_in",
+      "speaker": "lyra",
+      "file": "lyra/banter_db_lyra_grandma_i_can_still_hear_you_in.mp3",
+      "text": "Grandma, I can still hear you in the water... stay safe.",
+      "duration": 4.85
+    },
+    "banter_db_darius_coral_graveyard_whole_reef_just": {
+      "id": "banter_db_darius_coral_graveyard_whole_reef_just",
+      "speaker": "darius",
+      "file": "darius/banter_db_darius_coral_graveyard_whole_reef_just.mp3",
+      "text": "Coral graveyard. Whole reef, just dead. The Dreamer",
+      "duration": 6.07
+    },
+    "banter_db_lyra_the_ghost_echoes_are_loud_near_t": {
+      "id": "banter_db_lyra_the_ghost_echoes_are_loud_near_t",
+      "speaker": "lyra",
+      "file": "lyra/banter_db_lyra_the_ghost_echoes_are_loud_near_t.mp3",
+      "text": "The ghost echoes are loud near the monoliths. I",
+      "duration": 4.99
+    },
+    "banter_db_darius_we_know_the_reef": {
+      "id": "banter_db_darius_we_know_the_reef",
+      "speaker": "darius",
+      "file": "darius/banter_db_darius_we_know_the_reef.mp3",
+      "text": "We know the reef",
+      "duration": 2.16
+    },
+    "banter_db_naya_precision_flight_protocol_the_re": {
+      "id": "banter_db_naya_precision_flight_protocol_the_re",
+      "speaker": "naya",
+      "file": "naya/banter_db_naya_precision_flight_protocol_the_re.mp3",
+      "text": "Precision flight protocol. The reef won",
+      "duration": 3.19
+    },
+    "banter_db_darius_is_that_a_ghost_coral_formations": {
+      "id": "banter_db_darius_is_that_a_ghost_coral_formations",
+      "speaker": "darius",
+      "file": "darius/banter_db_darius_is_that_a_ghost_coral_formations.mp3",
+      "text": "Is that a GHOST? Coral formations don",
+      "duration": 4.34
+    },
+    "banter_db_darius_the_vault": {
+      "id": "banter_db_darius_the_vault",
+      "speaker": "darius",
+      "file": "darius/banter_db_darius_the_vault.mp3",
+      "text": "The vault",
+      "duration": 2.02
+    },
+    "banter_db_thorne_cross_your_fire_across_the_centr": {
+      "id": "banter_db_thorne_cross_your_fire_across_the_centr",
+      "speaker": "thorne",
+      "file": "thorne/banter_db_thorne_cross_your_fire_across_the_centr.mp3",
+      "text": "Cross your fire across the central spire. Don",
+      "duration": 3.98
+    },
+    "banter_db_darius_i_can": {
+      "id": "banter_db_darius_i_can",
+      "speaker": "darius",
+      "file": "darius/banter_db_darius_i_can.mp3",
+      "text": "I can",
+      "duration": 2.02
+    },
+    "banter_db_darius_frequency_dampers_installed_the": {
+      "id": "banter_db_darius_frequency_dampers_installed_the",
+      "speaker": "darius",
+      "file": "darius/banter_db_darius_frequency_dampers_installed_the.mp3",
+      "text": "Frequency dampers installed. The memory screams won",
+      "duration": 5.06
+    },
+    "banter_db_darius_we": {
+      "id": "banter_db_darius_we",
+      "speaker": "darius",
+      "file": "darius/banter_db_darius_we.mp3",
+      "text": "We",
+      "duration": 2.02
+    },
+    "banter_db_darius_the_memory_vault_defenses_are_fi": {
+      "id": "banter_db_darius_the_memory_vault_defenses_are_fi",
+      "speaker": "darius",
+      "file": "darius/banter_db_darius_the_memory_vault_defenses_are_fi.mp3",
+      "text": "The memory vault defenses are firing phantom spikes! I",
+      "duration": 5.28
+    },
+    "banter_db_naya_darius_watch_those_white_beams_r": {
+      "id": "banter_db_naya_darius_watch_those_white_beams_r",
+      "speaker": "naya",
+      "file": "naya/banter_db_naya_darius_watch_those_white_beams_r.mp3",
+      "text": "Darius, watch those white beams! Regroup at the perimeter!",
+      "duration": 4.3
+    },
+    "banter_db_selene_close_your_eyes_lyra_focus_on_my": {
+      "id": "banter_db_selene_close_your_eyes_lyra_focus_on_my",
+      "speaker": "selene",
+      "file": "selene/banter_db_selene_close_your_eyes_lyra_focus_on_my.mp3",
+      "text": "Close your eyes, Lyra. Focus on my voice. We",
+      "duration": 6.07
+    },
+    "banter_db_naya_ghost_coral_spores_are_clogging": {
+      "id": "banter_db_naya_ghost_coral_spores_are_clogging",
+      "speaker": "naya",
+      "file": "naya/banter_db_naya_ghost_coral_spores_are_clogging.mp3",
+      "text": "Ghost coral spores are clogging my engine intakes! I",
+      "duration": 3.84
+    },
+    "banter_db_thorne_purge_engines_now_naya_i": {
+      "id": "banter_db_thorne_purge_engines_now_naya_i",
+      "speaker": "thorne",
+      "file": "thorne/banter_db_thorne_purge_engines_now_naya_i.mp3",
+      "text": "Purge engines now, Naya. I",
+      "duration": 2.9
+    },
+    "banter_db_lyra_daddy_she": {
+      "id": "banter_db_lyra_daddy_she",
+      "speaker": "lyra",
+      "file": "lyra/banter_db_lyra_daddy_she.mp3",
+      "text": "Daddy... she",
+      "duration": 2.16
+    },
+    "banter_db_naya_darius_wake_up_don": {
+      "id": "banter_db_naya_darius_wake_up_don",
+      "speaker": "naya",
+      "file": "naya/banter_db_naya_darius_wake_up_don.mp3",
+      "text": "Darius, wake up! Don",
+      "duration": 2.81
+    },
+    "banter_db_darius_heating_systems_at_maximum_let": {
+      "id": "banter_db_darius_heating_systems_at_maximum_let",
+      "speaker": "darius",
+      "file": "darius/banter_db_darius_heating_systems_at_maximum_let.mp3",
+      "text": "Heating systems at maximum. Let",
+      "duration": 4.01
+    },
+    "banter_db_darius_unbreakable_let": {
+      "id": "banter_db_darius_unbreakable_let",
+      "speaker": "darius",
+      "file": "darius/banter_db_darius_unbreakable_let.mp3",
+      "text": "Unbreakable. Let",
+      "duration": 3.24
+    },
+    "banter_db_naya_engaging_hull_heaters_darius_ret": {
+      "id": "banter_db_naya_engaging_hull_heaters_darius_ret",
+      "speaker": "naya",
+      "file": "naya/banter_db_naya_engaging_hull_heaters_darius_ret.mp3",
+      "text": "Engaging hull heaters, Darius. Retrograde immediately.",
+      "duration": 4.39
+    },
+    "banter_db_lyra_the_hatchery_queen_she_thinks_i": {
+      "id": "banter_db_lyra_the_hatchery_queen_she_thinks_i",
+      "speaker": "lyra",
+      "file": "lyra/banter_db_lyra_the_hatchery_queen_she_thinks_i.mp3",
+      "text": "The Hatchery Queen... she thinks I",
+      "duration": 3.36
+    },
+    "banter_db_darius_lyra_break_the_link_i": {
+      "id": "banter_db_darius_lyra_break_the_link_i",
+      "speaker": "darius",
+      "file": "darius/banter_db_darius_lyra_break_the_link_i.mp3",
+      "text": "Lyra, break the link! I",
+      "duration": 3.82
+    },
+    "banter_db_thorne_ice_shelf_collapsing_above_us_i": {
+      "id": "banter_db_thorne_ice_shelf_collapsing_above_us_i",
+      "speaker": "thorne",
+      "file": "thorne/banter_db_thorne_ice_shelf_collapsing_above_us_i.mp3",
+      "text": "Ice shelf collapsing above us! I",
+      "duration": 3.05
+    },
+    "banter_db_naya_thorne_watch_your_radar_there": {
+      "id": "banter_db_naya_thorne_watch_your_radar_there",
+      "speaker": "naya",
+      "file": "naya/banter_db_naya_thorne_watch_your_radar_there.mp3",
+      "text": "Thorne, watch your radar! There",
+      "duration": 2.81
+    },
+    "banter_db_darius_the_veil_nebula_they_say_it": {
+      "id": "banter_db_darius_the_veil_nebula_they_say_it",
+      "speaker": "darius",
+      "file": "darius/banter_db_darius_the_veil_nebula_they_say_it.mp3",
+      "text": "The Veil Nebula. They say it",
+      "duration": 3.72
+    },
+    "banter_db_lyra_daddy_i_can_hear_it_not_words_fe": {
+      "id": "banter_db_lyra_daddy_i_can_hear_it_not_words_fe",
+      "speaker": "lyra",
+      "file": "lyra/banter_db_lyra_daddy_i_can_hear_it_not_words_fe.mp3",
+      "text": "Daddy, I can hear it. Not words \u2014 feelings. It",
+      "duration": 6.46
+    },
+    "banter_db_thorne_maintain_tight_formation_if_you": {
+      "id": "banter_db_thorne_maintain_tight_formation_if_you",
+      "speaker": "thorne",
+      "file": "thorne/banter_db_thorne_maintain_tight_formation_if_you.mp3",
+      "text": "Maintain tight formation. If you get separated in the Veil, you",
+      "duration": 4.82
+    },
+    "banter_db_naya_target_the_anchor_beacons_on_its": {
+      "id": "banter_db_naya_target_the_anchor_beacons_on_its",
+      "speaker": "naya",
+      "file": "naya/banter_db_naya_target_the_anchor_beacons_on_its.mp3",
+      "text": "Target the anchor beacons on its perimeter! That",
+      "duration": 3.41
+    },
+    "banter_db_darius_the_colors_they": {
+      "id": "banter_db_darius_the_colors_they",
+      "speaker": "darius",
+      "file": "darius/banter_db_darius_the_colors_they.mp3",
+      "text": "The colors... they",
+      "duration": 2.4
+    },
+    "banter_db_lyra_daddy_stay_in_your_ship_don": {
+      "id": "banter_db_lyra_daddy_stay_in_your_ship_don",
+      "speaker": "lyra",
+      "file": "lyra/banter_db_lyra_daddy_stay_in_your_ship_don.mp3",
+      "text": "Daddy! Stay in your ship! Don",
+      "duration": 4.94
+    },
+    "banter_db_darius_focus_anchor_to_reality_we": {
+      "id": "banter_db_darius_focus_anchor_to_reality_we",
+      "speaker": "darius",
+      "file": "darius/banter_db_darius_focus_anchor_to_reality_we.mp3",
+      "text": "Focus. Anchor to reality. We",
+      "duration": 5.16
+    },
+    "banter_db_darius_tachyon_filters_engaged_illusion": {
+      "id": "banter_db_darius_tachyon_filters_engaged_illusion",
+      "speaker": "darius",
+      "file": "darius/banter_db_darius_tachyon_filters_engaged_illusion.mp3",
+      "text": "Tachyon filters engaged. Illusions won",
+      "duration": 4.61
+    },
+    "banter_db_darius_nothing_stops_this_run_let": {
+      "id": "banter_db_darius_nothing_stops_this_run_let",
+      "speaker": "darius",
+      "file": "darius/banter_db_darius_nothing_stops_this_run_let.mp3",
+      "text": "Nothing stops this run. Let",
+      "duration": 3.84
+    },
+    "banter_db_darius_cockpit_glass_is_refracting_i_ca": {
+      "id": "banter_db_darius_cockpit_glass_is_refracting_i_ca",
+      "speaker": "darius",
+      "file": "darius/banter_db_darius_cockpit_glass_is_refracting_i_ca.mp3",
+      "text": "Cockpit glass is refracting! I can",
+      "duration": 4.32
+    },
+    "banter_db_darius_the_dreamer_showed_me_my_own_mem": {
+      "id": "banter_db_darius_the_dreamer_showed_me_my_own_mem",
+      "speaker": "darius",
+      "file": "darius/banter_db_darius_the_dreamer_showed_me_my_own_mem.mp3",
+      "text": "The Dreamer showed me my own memories. It wasn",
+      "duration": 4.82
+    },
+    "banter_db_lyra_the_dreamer_is_whispering_direct": {
+      "id": "banter_db_lyra_the_dreamer_is_whispering_direct",
+      "speaker": "lyra",
+      "file": "lyra/banter_db_lyra_the_dreamer_is_whispering_direct.mp3",
+      "text": "The Dreamer is whispering directly to me... the stars are too bright! I can",
+      "duration": 6.82
+    },
+    "banter_db_naya_lyra_baby_listen_to_mom": {
+      "id": "banter_db_naya_lyra_baby_listen_to_mom",
+      "speaker": "naya",
+      "file": "naya/banter_db_naya_lyra_baby_listen_to_mom.mp3",
+      "text": "Lyra, baby, listen to Mom",
+      "duration": 2.64
+    },
+    "banter_db_naya_these_shape_shifters_are_mimicki": {
+      "id": "banter_db_naya_these_shape_shifters_are_mimicki",
+      "speaker": "naya",
+      "file": "naya/banter_db_naya_these_shape_shifters_are_mimicki.mp3",
+      "text": "These shape-shifters are mimicking my sensor targets. I can",
+      "duration": 4.3
+    },
+    "banter_db_darius_naya_standard_beacon_code_engage": {
+      "id": "banter_db_darius_naya_standard_beacon_code_engage",
+      "speaker": "darius",
+      "file": "darius/banter_db_darius_naya_standard_beacon_code_engage.mp3",
+      "text": "Naya, standard beacon code engaged. Regroup on my signal.",
+      "duration": 5.78
+    },
+    "banter_db_darius_saturn": {
+      "id": "banter_db_darius_saturn",
+      "speaker": "darius",
+      "file": "darius/banter_db_darius_saturn.mp3",
+      "text": "Saturn",
+      "duration": 2.02
+    },
+    "banter_db_cross_navy_patrol_frequency_active_the": {
+      "id": "banter_db_cross_navy_patrol_frequency_active_the",
+      "speaker": "cross",
+      "file": "cross/banter_db_cross_navy_patrol_frequency_active_the.mp3",
+      "text": "Navy patrol frequency active. They",
+      "duration": 4.73
+    },
+    "banter_db_thorne_keep_your_shields_angled_forward": {
+      "id": "banter_db_thorne_keep_your_shields_angled_forward",
+      "speaker": "thorne",
+      "file": "thorne/banter_db_thorne_keep_your_shields_angled_forward.mp3",
+      "text": "Keep your shields angled forward. Don",
+      "duration": 3.26
+    },
+    "banter_db_cross_the_kraken": {
+      "id": "banter_db_cross_the_kraken",
+      "speaker": "cross",
+      "file": "cross/banter_db_cross_the_kraken.mp3",
+      "text": "The Kraken",
+      "duration": 2.04
+    },
+    "banter_db_darius_massive_navy_mobile_fortress_it": {
+      "id": "banter_db_darius_massive_navy_mobile_fortress_it",
+      "speaker": "darius",
+      "file": "darius/banter_db_darius_massive_navy_mobile_fortress_it.mp3",
+      "text": "Massive Navy mobile fortress. It",
+      "duration": 4.18
+    },
+    "banter_db_darius_rebooting_avionics_navy_hasn": {
+      "id": "banter_db_darius_rebooting_avionics_navy_hasn",
+      "speaker": "darius",
+      "file": "darius/banter_db_darius_rebooting_avionics_navy_hasn.mp3",
+      "text": "Rebooting avionics. Navy hasn",
+      "duration": 4.39
+    },
+    "banter_db_cross_formation_reformed_let": {
+      "id": "banter_db_cross_formation_reformed_let",
+      "speaker": "cross",
+      "file": "cross/banter_db_cross_formation_reformed_let.mp3",
+      "text": "Formation reformed. Let",
+      "duration": 4.01
+    },
+    "banter_db_thorne_darius_dive_into_the_ice_debris": {
+      "id": "banter_db_thorne_darius_dive_into_the_ice_debris",
+      "speaker": "thorne",
+      "file": "thorne/banter_db_thorne_darius_dive_into_the_ice_debris.mp3",
+      "text": "Darius, dive into the ice debris. I",
+      "duration": 3.96
+    },
+    "banter_db_lyra_the_metal_ships_they_are_so_angr": {
+      "id": "banter_db_lyra_the_metal_ships_they_are_so_angr",
+      "speaker": "lyra",
+      "file": "lyra/banter_db_lyra_the_metal_ships_they_are_so_angr.mp3",
+      "text": "The metal ships... they are so angry, they want to kill us. I",
+      "duration": 6.26
+    },
+    "banter_db_selene_good_choice_lyra_let_the_fighter": {
+      "id": "banter_db_selene_good_choice_lyra_let_the_fighter",
+      "speaker": "selene",
+      "file": "selene/banter_db_selene_good_choice_lyra_let_the_fighter.mp3",
+      "text": "Good choice, Lyra. Let the fighters handle the Navy. Fall back.",
+      "duration": 6.7
+    },
+    "banter_db_thorne_navy_jammer_has_cut_my_fire_cont": {
+      "id": "banter_db_thorne_navy_jammer_has_cut_my_fire_cont",
+      "speaker": "thorne",
+      "file": "thorne/banter_db_thorne_navy_jammer_has_cut_my_fire_cont.mp3",
+      "text": "Navy jammer has cut my fire control. Weapons are cold. I",
+      "duration": 5.18
+    },
+    "banter_db_naya_purging_jammer_frequency_now_tho": {
+      "id": "banter_db_naya_purging_jammer_frequency_now_tho",
+      "speaker": "naya",
+      "file": "naya/banter_db_naya_purging_jammer_frequency_now_tho.mp3",
+      "text": "Purging jammer frequency now, Thorne. Fall back to my position.",
+      "duration": 4.06
+    },
+    "banter_db_darius_the_forge_mind_it": {
+      "id": "banter_db_darius_the_forge_mind_it",
+      "speaker": "darius",
+      "file": "darius/banter_db_darius_the_forge_mind_it.mp3",
+      "text": "The Forge-Mind. It",
+      "duration": 3.26
+    },
+    "banter_db_darius_thermal_deflectors_overclocked_l": {
+      "id": "banter_db_darius_thermal_deflectors_overclocked_l",
+      "speaker": "darius",
+      "file": "darius/banter_db_darius_thermal_deflectors_overclocked_l.mp3",
+      "text": "Thermal deflectors overclocked. Let",
+      "duration": 4.22
+    },
+    "banter_db_lyra_daddy_the_thing_in_the_dark_isn": {
+      "id": "banter_db_lyra_daddy_the_thing_in_the_dark_isn",
+      "speaker": "lyra",
+      "file": "lyra/banter_db_lyra_daddy_the_thing_in_the_dark_isn.mp3",
+      "text": "Daddy, the thing in the dark isn",
+      "duration": 3.67
+    },
+    "banter_db_darius_thermal_shield_is_melting_my_coc": {
+      "id": "banter_db_darius_thermal_shield_is_melting_my_coc",
+      "speaker": "darius",
+      "file": "darius/banter_db_darius_thermal_shield_is_melting_my_coc.mp3",
+      "text": "Thermal shield is melting! My cockpit is burning up! I",
+      "duration": 6.12
+    },
+    "banter_db_naya_redirecting_coolants_to_your_pri": {
+      "id": "banter_db_naya_redirecting_coolants_to_your_pri",
+      "speaker": "naya",
+      "file": "naya/banter_db_naya_redirecting_coolants_to_your_pri.mp3",
+      "text": "Redirecting coolants to your primary cabin, Darius. Retreat immediately.",
+      "duration": 5.16
+    },
+    "banter_db_lyra_the_fire_it": {
+      "id": "banter_db_lyra_the_fire_it",
+      "speaker": "lyra",
+      "file": "lyra/banter_db_lyra_the_fire_it.mp3",
+      "text": "The fire... it",
+      "duration": 2.3
+    },
+    "banter_db_darius_lyra_i": {
+      "id": "banter_db_darius_lyra_i",
+      "speaker": "darius",
+      "file": "darius/banter_db_darius_lyra_i.mp3",
+      "text": "Lyra, I",
+      "duration": 2.28
+    },
+    "banter_db_thorne_valera_eject_your_heatsinks_i": {
+      "id": "banter_db_thorne_valera_eject_your_heatsinks_i",
+      "speaker": "thorne",
+      "file": "thorne/banter_db_thorne_valera_eject_your_heatsinks_i.mp3",
+      "text": "Valera, eject your heatsinks. I",
+      "duration": 3.41
+    },
+    "banter_db_darius_lightning_ray_it": {
+      "id": "banter_db_darius_lightning_ray_it",
+      "speaker": "darius",
+      "file": "darius/banter_db_darius_lightning_ray_it.mp3",
+      "text": "Lightning ray! It",
+      "duration": 3.17
+    },
+    "banter_db_darius_engines_re_ignited_in_the_eye_le": {
+      "id": "banter_db_darius_engines_re_ignited_in_the_eye_le",
+      "speaker": "darius",
+      "file": "darius/banter_db_darius_engines_re_ignited_in_the_eye_le.mp3",
+      "text": "Engines re-ignited in the eye. Let",
+      "duration": 4.06
+    },
+    "banter_db_darius_faraday_cage_active_lightning_wo": {
+      "id": "banter_db_darius_faraday_cage_active_lightning_wo",
+      "speaker": "darius",
+      "file": "darius/banter_db_darius_faraday_cage_active_lightning_wo.mp3",
+      "text": "Faraday cage active. Lightning won",
+      "duration": 4.32
+    },
+    "banter_db_lyra_its_song_is_peaceful_now_daddy_i": {
+      "id": "banter_db_lyra_its_song_is_peaceful_now_daddy_i",
+      "speaker": "lyra",
+      "file": "lyra/banter_db_lyra_its_song_is_peaceful_now_daddy_i.mp3",
+      "text": "Its song is peaceful now, Daddy. It",
+      "duration": 4.61
+    },
+    "banter_db_cross_thrust_down_into_the_lower_draft": {
+      "id": "banter_db_cross_thrust_down_into_the_lower_draft",
+      "speaker": "cross",
+      "file": "cross/banter_db_cross_thrust_down_into_the_lower_draft.mp3",
+      "text": "Thrust down into the lower drafts, Darius. I",
+      "duration": 5.4
+    },
+    "banter_db_lyra_the_lightning_it": {
+      "id": "banter_db_lyra_the_lightning_it",
+      "speaker": "lyra",
+      "file": "lyra/banter_db_lyra_the_lightning_it.mp3",
+      "text": "The lightning... it",
+      "duration": 2.35
+    },
+    "banter_db_darius_lyra_close_the_audio_feed_i": {
+      "id": "banter_db_darius_lyra_close_the_audio_feed_i",
+      "speaker": "darius",
+      "file": "darius/banter_db_darius_lyra_close_the_audio_feed_i.mp3",
+      "text": "Lyra, close the audio feed! I",
+      "duration": 4.39
+    },
+    "banter_db_naya_megastorm_lightning_has_shorted": {
+      "id": "banter_db_naya_megastorm_lightning_has_shorted",
+      "speaker": "naya",
+      "file": "naya/banter_db_naya_megastorm_lightning_has_shorted.mp3",
+      "text": "Megastorm lightning has shorted my primary battery! I",
+      "duration": 4.15
+    },
+    "banter_db_thorne_towing_cable_deployed_naya_hold": {
+      "id": "banter_db_thorne_towing_cable_deployed_naya_hold",
+      "speaker": "thorne",
+      "file": "thorne/banter_db_thorne_towing_cable_deployed_naya_hold.mp3",
+      "text": "Towing cable deployed, Naya. Hold on, I",
+      "duration": 4.06
+    },
+    "banter_db_cross_admiral_crane": {
+      "id": "banter_db_cross_admiral_crane",
+      "speaker": "cross",
+      "file": "cross/banter_db_cross_admiral_crane.mp3",
+      "text": "Admiral Crane",
+      "duration": 2.42
+    },
+    "banter_db_cross_crane": {
+      "id": "banter_db_cross_crane",
+      "speaker": "cross",
+      "file": "cross/banter_db_cross_crane.mp3",
+      "text": "Crane",
+      "duration": 1.99
+    },
+    "banter_db_darius_we_know_crane": {
+      "id": "banter_db_darius_we_know_crane",
+      "speaker": "darius",
+      "file": "darius/banter_db_darius_we_know_crane.mp3",
+      "text": "We know Crane",
+      "duration": 2.14
+    },
+    "banter_db_darius_heavy_automated_dreadnought_it": {
+      "id": "banter_db_darius_heavy_automated_dreadnought_it",
+      "speaker": "darius",
+      "file": "darius/banter_db_darius_heavy_automated_dreadnought_it.mp3",
+      "text": "Heavy automated dreadnought! It",
+      "duration": 3.79
+    },
+    "banter_db_cross_stay_in_its_dorsal_blindspot_tho": {
+      "id": "banter_db_cross_stay_in_its_dorsal_blindspot_tho",
+      "speaker": "cross",
+      "file": "cross/banter_db_cross_stay_in_its_dorsal_blindspot_tho.mp3",
+      "text": "Stay in its dorsal blindspot! Those bow cannons can",
+      "duration": 5.88
+    },
+    "banter_db_darius_no_more_ghosts_time_to_bury_cran": {
+      "id": "banter_db_darius_no_more_ghosts_time_to_bury_cran",
+      "speaker": "darius",
+      "file": "darius/banter_db_darius_no_more_ghosts_time_to_bury_cran.mp3",
+      "text": "No more ghosts. Time to bury Crane",
+      "duration": 4.42
+    },
+    "banter_db_darius_crane_you_won": {
+      "id": "banter_db_darius_crane_you_won",
+      "speaker": "darius",
+      "file": "darius/banter_db_darius_crane_you_won.mp3",
+      "text": "Crane... you won",
+      "duration": 2.38
+    },
+    "banter_db_darius_rebooted_ghost_fleet_hasn": {
+      "id": "banter_db_darius_rebooted_ghost_fleet_hasn",
+      "speaker": "darius",
+      "file": "darius/banter_db_darius_rebooted_ghost_fleet_hasn.mp3",
+      "text": "Rebooted. Ghost fleet hasn",
+      "duration": 3.82
+    },
+    "banter_db_darius_counter_hack_installed_crane_can": {
+      "id": "banter_db_darius_counter_hack_installed_crane_can",
+      "speaker": "darius",
+      "file": "darius/banter_db_darius_counter_hack_installed_crane_can.mp3",
+      "text": "Counter-hack installed. Crane can",
+      "duration": 4.1
+    },
+    "banter_db_darius_the_automated_navy_dreadnought_h": {
+      "id": "banter_db_darius_the_automated_navy_dreadnought_h",
+      "speaker": "darius",
+      "file": "darius/banter_db_darius_the_automated_navy_dreadnought_h.mp3",
+      "text": "The automated Navy dreadnought has me pinned with heavy lasers! I",
+      "duration": 5.54
+    },
+    "banter_db_thorne_darius_break_line_of_sight_behin": {
+      "id": "banter_db_thorne_darius_break_line_of_sight_behin",
+      "speaker": "thorne",
+      "file": "thorne/banter_db_thorne_darius_break_line_of_sight_behin.mp3",
+      "text": "Darius, break line of sight behind the wreck. I",
+      "duration": 4.3
+    },
+    "banter_db_naya_lyra_he": {
+      "id": "banter_db_naya_lyra_he",
+      "speaker": "naya",
+      "file": "naya/banter_db_naya_lyra_he.mp3",
+      "text": "Lyra! He",
+      "duration": 1.99
+    },
+    "banter_db_naya_defense_lasers_have_sliced_throu": {
+      "id": "banter_db_naya_defense_lasers_have_sliced_throu",
+      "speaker": "naya",
+      "file": "naya/banter_db_naya_defense_lasers_have_sliced_throu.mp3",
+      "text": "Defense lasers have sliced through my starboard engine! I",
+      "duration": 3.98
+    },
+    "banter_db_darius_naya_get_inside_the_hull_of_that": {
+      "id": "banter_db_darius_naya_get_inside_the_hull_of_that",
+      "speaker": "darius",
+      "file": "darius/banter_db_darius_naya_get_inside_the_hull_of_that.mp3",
+      "text": "Naya, get inside the hull of that carrier. I",
+      "duration": 4.75
+    },
+    "banter_db_lyra_daddy_i": {
+      "id": "banter_db_lyra_daddy_i",
+      "speaker": "lyra",
+      "file": "lyra/banter_db_lyra_daddy_i.mp3",
+      "text": "Daddy! I",
+      "duration": 2.71
+    },
+    "banter_db_darius_we_know_the_hive": {
+      "id": "banter_db_darius_we_know_the_hive",
+      "speaker": "darius",
+      "file": "darius/banter_db_darius_we_know_the_hive.mp3",
+      "text": "We know the Hive",
+      "duration": 2.18
+    },
+    "banter_db_darius_synaptic_parasite_drone_it": {
+      "id": "banter_db_darius_synaptic_parasite_drone_it",
+      "speaker": "darius",
+      "file": "darius/banter_db_darius_synaptic_parasite_drone_it.mp3",
+      "text": "Synaptic parasite drone! It",
+      "duration": 4.01
+    },
+    "banter_db_lyra_she": {
+      "id": "banter_db_lyra_she",
+      "speaker": "lyra",
+      "file": "lyra/banter_db_lyra_she.mp3",
+      "text": "She",
+      "duration": 1.87
+    },
+    "banter_db_thorne_clear_the_spore_swarm_immediatel": {
+      "id": "banter_db_thorne_clear_the_spore_swarm_immediatel",
+      "speaker": "thorne",
+      "file": "thorne/banter_db_thorne_clear_the_spore_swarm_immediatel.mp3",
+      "text": "Clear the spore swarm immediately or they",
+      "duration": 3.48
+    },
+    "banter_db_darius_we_know_every_tendril_swipe_brea": {
+      "id": "banter_db_darius_we_know_every_tendril_swipe_brea",
+      "speaker": "darius",
+      "file": "darius/banter_db_darius_we_know_every_tendril_swipe_brea.mp3",
+      "text": "We know every tendril swipe. Break the Hive Mother",
+      "duration": 4.8
+    },
+    "banter_db_lyra_daddy_wake_up_don": {
+      "id": "banter_db_lyra_daddy_wake_up_don",
+      "speaker": "lyra",
+      "file": "lyra/banter_db_lyra_daddy_wake_up_don.mp3",
+      "text": "Daddy! Wake up! Don",
+      "duration": 4.37
+    },
+    "banter_db_darius_psychic_feedback_filters_at_100": {
+      "id": "banter_db_darius_psychic_feedback_filters_at_100",
+      "speaker": "darius",
+      "file": "darius/banter_db_darius_psychic_feedback_filters_at_100.mp3",
+      "text": "Psychic feedback filters at 100%. The Hive won",
+      "duration": 5.54
+    },
+    "banter_db_lyra_you_said_no_because_you_love_us": {
+      "id": "banter_db_lyra_you_said_no_because_you_love_us",
+      "speaker": "lyra",
+      "file": "lyra/banter_db_lyra_you_said_no_because_you_love_us.mp3",
+      "text": "You said no because you love us, Daddy. That",
+      "duration": 4.99
+    },
+    "banter_db_darius_the_hive_is_showing_me_lyra_but": {
+      "id": "banter_db_darius_the_hive_is_showing_me_lyra_but",
+      "speaker": "darius",
+      "file": "darius/banter_db_darius_the_hive_is_showing_me_lyra_but.mp3",
+      "text": "The Hive is showing me Lyra... but it",
+      "duration": 3.19
+    },
+    "banter_db_naya_darius_don": {
+      "id": "banter_db_naya_darius_don",
+      "speaker": "naya",
+      "file": "naya/banter_db_naya_darius_don.mp3",
+      "text": "Darius, don",
+      "duration": 1.99
+    },
+    "banter_db_lyra_the_hive_wants_to_take_my_memori": {
+      "id": "banter_db_lyra_the_hive_wants_to_take_my_memori",
+      "speaker": "lyra",
+      "file": "lyra/banter_db_lyra_the_hive_wants_to_take_my_memori.mp3",
+      "text": "The Hive wants to take my memories... they want to keep my childhood. I won",
+      "duration": 6.62
+    },
+    "banter_db_darius_lyra_hold_on_to_my_hand_we": {
+      "id": "banter_db_darius_lyra_hold_on_to_my_hand_we",
+      "speaker": "darius",
+      "file": "darius/banter_db_darius_lyra_hold_on_to_my_hand_we.mp3",
+      "text": "Lyra, hold on to my hand. We",
+      "duration": 4.22
+    },
+    "banter_db_naya_these_false_realities_are_trying": {
+      "id": "banter_db_naya_these_false_realities_are_trying",
+      "speaker": "naya",
+      "file": "naya/banter_db_naya_these_false_realities_are_trying.mp3",
+      "text": "These false realities are trying to convince me this is Haven-7. I",
+      "duration": 4.7
+    },
+    "banter_db_lyra_the_architect": {
+      "id": "banter_db_lyra_the_architect",
+      "speaker": "lyra",
+      "file": "lyra/banter_db_lyra_the_architect.mp3",
+      "text": "The Architect",
+      "duration": 2.04
+    },
+    "banter_db_darius_chrono_sentinel_it": {
+      "id": "banter_db_darius_chrono_sentinel_it",
+      "speaker": "darius",
+      "file": "darius/banter_db_darius_chrono_sentinel_it.mp3",
+      "text": "Chrono-sentinel! It",
+      "duration": 3.26
+    },
+    "banter_db_lyra_i": {
+      "id": "banter_db_lyra_i",
+      "speaker": "lyra",
+      "file": "lyra/banter_db_lyra_i.mp3",
+      "text": "I",
+      "duration": 1.87
+    },
+    "banter_db_darius_chrono_stabilizers_locked_spacet": {
+      "id": "banter_db_darius_chrono_stabilizers_locked_spacet",
+      "speaker": "darius",
+      "file": "darius/banter_db_darius_chrono_stabilizers_locked_spacet.mp3",
+      "text": "Chrono-stabilizers locked. Spacetime won",
+      "duration": 4.66
+    },
+    "banter_db_darius_final_push_into_eternity_let": {
+      "id": "banter_db_darius_final_push_into_eternity_let",
+      "speaker": "darius",
+      "file": "darius/banter_db_darius_final_push_into_eternity_let.mp3",
+      "text": "Final push into eternity. Let",
+      "duration": 4.06
+    },
+    "banter_db_darius_chrono_rift_sealed_final_approac": {
+      "id": "banter_db_darius_chrono_rift_sealed_final_approac",
+      "speaker": "darius",
+      "file": "darius/banter_db_darius_chrono_rift_sealed_final_approac.mp3",
+      "text": "Chrono rift sealed. Final approach to the Architect",
+      "duration": 4.99
+    },
+    "banter_db_lyra_we_answered_it_together_daddy_we": {
+      "id": "banter_db_lyra_we_answered_it_together_daddy_we",
+      "speaker": "lyra",
+      "file": "lyra/banter_db_lyra_we_answered_it_together_daddy_we.mp3",
+      "text": "We answered it together, Daddy. We",
+      "duration": 4.49
+    },
+    "banter_db_darius_the_black_hole": {
+      "id": "banter_db_darius_the_black_hole",
+      "speaker": "darius",
+      "file": "darius/banter_db_darius_the_black_hole.mp3",
+      "text": "The black hole",
+      "duration": 2.09
+    },
+    "banter_db_cross_engaging_singularity_shield_dari": {
+      "id": "banter_db_cross_engaging_singularity_shield_dari",
+      "speaker": "cross",
+      "file": "cross/banter_db_cross_engaging_singularity_shield_dari.mp3",
+      "text": "Engaging singularity shield, Darius. Escape trajectory is narrow. Retreat now!",
+      "duration": 8.83
+    },
+    "banter_db_darius_lyra_look_at_me_only_me_we": {
+      "id": "banter_db_darius_lyra_look_at_me_only_me_we",
+      "speaker": "darius",
+      "file": "darius/banter_db_darius_lyra_look_at_me_only_me_we.mp3",
+      "text": "Lyra, look at me. Only me. We",
+      "duration": 5.14
+    },
+    "banter_db_naya_gravitational_shearing_is_tearin": {
+      "id": "banter_db_naya_gravitational_shearing_is_tearin",
+      "speaker": "naya",
+      "file": "naya/banter_db_naya_gravitational_shearing_is_tearin.mp3",
+      "text": "Gravitational shearing is tearing my hull apart! I have to back off before I",
+      "duration": 5.04
+    },
+    "banter_db_cross_engage_reverse_thrusters_naya_i": {
+      "id": "banter_db_cross_engage_reverse_thrusters_naya_i",
+      "speaker": "cross",
+      "file": "cross/banter_db_cross_engage_reverse_thrusters_naya_i.mp3",
+      "text": "Engage reverse thrusters, Naya. I",
+      "duration": 5.02
+    },
+    "banter_db_darius_marcus_star_log_00_the_navy_told": {
+      "id": "banter_db_darius_marcus_star_log_00_the_navy_told",
+      "speaker": "darius",
+      "file": "darius/banter_db_darius_marcus_star_log_00_the_navy_told.mp3",
+      "text": "Marcus Star Log #00: The Navy told me I was surveying sea life. They lied. The Coelacanth was already awake.",
+      "duration": 9.98
+    },
+    "banter_db_thorne_i_found_navy_transponders_inside": {
+      "id": "banter_db_thorne_i_found_navy_transponders_inside",
+      "speaker": "thorne",
+      "file": "thorne/banter_db_thorne_i_found_navy_transponders_inside.mp3",
+      "text": "I found Navy transponders inside the bone fields. High Command sent an entire black-ops strike wing here.",
+      "duration": 7.61
+    },
+    "banter_db_darius_grandpa_didn": {
+      "id": "banter_db_darius_grandpa_didn",
+      "speaker": "darius",
+      "file": "darius/banter_db_darius_grandpa_didn.mp3",
+      "text": "Grandpa didn",
+      "duration": 2.02
+    },
+    "banter_db_cross_navy_lost_three_stealth_squadron": {
+      "id": "banter_db_cross_navy_lost_three_stealth_squadron",
+      "speaker": "cross",
+      "file": "cross/banter_db_cross_navy_lost_three_stealth_squadron.mp3",
+      "text": "Navy lost three stealth squadrons in the Veil trying to capture the Dreamer",
+      "duration": 5.33
+    },
+    "banter_db_darius_crane_knew_about_haven_7_all_alo": {
+      "id": "banter_db_darius_crane_knew_about_haven_7_all_alo",
+      "speaker": "darius",
+      "file": "darius/banter_db_darius_crane_knew_about_haven_7_all_alo.mp3",
+      "text": "Crane knew about Haven-7 all along. The rings were his blockade to keep humanity trapped inside.",
+      "duration": 7.54
+    },
+    "banter_db_naya_the_forge_mind_isn": {
+      "id": "banter_db_naya_the_forge_mind_isn",
+      "speaker": "naya",
+      "file": "naya/banter_db_naya_the_forge_mind_isn.mp3",
+      "text": "The Forge-Mind isn",
+      "duration": 2.06
+    },
+    "banter_db_darius_he_gave_up_his_humanity_to_keep": {
+      "id": "banter_db_darius_he_gave_up_his_humanity_to_keep",
+      "speaker": "darius",
+      "file": "darius/banter_db_darius_he_gave_up_his_humanity_to_keep.mp3",
+      "text": "He gave up his humanity to keep command. Now he",
+      "duration": 4.8
+    },
+    "banter_db_lyra_her_name_was_elena_daddy_she_rem": {
+      "id": "banter_db_lyra_her_name_was_elena_daddy_she_rem",
+      "speaker": "lyra",
+      "file": "lyra/banter_db_lyra_her_name_was_elena_daddy_she_rem.mp3",
+      "text": "Her name was Elena... Daddy, she remembers you.",
+      "duration": 4.32
+    },
+    "banter_db_darius_then_every_timeline_ends_with_us": {
+      "id": "banter_db_darius_then_every_timeline_ends_with_us",
+      "speaker": "darius",
+      "file": "darius/banter_db_darius_then_every_timeline_ends_with_us.mp3",
+      "text": "Then every timeline ends with us breaking through the cycle.",
+      "duration": 4.1
+    },
+    "banter_db_lyra_the_timeline_is_looping_daddy_bu": {
+      "id": "banter_db_lyra_the_timeline_is_looping_daddy_bu",
+      "speaker": "lyra",
+      "file": "lyra/banter_db_lyra_the_timeline_is_looping_daddy_bu.mp3",
+      "text": "The timeline is looping, Daddy! But our weapons are tuned from our last run!",
+      "duration": 6.74
+    },
+    "banter_db_thorne_paradox_enemies_inbound_they_rem": {
+      "id": "banter_db_thorne_paradox_enemies_inbound_they_rem",
+      "speaker": "thorne",
+      "file": "thorne/banter_db_thorne_paradox_enemies_inbound_they_rem.mp3",
+      "text": "Paradox enemies inbound! They remember our tactics\u2014switch up attack vectors!",
+      "duration": 6.26
+    },
+    "banter_db_naya_quantum_fabricator_has_retained": {
+      "id": "banter_db_naya_quantum_fabricator_has_retained",
+      "speaker": "naya",
+      "file": "naya/banter_db_naya_quantum_fabricator_has_retained.mp3",
+      "text": "Quantum fabricator has retained full blueprint memory. Sweep the sector clean.",
+      "duration": 5.16
+    },
+    "banter_db_thorne_blow_the_kraken_generators_on_th": {
+      "id": "banter_db_thorne_blow_the_kraken_generators_on_th",
+      "speaker": "thorne",
+      "file": "thorne/banter_db_thorne_blow_the_kraken_generators_on_th.mp3",
+      "text": "Blow the kraken generators on the fly. Second time",
+      "duration": 4.49
+    },
+    "banter_db_darius_let_it_upgrade_our_quantum_dodad": {
+      "id": "banter_db_darius_let_it_upgrade_our_quantum_dodad",
+      "speaker": "darius",
+      "file": "darius/banter_db_darius_let_it_upgrade_our_quantum_dodad.mp3",
+      "text": "Let it upgrade. Our quantum dodad has higher output this loop.",
+      "duration": 5.64
+    },
+    "banter_db_lyra_we_promised_we": {
+      "id": "banter_db_lyra_we_promised_we",
+      "speaker": "lyra",
+      "file": "lyra/banter_db_lyra_we_promised_we.mp3",
+      "text": "We promised we",
+      "duration": 2.18
+    },
+    "banter_db_cross_overload_his_processing_core_bef": {
+      "id": "banter_db_cross_overload_his_processing_core_bef",
+      "speaker": "cross",
+      "file": "cross/banter_db_cross_overload_his_processing_core_bef.mp3",
+      "text": "Overload his processing core before he reconciles the timeline paradox.",
+      "duration": 5.74
+    },
+    "banter_db_darius_not_entropy_architect_purpose_al": {
+      "id": "banter_db_darius_not_entropy_architect_purpose_al",
+      "speaker": "darius",
+      "file": "darius/banter_db_darius_not_entropy_architect_purpose_al.mp3",
+      "text": "Not entropy, Architect. Purpose. All ships, engage the Cyber Coelacanth!",
+      "duration": 7.87
+    },
+    "banter_engine_darius_another_plate_the_nyxa_appreciat": {
+      "id": "banter_engine_darius_another_plate_the_nyxa_appreciat",
+      "speaker": "darius",
+      "file": "darius/banter_engine_darius_another_plate_the_nyxa_appreciat.mp3",
+      "text": "Another plate. The Nyxa appreciates it.",
+      "duration": 4.25
+    },
+    "banter_engine_naya_salvage_logged_every_credit_coun": {
+      "id": "banter_engine_naya_salvage_logged_every_credit_coun",
+      "speaker": "naya",
+      "file": "naya/banter_engine_naya_salvage_logged_every_credit_coun.mp3",
+      "text": "Salvage logged. Every credit counts toward the next push.",
+      "duration": 3.98
+    },
+    "banter_engine_naya_milestone_hit_we_are_not_broke_y": {
+      "id": "banter_engine_naya_milestone_hit_we_are_not_broke_y",
+      "speaker": "naya",
+      "file": "naya/banter_engine_naya_milestone_hit_we_are_not_broke_y.mp3",
+      "text": "Milestone hit. We are not broke yet.",
+      "duration": 2.9
+    },
+    "banter_engine_naya_energy_credits_banked_keep_salva": {
+      "id": "banter_engine_naya_energy_credits_banked_keep_salva",
+      "speaker": "naya",
+      "file": "naya/banter_engine_naya_energy_credits_banked_keep_salva.mp3",
+      "text": "Energy-credits banked. Keep salvaging, Darius.",
+      "duration": 3.91
+    },
+    "banter_engine_darius_essence_plate_pre_war_alloy_wort": {
+      "id": "banter_engine_darius_essence_plate_pre_war_alloy_wort",
+      "speaker": "darius",
+      "file": "darius/banter_engine_darius_essence_plate_pre_war_alloy_wort.mp3",
+      "text": "Essence plate! Pre-war alloy. Worth more than a fleet destroyer.",
+      "duration": 6.43
+    },
+    "banter_engine_naya_legendary_drop_that_piece_alone": {
+      "id": "banter_engine_naya_legendary_drop_that_piece_alone",
+      "speaker": "naya",
+      "file": "naya/banter_engine_naya_legendary_drop_that_piece_alone.mp3",
+      "text": "LEGENDARY drop! That piece alone would buy a week of station time.",
+      "duration": 4.3
+    },
+    "banter_engine_naya_an_essence_fragment_dreamer_sign": {
+      "id": "banter_engine_naya_an_essence_fragment_dreamer_sign",
+      "speaker": "naya",
+      "file": "naya/banter_engine_naya_an_essence_fragment_dreamer_sign.mp3",
+      "text": "An essence fragment. Dreamer signature confirmed in the alloy.",
+      "duration": 4.46
+    },
+    "banter_engine_naya_upgrade_installed_should_help_wi": {
+      "id": "banter_engine_naya_upgrade_installed_should_help_wi",
+      "speaker": "naya",
+      "file": "naya/banter_engine_naya_upgrade_installed_should_help_wi.mp3",
+      "text": "Upgrade installed. Should help with what is ahead.",
+      "duration": 3.17
+    },
+    "banter_engine_darius_better_gear_the_deep_doesn": {
+      "id": "banter_engine_darius_better_gear_the_deep_doesn",
+      "speaker": "darius",
+      "file": "darius/banter_engine_darius_better_gear_the_deep_doesn.mp3",
+      "text": "Better gear. The deep doesn",
+      "duration": 3.62
+    },
+    "banter_engine_thorne_good_investment_that_system_will": {
+      "id": "banter_engine_thorne_good_investment_that_system_will",
+      "speaker": "thorne",
+      "file": "thorne/banter_engine_thorne_good_investment_that_system_will.mp3",
+      "text": "Good investment. That system will earn its keep.",
+      "duration": 3.98
+    },
+    "banter_engine_naya_max_rank_upgrade_that_system_is": {
+      "id": "banter_engine_naya_max_rank_upgrade_that_system_is",
+      "speaker": "naya",
+      "file": "naya/banter_engine_naya_max_rank_upgrade_that_system_is.mp3",
+      "text": "MAX rank upgrade! That system is fully tuned now.",
+      "duration": 4.01
+    },
+    "banter_engine_darius_top_of_the_line_nothing_in_the_t": {
+      "id": "banter_engine_darius_top_of_the_line_nothing_in_the_t",
+      "speaker": "darius",
+      "file": "darius/banter_engine_darius_top_of_the_line_nothing_in_the_t.mp3",
+      "text": "Top of the line. Nothing in the trench can match this.",
+      "duration": 4.7
+    },
+    "banter_engine_naya_maximum_calibration_achieved_upg": {
+      "id": "banter_engine_naya_maximum_calibration_achieved_upg",
+      "speaker": "naya",
+      "file": "naya/banter_engine_naya_maximum_calibration_achieved_upg.mp3",
+      "text": "Maximum calibration achieved. Upgrade branch complete.",
+      "duration": 4.18
+    },
+    "banter_engine_darius_welcome_aboard_we": {
+      "id": "banter_engine_darius_welcome_aboard_we",
+      "speaker": "darius",
+      "file": "darius/banter_engine_darius_welcome_aboard_we.mp3",
+      "text": "Welcome aboard. We",
+      "duration": 3.34
+    },
+    "banter_engine_darius_glad_you_made_it_this_trench_doe": {
+      "id": "banter_engine_darius_glad_you_made_it_this_trench_doe",
+      "speaker": "darius",
+      "file": "darius/banter_engine_darius_glad_you_made_it_this_trench_doe.mp3",
+      "text": "Glad you made it. This trench doesn",
+      "duration": 3.96
+    },
+    "banter_engine_naya_another_pilot_we_could_use_the_h": {
+      "id": "banter_engine_naya_another_pilot_we_could_use_the_h",
+      "speaker": "naya",
+      "file": "naya/banter_engine_naya_another_pilot_we_could_use_the_h.mp3",
+      "text": "Another pilot. We could use the help down here.",
+      "duration": 3.22
+    },
+    "banter_engine_darius_just_in_time_the_heavy_fighting": {
+      "id": "banter_engine_darius_just_in_time_the_heavy_fighting",
+      "speaker": "darius",
+      "file": "darius/banter_engine_darius_just_in_time_the_heavy_fighting.mp3",
+      "text": "Just in time. The heavy fighting",
+      "duration": 3.84
+    },
+    "banter_engine_darius_right_on_schedule_things_are_hea": {
+      "id": "banter_engine_darius_right_on_schedule_things_are_hea",
+      "speaker": "darius",
+      "file": "darius/banter_engine_darius_right_on_schedule_things_are_hea.mp3",
+      "text": "Right on schedule. Things are heating up.",
+      "duration": 4.08
+    },
+    "banter_engine_cross_reinforcements_about_time": {
+      "id": "banter_engine_cross_reinforcements_about_time",
+      "speaker": "cross",
+      "file": "cross/banter_engine_cross_reinforcements_about_time.mp3",
+      "text": "Reinforcements. About time.",
+      "duration": 4.25
+    },
+    "banter_engine_darius_welcome_we": {
+      "id": "banter_engine_darius_welcome_we",
+      "speaker": "darius",
+      "file": "darius/banter_engine_darius_welcome_we.mp3",
+      "text": "Welcome! We",
+      "duration": 3.07
+    },
+    "banter_engine_naya_never_too_late_to_join_the_fight": {
+      "id": "banter_engine_naya_never_too_late_to_join_the_fight",
+      "speaker": "naya",
+      "file": "naya/banter_engine_naya_never_too_late_to_join_the_fight.mp3",
+      "text": "Never too late to join the fight!",
+      "duration": 2.11
+    },
+    "banter_engine_darius_they": {
+      "id": "banter_engine_darius_they",
+      "speaker": "darius",
+      "file": "darius/banter_engine_darius_they.mp3",
+      "text": "They",
+      "duration": 2.02
+    },
+    "banter_engine_cross_one_less_gun_we_adapt_we_always": {
+      "id": "banter_engine_cross_one_less_gun_we_adapt_we_always",
+      "speaker": "cross",
+      "file": "cross/banter_engine_cross_one_less_gun_we_adapt_we_always.mp3",
+      "text": "One less gun. We adapt. We always do.",
+      "duration": 6.02
+    },
+    "banter_engine_naya_they_fought_well_now_it": {
+      "id": "banter_engine_naya_they_fought_well_now_it",
+      "speaker": "naya",
+      "file": "naya/banter_engine_naya_they_fought_well_now_it.mp3",
+      "text": "They fought well. Now it",
+      "duration": 2.3
+    },
+    "dialogue_scenes_lyra_daddy_don": {
+      "id": "dialogue_scenes_lyra_daddy_don",
+      "speaker": "lyra",
+      "file": "lyra/dialogue_scenes_lyra_daddy_don.mp3",
+      "text": "Daddy... don",
+      "duration": 2.21
+    },
+    "dialogue_scenes_thorne_darius_our_thermal_readings_show": {
+      "id": "dialogue_scenes_thorne_darius_our_thermal_readings_show",
+      "speaker": "thorne",
+      "file": "thorne/dialogue_scenes_thorne_darius_our_thermal_readings_show.mp3",
+      "text": "Darius, our thermal readings show the left channel is stable. Stay on course.",
+      "duration": 5.93
+    },
+    "dialogue_scenes_darius_override_decision_required_which": {
+      "id": "dialogue_scenes_darius_override_decision_required_which",
+      "speaker": "darius",
+      "file": "darius/dialogue_scenes_darius_override_decision_required_which.mp3",
+      "text": "Override decision required. Which channel do we take?",
+      "duration": 4.99
+    },
+    "dialogue_scenes_darius_thorne_i": {
+      "id": "dialogue_scenes_darius_thorne_i",
+      "speaker": "darius",
+      "file": "darius/dialogue_scenes_darius_thorne_i.mp3",
+      "text": "Thorne, I",
+      "duration": 2.33
+    },
+    "dialogue_scenes_thorne_center": {
+      "id": "dialogue_scenes_thorne_center",
+      "speaker": "thorne",
+      "file": "thorne/dialogue_scenes_thorne_center.mp3",
+      "text": "Center",
+      "duration": 2.02
+    },
+    "dialogue_scenes_lyra_the_center_opens_up_in_about_for": {
+      "id": "dialogue_scenes_lyra_the_center_opens_up_in_about_for",
+      "speaker": "lyra",
+      "file": "lyra/dialogue_scenes_lyra_the_center_opens_up_in_about_for.mp3",
+      "text": "The center opens up in about forty meters. There",
+      "duration": 5.14
+    },
+    "dialogue_scenes_darius_now_what_navigator": {
+      "id": "dialogue_scenes_darius_now_what_navigator",
+      "speaker": "darius",
+      "file": "darius/dialogue_scenes_darius_now_what_navigator.mp3",
+      "text": "Now what, navigator?",
+      "duration": 2.64
+    },
+    "dialogue_scenes_lyra_follow_the_blue_glow_not_the_bri": {
+      "id": "dialogue_scenes_lyra_follow_the_blue_glow_not_the_bri",
+      "speaker": "lyra",
+      "file": "lyra/dialogue_scenes_lyra_follow_the_blue_glow_not_the_bri.mp3",
+      "text": "Follow the blue glow. Not the bright one \u2014 the dim one, way down low. It",
+      "duration": 7.87
+    },
+    "dialogue_scenes_darius_thorne": {
+      "id": "dialogue_scenes_darius_thorne",
+      "speaker": "darius",
+      "file": "darius/dialogue_scenes_darius_thorne.mp3",
+      "text": "Thorne",
+      "duration": 2.02
+    },
+    "dialogue_scenes_thorne_error_left_channel_thermal_readi": {
+      "id": "dialogue_scenes_thorne_error_left_channel_thermal_readi",
+      "speaker": "thorne",
+      "file": "thorne/dialogue_scenes_thorne_error_left_channel_thermal_readi.mp3",
+      "text": "Error! Left channel thermal readings spiking! Pull out, Darius!",
+      "duration": 5.33
+    },
+    "dialogue_scenes_lyra_daddy_get_out_of_there_veer_cent": {
+      "id": "dialogue_scenes_lyra_daddy_get_out_of_there_veer_cent",
+      "speaker": "lyra",
+      "file": "lyra/dialogue_scenes_lyra_daddy_get_out_of_there_veer_cent.mp3",
+      "text": "Daddy! Get out of there! Veer center now! The blue glow!",
+      "duration": 7.15
+    },
+    "dialogue_scenes_darius_steering_center_coral_cave_spott": {
+      "id": "dialogue_scenes_darius_steering_center_coral_cave_spott",
+      "speaker": "darius",
+      "file": "darius/dialogue_scenes_darius_steering_center_coral_cave_spott.mp3",
+      "text": "Steering center... Coral cave spotted. We",
+      "duration": 4.8
+    },
+    "dialogue_scenes_thorne_all_primary_escape_routes_are_se": {
+      "id": "dialogue_scenes_thorne_all_primary_escape_routes_are_se",
+      "speaker": "thorne",
+      "file": "thorne/dialogue_scenes_thorne_all_primary_escape_routes_are_se.mp3",
+      "text": "All primary escape routes are sealed. I",
+      "duration": 3.46
+    },
+    "dialogue_scenes_lyra_go_down": {
+      "id": "dialogue_scenes_lyra_go_down",
+      "speaker": "lyra",
+      "file": "lyra/dialogue_scenes_lyra_go_down.mp3",
+      "text": "Go down.",
+      "duration": 1.87
+    },
+    "dialogue_scenes_thorne_negative_lyra_down_is_the_substr": {
+      "id": "dialogue_scenes_thorne_negative_lyra_down_is_the_substr",
+      "speaker": "thorne",
+      "file": "thorne/dialogue_scenes_thorne_negative_lyra_down_is_the_substr.mp3",
+      "text": "Negative, Lyra. Down is the substrate layer. Solid bedrock for three kilometers. There",
+      "duration": 7.61
+    },
+    "dialogue_scenes_lyra_not_solid_not_anymore_the_dreame": {
+      "id": "dialogue_scenes_lyra_not_solid_not_anymore_the_dreame",
+      "speaker": "lyra",
+      "file": "lyra/dialogue_scenes_lyra_not_solid_not_anymore_the_dreame.mp3",
+      "text": "Not solid. Not anymore. The Dreamer... it dreamed through it. There",
+      "duration": 7.99
+    },
+    "dialogue_scenes_darius_lyra": {
+      "id": "dialogue_scenes_darius_lyra",
+      "speaker": "darius",
+      "file": "darius/dialogue_scenes_darius_lyra.mp3",
+      "text": "Lyra",
+      "duration": 2.02
+    },
+    "dialogue_scenes_darius_lyra_how_sure_are_you": {
+      "id": "dialogue_scenes_darius_lyra_how_sure_are_you",
+      "speaker": "darius",
+      "file": "darius/dialogue_scenes_darius_lyra_how_sure_are_you.mp3",
+      "text": "Lyra. How sure are you?",
+      "duration": 3.43
+    },
+    "dialogue_scenes_lyra_i_can_feel_the_water_moving_thro": {
+      "id": "dialogue_scenes_lyra_i_can_feel_the_water_moving_thro",
+      "speaker": "lyra",
+      "file": "lyra/dialogue_scenes_lyra_i_can_feel_the_water_moving_thro.mp3",
+      "text": "I can feel the water moving through it. It",
+      "duration": 4.32
+    },
+    "dialogue_scenes_darius_diving_down_hold_on": {
+      "id": "dialogue_scenes_darius_diving_down_hold_on",
+      "speaker": "darius",
+      "file": "darius/dialogue_scenes_darius_diving_down_hold_on.mp3",
+      "text": "Diving down! Hold on!",
+      "duration": 3.53
+    },
+    "dialogue_scenes_lyra_i_told_you_i_can_feel_the_shape": {
+      "id": "dialogue_scenes_lyra_i_told_you_i_can_feel_the_shape",
+      "speaker": "lyra",
+      "file": "lyra/dialogue_scenes_lyra_i_told_you_i_can_feel_the_shape.mp3",
+      "text": "I told you. I can feel the shape of things.",
+      "duration": 4.68
+    },
+    "dialogue_scenes_darius_cannot_risk_smashing_solid_bedro": {
+      "id": "dialogue_scenes_darius_cannot_risk_smashing_solid_bedro",
+      "speaker": "darius",
+      "file": "darius/dialogue_scenes_darius_cannot_risk_smashing_solid_bedro.mp3",
+      "text": "Cannot risk smashing solid bedrock. Thorne, give me that secondary vector!",
+      "duration": 6.36
+    },
+    "dialogue_scenes_lyra_daddy_the_wall_is_falling_you_ha": {
+      "id": "dialogue_scenes_lyra_daddy_the_wall_is_falling_you_ha",
+      "speaker": "lyra",
+      "file": "lyra/dialogue_scenes_lyra_daddy_the_wall_is_falling_you_ha.mp3",
+      "text": "Daddy! The wall is falling! You have to go down, please!",
+      "duration": 6.48
+    },
+    "dialogue_scenes_darius_fine_heading_down_bedrock_is_hol": {
+      "id": "dialogue_scenes_darius_fine_heading_down_bedrock_is_hol",
+      "speaker": "darius",
+      "file": "darius/dialogue_scenes_darius_fine_heading_down_bedrock_is_hol.mp3",
+      "text": "Fine! Heading down! Bedrock is... hollow! We are inside the vein!",
+      "duration": 7.82
+    },
+    "dialogue_scenes_cross_you": {
+      "id": "dialogue_scenes_cross_you",
+      "speaker": "cross",
+      "file": "cross/dialogue_scenes_cross_you.mp3",
+      "text": "You",
+      "duration": 1.99
+    },
+    "dialogue_scenes_lyra_daddy_the_ice_shard_at_bearing_2": {
+      "id": "dialogue_scenes_lyra_daddy_the_ice_shard_at_bearing_2",
+      "speaker": "lyra",
+      "file": "lyra/dialogue_scenes_lyra_daddy_the_ice_shard_at_bearing_2.mp3",
+      "text": "Daddy \u2014 the ice shard at bearing 217. The big one, the one that looks like a broken tooth. Fly INTO it.",
+      "duration": 10.8
+    },
+    "dialogue_scenes_darius_lyra_that": {
+      "id": "dialogue_scenes_darius_lyra_that",
+      "speaker": "darius",
+      "file": "darius/dialogue_scenes_darius_lyra_that.mp3",
+      "text": "Lyra, that",
+      "duration": 2.28
+    },
+    "dialogue_scenes_lyra_no_it": {
+      "id": "dialogue_scenes_lyra_no_it",
+      "speaker": "lyra",
+      "file": "lyra/dialogue_scenes_lyra_no_it.mp3",
+      "text": "No. It",
+      "duration": 2.64
+    },
+    "dialogue_scenes_darius_umbra_fighters_locking_missiles": {
+      "id": "dialogue_scenes_darius_umbra_fighters_locking_missiles",
+      "speaker": "darius",
+      "file": "darius/dialogue_scenes_darius_umbra_fighters_locking_missiles.mp3",
+      "text": "Umbra fighters locking missiles. Do we trust Lyra or engage?",
+      "duration": 5.5
+    },
+    "dialogue_scenes_darius_trusting_you_starlight_banking_h": {
+      "id": "dialogue_scenes_darius_trusting_you_starlight_banking_h",
+      "speaker": "darius",
+      "file": "darius/dialogue_scenes_darius_trusting_you_starlight_banking_h.mp3",
+      "text": "Trusting you, starlight. Banking hard!",
+      "duration": 4.46
+    },
+    "dialogue_scenes_lyra_i_can_see_the_path_in_my_head_le": {
+      "id": "dialogue_scenes_lyra_i_can_see_the_path_in_my_head_le",
+      "speaker": "lyra",
+      "file": "lyra/dialogue_scenes_lyra_i_can_see_the_path_in_my_head_le.mp3",
+      "text": "I can see the path in my head. Left fork in twenty meters... now!",
+      "duration": 6.38
+    },
+    "dialogue_scenes_darius_steering_left_cavern_is_narrow": {
+      "id": "dialogue_scenes_darius_steering_left_cavern_is_narrow",
+      "speaker": "darius",
+      "file": "darius/dialogue_scenes_darius_steering_left_cavern_is_narrow.mp3",
+      "text": "Steering left! Cavern is narrow!",
+      "duration": 4.13
+    },
+    "dialogue_scenes_lyra_slow_down_for_the_next_chamber_t": {
+      "id": "dialogue_scenes_lyra_slow_down_for_the_next_chamber_t",
+      "speaker": "lyra",
+      "file": "lyra/dialogue_scenes_lyra_slow_down_for_the_next_chamber_t.mp3",
+      "text": "Slow down for the next chamber \u2014 there",
+      "duration": 3.6
+    },
+    "dialogue_scenes_lyra_okay_you": {
+      "id": "dialogue_scenes_lyra_okay_you",
+      "speaker": "lyra",
+      "file": "lyra/dialogue_scenes_lyra_okay_you.mp3",
+      "text": "Okay, you",
+      "duration": 2.09
+    },
+    "dialogue_scenes_lyra_surface_exit_in_three_hundred_me": {
+      "id": "dialogue_scenes_lyra_surface_exit_in_three_hundred_me",
+      "speaker": "lyra",
+      "file": "lyra/dialogue_scenes_lyra_surface_exit_in_three_hundred_me.mp3",
+      "text": "Surface exit in three hundred meters. Cross is waiting on the far side, but she doesn",
+      "duration": 7.75
+    },
+    "dialogue_scenes_darius_exiting_northern_corridor_we_are": {
+      "id": "dialogue_scenes_darius_exiting_northern_corridor_we_are",
+      "speaker": "darius",
+      "file": "darius/dialogue_scenes_darius_exiting_northern_corridor_we_are.mp3",
+      "text": "Exiting northern corridor! We are clear. Cross is out of position!",
+      "duration": 6.48
+    },
+    "dialogue_scenes_lyra_daddy_shields_are_failing_get_in": {
+      "id": "dialogue_scenes_lyra_daddy_shields_are_failing_get_in",
+      "speaker": "lyra",
+      "file": "lyra/dialogue_scenes_lyra_daddy_shields_are_failing_get_in.mp3",
+      "text": "Daddy! Shields are failing! Get into the ice cavern, it",
+      "duration": 6.62
+    },
+    "dialogue_scenes_darius_too_many_of_them_banking_into_th": {
+      "id": "dialogue_scenes_darius_too_many_of_them_banking_into_th",
+      "speaker": "darius",
+      "file": "darius/dialogue_scenes_darius_too_many_of_them_banking_into_th.mp3",
+      "text": "Too many of them! Banking into the shard fissure!",
+      "duration": 4.49
+    },
+    "dialogue_scenes_lyra_left_fork_now_then_right_turn_ex": {
+      "id": "dialogue_scenes_lyra_left_fork_now_then_right_turn_ex",
+      "speaker": "lyra",
+      "file": "lyra/dialogue_scenes_lyra_left_fork_now_then_right_turn_ex.mp3",
+      "text": "Left fork... now! Then right turn. Exiting North!",
+      "duration": 6.41
+    },
+    "dialogue_scenes_thorne_without_lyra": {
+      "id": "dialogue_scenes_thorne_without_lyra",
+      "speaker": "thorne",
+      "file": "thorne/dialogue_scenes_thorne_without_lyra.mp3",
+      "text": "Without Lyra",
+      "duration": 2.02
+    },
+    "dialogue_scenes_darius_wake_up_soon_starlight_i_don": {
+      "id": "dialogue_scenes_darius_wake_up_soon_starlight_i_don",
+      "speaker": "darius",
+      "file": "darius/dialogue_scenes_darius_wake_up_soon_starlight_i_don.mp3",
+      "text": "Wake up soon, starlight. I don",
+      "duration": 4.37
+    },
+    "dialogue_scenes_lyra_daddy": {
+      "id": "dialogue_scenes_lyra_daddy",
+      "speaker": "lyra",
+      "file": "lyra/dialogue_scenes_lyra_daddy.mp3",
+      "text": "...Daddy?",
+      "duration": 1.87
+    },
+    "dialogue_scenes_darius_lyra_you": {
+      "id": "dialogue_scenes_darius_lyra_you",
+      "speaker": "darius",
+      "file": "darius/dialogue_scenes_darius_lyra_you.mp3",
+      "text": "Lyra! You",
+      "duration": 3.0
+    },
+    "dialogue_scenes_lyra_i_had_to_go_deep_to_come_back_i": {
+      "id": "dialogue_scenes_lyra_i_had_to_go_deep_to_come_back_i",
+      "speaker": "lyra",
+      "file": "lyra/dialogue_scenes_lyra_i_had_to_go_deep_to_come_back_i.mp3",
+      "text": "I had to go deep to come back. I saw everything. The Dreamer isn",
+      "duration": 7.34
+    },
+    "dialogue_scenes_lyra_the_hive_is_going_to_try_to_conf": {
+      "id": "dialogue_scenes_lyra_the_hive_is_going_to_try_to_conf",
+      "speaker": "lyra",
+      "file": "lyra/dialogue_scenes_lyra_the_hive_is_going_to_try_to_conf.mp3",
+      "text": "The Hive is going to try to confuse you. It",
+      "duration": 4.66
+    },
+    "dialogue_scenes_darius_tell_me_where_to_go": {
+      "id": "dialogue_scenes_darius_tell_me_where_to_go",
+      "speaker": "darius",
+      "file": "darius/dialogue_scenes_darius_tell_me_where_to_go.mp3",
+      "text": "Tell me where to go.",
+      "duration": 2.18
+    },
+    "biome_data_darius_sunlight": {
+      "id": "biome_data_darius_sunlight",
+      "speaker": "darius",
+      "file": "darius/biome_data_darius_sunlight.mp3",
+      "text": "Sunlight",
+      "duration": 2.02
+    },
+    "biome_data_lyra_daddy_the_reef_is_lighting_up_it": {
+      "id": "biome_data_lyra_daddy_the_reef_is_lighting_up_it",
+      "speaker": "lyra",
+      "file": "lyra/biome_data_lyra_daddy_the_reef_is_lighting_up_it.mp3",
+      "text": "Daddy, the reef is lighting up... it",
+      "duration": 3.65
+    },
+    "biome_data_lyra_the_purple_flowers_they": {
+      "id": "biome_data_lyra_the_purple_flowers_they",
+      "speaker": "lyra",
+      "file": "lyra/biome_data_lyra_the_purple_flowers_they.mp3",
+      "text": "The purple flowers... they",
+      "duration": 2.93
+    },
+    "biome_data_darius_i_hear_music_from_home_stay_shar": {
+      "id": "biome_data_darius_i_hear_music_from_home_stay_shar",
+      "speaker": "darius",
+      "file": "darius/biome_data_darius_i_hear_music_from_home_stay_shar.mp3",
+      "text": "I hear music from home. Stay sharp, it",
+      "duration": 4.61
+    },
+    "biome_data_lyra_the_vault_doors_are_opening_dadd": {
+      "id": "biome_data_lyra_the_vault_doors_are_opening_dadd",
+      "speaker": "lyra",
+      "file": "lyra/biome_data_lyra_the_vault_doors_are_opening_dadd.mp3",
+      "text": "The vault doors are opening, Daddy... they",
+      "duration": 4.08
+    },
+    "biome_data_darius_europa": {
+      "id": "biome_data_darius_europa",
+      "speaker": "darius",
+      "file": "darius/biome_data_darius_europa.mp3",
+      "text": "Europa",
+      "duration": 2.02
+    },
+    "biome_data_naya_unfinished_coelacanth_prototypes": {
+      "id": "biome_data_naya_unfinished_coelacanth_prototypes",
+      "speaker": "naya",
+      "file": "naya/biome_data_naya_unfinished_coelacanth_prototypes.mp3",
+      "text": "Unfinished Coelacanth prototypes detected. They",
+      "duration": 3.82
+    },
+    "biome_data_darius_ride_the_warm_updrafts_from_the": {
+      "id": "biome_data_darius_ride_the_warm_updrafts_from_the",
+      "speaker": "darius",
+      "file": "darius/biome_data_darius_ride_the_warm_updrafts_from_the.mp3",
+      "text": "Ride the warm updrafts from the fissure. It",
+      "duration": 4.3
+    },
+    "biome_data_naya_this_was_ophion": {
+      "id": "biome_data_naya_this_was_ophion",
+      "speaker": "naya",
+      "file": "naya/biome_data_naya_this_was_ophion.mp3",
+      "text": "This was Ophion",
+      "duration": 1.99
+    },
+    "biome_data_cross_navy_survey_team_was_wiped_here": {
+      "id": "biome_data_cross_navy_survey_team_was_wiped_here",
+      "speaker": "cross",
+      "file": "cross/biome_data_cross_navy_survey_team_was_wiped_here.mp3",
+      "text": "Navy survey team was wiped here in",
+      "duration": 3.53
+    },
+    "biome_data_lyra_the_queen_knows_we": {
+      "id": "biome_data_lyra_the_queen_knows_we",
+      "speaker": "lyra",
+      "file": "lyra/biome_data_lyra_the_queen_knows_we.mp3",
+      "text": "The Queen knows we",
+      "duration": 2.35
+    },
+    "biome_data_darius_the_veil_nebula_the_stars_look_l": {
+      "id": "biome_data_darius_the_veil_nebula_the_stars_look_l",
+      "speaker": "darius",
+      "file": "darius/biome_data_darius_the_veil_nebula_the_stars_look_l.mp3",
+      "text": "The Veil Nebula. The stars look like they",
+      "duration": 4.34
+    },
+    "biome_data_lyra_the_nebula_wants_to_tell_us_a_st": {
+      "id": "biome_data_lyra_the_nebula_wants_to_tell_us_a_st",
+      "speaker": "lyra",
+      "file": "lyra/biome_data_lyra_the_nebula_wants_to_tell_us_a_st.mp3",
+      "text": "The nebula wants to tell us a story, Daddy. It",
+      "duration": 5.16
+    },
+    "biome_data_cross_kraken_fortress_sighted_this_was": {
+      "id": "biome_data_cross_kraken_fortress_sighted_this_was",
+      "speaker": "cross",
+      "file": "cross/biome_data_cross_kraken_fortress_sighted_this_was.mp3",
+      "text": "Kraken Fortress sighted. This was Crane",
+      "duration": 4.66
+    },
+    "biome_data_darius_jupiter": {
+      "id": "biome_data_darius_jupiter",
+      "speaker": "darius",
+      "file": "darius/biome_data_darius_jupiter.mp3",
+      "text": "Jupiter",
+      "duration": 2.02
+    },
+    "biome_data_cross_those_point_defense_turrets_are": {
+      "id": "biome_data_cross_those_point_defense_turrets_are",
+      "speaker": "cross",
+      "file": "cross/biome_data_cross_those_point_defense_turrets_are.mp3",
+      "text": "Those point-defense turrets are still hunting on Admiral Crane",
+      "duration": 4.7
+    },
+    "biome_data_cross_heavy_automated_dreadnought_on_p": {
+      "id": "biome_data_cross_heavy_automated_dreadnought_on_p",
+      "speaker": "cross",
+      "file": "cross/biome_data_cross_heavy_automated_dreadnought_on_p.mp3",
+      "text": "Heavy automated dreadnought on patrol. It hasn",
+      "duration": 5.3
+    },
+    "biome_data_thorne_don": {
+      "id": "biome_data_thorne_don",
+      "speaker": "thorne",
+      "file": "thorne/biome_data_thorne_don.mp3",
+      "text": "Don",
+      "duration": 0.98
+    },
+    "biome_data_darius_flagship_goliath_dead_ahead_cran": {
+      "id": "biome_data_darius_flagship_goliath_dead_ahead_cran",
+      "speaker": "darius",
+      "file": "darius/biome_data_darius_flagship_goliath_dead_ahead_cran.mp3",
+      "text": "Flagship Goliath dead ahead. Crane",
+      "duration": 4.27
+    },
+    "biome_data_lyra_daddy_the_walls_are_whispering_i": {
+      "id": "biome_data_lyra_daddy_the_walls_are_whispering_i",
+      "speaker": "lyra",
+      "file": "lyra/biome_data_lyra_daddy_the_walls_are_whispering_i.mp3",
+      "text": "Daddy... the walls are whispering in Mom",
+      "duration": 3.77
+    },
+    "biome_data_thorne_destroy_the_neural_bridge_nodes": {
+      "id": "biome_data_thorne_destroy_the_neural_bridge_nodes",
+      "speaker": "thorne",
+      "file": "thorne/biome_data_thorne_destroy_the_neural_bridge_nodes.mp3",
+      "text": "Destroy the neural bridge nodes. It",
+      "duration": 3.12
+    },
+    "biome_data_darius_i_see_ships_from_every_timeline": {
+      "id": "biome_data_darius_i_see_ships_from_every_timeline",
+      "speaker": "darius",
+      "file": "darius/biome_data_darius_i_see_ships_from_every_timeline.mp3",
+      "text": "I see ships from every timeline flying alongside us. We",
+      "duration": 5.47
+    },
+    "biome_data_lyra_the_spires_are_singing_the_first": {
+      "id": "biome_data_lyra_the_spires_are_singing_the_first",
+      "speaker": "lyra",
+      "file": "lyra/biome_data_lyra_the_spires_are_singing_the_first.mp3",
+      "text": "The spires are singing the first song of creation. We",
+      "duration": 5.47
     }
   }
 }
