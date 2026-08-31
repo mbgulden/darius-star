@@ -458,11 +458,21 @@ function resetGame() {
 
     // Set LevelManager state
     if (window.LevelManager) {
-        if (campaignSave) {
-            LevelManager.setBiomeAndLevel(campaignSave.biome || 1, campaignSave.wave || 1);
-        } else {
-            LevelManager.setBiomeAndLevel(1, 1);
+        let targetBiome = 1;
+        let targetLevel = 1;
+        if (typeof window !== 'undefined' && window.location && window.location.search) {
+            const params = new URLSearchParams(window.location.search);
+            if (params.has('biome')) targetBiome = parseInt(params.get('biome')) || 1;
+            if (params.has('level')) targetLevel = parseInt(params.get('level')) || 1;
+        } else if (campaignSave) {
+            targetBiome = campaignSave.biome || 1;
+            targetLevel = campaignSave.level || campaignSave.biomeLevel || 1;
+            if (campaignSave.lastCheckpoint) {
+                targetBiome = campaignSave.lastCheckpoint.biome || targetBiome;
+                targetLevel = campaignSave.lastCheckpoint.level || campaignSave.lastCheckpoint.wave || targetLevel;
+            }
         }
+        LevelManager.setBiomeAndLevel(targetBiome, targetLevel);
     }
 
     // Re-apply score to get correct biome level

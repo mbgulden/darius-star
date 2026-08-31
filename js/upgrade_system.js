@@ -28,73 +28,74 @@
     const UPGRADE_CONFIG = {
         weapons: {
             name: 'Quantum Main Cannons',
-            maxRank: 10,
+            maxRank: 30,
             descriptions: [
-                'Base projectile damage: +5% per rank',
-                'Fire rate: +3% per rank (cooldown reduced)',
-                'Projectile velocity: +5% per rank'
+                'Tier I (1-10): Base projectile dmg +5%/rank, fire rate +3%/rank',
+                'Tier II (11-20): Overclocked beam velocity & +5% plasma piercing/rank',
+                'Tier III (21-30): Apex Singularity core (+150% total dmg, +90% fire rate)'
             ]
         },
         shields: {
-            name: 'Aegis Shield & Nanite Matrix',
-            maxRank: 10,
+            name: 'Aegis Shield & Nanites',
+            maxRank: 30,
             descriptions: [
-                'Max HP/Shield: +10 per rank (up to 200 total)',
-                'Passive Shield Regen: +0.15 HP/s per rank',
-                'Invulnerability frames: +0.05s on hit'
+                'Tier I (1-10): Max Shield +10 HP/rank, regen +0.15 HP/s',
+                'Tier II (11-20): Overclocked nano-weave, +10 HP/rank, +0.15 HP/s regen',
+                'Tier III (21-30): Apex Singularity shield matrix (up to 400 HP, 4.5 HP/s regen)'
             ]
         },
         rockets: {
             name: 'Valkyrie Missile Pods',
-            maxRank: 10,
+            maxRank: 30,
             descriptions: [
-                'Missile payload damage: +10% per rank',
-                'Area of Effect (AOE) blast radius: +12px per rank (up to +120px)',
-                'Secondary missile charge rate: +6% per rank'
+                'Tier I (1-10): Missile payload damage +10%/rank, AOE +10px/rank',
+                'Tier II (11-20): Overclocked micro-thrusters, rapid salvo reload',
+                'Tier III (21-30): Apex Singularity warheads (+300% dmg, +300px blast radius)'
             ]
         },
         magnetism: {
             name: 'Quantum Tractor Beam',
-            maxRank: 10,
+            maxRank: 30,
             descriptions: [
-                'Scrap attraction radius: +28px per rank (45px -> 325px)',
-                'Magnetic pull acceleration: +35px/s² per rank',
-                'Scavenger salvage yield: +3% bonus scrap value per rank'
+                'Tier I (1-10): Scrap attraction radius +20px/rank (45px -> 245px)',
+                'Tier II (11-20): Overclocked magnetic coil (245px -> 445px, +2% bonus scrap value/rank)',
+                'Tier III (21-30): Singularity scrap vortex (up to 645px screen-wide pull, +60% scrap bonus)'
             ]
         },
         engines: {
-            name: 'Hyper-Drive & Thrusters',
-            maxRank: 10,
+            name: 'Hyper-Drive Thrusters',
+            maxRank: 30,
             descriptions: [
-                'Ship movement speed: +3% per rank',
-                'Afterburner Boost: +6% duration, -5% recharge cooldown per rank'
+                'Tier I (1-10): Ship movement speed +2%/rank, afterburner boost duration',
+                'Tier II (11-20): Overclocked sub-light thrusters & reduced dodge cooldown',
+                'Tier III (21-30): Singularity hyper-space maneuverability (+60% speed, 0.35s dodge CD)'
             ]
         },
         specials: {
-            name: 'Precursor Cyber Overload',
-            maxRank: 10,
+            name: 'Cyber Overload Special',
+            maxRank: 30,
             descriptions: [
-                'Special ability duration: +0.35s per rank',
-                'Special ability cooldown: -5% per rank (down to 50% cooldown)'
+                'Tier I (1-10): Special duration +0.25s/rank, cooldown -3%/rank',
+                'Tier II (11-20): Overclocked supercapacitors & extended active duration',
+                'Tier III (21-30): Apex Singularity overload (+7.5s duration, 70% CD reduction)'
             ]
         },
         addons: {
             name: 'Quantum Combat Drones',
-            maxRank: 10,
+            maxRank: 30,
             descriptions: [
-                'Deploys orbiting companion drones (1 at Rank 1, 2 at Rank 4, 3 at Rank 7, 4 at Rank 10)',
-                'Drones fire helper plasma darts and intercept enemy missiles'
+                'Tier I (1-10): Deploys 1 to 4 companion drones with helper plasma darts',
+                'Tier II (11-20): Overclocked drones (5 to 6 drones) with hyper-interceptors',
+                'Tier III (21-30): Apex Singularity drone armada (up to 8 orbiting companion drones!)'
             ]
         },
         cosmetics: {
-            name: 'Chrono-Holo Plating & FX',
-            maxRank: 5,
+            name: 'Chrono Plating & FX',
+            maxRank: 15,
             descriptions: [
-                'Rank 1: Unlocks Neon Cyan ship & Electric Blue trail',
-                'Rank 2: Unlocks Cyber Magenta ship & Flame Red trail',
-                'Rank 3: Unlocks Matrix Emerald ship & Toxic Green trail',
-                'Rank 4: Unlocks Aurum Gold ship, Gold trail & EMP Shockwave explosion',
-                'Rank 5: Unlocks Void Purple ship, Rainbow trail & Scrap Burst explosion'
+                'Tier I (1-5): Cyan, Magenta, Emerald, Gold & Void Plating skins',
+                'Tier II (6-10): Solar Flare, Cyber Prism, Hyper Neon trails & EMP shockwaves',
+                'Tier III (11-15): Apex Singularity Rainbow aura, Chrono Nova & Quantum Sparkles'
             ]
         }
     };
@@ -132,15 +133,38 @@
             }
         }
 
+        // Helper: Compute cost for a single rank index r (1-indexed)
+        _computeRankCost(category, targetRank) {
+            if (category === 'cosmetics') {
+                if (targetRank <= 5) {
+                    return targetRank * 150;
+                } else if (targetRank <= 10) {
+                    return 1000 + (targetRank - 5) * 400;
+                } else {
+                    return 4000 + (targetRank - 10) * 1000;
+                }
+            } else {
+                if (targetRank <= 10) {
+                    // Tier I (Standard / Green): 100 -> 1,000
+                    return targetRank * 100;
+                } else if (targetRank <= 20) {
+                    // Tier II (Overclock / Gold): 1,350 -> 4,500
+                    return 1000 + (targetRank - 10) * 350;
+                } else {
+                    // Tier III (Singularity / Purple): 5,800 -> 13,000
+                    return 5000 + (targetRank - 20) * 800;
+                }
+            }
+        }
+
         // Reset all upgrades and refund all spent scrap (player-friendly)
         resetState(refund = true) {
             if (refund) {
-                // Calculate total spent scrap
                 let totalSpent = 0;
                 for (const cat in this.state.upgrades) {
-                    const rank = this.state.upgrades[cat];
+                    const rank = this.state.upgrades[cat] || 0;
                     for (let r = 1; r <= rank; r++) {
-                        totalSpent += r * 100;
+                        totalSpent += this._computeRankCost(cat, r);
                     }
                 }
                 this.state.scrap += totalSpent;
@@ -168,8 +192,7 @@
             if (!config || currentRank >= config.maxRank) {
                 return Infinity; // Already maxed out
             }
-            // Cost scale: rank N costs N * 100 scrap
-            return (currentRank + 1) * 100;
+            return this._computeRankCost(category, currentRank + 1);
         }
 
         // Purchase upgrade
@@ -184,6 +207,85 @@
             return false;
         }
 
+        // Get tier metadata for a category and rank
+        getTierInfo(category) {
+            const rank = this.state.upgrades[category] || 0;
+            const config = UPGRADE_CONFIG[category] || { maxRank: 30 };
+            const isMaxed = rank >= config.maxRank;
+
+            if (category === 'cosmetics') {
+                if (rank < 5) {
+                    return {
+                        tier: 1,
+                        tierRoman: 'I',
+                        tierName: 'STANDARD',
+                        color: '#00ff88',
+                        accent: '#00ffff',
+                        tierRank: rank,
+                        tierMax: 5,
+                        isMaxed: isMaxed
+                    };
+                } else if (rank < 10) {
+                    return {
+                        tier: 2,
+                        tierRoman: 'II',
+                        tierName: 'OVERCLOCK',
+                        color: '#ffea00',
+                        accent: '#ffaa00',
+                        tierRank: rank - 5,
+                        tierMax: 5,
+                        isMaxed: isMaxed
+                    };
+                } else {
+                    return {
+                        tier: 3,
+                        tierRoman: 'III',
+                        tierName: 'SINGULARITY',
+                        color: '#d044ff',
+                        accent: '#b026ff',
+                        tierRank: Math.min(5, rank - 10),
+                        tierMax: 5,
+                        isMaxed: isMaxed
+                    };
+                }
+            }
+
+            if (rank < 10) {
+                return {
+                    tier: 1,
+                    tierRoman: 'I',
+                    tierName: 'STANDARD',
+                    color: '#00ff88',
+                    accent: '#00ffff',
+                    tierRank: rank,
+                    tierMax: 10,
+                    isMaxed: isMaxed
+                };
+            } else if (rank < 20) {
+                return {
+                    tier: 2,
+                    tierRoman: 'II',
+                    tierName: 'OVERCLOCK',
+                    color: '#ffea00',
+                    accent: '#ffaa00',
+                    tierRank: rank - 10,
+                    tierMax: 10,
+                    isMaxed: isMaxed
+                };
+            } else {
+                return {
+                    tier: 3,
+                    tierRoman: 'III',
+                    tierName: 'SINGULARITY',
+                    color: '#d044ff',
+                    accent: '#b026ff',
+                    tierRank: Math.min(10, rank - 20),
+                    tierMax: 10,
+                    isMaxed: isMaxed
+                };
+            }
+        }
+
         // Get maximum ranks
         getMaxRank(category) {
             return UPGRADE_CONFIG[category] ? UPGRADE_CONFIG[category].maxRank : 0;
@@ -196,7 +298,6 @@
 
         // Select cosmetic option
         selectCosmetic(type, value) {
-            // Validate unlock status before setting
             const allowed = this.isCosmeticUnlocked(type, value);
             if (allowed) {
                 this.state.selections[type] = value;
@@ -217,9 +318,14 @@
                 if (value === 'emerald' && cosmeticRank >= 3) return true;
                 if (value === 'gold' && cosmeticRank >= 4) return true;
                 if (value === 'purple' && cosmeticRank >= 5) return true;
+                if (value === 'solar' && cosmeticRank >= 8) return true;
+                if (value === 'prism' && cosmeticRank >= 10) return true;
+                if (value === 'singularity' && cosmeticRank >= 15) return true;
             } else if (type === 'explosionStyle') {
                 if (value === 'emp' && cosmeticRank >= 4) return true;
                 if (value === 'scrap' && cosmeticRank >= 5) return true;
+                if (value === 'nova' && cosmeticRank >= 10) return true;
+                if (value === 'singularity' && cosmeticRank >= 15) return true;
             }
             return false;
         }
@@ -234,41 +340,52 @@
             const spRank = this.state.upgrades.specials || 0;
             const adRank = this.state.upgrades.addons || 0;
 
+            // Dynamic companion drone calculation: up to 8 drones at Rank 30
+            let drones = 0;
+            if (adRank >= 30) drones = 8;
+            else if (adRank >= 25) drones = 7;
+            else if (adRank >= 20) drones = 6;
+            else if (adRank >= 15) drones = 5;
+            else if (adRank >= 10) drones = 4;
+            else if (adRank >= 7) drones = 3;
+            else if (adRank >= 4) drones = 2;
+            else if (adRank >= 1) drones = 1;
+
             return {
                 // Weapons: Base damage +5% per rank, fire rate +3% per rank, projectile speed +5% per rank
                 weaponDamageMultiplier: 1 + wpRank * 0.05,
-                weaponFireRateMultiplier: 1 + wpRank * 0.03, // reduces cooldown duration
+                weaponFireRateMultiplier: 1 + wpRank * 0.03,
                 weaponProjSpeedMultiplier: 1 + wpRank * 0.05,
 
-                // Shields: Max HP +10 per rank, regen rate (+0.15 HP/sec per rank), invuln duration (+0.05s)
+                // Shields: Max HP +10 per rank (up to 400 total), passive regen (+0.15 HP/sec per rank), invuln (+0.05s)
                 shieldMaxHPBonus: shRank * 10,
-                shieldRegenRate: shRank * 0.15, // HP per second
-                shieldInvulnBonus: shRank * 0.05, // seconds
+                shieldRegenRate: shRank * 0.15,
+                shieldInvulnBonus: shRank * 0.05,
 
-                // Rockets: Missile payload damage +10%/rank, AOE blast radius +12px/rank, recharge rate +6%/rank
+                // Rockets: Missile payload damage +10%/rank, AOE blast radius +10px/rank, recharge rate +5%/rank
                 rocketDamageMultiplier: 1 + rkRank * 0.10,
-                rocketAoeRadiusBonus: rkRank * 12,
-                rocketRechargeMultiplier: 1 + rkRank * 0.06,
+                rocketAoeRadiusBonus: rkRank * 10,
+                rocketRechargeMultiplier: 1 + rkRank * 0.05,
 
-                // Magnetism: Attraction radius (base 45px, +28px/rank up to 325px), pull force (+35/rank), scrap value bonus (+3%/rank)
+                // Magnetism: Attraction radius (base 45px, +20px/rank up to 645px), pull force (+25/rank), scrap value bonus (+2%/rank)
                 magnetismRank: mgRank,
-                magnetRadius: 45 + mgRank * 28,
-                magnetPullForce: 280 + mgRank * 35,
-                scrapValueMultiplier: 1 + mgRank * 0.03,
+                magnetRadius: 45 + mgRank * 20,
+                magnetPullForce: 280 + mgRank * 25,
+                scrapValueMultiplier: 1 + mgRank * 0.02,
 
-                // Engines: Movement speed +3% per rank, thruster efficiency
-                engineSpeedMultiplier: 1 + enRank * 0.03,
-                engineBoostDurationMultiplier: 1 + enRank * 0.06,
-                engineBoostCooldownMultiplier: Math.max(0.4, 1 - enRank * 0.05),
+                // Engines: Movement speed +2% per rank, thruster efficiency
+                engineSpeedMultiplier: 1 + enRank * 0.02,
+                engineBoostDurationMultiplier: 1 + enRank * 0.04,
+                engineBoostCooldownMultiplier: Math.max(0.2, 1 - enRank * 0.03),
 
-                // Specials: Ship-specific ability cooldown reduction (-5% per rank), duration increase (+0.35s per rank)
-                specialCooldownMultiplier: Math.max(0.5, 1 - spRank * 0.05),
-                specialDurationBonus: spRank * 0.35,
+                // Specials: Ship-specific ability cooldown reduction (-3% per rank), duration increase (+0.25s per rank)
+                specialCooldownMultiplier: Math.max(0.3, 1 - spRank * 0.03),
+                specialDurationBonus: spRank * 0.25,
 
-                // Addons: Orbiting combat drone count (1 at rank 1, 2 at rank 4, 3 at rank 7, 4 at rank 10) & fire rate
+                // Addons: Orbiting combat drone count (1-8 drones) & helper fire rate
                 addonRank: adRank,
-                droneCount: adRank >= 10 ? 4 : (adRank >= 7 ? 3 : (adRank >= 4 ? 2 : (adRank >= 1 ? 1 : 0))),
-                droneFireRate: 1.0 + adRank * 0.1,
+                droneCount: drones,
+                droneFireRate: 1.0 + adRank * 0.08,
 
                 // Cosmetics selections
                 cosmetics: {

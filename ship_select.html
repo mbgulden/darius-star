@@ -858,9 +858,19 @@
         // Parse active save slot from URL parameters
         const urlParams = new URLSearchParams(window.location.search);
         const continueSlot = urlParams.get('continue');
+        let continueSaveData = null;
         if (continueSlot !== null) {
             localStorage.setItem('dariusStar_activeSlot', continueSlot);
             localStorage.setItem('dariusStar_isNewGame', 'false');
+            try {
+                const raw = localStorage.getItem('darius_star_saves') || localStorage.getItem('darius_star_save');
+                if (raw) {
+                    const parsed = JSON.parse(raw);
+                    continueSaveData = Array.isArray(parsed) ? parsed[parseInt(continueSlot)] : parsed;
+                }
+            } catch(e) {
+                console.error("Failed to parse continue save data:", e);
+            }
         } else {
             // Default to slot 0 and mark as new game if activeSlot doesn't exist
             if (localStorage.getItem('dariusStar_activeSlot') === null) {
@@ -1087,6 +1097,10 @@
 
         // --- Active States ---
         let p1SelectedIndex = 0; // STRIKER
+        if (continueSaveData && continueSaveData.ship) {
+            const savedShipIdx = SHIPS.findIndex(s => s.id === continueSaveData.ship);
+            if (savedShipIdx >= 0) p1SelectedIndex = savedShipIdx;
+        }
         let p1Color = SHIPS[p1SelectedIndex].color;
 
         let p2Active = false;
@@ -1499,9 +1513,21 @@
             localStorage.setItem('dariusStar_shipSelection', JSON.stringify(selectionData));
             localStorage.setItem('dariusStar_difficulty', selectedDifficulty);
 
+            let targetBiome = 1;
+            let targetLevel = 1;
+            if (continueSaveData) {
+                targetBiome = continueSaveData.biome || 1;
+                targetLevel = continueSaveData.level || continueSaveData.biomeLevel || 1;
+                if (continueSaveData.lastCheckpoint) {
+                    targetBiome = continueSaveData.lastCheckpoint.biome || targetBiome;
+                    targetLevel = continueSaveData.lastCheckpoint.level || continueSaveData.lastCheckpoint.wave || targetLevel;
+                }
+            }
+
+            const mode = p2Active ? 'coop' : 'solo';
             // Small delay to let game start sound effect play
             setTimeout(() => {
-                window.location.href = 'pre_level.html?biome=1&level=1&mode=solo';
+                window.location.href = `pre_level.html?biome=${targetBiome}&level=${targetLevel}&mode=${mode}`;
             }, 300);
         }
 

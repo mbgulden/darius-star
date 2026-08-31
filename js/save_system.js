@@ -52,6 +52,7 @@
     function createBlank() {
         const now = new Date().toISOString();
         return {
+            level: 1,
             biomeLevel: 1,
             biome: 1,
             wave: 1,

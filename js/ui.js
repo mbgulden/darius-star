@@ -1141,7 +1141,7 @@ function drawMenuScreens() {
 
         ctx.restore();
     } else if (currentScreen === SCREENS.UPGRADE_SHOP) {
-        // Precursor Quantum Fabricator / Scrap Shop UI
+        // Precursor Quantum Fabricator / Multi-Tier Overclock Prestige UI
         if (typeof CockpitUI !== 'undefined') {
             CockpitUI.drawCockpitGrid(ctx, canvas.width, canvas.height, (typeof gameTime !== 'undefined' ? gameTime : 0));
         }
@@ -1159,139 +1159,175 @@ function drawMenuScreens() {
             '7. Quantum Combat Drones',
             '8. Chrono Plating & FX'
         ];
-        const maxRanks = upgradeLabels.map(label => us ? us.getMaxRank(label) : 10);
+        const maxRanks = upgradeLabels.map(label => us ? us.getMaxRank(label) : 30);
         const selected = window._upgradeSelected || 0;
         const scrap = us && us.state ? us.state.scrap : 0;
 
-        // 1. Header & Quantum Dodad Lore Subtitle
+        // 1. Header & Multi-Tier Overclock Lore Subtitle
         ctx.textAlign = 'center';
         ctx.fillStyle = '#00ffff';
-        ctx.font = 'bold 22px monospace';
+        ctx.font = 'bold 20px monospace';
         ctx.shadowColor = '#00ffff';
         ctx.shadowBlur = 12;
-        ctx.fillText('PRECURSOR QUANTUM FABRICATOR', canvas.width / 2, 36);
+        ctx.fillText('PRECURSOR QUANTUM FABRICATOR', canvas.width / 2, 30);
         ctx.shadowBlur = 0;
 
         ctx.fillStyle = '#88aacc';
-        ctx.font = '10.5px monospace';
-        ctx.fillText('TRANSMUTING SALVAGED QUANTUM JUNK INTO DURABLE SHIP HARDPOINTS', canvas.width / 2, 52);
+        ctx.font = '10px monospace';
+        ctx.fillText('TRANSMUTING SALVAGED QUANTUM JUNK INTO OVERCLOCKED SHIP HARDPOINTS', canvas.width / 2, 44);
 
-        // Scrap Wallet Badge
+        // Scrap Wallet Badge with Tier Legend
         ctx.fillStyle = '#ffcc00';
-        ctx.font = 'bold 14px monospace';
+        ctx.font = 'bold 13px monospace';
         ctx.shadowColor = '#ffaa00';
-        ctx.shadowBlur = 8;
-        ctx.fillText(`💎 RECOVERED QUANTUM SCRAP: ${scrap.toLocaleString()}`, canvas.width / 2, 72);
+        ctx.shadowBlur = 6;
+        ctx.fillText(`💎 RECOVERED QUANTUM SCRAP: ${scrap.toLocaleString()}`, canvas.width / 2, 62);
         ctx.shadowBlur = 0;
 
         // 2. 2-Column Card Grid (4 per column)
         const colW = (canvas.width - 70) / 2;
-        const rowH = 72;
-        const startY = 88;
+        const rowH = 68;
+        const startY = 74;
         window._upgradeHitRegions = [];
 
         for (let i = 0; i < upgradeLabels.length; i++) {
             const col = i >= 4 ? 1 : 0;
             const row = i % 4;
             const cardX = 25 + col * (colW + 20);
-            const cardY = startY + row * (rowH + 8);
+            const cardY = startY + row * (rowH + 6);
 
             const label = upgradeLabels[i];
             const rank = us && us.state ? (us.state.upgrades[label] || 0) : 0;
             const maxRank = maxRanks[i];
+            const tierInfo = us && us.getTierInfo ? us.getTierInfo(label) : {
+                tier: 1, tierRoman: 'I', tierName: 'STANDARD', color: '#00ff88', accent: '#00ffff',
+                tierRank: rank % 10, tierMax: 10, isMaxed: rank >= maxRank
+            };
+
             let cost = 0;
             try { cost = us ? us.getUpgradeCost(label) : 999; } catch(e) {}
-            const isMaxed = rank >= maxRank;
+            const isMaxed = tierInfo.isMaxed || rank >= maxRank;
             const canAfford = !isMaxed && scrap >= cost;
             const isSelected = i === selected;
 
             window._upgradeHitRegions.push({ index: i, x: cardX, y: cardY, w: colW, h: rowH, label: label, canAfford: canAfford });
 
-            // Card Panel
+            // Card Panel with dynamic Tier color accents
             if (typeof CockpitUI !== 'undefined') {
                 CockpitUI.drawPanel(ctx, cardX, cardY, colW, rowH, {
-                    chamfer: 6,
-                    borderColor: isSelected ? '#00ffff' : 'rgba(0, 200, 255, 0.22)',
-                    bgColor: isSelected ? 'rgba(0, 255, 255, 0.14)' : 'rgba(10, 18, 34, 0.88)',
-                    bracketColor: isSelected ? '#00ffff' : '#ffaa00',
+                    chamfer: 5,
+                    borderColor: isSelected ? tierInfo.accent : (tierInfo.color + '44'),
+                    bgColor: isSelected ? 'rgba(0, 255, 255, 0.12)' : 'rgba(10, 18, 34, 0.90)',
+                    bracketColor: isSelected ? tierInfo.accent : tierInfo.color,
                     glow: isSelected,
-                    shadowBlur: isSelected ? 10 : 4,
+                    shadowBlur: isSelected ? 8 : 2,
                     brackets: isSelected
                 });
             }
 
-            // Title
+            // Title & Tier Tag
             ctx.textAlign = 'left';
-            ctx.fillStyle = isSelected ? '#00ffff' : '#ffffff';
-            ctx.font = 'bold 12px monospace';
-            ctx.fillText(upgradeNames[i], cardX + 12, cardY + 18);
+            ctx.fillStyle = isSelected ? '#ffffff' : '#d0e0f0';
+            ctx.font = 'bold 11px monospace';
+            ctx.fillText(upgradeNames[i], cardX + 10, cardY + 16);
+
+            // Tier Badge Tag
+            ctx.fillStyle = tierInfo.color;
+            ctx.font = 'bold 9px monospace';
+            ctx.fillText(`[T${tierInfo.tierRoman} ${tierInfo.tierName}]`, cardX + 180, cardY + 16);
 
             // Cost / Status Badge
             ctx.textAlign = 'right';
             if (isMaxed) {
-                ctx.fillStyle = '#00ff88';
-                ctx.font = 'bold 11px monospace';
-                ctx.fillText('✔ MAXED', cardX + colW - 12, cardY + 18);
+                ctx.fillStyle = '#d044ff';
+                ctx.font = 'bold 10px monospace';
+                ctx.fillText('★ APEX MAXED', cardX + colW - 10, cardY + 16);
             } else {
                 ctx.fillStyle = canAfford ? '#ffcc00' : '#ff3355';
-                ctx.font = 'bold 11px monospace';
-                ctx.fillText(`${cost} SCRAP`, cardX + colW - 12, cardY + 18);
+                ctx.font = 'bold 10px monospace';
+                ctx.fillText(`${cost.toLocaleString()} SCRAP`, cardX + colW - 10, cardY + 16);
             }
 
-            // Segmented Rank Meter
-            const meterX = cardX + 12;
-            const meterY = cardY + 26;
-            const meterW = colW - 130;
+            // Segmented Rank Meter (Shows pips for current active tier)
+            const meterX = cardX + 10;
+            const meterY = cardY + 23;
+            const meterW = colW - 145;
             if (typeof CockpitUI !== 'undefined') {
-                CockpitUI.drawSegmentedBar(ctx, meterX, meterY, meterW, 8, rank, maxRank, {
-                    segments: maxRank,
-                    activeColor: isMaxed ? '#00ff88' : (isSelected ? '#00ffff' : '#00aaee')
+                CockpitUI.drawSegmentedBar(ctx, meterX, meterY, meterW, 7, tierInfo.tierRank, tierInfo.tierMax, {
+                    segments: tierInfo.tierMax,
+                    activeColor: isMaxed ? '#d044ff' : tierInfo.color
                 });
             }
 
             // Rank text
             ctx.textAlign = 'left';
-            ctx.fillStyle = '#88aacc';
-            ctx.font = 'bold 10px monospace';
-            ctx.fillText(`LV ${rank}/${maxRank}`, meterX + meterW + 8, meterY + 7);
+            ctx.fillStyle = tierInfo.color;
+            ctx.font = 'bold 9.5px monospace';
+            ctx.fillText(`LV ${rank}/${maxRank} (T${tierInfo.tierRoman} ${tierInfo.tierRank}/${tierInfo.tierMax})`, meterX + meterW + 6, meterY + 6);
 
             // Real-Time Stat Delta Preview
             let statDelta = '';
             if (label === 'weapons') {
-                statDelta = `Dmg +${rank*5}% → +${(rank+1)*5}% | Bullet Speed +${rank*5}%`;
+                statDelta = `Dmg +${rank*5}% → +${(rank+1)*5}% | Fire Rate +${rank*3}% | Proj Spd +${rank*5}%`;
             } else if (label === 'shields') {
-                statDelta = `Shield ${100 + rank*10}HP → ${100 + (rank+1)*10}HP (+10 HP)`;
+                statDelta = `Shield ${100 + rank*10}HP → ${100 + (rank+1)*10}HP (+10 HP) | Regen: ${Math.round(rank*0.15*100)/100} HP/s`;
             } else if (label === 'rockets') {
-                statDelta = `Missile Dmg +${rank*10}% | Blast +${rank*12}px`;
+                statDelta = `Missile Dmg +${rank*10}% | Blast +${rank*10}px | Salvo Reload +${rank*5}%`;
             } else if (label === 'magnetism') {
-                statDelta = `Tractor Radius: ${45 + rank*28}px → ${45 + (rank+1)*28}px (+28px)`;
+                statDelta = `Tractor: ${45 + rank*20}px → ${45 + (rank+1)*20}px (+20px) | Scrap Yield +${rank*2}%`;
             } else if (label === 'engines') {
-                statDelta = `Speed +${rank*3}% | Dodge CD: ${Math.round((3.5 * Math.max(0.4, 1-rank*0.05))*10)/10}s`;
+                statDelta = `Speed +${rank*2}% | Boost +${rank*4}% | Dodge CD: ${Math.round((3.5 * Math.max(0.2, 1-rank*0.03))*10)/10}s`;
             } else if (label === 'specials') {
-                statDelta = `Special Duration: +${Math.round(rank*0.35*100)/100}s | CD: -${rank*5}%`;
+                statDelta = `Special Duration: +${Math.round(rank*0.25*100)/100}s | Cooldown: -${rank*3}%`;
             } else if (label === 'addons') {
-                const curDrones = rank >= 10 ? 4 : (rank >= 7 ? 3 : (rank >= 4 ? 2 : (rank >= 1 ? 1 : 0)));
-                statDelta = `Companion Combat Drones Active: ${curDrones} / 4`;
+                let curDrones = 0;
+                if (rank >= 30) curDrones = 8;
+                else if (rank >= 25) curDrones = 7;
+                else if (rank >= 20) curDrones = 6;
+                else if (rank >= 15) curDrones = 5;
+                else if (rank >= 10) curDrones = 4;
+                else if (rank >= 7) curDrones = 3;
+                else if (rank >= 4) curDrones = 2;
+                else if (rank >= 1) curDrones = 1;
+                statDelta = `Orbiting Companion Drones Active: ${curDrones} / 8 Apex Armada`;
             } else {
-                statDelta = `Chrono Plating Colors (Cyan, Mag, Gold, Void), FX`;
+                statDelta = `Chrono-Holo Plating Colors (Cyan, Mag, Gold, Void), Trails & Shockwaves`;
             }
 
             ctx.fillStyle = isSelected ? '#ffffff' : '#8899aa';
-            ctx.font = '9px monospace';
-            ctx.fillText(statDelta, cardX + 12, cardY + 48);
+            ctx.font = '8.5px monospace';
+            ctx.fillText(statDelta, cardX + 10, cardY + 44);
 
             // Dynamic Sub-Description
             ctx.fillStyle = isSelected ? '#00ff88' : '#5a6a7a';
-            ctx.font = 'italic 8.5px monospace';
-            const subDesc = isMaxed ? 'Maximum hardpoint efficiency achieved.' : (canAfford ? '▶ READY TO TRANSMUTE [ENTER]' : '⚠️ INSUFFICIENT SCRAP SALVAGE');
-            ctx.fillText(subDesc, cardX + 12, cardY + 62);
+            ctx.font = 'italic 8px monospace';
+            const subDesc = isMaxed ? '★ Apex Singularity hardpoint efficiency achieved.' : (canAfford ? '▶ READY TO TRANSMUTE [ENTER / CLICK]' : '⚠️ INSUFFICIENT QUANTUM SCRAP SALVAGE');
+            ctx.fillText(subDesc, cardX + 10, cardY + 57);
         }
 
-        // Footer instructions
-        ctx.textAlign = 'center';
-        ctx.fillStyle = '#6a7a9a';
-        ctx.font = '10px monospace';
-        ctx.fillText('↑↓←→ SELECT  |  ENTER / CLICK TO TRANSMUTE  |  ESC RETURN TO BRIDGE', canvas.width / 2, canvas.height - 12);
+        // 3. Navigation Action Bar (Bottom Buttons)
+        window._upgradeBtnRegions = [];
+        const btnBarY = startY + 4 * (rowH + 6) + 4;
+        const btnBarW = (canvas.width - 70) / 2;
+        const btnBarH = 34;
+
+        const isFromDebriefing = window._upgradeReturnScreen === SCREENS.LEVEL_CLEAR;
+        const contLabel = isFromDebriefing ? '▸ CONTINUE TO NEXT SECTOR' : '▸ RESUME MISSION';
+        const contHint = '[ENTER]';
+        const retLabel = isFromDebriefing ? '◂ RETURN TO DEBRIEFING' : '◂ RETURN TO COMMAND BRIDGE';
+        const retHint = '[ESC]';
+
+        window._upgradeBtnRegions.push({ key: 'continue', x: 25, y: btnBarY, w: btnBarW, h: btnBarH });
+        window._upgradeBtnRegions.push({ key: 'return', x: 25 + btnBarW + 20, y: btnBarY, w: btnBarW, h: btnBarH });
+
+        if (typeof CockpitUI !== 'undefined') {
+            CockpitUI.drawAvionicsButton(ctx, 25, btnBarY, btnBarW, btnBarH, contLabel, contHint, false, false, {
+                primaryColor: '#00ff88', accentColor: '#00ff88', font: 'bold 10px monospace'
+            });
+            CockpitUI.drawAvionicsButton(ctx, 25 + btnBarW + 20, btnBarY, btnBarW, btnBarH, retLabel, retHint, false, false, {
+                primaryColor: '#ffaa00', accentColor: '#ffaa00', font: 'bold 10px monospace'
+            });
+        }
 
         ctx.restore();
     } else if (currentScreen === SCREENS.LEVEL_CLEAR) {
@@ -1314,24 +1350,24 @@ function drawMenuScreens() {
         ctx.fillStyle = '#00ffff';
         ctx.font = 'bold 22px monospace';
         ctx.shadowColor = '#00ffff';
-        ctx.shadowBlur = 12;
+        ctx.shadowBlur = 14;
         ctx.fillText('SECTOR COMBAT DEBRIEFING // AIRSPACE SECURED', canvas.width / 2, 38);
         ctx.shadowBlur = 0;
 
-        ctx.fillStyle = '#ffaa00';
-        ctx.font = 'bold 12px monospace';
-        ctx.fillText(`SECTOR ${lvlInfo.name.toUpperCase()}`, canvas.width / 2, 56);
+        ctx.fillStyle = '#88aacc';
+        ctx.font = '11px monospace';
+        ctx.fillText(`BIOME ${b}: ${lvlInfo.name.toUpperCase()} — LEVEL ${b}.${l} COMPLETE`, canvas.width / 2, 56);
 
-        // 2. Metrics & Tally Box (Left Column)
-        const leftX = 40;
-        const topY = 74;
+        // 2. Metrics Box (Left Column)
         const boxW = (canvas.width - 100) / 2;
         const boxH = 230;
+        const topY = 74;
+        const leftX = 40;
 
         if (typeof CockpitUI !== 'undefined') {
             CockpitUI.drawPanel(ctx, leftX, topY, boxW, boxH, {
                 chamfer: 6,
-                borderColor: 'rgba(0, 200, 255, 0.35)',
+                borderColor: 'rgba(0, 255, 255, 0.35)',
                 bgColor: 'rgba(8, 16, 32, 0.90)',
                 bracketColor: '#00ffff',
                 headerBar: true,
@@ -1341,12 +1377,12 @@ function drawMenuScreens() {
             ctx.textAlign = 'left';
             ctx.fillStyle = '#00ffff';
             ctx.font = 'bold 10px monospace';
-            ctx.fillText('📡 COMBAT TELEMETRY METRICS', leftX + 14, topY + 15);
+            ctx.fillText('📊 COMBAT TELEMETRY & HARVEST', leftX + 14, topY + 15);
         }
 
         const killRatio = Math.min(1.0, anim / 0.8);
-        const scrapRatio = Math.min(1.0, Math.max(0, (anim - 0.4) / 0.8));
-        const scoreRatio = Math.min(1.0, Math.max(0, (anim - 0.8) / 0.8));
+        const scrapRatio = Math.min(1.0, Math.max(0, (anim - 0.3) / 0.8));
+        const scoreRatio = Math.min(1.0, Math.max(0, (anim - 0.6) / 0.8));
 
         const curKills = Math.floor((sum.killCount || 0) * killRatio);
         const curScrap = Math.floor((sum.scrapCollected || 0) * scrapRatio);
@@ -1392,7 +1428,7 @@ function drawMenuScreens() {
         ctx.font = '10px monospace';
         ctx.fillText(`⏱️ TRANSIT TIME: ${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`, leftX + 18, topY + 205);
 
-        // 3. Grade & Autosave Box (Right Column)
+        // Grade & Autosave Box (Right Column)
         const rightX = leftX + boxW + 20;
         if (typeof CockpitUI !== 'undefined') {
             CockpitUI.drawPanel(ctx, rightX, topY, boxW, boxH, {
@@ -1453,7 +1489,7 @@ function drawMenuScreens() {
 
         const btns = [
             { key: 'next', label: 'NEXT SECTOR', hint: '[ENTER]', color: '#00ff88', accent: '#00ff88' },
-            { key: 'upgrade', label: 'QUANTUM DODAD', hint: '[U]', color: '#00ffff', accent: '#00ffff' },
+            { key: 'upgrade', label: 'QUANTUM FABRICATOR', hint: '[U]', color: '#00ffff', accent: '#00ffff' },
             { key: 'intel', label: 'SECTOR INTEL', hint: '[L]', color: '#ffaa00', accent: '#ffaa00' },
             { key: 'menu', label: 'COMMAND BRIDGE', hint: '[ESC]', color: '#ff4455', accent: '#ff4455' }
         ];
@@ -2459,6 +2495,24 @@ canvas.addEventListener('click', function(e) {
     }
 
     if (currentScreen === SCREENS.UPGRADE_SHOP) {
+        var btnRegions = window._upgradeBtnRegions || [];
+        for (var b = 0; b < btnRegions.length; b++) {
+            var btn = btnRegions[b];
+            if (cx >= btn.x && cx <= btn.x + btn.w && cy >= btn.y && cy <= btn.y + btn.h) {
+                playSound('menu_click');
+                if (btn.key === 'continue') {
+                    if (window._upgradeReturnScreen === SCREENS.LEVEL_CLEAR) {
+                        advanceToNextLevelFromDebriefing();
+                    } else {
+                        transitionToScreen(SCREENS.MENU);
+                    }
+                } else if (btn.key === 'return') {
+                    transitionToScreen(window._upgradeReturnScreen || SCREENS.MENU);
+                }
+                return;
+            }
+        }
+
         var uRegions = window._upgradeHitRegions || [];
         var us = window.DS_UpgradeSystem;
         for (var k = 0; k < uRegions.length; k++) {
