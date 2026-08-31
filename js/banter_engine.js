@@ -198,6 +198,10 @@ const BanterEngine = {
     },
 
     trigger(event, biome = 1, speaker = null, attemptCount = null) {
+        if (typeof currentScreen !== 'undefined' && typeof SCREENS !== 'undefined' && currentScreen !== SCREENS.PLAYING && currentScreen !== SCREENS.BRIEFING) {
+            return null;
+        }
+
         const attempts = (attemptCount !== null && attemptCount !== undefined) 
             ? attemptCount 
             : this.getAttemptCount(biome, (typeof LevelManager !== 'undefined' ? LevelManager.level : 1));
@@ -233,6 +237,9 @@ const BanterEngine = {
 
     triggerDirect(line, duration = this._lineDuration) {
         if (!line) return null;
+        if (typeof currentScreen !== 'undefined' && typeof SCREENS !== 'undefined' && currentScreen !== SCREENS.PLAYING && currentScreen !== SCREENS.BRIEFING) {
+            return null;
+        }
         this.clear();
         this._activeLine = line;
         this._displayTimer = duration;

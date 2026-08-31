@@ -435,6 +435,19 @@ function update(dt) {
     }
 
     if (currentScreen !== SCREENS.PLAYING) {
+        if (typeof document !== 'undefined') {
+            const hud = document.getElementById('lyra-hud');
+            if (hud && hud.style.display !== 'none') {
+                hud.style.display = 'none';
+                hud.classList.remove('lyra-hud-active');
+            }
+        }
+        if (currentScreen === SCREENS.MENU || currentScreen === SCREENS.LOADING || currentScreen === SCREENS.SHIP_SELECT || currentScreen === SCREENS.SETTINGS) {
+            if (typeof activeDialogue !== 'undefined' && activeDialogue) {
+                activeDialogue = null;
+            }
+        }
+
         if (currentScreen === SCREENS.LOADING) {
             if (typeof AssetPreloader !== 'undefined') {
                 AssetPreloader.update(dt);

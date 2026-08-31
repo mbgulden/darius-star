@@ -212,12 +212,21 @@ const AssetPreloader = (function() {
             }
         }
 
+        // 6. Preload title music track in AudioManager
+        let audioMgrPromise = Promise.resolve();
+        if (typeof AudioManager !== 'undefined' && AudioManager.init) {
+            audioMgrPromise = AudioManager.init().then(() => {
+                return AudioManager.preloadTrack('title_cinematic');
+            }).then(() => updateItem('title_music')).catch(() => {});
+        }
+
         await Promise.all([
             ...spritePromises,
             ...portraitPromises,
             ...audioPromises,
             ...vfxExplosionPromises,
-            biome1Promise
+            biome1Promise,
+            audioMgrPromise
         ]);
 
         _rawProgress = 1.0;
@@ -419,7 +428,20 @@ const AssetPreloader = (function() {
         console.log('[AssetPreloader] User Launched into Main Menu');
 
         if (typeof initAudio === 'function') initAudio();
+        if (typeof audioCtx !== 'undefined' && audioCtx) {
+            if (audioCtx.state === 'suspended') {
+                try { audioCtx.resume(); } catch(e) {}
+            }
+        }
+        if (typeof AudioManager !== 'undefined') {
+            AudioManager.init().then(() => {
+                AudioManager.preloadTrack('title_cinematic').then(() => {
+                    AudioManager.play('title_cinematic', 0.5, true);
+                }).catch(() => {});
+            }).catch(() => {});
+        }
         if (typeof startMenuMusic === 'function') startMenuMusic();
+
         const menuScreen = (typeof SCREENS !== 'undefined' && SCREENS.MENU) ? SCREENS.MENU : 'menu';
         if (typeof window !== 'undefined') {
             window.currentScreen = menuScreen;

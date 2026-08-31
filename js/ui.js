@@ -416,14 +416,17 @@ function drawTitleBackground() {
 function drawTitleLogo() {
     if (titleLogoLoaded && titleLogoImg.naturalWidth > 0) {
         ctx.save();
-        const lw = 420;
-        const lh = 140;
+        // title_0.png has content bounding box: sx=106, sy=328, sw=827, sh=366 (aspect ratio ~2.26)
+        const sw = 827;
+        const sh = 366;
+        const lw = 310;
+        const lh = Math.round(lw * (sh / sw)); // 137px
         const lx = canvas.width / 2 - lw / 2;
-        const ly = 30 + Math.sin(gameTime * 2.5) * 6; // floating effect
+        const ly = 8 + Math.sin(gameTime * 2.0) * 3; // subtle floating effect
         
         ctx.shadowColor = '#00ffff';
-        ctx.shadowBlur = 12 + Math.sin(gameTime * 5) * 6;
-        ctx.drawImage(titleLogoImg, lx, ly, lw, lh);
+        ctx.shadowBlur = 10 + Math.sin(gameTime * 4) * 4;
+        ctx.drawImage(titleLogoImg, 106, 328, sw, sh, lx, ly, lw, lh);
         ctx.restore();
     } else {
         ctx.save();

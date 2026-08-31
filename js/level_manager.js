@@ -295,7 +295,7 @@ const LevelManager = {
         }
 
         const sectorIntel = this.getSectorIntel(this.biome, this.level);
-        if (typeof BanterEngine !== 'undefined' && BanterEngine.trigger) {
+        if (typeof BanterEngine !== 'undefined' && BanterEngine.trigger && typeof currentScreen !== 'undefined' && typeof SCREENS !== 'undefined' && currentScreen === SCREENS.PLAYING) {
             if (attempts === 1 && sectorIntel && sectorIntel.commLine) {
                 BanterEngine.triggerDirect(sectorIntel.commLine, 4.2);
             } else {
