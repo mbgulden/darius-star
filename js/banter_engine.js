@@ -223,10 +223,8 @@ const BanterEngine = {
                 }
 
                 window.activeDialogue = new DialogueSequence(sequenceLines, null, false);
-            }
-
-            // Play voice line if VoicePlayback is available
-            if (typeof window !== 'undefined' && window.VoicePlayback) {
+            } else if (typeof window !== 'undefined' && window.VoicePlayback) {
+                // Fallback voice playback if DialogueSequence is not active
                 try {
                     window.VoicePlayback.play(biome, event, line.s, line);
                 } catch(e) {}
@@ -249,10 +247,7 @@ const BanterEngine = {
 
         if (typeof DialogueSequence !== 'undefined' && typeof window !== 'undefined') {
             window.activeDialogue = new DialogueSequence([{ speaker: speakerName, text: line.l }], null, false);
-        }
-
-        // Trigger voice playback for direct comms line
-        if (typeof window !== 'undefined' && window.VoicePlayback && typeof window.VoicePlayback.play === 'function') {
+        } else if (typeof window !== 'undefined' && window.VoicePlayback && typeof window.VoicePlayback.play === 'function') {
             try {
                 const biome = (typeof LevelManager !== 'undefined' && LevelManager.biome) ? LevelManager.biome : 1;
                 window.VoicePlayback.play(biome, 'level_start', speakerCode, line);
@@ -272,8 +267,7 @@ const BanterEngine = {
                     if (typeof DialogueSequence !== 'undefined' && typeof window !== 'undefined') {
                         const respSpeakerName = SPEAKER_NAMES[this._activeResponse.s] || this._activeResponse.s || 'SYSTEM';
                         window.activeDialogue = new DialogueSequence([{ speaker: respSpeakerName, text: this._activeResponse.l }], null, false);
-                    }
-                    if (typeof window !== 'undefined' && window.VoicePlayback) {
+                    } else if (typeof window !== 'undefined' && window.VoicePlayback) {
                         try {
                             const biome = (typeof LevelManager !== 'undefined' && LevelManager.biome) ? LevelManager.biome : 1;
                             window.VoicePlayback.play(biome, 'response', this._activeResponse.s, this._activeResponse);

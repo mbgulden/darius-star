@@ -214,8 +214,12 @@ const VoicePipeline = {
                     playDecodedBuffer(audioBuffer);
                 })
                 .catch(err => {
-                    console.warn('[VoicePipeline] Buffer load failed, falling back to HTML5 Audio:', path, err);
-                    this._playHtml5Audio(path, options, onFinish);
+                    // Gracefully fallback to procedural synthesis or finish without crashing
+                    if (this._isPlaying) {
+                        this._playProceduralFallback(options.text || '', options.speaker || this._currentSpeaker, options);
+                    } else {
+                        onFinish();
+                    }
                 });
             return;
         }

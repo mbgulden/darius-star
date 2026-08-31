@@ -8903,6 +8903,559 @@
       "file": "lyra/briefing_lyra_daddy_it_s_beautiful_and_it_s_so.mp3",
       "text": "Daddy \u2014 it's beautiful. And it's so, so old. It's not evil. It's just... guarding something. Something the Dreamer left behind. Please don't hurt it if you don't have to.",
       "duration": 16.13
+    },
+    "audio_tunnel_thorne_darius_you_reading_me_the_trench": {
+      "id": "audio_tunnel_thorne_darius_you_reading_me_the_trench",
+      "speaker": "thorne",
+      "file": "thorne/audio_tunnel_thorne_darius_you_reading_me_the_trench.mp3",
+      "text": "Darius. You reading me? The trench opening is dead ahead.",
+      "duration": 4.73
+    },
+    "audio_tunnel_naya_scanners_online_abyssal_trench_p": {
+      "id": "audio_tunnel_naya_scanners_online_abyssal_trench_p",
+      "speaker": "naya",
+      "file": "naya/audio_tunnel_naya_scanners_online_abyssal_trench_p.mp3",
+      "text": "Scanners online. Abyssal Trench \u2014 pressure's reading extreme. Stay sharp.",
+      "duration": 5.81
+    },
+    "audio_tunnel_darius_copy_that_taking_us_in": {
+      "id": "audio_tunnel_darius_copy_that_taking_us_in",
+      "speaker": "darius",
+      "file": "darius/audio_tunnel_darius_copy_that_taking_us_in.mp3",
+      "text": "Copy that. Taking us in.",
+      "duration": 3.53
+    },
+    "audio_tunnel_lyra_i_i_feel_something_ahead_old_sle": {
+      "id": "audio_tunnel_lyra_i_i_feel_something_ahead_old_sle",
+      "speaker": "lyra",
+      "file": "lyra/audio_tunnel_lyra_i_i_feel_something_ahead_old_sle.mp3",
+      "text": "I... I feel something ahead. Old. Sleeping.",
+      "duration": 5.74
+    },
+    "audio_tunnel_naya_coral_graveyard_navy_census_says": {
+      "id": "audio_tunnel_naya_coral_graveyard_navy_census_says",
+      "speaker": "naya",
+      "file": "naya/audio_tunnel_naya_coral_graveyard_navy_census_says.mp3",
+      "text": "Coral Graveyard. Navy census says it's a dead reef. Lyra, what are you picking up?",
+      "duration": 5.98
+    },
+    "audio_tunnel_thorne_census_was_wrong_the_reef_is_act": {
+      "id": "audio_tunnel_thorne_census_was_wrong_the_reef_is_act",
+      "speaker": "thorne",
+      "file": "thorne/audio_tunnel_thorne_census_was_wrong_the_reef_is_act.mp3",
+      "text": "Census was wrong. The reef is active \u2014 and it's not coral. Stay in formation.",
+      "duration": 6.17
+    },
+    "audio_tunnel_lyra_it_s_it_s_the_dreamer_s_bones_th": {
+      "id": "audio_tunnel_lyra_it_s_it_s_the_dreamer_s_bones_th",
+      "speaker": "lyra",
+      "file": "lyra/audio_tunnel_lyra_it_s_it_s_the_dreamer_s_bones_th.mp3",
+      "text": "It's... it's the Dreamer's bones. This whole place is a graveyard of something ancient.",
+      "duration": 7.1
+    },
+    "audio_tunnel_thorne_rust_wastes_ahead_old_navy_salva": {
+      "id": "audio_tunnel_thorne_rust_wastes_ahead_old_navy_salva",
+      "speaker": "thorne",
+      "file": "thorne/audio_tunnel_thorne_rust_wastes_ahead_old_navy_salva.mp3",
+      "text": "Rust Wastes ahead. Old Navy salvage fields \u2014 high radiation, low visibility.",
+      "duration": 6.05
+    },
+    "audio_tunnel_naya_i_m_reading_navy_distress_beacon": {
+      "id": "audio_tunnel_naya_i_m_reading_navy_distress_beacon",
+      "speaker": "naya",
+      "file": "naya/audio_tunnel_naya_i_m_reading_navy_distress_beacon.mp3",
+      "text": "I'm reading Navy distress beacons. Old ones. Pre-war.",
+      "duration": 4.54
+    },
+    "audio_tunnel_darius_ignore_them_navy_doesn_t_come_ba": {
+      "id": "audio_tunnel_darius_ignore_them_navy_doesn_t_come_ba",
+      "speaker": "darius",
+      "file": "darius/audio_tunnel_darius_ignore_them_navy_doesn_t_come_ba.mp3",
+      "text": "Ignore them. Navy doesn't come back for their own. We're here for salvage, not ghosts.",
+      "duration": 7.63
+    },
+    "audio_tunnel_naya_fire_nebula_temperature_s_spikin": {
+      "id": "audio_tunnel_naya_fire_nebula_temperature_s_spikin",
+      "speaker": "naya",
+      "file": "naya/audio_tunnel_naya_fire_nebula_temperature_s_spikin.mp3",
+      "text": "Fire Nebula. Temperature's spiking \u2014 shields at 100% but that won't last.",
+      "duration": 6.05
+    },
+    "audio_tunnel_lyra_there_s_something_in_the_fire_no": {
+      "id": "audio_tunnel_lyra_there_s_something_in_the_fire_no",
+      "speaker": "lyra",
+      "file": "lyra/audio_tunnel_lyra_there_s_something_in_the_fire_no.mp3",
+      "text": "There's something in the fire. Not heat \u2014 consciousness. The Dreamer is awake here.",
+      "duration": 7.92
+    },
+    "audio_tunnel_thorne_if_the_dreamer_s_talking_listen": {
+      "id": "audio_tunnel_thorne_if_the_dreamer_s_talking_listen",
+      "speaker": "thorne",
+      "file": "thorne/audio_tunnel_thorne_if_the_dreamer_s_talking_listen.mp3",
+      "text": "If the Dreamer's talking, listen. That thing predates the Navy by millennia.",
+      "duration": 5.38
+    },
+    "audio_tunnel_darius_then_let_s_hear_what_it_has_to_s": {
+      "id": "audio_tunnel_darius_then_let_s_hear_what_it_has_to_s",
+      "speaker": "darius",
+      "file": "darius/audio_tunnel_darius_then_let_s_hear_what_it_has_to_s.mp3",
+      "text": "Then let's hear what it has to say. Full burn through the nebula.",
+      "duration": 5.14
+    },
+    "audio_tunnel_naya_ice_shelf_temperature_s_bottomin": {
+      "id": "audio_tunnel_naya_ice_shelf_temperature_s_bottomin",
+      "speaker": "naya",
+      "file": "naya/audio_tunnel_naya_ice_shelf_temperature_s_bottomin.mp3",
+      "text": "Ice Shelf. Temperature's bottoming out \u2014 weapons might ice up.",
+      "duration": 4.27
+    },
+    "audio_tunnel_thorne_keep_the_engines_hot_you_freeze": {
+      "id": "audio_tunnel_thorne_keep_the_engines_hot_you_freeze",
+      "speaker": "thorne",
+      "file": "thorne/audio_tunnel_thorne_keep_the_engines_hot_you_freeze.mp3",
+      "text": "Keep the engines hot. You freeze in the Shelf, you don't thaw.",
+      "duration": 4.3
+    },
+    "audio_tunnel_lyra_i_see_ships_in_the_ice_navy_dest": {
+      "id": "audio_tunnel_lyra_i_see_ships_in_the_ice_navy_dest",
+      "speaker": "lyra",
+      "file": "lyra/audio_tunnel_lyra_i_see_ships_in_the_ice_navy_dest.mp3",
+      "text": "I see ships in the ice. Navy destroyers, frozen mid-battle. They were fighting something.",
+      "duration": 8.71
+    },
+    "audio_tunnel_lyra_it_s_beautiful_biolume_depths_th": {
+      "id": "audio_tunnel_lyra_it_s_beautiful_biolume_depths_th",
+      "speaker": "lyra",
+      "file": "lyra/audio_tunnel_lyra_it_s_beautiful_biolume_depths_th.mp3",
+      "text": "It's beautiful... Biolume Depths. The Dreamer's light.",
+      "duration": 5.54
+    },
+    "audio_tunnel_naya_don_t_let_the_pretty_lights_fool": {
+      "id": "audio_tunnel_naya_don_t_let_the_pretty_lights_fool",
+      "speaker": "naya",
+      "file": "naya/audio_tunnel_naya_don_t_let_the_pretty_lights_fool.mp3",
+      "text": "Don't let the pretty lights fool you. Biolume attracts predators.",
+      "duration": 4.1
+    },
+    "audio_tunnel_thorne_naya_s_right_biolume_means_bioma": {
+      "id": "audio_tunnel_thorne_naya_s_right_biolume_means_bioma",
+      "speaker": "thorne",
+      "file": "thorne/audio_tunnel_thorne_naya_s_right_biolume_means_bioma.mp3",
+      "text": "Naya's right. Biolume means biomass \u2014 and biomass means teeth. Stay tight.",
+      "duration": 6.41
+    },
+    "audio_tunnel_darius_acknowledged_we_push_through": {
+      "id": "audio_tunnel_darius_acknowledged_we_push_through",
+      "speaker": "darius",
+      "file": "darius/audio_tunnel_darius_acknowledged_we_push_through.mp3",
+      "text": "Acknowledged. We push through.",
+      "duration": 3.62
+    },
+    "audio_tunnel_thorne_void_edge_this_is_where_the_tren": {
+      "id": "audio_tunnel_thorne_void_edge_this_is_where_the_tren",
+      "speaker": "thorne",
+      "file": "thorne/audio_tunnel_thorne_void_edge_this_is_where_the_tren.mp3",
+      "text": "Void Edge. This is where the trench stops and... nothing starts.",
+      "duration": 5.33
+    },
+    "audio_tunnel_lyra_the_dreamer_it_s_scared_the_void": {
+      "id": "audio_tunnel_lyra_the_dreamer_it_s_scared_the_void",
+      "speaker": "lyra",
+      "file": "lyra/audio_tunnel_lyra_the_dreamer_it_s_scared_the_void.mp3",
+      "text": "The Dreamer... it's scared. The Void isn't empty \u2014 it's waiting.",
+      "duration": 6.12
+    },
+    "audio_tunnel_naya_proximity_alert_something_s_in_t": {
+      "id": "audio_tunnel_naya_proximity_alert_something_s_in_t",
+      "speaker": "naya",
+      "file": "naya/audio_tunnel_naya_proximity_alert_something_s_in_t.mp3",
+      "text": "Proximity alert! Something's in the Void with us!",
+      "duration": 3.48
+    },
+    "audio_tunnel_thorne_navy_shadow_fleet_they_ve_been_f": {
+      "id": "audio_tunnel_thorne_navy_shadow_fleet_they_ve_been_f",
+      "speaker": "thorne",
+      "file": "thorne/audio_tunnel_thorne_navy_shadow_fleet_they_ve_been_f.mp3",
+      "text": "Navy shadow fleet. They've been following us since the Shelf. Ambush formation!",
+      "duration": 6.02
+    },
+    "audio_tunnel_naya_gravity_rift_hold_onto_something": {
+      "id": "audio_tunnel_naya_gravity_rift_hold_onto_something",
+      "speaker": "naya",
+      "file": "naya/audio_tunnel_naya_gravity_rift_hold_onto_something.mp3",
+      "text": "Gravity Rift. Hold onto something \u2014 flight dynamics are going to get weird.",
+      "duration": 4.68
+    },
+    "audio_tunnel_lyra_the_dreamer_says_let_go_let_grav": {
+      "id": "audio_tunnel_lyra_the_dreamer_says_let_go_let_grav",
+      "speaker": "lyra",
+      "file": "lyra/audio_tunnel_lyra_the_dreamer_says_let_go_let_grav.mp3",
+      "text": "The Dreamer says... let go. Let gravity take us.",
+      "duration": 5.4
+    },
+    "audio_tunnel_darius_trust_the_navigator_cut_engines": {
+      "id": "audio_tunnel_darius_trust_the_navigator_cut_engines",
+      "speaker": "darius",
+      "file": "darius/audio_tunnel_darius_trust_the_navigator_cut_engines.mp3",
+      "text": "Trust the Navigator. Cut engines \u2014 drift protocol.",
+      "duration": 5.18
+    },
+    "audio_tunnel_thorne_time_sink_navy_lost_three_destro": {
+      "id": "audio_tunnel_thorne_time_sink_navy_lost_three_destro",
+      "speaker": "thorne",
+      "file": "thorne/audio_tunnel_thorne_time_sink_navy_lost_three_destro.mp3",
+      "text": "Time Sink. Navy lost three destroyers here. Chronology errors in their black boxes.",
+      "duration": 6.94
+    },
+    "audio_tunnel_lyra_i_can_see_us_past_runs_future_ru": {
+      "id": "audio_tunnel_lyra_i_can_see_us_past_runs_future_ru",
+      "speaker": "lyra",
+      "file": "lyra/audio_tunnel_lyra_i_can_see_us_past_runs_future_ru.mp3",
+      "text": "I can see... us. Past runs. Future runs. They all converge here.",
+      "duration": 8.57
+    },
+    "audio_tunnel_naya_if_lyra_s_seeing_timelines_we_re": {
+      "id": "audio_tunnel_naya_if_lyra_s_seeing_timelines_we_re",
+      "speaker": "naya",
+      "file": "naya/audio_tunnel_naya_if_lyra_s_seeing_timelines_we_re.mp3",
+      "text": "If Lyra's seeing timelines, we're close to the Dreamer's core. Stay on her signal.",
+      "duration": 5.71
+    },
+    "audio_tunnel_darius_every_run_every_death_it_all_lea": {
+      "id": "audio_tunnel_darius_every_run_every_death_it_all_lea",
+      "speaker": "darius",
+      "file": "darius/audio_tunnel_darius_every_run_every_death_it_all_lea.mp3",
+      "text": "Every run, every death \u2014 it all leads here. We finish this.",
+      "duration": 5.9
+    },
+    "audio_tunnel_lyra_this_is_it_abyss_core_the_dreame": {
+      "id": "audio_tunnel_lyra_this_is_it_abyss_core_the_dreame",
+      "speaker": "lyra",
+      "file": "lyra/audio_tunnel_lyra_this_is_it_abyss_core_the_dreame.mp3",
+      "text": "This is it. Abyss Core. The Dreamer's... no, the CREATOR'S heart.",
+      "duration": 7.22
+    },
+    "audio_tunnel_thorne_all_hands_this_is_the_final_push": {
+      "id": "audio_tunnel_thorne_all_hands_this_is_the_final_push",
+      "speaker": "thorne",
+      "file": "thorne/audio_tunnel_thorne_all_hands_this_is_the_final_push.mp3",
+      "text": "All hands: this is the final push. Whatever's in that core \u2014 it's why the Navy burned a fleet here.",
+      "duration": 6.89
+    },
+    "audio_tunnel_naya_darius_whatever_choice_you_make": {
+      "id": "audio_tunnel_naya_darius_whatever_choice_you_make",
+      "speaker": "naya",
+      "file": "naya/audio_tunnel_naya_darius_whatever_choice_you_make.mp3",
+      "text": "Darius... whatever choice you make here, we're with you. All the way.",
+      "duration": 4.54
+    },
+    "audio_tunnel_lyra_dad_i_can_see_the_endings_three": {
+      "id": "audio_tunnel_lyra_dad_i_can_see_the_endings_three",
+      "speaker": "lyra",
+      "file": "lyra/audio_tunnel_lyra_dad_i_can_see_the_endings_three.mp3",
+      "text": "Dad... I can see the endings. Three of them. You have to choose.",
+      "duration": 6.98
+    },
+    "audio_tunnel_darius_then_let_s_write_the_right_one_f": {
+      "id": "audio_tunnel_darius_then_let_s_write_the_right_one_f",
+      "speaker": "darius",
+      "file": "darius/audio_tunnel_darius_then_let_s_write_the_right_one_f.mp3",
+      "text": "Then let's write the right one. Full power to all systems. We end this.",
+      "duration": 6.84
+    },
+    "audio_tunnel_lyra_it_s_done_the_dreamer_it_s_free": {
+      "id": "audio_tunnel_lyra_it_s_done_the_dreamer_it_s_free",
+      "speaker": "lyra",
+      "file": "lyra/audio_tunnel_lyra_it_s_done_the_dreamer_it_s_free.mp3",
+      "text": "It's done. The Dreamer... it's free.",
+      "duration": 4.25
+    },
+    "audio_tunnel_naya_we_did_it_against_everything_the": {
+      "id": "audio_tunnel_naya_we_did_it_against_everything_the",
+      "speaker": "naya",
+      "file": "naya/audio_tunnel_naya_we_did_it_against_everything_the.mp3",
+      "text": "We did it. Against everything the Navy threw at us \u2014 we made it.",
+      "duration": 4.32
+    },
+    "audio_tunnel_thorne_mission_complete_all_craft_statu": {
+      "id": "audio_tunnel_thorne_mission_complete_all_craft_statu",
+      "speaker": "thorne",
+      "file": "thorne/audio_tunnel_thorne_mission_complete_all_craft_statu.mp3",
+      "text": "Mission complete. All craft: status report. We're going home.",
+      "duration": 5.71
+    },
+    "audio_tunnel_darius_not_home_forward_there_s_still_w": {
+      "id": "audio_tunnel_darius_not_home_forward_there_s_still_w",
+      "speaker": "darius",
+      "file": "darius/audio_tunnel_darius_not_home_forward_there_s_still_w.mp3",
+      "text": "Not home. Forward. There's still work to do.",
+      "duration": 5.38
+    },
+    "audio_tunnel_lyra_wait_the_dreamer_says_there_s_mo": {
+      "id": "audio_tunnel_lyra_wait_the_dreamer_says_there_s_mo",
+      "speaker": "lyra",
+      "file": "lyra/audio_tunnel_lyra_wait_the_dreamer_says_there_s_mo.mp3",
+      "text": "Wait \u2014 the Dreamer says there's MORE. Beneath the core. The Reverse Abyss.",
+      "duration": 7.32
+    },
+    "audio_tunnel_thorne_a_reverse_run_through_the_abyss": {
+      "id": "audio_tunnel_thorne_a_reverse_run_through_the_abyss",
+      "speaker": "thorne",
+      "file": "thorne/audio_tunnel_thorne_a_reverse_run_through_the_abyss.mp3",
+      "text": "A reverse run? Through the Abyss backwards? That's suicide.",
+      "duration": 4.94
+    },
+    "audio_tunnel_darius_suicide_was_the_first_run_this_i": {
+      "id": "audio_tunnel_darius_suicide_was_the_first_run_this_i",
+      "speaker": "darius",
+      "file": "darius/audio_tunnel_darius_suicide_was_the_first_run_this_i.mp3",
+      "text": "Suicide was the first run. This is NG+. We go deeper.",
+      "duration": 6.6
+    },
+    "audio_tunnel_naya_rescue_successful_all_squad_memb": {
+      "id": "audio_tunnel_naya_rescue_successful_all_squad_memb",
+      "speaker": "naya",
+      "file": "naya/audio_tunnel_naya_rescue_successful_all_squad_memb.mp3",
+      "text": "Rescue successful! All squad members accounted for.",
+      "duration": 3.94
+    },
+    "audio_tunnel_thorne_good_work_nobody_gets_left_behin": {
+      "id": "audio_tunnel_thorne_good_work_nobody_gets_left_behin",
+      "speaker": "thorne",
+      "file": "thorne/audio_tunnel_thorne_good_work_nobody_gets_left_behin.mp3",
+      "text": "Good work. Nobody gets left behind in my trench.",
+      "duration": 4.22
+    },
+    "audio_tunnel_darius_we_re_stronger_together_let_s_fi": {
+      "id": "audio_tunnel_darius_we_re_stronger_together_let_s_fi",
+      "speaker": "darius",
+      "file": "darius/audio_tunnel_darius_we_re_stronger_together_let_s_fi.mp3",
+      "text": "We're stronger together. Let's finish this.",
+      "duration": 4.22
+    },
+    "dialogue_scenes_selene_narrative_the_nyxa_boosts_throu": {
+      "id": "dialogue_scenes_selene_narrative_the_nyxa_boosts_throu",
+      "speaker": "selene",
+      "file": "selene/dialogue_scenes_selene_narrative_the_nyxa_boosts_throu.mp3",
+      "text": "[NARRATIVE] The Nyxa boosts through a tight center channel. Behind you, the left channel erupts in a blowout! Superheated vents erupt in massive flares.",
+      "duration": 10.39
+    },
+    "dialogue_scenes_selene_warning_thermal_vents_blowing_m": {
+      "id": "dialogue_scenes_selene_warning_thermal_vents_blowing_m",
+      "speaker": "selene",
+      "file": "selene/dialogue_scenes_selene_warning_thermal_vents_blowing_m.mp3",
+      "text": "[WARNING] Thermal vents blowing! Massive thermal surge detected. Direct hit! Shield integrity damaged!",
+      "duration": 8.88
+    },
+    "dialogue_scenes_selene_narrative_the_coral_maze_begins": {
+      "id": "dialogue_scenes_selene_narrative_the_coral_maze_begins",
+      "speaker": "selene",
+      "file": "selene/dialogue_scenes_selene_narrative_the_coral_maze_begins.mp3",
+      "text": "[NARRATIVE] The coral maze begins to collapse as the Memory Wraith's death throes destabilize the sector. Bedrock shuddering.",
+      "duration": 7.75
+    },
+    "dialogue_scenes_selene_narrative_the_nyxa_plunges_into": {
+      "id": "dialogue_scenes_selene_narrative_the_nyxa_plunges_into",
+      "speaker": "selene",
+      "file": "selene/dialogue_scenes_selene_narrative_the_nyxa_plunges_into.mp3",
+      "text": "[NARRATIVE] The Nyxa plunges into what looks like solid coral bedrock\u2014and passes right through! A illusionary membrane of psychic static reveals a hidden current tunnel.",
+      "duration": 10.13
+    },
+    "dialogue_scenes_selene_warning_debris_collision_substr": {
+      "id": "dialogue_scenes_selene_warning_debris_collision_substr",
+      "speaker": "selene",
+      "file": "selene/dialogue_scenes_selene_warning_debris_collision_substr.mp3",
+      "text": "[WARNING] Debris collision! Substrate collapse! Hull damage sustained!",
+      "duration": 6.26
+    },
+    "dialogue_scenes_selene_narrative_the_nyxa_flies_straig": {
+      "id": "dialogue_scenes_selene_narrative_the_nyxa_flies_straig",
+      "speaker": "selene",
+      "file": "selene/dialogue_scenes_selene_narrative_the_nyxa_flies_straig.mp3",
+      "text": "[NARRATIVE] The Nyxa flies straight at the ice shard's surface. At the last possible moment, a fissure opens, bioluminescent Dreamer-matter pulsing. The ship slides through as Cross's torpedoes detonate harmlessly against the ice.",
+      "duration": 14.38
+    },
+    "dialogue_scenes_selene_warning_incoming_umbra_squad_ta": {
+      "id": "dialogue_scenes_selene_warning_incoming_umbra_squad_ta",
+      "speaker": "selene",
+      "file": "selene/dialogue_scenes_selene_warning_incoming_umbra_squad_ta.mp3",
+      "text": "[WARNING] Incoming Umbra squad! Tactical ambush! Taking fire!",
+      "duration": 6.26
+    },
+    "dialogue_scenes_selene_narrative_darius_plunges_the_da": {
+      "id": "dialogue_scenes_selene_narrative_darius_plunges_the_da",
+      "speaker": "selene",
+      "file": "selene/dialogue_scenes_selene_narrative_darius_plunges_the_da.mp3",
+      "text": "[NARRATIVE] Darius plunges the damaged Nyxa into the ice shard fissure, escaping Cross's main squadron.",
+      "duration": 6.48
+    },
+    "dialogue_scenes_selene_narrative_navy_attunement_accel": {
+      "id": "dialogue_scenes_selene_narrative_navy_attunement_accel",
+      "speaker": "selene",
+      "file": "selene/dialogue_scenes_selene_narrative_navy_attunement_accel.mp3",
+      "text": "[NARRATIVE] Navy attunement accelerator strike on Haven-7. Lyra has suffered neural overload and fallen into a deep coma.",
+      "duration": 8.21
+    },
+    "dialogue_scenes_selene_effect_lyra_is_offline_no_navig": {
+      "id": "dialogue_scenes_selene_effect_lyra_is_offline_no_navig",
+      "speaker": "selene",
+      "file": "selene/dialogue_scenes_selene_effect_lyra_is_offline_no_navig.mp3",
+      "text": "[EFFECT] Lyra is offline. No navigator route warnings. Wind shear active. Lightning storm active.",
+      "duration": 9.1
+    },
+    "dialogue_scenes_selene_narrative_lyra_awakens_her_eyes": {
+      "id": "dialogue_scenes_selene_narrative_lyra_awakens_her_eyes",
+      "speaker": "selene",
+      "file": "selene/dialogue_scenes_selene_narrative_lyra_awakens_her_eyes.mp3",
+      "text": "[NARRATIVE] Lyra awakens, her eyes glowing with a steady bioluminescent cyan light. A layered harmonic echo accompanies her voice.",
+      "duration": 8.76
+    },
+    "dialogue_scenes_selene_effect_lyra_is_back_online_path": {
+      "id": "dialogue_scenes_selene_effect_lyra_is_back_online_path",
+      "speaker": "selene",
+      "file": "selene/dialogue_scenes_selene_effect_lyra_is_back_online_path.mp3",
+      "text": "[EFFECT] Lyra is back online. Pathfinding overlay enabled.",
+      "duration": 5.11
+    },
+    "banter_db_cross_edc_black_ops_intercept_mariana": {
+      "id": "banter_db_cross_edc_black_ops_intercept_mariana",
+      "speaker": "cross",
+      "file": "cross/banter_db_cross_edc_black_ops_intercept_mariana.mp3",
+      "text": "[EDC BLACK-OPS // INTERCEPT]: Mariana Trench was never an expedition\u2014it was a quarantine zone for Prototype Alpha.",
+      "duration": 6.55
+    },
+    "banter_db_naya_precursor_decrypt_the_great_dyi": {
+      "id": "banter_db_naya_precursor_decrypt_the_great_dyi",
+      "speaker": "naya",
+      "file": "naya/banter_db_naya_precursor_decrypt_the_great_dyi.mp3",
+      "text": "[PRECURSOR DECRYPT]: The Great Dying wasn't a plague. The Precursors chose crystallisation over surrender.",
+      "duration": 5.45
+    },
+    "banter_db_naya_project_ophion_file_402_the_cyb": {
+      "id": "banter_db_naya_project_ophion_file_402_the_cyb",
+      "speaker": "naya",
+      "file": "naya/banter_db_naya_project_ophion_file_402_the_cyb.mp3",
+      "text": "[PROJECT OPHION FILE 402]: The cybernetic genome was spliced from Darius's grandfather forty years ago.",
+      "duration": 4.73
+    },
+    "banter_db_lyra_dreamer_cipher_the_veil_is_not": {
+      "id": "banter_db_lyra_dreamer_cipher_the_veil_is_not",
+      "speaker": "lyra",
+      "file": "lyra/banter_db_lyra_dreamer_cipher_the_veil_is_not.mp3",
+      "text": "[DREAMER CIPHER]: The Veil is not a gas cloud. It is the dreaming mind of the first Precursor Architect.",
+      "duration": 7.2
+    },
+    "banter_db_cross_admiral_crane_directive_9_all_c": {
+      "id": "banter_db_cross_admiral_crane_directive_9_all_c",
+      "speaker": "cross",
+      "file": "cross/banter_db_cross_admiral_crane_directive_9_all_c.mp3",
+      "text": "[ADMIRAL CRANE DIRECTIVE 9]: All civilian craft passing Saturn rings are to be neutralized on sight.",
+      "duration": 5.66
+    },
+    "banter_db_thorne_forge_mind_registry_smelter_out": {
+      "id": "banter_db_thorne_forge_mind_registry_smelter_out",
+      "speaker": "thorne",
+      "file": "thorne/banter_db_thorne_forge_mind_registry_smelter_out.mp3",
+      "text": "[FORGE-MIND REGISTRY]: Smelter output reached 12,000 hulls per day before the overseers were terminated.",
+      "duration": 5.64
+    },
+    "banter_db_selene_storm_singer_archive_her_acoust": {
+      "id": "banter_db_selene_storm_singer_archive_her_acoust",
+      "speaker": "selene",
+      "file": "selene/banter_db_selene_storm_singer_archive_her_acoust.mp3",
+      "text": "[STORM-SINGER ARCHIVE]: Her acoustic song is a distress beacon broadcasting on frequencies older than stars.",
+      "duration": 5.81
+    },
+    "banter_db_cross_flagship_goliath_purge_log_admi": {
+      "id": "banter_db_cross_flagship_goliath_purge_log_admi",
+      "speaker": "cross",
+      "file": "cross/banter_db_cross_flagship_goliath_purge_log_admi.mp3",
+      "text": "[FLAGSHIP GOLIATH PURGE LOG]: Admiral Crane digitized his consciousness 48 hours before the fleet fell.",
+      "duration": 5.93
+    },
+    "banter_db_naya_synaptic_hive_genome_the_hive_m": {
+      "id": "banter_db_naya_synaptic_hive_genome_the_hive_m",
+      "speaker": "naya",
+      "file": "naya/banter_db_naya_synaptic_hive_genome_the_hive_m.mp3",
+      "text": "[SYNAPTIC HIVE GENOME]: The Hive Mother was human once. The first test pilot to interface with the Coelacanth.",
+      "duration": 5.45
+    },
+    "banter_db_architect_architect_omega_cipher_the_cybe": {
+      "id": "banter_db_architect_architect_omega_cipher_the_cybe",
+      "speaker": "architect",
+      "file": "architect/banter_db_architect_architect_omega_cipher_the_cybe.mp3",
+      "text": "[ARCHITECT OMEGA CIPHER]: The Cyber Coelacanth is the eternal reset button. Every timeline ends here.",
+      "duration": 4.54
+    },
+    "banter_db_darius_timeline_echo_i_remember_this_s": {
+      "id": "banter_db_darius_timeline_echo_i_remember_this_s",
+      "speaker": "darius",
+      "file": "darius/banter_db_darius_timeline_echo_i_remember_this_s.mp3",
+      "text": "[TIMELINE ECHO]: I remember this silt reef... we've flown this dive before in another life.",
+      "duration": 5.06
+    },
+    "banter_db_naya_paradox_telemetry_crystalline_l": {
+      "id": "banter_db_naya_paradox_telemetry_crystalline_l",
+      "speaker": "naya",
+      "file": "naya/banter_db_naya_paradox_telemetry_crystalline_l.mp3",
+      "text": "[PARADOX TELEMETRY]: Crystalline lattice resonance matches data from our previous campaign.",
+      "duration": 4.42
+    },
+    "banter_db_darius_chrono_residual_europa_s_ice_fe": {
+      "id": "banter_db_darius_chrono_residual_europa_s_ice_fe",
+      "speaker": "darius",
+      "file": "darius/banter_db_darius_chrono_residual_europa_s_ice_fe.mp3",
+      "text": "[CHRONO RESIDUAL]: Europa's ice feels familiar. We know every ambush coordinate.",
+      "duration": 5.47
+    },
+    "banter_db_lyra_dreamer_recursion_the_stars_in": {
+      "id": "banter_db_lyra_dreamer_recursion_the_stars_in",
+      "speaker": "lyra",
+      "file": "lyra/banter_db_lyra_dreamer_recursion_the_stars_in.mp3",
+      "text": "[DREAMER RECURSION]: The stars in the Veil are singing the song from our previous victory!",
+      "duration": 5.09
+    },
+    "banter_db_cross_umbra_deja_vu_crane_s_ring_bloc": {
+      "id": "banter_db_cross_umbra_deja_vu_crane_s_ring_bloc",
+      "speaker": "cross",
+      "file": "cross/banter_db_cross_umbra_deja_vu_crane_s_ring_bloc.mp3",
+      "text": "[UMBRA DEJA-VU]: Crane's ring blockade is tighter in this timeline, but we know the weak points.",
+      "duration": 5.66
+    },
+    "banter_db_naya_foundry_echo_the_forge_mind_has": {
+      "id": "banter_db_naya_foundry_echo_the_forge_mind_has",
+      "speaker": "naya",
+      "file": "naya/banter_db_naya_foundry_echo_the_forge_mind_has.mp3",
+      "text": "[FOUNDRY ECHO]: The Forge-Mind has upgraded its armor based on our last assault.",
+      "duration": 4.01
+    },
+    "banter_db_selene_storm_singer_harmonic_the_tempe": {
+      "id": "banter_db_selene_storm_singer_harmonic_the_tempe",
+      "speaker": "selene",
+      "file": "selene/banter_db_selene_storm_singer_harmonic_the_tempe.mp3",
+      "text": "[STORM-SINGER HARMONIC]: The tempest recognizes your ship signature, Vanguard.",
+      "duration": 4.1
+    },
+    "banter_db_darius_ghost_fleet_paradox_crane_s_ai": {
+      "id": "banter_db_darius_ghost_fleet_paradox_crane_s_ai",
+      "speaker": "darius",
+      "file": "darius/banter_db_darius_ghost_fleet_paradox_crane_s_ai.mp3",
+      "text": "[GHOST FLEET PARADOX]: Crane's AI is panicking\u2014his sensors show two iterations of us on radar.",
+      "duration": 5.83
+    },
+    "banter_db_lyra_hive_memory_fracture_elena_s_mi": {
+      "id": "banter_db_lyra_hive_memory_fracture_elena_s_mi",
+      "speaker": "lyra",
+      "file": "lyra/banter_db_lyra_hive_memory_fracture_elena_s_mi.mp3",
+      "text": "[HIVE MEMORY FRACTURE]: Elena's mind is calling out clearer than before... she knows we're close.",
+      "duration": 5.62
+    },
+    "banter_db_architect_architect_paradox_equation_you": {
+      "id": "banter_db_architect_architect_paradox_equation_you",
+      "speaker": "architect",
+      "file": "architect/banter_db_architect_architect_paradox_equation_you.mp3",
+      "text": "[ARCHITECT PARADOX EQUATION]: You return to the singularity... yet each return brings higher entropy...",
+      "duration": 3.58
     }
   }
 }

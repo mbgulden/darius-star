@@ -48,16 +48,36 @@ const VoicePlayback = {
     DUCKING_COOLDOWN_MS: 300, // 0.3s debounce between rapid voice lines
 
     /**
-     * Build a voice file path from biome, trigger, and speaker code.
-     * Returns null if no matching file pattern exists.
+     * Build a voice file path from manifest if available.
+     * Returns null if no verified file pattern exists.
      */
     _buildPath(biome, trigger, speakerCode) {
-        const speaker = this.SPEAKER_MAP[speakerCode];
+        const speaker = this.SPEAKER_MAP[speakerCode] || speakerCode;
         if (!speaker) return null;
-        
-        const voiceTrigger = this.TRIGGER_MAP[trigger] || trigger;
-        const variant = String(Math.floor(Math.random() * 2) + 1).padStart(2, '0');
-        return `assets/audio/voice/b${biome}_${voiceTrigger}_${speaker}_${variant}.ogg`;
+
+        if (typeof VoicePipeline !== 'undefined' && VoicePipeline && VoicePipeline._manifest && VoicePipeline._manifest.lines) {
+            const charKey = speaker.toLowerCase();
+            const candidate = Object.values(VoicePipeline._manifest.lines).find(item => 
+                item && item.speaker === charKey && item.file && (item.biome === biome || item.file.startsWith(`${charKey}/`))
+            );
+            if (candidate && candidate.file) {
+                return `assets/audio/voice/${candidate.file}`;
+            }
+        }
+        return null;
+    },
+
+    /**
+     * Play a narrative audio tunnel voice line (GRO-1065 / GRO-940).
+     */
+    playTunnel(biome, speaker, text) {
+        if (!this._isEnabled()) return false;
+        const speakerName = this.SPEAKER_MAP[speaker] || speaker || 'Lyra';
+        if (typeof VoicePipeline !== 'undefined' && VoicePipeline && typeof VoicePipeline.speak === 'function') {
+            VoicePipeline.speak(text, speakerName, { biome: biome, trigger: 'tunnel' });
+            return true;
+        }
+        return this.speak(speakerName, text, { biome: biome, trigger: 'tunnel' });
     },
 
     /**
