@@ -41,9 +41,18 @@ const BanterEngine = {
             {s:'N', l:"Salvage logged. Every credit counts toward the next push."},
         ],
         scrap_milestone: [
-            {s:'D', l:"That's a decent haul. Keep the momentum."},
-            {s:'N', l:"Milestone hit. We are not broke yet."},
-            {s:'N', l:"Energy-credits banked. Keep salvaging, Darius."},
+            {s:'D', l:"One thousand scrap plates logged. The Nyxa's frame is holding."},
+            {s:'N', l:"Two thousand scrap secured. That's enough alloy to reinforce forward deflectors."},
+            {s:'L', l:"Daddy, look at all the metal we found! The ship feels stronger now."},
+            {s:'T', l:"Good salvage count, Star. Keep banking raw titanium for the lower reaches."},
+            {s:'D', l:"Four thousand scrap. The wreckage in this trench is paying for the dive."},
+            {s:'N', l:"Five thousand scrap cataloged. Quantum fabricator reserves at optimum."},
+            {s:'L', l:"The glowing pieces are singing, Daddy. We have so much stored now."},
+            {s:'T', l:"Solid haul, scrapper. Don't get greedy—keep your eyes on the radar."},
+            {s:'D', l:"Another thousand scrap in the holds. We're financing the whole mission."},
+            {s:'N', l:"Salvage rate exceeding estimates. Avionics and shields fully covered."},
+            {s:'L', l:"I'm helping Daddy count the crystals! We have enough to keep going!"},
+            {s:'D', l:"High-density salvage locked in. Keep pushing deeper."},
         ],
         legendary_drop: [
             {s:'D', l:"Essence plate! Pre-war alloy. Worth more than a fleet destroyer."},
@@ -290,22 +299,36 @@ const BanterEngine = {
         this._displayTimer = 0;
     },
 
+    _scrapShuffleBags: {},
+    _scrapEventsInitialized: false,
+
     triggerScrapEvent(trigger, line) {
         if (line) {
             return this.triggerDirect(line, 5.0);
         }
         const lines = this._scrapData[trigger];
         if (lines && lines.length > 0) {
-            const pick = lines[Math.floor(Math.random() * lines.length)];
+            if (!this._scrapShuffleBags[trigger] || this._scrapShuffleBags[trigger].length === 0) {
+                // Refill shuffle bag with fresh randomized indices
+                const indices = Array.from({ length: lines.length }, (_, i) => i);
+                for (let i = indices.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [indices[i], indices[j]] = [indices[j], indices[i]];
+                }
+                this._scrapShuffleBags[trigger] = indices;
+            }
+            const pickIndex = this._scrapShuffleBags[trigger].pop();
+            const pick = lines[pickIndex];
             return this.triggerDirect(pick, 4.0);
         }
         return null;
     },
 
     initScrapEvents() {
-        if (typeof window === 'undefined' || !window.ScrapEvents) return;
+        if (typeof window === 'undefined' || !window.ScrapEvents || this._scrapEventsInitialized) return;
+        this._scrapEventsInitialized = true;
 
-        // Only major milestones and legendary drops trigger radio chatter (avoids routine pickup noise)
+        // Only major 1000-scrap milestones and legendary drops trigger radio chatter (avoids routine pickup noise)
         window.ScrapEvents.on('scrap:milestone', () => {
             if (this.getActive()) return;
             this.triggerScrapEvent('scrap_milestone');

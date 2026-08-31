@@ -75,6 +75,10 @@ const VoicePipeline = {
         return null;
     },
 
+    _audioBufferCache: new Map(),
+    _activeSource: null,
+    _currentRequestId: 0,
+
     speak(text, speaker = 'Lyra', options = {}) {
         if (typeof streamerMode !== 'undefined' && streamerMode) {
             if (options.onStart) options.onStart();
@@ -83,6 +87,7 @@ const VoicePipeline = {
         }
 
         this.stop();
+        const reqId = ++this._currentRequestId;
         this._isPlaying = true;
         this._currentSpeaker = speaker;
         this._currentMood = options.mood || 'neutral';
@@ -98,7 +103,7 @@ const VoicePipeline = {
             }
         }
 
-        // Match by normalized text across all 687 recorded voice lines
+        // Match by normalized text across all recorded voice lines
         if (!audioFile && text && this._normalizedLineMap) {
             const norm = this._normalizeText(text);
             if (this._normalizedLineMap.has(norm)) {
@@ -112,16 +117,13 @@ const VoicePipeline = {
         }
 
         if (audioFile) {
-            this._playStudioAudio(audioFile, options);
+            this._playStudioAudio(audioFile, options, reqId);
         } else {
             this._playProceduralFallback(text, speaker, options);
         }
     },
 
-    _audioBufferCache: new Map(),
-    _activeSource: null,
-
-    _playStudioAudio(fileUrl, options) {
+    _playStudioAudio(fileUrl, options, reqId) {
         // Duck BGM
         if (typeof AudioManager !== 'undefined' && typeof AudioManager.duckMusic === 'function') {
             AudioManager.duckMusic(0.5);
@@ -132,6 +134,7 @@ const VoicePipeline = {
         const path = fileUrl.startsWith('assets/') ? fileUrl : `assets/audio/voice/${fileUrl}`;
 
         const onFinish = () => {
+            if (reqId && reqId !== this._currentRequestId) return;
             this._isPlaying = false;
             this._activeSource = null;
             this._currentAudio = null;
@@ -151,6 +154,7 @@ const VoicePipeline = {
             }
 
             const playDecodedBuffer = (buffer) => {
+                if (reqId && reqId !== this._currentRequestId) return false;
                 try {
                     const source = ctx.createBufferSource();
                     source.buffer = buffer;
@@ -183,10 +187,12 @@ const VoicePipeline = {
                 })
                 .then(buf => ctx.decodeAudioData(buf))
                 .then(audioBuffer => {
+                    if (reqId && reqId !== this._currentRequestId) return;
                     this._audioBufferCache.set(path, audioBuffer);
                     playDecodedBuffer(audioBuffer);
                 })
                 .catch(err => {
+                    if (reqId && reqId !== this._currentRequestId) return;
                     // Gracefully fallback to procedural synthesis or finish without crashing
                     if (this._isPlaying) {
                         this._playProceduralFallback(options.text || '', options.speaker || this._currentSpeaker, options);
@@ -197,10 +203,11 @@ const VoicePipeline = {
             return;
         }
 
-        this._playHtml5Audio(path, options, onFinish);
+        this._playHtml5Audio(path, options, onFinish, reqId);
     },
 
-    _playHtml5Audio(path, options, onFinish) {
+    _playHtml5Audio(path, options, onFinish, reqId) {
+        if (reqId && reqId !== this._currentRequestId) return;
         if (typeof Audio === 'undefined') {
             if (options.onStart) options.onStart();
             setTimeout(onFinish, 10);
@@ -211,6 +218,10 @@ const VoicePipeline = {
         this._currentAudio = audio;
 
         audio.onplay = () => {
+            if (reqId && reqId !== this._currentRequestId) {
+                try { audio.pause(); } catch(e) {}
+                return;
+            }
             if (options.onStart) options.onStart();
         };
 
@@ -236,9 +247,11 @@ const VoicePipeline = {
     },
 
     stop() {
+        this._currentRequestId++;
         this._isPlaying = false;
         if (this._activeSource) {
             try {
+                this._activeSource.onended = null;
                 this._activeSource.stop();
                 this._activeSource.disconnect();
             } catch(e) {}
@@ -246,6 +259,7 @@ const VoicePipeline = {
         }
         if (this._currentAudio) {
             try {
+                this._currentAudio.onended = null;
                 this._currentAudio.pause();
                 this._currentAudio.currentTime = 0;
             } catch(e) {}

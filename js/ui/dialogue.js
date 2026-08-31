@@ -232,7 +232,15 @@
 
         
 
+        let _lastDialogueSFXTimes = {};
         function triggerDialogueSFX(name, vol) {
+            const now = Date.now();
+            if (name === 'radio_squelch_in' || name === 'radio_squelch_out') {
+                if (_lastDialogueSFXTimes[name] && now - _lastDialogueSFXTimes[name] < 400) {
+                    return;
+                }
+                _lastDialogueSFXTimes[name] = now;
+            }
             if (typeof window !== 'undefined' && typeof window.playSound === 'function') {
                 try { window.playSound(name, vol); } catch(e) {}
             } else if (typeof playSound === 'function') {

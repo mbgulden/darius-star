@@ -9930,6 +9930,78 @@
       "speaker": "thorne",
       "text": "A reverse run? Through the Abyss backwards? That",
       "biome": 1
+    },
+    "darius_scrap_milestone_01": {
+      "file": "darius/darius_scrap_milestone_01.mp3",
+      "speaker": "darius",
+      "text": "One thousand scrap plates logged. The Nyxa's frame is holding.",
+      "biome": 1
+    },
+    "naya_scrap_milestone_02": {
+      "file": "naya/naya_scrap_milestone_02.mp3",
+      "speaker": "naya",
+      "text": "Two thousand scrap secured. That's enough alloy to reinforce forward deflectors.",
+      "biome": 1
+    },
+    "lyra_scrap_milestone_03": {
+      "file": "lyra/lyra_scrap_milestone_03.mp3",
+      "speaker": "lyra",
+      "text": "Daddy, look at all the metal we found! The ship feels stronger now.",
+      "biome": 1
+    },
+    "thorne_scrap_milestone_04": {
+      "file": "thorne/thorne_scrap_milestone_04.mp3",
+      "speaker": "thorne",
+      "text": "Good salvage count, Star. Keep banking raw titanium for the lower reaches.",
+      "biome": 1
+    },
+    "darius_scrap_milestone_05": {
+      "file": "darius/darius_scrap_milestone_05.mp3",
+      "speaker": "darius",
+      "text": "Four thousand scrap. The wreckage in this trench is paying for the dive.",
+      "biome": 1
+    },
+    "naya_scrap_milestone_06": {
+      "file": "naya/naya_scrap_milestone_06.mp3",
+      "speaker": "naya",
+      "text": "Five thousand scrap cataloged. Quantum fabricator reserves at optimum.",
+      "biome": 1
+    },
+    "lyra_scrap_milestone_07": {
+      "file": "lyra/lyra_scrap_milestone_07.mp3",
+      "speaker": "lyra",
+      "text": "The glowing pieces are singing, Daddy. We have so much stored now.",
+      "biome": 1
+    },
+    "thorne_scrap_milestone_08": {
+      "file": "thorne/thorne_scrap_milestone_08.mp3",
+      "speaker": "thorne",
+      "text": "Solid haul, scrapper. Don't get greedy\u2014keep your eyes on the radar.",
+      "biome": 1
+    },
+    "darius_scrap_milestone_09": {
+      "file": "darius/darius_scrap_milestone_09.mp3",
+      "speaker": "darius",
+      "text": "Another thousand scrap in the holds. We're financing the whole mission.",
+      "biome": 1
+    },
+    "naya_scrap_milestone_10": {
+      "file": "naya/naya_scrap_milestone_10.mp3",
+      "speaker": "naya",
+      "text": "Salvage rate exceeding estimates. Avionics and shields fully covered.",
+      "biome": 1
+    },
+    "lyra_scrap_milestone_11": {
+      "file": "lyra/lyra_scrap_milestone_11.mp3",
+      "speaker": "lyra",
+      "text": "I'm helping Daddy count the crystals! We have enough to keep going!",
+      "biome": 1
+    },
+    "darius_scrap_milestone_12": {
+      "file": "darius/darius_scrap_milestone_12.mp3",
+      "speaker": "darius",
+      "text": "High-density salvage locked in. Keep pushing deeper.",
+      "biome": 1
     }
   }
 }

@@ -145,7 +145,6 @@ window.addEventListener('DOMContentLoaded', () => {
             if (window.Economy) Economy.init();
             if (window.BanterEngine) {
                 BanterEngine.init(window.Multiplayer ? Multiplayer.count : 1);
-                BanterEngine.trigger('level_start', 1);
                 // GRO-1054: Wire scrap/upgrade events into banter system
                 BanterEngine.initScrapEvents();
             }

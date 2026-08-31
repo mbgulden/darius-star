@@ -55,30 +55,30 @@ const ScrapEvents = {
         }
     },
 
+    _lastMilestoneScrap: 0,
+
     /**
      * Called by game_loop.js when the player actually collects a scrap drop.
-     * Checks milestones (50/200/1000) and fires scrap:collected + scrap:milestone.
+     * Fires scrap:collected for telemetry/economy, and triggers scrap:milestone every 1000 scrap.
      */
     onScrapCollected(amount, type) {
         this._runScrap += amount;
 
-        // Always fire collected
+        // Always fire collected for stats & economy
         this.emit('scrap:collected', {
             amount: amount,
             type: type || 'unknown',
             runScrap: this._runScrap
         });
 
-        // Check milestone thresholds
-        for (const [threshold, key] of Object.entries(this._milestones)) {
-            const t = parseInt(threshold, 10);
-            if (this._runScrap >= t && key && !this._milestones[threshold + '_fired']) {
-                this.emit('scrap:milestone', {
-                    threshold: t,
-                    runScrap: this._runScrap
-                });
-                this._milestones[threshold + '_fired'] = true;
-            }
+        // Trigger major comms milestone every 1000 scrap collected
+        const nextMilestone = Math.floor(this._runScrap / 1000) * 1000;
+        if (nextMilestone >= 1000 && nextMilestone > this._lastMilestoneScrap) {
+            this._lastMilestoneScrap = nextMilestone;
+            this.emit('scrap:milestone', {
+                threshold: nextMilestone,
+                runScrap: this._runScrap
+            });
         }
     },
 
@@ -109,7 +109,8 @@ const ScrapEvents = {
     /** Reset all state for a new game. */
     reset() {
         this._runScrap = 0;
-        this._milestones = { '50': false, '200': 'scrap_milestone_50', '1000': 'scrap_milestone_1000' };
+        this._lastMilestoneScrap = 0;
+        this._milestones = {};
         this._legendarySeen = {};
     }
 };
