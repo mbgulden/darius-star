@@ -45,6 +45,7 @@
             align-items: center;
             padding: 20px;
             overflow-x: hidden;
+            user-select: none;
         }
 
         /* ── STATIC INTERFERENCE OVERLAY ── */
@@ -200,77 +201,88 @@
             background: rgba(255, 255, 255, 0.06);
             border-radius: 4px;
             overflow: hidden;
-            position: relative;
+            border: 1px solid rgba(255, 102, 0, 0.2);
         }
 
         .threat-fill {
             height: 100%;
-            border-radius: 4px;
-            transition: width 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border-radius: 3px;
             background: linear-gradient(90deg, var(--accent-green), var(--accent-gold), var(--accent-orange), var(--accent-red));
-            background-size: 400% 100%;
-            animation: threatPulse 2s ease-in-out infinite;
+            width: 0%;
+            transition: width 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        @keyframes threatPulse {
-            0%, 100% { filter: brightness(1); }
-            50% { filter: brightness(1.3); }
-        }
-
-        .threat-level-text {
+        .threat-text {
             font-family: var(--font-display);
             font-size: 11px;
             font-weight: 700;
             letter-spacing: 1px;
-            min-width: 70px;
+            min-width: 90px;
             text-align: right;
         }
 
-        /* ── COMMS PANEL (DIALOGUE) ── */
+        /* ── COMMS PANEL ── */
         .comms-panel {
-            min-height: 180px;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            border-color: rgba(0, 255, 255, 0.25);
+            box-shadow: 0 0 25px rgba(0, 255, 255, 0.03), inset 0 0 30px rgba(0, 255, 255, 0.02);
             position: relative;
+            overflow: hidden;
         }
 
         .comms-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(0, 255, 255, 0.15);
+            padding-bottom: 10px;
+            margin-bottom: 14px;
             font-family: var(--font-display);
             font-size: 11px;
-            letter-spacing: 3px;
+            letter-spacing: 2px;
             color: var(--accent-cyan);
-            text-transform: uppercase;
-            text-shadow: 0 0 8px rgba(0, 255, 255, 0.25);
-            margin-bottom: 14px;
-            padding-bottom: 8px;
-            border-bottom: 1px solid rgba(0, 255, 255, 0.1);
-            display: flex;
+        }
+
+        .comms-header .waveform {
+            display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 2px;
+            height: 14px;
+            margin-left: 8px;
+        }
+
+        .comms-header .wave-bar {
+            width: 2px;
+            height: 4px;
+            background: var(--accent-cyan);
+            border-radius: 1px;
+            transition: height 0.1s ease;
         }
 
         .comms-header .channel {
+            color: var(--accent-gold);
             font-size: 10px;
-            color: var(--text-muted);
-            letter-spacing: 1px;
         }
 
         .comms-content {
-            position: relative;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
             min-height: 120px;
         }
 
         .dialogue-line {
-            margin-bottom: 14px;
+            line-height: 1.6;
+            font-size: 15px;
             animation: lineFadeIn 0.3s ease-out;
-            animation-fill-mode: both;
-        }
-
-        .dialogue-line:last-child {
-            margin-bottom: 0;
         }
 
         @keyframes lineFadeIn {
-            0% { opacity: 0; transform: translateX(-8px); }
-            100% { opacity: 1; transform: translateX(0); }
+            0% { opacity: 0; transform: translateY(6px); }
+            100% { opacity: 1; transform: translateY(0); }
         }
 
         .dialogue-speaker {
@@ -278,228 +290,243 @@
             font-size: 11px;
             font-weight: 700;
             letter-spacing: 2px;
-            color: var(--accent-cyan);
-            text-shadow: 0 0 6px rgba(0, 255, 255, 0.3);
             margin-bottom: 4px;
             text-transform: uppercase;
         }
 
-        .dialogue-speaker.darius { color: var(--accent-pink); text-shadow: 0 0 6px rgba(255, 0, 85, 0.3); }
-        .dialogue-speaker.lyra { color: var(--accent-purple); text-shadow: 0 0 6px rgba(176, 38, 255, 0.3); }
-        .dialogue-speaker.thorne,
-        .dialogue-speaker.commander { color: var(--accent-cyan); text-shadow: 0 0 6px rgba(0, 255, 255, 0.3); }
-        .dialogue-speaker.naya { color: var(--accent-green); text-shadow: 0 0 6px rgba(0, 255, 85, 0.3); }
-        .dialogue-speaker.cross { color: var(--accent-gold); text-shadow: 0 0 6px rgba(255, 204, 0, 0.3); }
-        .dialogue-speaker.ophion { color: var(--accent-orange); text-shadow: 0 0 6px rgba(255, 102, 0, 0.3); }
-        .dialogue-speaker.selene { color: #8888ff; text-shadow: 0 0 6px rgba(136, 136, 255, 0.3); }
-        .dialogue-speaker.architect { color: var(--accent-red); text-shadow: 0 0 6px rgba(255, 34, 68, 0.3); }
+        .dialogue-speaker.thorne {
+            color: #88aacc;
+            text-shadow: 0 0 8px rgba(136, 170, 204, 0.4);
+        }
+
+        .dialogue-speaker.lyra {
+            color: var(--accent-cyan);
+            text-shadow: 0 0 8px rgba(0, 255, 255, 0.4);
+        }
+
+        .dialogue-speaker.darius {
+            color: var(--accent-gold);
+            text-shadow: 0 0 8px rgba(255, 204, 0, 0.4);
+        }
+
+        .dialogue-speaker.naya {
+            color: var(--accent-green);
+            text-shadow: 0 0 8px rgba(0, 255, 85, 0.4);
+        }
+
+        .dialogue-speaker.cross {
+            color: var(--accent-pink);
+            text-shadow: 0 0 8px rgba(255, 0, 85, 0.4);
+        }
 
         .dialogue-text {
-            font-size: 14px;
-            line-height: 1.5;
             color: var(--text-color);
-            letter-spacing: 0.3px;
+            position: relative;
         }
 
         .dialogue-text .cursor {
             display: inline-block;
             width: 8px;
-            height: 14px;
+            height: 15px;
             background: var(--accent-cyan);
-            animation: cursorBlink 0.6s step-end infinite;
-            vertical-align: text-bottom;
             margin-left: 2px;
+            vertical-align: text-bottom;
+            animation: cursorBlink 0.6s infinite;
         }
 
         @keyframes cursorBlink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
-        }
-
-        .dialogue-text.complete .cursor {
-            display: none;
+            0%, 49% { opacity: 1; }
+            50%, 100% { opacity: 0; }
         }
 
         /* ── PROGRESS DOTS ── */
         .dialogue-progress {
             display: flex;
-            gap: 6px;
-            margin-top: 12px;
             justify-content: center;
+            gap: 8px;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .dialogue-dot {
-            width: 6px;
-            height: 6px;
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--border-color);
             transition: all 0.3s ease;
         }
 
         .dialogue-dot.active {
             background: var(--accent-cyan);
-            box-shadow: 0 0 8px rgba(0, 255, 255, 0.5);
-            width: 16px;
-            border-radius: 3px;
+            box-shadow: 0 0 8px rgba(0, 255, 255, 0.6);
+            border-color: var(--accent-cyan);
         }
 
         .dialogue-dot.done {
             background: var(--accent-green);
-            box-shadow: 0 0 4px rgba(0, 255, 85, 0.3);
+            border-color: var(--accent-green);
+            opacity: 0.5;
         }
 
-        /* ── BUTTONS ── */
+        /* ── ACTIONS ── */
         .action-bar {
             display: flex;
-            gap: 15px;
-            justify-content: center;
-            margin-top: 5px;
-            animation: panelEntry 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            animation-delay: 0.5s;
-            animation-fill-mode: both;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-top: 4px;
         }
 
         .btn {
             font-family: var(--font-display);
-            font-size: 14px;
+            font-size: 12px;
             font-weight: 700;
             letter-spacing: 2px;
             text-transform: uppercase;
-            padding: 14px 32px;
-            border: 2px solid transparent;
-            border-radius: 6px;
+            padding: 12px 28px;
+            border-radius: 4px;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            outline: none;
+            transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid transparent;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
-            gap: 10px;
-        }
-
-        .btn-launch {
-            background-color: var(--accent-pink);
-            color: #fff;
-            box-shadow: 0 0 20px rgba(255, 0, 85, 0.4);
-            flex: 1;
-            justify-content: center;
-            animation: launchGlow 2s ease-in-out infinite;
-        }
-
-        @keyframes launchGlow {
-            0%, 100% { box-shadow: 0 0 20px rgba(255, 0, 85, 0.4); }
-            50% { box-shadow: 0 0 35px rgba(255, 0, 85, 0.7); }
-        }
-
-        .btn-launch:hover {
-            background-color: #ff3377;
-            box-shadow: 0 0 30px rgba(255, 0, 85, 0.7);
-            transform: translateY(-2px);
-        }
-
-        .btn-launch:disabled {
-            background-color: #3a3a5a;
-            color: var(--text-muted);
-            cursor: not-allowed;
-            box-shadow: none;
-            animation: none;
+            gap: 8px;
         }
 
         .btn-skip {
-            background-color: transparent;
-            border-color: var(--border-color);
+            background: rgba(255, 255, 255, 0.05);
             color: var(--text-muted);
-            flex: 0;
-            padding: 14px 20px;
-            box-shadow: none;
-            white-space: nowrap;
+            border-color: var(--border-color);
         }
 
         .btn-skip:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-color);
             border-color: var(--accent-cyan);
-            color: var(--accent-cyan);
-            box-shadow: 0 0 10px rgba(0, 255, 255, 0.15);
         }
 
-        /* ── LAUNCH COUNTDOWN ── */
+        .btn-launch {
+            background: var(--accent-pink);
+            color: #ffffff;
+            border-color: var(--accent-pink);
+            box-shadow: 0 0 20px rgba(255, 0, 85, 0.4);
+            margin-left: auto;
+        }
+
+        .btn-launch:hover:not(:disabled) {
+            transform: scale(1.04);
+            box-shadow: 0 0 30px rgba(255, 0, 85, 0.7);
+            background: #ff1a6b;
+        }
+
+        .btn-launch:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
         .launch-countdown {
-            font-family: var(--font-display);
-            font-size: 10px;
-            letter-spacing: 2px;
-            color: var(--text-muted);
             text-align: center;
-            margin-top: 6px;
-            animation: panelEntry 0.6s ease-out;
-            animation-delay: 0.5s;
-            animation-fill-mode: both;
+            font-size: 11px;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+            margin-top: 2px;
         }
 
-        /* ── OBJECTIVE HIGHLIGHT ── */
-        .objective-text {
-            color: var(--accent-gold);
-            text-shadow: 0 0 6px rgba(255, 204, 0, 0.15);
-            font-weight: 700;
+        /* ── AUDIO UNMUTE BANNER ── */
+        .audio-unmute-prompt {
+            position: fixed;
+            bottom: 20px;
+            background: rgba(4, 10, 22, 0.92);
+            border: 1px solid var(--accent-cyan);
+            border-radius: 20px;
+            padding: 8px 18px;
+            font-family: var(--font-display);
+            font-size: 11px;
+            color: var(--accent-cyan);
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            z-index: 1000;
+            animation: pulse 1.5s infinite;
         }
 
-        /* ── RESPONSIVE ── */
+        @keyframes pulse {
+            0%, 100% { opacity: 0.85; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.03); }
+        }
+
         @media (max-width: 600px) {
-            .briefing-header h1 { font-size: 20px; }
+            body { padding: 12px; }
+            .briefing-header h1 { font-size: 22px; letter-spacing: 2px; }
             .intel-grid { grid-template-columns: 1fr; }
-            .action-bar { flex-direction: column; }
+            .panel { padding: 14px 16px; }
+            .dialogue-line { font-size: 13.5px; }
+            .action-bar { flex-direction: column; width: 100%; }
             .btn { width: 100%; justify-content: center; }
-            .btn-skip { order: -1; }
+            .btn-launch { margin-left: 0; }
         }
     </style>
 </head>
 <body>
-
     <div class="interference-overlay"></div>
 
-    <!-- ── BRIEFING HEADER ── -->
     <div class="briefing-header">
-        <div class="classification">⚠ CLASSIFIED // FLEETCOM EYES ONLY</div>
-        <h1>Mission Briefing</h1>
-        <div class="codename" id="codename">OPERATION: DEEP DESCENT</div>
+        <div class="classification">★ TOP SECRET // EYES ONLY ★</div>
+        <h1 id="biomeName">ABYSSAL TRENCH</h1>
+        <div class="codename" id="codename">OPERATION: ABYSSAL TRENCH</div>
     </div>
 
-    <!-- ── INTEL ── -->
     <div class="container">
-        <div class="panel" id="intelPanel">
+        <!-- ── INTEL PANEL ── -->
+        <div class="panel">
             <div class="intel-grid">
                 <div class="intel-item">
-                    <span class="intel-label">📡 Biome</span>
-                    <span class="intel-value" id="biomeName">Abyssal Trench</span>
-                </div>
-                <div class="intel-item">
-                    <span class="intel-label">📍 Location</span>
+                    <span class="intel-label">Operational Sector</span>
                     <span class="intel-value location" id="biomeLocation">Earth — Pacific Ocean</span>
                 </div>
                 <div class="intel-item">
-                    <span class="intel-label">🎖 Commander</span>
+                    <span class="intel-label">Tactical Commander</span>
                     <span class="intel-value" id="biomeCommander">Commander Jack Thorne</span>
                 </div>
                 <div class="intel-item">
-                    <span class="intel-label">📊 Mission Level</span>
-                    <span class="intel-value" id="missionLevel">Level 1</span>
+                    <span class="intel-label">Mission Designation</span>
+                    <span class="intel-value" id="missionLevel">Biome 1 — Level 1</span>
+                </div>
+                <div class="intel-item">
+                    <span class="intel-label">Deployment Protocol</span>
+                    <span class="intel-value" id="flightMode">SOLO RECON VECTOR</span>
                 </div>
                 <div class="intel-item full-width">
-                    <span class="intel-label">☠ Threat Assessment</span>
                     <div class="threat-bar-container">
-                        <span class="threat-label">LOW</span>
+                        <span class="threat-label">Threat Level</span>
                         <div class="threat-bar">
-                            <div class="threat-fill" id="threatFill" style="width: 10%;"></div>
+                            <div class="threat-fill" id="threatFill"></div>
                         </div>
-                        <span class="threat-level-text" id="threatText" style="color: var(--accent-green);">MINIMAL</span>
-                        <span class="threat-label">CRITICAL</span>
+                        <span class="threat-text" id="threatText">MINIMAL</span>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- ── COMMS DIALOGUE ── -->
+        <!-- ── COMMS PANEL ── -->
         <div class="panel comms-panel" id="commsPanel">
             <div class="comms-header">
-                <span>📻 COMMS CHANNEL</span>
+                <div style="display: flex; align-items: center;">
+                    <span>📻 COMMS CHANNEL</span>
+                    <div class="waveform" id="waveform">
+                        <div class="wave-bar"></div>
+                        <div class="wave-bar"></div>
+                        <div class="wave-bar"></div>
+                        <div class="wave-bar"></div>
+                        <div class="wave-bar"></div>
+                    </div>
+                </div>
                 <span class="channel" id="channelFreq">FLEETCOM-ALPHA // ENCRYPTED</span>
             </div>
             <div class="comms-content" id="commsContent">
@@ -521,6 +548,10 @@
             </button>
         </div>
         <div class="launch-countdown" id="countdownHint"></div>
+    </div>
+
+    <div class="audio-unmute-prompt" id="audioPrompt" onclick="unlockAudioPrompt()">
+        🔊 Click anywhere to enable tactical voice comms
     </div>
 
     <script>
@@ -550,21 +581,48 @@
         { pct: 100, text: 'EXISTENTIAL', color: 'var(--accent-red)' },
     ];
 
-    // ── TYPEWRITER ENGINE ──
+    // ── AUDIO & TYPEWRITER ENGINE ──
     let dialogueLines = [];
     let currentLineIdx = -1;
     let typewriterInterval = null;
     let briefingComplete = false;
     let briefingSkipped = false;
+    let currentAudio = null;
+    let audioUnlocked = false;
+    let waveInterval = null;
 
-    const normalSpeed = 35;   // ms per character
-    const slowSpeed = 70;
-    const fastSpeed = 18;
+    function unlockAudioPrompt() {
+        audioUnlocked = true;
+        const prompt = document.getElementById('audioPrompt');
+        if (prompt) prompt.style.display = 'none';
+        if (currentAudio) {
+            currentAudio.play().catch(() => {});
+        }
+    }
 
-    function getSpeed(speedStr) {
-        if (speedStr === 'slow') return slowSpeed;
-        if (speedStr === 'fast') return fastSpeed;
-        return normalSpeed;
+    document.addEventListener('click', () => {
+        if (!audioUnlocked) unlockAudioPrompt();
+    }, { once: false });
+
+    function setWaveformActive(active) {
+        const bars = document.querySelectorAll('.wave-bar');
+        if (!bars || bars.length === 0) return;
+        if (active) {
+            if (!waveInterval) {
+                waveInterval = setInterval(() => {
+                    bars.forEach(b => {
+                        const h = Math.floor(Math.random() * 12) + 3;
+                        b.style.height = `${h}px`;
+                    });
+                }, 80);
+            }
+        } else {
+            if (waveInterval) {
+                clearInterval(waveInterval);
+                waveInterval = null;
+            }
+            bars.forEach(b => { b.style.height = '4px'; });
+        }
     }
 
     function speakerClass(speaker) {
@@ -578,11 +636,6 @@
         if (s.includes('selene')) return 'selene';
         if (s.includes('architect')) return 'architect';
         return '';
-    }
-
-    function playTypewriterSFX(sfx) {
-        // Audio SFX could be wired here — for now, visual-only
-        // The sfx field (comms_incoming, typewriter) can trigger sounds later
     }
 
     // ── LOAD BRIEFING DATA ──
@@ -599,28 +652,29 @@
     }
 
     function renderIntel(data) {
-        // Find biome
         const biome = data.biomes.find(b => b.id === biomeId);
         if (!biome) {
             showFallbackBriefing();
             return;
         }
 
-        // Update intel panel
         document.getElementById('biomeName').textContent = biome.name;
         document.getElementById('biomeLocation').textContent = biome.location;
         document.getElementById('biomeCommander').textContent = biome.commander;
         document.getElementById('missionLevel').textContent = `Biome ${biomeId} — Level ${level}`;
         document.getElementById('codename').textContent = `OPERATION: ${biome.name.toUpperCase()}`;
 
-        // Threat indicator — scales with biome
+        const flightModeEl = document.getElementById('flightMode');
+        if (mode === 'coop2') flightModeEl.textContent = '2-PILOT TACTICAL SQUADRON';
+        else if (mode === 'coop4') flightModeEl.textContent = '4-PILOT FLEET INTERCEPT FORMATION';
+        else flightModeEl.textContent = 'SOLO RECON VECTOR';
+
         const threatIdx = Math.min(biomeId - 1, threatMap.length - 1);
         const threat = threatMap[threatIdx];
         document.getElementById('threatFill').style.width = threat.pct + '%';
         document.getElementById('threatText').textContent = threat.text;
         document.getElementById('threatText').style.color = threat.color;
 
-        // Get dialogue lines for mode
         const modeKey = mode === 'coop2' ? 'coop2' : (mode === 'coop4' ? 'coop4' : 'solo');
         const preLevel = biome.pre_level || {};
         dialogueLines = (preLevel[modeKey] || preLevel['solo'] || []);
@@ -630,11 +684,9 @@
             return;
         }
 
-        // Build progress dots
         const progressContainer = document.getElementById('dialogueProgress');
         progressContainer.innerHTML = dialogueLines.map(() => '<span class="dialogue-dot"></span>').join('');
 
-        // Start dialogue sequence
         advanceDialogue();
     }
 
@@ -653,9 +705,11 @@
     }
 
     function advanceDialogue() {
+        if (briefingSkipped) return;
         currentLineIdx++;
         if (currentLineIdx >= dialogueLines.length) {
             briefingComplete = true;
+            setWaveformActive(false);
             enableLaunch();
             return;
         }
@@ -665,11 +719,16 @@
     }
 
     function renderDialogueLine(line) {
+        if (briefingSkipped) return;
         const container = document.getElementById('commsContent');
         const cls = speakerClass(line.speaker);
-        const speed = getSpeed(line.speed || 'normal');
 
-        // Create line element
+        // Stop previous line audio
+        if (currentAudio) {
+            try { currentAudio.pause(); } catch(e) {}
+            currentAudio = null;
+        }
+
         const lineEl = document.createElement('div');
         lineEl.className = 'dialogue-line';
         lineEl.innerHTML = `
@@ -677,7 +736,6 @@
             <div class="dialogue-text"><span class="text-content"></span><span class="cursor"></span></div>
         `;
 
-        // Replace existing content
         container.innerHTML = '';
         container.appendChild(lineEl);
 
@@ -685,31 +743,71 @@
         const cursor = lineEl.querySelector('.cursor');
         const fullText = line.text;
 
-        let charIdx = 0;
-        playTypewriterSFX(line.sfx);
+        // Determine audio track URL
+        const modeKey = mode === 'coop2' ? 'coop2' : (mode === 'coop4' ? 'coop4' : 'solo');
+        const audioUrl = `assets/audio/voice/thorne/pre_b${biomeId}_${modeKey}_${currentLineIdx + 1}.mp3`;
+        
+        let audioDurationSec = 8.0;
+        const audio = new Audio(audioUrl);
+        currentAudio = audio;
+        audio.volume = 0.9;
 
+        audio.onloadedmetadata = () => {
+            if (audio.duration && !isNaN(audio.duration)) {
+                audioDurationSec = audio.duration;
+            }
+        };
+
+        const playPromise = audio.play();
+        if (playPromise !== undefined) {
+            playPromise.then(() => {
+                audioUnlocked = true;
+                const prompt = document.getElementById('audioPrompt');
+                if (prompt) prompt.style.display = 'none';
+                setWaveformActive(true);
+            }).catch(() => {
+                // Autoplay blocked: user hasn't clicked yet
+                const prompt = document.getElementById('audioPrompt');
+                if (prompt) prompt.style.display = 'flex';
+                setWaveformActive(false);
+            });
+        }
+
+        // Typewriter speed dynamically calculated to match spoken audio duration
+        let charIdx = 0;
         clearInterval(typewriterInterval);
+        
+        const estSpeed = Math.max(20, Math.min(60, (audioDurationSec * 900) / Math.max(1, fullText.length)));
+
         typewriterInterval = setInterval(() => {
+            if (briefingSkipped) {
+                clearInterval(typewriterInterval);
+                return;
+            }
             if (charIdx >= fullText.length) {
                 clearInterval(typewriterInterval);
                 textSpan.parentElement.classList.add('complete');
                 cursor.style.display = 'none';
-                // Auto-advance after a pause
-                const pauseMs = line.speed === 'slow' ? 2500 : (line.speed === 'fast' ? 800 : 1500);
-                setTimeout(advanceDialogue, pauseMs);
                 return;
             }
             textSpan.textContent += fullText.charAt(charIdx);
             charIdx++;
-            // Skip cursor flash on fast mode — immediate display
-            if (line.speed === 'fast') {
-                charIdx += 2;
-                if (charIdx >= fullText.length) {
-                    textSpan.textContent = fullText;
-                    charIdx = fullText.length;
-                }
+        }, estSpeed);
+
+        audio.onended = () => {
+            setWaveformActive(false);
+            if (!briefingSkipped && !briefingComplete) {
+                setTimeout(advanceDialogue, 800);
             }
-        }, speed);
+        };
+
+        audio.onerror = () => {
+            setWaveformActive(false);
+            if (!briefingSkipped && !briefingComplete) {
+                const fallbackTime = Math.max(4000, fullText.length * 50);
+                setTimeout(advanceDialogue, fallbackTime);
+            }
+        };
     }
 
     function updateProgressDots() {
@@ -728,11 +826,9 @@
         launchBtn.textContent = '🚀 Launch Mission';
         document.getElementById('countdownHint').textContent = 'All systems nominal. Ready for deployment.';
 
-        // Flash the launch button
         const skipBtn = document.getElementById('skipBtn');
-        skipBtn.style.display = 'none';
+        if (skipBtn) skipBtn.style.display = 'none';
 
-        // Flash green briefly
         launchBtn.style.backgroundColor = 'var(--accent-green)';
         launchBtn.style.boxShadow = '0 0 25px rgba(0, 255, 85, 0.5)';
         setTimeout(() => {
@@ -744,8 +840,12 @@
     function skipBriefing() {
         briefingSkipped = true;
         clearInterval(typewriterInterval);
+        setWaveformActive(false);
+        if (currentAudio) {
+            try { currentAudio.pause(); } catch(e) {}
+            currentAudio = null;
+        }
 
-        // Show all dialogue at once
         const container = document.getElementById('commsContent');
         container.innerHTML = dialogueLines.map((line, i) => {
             const cls = speakerClass(line.speaker);
@@ -757,7 +857,6 @@
             `;
         }).join('');
 
-        // Mark all progress dots done
         document.querySelectorAll('.dialogue-dot').forEach(d => {
             d.classList.add('done');
             d.classList.remove('active');
@@ -768,7 +867,10 @@
     }
 
     function launchMission() {
-        if (!briefingComplete && !briefingSkipped) return;
+        if (currentAudio) {
+            try { currentAudio.pause(); } catch(e) {}
+            currentAudio = null;
+        }
         const params = new URLSearchParams();
         params.set('biome', biomeId);
         params.set('level', level);
@@ -779,6 +881,7 @@
 
     // ── KEYBOARD SHORTCUTS ──
     document.addEventListener('keydown', (e) => {
+        if (!audioUnlocked) unlockAudioPrompt();
         if (e.key === 'Escape') {
             e.preventDefault();
             skipBriefing();
@@ -787,16 +890,17 @@
             e.preventDefault();
             launchMission();
         }
-        // Space/Enter to skip current typewriter line and go to next
         if (e.key === ' ' && !briefingComplete && typewriterInterval) {
             e.preventDefault();
+            if (currentAudio) {
+                try { currentAudio.pause(); } catch(e) {}
+            }
             clearInterval(typewriterInterval);
             advanceDialogue();
         }
     });
 
     // ── INIT ──
-    document.getElementById('missionLevel').textContent = `Biome ${biomeId} — Level ${level}`;
     loadBriefing();
     </script>
 </body>
