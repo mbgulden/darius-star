@@ -74,8 +74,25 @@ const VoicePipeline = {
         const charKey = speaker.toLowerCase();
         let audioFile = null;
 
-        if (this._manifest && this._manifest.lines && lineKey && this._manifest.lines[lineKey]) {
-            audioFile = this._manifest.lines[lineKey].file;
+        if (this._manifest && this._manifest.lines) {
+            if (lineKey && this._manifest.lines[lineKey]) {
+                audioFile = this._manifest.lines[lineKey].file;
+            } else if (text) {
+                // Fuzzy match text if lineId not provided
+                const cleanText = text.trim().toLowerCase();
+                for (const k in this._manifest.lines) {
+                    const item = this._manifest.lines[k];
+                    if (item.text && item.text.trim().toLowerCase() === cleanText) {
+                        audioFile = item.file;
+                        break;
+                    }
+                }
+            }
+        }
+
+        // Direct fallback paths for known briefing / combat keys
+        if (!audioFile && lineKey && lineKey.startsWith('briefing_')) {
+            audioFile = `${charKey}/${lineKey}.mp3`;
         }
 
         if (audioFile) {
@@ -119,16 +136,16 @@ const VoicePipeline = {
     },
 
     _playProceduralFallback(text, speaker, options) {
-        if (typeof VoicePlayback !== 'undefined' && typeof VoicePlayback.speak === 'function') {
-            VoicePlayback.speak(text, speaker, {
-                onStart: () => {
-                    if (options.onStart) options.onStart();
-                },
-                onEnd: () => {
-                    this._isPlaying = false;
-                    if (options.onEnd) options.onEnd();
-                }
-            });
+        if (typeof VoicePlayback !== 'undefined' && typeof VoicePlayback._synthesizeVoiceSpeech === 'function') {
+            const speakerMap = {
+                'Darius': 'D', 'Lyra': 'L', 'Thorne': 'T', 'Naya': 'N',
+                'Cross': 'C', 'Ophion': 'O', 'Selene': 'S', 'Architect': 'A'
+            };
+            const code = speakerMap[speaker] || (speaker ? speaker[0].toUpperCase() : 'L');
+            VoicePlayback.duckBGM(0.65, 0.25);
+            VoicePlayback._synthesizeVoiceSpeech(code, text);
+            if (options.onStart) options.onStart();
+            if (options.onEnd) options.onEnd();
         } else {
             this._isPlaying = false;
             if (options.onStart) options.onStart();
@@ -142,35 +159,38 @@ const VoicePipeline = {
             try {
                 this._currentAudio.pause();
                 this._currentAudio.currentTime = 0;
-            } catch (e) {}
+            } catch(e) {}
             this._currentAudio = null;
         }
-
-        if (typeof VoicePlayback !== 'undefined' && typeof VoicePlayback.stop === 'function') {
-            VoicePlayback.stop();
-        }
-
         if (typeof AudioManager !== 'undefined' && typeof AudioManager.unduckMusic === 'function') {
             AudioManager.unduckMusic();
         }
     },
 
     isPlaying() {
-        return this._isPlaying || (typeof VoicePlayback !== 'undefined' && VoicePlayback.isPlaying());
+        return this._isPlaying;
+    },
+
+    getCurrentSpeaker() {
+        return this._currentSpeaker;
+    },
+
+    getCurrentMood() {
+        return this._currentMood;
     },
 
     getCurrentAmplitude() {
-        if (!this.isPlaying()) return 0;
-        // Synthesize dynamic speech amplitude wave
-        const t = (typeof gameTime !== 'undefined' ? gameTime : Date.now() / 1000) * 18;
-        return (Math.sin(t) * 0.5 + 0.5) * (Math.sin(t * 2.3) * 0.3 + 0.7);
+        return this._isPlaying ? 0.8 : 0;
     }
 };
 
 if (typeof window !== 'undefined') {
     window.VoicePipeline = VoicePipeline;
+    VoicePipeline.init();
 }
 if (typeof global !== 'undefined') {
     global.VoicePipeline = VoicePipeline;
 }
-VoicePipeline.init();
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = { VoicePipeline };
+}

@@ -12,125 +12,261 @@ let activeBriefing = null;
 let briefingCompletedForBiome = {};
 
 const BRIEFING_SCENES = {
-    /**
-     * Biome 1: Abyssal Trench
-     * The opening mission. Establish Thorne as mission control, Lyra as navigator,
-     * and the stakes of the descent.
-     */
     biome1: [
         {
+            id: 'briefing_b1_01',
             speaker: 'Thorne',
             portrait: 'thorne_neutral',
             text: "Commander Thorne, Mission Control. Identification confirmed: Pilot Darius Star, callsign 'Star.' Vessel: Nyxa-class deep-submersible fighter. Status: green across all systems."
         },
         {
+            id: 'briefing_b1_02',
             speaker: 'Thorne',
             portrait: 'thorne_neutral',
-            text: "Situation: The Abyssal Trench. Sector 7-G. Our seismic scans show unusual tectonic activity in the lower chasm — activity that matches no known geological pattern. Something is down there."
+            text: "Situation: The Abyssal Trench, Sector 7-G. Our seismic scans show unusual tectonic activity in the lower chasm — activity that matches no known geological pattern. Something is down there."
         },
         {
+            id: 'briefing_b1_03',
             speaker: 'Thorne',
             portrait: 'thorne_neutral',
             text: "Objective: Descend through the trench. Eliminate hostile contacts. Reach the sector beacon at depth 2,400 meters. Standard recon sweep — chart the area, clear the path, report back."
         },
         {
+            id: 'briefing_b1_04',
             speaker: 'Lyra',
             portrait: 'lyra_neutral',
             text: "Daddy? I can feel it. The trench... it's not empty. There's something old down there. Something that's been sleeping. It knows we're coming."
         },
         {
+            id: 'briefing_b1_05',
             speaker: 'Thorne',
             portrait: 'thorne_neutral',
-            text: "...Noted, Lyra. Threats: Standard Umbra patrol craft reported in the upper chasm. Light resistance expected. But if Lyra's readings are accurate, we may be dealing with something beyond standard Umbra hardware."
+            text: "Noted, Lyra. Threats: Standard Umbra patrol craft reported in the upper chasm. Light resistance expected. But if Lyra's readings are accurate, we may be dealing with something beyond standard Umbra hardware."
         },
         {
+            id: 'briefing_b1_06',
             speaker: 'Thorne',
             portrait: 'thorne_neutral',
             text: "Keep your head on straight, son. Lyra's your navigator — listen to her when it counts. You've got the best ship in the fleet and I've got your six from up here."
         },
         {
+            id: 'briefing_b1_07',
             speaker: 'Darius',
             portrait: 'darius_neutral',
             text: "Understood, Thorne. Nyxa is prepped and ready. Lyra — keep me posted on anything unusual down there. Let's move."
         },
         {
+            id: 'briefing_b1_08',
             speaker: 'Thorne',
             portrait: 'thorne_neutral',
             text: "Good hunting, Star. Thorne out."
         }
     ],
 
-    /**
-     * Biome 2: Coral Graveyard
-     * The coral maze. Introduce the Memory Wraith threat.
-     */
     biome2: [
         {
+            id: 'briefing_b2_01',
             speaker: 'Thorne',
             portrait: 'thorne_neutral',
             text: "Commander Thorne, Mission Control. Situation: Coral Graveyard, Sector 12-F. What was once a thriving reef is now a calcified labyrinth. Something killed it — and it's still here."
         },
         {
+            id: 'briefing_b2_02',
             speaker: 'Thorne',
             portrait: 'thorne_neutral',
             text: "Objective: Navigate the coral maze. Locate and retrieve the Precursor data cache at the graveyard's heart. The coral formations will obstruct sensors — you'll be flying blind in the tight corridors."
         },
         {
+            id: 'briefing_b2_03',
             speaker: 'Lyra',
             portrait: 'lyra_neutral',
             text: "The corals... they remember. Every creature that died here, their memories are still in the water. I can hear them whispering. They're scared of something called the Memory Wraith."
         },
         {
+            id: 'briefing_b2_04',
             speaker: 'Thorne',
             portrait: 'thorne_neutral',
-            text: "Threats: Memory Wraith — class: unknown. Reports describe a psychic predator that feeds on navigational fear. It will try to disorient you. Trust your instruments. Trust Lyra."
-        },
-        {
-            speaker: 'Thorne',
-            portrait: 'thorne_neutral',
-            text: "The maze shifts. What was open thirty seconds ago may be sealed now. Stay mobile. Don't let the Wraith corner you."
-        },
-        {
-            speaker: 'Thorne',
-            portrait: 'thorne_neutral',
-            text: "Thorne out."
+            text: "Threats: Memory Wraith — class: unknown. Reports describe a psychic predator that feeds on navigational fear. It will try to disorient you. Trust your instruments. Trust Lyra. Thorne out."
         }
     ],
 
-    /**
-     * Biome 3: Coelacanth's Lair
-     * Boss level. The ancient Coelacanth.
-     */
     biome3: [
         {
+            id: 'briefing_b3_01',
             speaker: 'Thorne',
             portrait: 'thorne_neutral',
             text: "Commander Thorne, Mission Control. Situation: Coelacanth's Lair. The creature you're about to face predates human civilization by three hundred million years. It is not hostile by nature — it is territorial."
         },
         {
+            id: 'briefing_b3_02',
             speaker: 'Lyra',
             portrait: 'lyra_reactive',
             text: "Daddy — it's beautiful. And it's so, so old. It's not evil. It's just... guarding something. Something the Dreamer left behind. Please don't hurt it if you don't have to."
         },
         {
+            id: 'briefing_b3_03',
             speaker: 'Thorne',
             portrait: 'thorne_neutral',
             text: "Objective: Survive. The Coelacanth controls the lair — it can trigger cave-ins, redirect currents, and summon lesser predators. Find its weakness and either neutralize or bypass it."
         },
         {
-            speaker: 'Thorne',
-            portrait: 'thorne_neutral',
-            text: "Threats: Coelacanth — class: leviathan. Armored hide. Sonic pulse attack. Tail sweep. Watch for the charge — it telegraphs with a low-frequency rumble. When you hear it, DODGE."
-        },
-        {
+            id: 'briefing_b3_04',
             speaker: 'Darius',
             portrait: 'darius_neutral',
-            text: "I've faced big fish before. Lyra — if there's a way to get past it without killing it, find it. But if it's us or the fish, the fish loses."
-        },
+            text: "I've faced big fish before. Lyra — if there's a way to get past it without killing it, find it. But if it's us or the fish, the fish loses. Thorne out."
+        }
+    ],
+
+    biome4: [
         {
+            id: 'briefing_b4_01',
             speaker: 'Thorne',
             portrait: 'thorne_neutral',
-            text: "Thorne out. Come back in one piece, both of you."
+            text: "Mission Control to Nyxa. You've entered the Veil Nebula Drift. High-energy ion plasma is disrupting our long-range radar."
+        },
+        {
+            id: 'briefing_b4_02',
+            speaker: 'Lyra',
+            portrait: 'lyra_neutral',
+            text: "The nebula gas is singing, Daddy. The plasma wisps are drawing power directly from precursor conduits."
+        },
+        {
+            id: 'briefing_b4_03',
+            speaker: 'Thorne',
+            portrait: 'thorne_neutral',
+            text: "Objective: Secure the tachyon navigation gate and eliminate the Warp Striker patrol squadron before they pin us down. Thorne out."
+        }
+    ],
+
+    biome5: [
+        {
+            id: 'briefing_b5_01',
+            speaker: 'Thorne',
+            portrait: 'thorne_neutral',
+            text: "Mission Control. Sector 5: Saturn Ice Ring. Sub-zero temperatures are stressing the Nyxa's thermal radiators."
+        },
+        {
+            id: 'briefing_b5_02',
+            speaker: 'Lyra',
+            portrait: 'lyra_neutral',
+            text: "Watch the glacier fields, Daddy! The ice shards are crystalline superconductors. They shatter into explosive fragments!"
+        },
+        {
+            id: 'briefing_b5_03',
+            speaker: 'Thorne',
+            portrait: 'thorne_neutral',
+            text: "Objective: Destroy the Cryo Aberration vanguard and clear the thermal fissure for orbital ascent. Thorne out."
+        }
+    ],
+
+    biome6: [
+        {
+            id: 'briefing_b6_01',
+            speaker: 'Thorne',
+            portrait: 'thorne_neutral',
+            text: "Haven-7 to Nyxa. You are entering the Fire Nebula around Betelgeuse. Thermal shielding at maximum load."
+        },
+        {
+            id: 'briefing_b6_02',
+            speaker: 'Lyra',
+            portrait: 'lyra_reactive',
+            text: "The magma currents are surging! Magma wasps and pyroclastic golems are converging on our thermal signature!"
+        },
+        {
+            id: 'briefing_b6_03',
+            speaker: 'Thorne',
+            portrait: 'thorne_neutral',
+            text: "Objective: Punch through the magma furnace cruisers and extract the GLYPH-6 Thermal Catalyst. Move fast! Thorne out."
+        }
+    ],
+
+    biome7: [
+        {
+            id: 'briefing_b7_01',
+            speaker: 'Thorne',
+            portrait: 'thorne_neutral',
+            text: "Mission Control. Storm Belt entry confirmed. Heavy lightning arcs and ion disruption detected across all frequencies."
+        },
+        {
+            id: 'briefing_b7_02',
+            speaker: 'Naya',
+            portrait: 'naya_neutral',
+            text: "Naya here! Atmospheric turbulence is off the charts, Darius! I've got your flank covered from the thunderheads!"
+        },
+        {
+            id: 'briefing_b7_03',
+            speaker: 'Thorne',
+            portrait: 'thorne_neutral',
+            text: "Objective: Neutralize the Storm Sentinel's EMP array before it disables our primary shields. Thorne out."
+        }
+    ],
+
+    biome8: [
+        {
+            id: 'briefing_b8_01',
+            speaker: 'Thorne',
+            portrait: 'thorne_neutral',
+            text: "Haven-7 to Star. You have arrived at the Derelict Navy Fleet graveyard. Centuries of ghost hulls drifting in decaying orbit."
+        },
+        {
+            id: 'briefing_b8_02',
+            speaker: 'Cross',
+            portrait: 'cross_neutral',
+            text: "Automated Navy defense turrets are still active on dead frigate hulls. Targeting subroutines set to kill on sight."
+        },
+        {
+            id: 'briefing_b8_03',
+            speaker: 'Thorne',
+            portrait: 'thorne_neutral',
+            text: "Objective: Salvage the master navy encryption keys from the flagship dreadnought. Do not let those ghost fighters surround you. Thorne out."
+        }
+    ],
+
+    biome9: [
+        {
+            id: 'briefing_b9_01',
+            speaker: 'Thorne',
+            portrait: 'thorne_neutral',
+            text: "Mission Control. Extreme biological bio-hazard alert. You are inside the Xenomorph Hive breeding cavern on Proxima b."
+        },
+        {
+            id: 'briefing_b9_02',
+            speaker: 'Lyra',
+            portrait: 'lyra_somber',
+            text: "The hive mind is awake... It's crying out in agony, Daddy. The precursor corruption has mutated every single organism."
+        },
+        {
+            id: 'briefing_b9_03',
+            speaker: 'Thorne',
+            portrait: 'thorne_neutral',
+            text: "Objective: Destroy the Hive Mind Node and sever the neural infestation before it spreads to Haven-7. Thorne out."
+        }
+    ],
+
+    biome10: [
+        {
+            id: 'briefing_b10_01',
+            speaker: 'Thorne',
+            portrait: 'thorne_neutral',
+            text: "Mission Control to Nyxa. This is it, Darius. The Core Rift. The event horizon of the Precursor Singularity."
+        },
+        {
+            id: 'briefing_b10_02',
+            speaker: 'Lyra',
+            portrait: 'lyra_determined',
+            text: "I can see the entire timeline folding, Daddy. The Architect is waiting at the center of creation. I'm with you to the end."
+        },
+        {
+            id: 'briefing_b10_03',
+            speaker: 'Darius',
+            portrait: 'darius_determined',
+            text: "Nyxa systems locked and overclocked. We finish this today. For Lyra. For all of us."
+        },
+        {
+            id: 'briefing_b10_04',
+            speaker: 'Thorne',
+            portrait: 'thorne_neutral',
+            text: "May God be with you, Star squadron. Mission Control standing by."
         }
     ]
 };
@@ -150,8 +286,9 @@ function startBriefing(biome, onComplete) {
         return;
     }
 
-    // Build dialogue lines from briefing data
+    // Build dialogue lines from briefing data with explicit line IDs for studio audio playback
     const dialogueLines = lines.map((line, idx) => ({
+        id: line.id || `briefing_${key}_0${idx + 1}`,
         speaker: line.speaker,
         portrait: line.portrait || 'none',
         text: line.text,
@@ -214,7 +351,7 @@ function drawBriefing() {
 
     // Haven-7 Tactical War Room Background
     const biome = (typeof LevelManager !== 'undefined') ? LevelManager.biome : 1;
-    const biomeName = (typeof BIOME_DATA !== 'undefined' && BIOME_DATA[biome]) ? BIOME_DATA[biome].name : `BIOME ${biome}`;
+    const biomeName = (typeof BIOME_DATA !== 'undefined' && BIOME_DATA.names && BIOME_DATA.names[biome]) ? BIOME_DATA.names[biome] : `BIOME ${biome}`;
 
     // Top Header
     ctx.textAlign = 'center';

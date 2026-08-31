@@ -56,9 +56,6 @@ const VoicePlayback = {
         if (!speaker) return null;
         
         const voiceTrigger = this.TRIGGER_MAP[trigger] || trigger;
-        
-        // Voice files: b{biome}_{trigger}_{speaker}_{variant}.ogg
-        // Try exact variant 01, or fallback to random 01-03
         const variant = String(Math.floor(Math.random() * 2) + 1).padStart(2, '0');
         return `assets/audio/voice/b${biome}_${voiceTrigger}_${speaker}_${variant}.ogg`;
     },
@@ -72,14 +69,6 @@ const VoicePlayback = {
         return true;
     },
 
-    /**
-     * Play a voice line. Called by BanterEngine, AudioTunnel, or DialogueSequence.
-     * @param {number} biome — current biome (1-10)
-     * @param {string} trigger — event trigger (e.g., 'level_start', 'boss_entrance')
-     * @param {string} speakerCode — BanterEngine speaker code ('D', 'L', 'T', 'N', ...)
-     * @param {object} line — {speaker, text} for subtitle display
-     * @returns {boolean} true if playback started
-     */
     /**
      * Play a voice line. Called by BanterEngine, AudioTunnel, or DialogueSequence.
      * @param {number} biome — current biome (1-10)
@@ -126,11 +115,17 @@ const VoicePlayback = {
      * Speak arbitrary character dialogue line with dynamic voice & BGM ducking (GRO-4208).
      * @param {string} speaker — character name ('Darius', 'Lyra', etc.) or code ('D', 'L')
      * @param {string} text — spoken dialogue text
+     * @param {object} options — optional parameters (lineId, mood, onStart, onEnd)
      */
-    speak(speaker, text) {
+    speak(speaker, text, options = {}) {
         if (!this._isEnabled()) return false;
         this.stop();
         
+        if (typeof VoicePipeline !== 'undefined' && VoicePipeline && typeof VoicePipeline.speak === 'function') {
+            VoicePipeline.speak(text, speaker, options);
+            return true;
+        }
+
         const speakerMap = {
             'Darius': 'D', 'Lyra': 'L', 'Thorne': 'T', 'Naya': 'N',
             'Cross': 'C', 'Ophion': 'O', 'Selene': 'S', 'Architect': 'A',
@@ -233,153 +228,81 @@ const VoicePlayback = {
     },
 
     /**
-     * Play a voice line for a tunnel dialogue event.
-     * @param {number} biome — target biome
-     * @param {string} speaker — speaker name (e.g., 'Darius', 'Lyra')
-     * @param {string} text — dialogue text
-     */
-    playTunnel(biome, speaker, text) {
-        if (!this._isEnabled()) return false;
-        
-        const speakerMap = {
-            'Darius': 'D', 'Lyra': 'L', 'Thorne': 'T', 'Naya': 'N',
-            'Cross': 'C', 'Ophion': 'O', 'Selene': 'S',
-        };
-        const code = speakerMap[speaker] || 'N';
-        
-        this._activeLine = { speaker, text };
-        this.duckBGM(0.65, 0.25);
-        
-        const path = this._buildPath(biome, 'tunnel_enter', code);
-        if (path) {
-            this.stop();
-            this._playFile(path, code, text);
-            return true;
-        } else {
-            this._synthesizeVoiceSpeech(code, text);
-            return true;
-        }
-    },
-
-    /**
      * Internal: load and play an audio file.
      */
-    _playFile(path, speakerCode = 'L', text = '') {
-        // Check cache first
-        let audio = this._cache[path];
+    _playFile(url, speakerCode, text) {
+        if (typeof Audio === 'undefined') return;
+        
+        let audio = this._cache[url];
         if (!audio) {
-            while (this._cacheOrder.length >= this._maxCache) {
-                const oldPath = this._cacheOrder.shift();
-                if (this._cache[oldPath]) {
-                    this._cache[oldPath].src = '';
-                    this._cache[oldPath].load();
-                    delete this._cache[oldPath];
-                }
-            }
-            
-            audio = new Audio();
+            audio = new Audio(url);
             audio.preload = 'auto';
-            audio.src = path;
+            this._cache[url] = audio;
+            this._cacheOrder.push(url);
             
-            audio.addEventListener('error', () => {
-                // If audio file is missing on disk, fallback to procedural radio synth
-                this._synthesizeVoiceSpeech(speakerCode, text);
-            });
-
-            audio.addEventListener('ended', () => {
-                this.unduckBGM(0.4);
-            });
-            
-            this._cache[path] = audio;
-            this._cacheOrder.push(path);
-        }
-        
-        const idx = this._cacheOrder.indexOf(path);
-        if (idx >= 0) {
-            this._cacheOrder.splice(idx, 1);
-            this._cacheOrder.push(path);
-        }
-        
-        audio.currentTime = 0;
-        audio.volume = typeof masterVolume !== 'undefined' ? masterVolume : 0.7;
-        
-        const playPromise = audio.play();
-        if (playPromise) {
-            playPromise.catch(() => {
-                // If autoplay blocked or error, fallback to procedural speech synth
-                this._synthesizeVoiceSpeech(speakerCode, text);
-            });
+            if (this._cacheOrder.length > this._maxCache) {
+                const evicted = this._cacheOrder.shift();
+                delete this._cache[evicted];
+            }
         }
         
         this._activeAudio = audio;
+        audio.currentTime = 0;
+        audio.volume = typeof sfxVolume !== 'undefined' ? sfxVolume : 0.8;
+        
+        audio.onended = () => {
+            this._activeAudio = null;
+            this._activeLine = null;
+            this.unduckBGM(0.4);
+        };
+        
+        audio.onerror = () => {
+            this._activeAudio = null;
+            this._activeLine = null;
+            this.unduckBGM(0.4);
+        };
+        
+        const playPromise = audio.play();
+        if (playPromise !== undefined) {
+            playPromise.catch(err => {
+                this._activeAudio = null;
+                this._activeLine = null;
+                this.unduckBGM(0.4);
+            });
+        }
     },
 
-    /**
-     * Stop current voice playback.
-     */
     stop() {
         if (this._activeAudio) {
-            try {
-                this._activeAudio.pause();
-                this._activeAudio.currentTime = 0;
-            } catch (e) { /* ignore */ }
+            this._activeAudio.pause();
+            this._activeAudio.currentTime = 0;
             this._activeAudio = null;
         }
         this._activeLine = null;
-        this.unduckBGM(0.4);
+        this.unduckBGM(0.3);
     },
 
-    /**
-     * Get current active line for subtitle rendering.
-     * @returns {object|null} {speaker, text} or null
-     */
+    isPlaying() {
+        return this._activeAudio !== null || this._synthActive === true;
+    },
+
     getActiveLine() {
         return this._activeLine;
     },
 
-    /**
-     * Check if voice is currently playing.
-     * @returns {boolean}
-     */
-    isPlaying() {
-        return this._activeAudio !== null && !this._activeAudio.paused;
-    },
-
-    /**
-     * Preload a batch of voice files for a biome.
-     * Call during tunnel transitions for smoother playback.
-     * @param {number} biome — biome to preload voices for
-     */
-    preloadBiome(biome) {
-        if (!this._isEnabled()) return;
-        
-        const triggers = ['level_start', 'boss_entrance', 'player_death', 'wave_clear', 'level_end'];
-        const speakers = ['darius', 'lyra', 'thorne', 'naya', 'cross', 'ophion'];
-        
-        triggers.forEach(trigger => {
-            speakers.forEach(speaker => {
-                const path = `assets/audio/voice/b${biome}_${trigger}_${speaker}_01.ogg`;
-                if (!this._cache[path]) {
-                    const audio = new Audio();
-                    audio.preload = 'auto';
-                    audio.src = path;
-                    audio.volume = 0;
-                    this._cache[path] = audio;
-                    this._cacheOrder.push(path);
-                    
-                    // LRU eviction
-                    while (this._cacheOrder.length > this._maxCache) {
-                        const oldPath = this._cacheOrder.shift();
-                        if (this._cache[oldPath]) {
-                            this._cache[oldPath].src = '';
-                            delete this._cache[oldPath];
-                        }
-                    }
-                }
-            });
-        });
+    clearCache() {
+        this.stop();
+        this._cache = {};
+        this._cacheOrder = [];
     },
 };
 
-// Attach to window for browser access
-window.VoicePlayback = VoicePlayback;
+if (typeof window !== 'undefined') {
+    window.VoicePlayback = VoicePlayback;
+}
+if (typeof global !== 'undefined') {
+    global.VoicePlayback = VoicePlayback;
+}
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = { VoicePlayback };
+}

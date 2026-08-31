@@ -5380,6 +5380,348 @@
       "level": 10,
       "sectorName": "10.10 The Cyber Coelacanth Singularity",
       "isClassifiedLog": true
+    },
+    "briefing_b1_01": {
+      "id": "briefing_b1_01",
+      "speaker": "thorne",
+      "file": "thorne/briefing_b1_01.mp3",
+      "text": "Commander Thorne, Mission Control. Identification confirmed: Pilot Darius Star, callsign Star. Vessel: Nyxa-class deep-submersible fighter. Status: green across all systems.",
+      "duration": 14.69,
+      "biome": 1,
+      "type": "briefing"
+    },
+    "briefing_b1_02": {
+      "id": "briefing_b1_02",
+      "speaker": "thorne",
+      "file": "thorne/briefing_b1_02.mp3",
+      "text": "Situation: The Abyssal Trench, Sector 7-G. Our seismic scans show unusual tectonic activity in the lower chasm, activity that matches no known geological pattern. Something is down there.",
+      "duration": 14.66,
+      "biome": 1,
+      "type": "briefing"
+    },
+    "briefing_b1_03": {
+      "id": "briefing_b1_03",
+      "speaker": "thorne",
+      "file": "thorne/briefing_b1_03.mp3",
+      "text": "Objective: Descend through the trench. Eliminate hostile contacts. Reach the sector beacon at depth 2,400 meters. Standard recon sweep, chart the area, clear the path, report back.",
+      "duration": 15.38,
+      "biome": 1,
+      "type": "briefing"
+    },
+    "briefing_b1_04": {
+      "id": "briefing_b1_04",
+      "speaker": "lyra",
+      "file": "lyra/briefing_b1_04.mp3",
+      "text": "Daddy? I can feel it. The trench, it's not empty. There's something old down there. Something that's been sleeping. It knows we're coming.",
+      "duration": 13.44,
+      "biome": 1,
+      "type": "briefing"
+    },
+    "briefing_b1_05": {
+      "id": "briefing_b1_05",
+      "speaker": "thorne",
+      "file": "thorne/briefing_b1_05.mp3",
+      "text": "Noted, Lyra. Threats: Standard Umbra patrol craft reported in the upper chasm. Light resistance expected. But if Lyra's readings are accurate, we may be dealing with something beyond standard Umbra hardware.",
+      "duration": 15.58,
+      "biome": 1,
+      "type": "briefing"
+    },
+    "briefing_b1_06": {
+      "id": "briefing_b1_06",
+      "speaker": "thorne",
+      "file": "thorne/briefing_b1_06.mp3",
+      "text": "Keep your head on straight, son. Lyra's your navigator, listen to her when it counts. You've got the best ship in the fleet and I've got your six from up here.",
+      "duration": 9.96,
+      "biome": 1,
+      "type": "briefing"
+    },
+    "briefing_b1_07": {
+      "id": "briefing_b1_07",
+      "speaker": "darius",
+      "file": "darius/briefing_b1_07.mp3",
+      "text": "Understood, Thorne. Nyxa is prepped and ready. Lyra, keep me posted on anything unusual down there. Let's move.",
+      "duration": 10.27,
+      "biome": 1,
+      "type": "briefing"
+    },
+    "briefing_b1_08": {
+      "id": "briefing_b1_08",
+      "speaker": "thorne",
+      "file": "thorne/briefing_b1_08.mp3",
+      "text": "Good hunting, Star. Thorne out.",
+      "duration": 2.93,
+      "biome": 1,
+      "type": "briefing"
+    },
+    "briefing_b2_01": {
+      "id": "briefing_b2_01",
+      "speaker": "thorne",
+      "file": "thorne/briefing_b2_01.mp3",
+      "text": "Commander Thorne, Mission Control. Situation: Coral Graveyard, Sector 12-F. What was once a thriving reef is now a calcified labyrinth. Something killed it, and it's still here.",
+      "duration": 14.04,
+      "biome": 2,
+      "type": "briefing"
+    },
+    "briefing_b2_02": {
+      "id": "briefing_b2_02",
+      "speaker": "thorne",
+      "file": "thorne/briefing_b2_02.mp3",
+      "text": "Objective: Navigate the coral maze. Locate and retrieve the Precursor data cache at the graveyard's heart. The coral formations will obstruct sensors, you'll be flying blind in the tight corridors.",
+      "duration": 12.96,
+      "biome": 2,
+      "type": "briefing"
+    },
+    "briefing_b2_03": {
+      "id": "briefing_b2_03",
+      "speaker": "lyra",
+      "file": "lyra/briefing_b2_03.mp3",
+      "text": "The corals, they remember. Every creature that died here, their memories are still in the water. I can hear them whispering. They're scared of something called the Memory Wraith.",
+      "duration": 13.92,
+      "biome": 2,
+      "type": "briefing"
+    },
+    "briefing_b2_04": {
+      "id": "briefing_b2_04",
+      "speaker": "thorne",
+      "file": "thorne/briefing_b2_04.mp3",
+      "text": "Threats: Memory Wraith, class unknown. Reports describe a psychic predator that feeds on navigational fear. It will try to disorient you. Trust your instruments. Trust Lyra. Thorne out.",
+      "duration": 15.12,
+      "biome": 2,
+      "type": "briefing"
+    },
+    "briefing_b3_01": {
+      "id": "briefing_b3_01",
+      "speaker": "thorne",
+      "file": "thorne/briefing_b3_01.mp3",
+      "text": "Commander Thorne, Mission Control. Situation: Coelacanth's Lair. The creature you're about to face predates human civilization by three hundred million years. It is not hostile by nature, it is territorial.",
+      "duration": 14.47,
+      "biome": 3,
+      "type": "briefing"
+    },
+    "briefing_b3_02": {
+      "id": "briefing_b3_02",
+      "speaker": "lyra",
+      "file": "lyra/briefing_b3_02.mp3",
+      "text": "Daddy, it's beautiful. And it's so, so old. It's not evil. It's just guarding something the Dreamer left behind. Please don't hurt it if you don't have to.",
+      "duration": 14.16,
+      "biome": 3,
+      "type": "briefing"
+    },
+    "briefing_b3_03": {
+      "id": "briefing_b3_03",
+      "speaker": "thorne",
+      "file": "thorne/briefing_b3_03.mp3",
+      "text": "Objective: Survive. The Coelacanth controls the lair, it can trigger cave-ins, redirect currents, and summon lesser predators. Find its weakness and either neutralize or bypass it.",
+      "duration": 13.56,
+      "biome": 3,
+      "type": "briefing"
+    },
+    "briefing_b3_04": {
+      "id": "briefing_b3_04",
+      "speaker": "darius",
+      "file": "darius/briefing_b3_04.mp3",
+      "text": "I've faced big fish before. Lyra, if there's a way to get past it without killing it, find it. But if it's us or the fish, the fish loses. Thorne out.",
+      "duration": 12.38,
+      "biome": 3,
+      "type": "briefing"
+    },
+    "briefing_b4_01": {
+      "id": "briefing_b4_01",
+      "speaker": "thorne",
+      "file": "thorne/briefing_b4_01.mp3",
+      "text": "Mission Control to Nyxa. You've entered the Veil Nebula Drift. High-energy ion plasma is disrupting our long-range radar.",
+      "duration": 9.0,
+      "biome": 4,
+      "type": "briefing"
+    },
+    "briefing_b4_02": {
+      "id": "briefing_b4_02",
+      "speaker": "lyra",
+      "file": "lyra/briefing_b4_02.mp3",
+      "text": "The nebula gas is singing, Daddy. The plasma wisps are drawing power directly from precursor conduits.",
+      "duration": 8.98,
+      "biome": 4,
+      "type": "briefing"
+    },
+    "briefing_b4_03": {
+      "id": "briefing_b4_03",
+      "speaker": "thorne",
+      "file": "thorne/briefing_b4_03.mp3",
+      "text": "Objective: Secure the tachyon navigation gate and eliminate the Warp Striker patrol squadron before they pin us down. Thorne out.",
+      "duration": 8.81,
+      "biome": 4,
+      "type": "briefing"
+    },
+    "briefing_b5_01": {
+      "id": "briefing_b5_01",
+      "speaker": "thorne",
+      "file": "thorne/briefing_b5_01.mp3",
+      "text": "Mission Control. Sector 5: Saturn Ice Ring. Sub-zero temperatures are stressing the Nyxa's thermal radiators.",
+      "duration": 8.54,
+      "biome": 5,
+      "type": "briefing"
+    },
+    "briefing_b5_02": {
+      "id": "briefing_b5_02",
+      "speaker": "lyra",
+      "file": "lyra/briefing_b5_02.mp3",
+      "text": "Watch the glacier fields, Daddy! The ice shards are crystalline superconductors. They shatter into explosive fragments!",
+      "duration": 10.7,
+      "biome": 5,
+      "type": "briefing"
+    },
+    "briefing_b5_03": {
+      "id": "briefing_b5_03",
+      "speaker": "thorne",
+      "file": "thorne/briefing_b5_03.mp3",
+      "text": "Objective: Destroy the Cryo Aberration vanguard and clear the thermal fissure for orbital ascent. Thorne out.",
+      "duration": 7.73,
+      "biome": 5,
+      "type": "briefing"
+    },
+    "briefing_b6_01": {
+      "id": "briefing_b6_01",
+      "speaker": "thorne",
+      "file": "thorne/briefing_b6_01.mp3",
+      "text": "Haven-7 to Nyxa. You are entering the Fire Nebula around Betelgeuse. Thermal shielding at maximum load.",
+      "duration": 8.16,
+      "biome": 6,
+      "type": "briefing"
+    },
+    "briefing_b6_02": {
+      "id": "briefing_b6_02",
+      "speaker": "lyra",
+      "file": "lyra/briefing_b6_02.mp3",
+      "text": "The magma currents are surging! Magma wasps and pyroclastic golems are converging on our thermal signature!",
+      "duration": 8.93,
+      "biome": 6,
+      "type": "briefing"
+    },
+    "briefing_b6_03": {
+      "id": "briefing_b6_03",
+      "speaker": "thorne",
+      "file": "thorne/briefing_b6_03.mp3",
+      "text": "Objective: Punch through the magma furnace cruisers and extract the GLYPH-6 Thermal Catalyst. Move fast! Thorne out.",
+      "duration": 8.21,
+      "biome": 6,
+      "type": "briefing"
+    },
+    "briefing_b7_01": {
+      "id": "briefing_b7_01",
+      "speaker": "thorne",
+      "file": "thorne/briefing_b7_01.mp3",
+      "text": "Mission Control. Storm Belt entry confirmed. Heavy lightning arcs and ion disruption detected across all frequencies.",
+      "duration": 8.95,
+      "biome": 7,
+      "type": "briefing"
+    },
+    "briefing_b7_02": {
+      "id": "briefing_b7_02",
+      "speaker": "naya",
+      "file": "naya/briefing_b7_02.mp3",
+      "text": "Naya here! Atmospheric turbulence is off the charts, Darius! I've got your flank covered from the thunderheads!",
+      "duration": 7.13,
+      "biome": 7,
+      "type": "briefing"
+    },
+    "briefing_b7_03": {
+      "id": "briefing_b7_03",
+      "speaker": "thorne",
+      "file": "thorne/briefing_b7_03.mp3",
+      "text": "Objective: Neutralize the Storm Sentinel's EMP array before it disables our primary shields. Thorne out.",
+      "duration": 7.87,
+      "biome": 7,
+      "type": "briefing"
+    },
+    "briefing_b8_01": {
+      "id": "briefing_b8_01",
+      "speaker": "thorne",
+      "file": "thorne/briefing_b8_01.mp3",
+      "text": "Haven-7 to Star. You have arrived at the Derelict Navy Fleet graveyard. Centuries of ghost hulls drifting in decaying orbit.",
+      "duration": 9.41,
+      "biome": 8,
+      "type": "briefing"
+    },
+    "briefing_b8_02": {
+      "id": "briefing_b8_02",
+      "speaker": "cross",
+      "file": "cross/briefing_b8_02.mp3",
+      "text": "Automated Navy defense turrets are still active on dead frigate hulls. Targeting subroutines set to kill on sight.",
+      "duration": 9.0,
+      "biome": 8,
+      "type": "briefing"
+    },
+    "briefing_b8_03": {
+      "id": "briefing_b8_03",
+      "speaker": "thorne",
+      "file": "thorne/briefing_b8_03.mp3",
+      "text": "Objective: Salvage the master navy encryption keys from the flagship dreadnought. Do not let those ghost fighters surround you. Thorne out.",
+      "duration": 9.7,
+      "biome": 8,
+      "type": "briefing"
+    },
+    "briefing_b9_01": {
+      "id": "briefing_b9_01",
+      "speaker": "thorne",
+      "file": "thorne/briefing_b9_01.mp3",
+      "text": "Mission Control. Extreme biological bio-hazard alert. You are inside the Xenomorph Hive breeding cavern on Proxima b.",
+      "duration": 9.26,
+      "biome": 9,
+      "type": "briefing"
+    },
+    "briefing_b9_02": {
+      "id": "briefing_b9_02",
+      "speaker": "lyra",
+      "file": "lyra/briefing_b9_02.mp3",
+      "text": "The hive mind is awake... It's crying out in agony, Daddy. The precursor corruption has mutated every single organism.",
+      "duration": 10.78,
+      "biome": 9,
+      "type": "briefing"
+    },
+    "briefing_b9_03": {
+      "id": "briefing_b9_03",
+      "speaker": "thorne",
+      "file": "thorne/briefing_b9_03.mp3",
+      "text": "Objective: Destroy the Hive Mind Node and sever the neural infestation before it spreads to Haven-7. Thorne out.",
+      "duration": 8.23,
+      "biome": 9,
+      "type": "briefing"
+    },
+    "briefing_b10_01": {
+      "id": "briefing_b10_01",
+      "speaker": "thorne",
+      "file": "thorne/briefing_b10_01.mp3",
+      "text": "Mission Control to Nyxa. This is it, Darius. The Core Rift. The event horizon of the Precursor Singularity.",
+      "duration": 8.59,
+      "biome": 10,
+      "type": "briefing"
+    },
+    "briefing_b10_02": {
+      "id": "briefing_b10_02",
+      "speaker": "lyra",
+      "file": "lyra/briefing_b10_02.mp3",
+      "text": "I can see the entire timeline folding, Daddy. The Architect is waiting at the center of creation. I'm with you to the end.",
+      "duration": 10.51,
+      "biome": 10,
+      "type": "briefing"
+    },
+    "briefing_b10_03": {
+      "id": "briefing_b10_03",
+      "speaker": "darius",
+      "file": "darius/briefing_b10_03.mp3",
+      "text": "Nyxa systems locked and overclocked. We finish this today. For Lyra. For all of us.",
+      "duration": 8.78,
+      "biome": 10,
+      "type": "briefing"
+    },
+    "briefing_b10_04": {
+      "id": "briefing_b10_04",
+      "speaker": "thorne",
+      "file": "thorne/briefing_b10_04.mp3",
+      "text": "May God be with you, Star squadron. Mission Control standing by.",
+      "duration": 5.16,
+      "biome": 10,
+      "type": "briefing"
     }
   }
 }
