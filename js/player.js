@@ -713,7 +713,7 @@ class Player {
         const candidates = enemies.slice().sort((a, b) => Math.hypot(a.x - this.x, a.y - this.y) - Math.hypot(b.x - this.x, b.y - this.y));
         for (let i = 0; i < 3; i++) {
             const target = candidates[i] || boss || null;
-            const missile = new Bullet(this.x + this.width, this.y + 4 + i * 6, 430, (i - 1) * 80, '#ffaa00', 3.5, true);
+            const missile = new Bullet(this.x + this.width, this.y + 4 + i * 6, 430, (i - 1) * 80, '#ffaa00', 2.5, true);
             missile.homingTarget = target;
             missile.homingStrength = 5.5;
             missile.damage = 6 * rocketDmgMult;
@@ -951,17 +951,16 @@ class Player {
             // Partially opaque ship (0.45)
             ctx.globalAlpha = 0.45 + Math.sin(this.pullOutTimer * 8) * 0.15;
             
-            let sprite;
-            const frameIdx = (Math.floor(gameTime * 6) % 2 === 0) ? '0' : '1';
-            if (this.shipType === 'phantom') sprite = playerSprites[`player_phantom_${frameIdx}`];
-            else if (this.shipType === 'bastion') sprite = playerSprites[`player_bastion_${frameIdx}`];
-            else if (this.shipType === 'tempest') sprite = playerSprites[`player_tempest_${frameIdx}`];
-            else if (this.shipType === 'specter') sprite = playerSprites[`player_specter_${frameIdx}`];
-            else if (this.shipType === 'warden') sprite = playerSprites[`player_warden_${frameIdx}`];
-            else if (this.shipType === 'scout') sprite = playerSprites['scout_0'];
-            else if (this.shipType === 'heavy') sprite = playerSprites['heavy_0'];
-            else if (this.shipType === 'interceptor') sprite = playerSprites['interceptor_0'];
-            else sprite = playerSprites[`player_${frameIdx}`];
+            const pSprites = (typeof window !== 'undefined' && window.playerSprites) ? window.playerSprites : (typeof playerSprites !== 'undefined' ? playerSprites : {});
+            if (this.shipType === 'phantom') sprite = pSprites[`player_phantom_${frameIdx}`];
+            else if (this.shipType === 'bastion') sprite = pSprites[`player_bastion_${frameIdx}`];
+            else if (this.shipType === 'tempest') sprite = pSprites[`player_tempest_${frameIdx}`];
+            else if (this.shipType === 'specter') sprite = pSprites[`player_specter_${frameIdx}`];
+            else if (this.shipType === 'warden') sprite = pSprites[`player_warden_${frameIdx}`];
+            else if (this.shipType === 'scout') sprite = pSprites['scout_0'];
+            else if (this.shipType === 'heavy') sprite = pSprites['heavy_0'];
+            else if (this.shipType === 'interceptor') sprite = pSprites['interceptor_0'];
+            else sprite = pSprites[`player_${frameIdx}`];
             
             const isRepImg = sprite && sprite.tagName !== 'CANVAS' && sprite.complete && sprite.naturalWidth > 0;
             const isRepCvs = sprite && sprite.tagName === 'CANVAS' && sprite.width > 0;
@@ -1045,24 +1044,25 @@ class Player {
 
         // Sprite frame: select ship model base sprite or cycle animation
         let sprite;
+        const pSprites = (typeof window !== 'undefined' && window.playerSprites) ? window.playerSprites : (typeof playerSprites !== 'undefined' ? playerSprites : {});
         const frameIdx = (Math.floor(gameTime * 6) % 2 === 0) ? '0' : '1';
         
         if (this.shipType === 'phantom') {
-            sprite = playerSprites[`player_phantom_${frameIdx}`];
+            sprite = pSprites[`player_phantom_${frameIdx}`];
         } else if (this.shipType === 'bastion') {
-            sprite = playerSprites[`player_bastion_${frameIdx}`];
+            sprite = pSprites[`player_bastion_${frameIdx}`];
         } else if (this.shipType === 'tempest') {
-            sprite = playerSprites[`player_tempest_${frameIdx}`];
+            sprite = pSprites[`player_tempest_${frameIdx}`];
         } else if (this.shipType === 'specter') {
-            sprite = playerSprites[`player_specter_${frameIdx}`];
+            sprite = pSprites[`player_specter_${frameIdx}`];
         } else if (this.shipType === 'warden') {
-            sprite = playerSprites[`player_warden_${frameIdx}`];
+            sprite = pSprites[`player_warden_${frameIdx}`];
         } else if (this.shipType === 'scout') {
-            sprite = playerSprites['scout_0'];
+            sprite = pSprites['scout_0'];
         } else if (this.shipType === 'heavy') {
-            sprite = playerSprites['heavy_0'];
+            sprite = pSprites['heavy_0'];
         } else {
-            sprite = playerSprites[`player_${frameIdx}`];
+            sprite = pSprites[`player_${frameIdx}`];
         }
 
         const isImage = sprite && sprite.tagName !== 'CANVAS' && sprite.complete && sprite.naturalWidth > 0;

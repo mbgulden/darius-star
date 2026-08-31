@@ -2,7 +2,7 @@
 // Implements 100-Level progressive visual journey with unique landmarks across all 10 biomes.
 // Uses globals: ctx, canvas, gameTime, LevelManager, BIOME_DATA
 
-const bgImages = {};
+const bgImages = (typeof window !== 'undefined' && window.bgImages) ? window.bgImages : (typeof window !== 'undefined' ? (window.bgImages = {}) : {});
 
 // === Biome background file mapping ===
 const BIOME_BG_MAP = {
@@ -211,8 +211,8 @@ class ParallaxLayer {
         const scaleY = (canvas.height || 450) / img.naturalHeight;
         const w = img.naturalWidth * scaleY;
         const h = canvas.height || 450;
-        const drawX = -this.offset;
-        const count = Math.ceil((canvas.width || 800) / w) + 1;
+        const drawX = -((this.offset % w + w) % w);
+        const count = Math.ceil((canvas.width || 800) / w) + 2;
         for (let i = 0; i < count; i++) {
             ctx.drawImage(img, drawX + i * w, this.yOffset, w, h);
         }
@@ -547,6 +547,7 @@ function rebuildStarBuffer(offCtx) {
 
 // Expose on window for global access
 if (typeof window !== 'undefined') {
+    window.bgImages = bgImages;
     window.ParallaxLayer = ParallaxLayer;
     window.OffscreenBuffer = OffscreenBuffer;
     window.Star = Star;
@@ -556,4 +557,9 @@ if (typeof window !== 'undefined') {
     window.setBiomeBackgrounds = setBiomeBackgrounds;
     window.preloadBiomeBackground = preloadBiomeBackground;
     window.generateBiomeBackground = generateBiomeBackground;
+}
+
+// Preload all 10 biome background multi-plane assets immediately
+for (let b = 1; b <= 10; b++) {
+    preloadBiomeBackground(b);
 }

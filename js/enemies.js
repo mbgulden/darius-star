@@ -298,9 +298,10 @@
                 }
 
                 // Resolve exact sprite
-                let sprite = enemySprites[this.type] ||
-                             enemySprites[this.type + '_0'] ||
-                             enemySprites['enemy_' + this.type + '_0'];
+                const eSprites = (typeof window !== 'undefined' && window.enemySprites) ? window.enemySprites : (typeof enemySprites !== 'undefined' ? enemySprites : {});
+                let sprite = eSprites[this.type] ||
+                             eSprites[this.type + '_0'] ||
+                             eSprites['enemy_' + this.type + '_0'];
 
                 // If type is a generic role or not directly loaded, resolve stratum archetype
                 if (!sprite && typeof BIOME_DATA !== 'undefined' && BIOME_DATA.enemies) {
@@ -309,13 +310,13 @@
                         const roleKey = this.behaviorPattern === 'hazard' ? 'alt' : this.behaviorPattern;
                         const archetypeKey = biomeEnemies[this.type] || biomeEnemies[roleKey] || biomeEnemies[this.behaviorPattern];
                         if (archetypeKey) {
-                            sprite = enemySprites[archetypeKey] || enemySprites[archetypeKey + '_0'];
+                            sprite = eSprites[archetypeKey] || eSprites[archetypeKey + '_0'];
                         }
                     }
                 }
 
                 if (!sprite) {
-                    sprite = enemySprites[this.behaviorPattern] || enemySprites['angler_scout'] || enemySprites['scout'];
+                    sprite = eSprites[this.behaviorPattern] || eSprites['angler_scout'] || eSprites['scout'];
                 }
 
                 const isImage = sprite && sprite.tagName !== 'CANVAS' && sprite.complete && sprite.naturalWidth > 0;
@@ -920,10 +921,16 @@
                 ctx.scale(pulseX, pulseY);
 
                 // Sprite selection
-                const sprite = bossSprites[this.spriteKey] ||
-                               bossSprites[`boss_${(biomeLevel - 1) % 4}`] ||
-                               bossSprites['boss_0'] ||
-                               bossSprites['boss'];
+                const currentBiome = (typeof LevelManager !== 'undefined' && LevelManager.biome) ? LevelManager.biome : (typeof biomeLevel !== 'undefined' ? biomeLevel : 1);
+                const isMid = this.isMidBoss;
+                const exactKey = this.spriteKey || (isMid ? `boss_b${currentBiome}_mid_0` : `boss_b${currentBiome}_0`);
+                const spritesDict = (typeof window !== 'undefined' && window.bossSprites) ? window.bossSprites : (typeof bossSprites !== 'undefined' ? bossSprites : {});
+                const sprite = spritesDict[exactKey] ||
+                               spritesDict[isMid ? `boss_b${currentBiome}_mid_0` : `boss_b${currentBiome}_0`] ||
+                               spritesDict[`boss_b${currentBiome}_0`] ||
+                               spritesDict[`boss_${(currentBiome - 1) % 4}`] ||
+                               spritesDict['boss_0'] ||
+                               spritesDict['boss'];
 
                 const isImage = sprite && sprite.tagName !== 'CANVAS' && sprite.complete && sprite.naturalWidth > 0;
                 const isCanvas = sprite && sprite.tagName === 'CANVAS' && sprite.width > 0;

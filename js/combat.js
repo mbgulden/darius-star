@@ -65,19 +65,19 @@
                 ctx.rotate(angle);
 
                 if (this.secondaryType === 'missile') {
-                    // Downsized sleek compact micro-missile (length ~10px, height ~4px)
+                    // Downsized sleek compact micro-missile (length ~7px, height ~3px)
                     ctx.shadowColor = this.color;
-                    ctx.shadowBlur = 6;
+                    ctx.shadowBlur = 5;
                     ctx.fillStyle = this.color;
                     ctx.beginPath();
-                    ctx.moveTo(5, 0);
-                    ctx.lineTo(-4, -2);
-                    ctx.lineTo(-2, 0);
-                    ctx.lineTo(-4, 2);
+                    ctx.moveTo(3.5, 0);
+                    ctx.lineTo(-3, -1.5);
+                    ctx.lineTo(-1.5, 0);
+                    ctx.lineTo(-3, 1.5);
                     ctx.closePath();
                     ctx.fill();
                     ctx.fillStyle = '#ff3300';
-                    ctx.fillRect(-6, -1, 3, 2);
+                    ctx.fillRect(-4.5, -0.75, 2, 1.5);
                     ctx.restore();
                     return;
                 }
@@ -633,8 +633,10 @@
 
                 // Apply Upgradable Quantum Magnet pull toward player
                 if (typeof player !== 'undefined' && player && !player.isPulledOut) {
-                    const dx = (player.x + player.width / 2) - this.x;
-                    const dy = (player.y + player.height / 2) - this.y;
+                    const targetX = player.x + player.width / 2;
+                    const targetY = player.y + player.height / 2;
+                    const dx = targetX - this.x;
+                    const dy = targetY - this.y;
                     const dist = Math.hypot(dx, dy);
                     
                     const mods = window.DS_UpgradeSystem ? window.DS_UpgradeSystem.getGameplayModifiers() : null;
@@ -642,13 +644,27 @@
                     const magnetRadius = mods ? (mods.magnetRadius || 45) : 45;
                     const basePull = mods ? (mods.magnetPullForce || 280) : 280;
 
-                    if (dist < magnetRadius && dist > 1) {
-                        const pullForce = basePull * (1 - dist / magnetRadius) + 80;
-                        this.vx += (dx / dist) * pullForce * dt;
-                        this.vy += (dy / dist) * pullForce * dt;
+                    if (dist < magnetRadius) {
+                        // Direct terminal vector homing with velocity dampening so it never overshoots the ship
+                        const dirX = dx / (dist || 1);
+                        const dirY = dy / (dist || 1);
+                        const speed = Math.max(380, basePull * (1.3 - (dist / magnetRadius) * 0.4));
+                        
+                        // Rapidly align velocity with target vector
+                        this.vx = this.vx * 0.82 + (dirX * speed) * 0.18;
+                        this.vy = this.vy * 0.82 + (dirY * speed) * 0.18;
+
+                        // Immediate proximity terminal lock: when within collection snap range, clamp directly onto ship
+                        if (dist <= 36) {
+                            this.x = targetX - this.width / 2;
+                            this.y = targetY - this.height / 2;
+                            this.vx = 0;
+                            this.vy = 0;
+                            return;
+                        }
                     } else {
-                        this.vx = this.vx * 0.97;
-                        this.vy = this.vy * 0.97;
+                        this.vx = this.vx * 0.96;
+                        this.vy = this.vy * 0.96;
                         this.x -= 35 * dt;
                     }
                 } else {

@@ -1,9 +1,9 @@
 // sprites.js ??? Player, Portrait, Enemy, VFX, and Boss sprite loading functions
 // Extracted from index.html by Ned (GRO-1097)
 
-        // --- Player Sprite Preloading ---
-        const playerSprites = {};
-        let playerSpritesLoaded = false;
+// --- Sprite Registries (Global Scope & Window Export) ---
+const playerSprites = (typeof window !== 'undefined' && window.playerSprites) ? window.playerSprites : (typeof window !== 'undefined' ? (window.playerSprites = {}) : {});
+let playerSpritesLoaded = false;
 
         function loadPlayerSprites() {
             if (playerSpritesLoaded) return;
@@ -27,7 +27,7 @@
         }
 
         // --- Character Portrait Preloading ---
-        const portraitSprites = {};
+        const portraitSprites = (typeof window !== 'undefined' && window.portraitSprites) ? window.portraitSprites : (typeof window !== 'undefined' ? (window.portraitSprites = {}) : {});
         let portraitSpritesLoaded = false;
 
         function loadPortraitSprites() {
@@ -54,7 +54,7 @@
         }
 
         // --- Enemy Sprite Preloading ---
-        const enemySprites = {};
+        const enemySprites = (typeof window !== 'undefined' && window.enemySprites) ? window.enemySprites : (typeof window !== 'undefined' ? (window.enemySprites = {}) : {});
         let enemySpritesLoaded = false;
 
         function loadEnemySprites() {
@@ -151,7 +151,7 @@
         }
 
         // --- VFX Sprite Preloading ---
-        const vfxSprites = {};
+        const vfxSprites = (typeof window !== 'undefined' && window.vfxSprites) ? window.vfxSprites : (typeof window !== 'undefined' ? (window.vfxSprites = {}) : {});
         let vfxSpritesLoaded = false;
 
         function loadVFXSprites() {
@@ -260,9 +260,8 @@
 // Track which sprites have been pre-composited
 const _preCompositeCache = new Set();
 
-        // --- Boss Asset Lazy-Loading ---
-        // Boss sprites are preloaded when score nears 2,000-point trigger
-        const bossSprites = {};
+        // --- Boss Asset Preloading ---
+        const bossSprites = (typeof window !== 'undefined' && window.bossSprites) ? window.bossSprites : (typeof window !== 'undefined' ? (window.bossSprites = {}) : {});
         let bossAssetsLoading = false;
         let bossAssetsLoaded = false;
         let bossLoadProgress = 0;  // 0-100
@@ -316,7 +315,6 @@ const _preCompositeCache = new Set();
             toLoad.forEach(({key, src}) => {
                 const img = new Image();
                 img.onload = () => {
-                    // Pre-composite on load for faster main-loop draws
                     bossSprites[key] = preCompositeAdditive(img);
                     loadedCount++;
                     bossLoadProgress = Math.round((loadedCount / total) * 100);
@@ -328,7 +326,6 @@ const _preCompositeCache = new Set();
                     }
                 };
                 img.onerror = () => {
-                    // Graceful fallback: mark done even on error
                     loadedCount++;
                     bossLoadProgress = Math.round((loadedCount / total) * 100);
                     console.error(`[BOSS] [ERROR] Failed to load boss asset: ${key} (${src})`);
@@ -341,3 +338,28 @@ const _preCompositeCache = new Set();
                 bossSprites[key] = img;
             });
         }
+
+        // --- Window Exports ---
+        if (typeof window !== 'undefined') {
+            window.playerSprites = playerSprites;
+            window.portraitSprites = portraitSprites;
+            window.enemySprites = enemySprites;
+            window.vfxSprites = vfxSprites;
+            window.bossSprites = bossSprites;
+            window.landmarkSprites = landmarkSprites;
+            window.loadPlayerSprites = loadPlayerSprites;
+            window.loadPortraitSprites = loadPortraitSprites;
+            window.loadEnemySprites = loadEnemySprites;
+            window.loadVFXSprites = loadVFXSprites;
+            window.preloadBossAssets = preloadBossAssets;
+            window.loadLandmarkSprites = loadLandmarkSprites;
+            window.preCompositeAdditive = preCompositeAdditive;
+        }
+
+        // --- Auto-Initialize Core Sprite Registries Immediately on Script Execution ---
+        loadPlayerSprites();
+        loadPortraitSprites();
+        loadEnemySprites();
+        loadVFXSprites();
+        preloadBossAssets();
+        loadLandmarkSprites();
