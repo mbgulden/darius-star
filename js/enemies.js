@@ -298,11 +298,25 @@
                 }
 
                 // Resolve exact sprite
-                const sprite = enemySprites[this.type] ||
-                               enemySprites[this.type + '_0'] ||
-                               enemySprites['enemy_' + this.type + '_0'] ||
-                               enemySprites[this.behaviorPattern] ||
-                               enemySprites['angler_scout'];
+                let sprite = enemySprites[this.type] ||
+                             enemySprites[this.type + '_0'] ||
+                             enemySprites['enemy_' + this.type + '_0'];
+
+                // If type is a generic role or not directly loaded, resolve stratum archetype
+                if (!sprite && typeof BIOME_DATA !== 'undefined' && BIOME_DATA.enemies) {
+                    const biomeEnemies = BIOME_DATA.enemies[this.biome] || BIOME_DATA.enemies[1];
+                    if (biomeEnemies) {
+                        const roleKey = this.behaviorPattern === 'hazard' ? 'alt' : this.behaviorPattern;
+                        const archetypeKey = biomeEnemies[this.type] || biomeEnemies[roleKey] || biomeEnemies[this.behaviorPattern];
+                        if (archetypeKey) {
+                            sprite = enemySprites[archetypeKey] || enemySprites[archetypeKey + '_0'];
+                        }
+                    }
+                }
+
+                if (!sprite) {
+                    sprite = enemySprites[this.behaviorPattern] || enemySprites['angler_scout'] || enemySprites['scout'];
+                }
 
                 const isImage = sprite && sprite.tagName !== 'CANVAS' && sprite.complete && sprite.naturalWidth > 0;
                 const isCanvas = sprite && sprite.tagName === 'CANVAS' && sprite.width > 0;

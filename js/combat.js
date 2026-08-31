@@ -44,13 +44,13 @@
                 if (this.secondaryType === 'missile') {
                     if (Math.random() < 0.45) {
                         const angle = Math.atan2(this.vy, this.vx);
-                        const rx = this.x - Math.cos(angle) * 8;
-                        const ry = this.y - Math.sin(angle) * 8;
+                        const rx = this.x - Math.cos(angle) * 5;
+                        const ry = this.y - Math.sin(angle) * 5;
                         const p = new Particle(rx, ry, Math.random() < 0.25 ? '#FF8800' : '#888888');
-                        p.vx = -this.vx * 0.12 + (Math.random() - 0.5) * 35;
-                        p.vy = -this.vy * 0.12 + (Math.random() - 0.5) * 35;
-                        p.size = Math.random() * 4.5 + 2.5;
-                        p.decay = Math.random() * 2.2 + 1.2;
+                        p.vx = -this.vx * 0.10 + (Math.random() - 0.5) * 18;
+                        p.vy = -this.vy * 0.10 + (Math.random() - 0.5) * 18;
+                        p.size = Math.random() * 2.2 + 1.2;
+                        p.decay = Math.random() * 2.5 + 1.5;
                         particles.push(p);
                     }
                 }
@@ -65,18 +65,19 @@
                 ctx.rotate(angle);
 
                 if (this.secondaryType === 'missile') {
+                    // Downsized sleek compact micro-missile (length ~10px, height ~4px)
                     ctx.shadowColor = this.color;
-                    ctx.shadowBlur = 10;
+                    ctx.shadowBlur = 6;
                     ctx.fillStyle = this.color;
                     ctx.beginPath();
-                    ctx.moveTo(10, 0);
-                    ctx.lineTo(-8, -4);
-                    ctx.lineTo(-4, 0);
-                    ctx.lineTo(-8, 4);
+                    ctx.moveTo(5, 0);
+                    ctx.lineTo(-4, -2);
+                    ctx.lineTo(-2, 0);
+                    ctx.lineTo(-4, 2);
                     ctx.closePath();
                     ctx.fill();
                     ctx.fillStyle = '#ff3300';
-                    ctx.fillRect(-12, -2, 5, 4);
+                    ctx.fillRect(-6, -1, 3, 2);
                     ctx.restore();
                     return;
                 }
@@ -86,8 +87,8 @@
                 const isGlowImage = glowSprite && glowSprite.tagName !== 'CANVAS' && glowSprite.complete && glowSprite.naturalWidth > 0;
                 const isGlowCanvas = glowSprite && glowSprite.tagName === 'CANVAS' && glowSprite.width > 0;
                 if (isGlowImage || isGlowCanvas) {
-                    const renderSize = this.size * 3.5;
-                    const glowSize = renderSize * 2.2;  // Glow is larger and softer
+                    const renderSize = Math.min(26, this.size * 2.4);
+                    const glowSize = renderSize * 1.6;  // Glow is larger and softer
                     ctx.globalAlpha = 0.35;
                     ctx.globalCompositeOperation = 'lighter';
                     drawSpriteFrame(ctx, glowSprite, 0, 0, SPRITE_FRAME, SPRITE_FRAME, -glowSize / 2, -glowSize / 2, glowSize, glowSize);
@@ -99,12 +100,12 @@
                 const isImage = sprite && sprite.tagName !== 'CANVAS' && sprite.complete && sprite.naturalWidth > 0;
                 const isCanvas = sprite && sprite.tagName === 'CANVAS' && sprite.width > 0;
                 if (isImage || isCanvas) {
-                    // Render laser sprite scaled to bullet size (sprite is 1024x1024)
-                    const renderSize = this.size * 3.5;
+                    // Render laser sprite scaled to bullet size (capped so it never bloats)
+                    const renderSize = Math.min(26, this.size * 2.4);
                     ctx.globalAlpha = 0.9;
                     if (this.isWave) {
                         ctx.shadowColor = this.color;
-                        ctx.shadowBlur = 12;
+                        ctx.shadowBlur = 10;
                     }
                     // Use additive only for non-pre-composited images (fallback)
                     if (isImage) {

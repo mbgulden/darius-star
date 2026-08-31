@@ -128,7 +128,12 @@
             allStratumEnemies.forEach(({key, src}) => {
                 const img = new Image();
                 img.onload = function() { 
-                    enemySprites[key] = preCompositeAdditive(img); 
+                    const pre = preCompositeAdditive(img);
+                    enemySprites[key] = pre; 
+                    if (key === 'angler_scout') enemySprites['scout'] = pre;
+                    if (key === 'jelly_interceptor') enemySprites['interceptor'] = pre;
+                    if (key === 'vent_crab_heavy') enemySprites['heavy'] = pre;
+                    if (key === 'boss_minion') enemySprites['boss_minion'] = pre;
                     console.log(`[SPRITE] Successfully loaded stratum enemy: ${key} (${src})`);
                 };
                 img.onerror = function() { 
@@ -136,13 +141,13 @@
                     console.error(`[SPRITE] [ERROR] Failed to load stratum enemy: ${key} (${src})`);
                 };
                 img.src = src;
+                // Immediate fallback pointer before pre-composition finishes
+                enemySprites[key] = img;
+                if (key === 'angler_scout') enemySprites['scout'] = img;
+                if (key === 'jelly_interceptor') enemySprites['interceptor'] = img;
+                if (key === 'vent_crab_heavy') enemySprites['heavy'] = img;
+                if (key === 'boss_minion') enemySprites['boss_minion'] = img;
             });
-
-            // Dedicated role-based fallbacks using distinct alien sprites (NEVER player ships)
-            enemySprites['scout'] = enemySprites['angler_scout'];
-            enemySprites['interceptor'] = enemySprites['jelly_interceptor'];
-            enemySprites['heavy'] = enemySprites['vent_crab_heavy'];
-            enemySprites['boss_minion'] = enemySprites['boss_minion'];
         }
 
         // --- VFX Sprite Preloading ---

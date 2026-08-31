@@ -18,7 +18,7 @@ const BIOME_BG_MAP = {
     10: 'core_rift'
 };
 
-const BIOMES_WITHOUT_ASSETS = new Set([10]);
+const BIOMES_WITHOUT_ASSETS = new Set();
 
 function preloadBiomeBackground(biomeNum) {
     const dirName = BIOME_BG_MAP[biomeNum];
@@ -42,9 +42,7 @@ function setBiomeBackgrounds(biomeNum, levelNum = 1) {
     if (typeof biomeNum !== 'number' || biomeNum < 1) biomeNum = 1;
     if (typeof levelNum !== 'number' || levelNum < 1) levelNum = 1;
 
-    if (!BIOMES_WITHOUT_ASSETS.has(biomeNum)) {
-        preloadBiomeBackground(biomeNum);
-    }
+    preloadBiomeBackground(biomeNum);
 
     const farKey  = `bg_${biomeNum}_far`;
     const nearKey = `bg_${biomeNum}_near`;
@@ -54,7 +52,7 @@ function setBiomeBackgrounds(biomeNum, levelNum = 1) {
         if (bgLayers.length > 1 && bgLayers[1].setKey) bgLayers[1].setKey(nearKey);
     }
 
-    if (JourneyBackgroundRenderer) {
+    if (typeof JourneyBackgroundRenderer !== 'undefined' && JourneyBackgroundRenderer.setLevel) {
         JourneyBackgroundRenderer.setLevel(biomeNum, levelNum);
     }
 }
@@ -145,18 +143,21 @@ class ParallaxLayer {
     }
 
     setKey(newKey) {
-        const baseKey = newKey.replace(/(_far|_near)$/, '');
-        const BIOME_STRIP_MAP = {
-            'bg_1': 'abyssal_trench', 'bg_2': 'coral_graveyard',
-            'bg_3': 'coelacanth_lair', 'bg_4': 'nebula_drift',
-            'bg_5': 'ice_rings', 'bg_6': 'inferno_core',
-            'bg_7': 'storm_belt', 'bg_8': 'derelict_fleet',
-            'bg_9': 'xenomorph_hive', 'bg_10': 'core_rift'
-        };
-        const stripName = BIOME_STRIP_MAP[baseKey] || 'abyssal_trench';
+        const isFar = newKey.endsWith('_far');
+        const isNear = newKey.endsWith('_near');
+        const numMatch = newKey.match(/bg_(\d+)/);
+        const biomeNum = numMatch ? parseInt(numMatch[1], 10) : 1;
+        const dirName = BIOME_BG_MAP[biomeNum] || 'abyssal_trench';
+
         if (!bgImages[newKey]) {
             const img = new Image();
-            img.src = `assets/sprites/backgrounds/bg_${stripName}_strip.png`;
+            if (isFar) {
+                img.src = `assets/sprites/backgrounds/bg_${dirName}_far.png`;
+            } else if (isNear) {
+                img.src = `assets/sprites/backgrounds/bg_${dirName}_near.png`;
+            } else {
+                img.src = `assets/sprites/backgrounds/bg_${dirName}_strip.png`;
+            }
             bgImages[newKey] = img;
         }
         this.key = newKey;

@@ -713,7 +713,7 @@ class Player {
         const candidates = enemies.slice().sort((a, b) => Math.hypot(a.x - this.x, a.y - this.y) - Math.hypot(b.x - this.x, b.y - this.y));
         for (let i = 0; i < 3; i++) {
             const target = candidates[i] || boss || null;
-            const missile = new Bullet(this.x + this.width, this.y + 4 + i * 6, 430, (i - 1) * 80, '#ffaa00', 7, true);
+            const missile = new Bullet(this.x + this.width, this.y + 4 + i * 6, 430, (i - 1) * 80, '#ffaa00', 3.5, true);
             missile.homingTarget = target;
             missile.homingStrength = 5.5;
             missile.damage = 6 * rocketDmgMult;
