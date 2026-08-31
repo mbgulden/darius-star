@@ -2058,22 +2058,11 @@ canvas.addEventListener('click', e => {
         return;
     }
 
-    setBiomeBackgrounds(biomeLevel);
-    initAudio();
-    // GRO-1470 / GRO-1926: Chiptune starts immediately for instant feedback;
-    // AudioManager.preloadAll resolves and triggers crossfadeToMenuTrack()
-    // to ramp chiptune out and start the cinematic MP3.
-    if (typeof AudioManager !== 'undefined') {
-        AudioManager.init().then(function() {
-            AudioManager.preloadAll().then(function() {
-                if (typeof crossfadeToMenuTrack === 'function' &&
-                    typeof currentScreen !== 'undefined' &&
-                    currentScreen !== SCREENS.PLAYING) {
-                    crossfadeToMenuTrack('ambient_deep_space', 2.0);
-                }
-            });
-        });
+    if (typeof initAudio === 'function') initAudio();
+    if (typeof audioCtx !== 'undefined' && audioCtx && audioCtx.state === 'suspended') {
+        try { audioCtx.resume(); } catch(e) {}
     }
+
     loadPlayerSprites();
     loadPortraitSprites();
     loadEnemySprites();
@@ -2084,8 +2073,12 @@ canvas.addEventListener('click', e => {
         LevelManager.init();
     }
 
-    if (currentScreen !== SCREENS.PLAYING) {
-        startMenuMusic();
+    if (currentScreen === SCREENS.MENU) {
+        if (typeof AudioManager !== 'undefined' && (!AudioManager._currentTrack || AudioManager._currentTrack === 'title_cinematic')) {
+            // Already handled by AudioManager
+        } else if (typeof startMenuMusic === 'function' && (!window.AudioManager || !window.AudioManager._currentTrack)) {
+            startMenuMusic();
+        }
     }
 
     if (typeof activeDialogue !== 'undefined' && activeDialogue) {

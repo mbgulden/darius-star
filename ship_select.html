@@ -995,15 +995,13 @@
                 this.bgm.loop = true;
                 this.bgm.volume = 0.35;
                 
-                // Pre-warm SFX and ship voice previews
+                // Pre-warm SFX
                 try {
                     Object.values(this.sfx).forEach(a => { if (a && a.load) a.load(); });
-                    Object.values(this.shipVoices).forEach(src => {
-                        const a = new Audio();
-                        a.src = src;
-                        a.load();
-                    });
                 } catch(e) {}
+
+                // Attempt immediate auto-play
+                this.playBgm();
 
                 const unlock = () => {
                     if (!this.bgmPlaying && !this.muted) {
@@ -1043,24 +1041,7 @@
                 } catch(e) {}
             },
             playShipVoice(shipId) {
-                if (this.muted) return;
-                try {
-                    if (this.voiceAudio) {
-                        this.voiceAudio.pause();
-                        this.voiceAudio = null;
-                    }
-                    const voiceUrl = this.shipVoices[shipId];
-                    if (voiceUrl) {
-                        if (this.bgm && this.bgmPlaying) this.bgm.volume = 0.12;
-                        const voice = new Audio(voiceUrl);
-                        this.voiceAudio = voice;
-                        voice.volume = 0.95;
-                        voice.onended = () => {
-                            if (this.bgm && this.bgmPlaying) this.bgm.volume = 0.35;
-                        };
-                        voice.play().catch(() => {});
-                    }
-                } catch(e) {}
+                // Out-of-place narrative broadcast audio disabled for ship selection
             }
         };
 
@@ -1123,13 +1104,13 @@
                 p1SelectedIndex = index;
                 p1Color = ship.color; // reset to default ship color upon selection change
                 updatePlayerPanel(1);
-                SoundEngine.playShipVoice(ship.id);
+                SoundEngine.playSfx('select');
             } else {
                 if (!p2Active) return;
                 p2SelectedIndex = index;
                 p2Color = ship.color; // reset to default ship color upon selection change
                 updatePlayerPanel(2);
-                SoundEngine.playShipVoice(ship.id);
+                SoundEngine.playSfx('select');
             }
             renderCards();
         }
