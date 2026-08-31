@@ -244,10 +244,21 @@ const BanterEngine = {
         this._activeLine = line;
         this._displayTimer = duration;
 
+        const speakerCode = line.s || 'D';
+        const speakerName = SPEAKER_NAMES[speakerCode] || speakerCode || 'SYSTEM';
+
         if (typeof DialogueSequence !== 'undefined' && typeof window !== 'undefined') {
-            const speakerName = SPEAKER_NAMES[line.s] || line.s || 'SYSTEM';
             window.activeDialogue = new DialogueSequence([{ speaker: speakerName, text: line.l }], null, false);
         }
+
+        // Trigger voice playback for direct comms line
+        if (typeof window !== 'undefined' && window.VoicePlayback && typeof window.VoicePlayback.play === 'function') {
+            try {
+                const biome = (typeof LevelManager !== 'undefined' && LevelManager.biome) ? LevelManager.biome : 1;
+                window.VoicePlayback.play(biome, 'level_start', speakerCode, line);
+            } catch(e) {}
+        }
+
         return line;
     },
 
@@ -258,6 +269,16 @@ const BanterEngine = {
                 if (this._activeLine && this._activeLine.r && !this._activeResponse) {
                     this._activeResponse = this._activeLine.r;
                     this._displayTimer = this._lineDuration;
+                    if (typeof DialogueSequence !== 'undefined' && typeof window !== 'undefined') {
+                        const respSpeakerName = SPEAKER_NAMES[this._activeResponse.s] || this._activeResponse.s || 'SYSTEM';
+                        window.activeDialogue = new DialogueSequence([{ speaker: respSpeakerName, text: this._activeResponse.l }], null, false);
+                    }
+                    if (typeof window !== 'undefined' && window.VoicePlayback) {
+                        try {
+                            const biome = (typeof LevelManager !== 'undefined' && LevelManager.biome) ? LevelManager.biome : 1;
+                            window.VoicePlayback.play(biome, 'response', this._activeResponse.s, this._activeResponse);
+                        } catch(e) {}
+                    }
                 } else {
                     this.clear();
                 }
@@ -266,7 +287,7 @@ const BanterEngine = {
     },
 
     getActive() {
-        return this._activeResponse || this._activeLine;
+        return this._activeLine;
     },
 
     clear() {
@@ -290,11 +311,7 @@ const BanterEngine = {
     initScrapEvents() {
         if (typeof window === 'undefined' || !window.ScrapEvents) return;
 
-        window.ScrapEvents.on('scrap:collected', () => {
-            if (this.getActive()) return;
-            this.triggerScrapEvent('scrap_collected');
-        });
-
+        // Only major milestones and legendary drops trigger radio chatter (avoids routine pickup noise)
         window.ScrapEvents.on('scrap:milestone', () => {
             if (this.getActive()) return;
             this.triggerScrapEvent('scrap_milestone');

@@ -363,12 +363,7 @@
                         this.typeTimer = 0;
                         this.typedText += this.currentLineText[this.charIndex];
                         this.charIndex++;
-                        
-                        this.soundCooldown -= dt;
-                        if (this.soundCooldown <= 0) {
-                            triggerDialogueSFX('menu_select', 0.2);
-                            this.soundCooldown = 0.08;
-                        }
+                        this.soundCooldown = 0.08;
                     }
                 } else {
                     // Non-blocking auto-advance when typing finishes
