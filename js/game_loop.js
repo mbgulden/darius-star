@@ -297,8 +297,8 @@ let runSeed = Math.floor(Math.random() * 2147483648);
 
 // Parallax background layers (image-based)
 const bgLayers = [
-    new ParallaxLayer('bg_1', 12, 0, 0.55, canvas.height / 768),      // Far: nebula cloud
-    new ParallaxLayer('bg_1', 55, 0, 0.45, canvas.height / 450)        // Mid: city silhouette
+    new ParallaxLayer('bg_1_far', 14, 0, 0.65, canvas.height / 768),      // Far: deep space nebula
+    new ParallaxLayer('bg_1_near', 50, 0, 0.85, canvas.height / 450)     // Near: planetary/trench silhouette
 ];
 
 // Environmental particle system (all 10 biomes)
@@ -472,6 +472,10 @@ function update(dt) {
         }
         updateTitleBackground(dt);
         return;
+    }
+
+    if (typeof AssetPreloader !== 'undefined' && typeof AssetPreloader.updateSectorInterstitial === 'function') {
+        AssetPreloader.updateSectorInterstitial(dt);
     }
 
     updateActiveBiome(dt, score);
@@ -1946,6 +1950,11 @@ function draw() {
     // Cinematics Overlay
     if (typeof CinematicsEngine !== 'undefined') {
         CinematicsEngine.draw(ctx, canvas.width, canvas.height);
+    }
+
+    // Sector Loading Interstitial Overlay
+    if (typeof AssetPreloader !== 'undefined' && typeof AssetPreloader.drawSectorInterstitial === 'function') {
+        AssetPreloader.drawSectorInterstitial(ctx, canvas.width, canvas.height);
     }
 
     if (screenFadeAlpha > 0) {

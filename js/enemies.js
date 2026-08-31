@@ -331,16 +331,8 @@
                     // Stratum glow aura
                     ctx.shadowColor = this.isParadox ? this.paradoxColor : this.biomeGlowColor;
                     ctx.shadowBlur = this.isParadox ? 16 : 10;
-
-                    if (isImage) {
-                        ctx.globalCompositeOperation = 'lighter';
-                    }
                     
                     ctx.drawImage(sprite, -renderSize / 2, -renderSize / 2, renderSize, renderSize);
-
-                    if (isImage) {
-                        ctx.globalCompositeOperation = 'source-over';
-                    }
                 } else {
                     // Fallback geometry (unique non-player silhouette)
                     ctx.fillStyle = this.isParadox ? this.paradoxColor : this.color;
@@ -952,9 +944,7 @@
                 }
 
                 if (hasSprite) {
-                    if (isImage) ctx.globalCompositeOperation = 'lighter';
                     ctx.drawImage(sprite, -renderW / 2, -renderH / 2, renderW, renderH);
-                    if (isImage) ctx.globalCompositeOperation = 'source-over';
                 } else {
                     ctx.fillStyle = this.themeColor;
                     ctx.beginPath();

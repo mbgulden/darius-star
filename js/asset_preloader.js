@@ -455,12 +455,131 @@ const AssetPreloader = (function() {
         }
     }
 
+    // ─── Fast Sector Loading Interstitial (GRO-4410) ───────────────────────────
+    let _sectorLoading = false;
+    let _sectorTimer = 0;
+    const SECTOR_DURATION = 1.0;
+    let _sectorBiome = 1;
+    let _sectorLevel = 1;
+
+    function startSectorInterstitial(biome, level) {
+        _sectorLoading = true;
+        _sectorTimer = 0;
+        _sectorBiome = biome || 1;
+        _sectorLevel = level || 1;
+        bufferBiome(_sectorBiome);
+        if (typeof setBiomeBackgrounds === 'function') {
+            setBiomeBackgrounds(_sectorBiome, _sectorLevel);
+        }
+    }
+
+    function updateSectorInterstitial(dt) {
+        if (!_sectorLoading) return;
+        _sectorTimer += dt;
+        if (_sectorTimer >= SECTOR_DURATION) {
+            _sectorLoading = false;
+        }
+    }
+
+    function drawSectorInterstitial(ctx, width, height) {
+        if (!_sectorLoading) return;
+
+        const progress = Math.min(1, _sectorTimer / (SECTOR_DURATION * 0.75));
+        const fadeAlpha = _sectorTimer > (SECTOR_DURATION * 0.75) 
+            ? Math.max(0, 1 - (_sectorTimer - SECTOR_DURATION * 0.75) / (SECTOR_DURATION * 0.25)) 
+            : 1.0;
+
+        ctx.save();
+        ctx.globalAlpha = fadeAlpha;
+
+        // Dark tactical backdrop
+        ctx.fillStyle = '#020208';
+        ctx.fillRect(0, 0, width, height);
+
+        // Tech grid backdrop
+        ctx.strokeStyle = 'rgba(0, 255, 255, 0.08)';
+        ctx.lineWidth = 1;
+        for (let x = 0; x < width; x += 40) {
+            ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, height); ctx.stroke();
+        }
+        for (let y = 0; y < height; y += 40) {
+            ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(width, y); ctx.stroke();
+        }
+
+        const cx = width / 2;
+        const cy = height / 2;
+
+        // Corner framing brackets
+        ctx.strokeStyle = '#00ffff';
+        ctx.lineWidth = 2;
+        const bw = 240, bh = 70;
+        // Top-left
+        ctx.beginPath(); ctx.moveTo(cx - bw, cy - bh + 15); ctx.lineTo(cx - bw, cy - bh); ctx.lineTo(cx - bw + 15, cy - bh); ctx.stroke();
+        // Top-right
+        ctx.beginPath(); ctx.moveTo(cx + bw - 15, cy - bh); ctx.lineTo(cx + bw, cy - bh); ctx.lineTo(cx + bw, cy - bh + 15); ctx.stroke();
+        // Bottom-left
+        ctx.beginPath(); ctx.moveTo(cx - bw, cy + bh - 15); ctx.lineTo(cx - bw, cy + bh); ctx.lineTo(cx - bw + 15, cy + bh); ctx.stroke();
+        // Bottom-right
+        ctx.beginPath(); ctx.moveTo(cx + bw - 15, cy + bh); ctx.lineTo(cx + bw, cy + bh); ctx.lineTo(cx + bw, cy + bh - 15); ctx.stroke();
+
+        // Biome Titles
+        const BIOME_NAMES = {
+            1: 'ABYSSAL TRENCH', 2: 'CORAL GRAVEYARD', 3: 'COELACANTH LAIR', 4: 'NEBULA DRIFT',
+            5: 'ICE RINGS', 6: 'INFERNO CORE', 7: 'STORM BELT', 8: 'DERELICT FLEET',
+            9: 'XENOMORPH HIVE', 10: 'CORE RIFT'
+        };
+        const bName = BIOME_NAMES[_sectorBiome] || `BIOME ${_sectorBiome}`;
+
+        ctx.textAlign = 'center';
+        ctx.fillStyle = 'rgba(0, 255, 255, 0.7)';
+        ctx.font = 'bold 11px "Share Tech Mono", monospace';
+        ctx.fillText(`⚡ INITIATING SECTOR ${_sectorBiome}.${_sectorLevel} ⚡`, cx, cy - 25);
+
+        ctx.fillStyle = '#00ffff';
+        ctx.font = 'bold 22px "Orbitron", monospace, sans-serif';
+        ctx.shadowColor = '#00ffff';
+        ctx.shadowBlur = 12;
+        ctx.fillText(bName, cx, cy + 5);
+        ctx.shadowBlur = 0;
+
+        // Progress bar
+        const barW = 320;
+        const barH = 5;
+        const barX = cx - barW / 2;
+        const barY = cy + 28;
+
+        ctx.fillStyle = 'rgba(0, 255, 255, 0.2)';
+        ctx.fillRect(barX, barY, barW, barH);
+
+        ctx.fillStyle = '#00ffaa';
+        ctx.shadowColor = '#00ffaa';
+        ctx.shadowBlur = 8;
+        ctx.fillRect(barX, barY, barW * progress, barH);
+        ctx.shadowBlur = 0;
+
+        ctx.fillStyle = 'rgba(0, 255, 170, 0.9)';
+        ctx.font = '10px "Share Tech Mono", monospace';
+        ctx.fillText('AVIONICS & SENSORS LOCKED — ENGAGING THRUSTERS', cx, cy + 48);
+
+        // Scanlines
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
+        for (let y = 0; y < height; y += 3) {
+            ctx.fillRect(0, y, width, 1);
+        }
+
+        ctx.restore();
+    }
+
     return {
         init: startBootPreload,
         bufferBiome,
         draw,
         update,
         handleLaunch,
+        startSectorInterstitial,
+        updateSectorInterstitial,
+        drawSectorInterstitial,
+        get isSectorLoading() { return _sectorLoading; },
         get isComplete() { return _isComplete; },
         get progress() { return _progress; }
     };

@@ -27,6 +27,7 @@ function preloadBiomeBackground(biomeNum) {
 
     const farKey  = `bg_${biomeNum}_far`;
     const nearKey = `bg_${biomeNum}_near`;
+    const stripKey = `bg_${biomeNum}_strip`;
 
     if (!bgImages[farKey]) {
         bgImages[farKey] = new Image();
@@ -36,6 +37,18 @@ function preloadBiomeBackground(biomeNum) {
         bgImages[nearKey] = new Image();
         bgImages[nearKey].src = `${base}_near.png`;
     }
+    if (!bgImages[stripKey]) {
+        bgImages[stripKey] = new Image();
+        bgImages[stripKey].src = `${base}_strip.png`;
+    }
+    if (!bgImages[`bg_${biomeNum}`]) {
+        bgImages[`bg_${biomeNum}`] = bgImages[farKey];
+    }
+}
+
+// Preload all 10 biomes immediately so background assets are cached in memory
+for (let b = 1; b <= 10; b++) {
+    preloadBiomeBackground(b);
 }
 
 function setBiomeBackgrounds(biomeNum, levelNum = 1) {
@@ -130,35 +143,57 @@ function generateBiomeBackground(biomeNum, levelNum = 1) {
 // ─── ParallaxLayer Class (Backwards-compatible + Level Journey integration) ──
 class ParallaxLayer {
     constructor(key, speed, yOffset = 0, alpha = 1.0, scale = 1.0) {
-        this.key = key;
         this.speed = speed;
         this.yOffset = yOffset;
         this.alpha = alpha;
         this.scale = scale;
         this.offset = 0;
+        this.setKey(key || 'bg_1_far');
     }
 
     getImg() {
+        if (bgImages[this.key] && bgImages[this.key].complete && bgImages[this.key].naturalWidth > 0) {
+            return bgImages[this.key];
+        }
+        const farKey = `${this.key}_far`;
+        const nearKey = `${this.key}_near`;
+        if (bgImages[farKey] && bgImages[farKey].complete && bgImages[farKey].naturalWidth > 0) return bgImages[farKey];
+        if (bgImages[nearKey] && bgImages[nearKey].complete && bgImages[nearKey].naturalWidth > 0) return bgImages[nearKey];
         return bgImages[this.key] || null;
     }
 
     setKey(newKey) {
+        if (!newKey) return;
         const isFar = newKey.endsWith('_far');
         const isNear = newKey.endsWith('_near');
         const numMatch = newKey.match(/bg_(\d+)/);
         const biomeNum = numMatch ? parseInt(numMatch[1], 10) : 1;
         const dirName = BIOME_BG_MAP[biomeNum] || 'abyssal_trench';
 
-        if (!bgImages[newKey]) {
+        const farKey = `bg_${biomeNum}_far`;
+        const nearKey = `bg_${biomeNum}_near`;
+        const stripKey = `bg_${biomeNum}_strip`;
+
+        if (!bgImages[farKey]) {
             const img = new Image();
-            if (isFar) {
-                img.src = `assets/sprites/backgrounds/bg_${dirName}_far.png`;
-            } else if (isNear) {
-                img.src = `assets/sprites/backgrounds/bg_${dirName}_near.png`;
-            } else {
-                img.src = `assets/sprites/backgrounds/bg_${dirName}_strip.png`;
-            }
-            bgImages[newKey] = img;
+            img.src = `assets/sprites/backgrounds/bg_${dirName}_far.png`;
+            bgImages[farKey] = img;
+        }
+        if (!bgImages[nearKey]) {
+            const img = new Image();
+            img.src = `assets/sprites/backgrounds/bg_${dirName}_near.png`;
+            bgImages[nearKey] = img;
+        }
+        if (!bgImages[stripKey]) {
+            const img = new Image();
+            img.src = `assets/sprites/backgrounds/bg_${dirName}_strip.png`;
+            bgImages[stripKey] = img;
+        }
+        if (!bgImages[newKey]) {
+            bgImages[newKey] = isFar ? bgImages[farKey] : (isNear ? bgImages[nearKey] : bgImages[stripKey]);
+        }
+        if (!bgImages[`bg_${biomeNum}`]) {
+            bgImages[`bg_${biomeNum}`] = bgImages[farKey];
         }
         this.key = newKey;
         this.offset = 0;

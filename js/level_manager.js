@@ -269,11 +269,12 @@ const LevelManager = {
 
     setBiomeAndLevel(biome, level) {
         this.resetLevelStats();
-        if (typeof setBiomeBackgrounds === 'function') setBiomeBackgrounds(biome, level);
         this.biome = Math.max(1, Math.min(10, biome));
         this.level = Math.max(1, Math.min(10, level));
-        if (typeof AssetPreloader !== 'undefined' && typeof AssetPreloader.bufferBiome === 'function') {
-            AssetPreloader.bufferBiome(this.biome);
+        if (typeof AssetPreloader !== 'undefined' && typeof AssetPreloader.startSectorInterstitial === 'function') {
+            AssetPreloader.startSectorInterstitial(this.biome, this.level);
+        } else if (typeof setBiomeBackgrounds === 'function') {
+            setBiomeBackgrounds(this.biome, this.level);
         }
         this.wave = 1;
         this.waveActive = true;

@@ -17,7 +17,12 @@ const VoicePipeline = {
     _audioContext: null,
     _analyzerNode: null,
     _currentAmplitude: 0,
-    _onEndCallbacks: [],
+    _normalizedLineMap: null,
+
+    _normalizeText(str) {
+        if (!str) return '';
+        return str.toLowerCase().replace(/[^a-z0-9]/g, '');
+    },
 
     init() {
         if (typeof window !== 'undefined') {
@@ -33,10 +38,23 @@ const VoicePipeline = {
                 .then(data => {
                     this._manifest = data;
                     this._manifestLoaded = true;
+                    this._buildNormalizedIndex();
                 })
                 .catch(err => {
                     console.warn('[VoicePipeline] Running with procedural synthesis fallback:', err.message);
                 });
+        }
+    },
+
+    _buildNormalizedIndex() {
+        this._normalizedLineMap = new Map();
+        if (this._manifest && this._manifest.lines) {
+            for (const k in this._manifest.lines) {
+                const item = this._manifest.lines[k];
+                if (item && item.text && item.file) {
+                    this._normalizedLineMap.set(this._normalizeText(item.text), item.file);
+                }
+            }
         }
     },
 
@@ -71,22 +89,20 @@ const VoicePipeline = {
 
         // Check if voice line file exists in manifest
         const lineKey = options.lineId;
-        const charKey = speaker.toLowerCase();
+        const charKey = (speaker || 'lyra').toLowerCase();
         let audioFile = null;
 
         if (this._manifest && this._manifest.lines) {
             if (lineKey && this._manifest.lines[lineKey]) {
                 audioFile = this._manifest.lines[lineKey].file;
-            } else if (text) {
-                // Fuzzy match text if lineId not provided
-                const cleanText = text.trim().toLowerCase();
-                for (const k in this._manifest.lines) {
-                    const item = this._manifest.lines[k];
-                    if (item.text && item.text.trim().toLowerCase() === cleanText) {
-                        audioFile = item.file;
-                        break;
-                    }
-                }
+            }
+        }
+
+        // Match by normalized text across all 687 recorded voice lines
+        if (!audioFile && text && this._normalizedLineMap) {
+            const norm = this._normalizeText(text);
+            if (this._normalizedLineMap.has(norm)) {
+                audioFile = this._normalizedLineMap.get(norm);
             }
         }
 
@@ -139,6 +155,7 @@ const VoicePipeline = {
 
         audio.onended = handleFinish;
         audio.onerror = () => {
+            console.log('[VoicePipeline] Audio file missing or load failed:', path);
             this._playProceduralFallback(options.text || '', this._currentSpeaker, options);
         };
 
@@ -148,21 +165,13 @@ const VoicePipeline = {
     },
 
     _playProceduralFallback(text, speaker, options) {
-        if (typeof VoicePlayback !== 'undefined' && typeof VoicePlayback._synthesizeVoiceSpeech === 'function') {
-            const speakerMap = {
-                'Darius': 'D', 'Lyra': 'L', 'Thorne': 'T', 'Naya': 'N',
-                'Cross': 'C', 'Ophion': 'O', 'Selene': 'S', 'Architect': 'A'
-            };
-            const code = speakerMap[speaker] || (speaker ? speaker[0].toUpperCase() : 'L');
-            VoicePlayback.duckBGM(0.65, 0.25);
-            VoicePlayback._synthesizeVoiceSpeech(code, text);
-            if (options.onStart) options.onStart();
-            if (options.onEnd) options.onEnd();
-        } else {
-            this._isPlaying = false;
-            if (options.onStart) options.onStart();
-            if (options.onEnd) options.onEnd();
+        // Subtle radio click rather than harsh beeps for unvoiced dynamic lines
+        if (typeof playSound === 'function') {
+            try { playSound('ui_select'); } catch(e) {}
         }
+        this._isPlaying = false;
+        if (options.onStart) options.onStart();
+        if (options.onEnd) options.onEnd();
     },
 
     stop() {
