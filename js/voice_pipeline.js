@@ -111,23 +111,12 @@ const VoicePipeline = {
             audioFile = `${charKey}/${lineKey}.mp3`;
         }
 
-        // Direct fallback for stratum banter triggers to play studio voice files
-        if (!audioFile && options.biome && options.trigger && typeof VoicePlayback !== 'undefined') {
-            const speakerCode = (typeof VoicePlayback.SPEAKER_MAP !== 'undefined') ? 
-                (Object.keys(VoicePlayback.SPEAKER_MAP).find(k => VoicePlayback.SPEAKER_MAP[k] === charKey) || charKey[0].toUpperCase()) : 
-                charKey[0].toUpperCase();
-            const directPath = VoicePlayback._buildPath(options.biome, options.trigger, speakerCode);
-            if (directPath) {
-                audioFile = directPath.replace(/^assets\/audio\/voice\//, '');
-            }
-        }
-
-        // Guaranteed voice line fallback for any character dialogue
+        // Guaranteed studio voice line fallback from manifest for any character dialogue
         if (!audioFile) {
             const biome = options.biome || (typeof LevelManager !== 'undefined' ? LevelManager.biome : 1);
             if (this._manifest && this._manifest.lines) {
                 const candidate = Object.values(this._manifest.lines).find(item => 
-                    item && item.speaker === charKey && item.biome === biome && item.file
+                    item && item.speaker === charKey && item.file && (item.biome === biome || item.file.startsWith(`${charKey}/`))
                 );
                 if (candidate) {
                     audioFile = candidate.file;
@@ -137,7 +126,7 @@ const VoicePipeline = {
                 const defaultFiles = {
                     'thorne': `thorne/briefing_b${biome}_01.mp3`,
                     'lyra': `lyra/briefing_b${biome}_01.mp3`,
-                    'darius': `darius/banter_b${biome}_level_start_tier1_0.mp3`,
+                    'darius': `darius/briefing_b${biome}_01.mp3`,
                     'naya': `naya/banter_b${biome}_level_start_tier1_1.mp3`,
                     'cross': `cross/banter_b${biome}_level_start_tier1_1.mp3`,
                     'selene': `selene/briefing_b${biome}_selene.mp3`,
