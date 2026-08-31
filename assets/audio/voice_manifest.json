@@ -9456,6 +9456,480 @@
       "file": "architect/banter_db_architect_architect_paradox_equation_you.mp3",
       "text": "[ARCHITECT PARADOX EQUATION]: You return to the singularity... yet each return brings higher entropy...",
       "duration": 3.58
+    },
+    "darius_justintimetheheavyfighti_26": {
+      "file": "darius/darius_justintimetheheavyfighti_26.mp3",
+      "speaker": "darius",
+      "text": "Just in time. The heavy fighting",
+      "biome": 1
+    },
+    "darius_gladyoumadeitthistrenchd_28": {
+      "file": "darius/darius_gladyoumadeitthistrenchd_28.mp3",
+      "speaker": "darius",
+      "text": "Glad you made it. This trench doesn",
+      "biome": 1
+    },
+    "ophion_thenletthewreckagefinanc_48": {
+      "file": "ophion/ophion_thenletthewreckagefinanc_48.mp3",
+      "speaker": "ophion",
+      "text": "Then let the wreckage finance the impossible, Darius Star.",
+      "biome": 1
+    },
+    "darius_iwasascrapperbeforeiwasa_63": {
+      "file": "darius/darius_iwasascrapperbeforeiwasa_63.mp3",
+      "speaker": "darius",
+      "text": "I was a scrapper before I was anything else. Junk talks if you know where to cut.",
+      "biome": 1
+    },
+    "darius_everyscrapplatewepullisl_81": {
+      "file": "darius/darius_everyscrapplatewepullisl_81.mp3",
+      "speaker": "darius",
+      "text": "Every scrap plate we pull is life support for the next depth. One-way trip, starlight. No retreat path.",
+      "biome": 1
+    },
+    "lyra_thenwekeepfindingpiecesd_43": {
+      "file": "lyra/lyra_thenwekeepfindingpiecesd_43.mp3",
+      "speaker": "lyra",
+      "text": "Then we keep finding pieces, Daddy. One piece at a time.",
+      "biome": 1
+    },
+    "darius_grandpacalledfindsliketh_73": {
+      "file": "darius/darius_grandpacalledfindsliketh_73.mp3",
+      "speaker": "darius",
+      "text": "Grandpa called finds like this one-in-a-million. Lyra only needs one miracle to stay alive.",
+      "biome": 1
+    },
+    "thorne_dariusdiveintotheicedebr_27": {
+      "file": "thorne/thorne_dariusdiveintotheicedebr_27.mp3",
+      "speaker": "thorne",
+      "text": "Darius, dive into the ice debris. I",
+      "biome": 1
+    },
+    "naya_dariusthathaulkeepsyours_62": {
+      "file": "naya/naya_dariusthathaulkeepsyours_62.mp3",
+      "speaker": "naya",
+      "text": "Darius, that haul keeps your shields breathing, but it will not buy a way back.",
+      "biome": 1
+    },
+    "selene_closeyoureyeslyrafocuson_33": {
+      "file": "selene/selene_closeyoureyeslyrafocuson_33.mp3",
+      "speaker": "selene",
+      "text": "Close your eyes, Lyra. Focus on my voice. We",
+      "biome": 1
+    },
+    "lyra_oneinamillionisstillacha_35": {
+      "file": "lyra/lyra_oneinamillionisstillacha_35.mp3",
+      "speaker": "lyra",
+      "text": "One-in-a-million is still a chance. That is us.",
+      "biome": 1
+    },
+    "cross_thrustdownintothelowerdr_35": {
+      "file": "cross/cross_thrustdownintothelowerdr_35.mp3",
+      "speaker": "cross",
+      "text": "Thrust down into the lower drafts, Darius. I",
+      "biome": 1
+    },
+    "thorne_towingcabledeployednayah_30": {
+      "file": "thorne/thorne_towingcabledeployednayah_30.mp3",
+      "speaker": "thorne",
+      "text": "Towing cable deployed, Naya. Hold on, I",
+      "biome": 1
+    },
+    "cross_engagereversethrustersna_27": {
+      "file": "cross/cross_engagereversethrustersna_27.mp3",
+      "speaker": "cross",
+      "text": "Engage reverse thrusters, Naya. I",
+      "biome": 1
+    },
+    "darius_nayagetinsidethehullofth_34": {
+      "file": "darius/darius_nayagetinsidethehullofth_34.mp3",
+      "speaker": "darius",
+      "text": "Naya, get inside the hull of that carrier. I",
+      "biome": 1
+    },
+    "thorne_dariusbreaklineofsightbe_37": {
+      "file": "thorne/thorne_dariusbreaklineofsightbe_37.mp3",
+      "speaker": "thorne",
+      "text": "Darius, break line of sight behind the wreck. I",
+      "biome": 1
+    },
+    "naya_projectophionfile402thec_59": {
+      "file": "naya/naya_projectophionfile402thec_59.mp3",
+      "speaker": "naya",
+      "text": "[PROJECT OPHION FILE 402]: The cybernetic genome was spliced from Darius",
+      "biome": 1
+    },
+    "naya_precursordecryptthegreat_33": {
+      "file": "naya/naya_precursordecryptthegreat_33.mp3",
+      "speaker": "naya",
+      "text": "[PRECURSOR DECRYPT]: The Great Dying wasn",
+      "biome": 1
+    },
+    "cross_navylostthreestealthsqua_63": {
+      "file": "cross/cross_navylostthreestealthsqua_63.mp3",
+      "speaker": "cross",
+      "text": "Navy lost three stealth squadrons in the Veil trying to capture the Dreamer",
+      "biome": 1
+    },
+    "darius_hegaveuphishumanitytokee_37": {
+      "file": "darius/darius_hegaveuphishumanitytokee_37.mp3",
+      "speaker": "darius",
+      "text": "He gave up his humanity to keep command. Now he",
+      "biome": 1
+    },
+    "cross_umbradejavucrane_16": {
+      "file": "cross/cross_umbradejavucrane_16.mp3",
+      "speaker": "cross",
+      "text": "[UMBRA DEJA-VU]: Crane",
+      "biome": 1
+    },
+    "darius_timelineechoirememberthi_35": {
+      "file": "darius/darius_timelineechoirememberthi_35.mp3",
+      "speaker": "darius",
+      "text": "[TIMELINE ECHO]: I remember this silt reef... we",
+      "biome": 1
+    },
+    "darius_chronoresidualeuropa_20": {
+      "file": "darius/darius_chronoresidualeuropa_20.mp3",
+      "speaker": "darius",
+      "text": "[CHRONO RESIDUAL]: Europa",
+      "biome": 1
+    },
+    "thorne_blowthekrakengeneratorso_41": {
+      "file": "thorne/thorne_blowthekrakengeneratorso_41.mp3",
+      "speaker": "thorne",
+      "text": "Blow the kraken generators on the fly. Second time",
+      "biome": 1
+    },
+    "darius_ghostfleetparadoxcrane_22": {
+      "file": "darius/darius_ghostfleetparadoxcrane_22.mp3",
+      "speaker": "darius",
+      "text": "[GHOST FLEET PARADOX]: Crane",
+      "biome": 1
+    },
+    "lyra_hivememoryfractureelena_23": {
+      "file": "lyra/lyra_hivememoryfractureelena_23.mp3",
+      "speaker": "lyra",
+      "text": "[HIVE MEMORY FRACTURE]: Elena",
+      "biome": 1
+    },
+    "lyra_warningidetectedcorrupte_101": {
+      "file": "lyra/lyra_warningidetectedcorrupte_101.mp3",
+      "speaker": "lyra",
+      "text": "Warning: I detected corrupted telemetry save data. It has been repaired and reset to a fresh state to prevent a system crash.",
+      "biome": 1
+    },
+    "lyra_daddyicanfeelitthetrench_26": {
+      "file": "lyra/lyra_daddyicanfeelitthetrench_26.mp3",
+      "speaker": "lyra",
+      "text": "Daddy? I can feel it. The trench... it",
+      "biome": 1
+    },
+    "thorne_keepyourheadonstraightso_29": {
+      "file": "thorne/thorne_keepyourheadonstraightso_29.mp3",
+      "speaker": "thorne",
+      "text": "Keep your head on straight, son. Lyra",
+      "biome": 1
+    },
+    "darius_understoodthornenyxaispr_82": {
+      "file": "darius/darius_understoodthornenyxaispr_82.mp3",
+      "speaker": "darius",
+      "text": "Understood, Thorne. Nyxa is prepped and ready. Lyra \u2014 keep me posted on anything unusual down there. Let",
+      "biome": 1
+    },
+    "thorne_notedlyrathreatsstandard_95": {
+      "file": "thorne/thorne_notedlyrathreatsstandard_95.mp3",
+      "speaker": "thorne",
+      "text": "Noted, Lyra. Threats: Standard Umbra patrol craft reported in the upper chasm. Light resistance expected. But if Lyra",
+      "biome": 1
+    },
+    "thorne_commanderthornemissionco_48": {
+      "file": "thorne/thorne_commanderthornemissionco_48.mp3",
+      "speaker": "thorne",
+      "text": "Commander Thorne, Mission Control. Situation: Coelacanth",
+      "biome": 1
+    },
+    "thorne_objectivenavigatethecora_81": {
+      "file": "thorne/thorne_objectivenavigatethecora_81.mp3",
+      "speaker": "thorne",
+      "text": "Objective: Navigate the coral maze. Locate and retrieve the Precursor data cache at the graveyard",
+      "biome": 1
+    },
+    "lyra_daddyit_7": {
+      "file": "lyra/lyra_daddyit_7.mp3",
+      "speaker": "lyra",
+      "text": "Daddy \u2014 it",
+      "biome": 1
+    },
+    "thorne_commanderthornemissionco_75": {
+      "file": "thorne/thorne_commanderthornemissionco_75.mp3",
+      "speaker": "thorne",
+      "text": "Commander Thorne, Mission Control. Identification confirmed: Pilot Darius Star, callsign ",
+      "biome": 1
+    },
+    "naya_nayahereatmosphericturbu_50": {
+      "file": "naya/naya_nayahereatmosphericturbu_50.mp3",
+      "speaker": "naya",
+      "text": "Naya here! Atmospheric turbulence is off the charts, Darius! I",
+      "biome": 1
+    },
+    "thorne_objectiveneutralizethest_35": {
+      "file": "thorne/thorne_objectiveneutralizethest_35.mp3",
+      "speaker": "thorne",
+      "text": "Objective: Neutralize the Storm Sentinel",
+      "biome": 1
+    },
+    "thorne_missioncontrolsector5sat_72": {
+      "file": "thorne/thorne_missioncontrolsector5sat_72.mp3",
+      "speaker": "thorne",
+      "text": "Mission Control. Sector 5: Saturn Ice Ring. Sub-zero temperatures are stressing the Nyxa",
+      "biome": 1
+    },
+    "thorne_missioncontroltonyxayou_23": {
+      "file": "thorne/thorne_missioncontroltonyxayou_23.mp3",
+      "speaker": "thorne",
+      "text": "Mission Control to Nyxa. You",
+      "biome": 1
+    },
+    "lyra_thehivemindisawakeit_20": {
+      "file": "lyra/lyra_thehivemindisawakeit_20.mp3",
+      "speaker": "lyra",
+      "text": "The hive mind is awake... It",
+      "biome": 1
+    },
+    "darius_centerchannellyra_17": {
+      "file": "darius/darius_centerchannellyra_17.mp3",
+      "speaker": "darius",
+      "text": "Center Channel (Lyra)",
+      "biome": 1
+    },
+    "darius_thecenteropensupinaboutf_39": {
+      "file": "darius/darius_thecenteropensupinaboutf_39.mp3",
+      "speaker": "darius",
+      "text": "The center opens up in about forty meters. There",
+      "biome": 1
+    },
+    "lyra_icanseetheentiretimeline_79": {
+      "file": "lyra/lyra_icanseetheentiretimeline_79.mp3",
+      "speaker": "lyra",
+      "text": "I can see the entire timeline folding, Daddy. The Architect is waiting at the center of creation. I",
+      "biome": 1
+    },
+    "darius_followtheblueglownottheb_53": {
+      "file": "darius/darius_followtheblueglownottheb_53.mp3",
+      "speaker": "darius",
+      "text": "Follow the blue glow. Not the bright one \u2014 the dim one, way down low. It",
+      "biome": 1
+    },
+    "system_steeringcentercoralcaves_32": {
+      "file": "selene/system_steeringcentercoralcaves_32.mp3",
+      "speaker": "selene",
+      "text": "Steering center... Coral cave spotted. We",
+      "biome": 1
+    },
+    "thorne_commanderthornemissionco_131": {
+      "file": "thorne/thorne_commanderthornemissionco_131.mp3",
+      "speaker": "thorne",
+      "text": "Commander Thorne, Mission Control. Situation: Coral Graveyard, Sector 12-F. What was once a thriving reef is now a calcified labyrinth. Something killed it \u2014 and it",
+      "biome": 1
+    },
+    "lyra_allprimaryescaperoutesar_32": {
+      "file": "lyra/lyra_allprimaryescaperoutesar_32.mp3",
+      "speaker": "lyra",
+      "text": "All primary escape routes are sealed. I",
+      "biome": 1
+    },
+    "lyra_negativelyradownisthesub_70": {
+      "file": "lyra/lyra_negativelyradownisthesub_70.mp3",
+      "speaker": "lyra",
+      "text": "Negative, Lyra. Down is the substrate layer. Solid bedrock for three kilometers. There",
+      "biome": 1
+    },
+    "lyra_thecoralstheyremembereve_103": {
+      "file": "lyra/lyra_thecoralstheyremembereve_103.mp3",
+      "speaker": "lyra",
+      "text": "The corals... they remember. Every creature that died here, their memories are still in the water. I can hear them whispering. They",
+      "biome": 1
+    },
+    "darius_notsolidnotanymorethedre_51": {
+      "file": "darius/darius_notsolidnotanymorethedre_51.mp3",
+      "speaker": "darius",
+      "text": "Not solid. Not anymore. The Dreamer... it dreamed through it. There",
+      "biome": 1
+    },
+    "darius_icanfeelthewatermovingth_33": {
+      "file": "darius/darius_icanfeelthewatermovingth_33.mp3",
+      "speaker": "darius",
+      "text": "I can feel the water moving through it. It",
+      "biome": 1
+    },
+    "thorne_narrativethecoralmazebeg_54": {
+      "file": "thorne/thorne_narrativethecoralmazebeg_54.mp3",
+      "speaker": "thorne",
+      "text": "[NARRATIVE] The coral maze begins to collapse as the Memory Wraith",
+      "biome": 1
+    },
+    "lyra_narrativethenyxafliesstr_42": {
+      "file": "lyra/lyra_narrativethenyxafliesstr_42.mp3",
+      "speaker": "lyra",
+      "text": "[NARRATIVE] The Nyxa flies straight at the ice shard",
+      "biome": 1
+    },
+    "lyra_slowdownforthenextchambe_30": {
+      "file": "lyra/lyra_slowdownforthenextchambe_30.mp3",
+      "speaker": "lyra",
+      "text": "Slow down for the next chamber \u2014 there",
+      "biome": 1
+    },
+    "lyra_narrativedariusplungesth_71": {
+      "file": "lyra/lyra_narrativedariusplungesth_71.mp3",
+      "speaker": "lyra",
+      "text": "[NARRATIVE] Darius plunges the damaged Nyxa into the ice shard fissure, escaping Cross",
+      "biome": 1
+    },
+    "darius_daddyshieldsarefailingge_43": {
+      "file": "darius/darius_daddyshieldsarefailingge_43.mp3",
+      "speaker": "darius",
+      "text": "Daddy! Shields are failing! Get into the ice cavern, it",
+      "biome": 1
+    },
+    "darius_surfaceexitinthreehundre_68": {
+      "file": "darius/darius_surfaceexitinthreehundre_68.mp3",
+      "speaker": "darius",
+      "text": "Surface exit in three hundred meters. Cross is waiting on the far side, but she doesn",
+      "biome": 1
+    },
+    "darius_thehiveisgoingtotrytocon_33": {
+      "file": "darius/darius_thehiveisgoingtotrytocon_33.mp3",
+      "speaker": "darius",
+      "text": "The Hive is going to try to confuse you. It",
+      "biome": 1
+    },
+    "naya_scannersonlineabyssaltre_35": {
+      "file": "naya/naya_scannersonlineabyssaltre_35.mp3",
+      "speaker": "naya",
+      "text": "Scanners online. Abyssal Trench \u2014 pressure",
+      "biome": 1
+    },
+    "lyra_ihadtogodeeptocomebackis_49": {
+      "file": "lyra/lyra_ihadtogodeeptocomebackis_49.mp3",
+      "speaker": "lyra",
+      "text": "I had to go deep to come back. I saw everything. The Dreamer isn",
+      "biome": 1
+    },
+    "naya_coralgraveyardnavycensus_30": {
+      "file": "naya/naya_coralgraveyardnavycensus_30.mp3",
+      "speaker": "naya",
+      "text": "Coral Graveyard. Navy census says it",
+      "biome": 1
+    },
+    "naya_firenebulatemperature_21": {
+      "file": "naya/naya_firenebulatemperature_21.mp3",
+      "speaker": "naya",
+      "text": "Fire Nebula. Temperature",
+      "biome": 1
+    },
+    "darius_ignorethemnavydoesn_19": {
+      "file": "darius/darius_ignorethemnavydoesn_19.mp3",
+      "speaker": "darius",
+      "text": "Ignore them. Navy doesn",
+      "biome": 1
+    },
+    "darius_thenlet_7": {
+      "file": "darius/darius_thenlet_7.mp3",
+      "speaker": "darius",
+      "text": "Then let",
+      "biome": 1
+    },
+    "thorne_ifthedreamer_12": {
+      "file": "thorne/thorne_ifthedreamer_12.mp3",
+      "speaker": "thorne",
+      "text": "If the Dreamer",
+      "biome": 1
+    },
+    "thorne_censuswaswrongthereefisa_34": {
+      "file": "thorne/thorne_censuswaswrongthereefisa_34.mp3",
+      "speaker": "thorne",
+      "text": "Census was wrong. The reef is active \u2014 and it",
+      "biome": 1
+    },
+    "naya_iceshelftemperature_19": {
+      "file": "naya/naya_iceshelftemperature_19.mp3",
+      "speaker": "naya",
+      "text": "Ice Shelf. Temperature",
+      "biome": 1
+    },
+    "lyra_thedreamerit_12": {
+      "file": "lyra/lyra_thedreamerit_12.mp3",
+      "speaker": "lyra",
+      "text": "The Dreamer... it",
+      "biome": 1
+    },
+    "naya_proximityalertsomething_23": {
+      "file": "naya/naya_proximityalertsomething_23.mp3",
+      "speaker": "naya",
+      "text": "Proximity alert! Something",
+      "biome": 1
+    },
+    "naya_iflyra_6": {
+      "file": "naya/naya_iflyra_6.mp3",
+      "speaker": "naya",
+      "text": "If Lyra",
+      "biome": 1
+    },
+    "thorne_navyshadowfleetthey_19": {
+      "file": "thorne/thorne_navyshadowfleetthey_19.mp3",
+      "speaker": "thorne",
+      "text": "Navy shadow fleet. They",
+      "biome": 1
+    },
+    "lyra_thisisitabysscorethedrea_27": {
+      "file": "lyra/lyra_thisisitabysscorethedrea_27.mp3",
+      "speaker": "lyra",
+      "text": "This is it. Abyss Core. The Dreamer",
+      "biome": 1
+    },
+    "naya_dariuswhateverchoiceyoum_33": {
+      "file": "naya/naya_dariuswhateverchoiceyoum_33.mp3",
+      "speaker": "naya",
+      "text": "Darius... whatever choice you make here, we",
+      "biome": 1
+    },
+    "thorne_allhandsthisisthefinalpu_34": {
+      "file": "thorne/thorne_allhandsthisisthefinalpu_34.mp3",
+      "speaker": "thorne",
+      "text": "All hands: this is the final push. Whatever",
+      "biome": 1
+    },
+    "darius_nothomeforwardthere_19": {
+      "file": "darius/darius_nothomeforwardthere_19.mp3",
+      "speaker": "darius",
+      "text": "Not home. Forward. There",
+      "biome": 1
+    },
+    "lyra_waitthedreamersaysthere_23": {
+      "file": "lyra/lyra_waitthedreamersaysthere_23.mp3",
+      "speaker": "lyra",
+      "text": "Wait \u2014 the Dreamer says there",
+      "biome": 1
+    },
+    "thorne_keeptheengineshotyoufree_42": {
+      "file": "thorne/thorne_keeptheengineshotyoufree_42.mp3",
+      "speaker": "thorne",
+      "text": "Keep the engines hot. You freeze in the Shelf, you don",
+      "biome": 1
+    },
+    "thorne_missioncompleteallcrafts_37": {
+      "file": "thorne/thorne_missioncompleteallcrafts_37.mp3",
+      "speaker": "thorne",
+      "text": "Mission complete. All craft: status report. We",
+      "biome": 1
+    },
+    "thorne_areverserunthroughtheaby_39": {
+      "file": "thorne/thorne_areverserunthroughtheaby_39.mp3",
+      "speaker": "thorne",
+      "text": "A reverse run? Through the Abyss backwards? That",
+      "biome": 1
     }
   }
 }

@@ -1110,7 +1110,6 @@ function update(dt) {
             if (window.ScrapEvents && ScrapEvents.onScrapCollected) {
                 ScrapEvents.onScrapCollected(collectedVal, sd.type);
             }
-            triggerScrapNarrativeBeat();
             scrapDrops.splice(i, 1);
             continue;
         }

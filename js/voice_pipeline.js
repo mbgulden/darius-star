@@ -111,33 +111,6 @@ const VoicePipeline = {
             audioFile = `${charKey}/${lineKey}.mp3`;
         }
 
-        // Guaranteed studio voice line fallback from manifest for any character dialogue
-        if (!audioFile) {
-            const biome = options.biome || (typeof LevelManager !== 'undefined' ? LevelManager.biome : 1);
-            if (this._manifest && this._manifest.lines) {
-                const candidate = Object.values(this._manifest.lines).find(item => 
-                    item && item.speaker === charKey && item.file && (item.biome === biome || item.file.startsWith(`${charKey}/`))
-                );
-                if (candidate) {
-                    audioFile = candidate.file;
-                }
-            }
-            if (!audioFile) {
-                const defaultFiles = {
-                    'thorne': `thorne/briefing_b${biome}_01.mp3`,
-                    'lyra': `lyra/briefing_b${biome}_01.mp3`,
-                    'darius': `darius/briefing_b${biome}_01.mp3`,
-                    'naya': `naya/banter_b${biome}_level_start_tier1_1.mp3`,
-                    'cross': `cross/banter_b${biome}_level_start_tier1_1.mp3`,
-                    'selene': `selene/briefing_b${biome}_selene.mp3`,
-                    'architect': `architect/banter_b10_level_start_tier1_1.mp3`
-                };
-                if (defaultFiles[charKey]) {
-                    audioFile = defaultFiles[charKey];
-                }
-            }
-        }
-
         if (audioFile) {
             this._playStudioAudio(audioFile, options);
         } else {
