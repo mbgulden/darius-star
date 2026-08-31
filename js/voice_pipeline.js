@@ -235,6 +235,11 @@ const VoicePipeline = {
     },
 
     _playHtml5Audio(path, options, onFinish) {
+        if (typeof Audio === 'undefined') {
+            if (options.onStart) options.onStart();
+            setTimeout(onFinish, 10);
+            return;
+        }
         const audio = new Audio(path);
         audio.volume = (typeof sfxVolume !== 'undefined' ? sfxVolume : 0.8) * (typeof masterVolume !== 'undefined' ? masterVolume : 1.0);
         this._currentAudio = audio;
