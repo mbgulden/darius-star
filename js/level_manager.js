@@ -272,6 +272,9 @@ const LevelManager = {
         if (typeof setBiomeBackgrounds === 'function') setBiomeBackgrounds(biome, level);
         this.biome = Math.max(1, Math.min(10, biome));
         this.level = Math.max(1, Math.min(10, level));
+        if (typeof AssetPreloader !== 'undefined' && typeof AssetPreloader.bufferBiome === 'function') {
+            AssetPreloader.bufferBiome(this.biome);
+        }
         this.wave = 1;
         this.waveActive = true;
         this.waveTimer = 1.5; // Initial delay before first wave
@@ -616,6 +619,9 @@ const LevelManager = {
 
         this.resetLevelStats();
         if (typeof setBiomeBackgrounds === 'function') setBiomeBackgrounds(this.biome, this.level);
+        if (typeof AssetPreloader !== 'undefined' && typeof AssetPreloader.bufferBiome === 'function') {
+            AssetPreloader.bufferBiome(this.biome);
+        }
         this._refreshLevelConfig(false);
 
         this._queueWave();

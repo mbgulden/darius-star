@@ -435,7 +435,12 @@ function update(dt) {
     }
 
     if (currentScreen !== SCREENS.PLAYING) {
-        if (currentScreen === SCREENS.CREDITS) {
+        if (currentScreen === SCREENS.LOADING) {
+            if (typeof AssetPreloader !== 'undefined') {
+                AssetPreloader.update(dt);
+            }
+            return;
+        } else if (currentScreen === SCREENS.CREDITS) {
             creditsScrollY += 35 * dt;
         } else if (currentScreen === SCREENS.CINEMATIC) {
             cinematicTime += dt;
@@ -2033,6 +2038,13 @@ canvas.addEventListener('mouseleave', () => {
 });
 
 canvas.addEventListener('click', e => {
+    if (currentScreen === SCREENS.LOADING) {
+        if (typeof AssetPreloader !== 'undefined' && AssetPreloader.isComplete) {
+            AssetPreloader.handleLaunch();
+        }
+        return;
+    }
+
     setBiomeBackgrounds(biomeLevel);
     initAudio();
     // GRO-1470 / GRO-1926: Chiptune starts immediately for instant feedback;

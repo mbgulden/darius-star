@@ -995,6 +995,16 @@
                 this.bgm.loop = true;
                 this.bgm.volume = 0.35;
                 
+                // Pre-warm SFX and ship voice previews
+                try {
+                    Object.values(this.sfx).forEach(a => { if (a && a.load) a.load(); });
+                    Object.values(this.shipVoices).forEach(src => {
+                        const a = new Audio();
+                        a.src = src;
+                        a.load();
+                    });
+                } catch(e) {}
+
                 const unlock = () => {
                     if (!this.bgmPlaying && !this.muted) {
                         this.playBgm();

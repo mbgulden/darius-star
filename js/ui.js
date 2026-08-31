@@ -43,6 +43,7 @@ if (typeof window !== 'undefined') {
 
 // --- Menu & Settings State Variables ---
 var SCREENS = {
+    LOADING: 'loading',         // Boot-time preloader & avionics buffering
     MENU: 'menu',
     SHIP_SELECT: 'ship_select',
     SETTINGS: 'settings',
@@ -59,7 +60,7 @@ var SCREENS = {
 if (typeof window !== 'undefined') {
     window.SCREENS = SCREENS;
 }
-var currentScreen = SCREENS.MENU;
+var currentScreen = SCREENS.LOADING;
 var selectedMenuIndex = 0;
 var hoveredMenuIndex = -1; // distinct from selected for hover state
 var prevHoveredMenuIndex = -1;   // GRO-1294: track previous for hover-sound debounce
@@ -829,6 +830,12 @@ function getCanvasMouseCoords(e) {
 }
 
 function drawMenuScreens() {
+    if (currentScreen === SCREENS.LOADING) {
+        if (typeof AssetPreloader !== 'undefined') {
+            AssetPreloader.draw(ctx, canvas.width, canvas.height);
+        }
+        return;
+    }
     drawTitleBackground();
     
     if (currentScreen === SCREENS.MENU) {
@@ -1963,6 +1970,14 @@ function drawMenuScreens() {
 // Keys pressed
 const keys = {};
 window.addEventListener('keydown', e => {
+    if (currentScreen === SCREENS.LOADING) {
+        if (typeof AssetPreloader !== 'undefined' && AssetPreloader.isComplete) {
+            AssetPreloader.handleLaunch();
+            e.preventDefault();
+        }
+        return;
+    }
+
     setBiomeBackgrounds(biomeLevel);
     initAudio();
     loadPlayerSprites();
