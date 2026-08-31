@@ -95,6 +95,17 @@ const VoicePipeline = {
             audioFile = `${charKey}/${lineKey}.mp3`;
         }
 
+        // Direct fallback for stratum banter triggers to play studio voice files
+        if (!audioFile && options.biome && options.trigger && typeof VoicePlayback !== 'undefined') {
+            const speakerCode = (typeof VoicePlayback.SPEAKER_MAP !== 'undefined') ? 
+                (Object.keys(VoicePlayback.SPEAKER_MAP).find(k => VoicePlayback.SPEAKER_MAP[k] === charKey) || charKey[0].toUpperCase()) : 
+                charKey[0].toUpperCase();
+            const directPath = VoicePlayback._buildPath(options.biome, options.trigger, speakerCode);
+            if (directPath) {
+                audioFile = directPath.replace(/^assets\/audio\/voice\//, '');
+            }
+        }
+
         if (audioFile) {
             this._playStudioAudio(audioFile, options);
         } else {
@@ -108,7 +119,8 @@ const VoicePipeline = {
             AudioManager.duckMusic(0.5);
         }
 
-        const audio = new Audio(`assets/audio/voice/${fileUrl}`);
+        const path = fileUrl.startsWith('assets/') ? fileUrl : `assets/audio/voice/${fileUrl}`;
+        const audio = new Audio(path);
         audio.volume = typeof sfxVolume !== 'undefined' ? sfxVolume : 0.8;
         this._currentAudio = audio;
 

@@ -75,6 +75,15 @@ export default {
       const targetUrl = new URL(targetPath + url.search, 'https://staging.darius-star.pages.dev');
       return fetch(new Request(targetUrl, request));
     }
+
+    // Direct proxy for assets/audio/js requested at host root
+    if (url.pathname.startsWith('/assets/') || 
+        url.pathname.startsWith('/audio/') || 
+        url.pathname.startsWith('/js/') ||
+        url.pathname.startsWith('/storyboards/')) {
+      const targetUrl = new URL(url.pathname + url.search, 'https://darius-star.pages.dev');
+      return fetch(new Request(targetUrl, request));
+    }
     
     return fetch(request);
   }

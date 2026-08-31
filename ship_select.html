@@ -4,6 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Darius Star — Ship Selection</title>
+    <script>
+        (function() {
+            if (!document.querySelector('base')) {
+                var base = document.createElement('base');
+                var path = window.location.pathname;
+                if (path.includes('/staging/darius-star')) {
+                    base.href = '/staging/darius-star/';
+                } else if (path.includes('/darius-star')) {
+                    base.href = '/darius-star/';
+                } else {
+                    base.href = './';
+                }
+                document.head.prepend(base);
+            }
+        })();
+    </script>
     <meta name="description" content="Select your fighter for Darius Star: Cyber Coelacanth — 6 unique ships with distinct stats and abilities.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

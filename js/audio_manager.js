@@ -93,14 +93,27 @@ const AudioManager = (function() {
         // Load manifest
         try {
             const resp = await fetch(MANIFEST_PATH);
-            if (!resp.ok) {
+            if (resp.ok) {
+                _manifest = await resp.json();
+                console.log('[AudioManager] Manifest loaded:', Object.keys(_manifest.tracks || {}).length, 'tracks');
+            } else {
                 console.warn('[AudioManager] Manifest fetch failed:', resp.status);
-                return;
             }
-            _manifest = await resp.json();
-            console.log('[AudioManager] Manifest loaded:', Object.keys(_manifest.tracks || {}).length, 'tracks');
         } catch (e) {
             console.warn('[AudioManager] Manifest load error:', e.message);
+        }
+
+        if (!_manifest || !_manifest.tracks) {
+            _manifest = {
+                tracks: {
+                    title_cinematic: { path: 'assets/audio/title-screen.mp3', loop: true },
+                    'title-screen': { path: 'assets/audio/title-screen.mp3', loop: true },
+                    victory: { path: 'assets/audio/victory.mp3', loop: false },
+                    game_over_cinematic: { path: 'assets/audio/game_over_cinematic.mp3', loop: false },
+                    ambient_deep_space: { path: 'assets/audio/ambient_deep_space.mp3', loop: true },
+                    ambient_abyssal_trench: { path: 'assets/audio/ambient_abyssal_trench.mp3', loop: true }
+                }
+            };
         }
     }
 
