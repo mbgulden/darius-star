@@ -130,6 +130,7 @@ const AudioManager = (function() {
                 try { audioCtx.resume(); } catch(e) {}
             }
             _userInteracted = true;
+            try { _updateMusicState(); } catch(e) {}
         };
 
         // One-shot resume on first meaningful interaction

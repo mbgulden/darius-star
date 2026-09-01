@@ -468,6 +468,15 @@ const AssetPreloader = (function() {
         _sectorBiome = biome || 1;
         _sectorLevel = level || 1;
         bufferBiome(_sectorBiome);
+        if (typeof AudioManager !== 'undefined' && AudioManager.preloadTrack) {
+            const trackMap = {
+                1: 'biome_b1_abyssal', 2: 'biome_b2_coral', 3: 'biome_b3_lair', 4: 'biome_b4_nebula',
+                5: 'biome_b5_ice', 6: 'biome_b6_fire', 7: 'biome_b7_storm', 8: 'biome_b8_derelict',
+                9: 'biome_b9_hive', 10: 'biome_b10_core'
+            };
+            const trackKey = trackMap[_sectorBiome] || 'biome_b1_abyssal';
+            AudioManager.preloadTrack(trackKey).catch(() => {});
+        }
         if (typeof setBiomeBackgrounds === 'function') {
             setBiomeBackgrounds(_sectorBiome, _sectorLevel);
         }
@@ -579,6 +588,7 @@ const AssetPreloader = (function() {
         startSectorInterstitial,
         updateSectorInterstitial,
         drawSectorInterstitial,
+        BIOME_ENEMIES_MAP,
         get isSectorLoading() { return _sectorLoading; },
         get isComplete() { return _isComplete; },
         get progress() { return _progress; }

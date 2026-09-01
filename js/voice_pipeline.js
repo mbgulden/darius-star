@@ -76,8 +76,27 @@ const VoicePipeline = {
     },
 
     _audioBufferCache: new Map(),
+    _maxCacheSize: 40,
     _activeSource: null,
     _currentRequestId: 0,
+
+    _setCachedBuffer(path, audioBuffer) {
+        if (this._audioBufferCache.has(path)) {
+            this._audioBufferCache.delete(path);
+        } else if (this._audioBufferCache.size >= this._maxCacheSize) {
+            const oldestKey = this._audioBufferCache.keys().next().value;
+            if (oldestKey) this._audioBufferCache.delete(oldestKey);
+        }
+        this._audioBufferCache.set(path, audioBuffer);
+    },
+
+    _getCachedBuffer(path) {
+        if (!this._audioBufferCache.has(path)) return null;
+        const buffer = this._audioBufferCache.get(path);
+        this._audioBufferCache.delete(path);
+        this._audioBufferCache.set(path, buffer);
+        return buffer;
+    },
 
     speak(text, speaker = 'Lyra', options = {}) {
         if (typeof streamerMode !== 'undefined' && streamerMode) {
@@ -175,8 +194,9 @@ const VoicePipeline = {
                 }
             };
 
-            if (this._audioBufferCache.has(path)) {
-                playDecodedBuffer(this._audioBufferCache.get(path));
+            const cached = this._getCachedBuffer(path);
+            if (cached) {
+                playDecodedBuffer(cached);
                 return;
             }
 
@@ -188,7 +208,7 @@ const VoicePipeline = {
                 .then(buf => ctx.decodeAudioData(buf))
                 .then(audioBuffer => {
                     if (reqId && reqId !== this._currentRequestId) return;
-                    this._audioBufferCache.set(path, audioBuffer);
+                    this._setCachedBuffer(path, audioBuffer);
                     playDecodedBuffer(audioBuffer);
                 })
                 .catch(err => {
