@@ -173,20 +173,26 @@ const VoicePlayback = {
     },
 
     /**
-     * Duck BGM volume via AudioManager (GRO-4208).
+     * Duck BGM and SFX volume via AudioManager & duckSFX (GRO-4208).
      */
-    duckBGM(multiplier = 0.65, fadeTime = 0.25) {
+    duckBGM(multiplier = 0.45, fadeTime = 0.35) {
         if (typeof AudioManager !== 'undefined' && AudioManager && typeof AudioManager.duckMusic === 'function') {
             AudioManager.duckMusic(multiplier, fadeTime);
+        }
+        if (typeof duckSFX === 'function') {
+            duckSFX(0.35, fadeTime);
         }
     },
 
     /**
-     * Restore BGM volume via AudioManager (GRO-4208).
+     * Restore BGM and SFX volume via AudioManager & unduckSFX (GRO-4208).
      */
-    unduckBGM(fadeTime = 0.4) {
+    unduckBGM(fadeTime = 0.55) {
         if (typeof AudioManager !== 'undefined' && AudioManager && typeof AudioManager.unduckMusic === 'function') {
             AudioManager.unduckMusic(fadeTime);
+        }
+        if (typeof unduckSFX === 'function') {
+            unduckSFX(fadeTime);
         }
     },
 

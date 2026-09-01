@@ -150,7 +150,8 @@ const MicroAudioEngine = {
             this._thrusterOsc2.frequency.setTargetAtTime(cfg.base2 * pitchShift, t, 0.05);
             this._thrusterFilter.frequency.setTargetAtTime(cfg.filter * (isBoosting ? 1.6 : 1.0), t, 0.05);
             
-            const targetGain = cfg.gain * (typeof sfxVolume !== 'undefined' ? sfxVolume : 0.8) * (0.4 + speedRatio * 0.6);
+            const duck = (typeof sfxDuckingMultiplier !== 'undefined') ? sfxDuckingMultiplier : 1.0;
+            const targetGain = cfg.gain * (typeof sfxVolume !== 'undefined' ? sfxVolume : 0.8) * duck * (0.4 + speedRatio * 0.6);
             this._thrusterGain.gain.setTargetAtTime(targetGain, t, 0.05);
         }
 

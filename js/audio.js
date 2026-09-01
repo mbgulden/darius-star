@@ -54,20 +54,102 @@ const SFX_SAMPLE_MAP = {
     'shield_hit':      'shield_hit.mp3',
 };
 
+// Calibrated baseline gains for preloaded samples (UI interaction sounds softened significantly)
+const SFX_SAMPLE_VOL = {
+    'menu_click':      0.08,
+    'menu_select':     0.06,
+    'ui_hover':        0.035,
+    'ui_click':        0.08,
+    'ui_select':       0.06,
+    'transition_click': 0.05,
+    'shoot':           0.38,
+    'hit':             0.42,
+    'explosion':       0.48,
+    'powerup':         0.32,
+    'laser_charge':    0.32,
+    'laser_fire':      0.42,
+    'siren':           0.28,
+    'victory_fanfare': 0.42,
+    'shield_hit':      0.38
+};
+
 let sfxSampleBuffers = {};      // type → AudioBuffer
 let sfxSamplesLoaded = false;   // true after all fetches settle
 
-// Play a preloaded sample buffer. No-op if buffer missing.
+// --- Dynamic SFX Ducking State & Master SFX Bus ---
+let sfxMasterGain = null;
+let sfxDuckingMultiplier = 1.0;
+
+function getSfxDestination(isUI = false) {
+    if (!audioCtx) return null;
+    if (isUI) {
+        return audioCtx.destination;
+    }
+    if (!sfxMasterGain) {
+        try {
+            sfxMasterGain = audioCtx.createGain();
+            sfxMasterGain.gain.setValueAtTime(sfxDuckingMultiplier, audioCtx.currentTime);
+            sfxMasterGain.connect(audioCtx.destination);
+        } catch(e) {
+            return audioCtx.destination;
+        }
+    }
+    return sfxMasterGain;
+}
+
+/**
+ * Smoothly duck all gameplay SFX on an exponential easing curve during comms dialogue.
+ * @param {number} targetMultiplier - volume target (default 0.35 = -65%)
+ * @param {number} duration - transition duration in seconds (default 0.35)
+ */
+function duckSFX(targetMultiplier = 0.35, duration = 0.35) {
+    const target = Math.max(0.05, Math.min(1.0, (typeof targetMultiplier === 'number') ? targetMultiplier : 0.35));
+    const dur = (typeof duration === 'number') ? duration : 0.35;
+    sfxDuckingMultiplier = target;
+    
+    if (audioCtx) {
+        getSfxDestination(false);
+        if (sfxMasterGain && sfxMasterGain.gain) {
+            const now = audioCtx.currentTime;
+            sfxMasterGain.gain.cancelScheduledValues(now);
+            sfxMasterGain.gain.setValueAtTime(sfxMasterGain.gain.value, now);
+            sfxMasterGain.gain.setTargetAtTime(target, now, Math.max(0.05, dur * 0.35));
+        }
+    }
+}
+
+/**
+ * Smoothly restore gameplay SFX volume on an exponential easing curve when comms chatter finishes.
+ * @param {number} duration - transition duration in seconds (default 0.55)
+ */
+function unduckSFX(duration = 0.55) {
+    const dur = (typeof duration === 'number') ? duration : 0.55;
+    sfxDuckingMultiplier = 1.0;
+
+    if (audioCtx) {
+        getSfxDestination(false);
+        if (sfxMasterGain && sfxMasterGain.gain) {
+            const now = audioCtx.currentTime;
+            sfxMasterGain.gain.cancelScheduledValues(now);
+            sfxMasterGain.gain.setValueAtTime(sfxMasterGain.gain.value, now);
+            sfxMasterGain.gain.setTargetAtTime(1.0, now, Math.max(0.05, dur * 0.35));
+        }
+    }
+}
+
+// Play a preloaded sample buffer with calibrated volume and ducking routing.
 function playSample(type, volMultiplier) {
     const buffer = sfxSampleBuffers[type];
     if (!buffer || !audioCtx) return;
     try {
+        const isUI = (type === 'menu_click' || type === 'menu_select' || type === 'ui_hover' || type === 'ui_click' || type === 'ui_select' || type === 'transition_click');
         const source = audioCtx.createBufferSource();
         source.buffer = buffer;
         const gain = audioCtx.createGain();
-        gain.gain.setValueAtTime(0.5 * (volMultiplier || 1), audioCtx.currentTime);
+        const baseLevel = SFX_SAMPLE_VOL[type] !== undefined ? SFX_SAMPLE_VOL[type] : 0.35;
+        gain.gain.setValueAtTime(baseLevel * (volMultiplier || 1), audioCtx.currentTime);
         source.connect(gain);
-        gain.connect(audioCtx.destination);
+        gain.connect(getSfxDestination(isUI));
         source.start();
     } catch(e) {
         // Silently fall through — synth fallback handles it
@@ -167,7 +249,7 @@ function startEngineHum() {
         engineHumGain.gain.value = 0;
         engineHumOsc.connect(engineHumFilter);
         engineHumFilter.connect(engineHumGain);
-        engineHumGain.connect(audioCtx.destination);
+        engineHumGain.connect(getSfxDestination(false) || audioCtx.destination);
         engineHumOsc.start();
         engineHumActive = true;
     } catch(e) {
@@ -178,7 +260,8 @@ function startEngineHum() {
 function updateEngineHum(speedPct) {
     if (!engineHumActive || !engineHumOsc || !engineHumGain || !engineHumFilter) return;
     try {
-        const volMultiplier = masterVolume * sfxVolume;
+        const duck = (typeof sfxDuckingMultiplier !== 'undefined') ? sfxDuckingMultiplier : 1.0;
+        const volMultiplier = masterVolume * sfxVolume * duck;
         // Pitch rises with speed: 55Hz idle → 110Hz at max speed
         const pitch = 55 + (speedPct * 55);
         engineHumOsc.frequency.setTargetAtTime(pitch, audioCtx.currentTime, 0.1);
@@ -222,7 +305,9 @@ function playSound(type, params) {
         }
     } catch(e) { /* fall through to synth */ }
     try {
-        const volMultiplier = masterVolume * sfxVolume;
+        const isUI = (type === 'menu_click' || type === 'menu_select' || type === 'ui_hover' || type === 'ui_click' || type === 'ui_select' || type === 'radio_squelch_in' || type === 'radio_squelch_out');
+        const sfxDest = getSfxDestination(isUI);
+        const volMultiplier = (typeof masterVolume !== 'undefined' ? masterVolume : 0.8) * (typeof sfxVolume !== 'undefined' ? sfxVolume : 0.8);
         const p = params || {};
         
         // Helper to create white noise buffer
@@ -244,7 +329,7 @@ function playSound(type, params) {
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
             osc.connect(gain);
-            gain.connect(audioCtx.destination);
+            gain.connect(sfxDest);
             
             // Base laser: sawtooth with descending pitch
             osc.type = wl >= 4 ? 'square' : (wl >= 3 ? 'sawtooth' : 'sawtooth');
@@ -266,7 +351,7 @@ function playSound(type, params) {
                 subGain.gain.setValueAtTime(0.05 * volMultiplier, audioCtx.currentTime);
                 subGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
                 subOsc.connect(subGain);
-                subGain.connect(audioCtx.destination);
+                subGain.connect(sfxDest);
                 subOsc.start();
                 subOsc.stop(audioCtx.currentTime + 0.15);
             }
@@ -281,7 +366,7 @@ function playSound(type, params) {
                 harmGain.gain.setValueAtTime(0.03 * volMultiplier, audioCtx.currentTime);
                 harmGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.08);
                 harmOsc.connect(harmGain);
-                harmGain.connect(audioCtx.destination);
+                harmGain.connect(sfxDest);
                 harmOsc.start();
                 harmOsc.stop(audioCtx.currentTime + 0.08);
             }
@@ -296,7 +381,7 @@ function playSound(type, params) {
                 chirpGain.gain.setValueAtTime(0.02 * volMultiplier, audioCtx.currentTime);
                 chirpGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.04);
                 chirpOsc.connect(chirpGain);
-                chirpGain.connect(audioCtx.destination);
+                chirpGain.connect(sfxDest);
                 chirpOsc.start();
                 chirpOsc.stop(audioCtx.currentTime + 0.04);
             }
@@ -304,7 +389,7 @@ function playSound(type, params) {
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
             osc.connect(gain);
-            gain.connect(audioCtx.destination);
+            gain.connect(sfxDest);
             osc.type = 'triangle';
             osc.frequency.setValueAtTime(140, audioCtx.currentTime);
             osc.frequency.exponentialRampToValueAtTime(30, audioCtx.currentTime + 0.1);
@@ -317,7 +402,7 @@ function playSound(type, params) {
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
             osc.connect(gain);
-            gain.connect(audioCtx.destination);
+            gain.connect(sfxDest);
             osc.type = 'square';
             osc.frequency.setValueAtTime(600, audioCtx.currentTime);
             osc.frequency.exponentialRampToValueAtTime(200, audioCtx.currentTime + 0.06);
@@ -329,7 +414,7 @@ function playSound(type, params) {
             const pingOsc = audioCtx.createOscillator();
             const pingGain = audioCtx.createGain();
             pingOsc.connect(pingGain);
-            pingGain.connect(audioCtx.destination);
+            pingGain.connect(sfxDest);
             pingOsc.type = 'sine';
             pingOsc.frequency.setValueAtTime(1800, audioCtx.currentTime);
             pingOsc.frequency.exponentialRampToValueAtTime(800, audioCtx.currentTime + 0.04);
@@ -342,7 +427,7 @@ function playSound(type, params) {
             const crackOsc = audioCtx.createOscillator();
             const crackGain = audioCtx.createGain();
             crackOsc.connect(crackGain);
-            crackGain.connect(audioCtx.destination);
+            crackGain.connect(sfxDest);
             crackOsc.type = 'sawtooth';
             crackOsc.frequency.setValueAtTime(180, audioCtx.currentTime);
             crackOsc.frequency.exponentialRampToValueAtTime(20, audioCtx.currentTime + 0.25);
@@ -373,9 +458,9 @@ function playSound(type, params) {
             
             rumbleNoise.connect(rumbleFilter);
             rumbleFilter.connect(rumbleNoiseGain);
-            rumbleNoiseGain.connect(audioCtx.destination);
+            rumbleNoiseGain.connect(sfxDest);
             rumbleOsc.connect(rumbleOscGain);
-            rumbleOscGain.connect(audioCtx.destination);
+            rumbleOscGain.connect(sfxDest);
             
             rumbleNoise.start(audioCtx.currentTime + rumbleDelay);
             rumbleOsc.start(audioCtx.currentTime + rumbleDelay);
@@ -385,7 +470,7 @@ function playSound(type, params) {
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
             osc.connect(gain);
-            gain.connect(audioCtx.destination);
+            gain.connect(sfxDest);
             osc.type = 'sine';
             osc.frequency.setValueAtTime(280, audioCtx.currentTime);
             osc.frequency.linearRampToValueAtTime(520, audioCtx.currentTime + 0.08);
@@ -398,7 +483,7 @@ function playSound(type, params) {
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
             osc.connect(gain);
-            gain.connect(audioCtx.destination);
+            gain.connect(sfxDest);
             osc.type = 'sawtooth';
             osc.frequency.setValueAtTime(350, audioCtx.currentTime);
             osc.frequency.linearRampToValueAtTime(450, audioCtx.currentTime + 0.2);
@@ -411,7 +496,7 @@ function playSound(type, params) {
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
             osc.connect(gain);
-            gain.connect(audioCtx.destination);
+            gain.connect(sfxDest);
             osc.type = 'sine';
             osc.frequency.setValueAtTime(100, audioCtx.currentTime);
             osc.frequency.exponentialRampToValueAtTime(1000, audioCtx.currentTime + 1.2);
@@ -423,7 +508,7 @@ function playSound(type, params) {
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
             osc.connect(gain);
-            gain.connect(audioCtx.destination);
+            gain.connect(sfxDest);
             osc.type = 'sawtooth';
             osc.frequency.setValueAtTime(120, audioCtx.currentTime);
             osc.frequency.linearRampToValueAtTime(80, audioCtx.currentTime + 1.5);
@@ -435,38 +520,38 @@ function playSound(type, params) {
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
             osc.connect(gain);
-            gain.connect(audioCtx.destination);
+            gain.connect(sfxDest);
             osc.type = 'sine';
-            osc.frequency.setValueAtTime(600, audioCtx.currentTime);
-            osc.frequency.exponentialRampToValueAtTime(300, audioCtx.currentTime + 0.05);
-            gain.gain.setValueAtTime(0.05 * volMultiplier, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
+            osc.frequency.setValueAtTime(520, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(380, audioCtx.currentTime + 0.04);
+            gain.gain.setValueAtTime(0.012 * volMultiplier, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.04);
             osc.start();
-            osc.stop(audioCtx.currentTime + 0.05);
+            osc.stop(audioCtx.currentTime + 0.04);
         } else if (type === 'menu_click') {
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
             osc.connect(gain);
-            gain.connect(audioCtx.destination);
+            gain.connect(sfxDest);
             osc.type = 'sine';
-            osc.frequency.setValueAtTime(400, audioCtx.currentTime);
-            osc.frequency.linearRampToValueAtTime(800, audioCtx.currentTime + 0.08);
-            gain.gain.setValueAtTime(0.08 * volMultiplier, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.08);
+            osc.frequency.setValueAtTime(360, audioCtx.currentTime);
+            osc.frequency.linearRampToValueAtTime(640, audioCtx.currentTime + 0.05);
+            gain.gain.setValueAtTime(0.016 * volMultiplier, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.05);
             osc.start();
-            osc.stop(audioCtx.currentTime + 0.08);
+            osc.stop(audioCtx.currentTime + 0.05);
         } else if (type === 'ui_hover') {
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
             osc.connect(gain);
-            gain.connect(audioCtx.destination);
+            gain.connect(sfxDest);
             osc.type = 'sine';
-            osc.frequency.setValueAtTime(800, audioCtx.currentTime);
-            osc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.03);
-            gain.gain.setValueAtTime(0.03 * volMultiplier, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.03);
+            osc.frequency.setValueAtTime(750, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(950, audioCtx.currentTime + 0.025);
+            gain.gain.setValueAtTime(0.006 * volMultiplier, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.025);
             osc.start();
-            osc.stop(audioCtx.currentTime + 0.03);
+            osc.stop(audioCtx.currentTime + 0.025);
         } else if (type === 'radio_squelch_in') {
             const osc1 = audioCtx.createOscillator();
             const osc2 = audioCtx.createOscillator();
@@ -483,23 +568,23 @@ function playSound(type, params) {
             osc2.frequency.setValueAtTime(1100, audioCtx.currentTime);
             osc2.frequency.setValueAtTime(880, audioCtx.currentTime + 0.025);
 
-            gain.gain.setValueAtTime(0.08 * volMultiplier, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
+            gain.gain.setValueAtTime(0.022 * volMultiplier, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.05);
 
             filter.type = 'bandpass';
             filter.frequency.setValueAtTime(3200, audioCtx.currentTime);
             filter.Q.setValueAtTime(3.0, audioCtx.currentTime);
 
-            noiseGain.gain.setValueAtTime(0.05 * volMultiplier, audioCtx.currentTime);
-            noiseGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.06);
+            noiseGain.gain.setValueAtTime(0.015 * volMultiplier, audioCtx.currentTime);
+            noiseGain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.06);
 
             osc1.connect(gain);
             osc2.connect(gain);
-            gain.connect(audioCtx.destination);
+            gain.connect(sfxDest);
 
             noise.connect(filter);
             filter.connect(noiseGain);
-            noiseGain.connect(audioCtx.destination);
+            noiseGain.connect(sfxDest);
 
             osc1.start();
             osc2.start();
@@ -513,20 +598,20 @@ function playSound(type, params) {
             osc.type = 'sine';
             osc.frequency.setValueAtTime(1200, audioCtx.currentTime);
             osc.frequency.exponentialRampToValueAtTime(320, audioCtx.currentTime + 0.035);
-            gain.gain.setValueAtTime(0.06 * volMultiplier, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.035);
+            gain.gain.setValueAtTime(0.018 * volMultiplier, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.035);
 
             const clickOsc = audioCtx.createOscillator();
             const clickGain = audioCtx.createGain();
             clickOsc.type = 'square';
             clickOsc.frequency.setValueAtTime(180, audioCtx.currentTime);
-            clickGain.gain.setValueAtTime(0.07 * volMultiplier, audioCtx.currentTime);
-            clickGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.015);
+            clickGain.gain.setValueAtTime(0.015 * volMultiplier, audioCtx.currentTime);
+            clickGain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.015);
 
             osc.connect(gain);
-            gain.connect(audioCtx.destination);
+            gain.connect(sfxDest);
             clickOsc.connect(clickGain);
-            clickGain.connect(audioCtx.destination);
+            clickGain.connect(sfxDest);
 
             osc.start();
             clickOsc.start();
@@ -545,7 +630,7 @@ function playSound(type, params) {
                 gainNode.gain.setValueAtTime(0.05 * volMultiplier, noteTime);
                 gainNode.gain.exponentialRampToValueAtTime(0.001, noteTime + durations[idx]);
                 oscNode.connect(gainNode);
-                gainNode.connect(audioCtx.destination);
+                gainNode.connect(sfxDest);
                 oscNode.start(noteTime);
                 oscNode.stop(noteTime + durations[idx]);
                 accumTime += durations[idx] * 0.8;
@@ -559,7 +644,7 @@ function playSound(type, params) {
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
             osc.connect(gain);
-            gain.connect(audioCtx.destination);
+            gain.connect(sfxDest);
             osc.type = 'sine';
             const startFreq = enemyType === 'boss' ? 120 : (enemyType === 'heavy' ? 200 : 300);
             const peakFreq = enemyType === 'boss' ? 400 : (enemyType === 'heavy' ? 600 : 800);
@@ -584,7 +669,7 @@ function playSound(type, params) {
                 gain.gain.setValueAtTime(0.06 * volMultiplier, noteTime);
                 gain.gain.exponentialRampToValueAtTime(0.001, noteTime + 0.12);
                 osc.connect(gain);
-                gain.connect(audioCtx.destination);
+                gain.connect(sfxDest);
                 osc.start(noteTime);
                 osc.stop(noteTime + 0.12);
             });
@@ -597,7 +682,7 @@ function playSound(type, params) {
             bassGain.gain.setValueAtTime(0.10 * volMultiplier, audioCtx.currentTime);
             bassGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
             bassOsc.connect(bassGain);
-            bassGain.connect(audioCtx.destination);
+            bassGain.connect(sfxDest);
             bassOsc.start();
             bassOsc.stop(audioCtx.currentTime + 0.3);
         } else if (type === 'shield_break') {
@@ -615,7 +700,7 @@ function playSound(type, params) {
                 gain.gain.exponentialRampToValueAtTime(0.001, shardTime + 0.04);
                 noise.connect(filter);
                 filter.connect(gain);
-                gain.connect(audioCtx.destination);
+                gain.connect(sfxDest);
                 noise.start(shardTime);
                 noise.stop(shardTime + 0.04);
             }
@@ -628,7 +713,7 @@ function playSound(type, params) {
             whineGain.gain.setValueAtTime(0.10 * volMultiplier, audioCtx.currentTime + 0.05);
             whineGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.6);
             whineOsc.connect(whineGain);
-            whineGain.connect(audioCtx.destination);
+            whineGain.connect(sfxDest);
             whineOsc.start(audioCtx.currentTime + 0.05);
             whineOsc.stop(audioCtx.currentTime + 0.6);
         } else if (type === 'enemy_shoot') {
@@ -637,7 +722,7 @@ function playSound(type, params) {
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
             osc.connect(gain);
-            gain.connect(audioCtx.destination);
+            gain.connect(sfxDest);
             
             if (enemyType === 'scout' || enemyType === 'interceptor') {
                 // Light enemies: quick high pew
@@ -667,7 +752,7 @@ function playSound(type, params) {
                 subGain.gain.setValueAtTime(0.06 * volMultiplier, audioCtx.currentTime);
                 subGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.2);
                 subOsc.connect(subGain);
-                subGain.connect(audioCtx.destination);
+                subGain.connect(sfxDest);
                 subOsc.start();
                 subOsc.stop(audioCtx.currentTime + 0.2);
             } else if (enemyType === 'boss' || enemyType === 'boss_minion') {
@@ -691,7 +776,7 @@ function playSound(type, params) {
                 noiseGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
                 noise.connect(noiseFilter);
                 noiseFilter.connect(noiseGain);
-                noiseGain.connect(audioCtx.destination);
+                noiseGain.connect(sfxDest);
                 noise.start();
                 noise.stop(audioCtx.currentTime + 0.3);
             } else {
@@ -722,7 +807,7 @@ function playSound(type, params) {
             gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 3.0);
             osc.connect(filter);
             filter.connect(gain);
-            gain.connect(audioCtx.destination);
+            gain.connect(sfxDest);
             osc.start();
             osc.stop(audioCtx.currentTime + 3.0);
         } else if (type === 'sfx_bioluminescent_crackle') {
@@ -736,7 +821,7 @@ function playSound(type, params) {
                 gain.gain.setValueAtTime(0.03 * volMultiplier, clickTime);
                 gain.gain.exponentialRampToValueAtTime(0.001, clickTime + 0.015);
                 osc.connect(gain);
-                gain.connect(audioCtx.destination);
+                gain.connect(sfxDest);
                 osc.start(clickTime);
                 osc.stop(clickTime + 0.015);
             }
@@ -756,7 +841,7 @@ function playSound(type, params) {
                 gain.gain.exponentialRampToValueAtTime(0.001, thumpTime + 0.12);
                 osc.connect(filter);
                 filter.connect(gain);
-                gain.connect(audioCtx.destination);
+                gain.connect(sfxDest);
                 osc.start(thumpTime);
                 osc.stop(thumpTime + 0.12);
             });
@@ -777,7 +862,7 @@ function playSound(type, params) {
             gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 2.0);
             osc.connect(filter);
             filter.connect(gain);
-            gain.connect(audioCtx.destination);
+            gain.connect(sfxDest);
             osc.start();
             osc.stop(audioCtx.currentTime + 2.0);
         } else if (type === 'sfx_ghost_whale_song') {
@@ -797,7 +882,7 @@ function playSound(type, params) {
             gain.gain.setValueAtTime(0.08 * volMultiplier, audioCtx.currentTime);
             gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 2.2);
             osc.connect(gain);
-            gain.connect(audioCtx.destination);
+            gain.connect(sfxDest);
             lfo.start();
             osc.start();
             lfo.stop(audioCtx.currentTime + 2.2);
@@ -813,7 +898,7 @@ function playSound(type, params) {
             gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 1.5);
             noise.connect(filter);
             filter.connect(gain);
-            gain.connect(audioCtx.destination);
+            gain.connect(sfxDest);
             noise.start();
             noise.stop(audioCtx.currentTime + 1.5);
         }
@@ -828,7 +913,7 @@ function playSound(type, params) {
             gain.gain.setValueAtTime(0.12 * volMultiplier, audioCtx.currentTime);
             gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 2.5);
             osc.connect(gain);
-            gain.connect(audioCtx.destination);
+            gain.connect(sfxDest);
             osc.start();
             osc.stop(audioCtx.currentTime + 2.5);
         } else if (type === 'sfx_embryonic_pulse') {
@@ -840,7 +925,7 @@ function playSound(type, params) {
             gain.gain.setValueAtTime(0.18 * volMultiplier, audioCtx.currentTime);
             gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.25);
             osc.connect(gain);
-            gain.connect(audioCtx.destination);
+            gain.connect(sfxDest);
             osc.start();
             osc.stop(audioCtx.currentTime + 0.25);
         } else if (type === 'sfx_cryo_shatter') {
@@ -853,7 +938,7 @@ function playSound(type, params) {
                 gain.gain.setValueAtTime(0.05 * volMultiplier, noteTime);
                 gain.gain.exponentialRampToValueAtTime(0.001, noteTime + 0.15);
                 osc.connect(gain);
-                gain.connect(audioCtx.destination);
+                gain.connect(sfxDest);
                 osc.start(noteTime);
                 osc.stop(noteTime + 0.15);
             });
@@ -875,7 +960,7 @@ function playSound(type, params) {
             gain.gain.setValueAtTime(0.15 * volMultiplier, audioCtx.currentTime);
             gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 2.8);
             osc.connect(gain);
-            gain.connect(audioCtx.destination);
+            gain.connect(sfxDest);
             lfo.start();
             osc.start();
             lfo.stop(audioCtx.currentTime + 2.8);
@@ -891,7 +976,7 @@ function playSound(type, params) {
                 gain.gain.setValueAtTime(0.04 * volMultiplier, jumpTime);
                 gain.gain.exponentialRampToValueAtTime(0.001, jumpTime + 0.05);
                 osc.connect(gain);
-                gain.connect(audioCtx.destination);
+                gain.connect(sfxDest);
                 osc.start(jumpTime);
                 osc.stop(jumpTime + 0.05);
             }
@@ -910,7 +995,7 @@ function playSound(type, params) {
             gain.gain.setValueAtTime(0.14 * volMultiplier, audioCtx.currentTime);
             gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 2.8);
             osc.connect(gain);
-            gain.connect(audioCtx.destination);
+            gain.connect(sfxDest);
             lfo.start();
             osc.start();
             lfo.stop(audioCtx.currentTime + 2.8);
@@ -929,7 +1014,7 @@ function playSound(type, params) {
             gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 1.5);
             noise.connect(filter);
             filter.connect(gain);
-            gain.connect(audioCtx.destination);
+            gain.connect(sfxDest);
             noise.start();
             noise.stop(audioCtx.currentTime + 1.5);
         } else if (type === 'sfx_navy_radio_static') {
@@ -945,7 +1030,7 @@ function playSound(type, params) {
             gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.6);
             noise.connect(filter);
             filter.connect(gain);
-            gain.connect(audioCtx.destination);
+            gain.connect(sfxDest);
             noise.start();
             noise.stop(audioCtx.currentTime + 0.6);
         } else if (type === 'sfx_decompression_boom') {
@@ -968,10 +1053,10 @@ function playSound(type, params) {
             
             noise.connect(filter);
             filter.connect(noiseGain);
-            noiseGain.connect(audioCtx.destination);
+            noiseGain.connect(sfxDest);
             
             osc.connect(oscGain);
-            oscGain.connect(audioCtx.destination);
+            oscGain.connect(sfxDest);
             
             noise.start();
             osc.start();
@@ -990,7 +1075,7 @@ function playSound(type, params) {
             gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 2.0);
             noise.connect(filter);
             filter.connect(gain);
-            gain.connect(audioCtx.destination);
+            gain.connect(sfxDest);
             noise.start();
             noise.stop(audioCtx.currentTime + 2.0);
         } else if (type === 'sfx_flare_sizzle') {
@@ -1003,7 +1088,7 @@ function playSound(type, params) {
             gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 1.0);
             noise.connect(filter);
             filter.connect(gain);
-            gain.connect(audioCtx.destination);
+            gain.connect(sfxDest);
             noise.start();
             noise.stop(audioCtx.currentTime + 1.0);
         } else if (type === 'sfx_lyra_energy_arcs') {
@@ -1019,7 +1104,7 @@ function playSound(type, params) {
             }
             gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 1.0);
             osc.connect(gain);
-            gain.connect(audioCtx.destination);
+            gain.connect(sfxDest);
             osc.start();
             osc.stop(audioCtx.currentTime + 1.0);
         }
@@ -1038,7 +1123,7 @@ function playSound(type, params) {
             gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 2.5);
             noise.connect(filter);
             filter.connect(gain);
-            gain.connect(audioCtx.destination);
+            gain.connect(sfxDest);
             noise.start();
             noise.stop(audioCtx.currentTime + 2.5);
         } else if (type === 'sfx_singer_weeping') {
@@ -1050,7 +1135,7 @@ function playSound(type, params) {
             gain.gain.setValueAtTime(0.08 * volMultiplier, audioCtx.currentTime);
             gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 1.4);
             osc.connect(gain);
-            gain.connect(audioCtx.destination);
+            gain.connect(sfxDest);
             osc.start();
             osc.stop(audioCtx.currentTime + 1.4);
         } else if (type === 'sfx_data_burst_transfer') {
@@ -1064,7 +1149,7 @@ function playSound(type, params) {
                 gain.gain.setValueAtTime(0.04 * volMultiplier, noteTime);
                 gain.gain.exponentialRampToValueAtTime(0.001, noteTime + 0.12);
                 osc.connect(gain);
-                gain.connect(audioCtx.destination);
+                gain.connect(sfxDest);
                 osc.start(noteTime);
                 osc.stop(noteTime + 0.12);
             });
@@ -1080,7 +1165,7 @@ function playSound(type, params) {
             gain.gain.setValueAtTime(0.12 * volMultiplier, audioCtx.currentTime);
             gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 2.0);
             osc.connect(gain);
-            gain.connect(audioCtx.destination);
+            gain.connect(sfxDest);
             osc.start();
             osc.stop(audioCtx.currentTime + 2.0);
             
@@ -1093,7 +1178,7 @@ function playSound(type, params) {
             beepGain.gain.setValueAtTime(0.03 * volMultiplier, beepTime);
             beepGain.gain.exponentialRampToValueAtTime(0.001, beepTime + 0.08);
             beep.connect(beepGain);
-            beepGain.connect(audioCtx.destination);
+            beepGain.connect(sfxDest);
             beep.start(beepTime);
             beep.stop(beepTime + 0.08);
         } else if (type === 'sfx_crane_whisper') {
@@ -1108,7 +1193,7 @@ function playSound(type, params) {
             gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 1.5);
             noise.connect(filter);
             filter.connect(gain);
-            gain.connect(audioCtx.destination);
+            gain.connect(sfxDest);
             noise.start();
             noise.stop(audioCtx.currentTime + 1.5);
         } else if (type === 'sfx_pressure_door_heartbeat') {
@@ -1122,7 +1207,7 @@ function playSound(type, params) {
             hissGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.5);
             noise.connect(filter);
             filter.connect(hissGain);
-            hissGain.connect(audioCtx.destination);
+            hissGain.connect(sfxDest);
             noise.start();
             noise.stop(audioCtx.currentTime + 0.5);
             
@@ -1137,7 +1222,7 @@ function playSound(type, params) {
                 thumpGain.gain.setValueAtTime(0.22 * volMultiplier, heartbeatTime);
                 thumpGain.gain.exponentialRampToValueAtTime(0.001, heartbeatTime + 0.12);
                 osc.connect(thumpGain);
-                thumpGain.connect(audioCtx.destination);
+                thumpGain.connect(sfxDest);
                 osc.start(heartbeatTime);
                 osc.stop(heartbeatTime + 0.12);
             });
@@ -1156,7 +1241,7 @@ function playSound(type, params) {
             gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 3.0);
             noise.connect(filter);
             filter.connect(gain);
-            gain.connect(audioCtx.destination);
+            gain.connect(sfxDest);
             noise.start();
             noise.stop(audioCtx.currentTime + 3.0);
         } else if (type === 'sfx_hive_seductive_choir') {
@@ -1169,7 +1254,7 @@ function playSound(type, params) {
                 gain.gain.setValueAtTime(0.03 * volMultiplier, audioCtx.currentTime);
                 gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 2.0);
                 osc.connect(gain);
-                gain.connect(audioCtx.destination);
+                gain.connect(sfxDest);
                 osc.start();
                 osc.stop(audioCtx.currentTime + 2.0);
             });
@@ -1192,7 +1277,7 @@ function playSound(type, params) {
             
             osc1.connect(gain);
             osc2.connect(gain);
-            gain.connect(audioCtx.destination);
+            gain.connect(sfxDest);
             osc1.start();
             osc2.start();
             osc1.stop(audioCtx.currentTime + 1.0);
@@ -1209,7 +1294,7 @@ function playSound(type, params) {
             gain.gain.setValueAtTime(0.28 * volMultiplier, audioCtx.currentTime);
             gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 2.5);
             osc.connect(gain);
-            gain.connect(audioCtx.destination);
+            gain.connect(sfxDest);
             osc.start();
             osc.stop(audioCtx.currentTime + 2.5);
         } else if (type === 'sfx_prime_data_clicks') {
@@ -1223,7 +1308,7 @@ function playSound(type, params) {
                 gain.gain.setValueAtTime(0.03 * volMultiplier, clickTime);
                 gain.gain.exponentialRampToValueAtTime(0.001, clickTime + 0.02);
                 osc.connect(gain);
-                gain.connect(audioCtx.destination);
+                gain.connect(sfxDest);
                 osc.start(clickTime);
                 osc.stop(clickTime + 0.02);
             }
@@ -1245,7 +1330,7 @@ function playSound(type, params) {
             
             osc.connect(filter);
             filter.connect(gain);
-            gain.connect(audioCtx.destination);
+            gain.connect(sfxDest);
             osc.start();
             osc.stop(audioCtx.currentTime + 1.8);
         }
@@ -1439,3 +1524,9 @@ const AUDIO_STORY_BEATS = {
     }
 };
 
+
+if (typeof window !== 'undefined') {
+    window.duckSFX = duckSFX;
+    window.unduckSFX = unduckSFX;
+    window.getSfxDestination = getSfxDestination;
+}

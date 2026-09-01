@@ -143,11 +143,14 @@ const VoicePipeline = {
     },
 
     _playStudioAudio(fileUrl, options, reqId) {
-        // Duck BGM
+        // Duck BGM and Battle SFX on smooth natural easing curves
         if (typeof AudioManager !== 'undefined' && typeof AudioManager.duckMusic === 'function') {
-            AudioManager.duckMusic(0.5);
+            AudioManager.duckMusic(0.45, 0.35);
         } else if (typeof VoicePlayback !== 'undefined' && typeof VoicePlayback.duckBGM === 'function') {
-            VoicePlayback.duckBGM(0.65, 0.25);
+            VoicePlayback.duckBGM(0.45, 0.35);
+        }
+        if (typeof duckSFX === 'function') {
+            duckSFX(0.35, 0.35);
         }
 
         const path = fileUrl.startsWith('assets/') ? fileUrl : `assets/audio/voice/${fileUrl}`;
@@ -158,9 +161,12 @@ const VoicePipeline = {
             this._activeSource = null;
             this._currentAudio = null;
             if (typeof AudioManager !== 'undefined' && typeof AudioManager.unduckMusic === 'function') {
-                AudioManager.unduckMusic();
+                AudioManager.unduckMusic(0.55);
             } else if (typeof VoicePlayback !== 'undefined' && typeof VoicePlayback.unduckBGM === 'function') {
-                VoicePlayback.unduckBGM(0.4);
+                VoicePlayback.unduckBGM(0.55);
+            }
+            if (typeof unduckSFX === 'function') {
+                unduckSFX(0.55);
             }
             if (options.onEnd) options.onEnd();
         };
@@ -286,7 +292,12 @@ const VoicePipeline = {
             this._currentAudio = null;
         }
         if (typeof AudioManager !== 'undefined' && typeof AudioManager.unduckMusic === 'function') {
-            AudioManager.unduckMusic();
+            AudioManager.unduckMusic(0.55);
+        } else if (typeof VoicePlayback !== 'undefined' && typeof VoicePlayback.unduckBGM === 'function') {
+            VoicePlayback.unduckBGM(0.55);
+        }
+        if (typeof unduckSFX === 'function') {
+            unduckSFX(0.55);
         }
     },
 

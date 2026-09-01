@@ -736,44 +736,46 @@ const AudioManager = (function() {
     }
 
     /**
-     * Duck BGM volume during active character speech (GRO-4208).
-     * @param {number} multiplier — gain target (default 0.65 = -35%)
-     * @param {number} fadeTime — transition duration in seconds (default 0.25)
+     * Duck BGM volume on a natural easing curve during character comms speech (GRO-4208).
+     * @param {number} multiplier — gain target (default 0.45 = -55%)
+     * @param {number} fadeTime — transition duration in seconds (default 0.35)
      */
     function duckMusic(multiplier, fadeTime) {
-        const target = (typeof multiplier === 'number') ? multiplier : 0.65;
-        const dur = (typeof fadeTime === 'number') ? fadeTime : 0.25;
+        const target = (typeof multiplier === 'number') ? multiplier : 0.45;
+        const dur = (typeof fadeTime === 'number') ? fadeTime : 0.35;
         _speechDuckingMult = target;
 
         if (typeof audioCtx !== 'undefined' && audioCtx && _activeGains.length > 0) {
             const now = audioCtx.currentTime;
             const effectiveVol = _getEffectiveVolume();
+            const timeConst = Math.max(0.05, dur * 0.35);
             _activeGains.forEach(function(gain) {
                 if (gain && gain.gain) {
-                    const currentVal = gain.gain.value;
-                    gain.gain.setValueAtTime(currentVal, now);
-                    gain.gain.linearRampToValueAtTime(effectiveVol, now + dur);
+                    gain.gain.cancelScheduledValues(now);
+                    gain.gain.setValueAtTime(gain.gain.value, now);
+                    gain.gain.setTargetAtTime(effectiveVol, now, timeConst);
                 }
             });
         }
     }
 
     /**
-     * Restore BGM volume after character speech completes (GRO-4208).
-     * @param {number} fadeTime — transition duration in seconds (default 0.4)
+     * Restore BGM volume on a natural easing curve after character speech completes (GRO-4208).
+     * @param {number} fadeTime — transition duration in seconds (default 0.55)
      */
     function unduckMusic(fadeTime) {
-        const dur = (typeof fadeTime === 'number') ? fadeTime : 0.4;
+        const dur = (typeof fadeTime === 'number') ? fadeTime : 0.55;
         _speechDuckingMult = 1.0;
 
         if (typeof audioCtx !== 'undefined' && audioCtx && _activeGains.length > 0) {
             const now = audioCtx.currentTime;
             const effectiveVol = _getEffectiveVolume();
+            const timeConst = Math.max(0.05, dur * 0.35);
             _activeGains.forEach(function(gain) {
                 if (gain && gain.gain) {
-                    const currentVal = gain.gain.value;
-                    gain.gain.setValueAtTime(currentVal, now);
-                    gain.gain.linearRampToValueAtTime(effectiveVol, now + dur);
+                    gain.gain.cancelScheduledValues(now);
+                    gain.gain.setValueAtTime(gain.gain.value, now);
+                    gain.gain.setTargetAtTime(effectiveVol, now, timeConst);
                 }
             });
         }
