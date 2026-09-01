@@ -9,7 +9,12 @@
 
 // --- Briefing State ---
 let activeBriefing = null;
+let _briefingOnComplete = null;
 let briefingCompletedForBiome = {};
+if (typeof window !== 'undefined') {
+    window._briefingHitRegions = { back: { x: 24, y: 14, w: 165, h: 34 }, skip: { x: 611, y: 14, w: 165, h: 34 } };
+    window._briefingHoveredBtn = null;
+}
 
 const BRIEFING_SCENES = {
     biome1: [
@@ -99,21 +104,21 @@ const BRIEFING_SCENES = {
         },
         {
             id: 'briefing_b3_02',
-            speaker: 'Lyra',
-            portrait: 'lyra_reactive',
-            text: "Daddy — it's beautiful. And it's so, so old. It's not evil. It's just... guarding something. Something the Dreamer left behind. Please don't hurt it if you don't have to."
+            speaker: 'Thorne',
+            portrait: 'thorne_neutral',
+            text: "Objective: The Cyber Coelacanth has integrated Precursor cybernetics into its biology. We need the data core embedded in its dorsal plate. You must disable the cybernetic augmentations without destroying the biological specimen."
         },
         {
             id: 'briefing_b3_03',
-            speaker: 'Thorne',
-            portrait: 'thorne_neutral',
-            text: "Objective: Survive. The Coelacanth controls the lair — it can trigger cave-ins, redirect currents, and summon lesser predators. Find its weakness and either neutralize or bypass it."
+            speaker: 'Lyra',
+            portrait: 'lyra_neutral',
+            text: "It's in pain. The machine parts are burning it from the inside. It doesn't want to fight us — it wants the metal out. Please be gentle, Daddy."
         },
         {
             id: 'briefing_b3_04',
-            speaker: 'Darius',
-            portrait: 'darius_neutral',
-            text: "I've faced big fish before. Lyra — if there's a way to get past it without killing it, find it. But if it's us or the fish, the fish loses. Thorne out."
+            speaker: 'Thorne',
+            portrait: 'thorne_neutral',
+            text: "Threats: Cyber Coelacanth — bio-mechanical apex predator. Armored plating, EMP discharge, plasma breath. Aim for the cybernetic nodes. Bring it home in one piece if you can. Thorne out."
         }
     ],
 
@@ -122,19 +127,19 @@ const BRIEFING_SCENES = {
             id: 'briefing_b4_01',
             speaker: 'Thorne',
             portrait: 'thorne_neutral',
-            text: "Mission Control to Nyxa. You've entered the Veil Nebula Drift. High-energy ion plasma is disrupting our long-range radar."
+            text: "Mission Control. Sector 4: Nebula Drift. Ion storm density has reached critical thresholds."
         },
         {
             id: 'briefing_b4_02',
             speaker: 'Lyra',
             portrait: 'lyra_neutral',
-            text: "The nebula gas is singing, Daddy. The plasma wisps are drawing power directly from precursor conduits."
+            text: "The plasma waves are singing, Daddy. Ghost signatures in the dust clouds. Watch the sensor blind spots!"
         },
         {
             id: 'briefing_b4_03',
             speaker: 'Thorne',
             portrait: 'thorne_neutral',
-            text: "Objective: Secure the tachyon navigation gate and eliminate the Warp Striker patrol squadron before they pin us down. Thorne out."
+            text: "Keep your energy shields polarized. Vanguard units deployed ahead. Advance with caution."
         }
     ],
 
@@ -143,19 +148,19 @@ const BRIEFING_SCENES = {
             id: 'briefing_b5_01',
             speaker: 'Thorne',
             portrait: 'thorne_neutral',
-            text: "Mission Control. Sector 5: Saturn Ice Ring. Sub-zero temperatures are stressing the Nyxa's thermal radiators."
+            text: "Mission Control. Sector 5: Sub-Zero Trench. Hull integrity will suffer thermal compression."
         },
         {
             id: 'briefing_b5_02',
             speaker: 'Lyra',
             portrait: 'lyra_neutral',
-            text: "Watch the glacier fields, Daddy! The ice shards are crystalline superconductors. They shatter into explosive fragments!"
+            text: "Glacial spires moving under their own power... they are awake and hunting."
         },
         {
             id: 'briefing_b5_03',
             speaker: 'Thorne',
             portrait: 'thorne_neutral',
-            text: "Objective: Destroy the Cryo Aberration vanguard and clear the thermal fissure for orbital ascent. Thorne out."
+            text: "Maintain engine thrust to prevent freeze-lock. Eliminate cryogenic defenders."
         }
     ],
 
@@ -164,19 +169,19 @@ const BRIEFING_SCENES = {
             id: 'briefing_b6_01',
             speaker: 'Thorne',
             portrait: 'thorne_neutral',
-            text: "Haven-7 to Nyxa. You are entering the Fire Nebula around Betelgeuse. Thermal shielding at maximum load."
+            text: "Sector 6: Magma Vent Stratum. Superheated plasma flows will test your heat sinks to the limit."
         },
         {
             id: 'briefing_b6_02',
             speaker: 'Lyra',
-            portrait: 'lyra_reactive',
-            text: "The magma currents are surging! Magma wasps and pyroclastic golems are converging on our thermal signature!"
+            portrait: 'lyra_neutral',
+            text: "The lava serpents are guarding the thermal relays. High thermal spikes detected ahead!"
         },
         {
             id: 'briefing_b6_03',
             speaker: 'Thorne',
             portrait: 'thorne_neutral',
-            text: "Objective: Punch through the magma furnace cruisers and extract the GLYPH-6 Thermal Catalyst. Move fast! Thorne out."
+            text: "Dodge eruptions, prioritize thermal vents, and punch through to the lower mantle."
         }
     ],
 
@@ -185,19 +190,19 @@ const BRIEFING_SCENES = {
             id: 'briefing_b7_01',
             speaker: 'Thorne',
             portrait: 'thorne_neutral',
-            text: "Mission Control. Storm Belt entry confirmed. Heavy lightning arcs and ion disruption detected across all frequencies."
+            text: "Sector 7: Tempest Chasm. Lightning discharge grid active throughout the sector."
         },
         {
             id: 'briefing_b7_02',
-            speaker: 'Naya',
-            portrait: 'naya_neutral',
-            text: "Naya here! Atmospheric turbulence is off the charts, Darius! I've got your flank covered from the thunderheads!"
+            speaker: 'Lyra',
+            portrait: 'lyra_neutral',
+            text: "Electric archons are synchronizing their energy webs. Keep moving or get grounded!"
         },
         {
             id: 'briefing_b7_03',
             speaker: 'Thorne',
             portrait: 'thorne_neutral',
-            text: "Objective: Neutralize the Storm Sentinel's EMP array before it disables our primary shields. Thorne out."
+            text: "Overload the lightning conduits and secure the passage."
         }
     ],
 
@@ -206,19 +211,19 @@ const BRIEFING_SCENES = {
             id: 'briefing_b8_01',
             speaker: 'Thorne',
             portrait: 'thorne_neutral',
-            text: "Haven-7 to Star. You have arrived at the Derelict Navy Fleet graveyard. Centuries of ghost hulls drifting in decaying orbit."
+            text: "Sector 8: Derelict Fleet Graveyard. Ancient warship hulls drifting in tight formation."
         },
         {
             id: 'briefing_b8_02',
-            speaker: 'Cross',
-            portrait: 'cross_neutral',
-            text: "Automated Navy defense turrets are still active on dead frigate hulls. Targeting subroutines set to kill on sight."
+            speaker: 'Lyra',
+            portrait: 'lyra_neutral',
+            text: "Automated defense turrets are still online after centuries... they think the war never ended."
         },
         {
             id: 'briefing_b8_03',
             speaker: 'Thorne',
             portrait: 'thorne_neutral',
-            text: "Objective: Salvage the master navy encryption keys from the flagship dreadnought. Do not let those ghost fighters surround you. Thorne out."
+            text: "Navigate the wreckage, neutralize automated sentries, and extract the telemetry logs."
         }
     ],
 
@@ -227,19 +232,19 @@ const BRIEFING_SCENES = {
             id: 'briefing_b9_01',
             speaker: 'Thorne',
             portrait: 'thorne_neutral',
-            text: "Mission Control. Extreme biological bio-hazard alert. You are inside the Xenomorph Hive breeding cavern on Proxima b."
+            text: "Sector 9: Xenomorph Hive Cluster. Bio-luminescent organic structures choking the rift."
         },
         {
             id: 'briefing_b9_02',
             speaker: 'Lyra',
-            portrait: 'lyra_somber',
-            text: "The hive mind is awake... It's crying out in agony, Daddy. The precursor corruption has mutated every single organism."
+            portrait: 'lyra_neutral',
+            text: "The Hive Queen knows we are here. A million voices crying out in unison... it hurts!"
         },
         {
             id: 'briefing_b9_03',
             speaker: 'Thorne',
             portrait: 'thorne_neutral',
-            text: "Objective: Destroy the Hive Mind Node and sever the neural infestation before it spreads to Haven-7. Thorne out."
+            text: "Sterilize bio-pods and breach the hive core."
         }
     ],
 
@@ -277,6 +282,7 @@ const BRIEFING_SCENES = {
  * @param {function} onComplete - callback when briefing finishes or is skipped
  */
 function startBriefing(biome, onComplete) {
+    _briefingOnComplete = onComplete;
     const key = typeof biome === 'number' ? `biome${biome}` : biome;
     const lines = BRIEFING_SCENES[key];
 
@@ -295,7 +301,13 @@ function startBriefing(biome, onComplete) {
         onComplete: idx === lines.length - 1 ? () => {
             briefingCompletedForBiome[key] = true;
             activeBriefing = null;
-            if (onComplete) onComplete();
+            if (_briefingOnComplete) {
+                const cb = _briefingOnComplete;
+                _briefingOnComplete = null;
+                cb();
+            } else if (typeof transitionToScreen === 'function' && typeof SCREENS !== 'undefined') {
+                transitionToScreen(SCREENS.PLAYING);
+            }
         } : undefined
     }));
 
@@ -303,27 +315,124 @@ function startBriefing(biome, onComplete) {
 }
 
 /**
- * Skip the current briefing entirely (jump to gameplay).
+ * Auto-saves progress and returns from Briefing to Ship Selection / Hangar.
  */
-function skipBriefing() {
-    if (activeBriefing) {
-        activeBriefing = null;
+function saveAndReturnFromBriefing() {
+    if (typeof playSound === 'function') playSound('menu_click');
+
+    // 1. Auto-save current progress to active campaign save slot
+    if (typeof window !== 'undefined' && window.CampaignSave) {
+        try {
+            const activeSlot = parseInt(localStorage.getItem('dariusStar_activeSlot') || '0');
+            const us = window.DS_UpgradeSystem;
+            const currentSave = CampaignSave.load(activeSlot) || CampaignSave.createBlank();
+            currentSave.biome = (typeof LevelManager !== 'undefined') ? LevelManager.biome : 1;
+            currentSave.level = (typeof LevelManager !== 'undefined') ? LevelManager.level : 1;
+            currentSave.ship = (typeof selectedShip !== 'undefined') ? selectedShip : (currentSave.ship || 'interceptor');
+            if (us && us.state) {
+                currentSave.scrap = us.state.scrap;
+                currentSave.upgrades = { ...us.state.upgrades };
+            }
+            currentSave.timestamp = Date.now();
+            CampaignSave.save(activeSlot, currentSave);
+        } catch (err) {
+            console.warn('[Briefing] Save failed on return:', err);
+        }
+    }
+
+    // 2. Stop voice playback
+    if (typeof VoicePipeline !== 'undefined' && VoicePipeline && typeof VoicePipeline.stop === 'function') {
+        VoicePipeline.stop();
+    }
+    if (typeof VoicePlayback !== 'undefined' && VoicePlayback && typeof VoicePlayback.stop === 'function') {
+        VoicePlayback.stop();
+    }
+
+    // 3. Clear active briefing and hide dialogue DOM HUD
+    activeBriefing = null;
+    _briefingOnComplete = null;
+    if (typeof document !== 'undefined') {
+        const hud = document.getElementById('lyra-hud');
+        if (hud) {
+            hud.style.display = 'none';
+            hud.classList.remove('lyra-hud-active');
+        }
+    }
+
+    // 4. Return to Ship Selection screen
+    if (typeof transitionToScreen === 'function' && typeof SCREENS !== 'undefined') {
+        transitionToScreen(SCREENS.SHIP_SELECT);
     }
 }
 
 /**
- * Handle click input for briefing (delegates to activeBriefing.next()).
+ * Skip the current briefing entirely (jump to gameplay).
  */
-function handleBriefingClick() {
+function skipBriefing() {
+    if (typeof playSound === 'function') playSound('menu_click');
+    if (typeof VoicePipeline !== 'undefined' && VoicePipeline && typeof VoicePipeline.stop === 'function') {
+        VoicePipeline.stop();
+    }
+    if (typeof VoicePlayback !== 'undefined' && VoicePlayback && typeof VoicePlayback.stop === 'function') {
+        VoicePlayback.stop();
+    }
+    const key = (typeof LevelManager !== 'undefined') ? `biome${LevelManager.biome}` : 'biome1';
+    briefingCompletedForBiome[key] = true;
+    activeBriefing = null;
+
+    if (typeof document !== 'undefined') {
+        const hud = document.getElementById('lyra-hud');
+        if (hud) {
+            hud.style.display = 'none';
+            hud.classList.remove('lyra-hud-active');
+        }
+    }
+
+    if (_briefingOnComplete) {
+        const cb = _briefingOnComplete;
+        _briefingOnComplete = null;
+        cb();
+    } else if (typeof transitionToScreen === 'function' && typeof SCREENS !== 'undefined') {
+        transitionToScreen(SCREENS.PLAYING);
+    }
+}
+
+/**
+ * Handle click input for briefing with button hit testing.
+ */
+function handleBriefingClick(x, y) {
+    if (typeof x === 'number' && typeof y === 'number') {
+        const regions = window._briefingHitRegions || {};
+        if (regions.back && x >= regions.back.x && x <= regions.back.x + regions.back.w &&
+            y >= regions.back.y && y <= regions.back.y + regions.back.h) {
+            saveAndReturnFromBriefing();
+            return;
+        }
+        if (regions.skip && x >= regions.skip.x && x <= regions.skip.x + regions.skip.w &&
+            y >= regions.skip.y && y <= regions.skip.y + regions.skip.h) {
+            skipBriefing();
+            return;
+        }
+    }
     if (activeBriefing) {
         activeBriefing.next();
     }
 }
 
 /**
- * Handle keyboard input for briefing (delegates to activeBriefing.handleKey()).
+ * Handle keyboard input for briefing (delegates to activeBriefing.handleKey() or returns to hangar).
  */
 function handleBriefingKey(key) {
+    if (!key) return;
+    const k = key.toLowerCase();
+    if (k === 'escape' || k === 'b' || k === 'backspace') {
+        saveAndReturnFromBriefing();
+        return;
+    }
+    if (k === 's') {
+        skipBriefing();
+        return;
+    }
     if (activeBriefing) {
         activeBriefing.handleKey(key);
     }
@@ -353,24 +462,91 @@ function drawBriefing() {
     const biome = (typeof LevelManager !== 'undefined') ? LevelManager.biome : 1;
     const biomeName = (typeof BIOME_DATA !== 'undefined' && BIOME_DATA.names && BIOME_DATA.names[biome]) ? BIOME_DATA.names[biome] : `BIOME ${biome}`;
 
-    // Top Header
+    // Define Hit Regions for interactive buttons
+    const backBtn = { x: 24, y: 14, w: 165, h: 34 };
+    const skipBtn = { x: canvas.width - 189, y: 14, w: 165, h: 34 };
+    window._briefingHitRegions = { back: backBtn, skip: skipBtn };
+
+    const hovered = window._briefingHoveredBtn;
+
+    // 1. Back / Save & Return Button (Top Left)
+    ctx.save();
+    const isBackHovered = (hovered === 'back');
+    ctx.fillStyle = isBackHovered ? 'rgba(0, 255, 255, 0.25)' : 'rgba(4, 14, 28, 0.90)';
+    ctx.fillRect(backBtn.x, backBtn.y, backBtn.w, backBtn.h);
+    ctx.strokeStyle = isBackHovered ? '#00ffff' : 'rgba(0, 200, 255, 0.55)';
+    ctx.lineWidth = isBackHovered ? 2 : 1.2;
+    if (isBackHovered) {
+        ctx.shadowColor = '#00ffff';
+        ctx.shadowBlur = 10;
+    }
+    ctx.strokeRect(backBtn.x, backBtn.y, backBtn.w, backBtn.h);
+    ctx.shadowBlur = 0;
+
+    // Corner tech notches on Back button
+    ctx.fillStyle = isBackHovered ? '#00ffff' : '#00aacc';
+    ctx.fillRect(backBtn.x, backBtn.y, 4, 4);
+    ctx.fillRect(backBtn.x + backBtn.w - 4, backBtn.y, 4, 4);
+    ctx.fillRect(backBtn.x, backBtn.y + backBtn.h - 4, 4, 4);
+    ctx.fillRect(backBtn.x + backBtn.w - 4, backBtn.y + backBtn.h - 4, 4, 4);
+
+    ctx.textAlign = 'center';
+    ctx.fillStyle = isBackHovered ? '#ffffff' : '#00ffff';
+    ctx.font = 'bold 11px monospace';
+    ctx.fillText('◀ SAVE & GO BACK', backBtn.x + backBtn.w / 2, backBtn.y + 15);
+    ctx.fillStyle = isBackHovered ? '#00ffff' : 'rgba(0, 255, 255, 0.65)';
+    ctx.font = 'bold 8.5px monospace';
+    ctx.fillText('[ESC / B]', backBtn.x + backBtn.w / 2, backBtn.y + 27);
+    ctx.restore();
+
+    // 2. Skip Briefing Button (Top Right)
+    ctx.save();
+    const isSkipHovered = (hovered === 'skip');
+    ctx.fillStyle = isSkipHovered ? 'rgba(255, 170, 0, 0.25)' : 'rgba(28, 14, 4, 0.90)';
+    ctx.fillRect(skipBtn.x, skipBtn.y, skipBtn.w, skipBtn.h);
+    ctx.strokeStyle = isSkipHovered ? '#ffaa00' : 'rgba(255, 170, 0, 0.55)';
+    ctx.lineWidth = isSkipHovered ? 2 : 1.2;
+    if (isSkipHovered) {
+        ctx.shadowColor = '#ffaa00';
+        ctx.shadowBlur = 10;
+    }
+    ctx.strokeRect(skipBtn.x, skipBtn.y, skipBtn.w, skipBtn.h);
+    ctx.shadowBlur = 0;
+
+    // Corner tech notches on Skip button
+    ctx.fillStyle = isSkipHovered ? '#ffaa00' : '#cc8800';
+    ctx.fillRect(skipBtn.x, skipBtn.y, 4, 4);
+    ctx.fillRect(skipBtn.x + skipBtn.w - 4, skipBtn.y, 4, 4);
+    ctx.fillRect(skipBtn.x, skipBtn.y + skipBtn.h - 4, 4, 4);
+    ctx.fillRect(skipBtn.x + skipBtn.w - 4, skipBtn.y + skipBtn.h - 4, 4, 4);
+
+    ctx.textAlign = 'center';
+    ctx.fillStyle = isSkipHovered ? '#ffffff' : '#ffaa00';
+    ctx.font = 'bold 11px monospace';
+    ctx.fillText('SKIP BRIEFING ▶', skipBtn.x + skipBtn.w / 2, skipBtn.y + 15);
+    ctx.fillStyle = isSkipHovered ? '#ffaa00' : 'rgba(255, 170, 0, 0.65)';
+    ctx.font = 'bold 8.5px monospace';
+    ctx.fillText('[SPACE / S]', skipBtn.x + skipBtn.w / 2, skipBtn.y + 27);
+    ctx.restore();
+
+    // Top Center Header
     ctx.textAlign = 'center';
     ctx.fillStyle = '#00ffff';
-    ctx.font = 'bold 20px monospace';
+    ctx.font = 'bold 15px monospace';
     ctx.shadowColor = '#00ffff';
-    ctx.shadowBlur = 10;
-    ctx.fillText('HAVEN-7 TACTICAL WAR ROOM // MISSION DESCENT BRIEFING', canvas.width / 2, 38);
+    ctx.shadowBlur = 8;
+    ctx.fillText('HAVEN-7 TACTICAL WAR ROOM', canvas.width / 2, 26);
     ctx.shadowBlur = 0;
 
     ctx.fillStyle = '#ffaa00';
-    ctx.font = 'bold 11px monospace';
-    ctx.fillText(`OPERATIONAL SECTOR: ${biomeName.toUpperCase()} — DEEP TRENCH ENTRY`, canvas.width / 2, 54);
+    ctx.font = 'bold 10px monospace';
+    ctx.fillText(`SECTOR ${biome}: ${biomeName.toUpperCase()} — ENTRY BRIEFING`, canvas.width / 2, 42);
 
     // Tactical Descent Depth Profile Panel
     const panelX = 40;
-    const panelY = 72;
+    const panelY = 64;
     const panelW = canvas.width - 80;
-    const panelH = 260;
+    const panelH = 268;
 
     if (typeof CockpitUI !== 'undefined') {
         CockpitUI.drawPanel(ctx, panelX, panelY, panelW, panelH, {
@@ -441,4 +617,14 @@ function drawBriefing() {
     if (activeBriefing) {
         activeBriefing.draw();
     }
+}
+
+if (typeof window !== 'undefined') {
+    window.startBriefing = startBriefing;
+    window.saveAndReturnFromBriefing = saveAndReturnFromBriefing;
+    window.skipBriefing = skipBriefing;
+    window.handleBriefingClick = handleBriefingClick;
+    window.handleBriefingKey = handleBriefingKey;
+    window.updateBriefing = updateBriefing;
+    window.drawBriefing = drawBriefing;
 }

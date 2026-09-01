@@ -2053,6 +2053,20 @@ canvas.addEventListener('mousemove', e => {
                 break;
             }
         }
+    } else if (currentScreen === SCREENS.BRIEFING) {
+        const regions = window._briefingHitRegions || {};
+        const prevBtn = window._briefingHoveredBtn;
+        window._briefingHoveredBtn = null;
+        if (regions.back && x >= regions.back.x && x <= regions.back.x + regions.back.w &&
+            y >= regions.back.y && y <= regions.back.y + regions.back.h) {
+            window._briefingHoveredBtn = 'back';
+        } else if (regions.skip && x >= regions.skip.x && x <= regions.skip.x + regions.skip.w &&
+            y >= regions.skip.y && y <= regions.skip.y + regions.skip.h) {
+            window._briefingHoveredBtn = 'skip';
+        }
+        if (window._briefingHoveredBtn !== prevBtn && window._briefingHoveredBtn) {
+            playSound('ui_hover');
+        }
     }
 });
 
@@ -2061,6 +2075,7 @@ canvas.addEventListener('mouseleave', () => {
     hoveredShipIndex = -1;
     hoveredSettingsIndex = -1;
     hoveredUpgradeIndex = -1;
+    window._briefingHoveredBtn = null;
 });
 
 canvas.addEventListener('click', e => {
@@ -2156,8 +2171,8 @@ canvas.addEventListener('click', e => {
         playSound('menu_click');
         transitionToScreen(SCREENS.CREDITS);
     } else if (currentScreen === SCREENS.BRIEFING) {
-        // GRO-936: Click to advance/skip briefing
-        handleBriefingClick();
+        // GRO-936: Click to advance/skip/back briefing
+        handleBriefingClick(x, y);
     } else if (currentScreen === SCREENS.LOAD_GAME) {
         // GRO-1160: Touch/click handling for load game screen
         const hoveredSlot = window._loadHoveredSlot;
