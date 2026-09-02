@@ -315,7 +315,7 @@ const _preCompositeCache = new Set();
             toLoad.forEach(({key, src}) => {
                 const img = new Image();
                 img.onload = () => {
-                    bossSprites[key] = preCompositeAdditive(img);
+                    bossSprites[key] = img;
                     loadedCount++;
                     bossLoadProgress = Math.round((loadedCount / total) * 100);
                     console.log(`[BOSS] Successfully loaded boss asset: ${key} (${src})`);
@@ -339,6 +339,57 @@ const _preCompositeCache = new Set();
             });
         }
 
+        // --- 5-Tier Standardized Animation Manifest (GRO-1142) ---
+        const SPRITE_ANIMATIONS = {};
+
+        // Helper to register standard 4x4 16-frame boss spritesheet
+        function registerBossAnimation(spriteKey, frameSize = 256) {
+            SPRITE_ANIMATIONS[spriteKey] = {
+                frameWidth: frameSize,
+                frameHeight: frameSize,
+                actions: {
+                    idle:   { row: 0, frames: 4, fps: 6, loop: true },
+                    shoot:  { row: 1, frames: 4, fps: 10, loop: false, muzzle: { x: -35, y: 0 } },
+                    hit:    { row: 2, frames: 4, fps: 12, loop: false },
+                    death:  { row: 3, frames: 4, fps: 6, loop: false }
+                }
+            };
+        }
+
+        // Register all 10 Sub-Bosses (Level 5) and 10 Biome Bosses (Level 10)
+        for (let b = 1; b <= 10; b++) {
+            registerBossAnimation(`boss_b${b}_mid_0`, (b === 4 || b === 6 || b === 9) ? 512 : 256);
+            registerBossAnimation(`boss_b${b}_0`, (b === 1 || b === 2 || b === 4 || b === 5 || b === 6 || b === 8 || b === 10) ? 512 : 256);
+        }
+
+        function drawAnimatedSpriteSheet(ctx, spriteSheet, animDef, actionName, animTimer, dx, dy, dw, dh, customFrameIndex) {
+            if (!animDef || !animDef.actions) {
+                ctx.drawImage(spriteSheet, dx, dy, dw, dh);
+                return;
+            }
+            const action = animDef.actions[actionName] || animDef.actions.idle || Object.values(animDef.actions)[0];
+            const totalFrames = action.frames || 1;
+            let frameIndex = 0;
+            if (customFrameIndex !== undefined && customFrameIndex !== null) {
+                frameIndex = Math.max(0, Math.min(totalFrames - 1, customFrameIndex));
+            } else {
+                frameIndex = action.loop 
+                    ? Math.floor(animTimer * (action.fps || 8)) % totalFrames 
+                    : Math.min(totalFrames - 1, Math.floor(animTimer * (action.fps || 8)));
+            }
+            
+            const frameW = (spriteSheet && spriteSheet.naturalWidth) ? Math.floor(spriteSheet.naturalWidth / 4) : (animDef.frameWidth || 256);
+            const frameH = (spriteSheet && spriteSheet.naturalHeight) ? Math.floor(spriteSheet.naturalHeight / 4) : (animDef.frameHeight || 256);
+            const sx = frameIndex * frameW;
+            const sy = (action.row || 0) * frameH;
+
+            ctx.drawImage(
+                spriteSheet,
+                sx, sy, frameW, frameH,
+                dx, dy, dw, dh
+            );
+        }
+
         // --- Window Exports ---
         if (typeof window !== 'undefined') {
             window.playerSprites = playerSprites;
@@ -347,6 +398,8 @@ const _preCompositeCache = new Set();
             window.vfxSprites = vfxSprites;
             window.bossSprites = bossSprites;
             window.landmarkSprites = landmarkSprites;
+            window.SPRITE_ANIMATIONS = SPRITE_ANIMATIONS;
+            window.drawAnimatedSpriteSheet = drawAnimatedSpriteSheet;
             window.loadPlayerSprites = loadPlayerSprites;
             window.loadPortraitSprites = loadPortraitSprites;
             window.loadEnemySprites = loadEnemySprites;
