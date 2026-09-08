@@ -175,6 +175,154 @@
             margin-top: 4px;
             font-size: 0.85rem;
         }
+        /* Asset Inspection & Evaluation Gallery */
+        .gallery-section {
+            width: 100%;
+            max-width: 1120px;
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 16px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            margin-top: 10px;
+        }
+        .gallery-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+        .gallery-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--accent-cyan);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .gallery-tabs {
+            display: flex;
+            gap: 8px;
+        }
+        .gallery-tab {
+            background: #21262d;
+            border: 1px solid var(--border-color);
+            color: var(--text-dim);
+            padding: 6px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.86rem;
+            transition: all 0.2s;
+        }
+        .gallery-tab.active {
+            background: var(--accent-cyan);
+            color: #000;
+            font-weight: bold;
+            border-color: var(--accent-cyan);
+        }
+        .asset-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 16px;
+        }
+        .asset-card {
+            background: #0d1117;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+        .asset-card:hover {
+            border-color: var(--accent-cyan);
+            transform: translateY(-2px);
+        }
+        .asset-preview-container {
+            width: 100%;
+            height: 180px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #05070a;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .asset-preview-container.checkered {
+            background-image: repeating-conic-gradient(#1b212c 0% 25%, #0f131a 0% 50%);
+            background-size: 20px 20px;
+        }
+        .asset-preview-img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            image-rendering: auto;
+            transition: transform 0.3s;
+        }
+        .asset-card:hover .asset-preview-img {
+            transform: scale(1.04);
+        }
+        .asset-info {
+            padding: 12px 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            flex: 1;
+        }
+        .asset-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .asset-badge {
+            font-size: 0.72rem;
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        .badge-far { background: rgba(0, 210, 255, 0.18); color: var(--accent-cyan); border: 1px solid var(--accent-cyan); }
+        .badge-near { background: rgba(197, 108, 240, 0.18); color: var(--accent-purple); border: 1px solid var(--accent-purple); }
+        .badge-landmark { background: rgba(247, 183, 49, 0.18); color: var(--accent-gold); border: 1px solid var(--accent-gold); }
+        .asset-desc {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            line-height: 1.35;
+        }
+        .asset-meta-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.78rem;
+            color: var(--text-dim);
+            border-top: 1px dashed rgba(255, 255, 255, 0.08);
+            padding-top: 6px;
+            margin-top: 4px;
+        }
+        .asset-link-btn {
+            display: inline-block;
+            text-align: center;
+            padding: 5px 10px;
+            background: #21262d;
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            margin-top: 4px;
+            transition: all 0.2s;
+        }
+        .asset-link-btn:hover {
+            background: var(--accent-cyan);
+            color: #000;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -267,6 +415,23 @@
                 <div style="margin-top:4px; font-size:0.8rem; color:var(--text-dim);" id="diagClassified">-</div>
             </div>
         </div>
+
+        <!-- Asset Inspection & Evaluation Gallery -->
+        <section class="gallery-section">
+            <div class="gallery-header">
+                <div class="gallery-title">
+                    <span>🔬</span> Asset Evaluation & Inspection Suite (Biomes 1–3)
+                </div>
+                <div class="gallery-tabs">
+                    <button class="gallery-tab active" id="tabBio1" onclick="switchGalleryTab(1)">Biome 1: Abyssal Trench</button>
+                    <button class="gallery-tab" id="tabBio2" onclick="switchGalleryTab(2)">Biome 2: Coral Graveyard</button>
+                    <button class="gallery-tab" id="tabBio3" onclick="switchGalleryTab(3)">Biome 3: Coelacanth's Lair</button>
+                </div>
+            </div>
+            <div id="assetCardsContainer" class="asset-grid">
+                <!-- Dynamically rendered by JS -->
+            </div>
+        </section>
     </div>
 
     <!-- Engine Scripts -->
@@ -556,11 +721,185 @@
             document.getElementById('diagParticles').textContent = `${(typeof envParticles !== 'undefined') ? envParticles.length : 0} active particles`;
         }
 
+        // --- Interactive Asset Evaluation & Inspection Gallery ---
+        const ASSET_CATALOG = {
+            1: [
+                {
+                    name: "Abyssal Trench (Far Layer)",
+                    type: "Far (≥3000px)",
+                    badgeClass: "badge-far",
+                    path: "assets/sprites/backgrounds/bg_abyssal_trench_far.png",
+                    dimensions: "3072 × 768 px",
+                    fileSize: "1,814 KB",
+                    alpha: "0% (Opaque)",
+                    checkered: false,
+                    desc: "Approved style benchmark: Deep midnight-blue ocean trench, soft underwater sunbeams filtering through the abyss, distant undersea ridges and tectonic crevices. Seamless horizontal loop."
+                },
+                {
+                    name: "Abyssal Trench (Near Silhouette)",
+                    type: "Near Silhouette",
+                    badgeClass: "badge-near",
+                    path: "assets/sprites/backgrounds/bg_abyssal_trench_near.png",
+                    dimensions: "3072 × 768 px",
+                    fileSize: "1,876 KB",
+                    alpha: "31.4% Flight Corridor",
+                    checkered: true,
+                    desc: "Darius boss-style redesign: Hanging dark titanium armor plates and basalt cavern stalactites from ceiling; hydrothermal black smokers venting smoke and glowing cyber-coral along seafloor. 4-boundary flood-fill alpha."
+                },
+                {
+                    name: "Coral Spire (Landmark 1)",
+                    type: "Landmark (≥1000px)",
+                    badgeClass: "badge-landmark",
+                    path: "assets/sprites/landmarks/landmark_coral_spire.png",
+                    dimensions: "1024 × 1024 px",
+                    fileSize: "755 KB",
+                    alpha: "69.5% Transparent",
+                    checkered: true,
+                    desc: "Darius boss-style redesign: Colossal cybernetic coral monument with dark titanium superstructure, chrome specular bevels, and glowing cyan power cores. Dynamic perspective tilting (-18°..+18°)."
+                },
+                {
+                    name: "Kelp Canopy (Landmark 2)",
+                    type: "Landmark (≥1000px)",
+                    badgeClass: "badge-landmark",
+                    path: "assets/sprites/landmarks/landmark_kelp_canopy.png",
+                    dimensions: "1024 × 1024 px",
+                    fileSize: "1,513 KB",
+                    alpha: "45.2% Transparent",
+                    checkered: true,
+                    desc: "Darius boss-style redesign: Towering biomechanical kelp tendrils, hydraulic armor conduits, emerald plasma chambers, and glowing orange core reactor eye. Scales 1.0x -> 1.35x as waves progress."
+                }
+            ],
+            2: [
+                {
+                    name: "Coral Graveyard (Far Layer)",
+                    type: "Far (≥3000px)",
+                    badgeClass: "badge-far",
+                    path: "assets/sprites/backgrounds/bg_coral_graveyard_far.png",
+                    dimensions: "3072 × 768 px",
+                    fileSize: "2,318 KB",
+                    alpha: "0% (Opaque)",
+                    checkered: false,
+                    desc: "Darius boss-style redesign: Kepler-442b alien ocean, ethereal twilight purple water gradient, distant submerged cybernetic warship graveyards, glowing reefs, and planetary rings in twilight sky."
+                },
+                {
+                    name: "Coral Graveyard (Near Silhouette)",
+                    type: "Near Silhouette",
+                    badgeClass: "badge-near",
+                    path: "assets/sprites/backgrounds/bg_coral_graveyard_near.png",
+                    dimensions: "3072 × 768 px",
+                    fileSize: "1,863 KB",
+                    alpha: "39.8% Flight Corridor",
+                    checkered: true,
+                    desc: "Darius boss-style redesign: Calcified bone arches entwined with dark gunmetal armor plates, purple hydraulic conduits, and glowing violet anemones. Open central flight corridor."
+                },
+                {
+                    name: "Leviathan Bones (Landmark)",
+                    type: "Landmark (≥1000px)",
+                    badgeClass: "badge-landmark",
+                    path: "assets/sprites/landmarks/landmark_leviathan_bones.png",
+                    dimensions: "1024 × 1024 px",
+                    fileSize: "1,354 KB",
+                    alpha: "51.4% Transparent",
+                    checkered: true,
+                    desc: "Darius boss-style redesign: Colossal prehistoric cybernetic space leviathan skeleton, armored horned titanium skull, purple sensor visor, articulated ribs and spinal vertebrae on precursor plinth."
+                }
+            ],
+            3: [
+                {
+                    name: "Coelacanth's Lair (Far Layer)",
+                    type: "Far (≥3000px)",
+                    badgeClass: "badge-far",
+                    path: "assets/sprites/backgrounds/bg_coelacanth_lair_far.png",
+                    dimensions: "3072 × 768 px",
+                    fileSize: "1,952 KB",
+                    alpha: "0% (Opaque)",
+                    checkered: false,
+                    desc: "Darius boss-style redesign: Europa sub-glacial ocean abyss, massive frozen ice shelf ceiling overhead with glowing cyan radiation fractures, subterranean deep cerulean sea and tectonic vents."
+                },
+                {
+                    name: "Coelacanth's Lair (Near Silhouette)",
+                    type: "Near Silhouette",
+                    badgeClass: "badge-near",
+                    path: "assets/sprites/backgrounds/bg_coelacanth_lair_near.png",
+                    dimensions: "3072 × 768 px",
+                    fileSize: "2,018 KB",
+                    alpha: "19.6% Flight Corridor",
+                    checkered: true,
+                    desc: "Darius boss-style redesign: Hanging frozen pykrete icicles descending from ceiling cybernetic bulkheads; frozen seafloor gears and machinery with glowing cyan cryo-nodes."
+                },
+                {
+                    name: "Ice Berg (Landmark 1)",
+                    type: "Landmark (≥1000px)",
+                    badgeClass: "badge-landmark",
+                    path: "assets/sprites/landmarks/landmark_ice_berg.png",
+                    dimensions: "1024 × 1024 px",
+                    fileSize: "803 KB",
+                    alpha: "61.2% Transparent",
+                    checkered: true,
+                    desc: "Darius boss-style redesign: Sub-glacial inverted cryo-spire monument, faceted glacial iceberg fused with ancient precursor reactor pylon, glowing turquoise conduits and titanium brackets."
+                },
+                {
+                    name: "Magma Chimney (Landmark 2)",
+                    type: "Landmark (≥1000px)",
+                    badgeClass: "badge-landmark",
+                    path: "assets/sprites/landmarks/landmark_magma_chimney.png",
+                    dimensions: "1024 × 1024 px",
+                    fileSize: "574 KB",
+                    alpha: "73.9% Transparent",
+                    checkered: true,
+                    desc: "Darius boss-style redesign: Abyssal volcanic magma chimney encased in heavy heat-shield titanium armor, venting dark smoke and glowing fiercely with fiery molten lava fissures."
+                }
+            ]
+        };
+
+        function switchGalleryTab(biomeNum) {
+            [1, 2, 3].forEach(b => {
+                const tab = document.getElementById('tabBio' + b);
+                if (tab) tab.classList.toggle('active', b === biomeNum);
+            });
+            renderAssetGallery(biomeNum);
+        }
+
+        function renderAssetGallery(biomeNum) {
+            const container = document.getElementById('assetCardsContainer');
+            if (!container) return;
+            container.innerHTML = '';
+
+            const items = ASSET_CATALOG[biomeNum] || [];
+            items.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'asset-card';
+                card.innerHTML = `
+                    <div class="asset-preview-container ${item.checkered ? 'checkered' : ''}">
+                        <img class="asset-preview-img" src="${item.path}?t=${Date.now()}" alt="${item.name}">
+                    </div>
+                    <div class="asset-info">
+                        <div class="asset-name">
+                            <span>${item.name}</span>
+                            <span class="asset-badge ${item.badgeClass}">${item.type}</span>
+                        </div>
+                        <div class="asset-desc">${item.desc}</div>
+                        <div class="asset-meta-row">
+                            <span>Resolution: <strong>${item.dimensions}</strong></span>
+                            <span>Size: <strong>${item.fileSize}</strong></span>
+                        </div>
+                        <div class="asset-meta-row">
+                            <span>Alpha: <strong>${item.alpha}</strong></span>
+                            <span>Status: <strong style="color:#00ff88">HD Verified ✓</strong></span>
+                        </div>
+                        <a href="${item.path}" target="_blank" class="asset-link-btn">Inspect Raw Image ↗</a>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
         // Initialize on load
         window.addEventListener('DOMContentLoaded', () => {
             initializeRendererBuffers();
             if (typeof loadLandmarkSprites === 'function') loadLandmarkSprites();
             applySector();
+            renderAssetGallery(1);
             requestAnimationFrame(animate);
         });
     </script>
