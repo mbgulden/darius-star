@@ -1381,6 +1381,7 @@ function draw() {
     if (envBuffer.dirty) envBuffer.rebuild(rebuildEnvBuffer);
     ctx.drawImage(starBuffer.canvas, 0, 0);
     ctx.drawImage(envBuffer.canvas, 0, 0);
+    if (typeof AtmosphericWeatherEngine !== 'undefined') AtmosphericWeatherEngine.draw(ctx);
 
     bullets.forEach(b => b.draw());
     enemyBullets.forEach(eb => eb.draw());

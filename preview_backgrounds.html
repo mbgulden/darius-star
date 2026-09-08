@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Darius Star — Parallax Backgrounds & Journey Viewer</title>
+    <title>Darius Star — Parallax Backgrounds & Multi-Layer Weather Viewer</title>
     <style>
         :root {
             --bg-color: #0d1117;
@@ -12,6 +12,7 @@
             --accent-cyan: #00d2ff;
             --accent-purple: #c56cf0;
             --accent-gold: #f7b731;
+            --accent-red: #ff4757;
             --text-main: #f0f6fc;
             --text-dim: #8b949e;
         }
@@ -19,49 +20,54 @@
         body {
             background-color: var(--bg-color);
             color: var(--text-main);
-            padding: 20px;
+            padding: 16px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 20px;
+            gap: 16px;
         }
         header {
             text-align: center;
-            max-width: 1000px;
+            max-width: 1100px;
         }
         h1 {
-            font-size: 1.8rem;
+            font-size: 1.7rem;
             color: var(--accent-cyan);
             text-shadow: 0 0 14px rgba(0, 210, 255, 0.4);
-            margin-bottom: 6px;
+            margin-bottom: 4px;
         }
-        p { color: var(--text-dim); font-size: 0.95rem; }
-        .controls-bar {
+        p { color: var(--text-dim); font-size: 0.9rem; }
+        .controls-panel {
             display: flex;
-            gap: 16px;
-            flex-wrap: wrap;
+            flex-direction: column;
+            gap: 10px;
             background: var(--panel-bg);
-            padding: 14px 20px;
+            padding: 12px 18px;
             border-radius: 12px;
             border: 1px solid var(--border-color);
-            align-items: center;
-            justify-content: center;
-            max-width: 1100px;
+            max-width: 1120px;
             width: 100%;
+        }
+        .controls-row {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
         }
         .control-group {
             display: flex;
             align-items: center;
             gap: 8px;
-            font-size: 0.9rem;
+            font-size: 0.88rem;
         }
-        select, button {
+        select, button, input[type="range"] {
             background: #21262d;
             color: var(--text-main);
             border: 1px solid var(--border-color);
-            padding: 7px 14px;
+            padding: 6px 12px;
             border-radius: 6px;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             cursor: pointer;
             outline: none;
             transition: all 0.2s;
@@ -76,18 +82,24 @@
             font-weight: bold;
             border-color: var(--accent-cyan);
         }
+        button.alert-active {
+            background: var(--accent-red) !important;
+            color: #fff !important;
+            border-color: var(--accent-red) !important;
+            box-shadow: 0 0 12px rgba(255, 71, 87, 0.6);
+        }
         .toggle-btn {
-            padding: 5px 12px;
-            font-size: 0.82rem;
+            padding: 5px 11px;
+            font-size: 0.8rem;
             border-radius: 4px;
         }
         .main-view {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 16px;
+            gap: 14px;
             width: 100%;
-            max-width: 1100px;
+            max-width: 1120px;
         }
         .viewport-wrapper {
             position: relative;
@@ -96,23 +108,27 @@
             overflow: hidden;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
             background: #02040a;
+            width: 960px;
+            height: 540px;
         }
         #bgCanvas {
             display: block;
             image-rendering: pixelated;
             image-rendering: crisp-edges;
+            width: 960px;
+            height: 540px;
         }
         .hud-overlay {
             position: absolute;
-            top: 12px;
-            left: 14px;
+            top: 10px;
+            left: 12px;
             pointer-events: none;
             font-family: 'Courier New', monospace;
-            font-size: 0.85rem;
-            color: rgba(255, 255, 255, 0.85);
+            font-size: 0.82rem;
+            color: rgba(255, 255, 255, 0.9);
             text-shadow: 0 0 6px #000;
-            line-height: 1.4;
-            background: rgba(10, 14, 20, 0.65);
+            line-height: 1.35;
+            background: rgba(10, 14, 20, 0.72);
             padding: 8px 12px;
             border-radius: 6px;
             border: 1px solid rgba(0, 210, 255, 0.25);
@@ -120,32 +136,32 @@
         .info-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 16px;
+            gap: 14px;
             width: 100%;
         }
         .info-card {
             background: var(--panel-bg);
             border: 1px solid var(--border-color);
             border-radius: 10px;
-            padding: 16px;
+            padding: 14px;
             display: flex;
             flex-direction: column;
-            gap: 8px;
-            font-size: 0.9rem;
+            gap: 6px;
+            font-size: 0.88rem;
         }
         .card-title {
-            font-size: 1rem;
+            font-size: 0.95rem;
             font-weight: 600;
             color: var(--accent-purple);
             border-bottom: 1px solid var(--border-color);
-            padding-bottom: 6px;
-            margin-bottom: 4px;
+            padding-bottom: 5px;
+            margin-bottom: 3px;
         }
         .prop-row {
             display: flex;
             justify-content: space-between;
             border-bottom: 1px dashed rgba(255, 255, 255, 0.08);
-            padding: 4px 0;
+            padding: 3px 0;
         }
         .prop-label { color: var(--text-dim); }
         .prop-val { font-weight: 500; }
@@ -153,48 +169,68 @@
             font-style: italic;
             color: var(--accent-gold);
             background: rgba(247, 183, 49, 0.08);
-            padding: 8px 12px;
+            padding: 6px 10px;
             border-left: 3px solid var(--accent-gold);
             border-radius: 4px;
-            margin-top: 6px;
+            margin-top: 4px;
+            font-size: 0.85rem;
         }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>DARIUS STAR: PARALLAX BACKGROUNDS & JOURNEY VIEWER</h1>
-        <p>Real-time visual inspection testbed for 10-Biome × 10-Level parallax backdrops, silhouettes, landmarks & particles.</p>
+        <h1>DARIUS STAR: PARALLAX & ATMOSPHERIC WEATHER VIEWER</h1>
+        <p>Phase 1 Inspection Testbed: Ultra-Wide (≥3000px) Scrolling, Multi-Angle Landmarks & Dynamic Layer 4 Weather.</p>
     </header>
 
-    <div class="controls-bar">
-        <div class="control-group">
-            <label for="biomeSelect">Biome:</label>
-            <select id="biomeSelect"></select>
+    <div class="controls-panel">
+        <div class="controls-row">
+            <div class="control-group">
+                <label for="biomeSelect"><strong>Biome:</strong></label>
+                <select id="biomeSelect"></select>
+            </div>
+            <div class="control-group">
+                <label for="levelSelect"><strong>Level:</strong></label>
+                <select id="levelSelect"></select>
+            </div>
+            <div class="control-group">
+                <label>Speed:</label>
+                <button id="spd0" class="toggle-btn" onclick="setSpeed(0)">0x</button>
+                <button id="spd1" class="toggle-btn active" onclick="setSpeed(1)">1x</button>
+                <button id="spd2" class="toggle-btn" onclick="setSpeed(2)">2x</button>
+                <button id="spd4" class="toggle-btn" onclick="setSpeed(4)">4x</button>
+            </div>
+            <div class="control-group">
+                <button id="btnBossAlert" class="toggle-btn" onclick="toggleBossAlert()">🚨 Boss Alert / Climax</button>
+                <button id="btnFlash" class="toggle-btn" onclick="triggerLightning()">⚡ Flash Surge</button>
+                <button id="btnSeam" class="toggle-btn" onclick="toggleSeam()">Seams</button>
+            </div>
         </div>
-        <div class="control-group">
-            <label for="levelSelect">Level:</label>
-            <select id="levelSelect"></select>
-        </div>
-        <div class="control-group">
-            <label>Speed:</label>
-            <button id="spd0" class="toggle-btn" onclick="setSpeed(0)">0x (Pause)</button>
-            <button id="spd1" class="toggle-btn active" onclick="setSpeed(1)">1x (Normal)</button>
-            <button id="spd2" class="toggle-btn" onclick="setSpeed(2)">2x</button>
-            <button id="spd4" class="toggle-btn" onclick="setSpeed(4)">4x</button>
-        </div>
-        <div class="control-group">
-            <button id="btnSeam" class="toggle-btn" onclick="toggleSeam()">Highlight Seams</button>
-        </div>
-    </div>
 
-    <div class="controls-bar" style="gap: 12px; padding: 10px 20px;">
-        <span style="font-size: 0.85rem; color: var(--text-dim);">Layers:</span>
-        <button id="togFar" class="toggle-btn active" onclick="toggleLayer('far')">Far Backdrop</button>
-        <button id="togStars" class="toggle-btn active" onclick="toggleLayer('stars')">Starfield</button>
-        <button id="togLandmark" class="toggle-btn active" onclick="toggleLayer('landmark')">Journey Landmark</button>
-        <button id="togNear" class="toggle-btn active" onclick="toggleLayer('near')">Near Silhouette</button>
-        <button id="togParticles" class="toggle-btn active" onclick="toggleLayer('particles')">Particles</button>
+        <div class="controls-row" style="background: rgba(0,0,0,0.25); padding: 8px 12px; border-radius: 8px;">
+            <div class="control-group" style="flex: 1;">
+                <label for="progSlider"><strong>Level Progression (Wave 0% → 100% Climax):</strong></label>
+                <input type="range" id="progSlider" min="0" max="100" value="25" style="flex:1;">
+                <span id="progValue" style="min-width: 45px; text-align: right; color: var(--accent-cyan); font-weight: bold;">25%</span>
+            </div>
+        </div>
+
+        <div class="controls-row">
+            <div class="control-group">
+                <span style="color: var(--text-dim);">Background Planes:</span>
+                <button id="togFar" class="toggle-btn active" onclick="toggleLayer('far')">Far (≥3000px)</button>
+                <button id="togNear" class="toggle-btn active" onclick="toggleLayer('near')">Near (≥3000px)</button>
+                <button id="togLandmark" class="toggle-btn active" onclick="toggleLayer('landmark')">Landmark (≥1000px)</button>
+                <button id="togStars" class="toggle-btn active" onclick="toggleLayer('stars')">Starfield</button>
+            </div>
+            <div class="control-group">
+                <span style="color: var(--accent-gold);">Layer 4 Weather:</span>
+                <button id="togWeather4A" class="toggle-btn active" onclick="toggleWeather('ambientDrift')">4A: Ambient Drift</button>
+                <button id="togWeather4B" class="toggle-btn active" onclick="toggleWeather('weatherSquall')">4B: Squall Winds</button>
+                <button id="togWeather4C" class="toggle-btn active" onclick="toggleWeather('eventSurge')">4C: Event Surges</button>
+            </div>
+        </div>
     </div>
 
     <div class="main-view">
@@ -203,7 +239,8 @@
             <div class="hud-overlay" id="hudOverlay">
                 <div>BIOME: <span id="hudBiome" style="color:var(--accent-cyan)">1 - Abyssal Trench</span></div>
                 <div>LEVEL: <span id="hudLevel">1.1 Sunlit Atoll Crest</span></div>
-                <div>LANDMARK: <span id="hudLandmark" style="color:var(--accent-gold)">coral_spire</span></div>
+                <div>LANDMARK: <span id="hudLandmark" style="color:var(--accent-gold)">coral_spire</span> (<span id="hudLmScale">1.0x</span>, <span id="hudLmAngle">0°</span>)</div>
+                <div>WEATHER: <span id="hudWeather" style="color:#00ff88">Active (L4A, L4B, L4C)</span></div>
                 <div>FAR POS: <span id="hudFarX">0 px</span> | NEAR POS: <span id="hudNearX">0 px</span></div>
                 <div>FPS: <span id="hudFps">60</span></div>
             </div>
@@ -211,29 +248,28 @@
 
         <div class="info-grid">
             <div class="info-card">
-                <div class="card-title">Sector Metadata & Intel</div>
+                <div class="card-title">Sector Metadata & Tactical Intel</div>
                 <div class="prop-row"><span class="prop-label">Sector Name</span><span class="prop-val" id="infoName">-</span></div>
                 <div class="prop-row"><span class="prop-label">Primary Hazard</span><span class="prop-val" id="infoHazard" style="color:#ff6b6b">-</span></div>
                 <div class="prop-row"><span class="prop-label">Accent Lighting</span><span class="prop-val" id="infoAccent">-</span></div>
-                <div class="prop-row"><span class="prop-label">Atmosphere Preset</span><span class="prop-val" id="infoParticles">-</span></div>
-                <div style="margin-top:6px; font-size:0.85rem; color:var(--text-dim);" id="infoIntel">-</div>
+                <div class="prop-row"><span class="prop-label">Weather Archetype</span><span class="prop-val" id="infoWeatherType">-</span></div>
+                <div style="margin-top:4px; font-size:0.83rem; color:var(--text-dim);" id="infoIntel">-</div>
                 <div class="quote-box" id="infoComm">-</div>
             </div>
 
             <div class="info-card">
-                <div class="card-title">Asset Diagnostics & Seams</div>
-                <div class="prop-row"><span class="prop-label">Far Texture (Plane 0)</span><span class="prop-val" id="diagFar">-</span></div>
-                <div class="prop-row"><span class="prop-label">Near Texture (Plane 2)</span><span class="prop-val" id="diagNear">-</span></div>
-                <div class="prop-row"><span class="prop-label">Landmark Sprite (Plane 1)</span><span class="prop-val" id="diagLandmark">-</span></div>
-                <div class="prop-row"><span class="prop-label">Far Scroll Velocity</span><span class="prop-val">14 px/s × Speed</span></div>
-                <div class="prop-row"><span class="prop-label">Near Scroll Velocity</span><span class="prop-val">50 px/s × Speed</span></div>
-                <div class="prop-row"><span class="prop-label">Landmark Velocity</span><span class="prop-val">28 px/s × Speed</span></div>
-                <div style="margin-top:6px; font-size:0.82rem; color:var(--text-dim);" id="diagClassified">-</div>
+                <div class="card-title">Parallax Architecture & Dynamics</div>
+                <div class="prop-row"><span class="prop-label">Far Layer (Plane 0)</span><span class="prop-val" id="diagFar">-</span></div>
+                <div class="prop-row"><span class="prop-label">Near Silhouette (Plane 2)</span><span class="prop-val" id="diagNear">-</span></div>
+                <div class="prop-row"><span class="prop-label">Landmark Perspective Angle</span><span class="prop-val" id="diagAngle">-</span></div>
+                <div class="prop-row"><span class="prop-label">Progression Midground Scale</span><span class="prop-val" id="diagScale">-</span></div>
+                <div class="prop-row"><span class="prop-label">Atmospheric Density</span><span class="prop-val" id="diagParticles">-</span></div>
+                <div style="margin-top:4px; font-size:0.8rem; color:var(--text-dim);" id="diagClassified">-</div>
             </div>
         </div>
     </div>
 
-    <!-- Scripts required in dependency order -->
+    <!-- Engine Scripts -->
     <script src="js/levels/biome_data.js"></script>
     <script src="js/sprites.js"></script>
     <script src="js/renderer/particles.js"></script>
@@ -245,15 +281,16 @@
 
         let currentBiome = 1;
         let currentLevel = 1;
+        let currentProgress = 0.25;
         let speedMultiplier = 1.0;
         let showSeams = false;
+        let isBossAlert = false;
 
         const layersActive = {
             far: true,
             stars: true,
             landmark: true,
-            near: true,
-            particles: true
+            near: true
         };
 
         // Initialize Biome Selector
@@ -290,12 +327,39 @@
             applySector();
         });
 
+        const progSlider = document.getElementById('progSlider');
+        progSlider.addEventListener('input', (e) => {
+            currentProgress = parseInt(e.target.value, 10) / 100;
+            document.getElementById('progValue').textContent = `${Math.round(currentProgress * 100)}%`;
+            updateDynamics();
+        });
+
         function setSpeed(mult) {
             speedMultiplier = mult;
             [0, 1, 2, 4].forEach(s => {
                 const b = document.getElementById('spd' + s);
                 if (b) b.classList.toggle('active', s === mult);
             });
+        }
+
+        function toggleBossAlert() {
+            isBossAlert = !isBossAlert;
+            const btn = document.getElementById('btnBossAlert');
+            btn.classList.toggle('alert-active', isBossAlert);
+            updateDynamics();
+        }
+
+        function triggerLightning() {
+            if (window.AtmosphericWeatherEngine) {
+                const colors = {
+                    1: 'rgba(0, 210, 255, 0.28)',
+                    4: 'rgba(255, 0, 255, 0.24)',
+                    6: 'rgba(255, 100, 0, 0.30)',
+                    7: 'rgba(68, 102, 255, 0.35)',
+                    10: 'rgba(232, 67, 147, 0.30)'
+                };
+                AtmosphericWeatherEngine.triggerFlash(colors[currentBiome] || 'rgba(255, 255, 255, 0.30)', 0.18);
+            }
         }
 
         function toggleSeam() {
@@ -310,30 +374,39 @@
             if (btn) btn.classList.toggle('active', layersActive[layer]);
         }
 
+        function toggleWeather(sublayer) {
+            if (window.AtmosphericWeatherEngine) {
+                AtmosphericWeatherEngine.layers[sublayer] = !AtmosphericWeatherEngine.layers[sublayer];
+                let btnId = '';
+                if (sublayer === 'ambientDrift') btnId = 'togWeather4A';
+                else if (sublayer === 'weatherSquall') btnId = 'togWeather4B';
+                else if (sublayer === 'eventSurge') btnId = 'togWeather4C';
+                const btn = document.getElementById(btnId);
+                if (btn) btn.classList.toggle('active', AtmosphericWeatherEngine.layers[sublayer]);
+            }
+        }
+
         // Parallax & Landmark instance
         let farLayer = new ParallaxLayer('bg_1_far', 14);
         let nearLayer = new ParallaxLayer('bg_1_near', 50);
-        let landmark = new JourneyLandmark(currentBiome, currentLevel);
-        let previewParticles = [];
-
-        function initParticlesForBiome(biomeNum) {
-            previewParticles = [];
-            for (let i = 0; i < 40; i++) {
-                const p = new EnvironmentParticle('mote');
-                p.x = Math.random() * canvas.width;
-                p.y = Math.random() * canvas.height;
-                previewParticles.push(p);
-            }
-        }
-        initParticlesForBiome(currentBiome);
+        let landmark = new JourneyLandmark(currentBiome, currentLevel, currentProgress);
 
         function applySector() {
             setBiomeBackgrounds(currentBiome, currentLevel);
             farLayer.setKey(`bg_${currentBiome}_far`);
             nearLayer.setKey(`bg_${currentBiome}_near`);
-            landmark = new JourneyLandmark(currentBiome, currentLevel);
-            initParticlesForBiome(currentBiome);
+            landmark = new JourneyLandmark(currentBiome, currentLevel, currentProgress);
+            updateDynamics();
             updateInfoUI();
+        }
+
+        function updateDynamics() {
+            if (landmark) {
+                landmark.setProgress(currentProgress, isBossAlert);
+            }
+            if (window.AtmosphericWeatherEngine) {
+                AtmosphericWeatherEngine.setContext(currentBiome, currentLevel, currentProgress, isBossAlert, isBossAlert ? 1.0 : 0.0);
+            }
         }
 
         function updateInfoUI() {
@@ -348,7 +421,7 @@
             document.getElementById('infoHazard').textContent = info.hazard || 'Standard Atmospheric Void';
             document.getElementById('infoAccent').textContent = info.accentColor;
             document.getElementById('infoAccent').style.color = info.accentColor;
-            document.getElementById('infoParticles').textContent = info.particlePreset || 'motes';
+            document.getElementById('infoWeatherType').textContent = `${BIOME_DATA.names[currentBiome]} Atmospheric Stream`;
             document.getElementById('infoIntel').textContent = info.intel;
 
             const spkr = (info.commLine && info.commLine.s) ? `[${info.commLine.s}] ` : '';
@@ -358,18 +431,12 @@
             // Texture status check
             const farImg = farLayer.getImg();
             const nearImg = nearLayer.getImg();
-            const lmKey = 'landmark_' + info.landmark;
-            const lmImg = (window.landmarkSprites && window.landmarkSprites[lmKey]) ? window.landmarkSprites[lmKey] : null;
-
             document.getElementById('diagFar').textContent = (farImg && farImg.complete && farImg.naturalWidth > 0)
-                ? `Loaded (${farImg.naturalWidth}×${farImg.naturalHeight})`
+                ? `Loaded (${farImg.naturalWidth}×${farImg.naturalHeight}px)`
                 : 'Using Procedural Fallback';
             document.getElementById('diagNear').textContent = (nearImg && nearImg.complete && nearImg.naturalWidth > 0)
-                ? `Loaded (${nearImg.naturalWidth}×${nearImg.naturalHeight})`
+                ? `Loaded (${nearImg.naturalWidth}×${nearImg.naturalHeight}px)`
                 : 'Using Procedural Fallback';
-            document.getElementById('diagLandmark').textContent = (lmImg && lmImg.complete && lmImg.naturalWidth > 0)
-                ? `Loaded Sprite (${lmImg.naturalWidth}×${lmImg.naturalHeight})`
-                : 'Using Procedural Vector Shape';
         }
 
         // Animation Loop
@@ -394,14 +461,22 @@
             const effectiveDt = dt * speedMultiplier;
             farLayer.update(effectiveDt);
             nearLayer.update(effectiveDt);
-            if (landmark) landmark.update(effectiveDt);
-            previewParticles.forEach(p => p.update(effectiveDt));
+            if (landmark) landmark.update(effectiveDt, currentProgress, isBossAlert);
+            if (window.AtmosphericWeatherEngine) {
+                AtmosphericWeatherEngine.update(effectiveDt);
+            }
+            if (typeof envParticles !== 'undefined') {
+                for (let i = envParticles.length - 1; i >= 0; i--) {
+                    envParticles[i].update(effectiveDt);
+                    if (!envParticles[i].alive) envParticles.splice(i, 1);
+                }
+            }
 
             // Render
             ctx.fillStyle = '#010208';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            // 1. Far Layer
+            // 1. Far Layer (>=3000px)
             if (layersActive.far) {
                 farLayer.draw();
                 if (showSeams) {
@@ -434,12 +509,12 @@
                 }
             }
 
-            // 3. Journey Landmark (Midground)
+            // 3. Journey Landmark (Midground: Dynamic Scale & Perspective Angle)
             if (layersActive.landmark && landmark) {
                 landmark.draw(ctx);
             }
 
-            // 4. Near Silhouette
+            // 4. Near Silhouette (>=3000px)
             if (layersActive.near) {
                 nearLayer.draw();
                 if (showSeams) {
@@ -458,17 +533,30 @@
                 }
             }
 
-            // 5. Environmental Particles
-            if (layersActive.particles) {
-                previewParticles.forEach(p => p.draw(ctx));
+            // 5. Layer 4 Multi-Tier Weather Rendering (Offscreen buffer + Flash overlays)
+            if (typeof envBuffer !== 'undefined' && envBuffer) {
+                rebuildEnvBuffer(envBuffer.ctx);
+                ctx.drawImage(envBuffer.canvas, 0, 0);
+            }
+            if (window.AtmosphericWeatherEngine) {
+                AtmosphericWeatherEngine.draw(ctx);
             }
 
-            // Update HUD text
+            // Update Dynamic HUD Readouts
+            if (landmark) {
+                const deg = Math.round(landmark.currentAngle * (180 / Math.PI));
+                const scaleF = landmark.currentScale.toFixed(2);
+                document.getElementById('hudLmScale').textContent = `${scaleF}x`;
+                document.getElementById('hudLmAngle').textContent = `${deg}°`;
+                document.getElementById('diagAngle').textContent = `${deg}° perspective tilt`;
+                document.getElementById('diagScale').textContent = `${scaleF}x (approaching midground)`;
+            }
             document.getElementById('hudFarX').textContent = Math.round(farLayer.offset) + ' px';
             document.getElementById('hudNearX').textContent = Math.round(nearLayer.offset) + ' px';
+            document.getElementById('diagParticles').textContent = `${(typeof envParticles !== 'undefined') ? envParticles.length : 0} active particles`;
         }
 
-        // Initialize when window loads
+        // Initialize on load
         window.addEventListener('DOMContentLoaded', () => {
             initializeRendererBuffers();
             if (typeof loadLandmarkSprites === 'function') loadLandmarkSprites();

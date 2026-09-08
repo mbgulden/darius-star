@@ -494,58 +494,218 @@
             draw() {} // No-op — rendered via offscreen buffer
         }
 
-        // Spawning helper: creates biome-appropriate particles each frame
-        function spawnBiomeParticles(dt) {
-            if (!window.LevelManager || !LevelManager.currentLevelConfig) return;
-            const settings = LevelManager.currentLevelConfig.particleSettings;
-            if (!settings) return;
+// ─── AtmosphericWeatherEngine: Multi-Tier Layer 4 Weather Engine ──────────
+const AtmosphericWeatherEngine = {
+    layers: {
+        ambientDrift: true,    // Layer 4A: subtle micro-motes, marine snow, cosmic dust
+        weatherSquall: true,   // Layer 4B: directional pressure currents, wind, embers, rain
+        eventSurge: true       // Layer 4C: boss alert storms, lightning arcs, coronal pulses
+    },
+    currentBiome: 1,
+    currentLevel: 1,
+    levelProgress: 0.0,
+    isBossActive: false,
+    alertLevel: 0.0,
+    accumA: 0.0,
+    accumB: 0.0,
+    accumC: 0.0,
+    flashTimer: 0.0,
+    flashColor: 'rgba(255,255,255,0)',
 
-            // Accumulator-based spawning to avoid frame-rate dependency
-            envSpawnAccum += dt;
+    setContext(biome, level, progress = 0.0, isBoss = false, alert = 0.0) {
+        this.currentBiome = Math.max(1, Math.min(10, biome || 1));
+        this.currentLevel = Math.max(1, Math.min(10, level || 1));
+        this.levelProgress = Math.max(0, Math.min(1.0, progress || 0.0));
+        this.isBossActive = !!isBoss;
+        this.alertLevel = Math.max(0, Math.min(1.0, alert || (isBoss ? 1.0 : 0.0)));
+    },
 
-            // 1. Primary particle (accumulated spawning)
-            if (settings.primary) {
-                const rate = settings.primary.rate;
-                const type = settings.primary.type;
-                while (envSpawnAccum >= rate) {
-                    envSpawnAccum -= rate;
-                    envParticles.push(new EnvironmentParticle(type));
-                }
-            }
+    triggerFlash(color = 'rgba(255, 255, 255, 0.25)', duration = 0.15) {
+        this.flashColor = color;
+        this.flashTimer = duration;
+    },
 
-            // 2. Secondary particle (chance or rate)
-            if (settings.secondary) {
-                const sec = settings.secondary;
-                if (sec.rate) {
-                    while (envSpawnAccum >= sec.rate) {
-                        envSpawnAccum -= sec.rate;
-                        envParticles.push(new EnvironmentParticle(sec.type));
-                    }
-                } else if (sec.chance) {
-                    if (Math.random() < dt * sec.chance) {
-                        envParticles.push(new EnvironmentParticle(sec.type));
-                    }
-                }
-            }
-
-            // 3. Tertiary particle (chance or rate)
-            if (settings.tertiary) {
-                const tert = settings.tertiary;
-                if (tert.rate) {
-                    while (envSpawnAccum >= tert.rate) {
-                        envSpawnAccum -= tert.rate;
-                        envParticles.push(new EnvironmentParticle(tert.type));
-                    }
-                } else if (tert.chance) {
-                    if (Math.random() < dt * tert.chance) {
-                        envParticles.push(new EnvironmentParticle(tert.type));
-                    }
-                }
-            }
-
-            // Cap accumulator
-            envSpawnAccum = Math.min(envSpawnAccum, 1.0);
+    update(dt) {
+        if (this.flashTimer > 0) {
+            this.flashTimer = Math.max(0, this.flashTimer - dt);
         }
+
+        // Context sync from LevelManager or game state if running inside game loop
+        if (typeof LevelManager !== 'undefined') {
+            const b = LevelManager.biome || 1;
+            const l = LevelManager.level || 1;
+            const curWave = LevelManager.currentWave || 0;
+            const maxW = (LevelManager.currentLevelConfig && LevelManager.currentLevelConfig.waves) ? LevelManager.currentLevelConfig.waves.length : 5;
+            const prog = maxW > 0 ? Math.min(1.0, curWave / maxW) : 0.0;
+            const isBoss = (typeof boss !== 'undefined' && boss !== null && boss.hp > 0);
+            this.setContext(b, l, prog, isBoss);
+        }
+
+        // Intensity scaling
+        const progressionMult = 1.0 + (this.levelProgress * 0.85);
+        const bossMult = this.isBossActive ? 1.8 : 1.0;
+
+        // 1. Layer 4A: Ambient Depth Drift (gentle motes, plankton, spores)
+        if (this.layers.ambientDrift) {
+            this.accumA += dt;
+            const rateA = 0.25;
+            while (this.accumA >= rateA) {
+                this.accumA -= rateA;
+                if (typeof envParticles !== 'undefined' && envParticles.length < 90) {
+                    const ambientType = this._getAmbientType(this.currentBiome);
+                    envParticles.push(new EnvironmentParticle(ambientType));
+                }
+            }
+        }
+
+        // 2. Layer 4B: Directional Weather Squalls (rain, ash, embers, smoke, wind)
+        if (this.layers.weatherSquall) {
+            this.accumB += dt * progressionMult * bossMult;
+            const rateB = Math.max(0.08, 0.28 - (this.currentLevel * 0.015));
+            while (this.accumB >= rateB) {
+                this.accumB -= rateB;
+                if (typeof envParticles !== 'undefined' && envParticles.length < 120) {
+                    const squallType = this._getSquallType(this.currentBiome);
+                    envParticles.push(new EnvironmentParticle(squallType));
+                }
+            }
+        }
+
+        // 3. Layer 4C: Event Surges & Climax Storms
+        if (this.layers.eventSurge) {
+            this.accumC += dt;
+            if (this.isBossActive || this.levelProgress >= 0.85 || this.alertLevel > 0) {
+                const eventRate = this.isBossActive ? 0.35 : 0.8;
+                while (this.accumC >= eventRate) {
+                    this.accumC -= eventRate;
+                    if (typeof envParticles !== 'undefined' && envParticles.length < 140) {
+                        const eventType = this._getEventType(this.currentBiome);
+                        envParticles.push(new EnvironmentParticle(eventType));
+                        if ((this.currentBiome === 7 || this.currentBiome === 4) && Math.random() < 0.25) {
+                            this.triggerFlash(this.currentBiome === 7 ? 'rgba(68, 102, 255, 0.18)' : 'rgba(255, 0, 255, 0.12)', 0.08);
+                        }
+                    }
+                }
+            }
+        }
+    },
+
+    _getAmbientType(biome) {
+        switch (biome) {
+            case 1: return 'mote';
+            case 2: return 'neon_glow';
+            case 3: return 'mote';
+            case 4: return 'plasma_ribbon';
+            case 5: return 'ice_crystal';
+            case 6: return 'ember';
+            case 7: return 'static_band';
+            case 8: return 'coolant_gas';
+            case 9: return 'spore';
+            case 10: return 'echo_shard';
+            default: return 'mote';
+        }
+    },
+
+    _getSquallType(biome) {
+        switch (biome) {
+            case 1: return 'vent_smoke';
+            case 2: return 'rust_flake';
+            case 3: return 'coolant_drip';
+            case 4: return 'plasma_ribbon';
+            case 5: return 'ice_crystal';
+            case 6: return 'ash_cloud';
+            case 7: return 'rain_drop';
+            case 8: return 'debris';
+            case 9: return 'acid_drip';
+            case 10: return 'code_stream';
+            default: return 'mote';
+        }
+    },
+
+    _getEventType(biome) {
+        switch (biome) {
+            case 1: return 'vent_smoke';
+            case 2: return 'rust_flake';
+            case 3: return 'tesla_bolt';
+            case 4: return 'storm_flash';
+            case 5: return 'prism_beam';
+            case 6: return 'ember';
+            case 7: return 'lightning_strike';
+            case 8: return 'beacon_flash';
+            case 9: return 'vein_pulse';
+            case 10: return 'rift_tear';
+            default: return 'tesla_bolt';
+        }
+    },
+
+    draw(targetCtx) {
+        const c = targetCtx || ctx;
+        if (!c) return;
+        if (this.flashTimer > 0 && this.layers.eventSurge) {
+            c.save();
+            c.fillStyle = this.flashColor;
+            c.fillRect(0, 0, (typeof canvas !== 'undefined' ? canvas.width : 800), (typeof canvas !== 'undefined' ? canvas.height : 450));
+            c.restore();
+        }
+    }
+};
+
+// Spawning helper: creates biome-appropriate particles each frame
+function spawnBiomeParticles(dt) {
+    if (typeof AtmosphericWeatherEngine !== 'undefined') {
+        AtmosphericWeatherEngine.update(dt);
+    }
+
+    if (!window.LevelManager || !LevelManager.currentLevelConfig) return;
+    const settings = LevelManager.currentLevelConfig.particleSettings;
+    if (!settings) return;
+
+    // Accumulator-based spawning to avoid frame-rate dependency
+    envSpawnAccum += dt;
+
+    // 1. Primary particle (accumulated spawning)
+    if (settings.primary) {
+        const rate = settings.primary.rate;
+        const type = settings.primary.type;
+        while (envSpawnAccum >= rate) {
+            envSpawnAccum -= rate;
+            envParticles.push(new EnvironmentParticle(type));
+        }
+    }
+
+    // 2. Secondary particle (chance or rate)
+    if (settings.secondary) {
+        const sec = settings.secondary;
+        if (sec.rate) {
+            while (envSpawnAccum >= sec.rate) {
+                envSpawnAccum -= sec.rate;
+                envParticles.push(new EnvironmentParticle(sec.type));
+            }
+        } else if (sec.chance) {
+            if (Math.random() < dt * sec.chance) {
+                envParticles.push(new EnvironmentParticle(sec.type));
+            }
+        }
+    }
+
+    // 3. Tertiary particle (chance or rate)
+    if (settings.tertiary) {
+        const tert = settings.tertiary;
+        if (tert.rate) {
+            while (envSpawnAccum >= tert.rate) {
+                envSpawnAccum -= tert.rate;
+                envParticles.push(new EnvironmentParticle(tert.type));
+            }
+        } else if (tert.chance) {
+            if (Math.random() < dt * tert.chance) {
+                envParticles.push(new EnvironmentParticle(tert.type));
+            }
+        }
+    }
+
+    // Cap accumulator
+    envSpawnAccum = Math.min(envSpawnAccum, 1.0);
+}
 
         // Offscreen buffer for environmental particles (redrawn every 150ms)
         let envBuffer = null;
@@ -784,5 +944,11 @@
                 }
                 offCtx.restore();
             });
+        }
+
+        if (typeof window !== 'undefined') {
+            window.AtmosphericWeatherEngine = AtmosphericWeatherEngine;
+            window.spawnBiomeParticles = spawnBiomeParticles;
+            window.rebuildEnvBuffer = rebuildEnvBuffer;
         }
 

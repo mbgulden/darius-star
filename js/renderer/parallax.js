@@ -140,13 +140,14 @@ function generateBiomeBackground(biomeNum, levelNum = 1) {
     return c;
 }
 
-// ─── ParallaxLayer Class (Backwards-compatible + Level Journey integration) ──
+// ─── ParallaxLayer Class (Backwards-compatible + Ultra-Wide >=3000px Support) ──
 class ParallaxLayer {
-    constructor(key, speed, yOffset = 0, alpha = 1.0, scale = 1.0) {
+    constructor(key, speed, yOffset = 0, alpha = 1.0, scale = 1.0, anchor = 'fill') {
         this.speed = speed;
         this.yOffset = yOffset;
         this.alpha = alpha;
         this.scale = scale;
+        this.anchor = anchor; // 'fill', 'top', 'bottom', 'center'
         this.offset = 0;
         this.setKey(key || 'bg_1_far');
     }
@@ -202,8 +203,9 @@ class ParallaxLayer {
     update(dt) {
         const img = this.getImg();
         let w;
+        const targetH = (typeof canvas !== 'undefined' && canvas.height) ? canvas.height : 450;
         if (img && img.complete && img.naturalWidth > 0) {
-            const scaleY = (canvas.height || 450) / img.naturalHeight;
+            const scaleY = (targetH / img.naturalHeight) * this.scale;
             w = img.naturalWidth * scaleY;
         } else {
             let biomeNum = 1;
@@ -213,9 +215,9 @@ class ParallaxLayer {
                 levelNum = LevelManager.level || 1;
             }
             const procBg = generateBiomeBackground(biomeNum, levelNum);
-            w = procBg ? procBg.width : (canvas.width || 800);
+            w = procBg ? procBg.width : ((typeof canvas !== 'undefined' && canvas.width) ? canvas.width : 800);
         }
-        if (w <= 0) w = canvas.width || 800;
+        if (w <= 0) w = (typeof canvas !== 'undefined' && canvas.width) ? canvas.width : 800;
         this.offset = (this.offset + this.speed * dt) % w;
     }
 
@@ -223,6 +225,8 @@ class ParallaxLayer {
         const img = this.getImg();
         let biomeNum = (typeof LevelManager !== 'undefined') ? (LevelManager.biome || 1) : 1;
         let levelNum = (typeof LevelManager !== 'undefined') ? (LevelManager.level || 1) : 1;
+        const canvasW = (typeof canvas !== 'undefined' && canvas.width) ? canvas.width : 800;
+        const canvasH = (typeof canvas !== 'undefined' && canvas.height) ? canvas.height : 450;
 
         if (!img || !img.complete || img.naturalWidth === 0) {
             const procBg = generateBiomeBackground(biomeNum, levelNum);
@@ -232,9 +236,9 @@ class ParallaxLayer {
                 const w = procBg.width;
                 const h = procBg.height;
                 const drawX = -this.offset % w;
-                const count = Math.ceil((canvas.width || 800) / w) + 1;
+                const count = Math.ceil(canvasW / w) + 1;
                 for (let i = 0; i < count; i++) {
-                    ctx.drawImage(procBg, drawX + i * w, this.yOffset, w, h);
+                    ctx.drawImage(procBg, Math.floor(drawX + i * w), Math.floor(this.yOffset), Math.ceil(w) + 1, Math.ceil(h));
                 }
                 ctx.restore();
             }
@@ -243,40 +247,73 @@ class ParallaxLayer {
 
         ctx.save();
         ctx.globalAlpha = this.alpha;
-        const scaleY = (canvas.height || 450) / img.naturalHeight;
+        const scaleY = (canvasH / img.naturalHeight) * this.scale;
         const w = img.naturalWidth * scaleY;
-        const h = canvas.height || 450;
+        const h = canvasH;
         const drawX = -((this.offset % w + w) % w);
-        const count = Math.ceil((canvas.width || 800) / w) + 2;
+        const count = Math.ceil(canvasW / w) + 2;
+        
+        // Render seamless tiles with 1px overdraw to prevent sub-pixel hairline seams
         for (let i = 0; i < count; i++) {
-            ctx.drawImage(img, drawX + i * w, this.yOffset, w, h);
+            const x = Math.floor(drawX + i * w);
+            ctx.drawImage(img, x, Math.floor(this.yOffset), Math.ceil(w) + 1, Math.ceil(h));
         }
         ctx.restore();
     }
 }
 
-// ─── Unique Journey Landmark Renderer (100 Distinct Level Landmarks) ─────────
+// ─── Unique Journey Landmark Renderer (Dynamic Angles, Sizes & Progression) ───
 class JourneyLandmark {
-    constructor(biome, level) {
+    constructor(biome, level, progress = 0.0) {
         this.biome = biome;
         this.level = level;
-        this.x = (typeof canvas !== 'undefined' ? canvas.width : 800) + 100;
+        this.progress = progress; // 0.0 (start of level) to 1.0 (level climax / boss)
+        this.x = (typeof canvas !== 'undefined' ? canvas.width : 800) + 150;
         this.y = (typeof canvas !== 'undefined' ? canvas.height / 2 : 225);
         this.speed = 28; // Midground parallax velocity
         this.time = Math.random() * Math.PI * 2;
+        this.isBossAlert = false;
         this.info = (typeof BIOME_DATA !== 'undefined' && BIOME_DATA.getLevelInfo)
             ? BIOME_DATA.getLevelInfo(biome, level)
             : { landmark: 'coral_spire', accentColor: '#00ffff' };
+        
+        // Deterministic unique angle seed per biome + level (ranges between -18 deg and +18 deg)
+        const angleSeed = (this.biome * 43 + this.level * 23) % 360;
+        this.baseAngle = ((angleSeed % 37) - 18) * (Math.PI / 180);
+        this.currentAngle = this.baseAngle;
+
+        // Base display size for >=1000px master assets
+        this.baseSize = 340;
+        this.currentScale = 1.0;
     }
 
-    update(dt) {
+    setProgress(p, isBoss = false) {
+        this.progress = Math.max(0, Math.min(1.0, p));
+        this.isBossAlert = !!isBoss;
+    }
+
+    update(dt, progress = null, isBoss = null) {
+        if (progress !== null && typeof progress === 'number') {
+            this.progress = Math.max(0, Math.min(1.0, progress));
+        }
+        if (isBoss !== null) {
+            this.isBossAlert = !!isBoss;
+        }
+
         this.x -= this.speed * dt;
-        this.time += dt * 1.5;
+        this.time += dt * (this.isBossAlert ? 3.0 : 1.4);
+
+        // Dynamic undulating tilt based on environmental current and base perspective angle
+        this.currentAngle = this.baseAngle + Math.sin(this.time * 0.7) * 0.06 + (this.progress * 0.08);
+
+        // Progressive scaling: looms larger into midground as waves clear (1.0x -> 1.35x)
+        this.currentScale = 1.0 + (this.progress * 0.35);
+
         // Loop landmark around smoothly so the level feels continuously inhabited
-        const wrapX = -450;
+        const wrapX = -550;
         if (this.x < wrapX) {
-            this.x = (typeof canvas !== 'undefined' ? canvas.width : 800) + 250;
-            this.y = (canvas.height || 450) * (0.25 + (Math.sin(this.time) * 0.5 + 0.5) * 0.5);
+            this.x = (typeof canvas !== 'undefined' ? canvas.width : 800) + 280;
+            this.y = (canvas.height || 450) * (0.22 + (Math.sin(this.time * 0.5) * 0.5 + 0.5) * 0.56);
         }
     }
 
@@ -286,28 +323,30 @@ class JourneyLandmark {
 
         c.save();
         c.translate(this.x, this.y);
+        c.rotate(this.currentAngle);
 
         const type = this.info.landmark;
-        const accent = this.info.accentColor || '#00ffff';
-        const pulse = 1.0 + Math.sin(this.time) * 0.12;
+        const accent = this.isBossAlert ? '#ff3344' : (this.info.accentColor || '#00ffff');
+        const pulse = 1.0 + Math.sin(this.time) * (this.isBossAlert ? 0.20 : 0.10);
 
         const spriteKey = 'landmark_' + type;
         const spriteImg = (typeof landmarkSprites !== 'undefined' && landmarkSprites[spriteKey])
             ? landmarkSprites[spriteKey]
             : ((typeof window !== 'undefined' && window.landmarkSprites) ? window.landmarkSprites[spriteKey] : null);
 
+        // Render >=1000px high-definition master asset when available
         if (spriteImg && spriteImg.complete && spriteImg.naturalWidth > 0) {
             c.shadowColor = accent;
-            c.shadowBlur = 18 * pulse;
-            const drawW = 280 * pulse;
-            const drawH = 280 * pulse;
+            c.shadowBlur = (this.isBossAlert ? 28 : 18) * pulse;
+            const drawW = this.baseSize * this.currentScale * pulse;
+            const drawH = this.baseSize * this.currentScale * pulse;
             c.drawImage(spriteImg, -drawW / 2, -drawH / 2, drawW, drawH);
             c.restore();
             return;
         }
 
         c.shadowColor = accent;
-        c.shadowBlur = 12;
+        c.shadowBlur = this.isBossAlert ? 22 : 12;
 
         if (type === 'coral_spire') {
             // Bioluminescent branching coral pinnacle
@@ -484,19 +523,38 @@ class JourneyLandmark {
 const JourneyBackgroundRenderer = {
     biome: 1,
     level: 1,
+    levelProgress: 0.0,
+    isBossActive: false,
     currentLandmark: null,
 
-    setLevel(biome, level) {
+    setLevel(biome, level, progress = 0.0) {
         this.biome = Math.max(1, Math.min(10, biome));
         this.level = Math.max(1, Math.min(10, level));
-        this.currentLandmark = new JourneyLandmark(this.biome, this.level);
+        this.levelProgress = progress;
+        this.currentLandmark = new JourneyLandmark(this.biome, this.level, this.levelProgress);
     },
 
-    update(dt) {
-        if (!this.currentLandmark) {
-            this.currentLandmark = new JourneyLandmark(this.biome, this.level);
+    update(dt, progress = null, isBoss = null) {
+        if (progress !== null && typeof progress === 'number') {
+            this.levelProgress = Math.max(0, Math.min(1.0, progress));
+        } else if (typeof LevelManager !== 'undefined') {
+            const curWave = LevelManager.currentWave || 0;
+            const maxW = (LevelManager.currentLevelConfig && LevelManager.currentLevelConfig.waves) ? LevelManager.currentLevelConfig.waves.length : 5;
+            this.levelProgress = maxW > 0 ? Math.min(1.0, curWave / maxW) : 0.0;
         }
-        this.currentLandmark.update(dt);
+
+        if (isBoss !== null) {
+            this.isBossActive = !!isBoss;
+        } else if (typeof boss !== 'undefined' && boss !== null && boss.hp > 0) {
+            this.isBossActive = true;
+        } else {
+            this.isBossActive = false;
+        }
+
+        if (!this.currentLandmark) {
+            this.currentLandmark = new JourneyLandmark(this.biome, this.level, this.levelProgress);
+        }
+        this.currentLandmark.update(dt, this.levelProgress, this.isBossActive);
     },
 
     draw(targetCtx) {
