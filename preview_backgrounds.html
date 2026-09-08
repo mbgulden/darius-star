@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Darius Star — Parallax Backgrounds & Journey Viewer</title>
+    <style>
+        :root {
+            --bg-color: #0d1117;
+            --panel-bg: #161b22;
+            --border-color: #30363d;
+            --accent-cyan: #00d2ff;
+            --accent-purple: #c56cf0;
+            --accent-gold: #f7b731;
+            --text-main: #f0f6fc;
+            --text-dim: #8b949e;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+        header {
+            text-align: center;
+            max-width: 1000px;
+        }
+        h1 {
+            font-size: 1.8rem;
+            color: var(--accent-cyan);
+            text-shadow: 0 0 14px rgba(0, 210, 255, 0.4);
+            margin-bottom: 6px;
+        }
+        p { color: var(--text-dim); font-size: 0.95rem; }
+        .controls-bar {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            background: var(--panel-bg);
+            padding: 14px 20px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            align-items: center;
+            justify-content: center;
+            max-width: 1100px;
+            width: 100%;
+        }
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+        select, button {
+            background: #21262d;
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            padding: 7px 14px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            outline: none;
+            transition: all 0.2s;
+        }
+        select:hover, button:hover {
+            border-color: var(--accent-cyan);
+            background: #30363d;
+        }
+        button.active {
+            background: var(--accent-cyan);
+            color: #000;
+            font-weight: bold;
+            border-color: var(--accent-cyan);
+        }
+        .toggle-btn {
+            padding: 5px 12px;
+            font-size: 0.82rem;
+            border-radius: 4px;
+        }
+        .main-view {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            width: 100%;
+            max-width: 1100px;
+        }
+        .viewport-wrapper {
+            position: relative;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+            background: #02040a;
+        }
+        #bgCanvas {
+            display: block;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+        }
+        .hud-overlay {
+            position: absolute;
+            top: 12px;
+            left: 14px;
+            pointer-events: none;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.85);
+            text-shadow: 0 0 6px #000;
+            line-height: 1.4;
+            background: rgba(10, 14, 20, 0.65);
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 1px solid rgba(0, 210, 255, 0.25);
+        }
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            width: 100%;
+        }
+        .info-card {
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+        .card-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--accent-purple);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 6px;
+            margin-bottom: 4px;
+        }
+        .prop-row {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.08);
+            padding: 4px 0;
+        }
+        .prop-label { color: var(--text-dim); }
+        .prop-val { font-weight: 500; }
+        .quote-box {
+            font-style: italic;
+            color: var(--accent-gold);
+            background: rgba(247, 183, 49, 0.08);
+            padding: 8px 12px;
+            border-left: 3px solid var(--accent-gold);
+            border-radius: 4px;
+            margin-top: 6px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>DARIUS STAR: PARALLAX BACKGROUNDS & JOURNEY VIEWER</h1>
+        <p>Real-time visual inspection testbed for 10-Biome × 10-Level parallax backdrops, silhouettes, landmarks & particles.</p>
+    </header>
+
+    <div class="controls-bar">
+        <div class="control-group">
+            <label for="biomeSelect">Biome:</label>
+            <select id="biomeSelect"></select>
+        </div>
+        <div class="control-group">
+            <label for="levelSelect">Level:</label>
+            <select id="levelSelect"></select>
+        </div>
+        <div class="control-group">
+            <label>Speed:</label>
+            <button id="spd0" class="toggle-btn" onclick="setSpeed(0)">0x (Pause)</button>
+            <button id="spd1" class="toggle-btn active" onclick="setSpeed(1)">1x (Normal)</button>
+            <button id="spd2" class="toggle-btn" onclick="setSpeed(2)">2x</button>
+            <button id="spd4" class="toggle-btn" onclick="setSpeed(4)">4x</button>
+        </div>
+        <div class="control-group">
+            <button id="btnSeam" class="toggle-btn" onclick="toggleSeam()">Highlight Seams</button>
+        </div>
+    </div>
+
+    <div class="controls-bar" style="gap: 12px; padding: 10px 20px;">
+        <span style="font-size: 0.85rem; color: var(--text-dim);">Layers:</span>
+        <button id="togFar" class="toggle-btn active" onclick="toggleLayer('far')">Far Backdrop</button>
+        <button id="togStars" class="toggle-btn active" onclick="toggleLayer('stars')">Starfield</button>
+        <button id="togLandmark" class="toggle-btn active" onclick="toggleLayer('landmark')">Journey Landmark</button>
+        <button id="togNear" class="toggle-btn active" onclick="toggleLayer('near')">Near Silhouette</button>
+        <button id="togParticles" class="toggle-btn active" onclick="toggleLayer('particles')">Particles</button>
+    </div>
+
+    <div class="main-view">
+        <div class="viewport-wrapper">
+            <canvas id="bgCanvas" width="960" height="540"></canvas>
+            <div class="hud-overlay" id="hudOverlay">
+                <div>BIOME: <span id="hudBiome" style="color:var(--accent-cyan)">1 - Abyssal Trench</span></div>
+                <div>LEVEL: <span id="hudLevel">1.1 Sunlit Atoll Crest</span></div>
+                <div>LANDMARK: <span id="hudLandmark" style="color:var(--accent-gold)">coral_spire</span></div>
+                <div>FAR POS: <span id="hudFarX">0 px</span> | NEAR POS: <span id="hudNearX">0 px</span></div>
+                <div>FPS: <span id="hudFps">60</span></div>
+            </div>
+        </div>
+
+        <div class="info-grid">
+            <div class="info-card">
+                <div class="card-title">Sector Metadata & Intel</div>
+                <div class="prop-row"><span class="prop-label">Sector Name</span><span class="prop-val" id="infoName">-</span></div>
+                <div class="prop-row"><span class="prop-label">Primary Hazard</span><span class="prop-val" id="infoHazard" style="color:#ff6b6b">-</span></div>
+                <div class="prop-row"><span class="prop-label">Accent Lighting</span><span class="prop-val" id="infoAccent">-</span></div>
+                <div class="prop-row"><span class="prop-label">Atmosphere Preset</span><span class="prop-val" id="infoParticles">-</span></div>
+                <div style="margin-top:6px; font-size:0.85rem; color:var(--text-dim);" id="infoIntel">-</div>
+                <div class="quote-box" id="infoComm">-</div>
+            </div>
+
+            <div class="info-card">
+                <div class="card-title">Asset Diagnostics & Seams</div>
+                <div class="prop-row"><span class="prop-label">Far Texture (Plane 0)</span><span class="prop-val" id="diagFar">-</span></div>
+                <div class="prop-row"><span class="prop-label">Near Texture (Plane 2)</span><span class="prop-val" id="diagNear">-</span></div>
+                <div class="prop-row"><span class="prop-label">Landmark Sprite (Plane 1)</span><span class="prop-val" id="diagLandmark">-</span></div>
+                <div class="prop-row"><span class="prop-label">Far Scroll Velocity</span><span class="prop-val">14 px/s × Speed</span></div>
+                <div class="prop-row"><span class="prop-label">Near Scroll Velocity</span><span class="prop-val">50 px/s × Speed</span></div>
+                <div class="prop-row"><span class="prop-label">Landmark Velocity</span><span class="prop-val">28 px/s × Speed</span></div>
+                <div style="margin-top:6px; font-size:0.82rem; color:var(--text-dim);" id="diagClassified">-</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts required in dependency order -->
+    <script src="js/levels/biome_data.js"></script>
+    <script src="js/sprites.js"></script>
+    <script src="js/renderer/particles.js"></script>
+    <script src="js/renderer/parallax.js"></script>
+
+    <script>
+        const canvas = document.getElementById('bgCanvas');
+        const ctx = canvas.getContext('2d');
+
+        let currentBiome = 1;
+        let currentLevel = 1;
+        let speedMultiplier = 1.0;
+        let showSeams = false;
+
+        const layersActive = {
+            far: true,
+            stars: true,
+            landmark: true,
+            near: true,
+            particles: true
+        };
+
+        // Initialize Biome Selector
+        const biomeSelect = document.getElementById('biomeSelect');
+        for (let b = 1; b <= 10; b++) {
+            const opt = document.createElement('option');
+            opt.value = b;
+            opt.textContent = `Biome ${b}: ${BIOME_DATA.names[b]}`;
+            biomeSelect.appendChild(opt);
+        }
+
+        const levelSelect = document.getElementById('levelSelect');
+        function populateLevelSelect(b) {
+            levelSelect.innerHTML = '';
+            for (let l = 1; l <= 10; l++) {
+                const opt = document.createElement('option');
+                opt.value = l;
+                const info = BIOME_DATA.levelDetails[b][l];
+                opt.textContent = info ? info.name : `Level ${b}.${l}`;
+                levelSelect.appendChild(opt);
+            }
+        }
+        populateLevelSelect(currentBiome);
+
+        biomeSelect.addEventListener('change', (e) => {
+            currentBiome = parseInt(e.target.value, 10);
+            populateLevelSelect(currentBiome);
+            currentLevel = 1;
+            applySector();
+        });
+
+        levelSelect.addEventListener('change', (e) => {
+            currentLevel = parseInt(e.target.value, 10);
+            applySector();
+        });
+
+        function setSpeed(mult) {
+            speedMultiplier = mult;
+            [0, 1, 2, 4].forEach(s => {
+                const b = document.getElementById('spd' + s);
+                if (b) b.classList.toggle('active', s === mult);
+            });
+        }
+
+        function toggleSeam() {
+            showSeams = !showSeams;
+            document.getElementById('btnSeam').classList.toggle('active', showSeams);
+        }
+
+        function toggleLayer(layer) {
+            layersActive[layer] = !layersActive[layer];
+            const btnId = 'tog' + layer.charAt(0).toUpperCase() + layer.slice(1);
+            const btn = document.getElementById(btnId);
+            if (btn) btn.classList.toggle('active', layersActive[layer]);
+        }
+
+        // Parallax & Landmark instance
+        let farLayer = new ParallaxLayer('bg_1_far', 14);
+        let nearLayer = new ParallaxLayer('bg_1_near', 50);
+        let landmark = new JourneyLandmark(currentBiome, currentLevel);
+        let previewParticles = [];
+
+        function initParticlesForBiome(biomeNum) {
+            previewParticles = [];
+            for (let i = 0; i < 40; i++) {
+                const p = new EnvironmentParticle('mote');
+                p.x = Math.random() * canvas.width;
+                p.y = Math.random() * canvas.height;
+                previewParticles.push(p);
+            }
+        }
+        initParticlesForBiome(currentBiome);
+
+        function applySector() {
+            setBiomeBackgrounds(currentBiome, currentLevel);
+            farLayer.setKey(`bg_${currentBiome}_far`);
+            nearLayer.setKey(`bg_${currentBiome}_near`);
+            landmark = new JourneyLandmark(currentBiome, currentLevel);
+            initParticlesForBiome(currentBiome);
+            updateInfoUI();
+        }
+
+        function updateInfoUI() {
+            const info = BIOME_DATA.levelDetails[currentBiome][currentLevel];
+            if (!info) return;
+
+            document.getElementById('hudBiome').textContent = `${currentBiome} - ${BIOME_DATA.names[currentBiome]}`;
+            document.getElementById('hudLevel').textContent = info.name;
+            document.getElementById('hudLandmark').textContent = info.landmark;
+
+            document.getElementById('infoName').textContent = info.name;
+            document.getElementById('infoHazard').textContent = info.hazard || 'Standard Atmospheric Void';
+            document.getElementById('infoAccent').textContent = info.accentColor;
+            document.getElementById('infoAccent').style.color = info.accentColor;
+            document.getElementById('infoParticles').textContent = info.particlePreset || 'motes';
+            document.getElementById('infoIntel').textContent = info.intel;
+
+            const spkr = (info.commLine && info.commLine.s) ? `[${info.commLine.s}] ` : '';
+            document.getElementById('infoComm').textContent = info.commLine ? (spkr + info.commLine.l) : 'No comm traffic recorded.';
+            document.getElementById('diagClassified').textContent = info.classifiedLog || 'Sector archive encrypted.';
+
+            // Texture status check
+            const farImg = farLayer.getImg();
+            const nearImg = nearLayer.getImg();
+            const lmKey = 'landmark_' + info.landmark;
+            const lmImg = (window.landmarkSprites && window.landmarkSprites[lmKey]) ? window.landmarkSprites[lmKey] : null;
+
+            document.getElementById('diagFar').textContent = (farImg && farImg.complete && farImg.naturalWidth > 0)
+                ? `Loaded (${farImg.naturalWidth}×${farImg.naturalHeight})`
+                : 'Using Procedural Fallback';
+            document.getElementById('diagNear').textContent = (nearImg && nearImg.complete && nearImg.naturalWidth > 0)
+                ? `Loaded (${nearImg.naturalWidth}×${nearImg.naturalHeight})`
+                : 'Using Procedural Fallback';
+            document.getElementById('diagLandmark').textContent = (lmImg && lmImg.complete && lmImg.naturalWidth > 0)
+                ? `Loaded Sprite (${lmImg.naturalWidth}×${lmImg.naturalHeight})`
+                : 'Using Procedural Vector Shape';
+        }
+
+        // Animation Loop
+        let lastTime = performance.now();
+        let frameCount = 0;
+        let fpsTimer = 0;
+
+        function animate(now) {
+            requestAnimationFrame(animate);
+            const dt = Math.min((now - lastTime) / 1000, 0.1);
+            lastTime = now;
+
+            frameCount++;
+            fpsTimer += dt;
+            if (fpsTimer >= 0.5) {
+                document.getElementById('hudFps').textContent = Math.round(frameCount / fpsTimer);
+                frameCount = 0;
+                fpsTimer = 0;
+            }
+
+            // Update layers
+            const effectiveDt = dt * speedMultiplier;
+            farLayer.update(effectiveDt);
+            nearLayer.update(effectiveDt);
+            if (landmark) landmark.update(effectiveDt);
+            previewParticles.forEach(p => p.update(effectiveDt));
+
+            // Render
+            ctx.fillStyle = '#010208';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // 1. Far Layer
+            if (layersActive.far) {
+                farLayer.draw();
+                if (showSeams) {
+                    const img = farLayer.getImg();
+                    if (img && img.naturalWidth > 0) {
+                        const scaleY = canvas.height / img.naturalHeight;
+                        const w = img.naturalWidth * scaleY;
+                        const seamX = -((farLayer.offset % w + w) % w);
+                        ctx.strokeStyle = '#ff0055';
+                        ctx.lineWidth = 2;
+                        ctx.beginPath();
+                        ctx.moveTo(seamX, 0); ctx.lineTo(seamX, canvas.height);
+                        ctx.moveTo(seamX + w, 0); ctx.lineTo(seamX + w, canvas.height);
+                        ctx.stroke();
+                    }
+                }
+            }
+
+            // 2. Stars
+            if (layersActive.stars) {
+                if (typeof stars !== 'undefined' && stars.length > 0) {
+                    stars.forEach(st => {
+                        st.update(effectiveDt);
+                        ctx.save();
+                        ctx.globalAlpha = st.getAlpha();
+                        ctx.fillStyle = st.color;
+                        ctx.fillRect(st.x, st.y, st.size, st.size);
+                        ctx.restore();
+                    });
+                }
+            }
+
+            // 3. Journey Landmark (Midground)
+            if (layersActive.landmark && landmark) {
+                landmark.draw(ctx);
+            }
+
+            // 4. Near Silhouette
+            if (layersActive.near) {
+                nearLayer.draw();
+                if (showSeams) {
+                    const img = nearLayer.getImg();
+                    if (img && img.naturalWidth > 0) {
+                        const scaleY = canvas.height / img.naturalHeight;
+                        const w = img.naturalWidth * scaleY;
+                        const seamX = -((nearLayer.offset % w + w) % w);
+                        ctx.strokeStyle = '#00ff88';
+                        ctx.lineWidth = 2;
+                        ctx.beginPath();
+                        ctx.moveTo(seamX, 0); ctx.lineTo(seamX, canvas.height);
+                        ctx.moveTo(seamX + w, 0); ctx.lineTo(seamX + w, canvas.height);
+                        ctx.stroke();
+                    }
+                }
+            }
+
+            // 5. Environmental Particles
+            if (layersActive.particles) {
+                previewParticles.forEach(p => p.draw(ctx));
+            }
+
+            // Update HUD text
+            document.getElementById('hudFarX').textContent = Math.round(farLayer.offset) + ' px';
+            document.getElementById('hudNearX').textContent = Math.round(nearLayer.offset) + ' px';
+        }
+
+        // Initialize when window loads
+        window.addEventListener('DOMContentLoaded', () => {
+            initializeRendererBuffers();
+            if (typeof loadLandmarkSprites === 'function') loadLandmarkSprites();
+            applySector();
+            requestAnimationFrame(animate);
+        });
+    </script>
+</body>
+</html>
