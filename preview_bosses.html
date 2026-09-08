@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Darius Star - Boss Spritesheet Live Previewer</title>
+    <style>
+        :root {
+            --bg-color: #0d1117;
+            --panel-bg: #161b22;
+            --border-color: #30363d;
+            --accent-cyan: #00ffff;
+            --accent-purple: #e056fd;
+            --text-main: #f0f6fc;
+            --text-dim: #8b949e;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 24px;
+        }
+        header {
+            text-align: center;
+            max-width: 900px;
+        }
+        h1 {
+            font-size: 1.8rem;
+            color: var(--accent-cyan);
+            text-shadow: 0 0 12px rgba(0, 255, 255, 0.4);
+            margin-bottom: 8px;
+        }
+        p { color: var(--text-dim); font-size: 0.95rem; }
+        .controls {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            background: var(--panel-bg);
+            padding: 16px 24px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            align-items: center;
+            justify-content: center;
+        }
+        select, button {
+            background: #21262d;
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            cursor: pointer;
+            outline: none;
+            transition: border-color 0.2s, background 0.2s;
+        }
+        select:hover, button:hover {
+            border-color: var(--accent-cyan);
+            background: #30363d;
+        }
+        button.active {
+            background: var(--accent-cyan);
+            color: #000;
+            font-weight: bold;
+            border-color: var(--accent-cyan);
+        }
+        .main-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px;
+            max-width: 1400px;
+            justify-content: center;
+            width: 100%;
+        }
+        .card {
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+        }
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--accent-purple);
+            align-self: flex-start;
+        }
+        #animCanvas {
+            background: #090d13;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+        .sheet-wrapper {
+            position: relative;
+            max-width: 600px;
+            max-height: 600px;
+            overflow: auto;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background: #090d13;
+        }
+        #sheetImg {
+            width: 100%;
+            height: auto;
+            display: block;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+        }
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .info-badge {
+            background: #21262d;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: var(--accent-cyan);
+            border: 1px solid var(--border-color);
+        }
+        .raw-links {
+            display: flex;
+            gap: 12px;
+            margin-top: 8px;
+        }
+        a {
+            color: var(--accent-cyan);
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Darius Star — Boss Spritesheet & Animation Live Previewer</h1>
+        <p>Real-time 16-frame 4x4 animated playback, destruction tier inspector, and full-resolution sheet viewer.</p>
+    </header>
+
+    <div class="controls">
+        <label for="bossSelect">Select Boss:</label>
+        <select id="bossSelect">
+            <optgroup label="Biome 1: Abyssal Trench">
+                <option value="boss_b1_mid_0" selected>Level 5 Mid-Boss: TRENCH NAUTILUS</option>
+                <option value="boss_b1_0">Level 10 Biome Boss: DROWNED WARDEN</option>
+            </optgroup>
+            <optgroup label="Biome 2: Coral Graveyard">
+                <option value="boss_b2_mid_0">Level 15 Mid-Boss: CORAL DREADNOUGHT CORE</option>
+                <option value="boss_b2_0">Level 20 Biome Boss: MEMORY WRAITH</option>
+            </optgroup>
+            <optgroup label="Biome 3: Europa Coelacanth Lair">
+                <option value="boss_b3_mid_0">Level 25 Mid-Boss: WARDEN MECH</option>
+                <option value="boss_b3_0">Level 30 Biome Boss: EUROPA CYBER COELACANTH</option>
+            </optgroup>
+            <optgroup label="Biome 4: Nebula Drift">
+                <option value="boss_b4_mid_0">Level 35 Mid-Boss: NEBULA LEVIATHAN</option>
+                <option value="boss_b4_0">Level 40 Biome Boss: VORTEX PRIMUS</option>
+            </optgroup>
+            <optgroup label="Biome 5: Glacial Ice Ring">
+                <option value="boss_b5_mid_0">Level 45 Mid-Boss: GLACIAL JUGGERNAUT</option>
+                <option value="boss_b5_0">Level 50 Biome Boss: FROST TYRANT</option>
+            </optgroup>
+            <optgroup label="Biome 6: Fire Nebula">
+                <option value="boss_b6_mid_0">Level 55 Mid-Boss: MAGMA BEHEMOTH</option>
+                <option value="boss_b6_0">Level 60 Biome Boss: INFERNO DRAGON</option>
+            </optgroup>
+            <optgroup label="Biome 7: Storm Belt">
+                <option value="boss_b7_mid_0">Level 65 Mid-Boss: STORM EMPEROR CRUISER</option>
+                <option value="boss_b7_0">Level 70 Biome Boss: STORM-SINGER</option>
+            </optgroup>
+            <optgroup label="Biome 8: Derelict Fleet">
+                <option value="boss_b8_mid_0">Level 75 Mid-Boss: FLAGSHIP HANGAR</option>
+                <option value="boss_b8_0">Level 80 Biome Boss: THE IRON GHOST</option>
+            </optgroup>
+            <optgroup label="Biome 9: Xenomorph Bio-Hive">
+                <option value="boss_b9_mid_0">Level 85 Mid-Boss: HIVE QUEEN SUB-CORE</option>
+                <option value="boss_b9_0">Level 90 Biome Boss: HIVE MIND OVERMIND</option>
+            </optgroup>
+            <optgroup label="Biome 10: Chrono Singularity Core">
+                <option value="boss_b10_mid_0">Level 95 Mid-Boss: PARADOX SINGULARITY GATE</option>
+                <option value="boss_b10_0">Level 100 Biome Boss: THE PRIMORDIAL SINGULARITY</option>
+            </optgroup>
+        </select>
+
+        <span class="info-badge" id="resBadge">Resolution: 2048x2048 (512x512 cell)</span>
+
+        <div class="action-buttons">
+            <button class="actBtn active" data-action="idle">Idle (Row 0)</button>
+            <button class="actBtn" data-action="shoot">Shoot (Row 1)</button>
+            <button class="actBtn" data-action="hit_0">Hit T1 (Row 2 F0)</button>
+            <button class="actBtn" data-action="hit_1">Hit T2 (Row 2 F1)</button>
+            <button class="actBtn" data-action="hit_2">Hit T3 (Row 2 F2)</button>
+            <button class="actBtn" data-action="hit_3">Hit T4 (Row 2 F3)</button>
+            <button class="actBtn" data-action="death">Death (Row 3)</button>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <!-- Live Animation Player -->
+        <div class="card">
+            <div class="card-title">Live In-Game Animation Playback (512x512 canvas)</div>
+            <canvas id="animCanvas" width="512" height="512"></canvas>
+            <div style="display: flex; gap: 12px; align-items: center;">
+                <label for="fpsSlider">Playback Speed:</label>
+                <input type="range" id="fpsSlider" min="2" max="24" value="8">
+                <span id="fpsVal">8 FPS</span>
+            </div>
+        </div>
+
+        <!-- Full Spritesheet Viewer -->
+        <div class="card">
+            <div class="card-title" style="display: flex; justify-content: space-between; width: 100%;">
+                <span>4x4 Uniform Spritesheet Atlas</span>
+                <span class="raw-links">
+                    <a id="rawLink" href="/assets/sprites/boss_b4_mid_0.png" target="_blank">Open Raw PNG ↗</a>
+                </span>
+            </div>
+            <div class="sheet-wrapper">
+                <img id="sheetImg" src="/assets/sprites/boss_b4_mid_0.png" alt="Spritesheet Atlas">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const bossSelect = document.getElementById('bossSelect');
+        const sheetImg = document.getElementById('sheetImg');
+        const rawLink = document.getElementById('rawLink');
+        const animCanvas = document.getElementById('animCanvas');
+        const ctx = animCanvas.getContext('2d');
+        const resBadge = document.getElementById('resBadge');
+        const fpsSlider = document.getElementById('fpsSlider');
+        const fpsVal = document.getElementById('fpsVal');
+        const actButtons = document.querySelectorAll('.actBtn');
+
+        let currentAction = 'idle';
+        let animTimer = 0;
+        let lastTimestamp = performance.now();
+        let customFrame = null;
+        let customFPS = 8;
+
+        const bossConfigs = {
+            boss_b9_mid_0: { res: '2048x2048', cellSize: 512 },
+            boss_b5_0: { res: '2048x2048', cellSize: 512 },
+            boss_b4_mid_0: { res: '2048x2048', cellSize: 512 },
+            boss_b2_0: { res: '2048x2048', cellSize: 512 },
+            boss_b1_0: { res: '2048x2048', cellSize: 512 },
+            boss_b2_mid_0: { res: '1024x1024', cellSize: 256 },
+            boss_b1_mid_0: { res: '1024x1024', cellSize: 256 },
+            boss_b3_mid_0: { res: '1024x1024', cellSize: 256 }
+        };
+
+        function updateBoss() {
+            const key = bossSelect.value;
+            const src = `/assets/sprites/${key}.png`;
+            sheetImg.src = src;
+            rawLink.href = src;
+            const cfg = bossConfigs[key] || { res: '2048x2048', cellSize: 512 };
+            resBadge.innerText = `Resolution: ${cfg.res} (${cfg.cellSize}x${cfg.cellSize} cell)`;
+        }
+
+        bossSelect.addEventListener('change', updateBoss);
+
+        fpsSlider.addEventListener('input', (e) => {
+            customFPS = parseInt(e.target.value);
+            fpsVal.innerText = `${customFPS} FPS`;
+        });
+
+        actButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                actButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                const act = btn.dataset.action;
+                if (act.startsWith('hit_')) {
+                    currentAction = 'hit';
+                    customFrame = parseInt(act.split('_')[1]);
+                } else {
+                    currentAction = act;
+                    customFrame = null;
+                    animTimer = 0;
+                }
+            });
+        });
+
+        function render(timestamp) {
+            const dt = (timestamp - lastTimestamp) / 1000;
+            lastTimestamp = timestamp;
+            animTimer += dt;
+
+            ctx.clearRect(0, 0, animCanvas.width, animCanvas.height);
+
+            // Background grid pattern
+            ctx.strokeStyle = '#1e2632';
+            ctx.lineWidth = 1;
+            for (let x = 0; x < animCanvas.width; x += 32) {
+                ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, animCanvas.height); ctx.stroke();
+            }
+            for (let y = 0; y < animCanvas.height; y += 32) {
+                ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(animCanvas.width, y); ctx.stroke();
+            }
+
+            if (sheetImg.complete && sheetImg.naturalWidth > 0) {
+                const sheetW = sheetImg.naturalWidth;
+                const frameSize = Math.floor(sheetW / 4);
+
+                let row = 0;
+                let totalFrames = 4;
+                let loop = true;
+                let fps = customFPS;
+
+                if (currentAction === 'idle') {
+                    row = 0; loop = true; fps = 6;
+                } else if (currentAction === 'shoot') {
+                    row = 1; loop = false; fps = 10;
+                } else if (currentAction === 'hit') {
+                    row = 2; loop = false; fps = 12;
+                } else if (currentAction === 'death') {
+                    row = 3; loop = false; fps = 6;
+                }
+
+                let frameIndex = 0;
+                if (customFrame !== null) {
+                    frameIndex = customFrame;
+                } else {
+                    frameIndex = loop 
+                        ? Math.floor(animTimer * fps) % totalFrames 
+                        : Math.min(totalFrames - 1, Math.floor(animTimer * fps));
+                }
+
+                const sx = frameIndex * frameSize;
+                const sy = row * frameSize;
+
+                ctx.drawImage(
+                    sheetImg,
+                    sx, sy, frameSize, frameSize,
+                    0, 0, animCanvas.width, animCanvas.height
+                );
+
+                // HUD overlay
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
+                ctx.fillRect(8, 8, 220, 48);
+                ctx.fillStyle = '#00ffff';
+                ctx.font = '12px monospace';
+                ctx.fillText(`Action: ${currentAction.toUpperCase()}`, 16, 26);
+                ctx.fillText(`Frame: ${frameIndex} (Row ${row}, Col ${frameIndex})`, 16, 44);
+            }
+
+            requestAnimationFrame(render);
+        }
+
+        requestAnimationFrame(render);
+    </script>
+</body>
+</html>

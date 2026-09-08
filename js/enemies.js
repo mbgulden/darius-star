@@ -706,6 +706,8 @@ class Boss {
         this._victoryTimeout = null;
         this._advanceTimeout = null;
         this._explosionTimers = [];
+        this.deathTimer = 0;
+        this.shootAnimTimer = 0;
 
         // Detect mid-boss (level 5) vs biome boss (level 10)
         this.isMidBoss = (typeof LevelManager !== 'undefined' && LevelManager.level === 5) || 
@@ -814,7 +816,21 @@ class Boss {
     }
 
     update(dt) {
+        if (this.hp <= 0) {
+            this.deathTimer += dt;
+            this.x -= 20 * dt;
+            this.y += Math.sin(this.deathTimer * 28) * 1.5;
+            return;
+        }
+
         this.bobTimer += dt;
+
+        // Shoot animation timer tracking
+        if (this.state === 'charge_up' || this.state === 'charge_blast' || this.muzzleFlashTimer > 0) {
+            this.shootAnimTimer += dt;
+        } else {
+            this.shootAnimTimer = 0;
+        }
 
         // Blaster animation timers decay
         if (this.muzzleFlashTimer > 0) this.muzzleFlashTimer -= dt * 6.0;
@@ -1217,9 +1233,13 @@ class Boss {
                 this.currentStage++;
                 playSound('explosion');
 
-                // Major localized component explosion
-                for (let k = 0; k < 15; k++) {
-                    createExplosion(sparkX + (Math.random() - 0.5) * 45, sparkY + (Math.random() - 0.5) * 45, '#ff3300', 14);
+                // Major localized component explosion: AOE blast wave + multi-sprite explosion
+                createExplosion(sparkX, sparkY, '#ff4400', 32, 'missile_aoe');
+                createExplosion(sparkX, sparkY, '#ffffff', 24, 'white_laser');
+                for (let k = 0; k < 6; k++) {
+                    const ox = (Math.random() - 0.5) * 40;
+                    const oy = (Math.random() - 0.5) * 40;
+                    createExplosion(sparkX + ox, sparkY + oy, '#ff8800', 16, `explosion_${k % 4}`);
                 }
                 spawnHitFlash(sparkX, sparkY, 'boss_vulnerable');
 
@@ -1272,27 +1292,50 @@ class Boss {
                 }
             }
 
-            for (let i = 0; i < (this.isMidBoss ? 18 : 35); i++) {
+            // Multi-stage cascading chain reaction explosion
+            const totalExplosions = this.isMidBoss ? 22 : 40;
+            for (let i = 0; i < totalExplosions; i++) {
                 this._explosionTimers.push(setTimeout(() => {
-                    createExplosion(this.x + Math.random() * 160, this.y + Math.random() * 120, '#ff3300', 14);
-                    playSound('explosion');
-                }, i * 90));
+                    const ox = (Math.random() - 0.5) * (this.width * 0.9);
+                    const oy = (Math.random() - 0.5) * (this.height * 0.9);
+                    const ex = this.x + this.width / 2 + ox;
+                    const ey = this.y + this.height / 2 + oy;
+
+                    const isFinalPop = (i >= totalExplosions - 2);
+                    if (isFinalPop) {
+                        createExplosion(this.x + this.width / 2, this.y + this.height / 2, '#ffffff', 50, 'white_laser');
+                        createExplosion(this.x + this.width / 2, this.y + this.height / 2, '#ff4400', 45, 'missile_aoe');
+                        playSound('explosion');
+                    } else if (i % 3 === 0) {
+                        createExplosion(ex, ey, '#ff4400', 28, 'missile_aoe');
+                        playSound('explosion');
+                    } else {
+                        createExplosion(ex, ey, '#ff8800', 20, `explosion_${i % 4}`);
+                        playSound('explosion');
+                    }
+                }, i * 70));
             }
 
             if (this.isMidBoss) {
                 if (this._advanceTimeout) clearTimeout(this._advanceTimeout);
-                this._advanceTimeout = setTimeout(() => { advanceSubLevel(); }, 2500);
+                this._advanceTimeout = setTimeout(() => { 
+                    if (typeof advanceSubLevel === 'function') advanceSubLevel(); 
+                }, 2500);
             } else if (this.biome >= 10) {
-                _winTransition = true;
-                determineEnding();
+                if (typeof _winTransition !== 'undefined') _winTransition = true;
+                if (typeof determineEnding === 'function') determineEnding();
                 if (typeof saveTotalScrapOnBiomeCompletion === 'function') {
                     saveTotalScrapOnBiomeCompletion();
                 }
                 if (this._victoryTimeout) clearTimeout(this._victoryTimeout);
-                this._victoryTimeout = setTimeout(() => { playVictoryCinematic(); }, 3500);
+                this._victoryTimeout = setTimeout(() => { 
+                    if (typeof playVictoryCinematic === 'function') playVictoryCinematic(); 
+                }, 3500);
             } else {
                 if (this._advanceTimeout) clearTimeout(this._advanceTimeout);
-                this._advanceTimeout = setTimeout(() => { advanceToNextBiome(); }, 3000);
+                this._advanceTimeout = setTimeout(() => { 
+                    if (typeof advanceToNextBiome === 'function') advanceToNextBiome(); 
+                }, 3000);
             }
         }
     }
@@ -1365,12 +1408,25 @@ class Boss {
         }
 
         if (hasSprite) {
-            // Determine active action state and hardpoint damage frame
+            // Determine active action state, frame, and animation timer
             let actionName = 'idle';
             let customFrameIndex = undefined;
+            let animTimer = this.bobTimer;
 
             if (this.hp <= 0) {
                 actionName = 'death';
+                animTimer = this.deathTimer;
+                customFrameIndex = undefined;
+            } else if (this.state === 'charge_up' || this.state === 'charge_blast' || this.muzzleFlashTimer > 0) {
+                actionName = 'shoot';
+                animTimer = this.shootAnimTimer;
+                if (this.state === 'charge_up') {
+                    customFrameIndex = this.chargeProgress < 0.5 ? 0 : 1;
+                } else if (this.state === 'charge_blast') {
+                    customFrameIndex = 2;
+                } else if (this.muzzleFlashTimer > 0) {
+                    customFrameIndex = this.recoilX > 0.4 ? 2 : 3;
+                }
             } else if (this.targetPoints && this.targetPoints.length > 0 && this.targetPoints.some(tp => tp.destroyed || tp.hp <= 0)) {
                 actionName = 'hit';
                 const totalParts = this.targetPoints.length;
@@ -1388,40 +1444,9 @@ class Boss {
                     customFrameIndex = 2;
                 } else if (destroyedCount >= 2) {
                     customFrameIndex = 1;
-                } else if (destroyedCount === 1) {
-                    const pId = destroyedParts[0].id;
-                    if (this.spriteKey === 'boss_b1_mid_0') {
-                        if (pId === 'tentacles') customFrameIndex = 0;
-                        else if (pId === 'maw') customFrameIndex = 1;
-                        else if (pId === 'shell') customFrameIndex = 2;
-                        else customFrameIndex = 0;
-                    } else if (this.spriteKey === 'boss_b2_mid_0') {
-                        if (pId === 'upper_flak') customFrameIndex = 0;
-                        else if (pId === 'lower_flak') customFrameIndex = 1;
-                        else if (pId === 'calcified_plate') customFrameIndex = 2;
-                        else customFrameIndex = 0;
-                    } else if (this.spriteKey === 'boss_b3_mid_0') {
-                        if (pId === 'rail_arm') customFrameIndex = 0;
-                        else if (pId === 'shield_arm') customFrameIndex = 1;
-                        else if (pId === 'sensor_pod') customFrameIndex = 2;
-                        else customFrameIndex = 0;
-                    } else if (this.spriteKey === 'boss_b5_mid_0') {
-                        if (pId === 'ram_prow') customFrameIndex = 0;
-                        else if (pId === 'freeze_mortar') customFrameIndex = 1;
-                        else if (pId === 'cooling_vents') customFrameIndex = 2;
-                        else customFrameIndex = 0;
-                    } else if (this.spriteKey === 'boss_b8_mid_0') {
-                        if (pId === 'upper_turret') customFrameIndex = 0;
-                        else if (pId === 'lower_turret') customFrameIndex = 1;
-                        else if (pId === 'drone_hangar') customFrameIndex = 2;
-                        else customFrameIndex = 0;
-                    } else {
-                        const partIdx = this.targetPoints.findIndex(tp => tp.id === pId);
-                        customFrameIndex = Math.max(0, Math.min(2, partIdx));
-                    }
+                } else {
+                    customFrameIndex = 0;
                 }
-            } else if (this.state === 'charge_up' || this.state === 'charge_blast' || this.muzzleFlashTimer > 0) {
-                actionName = 'shoot';
             } else if (this.targetPoints && this.targetPoints.some(tp => tp.hitTimer > 1.8)) {
                 actionName = 'hit';
                 customFrameIndex = 0;
@@ -1431,11 +1456,11 @@ class Boss {
                 // Biome 10 Chromatic Glitch Offset
                 if (this.biome === 10) {
                     ctx.globalAlpha = 0.60;
-                    drawAnimatedSpriteSheet(ctx, sprite, animDef, actionName, this.bobTimer, -renderW / 2 - 3, -renderH / 2, renderW, renderH, customFrameIndex);
-                    drawAnimatedSpriteSheet(ctx, sprite, animDef, actionName, this.bobTimer, -renderW / 2 + 3, -renderH / 2, renderW, renderH, customFrameIndex);
+                    drawAnimatedSpriteSheet(ctx, sprite, animDef, actionName, animTimer, -renderW / 2 - 3, -renderH / 2, renderW, renderH, customFrameIndex);
+                    drawAnimatedSpriteSheet(ctx, sprite, animDef, actionName, animTimer, -renderW / 2 + 3, -renderH / 2, renderW, renderH, customFrameIndex);
                     ctx.globalAlpha = 1.0;
                 }
-                drawAnimatedSpriteSheet(ctx, sprite, animDef, actionName, this.bobTimer, -renderW / 2, -renderH / 2, renderW, renderH, customFrameIndex);
+                drawAnimatedSpriteSheet(ctx, sprite, animDef, actionName, animTimer, -renderW / 2, -renderH / 2, renderW, renderH, customFrameIndex);
             } else {
                 // Biome 10 Chromatic Glitch Offset
                 if (this.biome === 10) {

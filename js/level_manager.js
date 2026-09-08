@@ -269,8 +269,13 @@ const LevelManager = {
 
     setBiomeAndLevel(biome, level) {
         this.resetLevelStats();
-        this.biome = Math.max(1, Math.min(10, biome));
-        this.level = Math.max(1, Math.min(10, level));
+        // Support absolute level numbers across 100-level journey (e.g. level=15 -> biome 2, level 5)
+        if (level > 10 && (!biome || biome === 1)) {
+            biome = Math.floor((level - 1) / 10) + 1;
+            level = ((level - 1) % 10) + 1;
+        }
+        this.biome = Math.max(1, Math.min(10, biome || 1));
+        this.level = Math.max(1, Math.min(10, level || 1));
         if (typeof AssetPreloader !== 'undefined' && typeof AssetPreloader.startSectorInterstitial === 'function') {
             AssetPreloader.startSectorInterstitial(this.biome, this.level);
         } else if (typeof setBiomeBackgrounds === 'function') {
