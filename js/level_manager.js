@@ -560,6 +560,9 @@ const LevelManager = {
                 enemy.hp = 3;
                 enemy.scoreValue = 200;
             }
+            if (typeof enemy.applyClassRules === 'function') {
+                enemy.applyClassRules();
+            }
         }
         enemy.x = x;
         enemy.y = y;

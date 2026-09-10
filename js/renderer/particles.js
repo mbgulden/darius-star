@@ -97,14 +97,25 @@
                         this.glowSize = this.size * 4;
                         break;
                     case 'vent_smoke':
-                        this.x = Math.random() * canvas.width * 0.6 + canvas.width * 0.2;
-                        this.y = canvas.height + 5;
-                        this.size = 6 + Math.random() * 12;
-                        this.speed = 40 + Math.random() * 50;
-                        this.drift = (Math.random() - 0.5) * 20;
-                        this.alpha = 0.2 + Math.random() * 0.2;
-                        this.color = Math.random() < 0.5 ? '#FF6600' : '#333333';
-                        this.life = 3 + Math.random() * 2;
+                        if (typeof this.x === 'undefined' || this.x === null) {
+                            this.x = Math.random() * (typeof canvas !== 'undefined' ? canvas.width * 0.7 : 600) + (typeof canvas !== 'undefined' ? canvas.width * 0.15 : 100);
+                        }
+                        if (typeof this.y === 'undefined' || this.y === null) {
+                            this.y = (typeof canvas !== 'undefined' ? canvas.height : 450) + 10;
+                        }
+                        this.size = 6 + Math.random() * 10;
+                        this.maxSize = this.size * (2.5 + Math.random() * 2.0);
+                        this.speed = 35 + Math.random() * 45;
+                        this.drift = (Math.random() - 0.5) * 16;
+                        this.wiggleFreq = 2.4 + Math.random() * 3.0;
+                        this.wiggleAmp = 12 + Math.random() * 16;
+                        this.phase = Math.random() * Math.PI * 2;
+                        this.alpha = 0.35 + Math.random() * 0.25;
+                        this.maxAlpha = this.alpha;
+                        this.color = Math.random() < 0.35 ? '#ff7722' : (Math.random() < 0.6 ? '#222831' : '#393e46');
+                        this.isThermal = (this.color === '#ff7722');
+                        this.life = 3.0 + Math.random() * 2.5;
+                        this.maxLife = this.life;
                         break;
 
                     // --- B2: Coral Graveyard — Rust Storm ---
@@ -372,10 +383,12 @@
                         break;
                     case 'vent_smoke':
                         this.y -= this.speed * dt;
-                        this.x += this.drift * dt;
-                        this.size += dt * 8;
-                        this.alpha = Math.max(0, this.life / 4);
-                        if (this.y < -30) this.alive = false;
+                        this.phase += this.wiggleFreq * dt;
+                        this.x += (this.drift + Math.sin(this.phase) * this.wiggleAmp) * dt;
+                        this.size += dt * 8.5;
+                        const ventRatio = Math.max(0, this.life / this.maxLife);
+                        this.alpha = (1.0 - Math.pow(1.0 - ventRatio, 2)) * this.maxAlpha;
+                        if (this.y < -40 || this.x < -50 || (typeof canvas !== 'undefined' && this.x > canvas.width + 50)) this.alive = false;
                         break;
                     case 'rust_flake':
                         this.x += this.speed * dt;
@@ -499,7 +512,8 @@ const AtmosphericWeatherEngine = {
     layers: {
         ambientDrift: true,    // Layer 4A: subtle micro-motes, marine snow, cosmic dust
         weatherSquall: true,   // Layer 4B: directional pressure currents, wind, embers, rain
-        eventSurge: true       // Layer 4C: boss alert storms, lightning arcs, coronal pulses
+        eventSurge: true,      // Layer 4C: boss alert storms, lightning arcs, coronal pulses
+        atmosphericVignette: true // Layer 4D: biome/level atmospheric edge tint & coolness factor
     },
     currentBiome: 1,
     currentLevel: 1,
@@ -511,6 +525,18 @@ const AtmosphericWeatherEngine = {
     accumC: 0.0,
     flashTimer: 0.0,
     flashColor: 'rgba(255,255,255,0)',
+    vignetteColors: {
+        1: 'rgba(0, 34, 68, ',     // Abyssal Trench: deep hadal cyan-black
+        2: 'rgba(42, 16, 48, ',    // Coral Graveyard: bio-decay violet
+        3: 'rgba(0, 51, 85, ',     // Coelacanth Lair: sub-glacial cryo-blue
+        4: 'rgba(51, 0, 68, ',     // Nebula Drift: ionized magenta-indigo
+        5: 'rgba(10, 34, 68, ',    // Ice Rings: cryogenic frost-blue
+        6: 'rgba(68, 21, 0, ',     // Inferno Core: incandescent plasma ember
+        7: 'rgba(34, 0, 68, ',     // Storm Belt: electric hyper-storm violet
+        8: 'rgba(17, 24, 34, ',    // Derelict Fleet: cold space warship steel
+        9: 'rgba(5, 40, 16, ',     // Xenomorph Hive: toxic bio-luminescent emerald
+        10: 'rgba(37, 0, 53, '     // Core Rift: non-Euclidean tachyon void
+    },
 
     setContext(biome, level, progress = 0.0, isBoss = false, alert = 0.0) {
         this.currentBiome = Math.max(1, Math.min(10, biome || 1));
@@ -545,14 +571,14 @@ const AtmosphericWeatherEngine = {
         const progressionMult = 1.0 + (this.levelProgress * 0.85);
         const bossMult = this.isBossActive ? 1.8 : 1.0;
 
-        // 1. Layer 4A: Ambient Depth Drift (gentle motes, plankton, spores)
+        // 1. Layer 4A: Ambient Depth Drift (gentle motes, plankton, spores, micro-debris)
         if (this.layers.ambientDrift) {
             this.accumA += dt;
-            const rateA = 0.25;
+            const rateA = 0.22;
             while (this.accumA >= rateA) {
                 this.accumA -= rateA;
-                if (typeof envParticles !== 'undefined' && envParticles.length < 90) {
-                    const ambientType = this._getAmbientType(this.currentBiome);
+                if (typeof envParticles !== 'undefined' && envParticles.length < 95) {
+                    const ambientType = this._getAmbientType(this.currentBiome, this.currentLevel);
                     envParticles.push(new EnvironmentParticle(ambientType));
                 }
             }
@@ -561,11 +587,11 @@ const AtmosphericWeatherEngine = {
         // 2. Layer 4B: Directional Weather Squalls (rain, ash, embers, smoke, wind)
         if (this.layers.weatherSquall) {
             this.accumB += dt * progressionMult * bossMult;
-            const rateB = Math.max(0.08, 0.28 - (this.currentLevel * 0.015));
+            const rateB = Math.max(0.06, 0.26 - (this.currentLevel * 0.015));
             while (this.accumB >= rateB) {
                 this.accumB -= rateB;
-                if (typeof envParticles !== 'undefined' && envParticles.length < 120) {
-                    const squallType = this._getSquallType(this.currentBiome);
+                if (typeof envParticles !== 'undefined' && envParticles.length < 130) {
+                    const squallType = this._getSquallType(this.currentBiome, this.currentLevel);
                     envParticles.push(new EnvironmentParticle(squallType));
                 }
             }
@@ -574,15 +600,19 @@ const AtmosphericWeatherEngine = {
         // 3. Layer 4C: Event Surges & Climax Storms
         if (this.layers.eventSurge) {
             this.accumC += dt;
-            if (this.isBossActive || this.levelProgress >= 0.85 || this.alertLevel > 0) {
-                const eventRate = this.isBossActive ? 0.35 : 0.8;
+            if (this.isBossActive || this.levelProgress >= 0.80 || this.alertLevel > 0) {
+                const eventRate = this.isBossActive ? 0.30 : 0.70;
                 while (this.accumC >= eventRate) {
                     this.accumC -= eventRate;
-                    if (typeof envParticles !== 'undefined' && envParticles.length < 140) {
-                        const eventType = this._getEventType(this.currentBiome);
+                    if (typeof envParticles !== 'undefined' && envParticles.length < 150) {
+                        const eventType = this._getEventType(this.currentBiome, this.currentLevel);
                         envParticles.push(new EnvironmentParticle(eventType));
-                        if ((this.currentBiome === 7 || this.currentBiome === 4) && Math.random() < 0.25) {
-                            this.triggerFlash(this.currentBiome === 7 ? 'rgba(68, 102, 255, 0.18)' : 'rgba(255, 0, 255, 0.12)', 0.08);
+                        if ((this.currentBiome === 7 || this.currentBiome === 4) && Math.random() < 0.28) {
+                            this.triggerFlash(this.currentBiome === 7 ? 'rgba(68, 102, 255, 0.22)' : 'rgba(255, 0, 255, 0.15)', 0.09);
+                        } else if (this.currentBiome === 6 && Math.random() < 0.20) {
+                            this.triggerFlash('rgba(255, 120, 0, 0.18)', 0.10);
+                        } else if (this.currentBiome === 10 && Math.random() < 0.22) {
+                            this.triggerFlash('rgba(200, 0, 255, 0.20)', 0.08);
                         }
                     }
                 }
@@ -590,39 +620,39 @@ const AtmosphericWeatherEngine = {
         }
     },
 
-    _getAmbientType(biome) {
+    _getAmbientType(biome, level = 1) {
         switch (biome) {
-            case 1: return 'mote';
-            case 2: return 'neon_glow';
-            case 3: return 'mote';
-            case 4: return 'plasma_ribbon';
-            case 5: return 'ice_crystal';
-            case 6: return 'ember';
-            case 7: return 'static_band';
-            case 8: return 'coolant_gas';
-            case 9: return 'spore';
-            case 10: return 'echo_shard';
+            case 1: return (level <= 3) ? 'mote' : (level <= 7 ? 'vent_smoke' : 'mote');
+            case 2: return (level <= 4) ? 'neon_glow' : 'rust_flake';
+            case 3: return (level <= 5) ? 'mote' : 'coolant_drip';
+            case 4: return (level <= 4) ? 'plasma_ribbon' : 'mote';
+            case 5: return (level <= 5) ? 'ice_crystal' : 'prism_beam';
+            case 6: return (level <= 4) ? 'ember' : 'ash_cloud';
+            case 7: return (level <= 4) ? 'static_band' : 'rain_drop';
+            case 8: return (level <= 4) ? 'debris' : 'coolant_gas';
+            case 9: return (level <= 4) ? 'spore' : 'vein_pulse';
+            case 10: return (level <= 4) ? 'code_stream' : 'echo_shard';
             default: return 'mote';
         }
     },
 
-    _getSquallType(biome) {
+    _getSquallType(biome, level = 1) {
         switch (biome) {
-            case 1: return 'vent_smoke';
-            case 2: return 'rust_flake';
-            case 3: return 'coolant_drip';
-            case 4: return 'plasma_ribbon';
-            case 5: return 'ice_crystal';
-            case 6: return 'ash_cloud';
-            case 7: return 'rain_drop';
-            case 8: return 'debris';
-            case 9: return 'acid_drip';
-            case 10: return 'code_stream';
+            case 1: return (level >= 6) ? 'vent_smoke' : 'mote';
+            case 2: return (level >= 5) ? 'rust_flake' : 'neon_glow';
+            case 3: return (level >= 5) ? 'coolant_drip' : 'tesla_bolt';
+            case 4: return (level >= 6) ? 'storm_flash' : 'plasma_ribbon';
+            case 5: return (level >= 6) ? 'ice_crystal' : 'prism_beam';
+            case 6: return (level >= 5) ? 'ash_cloud' : 'ember';
+            case 7: return (level >= 5) ? 'lightning_strike' : 'rain_drop';
+            case 8: return (level >= 5) ? 'coolant_gas' : 'debris';
+            case 9: return (level >= 5) ? 'acid_drip' : 'spore';
+            case 10: return (level >= 6) ? 'rift_tear' : 'code_stream';
             default: return 'mote';
         }
     },
 
-    _getEventType(biome) {
+    _getEventType(biome, level = 1) {
         switch (biome) {
             case 1: return 'vent_smoke';
             case 2: return 'rust_flake';
@@ -641,10 +671,32 @@ const AtmosphericWeatherEngine = {
     draw(targetCtx) {
         const c = targetCtx || ctx;
         if (!c) return;
+
+        const w = (typeof canvas !== 'undefined' ? canvas.width : 800);
+        const h = (typeof canvas !== 'undefined' ? canvas.height : 450);
+
+        // 1. Dynamic Atmospheric Edge Vignette & Tone Shading
+        if (this.layers.atmosphericVignette) {
+            c.save();
+            const colorPrefix = this.vignetteColors[this.currentBiome] || 'rgba(0, 0, 0, ';
+            const pulse = Math.sin((typeof gameTime !== 'undefined' ? gameTime : 0) * 1.5) * 0.03;
+            const baseAlpha = 0.08 + (this.levelProgress * 0.09) + (this.isBossActive ? 0.08 : 0.0) + pulse;
+            const alphaClamped = Math.max(0.04, Math.min(0.28, baseAlpha));
+
+            const vigGrad = c.createRadialGradient(w / 2, h / 2, Math.min(w, h) * 0.45, w / 2, h / 2, Math.max(w, h) * 0.72);
+            vigGrad.addColorStop(0, 'rgba(0, 0, 0, 0)');
+            vigGrad.addColorStop(1, colorPrefix + alphaClamped.toFixed(3) + ')');
+
+            c.fillStyle = vigGrad;
+            c.fillRect(0, 0, w, h);
+            c.restore();
+        }
+
+        // 2. Climax / Lightning / Thermal Screen Surge Flashes
         if (this.flashTimer > 0 && this.layers.eventSurge) {
             c.save();
             c.fillStyle = this.flashColor;
-            c.fillRect(0, 0, (typeof canvas !== 'undefined' ? canvas.width : 800), (typeof canvas !== 'undefined' ? canvas.height : 450));
+            c.fillRect(0, 0, w, h);
             c.restore();
         }
     }
@@ -725,11 +777,23 @@ function spawnBiomeParticles(dt) {
                         offCtx.fill();
                         break;
                     case 'vent_smoke':
-                        offCtx.fillStyle = p.color;
-                        offCtx.globalAlpha = Math.min(p.alpha, 0.25);
+                        offCtx.save();
+                        offCtx.globalAlpha = Math.min(p.alpha, 0.45);
+                        const grad = offCtx.createRadialGradient(p.x, p.y, p.size * 0.1, p.x, p.y, p.size);
+                        if (p.isThermal) {
+                            grad.addColorStop(0, 'rgba(255, 130, 40, 0.85)');
+                            grad.addColorStop(0.4, 'rgba(180, 60, 20, 0.5)');
+                            grad.addColorStop(1, 'rgba(40, 44, 52, 0)');
+                        } else {
+                            grad.addColorStop(0, 'rgba(50, 58, 70, 0.85)');
+                            grad.addColorStop(0.5, 'rgba(30, 36, 45, 0.5)');
+                            grad.addColorStop(1, 'rgba(20, 24, 30, 0)');
+                        }
+                        offCtx.fillStyle = grad;
                         offCtx.beginPath();
                         offCtx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
                         offCtx.fill();
+                        offCtx.restore();
                         break;
                     case 'rust_flake':
                         offCtx.fillStyle = p.color;

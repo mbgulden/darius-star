@@ -370,6 +370,7 @@
                 <button id="togFar" class="toggle-btn active" onclick="toggleLayer('far')">Far (≥3000px)</button>
                 <button id="togNear" class="toggle-btn active" onclick="toggleLayer('near')">Near (≥3000px)</button>
                 <button id="togLandmark" class="toggle-btn active" onclick="toggleLayer('landmark')">Landmark (≥1000px)</button>
+                <button id="togLevitation" class="toggle-btn active" onclick="toggleLevitation()" title="Toggle Harmonic Bobbing & Repulsor Field">✨ Levitation Field</button>
                 <button id="togStars" class="toggle-btn active" onclick="toggleLayer('stars')">Starfield</button>
             </div>
             <div class="control-group">
@@ -388,6 +389,7 @@
                 <div>BIOME: <span id="hudBiome" style="color:var(--accent-cyan)">1 - Abyssal Trench</span></div>
                 <div>LEVEL: <span id="hudLevel">1.1 Sunlit Atoll Crest</span></div>
                 <div>LANDMARK: <span id="hudLandmark" style="color:var(--accent-gold)">coral_spire</span> (<span id="hudLmScale">1.0x</span>, <span id="hudLmAngle">0°</span>)</div>
+                <div>LEVITATION: <span id="hudLevitate" style="color:var(--accent-cyan)">Active (±14px Bob, Repulsor Cushion)</span></div>
                 <div>WEATHER: <span id="hudWeather" style="color:#00ff88">Active (L4A, L4B, L4C)</span></div>
                 <div>FAR POS: <span id="hudFarX">0 px</span> | NEAR POS: <span id="hudNearX">0 px</span></div>
                 <div>FPS: <span id="hudFps">60</span></div>
@@ -410,6 +412,7 @@
                 <div class="prop-row"><span class="prop-label">Far Layer (Plane 0)</span><span class="prop-val" id="diagFar">-</span></div>
                 <div class="prop-row"><span class="prop-label">Near Silhouette (Plane 2)</span><span class="prop-val" id="diagNear">-</span></div>
                 <div class="prop-row"><span class="prop-label">Landmark Perspective Angle</span><span class="prop-val" id="diagAngle">-</span></div>
+                <div class="prop-row"><span class="prop-label">Anti-Gravity Levitation</span><span class="prop-val" id="diagLevitation" style="color:var(--accent-cyan)">Active (Harmonic Bob)</span></div>
                 <div class="prop-row"><span class="prop-label">Progression Midground Scale</span><span class="prop-val" id="diagScale">-</span></div>
                 <div class="prop-row"><span class="prop-label">Atmospheric Density</span><span class="prop-val" id="diagParticles">-</span></div>
                 <div style="margin-top:4px; font-size:0.8rem; color:var(--text-dim);" id="diagClassified">-</div>
@@ -418,14 +421,21 @@
 
         <!-- Asset Inspection & Evaluation Gallery -->
         <section class="gallery-section">
-            <div class="gallery-header">
+            <div class="gallery-header" style="flex-direction: column; align-items: flex-start; gap: 10px;">
                 <div class="gallery-title">
-                    <span>🔬</span> Asset Evaluation & Inspection Suite (Biomes 1–3)
+                    <span>🔬</span> 10-Biome Asset Evaluation & Inspection Suite (Phases 1–4)
                 </div>
-                <div class="gallery-tabs">
-                    <button class="gallery-tab active" id="tabBio1" onclick="switchGalleryTab(1)">Biome 1: Abyssal Trench</button>
-                    <button class="gallery-tab" id="tabBio2" onclick="switchGalleryTab(2)">Biome 2: Coral Graveyard</button>
-                    <button class="gallery-tab" id="tabBio3" onclick="switchGalleryTab(3)">Biome 3: Coelacanth's Lair</button>
+                <div class="gallery-tabs" style="flex-wrap: wrap;">
+                    <button class="gallery-tab active" id="tabBio1" onclick="switchGalleryTab(1)">B1: Abyssal Trench</button>
+                    <button class="gallery-tab" id="tabBio2" onclick="switchGalleryTab(2)">B2: Coral Graveyard</button>
+                    <button class="gallery-tab" id="tabBio3" onclick="switchGalleryTab(3)">B3: Coelacanth's Lair</button>
+                    <button class="gallery-tab" id="tabBio4" onclick="switchGalleryTab(4)">B4: Nebula Drift</button>
+                    <button class="gallery-tab" id="tabBio5" onclick="switchGalleryTab(5)">B5: Ice Rings</button>
+                    <button class="gallery-tab" id="tabBio6" onclick="switchGalleryTab(6)">B6: Inferno Core</button>
+                    <button class="gallery-tab" id="tabBio7" onclick="switchGalleryTab(7)">B7: Storm Belt</button>
+                    <button class="gallery-tab" id="tabBio8" onclick="switchGalleryTab(8)">B8: Derelict Fleet</button>
+                    <button class="gallery-tab" id="tabBio9" onclick="switchGalleryTab(9)">B9: Xenomorph Hive</button>
+                    <button class="gallery-tab" id="tabBio10" onclick="switchGalleryTab(10)">B10: Core Rift</button>
                 </div>
             </div>
             <div id="assetCardsContainer" class="asset-grid">
@@ -551,6 +561,14 @@
             }
         }
 
+        function toggleLevitation() {
+            if (landmark) {
+                landmark.levitateActive = !landmark.levitateActive;
+                const btn = document.getElementById('togLevitation');
+                if (btn) btn.classList.toggle('active', landmark.levitateActive);
+            }
+        }
+
         // Parallax & Landmark instance
         let farLayer = new ParallaxLayer('bg_1_far', 14);
         let nearLayer = new ParallaxLayer('bg_1_near', 50);
@@ -563,6 +581,7 @@
             landmark = new JourneyLandmark(currentBiome, currentLevel, currentProgress);
             updateDynamics();
             updateInfoUI();
+            switchGalleryTab(currentBiome);
         }
 
         function updateDynamics() {
@@ -715,6 +734,10 @@
                 document.getElementById('hudLmAngle').textContent = `${deg}°`;
                 document.getElementById('diagAngle').textContent = `${deg}° perspective tilt`;
                 document.getElementById('diagScale').textContent = `${scaleF}x (approaching midground)`;
+                const bob = Math.round(landmark.levitateY);
+                const levStr = landmark.levitateActive ? `Active (${bob >= 0 ? '+' : ''}${bob}px Bob, Repulsor Cushion)` : 'Stationary (Field Off)';
+                document.getElementById('hudLevitate').textContent = levStr;
+                document.getElementById('diagLevitation').textContent = levStr;
             }
             document.getElementById('hudFarX').textContent = Math.round(farLayer.offset) + ' px';
             document.getElementById('hudNearX').textContent = Math.round(nearLayer.offset) + ' px';
@@ -730,10 +753,10 @@
                     badgeClass: "badge-far",
                     path: "assets/sprites/backgrounds/bg_abyssal_trench_far.png",
                     dimensions: "3072 × 768 px",
-                    fileSize: "1,814 KB",
+                    fileSize: "2,647 KB",
                     alpha: "0% (Opaque)",
                     checkered: false,
-                    desc: "Approved style benchmark: Deep midnight-blue ocean trench, soft underwater sunbeams filtering through the abyss, distant undersea ridges and tectonic crevices. Seamless horizontal loop."
+                    desc: "Dual-perspective non-repeating panorama: Deep midnight-blue ocean trench, angled sunbeam shafts, sunken oceanic shelf. Seamless cosine horizontal loop."
                 },
                 {
                     name: "Abyssal Trench (Near Silhouette)",
@@ -741,32 +764,32 @@
                     badgeClass: "badge-near",
                     path: "assets/sprites/backgrounds/bg_abyssal_trench_near.png",
                     dimensions: "3072 × 768 px",
-                    fileSize: "1,876 KB",
-                    alpha: "31.4% Flight Corridor",
+                    fileSize: "1,490 KB",
+                    alpha: "42.0% Flight Corridor",
                     checkered: true,
-                    desc: "Darius boss-style redesign: Hanging dark titanium armor plates and basalt cavern stalactites from ceiling; hydrothermal black smokers venting smoke and glowing cyber-coral along seafloor. 4-boundary flood-fill alpha."
+                    desc: "Darius boss-style redesign: Basalt cave stalactites with open hydrothermal chimney nozzles and zero baked smoke. 42.0% clear flight corridor."
                 },
                 {
                     name: "Coral Spire (Landmark 1)",
-                    type: "Landmark (≥1000px)",
+                    type: "Floating Landmark (≥1000px)",
                     badgeClass: "badge-landmark",
                     path: "assets/sprites/landmarks/landmark_coral_spire.png",
                     dimensions: "1024 × 1024 px",
-                    fileSize: "755 KB",
-                    alpha: "69.5% Transparent",
+                    fileSize: "862 KB",
+                    alpha: "67.8% Transparent (360° Floating)",
                     checkered: true,
-                    desc: "Darius boss-style redesign: Colossal cybernetic coral monument with dark titanium superstructure, chrome specular bevels, and glowing cyan power cores. Dynamic perspective tilting (-18°..+18°)."
+                    desc: "360° self-contained floating cybernetic coral monument: Tapered base with hovering stabilizer struts, chrome specular bevels, and glowing cyan anti-gravity core."
                 },
                 {
                     name: "Kelp Canopy (Landmark 2)",
-                    type: "Landmark (≥1000px)",
+                    type: "Floating Landmark (≥1000px)",
                     badgeClass: "badge-landmark",
                     path: "assets/sprites/landmarks/landmark_kelp_canopy.png",
                     dimensions: "1024 × 1024 px",
-                    fileSize: "1,513 KB",
-                    alpha: "45.2% Transparent",
+                    fileSize: "1,121 KB",
+                    alpha: "58.6% Transparent (360° Floating)",
                     checkered: true,
-                    desc: "Darius boss-style redesign: Towering biomechanical kelp tendrils, hydraulic armor conduits, emerald plasma chambers, and glowing orange core reactor eye. Scales 1.0x -> 1.35x as waves progress."
+                    desc: "360° self-contained levitating titanium ballast sphere with downward propulsion jets, emerald plasma chambers, and curling biomechanical kelp tendrils."
                 }
             ],
             2: [
@@ -776,10 +799,10 @@
                     badgeClass: "badge-far",
                     path: "assets/sprites/backgrounds/bg_coral_graveyard_far.png",
                     dimensions: "3072 × 768 px",
-                    fileSize: "2,318 KB",
+                    fileSize: "3,641 KB",
                     alpha: "0% (Opaque)",
                     checkered: false,
-                    desc: "Darius boss-style redesign: Kepler-442b alien ocean, ethereal twilight purple water gradient, distant submerged cybernetic warship graveyards, glowing reefs, and planetary rings in twilight sky."
+                    desc: "Dual-angle sunken alien battlefleet graveyard: Tilted carrier flight decks, deep violet trenches, and twilight bioluminescent reefs. Seamless loop."
                 },
                 {
                     name: "Coral Graveyard (Near Silhouette)",
@@ -790,18 +813,18 @@
                     fileSize: "1,863 KB",
                     alpha: "39.8% Flight Corridor",
                     checkered: true,
-                    desc: "Darius boss-style redesign: Calcified bone arches entwined with dark gunmetal armor plates, purple hydraulic conduits, and glowing violet anemones. Open central flight corridor."
+                    desc: "Calcified bone arches entwined with dark gunmetal armor plates, purple hydraulic conduits, and glowing violet anemones. Open central corridor."
                 },
                 {
                     name: "Leviathan Bones (Landmark)",
-                    type: "Landmark (≥1000px)",
+                    type: "Floating Landmark (≥1000px)",
                     badgeClass: "badge-landmark",
                     path: "assets/sprites/landmarks/landmark_leviathan_bones.png",
                     dimensions: "1024 × 1024 px",
-                    fileSize: "1,354 KB",
-                    alpha: "51.4% Transparent",
+                    fileSize: "827 KB",
+                    alpha: "71.6% Transparent (360° Floating)",
                     checkered: true,
-                    desc: "Darius boss-style redesign: Colossal prehistoric cybernetic space leviathan skeleton, armored horned titanium skull, purple sensor visor, articulated ribs and spinal vertebrae on precursor plinth."
+                    desc: "360° weightless cybernetic space leviathan carcass: Fully floating in the void with curved rib arches, glowing spinal vertebrae, half-buried skull, and zero flat border cuts."
                 }
             ],
             3: [
@@ -811,52 +834,297 @@
                     badgeClass: "badge-far",
                     path: "assets/sprites/backgrounds/bg_coelacanth_lair_far.png",
                     dimensions: "3072 × 768 px",
-                    fileSize: "1,952 KB",
+                    fileSize: "3,234 KB",
                     alpha: "0% (Opaque)",
                     checkered: false,
-                    desc: "Darius boss-style redesign: Europa sub-glacial ocean abyss, massive frozen ice shelf ceiling overhead with glowing cyan radiation fractures, subterranean deep cerulean sea and tectonic vents."
+                    desc: "Dual-angle Europa sub-glacial abyss: Inverted ice shelf ceiling with branching cyan radiation fractures, subterranean deep cerulean sea, and hydrothermal rifts."
                 },
                 {
-                    name: "Coelacanth's Lair (Near Silhouette)",
+                    name: "Coelacanth's Lair (Near Silhouette v2)",
                     type: "Near Silhouette",
                     badgeClass: "badge-near",
                     path: "assets/sprites/backgrounds/bg_coelacanth_lair_near.png",
                     dimensions: "3072 × 768 px",
-                    fileSize: "2,018 KB",
-                    alpha: "19.6% Flight Corridor",
+                    fileSize: "1,180 KB",
+                    alpha: "53.7% Flight Corridor",
                     checkered: true,
-                    desc: "Darius boss-style redesign: Hanging frozen pykrete icicles descending from ceiling cybernetic bulkheads; frozen seafloor gears and machinery with glowing cyan cryo-nodes."
+                    desc: "Sharp cryo-crystal stalactites, dark rock shelves, and cybernetic titanium pipeline frames with a generous 53.7% open flight corridor."
                 },
                 {
                     name: "Ice Berg (Landmark 1)",
-                    type: "Landmark (≥1000px)",
+                    type: "Floating Landmark (≥1000px)",
                     badgeClass: "badge-landmark",
                     path: "assets/sprites/landmarks/landmark_ice_berg.png",
                     dimensions: "1024 × 1024 px",
-                    fileSize: "803 KB",
-                    alpha: "61.2% Transparent",
+                    fileSize: "686 KB",
+                    alpha: "66.9% Transparent (360° Floating)",
                     checkered: true,
-                    desc: "Darius boss-style redesign: Sub-glacial inverted cryo-spire monument, faceted glacial iceberg fused with ancient precursor reactor pylon, glowing turquoise conduits and titanium brackets."
+                    desc: "Dual-tapered diamond cryo-crystal monolith held by titanium containment collar and Cherenkov radiation core. Complete floating ice berg with clean 360° clearance."
                 },
                 {
                     name: "Magma Chimney (Landmark 2)",
-                    type: "Landmark (≥1000px)",
+                    type: "Floating Landmark (≥1000px)",
                     badgeClass: "badge-landmark",
                     path: "assets/sprites/landmarks/landmark_magma_chimney.png",
                     dimensions: "1024 × 1024 px",
-                    fileSize: "574 KB",
-                    alpha: "73.9% Transparent",
+                    fileSize: "848 KB",
+                    alpha: "62.3% Transparent (360° Floating)",
                     checkered: true,
-                    desc: "Darius boss-style redesign: Abyssal volcanic magma chimney encased in heavy heat-shield titanium armor, venting dark smoke and glowing fiercely with fiery molten lava fissures."
+                    desc: "Floating conical volcanic chimney chassis with open top flue nozzle and downward directional thermal repulsors. Vents dynamic particle smoke in real time."
+                }
+            ],
+            4: [
+                {
+                    name: "Nebula Drift (Far Layer)",
+                    type: "Far (≥3000px)",
+                    badgeClass: "badge-far",
+                    path: "assets/sprites/backgrounds/bg_nebula_drift_far.png",
+                    dimensions: "3072 × 768 px",
+                    fileSize: "3,940 KB",
+                    alpha: "0% (Opaque)",
+                    checkered: false,
+                    desc: "Dual-angle interstellar stellar nursery: Towering emission pillars of violet, cyan, and magenta ionized gases with glowing newborn protostars. Seamless horizontal loop."
+                },
+                {
+                    name: "Nebula Drift (Near Silhouette)",
+                    type: "Near Silhouette",
+                    badgeClass: "badge-near",
+                    path: "assets/sprites/backgrounds/bg_nebula_drift_near.png",
+                    dimensions: "3072 × 768 px",
+                    fileSize: "1,451 KB",
+                    alpha: "48.3% Flight Corridor",
+                    checkered: true,
+                    desc: "Floating crystalline asteroid shelves, dark metallic solar sails, and ionized gas collectors with 48.3% open center flight corridor."
+                },
+                {
+                    name: "Atoll Chasm (Landmark)",
+                    type: "Landmark (≥1000px)",
+                    badgeClass: "badge-landmark",
+                    path: "assets/sprites/landmarks/landmark_atoll_chasm.png",
+                    dimensions: "1024 × 1024 px",
+                    fileSize: "703 KB",
+                    alpha: "65.6% Transparent",
+                    checkered: true,
+                    desc: "Precursor quantum hyper-gate megalith hovering in the void with glowing cyan event runes and chrome structural pylons."
+                }
+            ],
+            5: [
+                {
+                    name: "Ice Rings (Far Layer)",
+                    type: "Far (≥3000px)",
+                    badgeClass: "badge-far",
+                    path: "assets/sprites/backgrounds/bg_ice_rings_far.png",
+                    dimensions: "3072 × 768 px",
+                    fileSize: "3,627 KB",
+                    alpha: "0% (Opaque)",
+                    checkered: false,
+                    desc: "Dual-angle planetary ice ring panorama: Sweeping concentric rings of diamond-bright ice chunks viewed across the sharp shadow terminator of a giant striped gas giant."
+                },
+                {
+                    name: "Ice Rings (Near Silhouette)",
+                    type: "Near Silhouette",
+                    badgeClass: "badge-near",
+                    path: "assets/sprites/backgrounds/bg_ice_rings_near.png",
+                    dimensions: "3072 × 768 px",
+                    fileSize: "1,297 KB",
+                    alpha: "51.1% Flight Corridor",
+                    checkered: true,
+                    desc: "Jagged cryo-crystal asteroid shelves, tumbling frozen methane boulders, and frosted mining scaffolding with 51.1% open flight clearance."
+                },
+                {
+                    name: "Sensor Buoy (Landmark)",
+                    type: "Landmark (≥1000px)",
+                    badgeClass: "badge-landmark",
+                    path: "assets/sprites/landmarks/landmark_sensor_buoy.png",
+                    dimensions: "1024 × 1024 px",
+                    fileSize: "1,008 KB",
+                    alpha: "63.3% Transparent",
+                    checkered: true,
+                    desc: "Precursor deep-space telemetry relay station: Dark titanium chassis, communications antenna masts, parabolic radar dish, solar-ion energy collectors, and amber beacons."
+                }
+            ],
+            6: [
+                {
+                    name: "Inferno Core (Far Layer)",
+                    type: "Far (≥3000px)",
+                    badgeClass: "badge-far",
+                    path: "assets/sprites/backgrounds/bg_inferno_core_far.png",
+                    dimensions: "3072 × 768 px",
+                    fileSize: "3,515 KB",
+                    alpha: "0% (Opaque)",
+                    checkered: false,
+                    desc: "Dual-angle Betelgeuse stellar crucible: Churning convective plasma surface, titanic solar prominence loops arching into the black void, coronal mass ejections."
+                },
+                {
+                    name: "Inferno Core (Near Silhouette)",
+                    type: "Near Silhouette",
+                    badgeClass: "badge-near",
+                    path: "assets/sprites/backgrounds/bg_inferno_core_near.png",
+                    dimensions: "3072 × 768 px",
+                    fileSize: "1,185 KB",
+                    alpha: "50.3% Flight Corridor",
+                    checkered: true,
+                    desc: "Charred obsidian and volcanic basalt shelves with incandescent magma seams, heavy geothermal radiators, and open exhaust vents. 50.3% corridor."
+                },
+                {
+                    name: "Sunken Aqueduct (Landmark)",
+                    type: "Landmark (≥1000px)",
+                    badgeClass: "badge-landmark",
+                    path: "assets/sprites/landmarks/landmark_sunken_aqueduct.png",
+                    dimensions: "1024 × 1024 px",
+                    fileSize: "1,056 KB",
+                    alpha: "57.0% Transparent",
+                    checkered: true,
+                    desc: "Colossal precursor geothermal viaduct: Multi-arched dark titanium bridge carrying glowing liquid plasma coolant with heavy buttresses and status lights."
+                }
+            ],
+            7: [
+                {
+                    name: "Storm Belt (Far Layer)",
+                    type: "Far (≥3000px)",
+                    badgeClass: "badge-far",
+                    path: "assets/sprites/backgrounds/bg_storm_belt_far.png",
+                    dimensions: "3072 × 768 px",
+                    fileSize: "3,647 KB",
+                    alpha: "0% (Opaque)",
+                    checkered: false,
+                    desc: "Dual-angle Jovian hyper-storm: Massive cyclone vortex beneath green aurora crown, deep violet-slate cloud walls, and violent branching sheet lightning."
+                },
+                {
+                    name: "Storm Belt (Near Silhouette)",
+                    type: "Near Silhouette",
+                    badgeClass: "badge-near",
+                    path: "assets/sprites/backgrounds/bg_storm_belt_near.png",
+                    dimensions: "3072 × 768 px",
+                    fileSize: "1,145 KB",
+                    alpha: "58.8% Flight Corridor",
+                    checkered: true,
+                    desc: "Precursor storm-catcher pylons, tall conductive lightning rod spires with glowing violet electrode tips, dark lattice trusses with 58.8% flight clearance."
+                }
+            ],
+            8: [
+                {
+                    name: "Derelict Fleet (Far Layer)",
+                    type: "Far (≥3000px)",
+                    badgeClass: "badge-far",
+                    path: "assets/sprites/backgrounds/bg_derelict_fleet_far.png",
+                    dimensions: "3072 × 768 px",
+                    fileSize: "3,911 KB",
+                    alpha: "0% (Opaque)",
+                    checkered: false,
+                    desc: "Dual-angle orbital battlefield graveyard: Shattered dreadnought hulls, carrier flight decks, and severed thrusters drifting over an azure planetary horizon."
+                },
+                {
+                    name: "Derelict Fleet (Near Silhouette)",
+                    type: "Near Silhouette",
+                    badgeClass: "badge-near",
+                    path: "assets/sprites/backgrounds/bg_derelict_fleet_near.png",
+                    dimensions: "3072 × 768 px",
+                    fileSize: "1,149 KB",
+                    alpha: "49.6% Flight Corridor",
+                    checkered: true,
+                    desc: "Massive severed battleship armor plates, hollowed hangar corridors, sheared titanium beams, and blinking crimson emergency beacons. 49.6% corridor."
+                },
+                {
+                    name: "Frigate Wreck (Landmark)",
+                    type: "Landmark (≥1000px)",
+                    badgeClass: "badge-landmark",
+                    path: "assets/sprites/landmarks/landmark_frigate_wreck.png",
+                    dimensions: "1024 × 1024 px",
+                    fileSize: "743 KB",
+                    alpha: "70.6% Transparent",
+                    checkered: true,
+                    desc: "Colossal severed combat battle frigate prow: Wedge-shaped warship bow, sheared titanium hull plates, exposed reactor core emitting cyan Cherenkov radiation."
+                }
+            ],
+            9: [
+                {
+                    name: "Xenomorph Hive (Far Layer)",
+                    type: "Far (≥3000px)",
+                    badgeClass: "badge-far",
+                    path: "assets/sprites/backgrounds/bg_xenomorph_hive_far.png",
+                    dimensions: "3072 × 768 px",
+                    fileSize: "3,905 KB",
+                    alpha: "0% (Opaque)",
+                    checkered: false,
+                    desc: "Dual-angle alien biomechanical hive world: Cavernous chitinous bone vaults, glowing emerald and violet egg clutches, fibrous nerve cords, toxic amber haze."
+                },
+                {
+                    name: "Xenomorph Hive (Near Silhouette)",
+                    type: "Near Silhouette",
+                    badgeClass: "badge-near",
+                    path: "assets/sprites/backgrounds/bg_xenomorph_hive_near.png",
+                    dimensions: "3072 × 768 px",
+                    fileSize: "1,403 KB",
+                    alpha: "49.3% Flight Corridor",
+                    checkered: true,
+                    desc: "Ribbed alien chitinous exoskeleton plates, bone claws, glowing emerald spore sacs, and biomechanical vertebrae with 49.3% open flight clearance."
+                },
+                {
+                    name: "Bio Cluster (Landmark)",
+                    type: "Landmark (≥1000px)",
+                    badgeClass: "badge-landmark",
+                    path: "assets/sprites/landmarks/landmark_bio_cluster.png",
+                    dimensions: "1024 × 1024 px",
+                    fileSize: "1,270 KB",
+                    alpha: "43.5% Transparent",
+                    checkered: true,
+                    desc: "Colossal alien queen gestation capsule: Segmented dark obsidian chitin shell split open to reveal glowing emerald and violet bioluminescent embryo eggs and neural filaments."
+                }
+            ],
+            10: [
+                {
+                    name: "Core Rift (Far Layer)",
+                    type: "Far (≥3000px)",
+                    badgeClass: "badge-far",
+                    path: "assets/sprites/backgrounds/bg_core_rift_far.png",
+                    dimensions: "3072 × 768 px",
+                    fileSize: "4,165 KB",
+                    alpha: "0% (Opaque)",
+                    checkered: false,
+                    desc: "Dual-angle supermassive black hole & spacetime rift: Blinding accretion disk of Hawking radiation, polar plasma jets, Einstein lensing rings, and non-Euclidean tachyon grid tunnel."
+                },
+                {
+                    name: "Core Rift (Near Silhouette)",
+                    type: "Near Silhouette",
+                    badgeClass: "badge-near",
+                    path: "assets/sprites/backgrounds/bg_core_rift_near.png",
+                    dimensions: "3072 × 768 px",
+                    fileSize: "1,390 KB",
+                    alpha: "49.4% Flight Corridor",
+                    checkered: true,
+                    desc: "Floating non-Euclidean quantum monoliths, shattered geometric tesseract structures, and glowing neon violet/emerald tachyon circuit runes with 49.4% corridor."
+                },
+                {
+                    name: "Chrono Cube (Landmark 1)",
+                    type: "Landmark (≥1000px)",
+                    badgeClass: "badge-landmark",
+                    path: "assets/sprites/landmarks/landmark_chrono_cube.png",
+                    dimensions: "1024 × 1024 px",
+                    fileSize: "1,085 KB",
+                    alpha: "49.7% Transparent",
+                    checkered: true,
+                    desc: "Precursor 4D chrono-tesseract hypercube artifact: Interlocking crystalline titanium frames, glowing multi-colored tachyon runes, and pulsing singularity core."
+                },
+                {
+                    name: "Chrono Singularity (Landmark 2)",
+                    type: "Landmark (≥1000px)",
+                    badgeClass: "badge-landmark",
+                    path: "assets/sprites/landmarks/landmark_chrono_singularity.png",
+                    dimensions: "1024 × 1024 px",
+                    fileSize: "1,306 KB",
+                    alpha: "43.0% Transparent",
+                    checkered: true,
+                    desc: "Precursor gravitational containment engine: Concentric gyroscopic gimbal rings trapping a micro-black-hole event horizon emitting intense Hawking radiation arcs."
                 }
             ]
         };
 
         function switchGalleryTab(biomeNum) {
-            [1, 2, 3].forEach(b => {
+            for (let b = 1; b <= 10; b++) {
                 const tab = document.getElementById('tabBio' + b);
                 if (tab) tab.classList.toggle('active', b === biomeNum);
-            });
+            }
             renderAssetGallery(biomeNum);
         }
 

@@ -3,7 +3,7 @@
 
 // --- Bullet Class ---
         class Bullet {
-            constructor(x, y, vx, vy, color, size = 4, isWave = false) {
+            constructor(x, y, vx, vy, color, size = 4, isWave = false, bulletStyle = 'nyxa', damage = 1, piercing = false, helix = 0, helixPhase = 0) {
                 this.x = x;
                 this.y = y;
                 this.vx = vx;
@@ -11,6 +11,14 @@
                 this.color = color;
                 this.size = size;
                 this.isWave = isWave;
+                this.bulletStyle = bulletStyle;
+                this.damage = damage;
+                this.piercing = piercing;
+                this.pierceCount = 0;
+                this.maxPierce = piercing ? 3 : 1;
+                this.helix = helix; // -1, +1, or 0
+                this.helixPhase = helixPhase;
+                this.baseY = y;
                 this.age = 0;
                 this.isPlayer = true;
                 this.weaponLevel = typeof player !== 'undefined' ? player.weaponLevel : 1;
@@ -32,25 +40,72 @@
                     this.vy = Math.sin(next) * speed;
                 }
 
-                this.x += this.vx * dt;
-                this.y += this.vy * dt;
                 this.age += dt;
+                this.x += this.vx * dt;
 
-                if (this.isWave) {
-                    this.y += Math.sin(this.age * 22) * 4;
+                if (this.helix !== 0) {
+                    this.baseY += this.vy * dt;
+                    this.y = this.baseY + Math.sin(this.age * 18 + this.helixPhase) * (14 * this.helix);
+                } else if (this.isWave) {
+                    this.y += (this.vy * dt) + Math.sin(this.age * 22) * 4;
+                } else {
+                    this.y += this.vy * dt;
                 }
 
-                // Smoke trail for player missiles
-                if (this.secondaryType === 'missile') {
-                    if (Math.random() < 0.45) {
-                        const angle = Math.atan2(this.vy, this.vx);
-                        const rx = this.x - Math.cos(angle) * 5;
-                        const ry = this.y - Math.sin(angle) * 5;
-                        const p = new Particle(rx, ry, Math.random() < 0.25 ? '#FF8800' : '#888888');
-                        p.vx = -this.vx * 0.10 + (Math.random() - 0.5) * 18;
-                        p.vy = -this.vy * 0.10 + (Math.random() - 0.5) * 18;
-                        p.size = Math.random() * 2.2 + 1.2;
-                        p.decay = Math.random() * 2.5 + 1.5;
+                if (typeof Particle !== 'undefined') {
+                    if (this.secondaryType === 'missile') {
+                        if (Math.random() < 0.45) {
+                            const angle = Math.atan2(this.vy, this.vx);
+                            const rx = this.x - Math.cos(angle) * 5;
+                            const ry = this.y - Math.sin(angle) * 5;
+                            const p = new Particle(rx, ry, Math.random() < 0.25 ? '#FF8800' : '#888888');
+                            p.vx = -this.vx * 0.10 + (Math.random() - 0.5) * 18;
+                            p.vy = -this.vy * 0.10 + (Math.random() - 0.5) * 18;
+                            p.size = Math.random() * 2.2 + 1.2;
+                            p.decay = Math.random() * 2.5 + 1.5;
+                            particles.push(p);
+                        }
+                    } else if (this.bulletStyle === 'bastion' && Math.random() < 0.35) {
+                        const p = new Particle(this.x - 6, this.y, Math.random() < 0.5 ? '#ffaa00' : '#ff5500');
+                        p.vx = -this.vx * 0.08 + (Math.random() - 0.5) * 20;
+                        p.vy = (Math.random() - 0.5) * 20;
+                        p.size = Math.random() * 2 + 1;
+                        p.decay = 3.0;
+                        particles.push(p);
+                    } else if (this.bulletStyle === 'specter' && Math.random() < 0.35) {
+                        const p = new Particle(this.x - 8, this.y, Math.random() < 0.6 ? '#b026ff' : '#ffffff');
+                        p.vx = -this.vx * 0.06;
+                        p.vy = (Math.random() - 0.5) * 12;
+                        p.size = Math.random() * 1.8 + 0.8;
+                        p.decay = 4.0;
+                        particles.push(p);
+                    } else if (this.bulletStyle === 'tempest' && Math.random() < 0.30) {
+                        const p = new Particle(this.x - 5, this.y, '#ff2244');
+                        p.vx = -this.vx * 0.08 + (Math.random() - 0.5) * 25;
+                        p.vy = (Math.random() - 0.5) * 25;
+                        p.size = Math.random() * 1.8 + 1;
+                        p.decay = 3.5;
+                        particles.push(p);
+                    } else if (this.bulletStyle === 'warden' && Math.random() < 0.35) {
+                        const p = new Particle(this.x - 6, this.y, '#00ff88');
+                        p.vx = -this.vx * 0.05;
+                        p.vy = (Math.random() - 0.5) * 15;
+                        p.size = Math.random() * 2.5 + 1;
+                        p.decay = 3.0;
+                        particles.push(p);
+                    } else if (this.bulletStyle === 'phantom' && Math.random() < 0.40) {
+                        const p = new Particle(this.x - 6, this.y, Math.random() < 0.5 ? '#ff00aa' : '#00ffff');
+                        p.vx = -this.vx * 0.07 + (Math.random() - 0.5) * 20;
+                        p.vy = (Math.random() - 0.5) * 20;
+                        p.size = Math.random() * 2 + 1;
+                        p.decay = 3.5;
+                        particles.push(p);
+                    } else if (this.bulletStyle === 'nyxa' && Math.random() < 0.25) {
+                        const p = new Particle(this.x - 6, this.y, '#00f0ff');
+                        p.vx = -this.vx * 0.05;
+                        p.vy = (Math.random() - 0.5) * 12;
+                        p.size = Math.random() * 1.5 + 1;
+                        p.decay = 3.5;
                         particles.push(p);
                     }
                 }
@@ -60,12 +115,12 @@
                 ctx.save();
                 ctx.translate(this.x, this.y);
 
-                // Rotate to face bullet direction
+                // Rotate to face bullet velocity vector
                 const angle = Math.atan2(this.vy, this.vx);
                 ctx.rotate(angle);
 
                 if (this.secondaryType === 'missile') {
-                    // Downsized sleek compact micro-missile (length ~7px, height ~3px)
+                    // Downsized sleek compact micro-missile
                     ctx.shadowColor = this.color;
                     ctx.shadowBlur = 5;
                     ctx.fillStyle = this.color;
@@ -82,53 +137,91 @@
                     return;
                 }
 
-                // GRO-882: Render glow sprite behind main laser for weapon glow effect
-                const glowSprite = vfxSprites['laser_glow'];
-                const isGlowImage = glowSprite && glowSprite.tagName !== 'CANVAS' && glowSprite.complete && glowSprite.naturalWidth > 0;
-                const isGlowCanvas = glowSprite && glowSprite.tagName === 'CANVAS' && glowSprite.width > 0;
-                if (isGlowImage || isGlowCanvas) {
-                    const renderSize = Math.min(26, this.size * 2.4);
-                    const glowSize = renderSize * 1.6;  // Glow is larger and softer
-                    ctx.globalAlpha = 0.35;
-                    ctx.globalCompositeOperation = 'lighter';
-                    drawSpriteFrame(ctx, glowSprite, 0, 0, SPRITE_FRAME, SPRITE_FRAME, -glowSize / 2, -glowSize / 2, glowSize, glowSize);
-                    ctx.globalCompositeOperation = 'source-over';
-                }
-
-                const sprite = vfxSprites['laser'];
-                // Check for both Image (not yet pre-composited) and Canvas (pre-composited)
+                // Check for dedicated ship projectile sprite
+                const vfx = (typeof window !== 'undefined' && window.vfxSprites) ? window.vfxSprites : (typeof vfxSprites !== 'undefined' ? vfxSprites : {});
+                const styleKey = 'player_bullet_' + (this.bulletStyle || 'nyxa');
+                const sprite = vfx[styleKey] || vfx['laser'];
                 const isImage = sprite && sprite.tagName !== 'CANVAS' && sprite.complete && sprite.naturalWidth > 0;
                 const isCanvas = sprite && sprite.tagName === 'CANVAS' && sprite.width > 0;
+
                 if (isImage || isCanvas) {
-                    // Render laser sprite scaled to bullet size (capped so it never bloats)
-                    const renderSize = Math.min(26, this.size * 2.4);
-                    ctx.globalAlpha = 0.9;
-                    if (this.isWave) {
-                        ctx.shadowColor = this.color;
-                        ctx.shadowBlur = 10;
-                    }
-                    // Use additive only for non-pre-composited images (fallback)
-                    if (isImage) {
-                        ctx.globalCompositeOperation = 'lighter';
-                    }
-                    ctx.drawImage(sprite, -renderSize / 2, -renderSize / 2, renderSize, renderSize);
-                    if (isImage) {
-                        ctx.globalCompositeOperation = 'source-over';
-                    }
-                    ctx.shadowBlur = 0;
-                } else {
-                    // Fallback: colored rectangle
+                    const renderW = Math.min(38, this.size * 3.6);
+                    const renderH = (this.bulletStyle === 'warden') ? renderW : renderW * 0.52;
+                    ctx.shadowColor = this.color;
+                    ctx.shadowBlur = 10;
+                    ctx.drawImage(sprite, -renderW / 2, -renderH / 2, renderW, renderH);
+                    ctx.restore();
+                    return;
+                }
+
+                // Procedural rendering fallback per player ship weapon style
+                if (this.bulletStyle === 'bastion') {
+                    // Molten amber sabot slug
+                    ctx.shadowColor = '#ffaa00';
+                    ctx.shadowBlur = 8;
+                    ctx.fillStyle = '#ffaa00';
+                    ctx.fillRect(-this.size * 1.5, -this.size * 0.5, this.size * 3.0, this.size);
+                    ctx.fillStyle = '#ffee88';
+                    ctx.fillRect(this.size * 0.3, -this.size * 0.3, this.size * 1.2, this.size * 0.6);
+                    ctx.fillStyle = '#ff4400';
+                    ctx.fillRect(-this.size * 1.8, -this.size * 0.3, this.size * 0.4, this.size * 0.6);
+                } else if (this.bulletStyle === 'specter') {
+                    // Void violet railgun lance
+                    ctx.shadowColor = '#b026ff';
+                    ctx.shadowBlur = 12;
+                    ctx.strokeStyle = '#b026ff';
+                    ctx.lineWidth = 3;
+                    ctx.beginPath();
+                    ctx.moveTo(-this.size * 3.0, 0);
+                    ctx.lineTo(this.size * 3.0, 0);
+                    ctx.stroke();
+                    ctx.strokeStyle = '#ffffff';
+                    ctx.lineWidth = 1.2;
+                    ctx.stroke();
+                } else if (this.bulletStyle === 'tempest') {
+                    // Crimson scatter dart
+                    ctx.shadowColor = '#ff2244';
+                    ctx.shadowBlur = 10;
+                    ctx.fillStyle = '#ff2244';
+                    ctx.beginPath();
+                    ctx.moveTo(this.size * 2.0, 0);
+                    ctx.lineTo(-this.size * 1.2, -this.size * 0.8);
+                    ctx.lineTo(-this.size * 0.6, 0);
+                    ctx.lineTo(-this.size * 1.2, this.size * 0.8);
+                    ctx.closePath();
+                    ctx.fill();
+                    ctx.fillStyle = '#ff88aa';
+                    ctx.fillRect(0, -1, this.size, 2);
+                } else if (this.bulletStyle === 'warden') {
+                    // Acoustic shockwave rings
+                    ctx.shadowColor = '#00ff88';
+                    ctx.shadowBlur = 12;
+                    ctx.strokeStyle = '#00ff88';
+                    ctx.lineWidth = 2.2;
+                    ctx.beginPath();
+                    ctx.arc(0, 0, this.size * 1.4, 0, Math.PI * 2);
+                    ctx.stroke();
+                    ctx.strokeStyle = '#aaffcc';
+                    ctx.lineWidth = 1;
+                    ctx.beginPath();
+                    ctx.arc(0, 0, this.size * 0.7, 0, Math.PI * 2);
+                    ctx.stroke();
+                } else if (this.bulletStyle === 'phantom') {
+                    // Tachyon phase dart
+                    ctx.shadowColor = this.color;
+                    ctx.shadowBlur = 10;
                     ctx.fillStyle = this.color;
-                    if (this.isWave) {
-                        ctx.shadowColor = this.color;
-                        ctx.shadowBlur = 10;
-                        ctx.beginPath();
-                        ctx.arc(0, 0, this.size, 0, Math.PI * 2);
-                        ctx.fill();
-                        ctx.shadowBlur = 0;
-                    } else {
-                        ctx.fillRect(-this.size, -2, this.size * 2, 4);
-                    }
+                    ctx.fillRect(-this.size * 1.8, -2, this.size * 3.6, 4);
+                    ctx.fillStyle = '#ffffff';
+                    ctx.fillRect(-this.size * 0.8, -1, this.size * 1.6, 2);
+                } else {
+                    // Default / Nyxa: Cyan pulse laser
+                    ctx.shadowColor = '#00f0ff';
+                    ctx.shadowBlur = 10;
+                    ctx.fillStyle = this.color;
+                    ctx.fillRect(-this.size * 1.6, -2, this.size * 3.2, 4);
+                    ctx.fillStyle = '#ffffff';
+                    ctx.fillRect(-this.size * 0.8, -1, this.size * 1.6, 2);
                 }
 
                 ctx.restore();
@@ -182,9 +275,25 @@
                     themeColor = '#b026ff';
                     label = 'MAT';
                 }
+                this.themeColor = themeColor;
 
                 const pulse = 1.0 + Math.sin(this.bob * 3) * 0.12;
                 ctx.scale(pulse, pulse);
+
+                // Phased Radial Pulse Wave (radiating chromatic phase ring)
+                const phaseProgress = (this.bob * 1.6) % Math.PI;
+                const phaseR = 14 + (phaseProgress / Math.PI) * 20;
+                const phaseAlpha = (1.0 - (phaseProgress / Math.PI)) * 0.55;
+                ctx.save();
+                ctx.strokeStyle = themeColor;
+                ctx.lineWidth = 1.6;
+                ctx.globalAlpha = phaseAlpha;
+                ctx.shadowColor = themeColor;
+                ctx.shadowBlur = 10;
+                ctx.beginPath();
+                ctx.arc(0, 0, phaseR, 0, Math.PI * 2);
+                ctx.stroke();
+                ctx.restore();
 
                 // High-Contrast Dark Rim Backdrop so items pop on ANY background
                 ctx.save();
@@ -223,11 +332,9 @@
                 ctx.shadowBlur = 14 * pulse;
 
                 if (isImage || isCanvas) {
-                    const renderW = 28;
-                    const renderH = 28;
-                    if (isImage) ctx.globalCompositeOperation = 'lighter';
+                    const renderW = 34;
+                    const renderH = 34;
                     ctx.drawImage(sprite, -renderW / 2, -renderH / 2, renderW, renderH);
-                    if (isImage) ctx.globalCompositeOperation = 'source-over';
                 } else {
                     // Geometric vector fallback
                     ctx.fillStyle = themeColor;
@@ -236,16 +343,19 @@
                     ctx.fill();
                 }
 
-                // 3. Floating Materia / Power-Up Typography Badge
+                // 3. Floating Materia / Power-Up Micro-Badge
                 ctx.shadowBlur = 0;
+                ctx.fillStyle = 'rgba(6, 14, 28, 0.85)';
+                ctx.fillRect(-13, 14, 26, 10);
+                ctx.strokeStyle = themeColor;
+                ctx.lineWidth = 1;
+                ctx.strokeRect(-13, 14, 26, 10);
+                
                 ctx.fillStyle = '#ffffff';
-                ctx.font = 'bold 9px monospace';
+                ctx.font = 'bold 8px monospace';
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
-                ctx.strokeStyle = 'rgba(0, 0, 0, 0.8)';
-                ctx.lineWidth = 2;
-                ctx.strokeText(label, 0, 0);
-                ctx.fillText(label, 0, 0);
+                ctx.fillText(label, 0, 19);
 
                 ctx.restore();
             }
@@ -492,7 +602,18 @@
                         ctx.stroke();
                     }
                     else if (this.style === 'shield_hit') {
-                        // Hexagonal energetic deflection ripple & electrical arcs
+                        // High-Resolution Shield Impact Sprite Ripple & Hexagonal Deflection Arcs
+                        const impactImg = (typeof vfxSprites !== 'undefined') ? vfxSprites['shield_impact'] : null;
+                        if (impactImg) {
+                            ctx.save();
+                            ctx.globalAlpha = Math.max(0, (1 - progress) * 0.95);
+                            ctx.translate(this.x, this.y);
+                            ctx.rotate(progress * 1.4);
+                            const impSz = this.size * (0.8 + progress * 0.8);
+                            ctx.drawImage(impactImg, -impSz / 2, -impSz / 2, impSz, impSz);
+                            ctx.restore();
+                        }
+
                         ctx.globalAlpha = (1 - progress) * 0.95;
                         ctx.strokeStyle = '#00E5FF';
                         ctx.lineWidth = 3 * (1 - progress);
@@ -680,7 +801,7 @@
 
             draw() {
                 ctx.save();
-                ctx.translate(this.x, this.y);
+                ctx.translate(this.x + this.width / 2, this.y + this.height / 2);
 
                 const pulse = 1.0 + Math.sin(this.pulseTime) * 0.15;
                 const isRare = (this.type === 'core' || this.type === 'essence' || this.type === 'fragment');
@@ -706,10 +827,8 @@
                 ctx.rotate(this.spin);
 
                 if (isImage || isCanvas) {
-                    const renderSize = (isRare ? 22 : 18) * pulse;
-                    if (isImage) ctx.globalCompositeOperation = 'lighter';
+                    const renderSize = (isRare ? 28 : 22) * pulse;
                     ctx.drawImage(sprite, -renderSize / 2, -renderSize / 2, renderSize, renderSize);
-                    if (isImage) ctx.globalCompositeOperation = 'source-over';
                 } else {
                     // Geometric vector fallback
                     ctx.fillStyle = this.color;

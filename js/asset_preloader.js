@@ -58,64 +58,64 @@ const AssetPreloader = (function() {
 
     const BIOME_ENEMIES_MAP = {
         1: [
-            { key: 'angler_scout', src: 'assets/sprites/enemy_angler_scout_0.png' },
-            { key: 'jelly_interceptor', src: 'assets/sprites/enemy_jelly_interceptor_0.png' },
-            { key: 'vent_crab_heavy', src: 'assets/sprites/enemy_vent_crab_heavy_0.png' },
-            { key: 'trench_eel', src: 'assets/sprites/enemy_trench_eel_0.png' }
+            { key: 'angler_scout', src: 'assets/sprites/enemy_angler_scout_sheet.png' },
+            { key: 'jelly_interceptor', src: 'assets/sprites/enemy_jelly_interceptor_sheet.png' },
+            { key: 'vent_crab_heavy', src: 'assets/sprites/enemy_vent_crab_heavy_sheet.png' },
+            { key: 'trench_eel', src: 'assets/sprites/enemy_trench_eel_sheet.png' }
         ],
         2: [
-            { key: 'rust_drone', src: 'assets/sprites/enemy_rust_drone_0.png' },
-            { key: 'coral_wasp', src: 'assets/sprites/enemy_coral_wasp_0.png' },
-            { key: 'armored_eel', src: 'assets/sprites/enemy_armored_eel_0.png' },
-            { key: 'spine_urchin', src: 'assets/sprites/enemy_spine_urchin_0.png' }
+            { key: 'rust_drone', src: 'assets/sprites/enemy_rust_drone_sheet.png' },
+            { key: 'coral_wasp', src: 'assets/sprites/enemy_coral_wasp_sheet.png' },
+            { key: 'armored_eel', src: 'assets/sprites/enemy_armored_eel_sheet.png' },
+            { key: 'spine_urchin', src: 'assets/sprites/enemy_spine_urchin_sheet.png' }
         ],
         3: [
-            { key: 'sparker', src: 'assets/sprites/enemy_sparker_0.png' },
-            { key: 'sentinel', src: 'assets/sprites/enemy_sentinel_0.png' },
-            { key: 'juggernaut', src: 'assets/sprites/enemy_juggernaut_0.png' },
-            { key: 'boss_minion', src: 'assets/sprites/enemy_boss_minion_0.png' }
+            { key: 'sparker', src: 'assets/sprites/enemy_sparker_sheet.png' },
+            { key: 'sentinel', src: 'assets/sprites/enemy_sentinel_sheet.png' },
+            { key: 'juggernaut', src: 'assets/sprites/enemy_juggernaut_sheet.png' },
+            { key: 'boss_minion', src: 'assets/sprites/enemy_boss_minion_sheet.png' }
         ],
         4: [
-            { key: 'plasma_wisp', src: 'assets/sprites/enemy_plasma_wisp_0.png' },
-            { key: 'storm_sprite', src: 'assets/sprites/enemy_storm_sprite_0.png' },
-            { key: 'gas_giant', src: 'assets/sprites/enemy_gas_giant_0.png' },
-            { key: 'nebula_wraith', src: 'assets/sprites/enemy_nebula_wraith_0.png' }
+            { key: 'plasma_wisp', src: 'assets/sprites/enemy_plasma_wisp_sheet.png' },
+            { key: 'storm_sprite', src: 'assets/sprites/enemy_storm_sprite_sheet.png' },
+            { key: 'gas_giant', src: 'assets/sprites/enemy_gas_giant_sheet.png' },
+            { key: 'nebula_wraith', src: 'assets/sprites/enemy_nebula_wraith_sheet.png' }
         ],
         5: [
-            { key: 'ice_shard', src: 'assets/sprites/enemy_ice_shard_0.png' },
-            { key: 'frost_drone', src: 'assets/sprites/enemy_frost_drone_0.png' },
-            { key: 'glacier', src: 'assets/sprites/enemy_glacier_0.png' },
-            { key: 'ice_swarm', src: 'assets/sprites/enemy_ice_swarm_0.png' }
+            { key: 'ice_shard', src: 'assets/sprites/enemy_ice_shard_sheet.png' },
+            { key: 'frost_drone', src: 'assets/sprites/enemy_frost_drone_sheet.png' },
+            { key: 'glacier', src: 'assets/sprites/enemy_glacier_sheet.png' },
+            { key: 'ice_swarm', src: 'assets/sprites/enemy_ice_swarm_sheet.png' }
         ],
         6: [
-            { key: 'ember_sprite', src: 'assets/sprites/enemy_ember_sprite_0.png' },
-            { key: 'magma_wasp', src: 'assets/sprites/enemy_magma_wasp_0.png' },
-            { key: 'lava_golem', src: 'assets/sprites/enemy_lava_golem_0.png' },
-            { key: 'inferno_node', src: 'assets/sprites/enemy_inferno_node_0.png' }
+            { key: 'ember_sprite', src: 'assets/sprites/enemy_ember_sprite_sheet.png' },
+            { key: 'magma_wasp', src: 'assets/sprites/enemy_magma_wasp_sheet.png' },
+            { key: 'lava_golem', src: 'assets/sprites/enemy_lava_golem_sheet.png' },
+            { key: 'inferno_node', src: 'assets/sprites/enemy_inferno_node_sheet.png' }
         ],
         7: [
-            { key: 'static_spark', src: 'assets/sprites/enemy_static_spark_0.png' },
-            { key: 'storm_hawk', src: 'assets/sprites/enemy_storm_hawk_0.png' },
-            { key: 'thunderhead', src: 'assets/sprites/enemy_thunderhead_0.png' },
-            { key: 'storm_sentinel', src: 'assets/sprites/enemy_storm_sentinel_0.png' }
+            { key: 'static_spark', src: 'assets/sprites/enemy_static_spark_sheet.png' },
+            { key: 'storm_hawk', src: 'assets/sprites/enemy_storm_hawk_sheet.png' },
+            { key: 'thunderhead', src: 'assets/sprites/enemy_thunderhead_sheet.png' },
+            { key: 'storm_sentinel', src: 'assets/sprites/enemy_storm_sentinel_sheet.png' }
         ],
         8: [
-            { key: 'salvage_drone', src: 'assets/sprites/enemy_salvage_drone_0.png' },
-            { key: 'ghost_fighter', src: 'assets/sprites/enemy_ghost_fighter_0.png' },
-            { key: 'turret_battery', src: 'assets/sprites/enemy_turret_battery_0.png' },
-            { key: 'fleet_turret', src: 'assets/sprites/enemy_fleet_turret_0.png' }
+            { key: 'salvage_drone', src: 'assets/sprites/enemy_salvage_drone_sheet.png' },
+            { key: 'ghost_fighter', src: 'assets/sprites/enemy_ghost_fighter_sheet.png' },
+            { key: 'turret_battery', src: 'assets/sprites/enemy_turret_battery_sheet.png' },
+            { key: 'fleet_turret', src: 'assets/sprites/enemy_fleet_turret_sheet.png' }
         ],
         9: [
-            { key: 'crawler', src: 'assets/sprites/enemy_crawler_0.png' },
-            { key: 'spitter', src: 'assets/sprites/enemy_spitter_0.png' },
-            { key: 'brute', src: 'assets/sprites/enemy_brute_0.png' },
-            { key: 'hive_node', src: 'assets/sprites/enemy_hive_node_0.png' }
+            { key: 'crawler', src: 'assets/sprites/enemy_crawler_sheet.png' },
+            { key: 'spitter', src: 'assets/sprites/enemy_spitter_sheet.png' },
+            { key: 'brute', src: 'assets/sprites/enemy_brute_sheet.png' },
+            { key: 'hive_node', src: 'assets/sprites/enemy_hive_node_sheet.png' }
         ],
         10: [
-            { key: 'glitch_fragment', src: 'assets/sprites/enemy_glitch_fragment_0.png' },
-            { key: 'paradox_wisp', src: 'assets/sprites/enemy_paradox_wisp_0.png' },
-            { key: 'null_entity', src: 'assets/sprites/enemy_null_entity_0.png' },
-            { key: 'rift_aberration', src: 'assets/sprites/enemy_rift_aberration_0.png' }
+            { key: 'glitch_fragment', src: 'assets/sprites/enemy_glitch_fragment_sheet.png' },
+            { key: 'paradox_wisp', src: 'assets/sprites/enemy_paradox_wisp_sheet.png' },
+            { key: 'null_entity', src: 'assets/sprites/enemy_null_entity_sheet.png' },
+            { key: 'rift_aberration', src: 'assets/sprites/enemy_rift_aberration_sheet.png' }
         ]
     };
 
@@ -252,11 +252,15 @@ const AssetPreloader = (function() {
         enemies.forEach(({ key, src }) => {
             promises.push(_loadImage(src).then((res) => {
                 if (res.img && typeof enemySprites !== 'undefined') {
-                    if (typeof preCompositeAdditive === 'function') {
-                        enemySprites[key] = preCompositeAdditive(res.img);
-                    } else {
-                        enemySprites[key] = res.img;
-                    }
+                    const spriteImg = res.img;
+                    enemySprites[key] = spriteImg;
+                    enemySprites[key + '_sheet'] = spriteImg;
+                    enemySprites[key + '_0'] = spriteImg;
+                    enemySprites['enemy_' + key + '_0'] = spriteImg;
+                    if (key === 'angler_scout') enemySprites['scout'] = spriteImg;
+                    if (key === 'jelly_interceptor') enemySprites['interceptor'] = spriteImg;
+                    if (key === 'vent_crab_heavy') enemySprites['heavy'] = spriteImg;
+                    if (key === 'boss_minion') enemySprites['boss_minion'] = spriteImg;
                 }
             }));
         });

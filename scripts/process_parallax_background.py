@@ -107,6 +107,60 @@ def make_seamless_horizontal(img: Image.Image, blend_fraction: float = 0.12) -> 
 
     return Image.fromarray(np.clip(arr, 0, 255).astype(np.uint8), 'RGBA')
 
+def compile_dual_angle_panorama(frame_a_path: str, frame_b_path: str, output_path: str,
+                                target_w: int = 3072, target_h: int = 768,
+                                blend_fraction: float = 0.12) -> Image.Image:
+    """
+    Combines two distinct camera perspective frames (Frame A & Frame B) into a seamless 3072x768 panorama.
+    Frame A occupies the left half, Frame B occupies the right half.
+    Applies smooth cosine cross-fade blending at the center interface and outer loop boundary.
+    """
+    img_a = Image.open(frame_a_path).convert('RGBA')
+    img_b = Image.open(frame_b_path).convert('RGBA')
+
+    half_w = target_w // 2
+    overlap_w = max(32, int(half_w * blend_fraction))
+    tile_w = half_w + overlap_w
+
+    scale_a = max(tile_w / img_a.size[0], target_h / img_a.size[1])
+    scaled_a = img_a.resize((int(img_a.size[0] * scale_a), int(img_a.size[1] * scale_a)), Image.Resampling.LANCZOS)
+    cropped_a = scaled_a.crop((0, 0, tile_w, target_h))
+
+    scale_b = max(tile_w / img_b.size[0], target_h / img_b.size[1])
+    scaled_b = img_b.resize((int(img_b.size[0] * scale_b), int(img_b.size[1] * scale_b)), Image.Resampling.LANCZOS)
+    cropped_b = scaled_b.crop((0, 0, tile_w, target_h))
+
+    arr_a = np.array(cropped_a, dtype=np.float32)
+    arr_b = np.array(cropped_b, dtype=np.float32)
+
+    canvas = np.zeros((target_h, target_w, 4), dtype=np.float32)
+
+    # Place left half up to transition zone
+    canvas[:, :half_w - overlap_w, :] = arr_a[:, :half_w - overlap_w, :]
+
+    # Center transition blend
+    blend_len = 2 * overlap_w
+    t_center = np.linspace(0, np.pi, blend_len, endpoint=True)
+    w_b = (1.0 - np.cos(t_center)) / 2.0
+    for i in range(blend_len):
+        idx = half_w - overlap_w + i
+        weight_b = w_b[i]
+        weight_a = 1.0 - weight_b
+        canvas[:, idx, :] = arr_a[:, half_w - overlap_w + i, :] * weight_a + arr_b[:, i, :] * weight_b
+
+    # Place right half
+    right_start = half_w + overlap_w
+    rem_w = target_w - right_start
+    canvas[:, right_start:, :] = arr_b[:, blend_len : blend_len + rem_w, :]
+
+    out_img = Image.fromarray(np.clip(canvas, 0, 255).astype(np.uint8), 'RGBA')
+    seamless_out = make_seamless_horizontal(out_img, blend_fraction=0.08)
+
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+    seamless_out.save(output_path, 'PNG')
+    print(f"[COMPILED DUAL-ANGLE PANORAMA] Successfully created 2-frame seamless panorama ({target_w}x{target_h}): {output_path}")
+    return seamless_out
+
 def compile_ultra_wide_background(input_path: str, output_path: str,
                                   target_w: int = 3072, target_h: int = 768,
                                   is_near_silhouette: bool = False,
@@ -168,13 +222,11 @@ def compile_landmark(input_path: str, output_path: str,
 
 if __name__ == '__main__':
     if len(sys.argv) < 3:
-        print("Usage: python3 scripts/process_parallax_background.py <input_img> <output_png> [--near] [--landmark] [--width 3072] [--height 768] [--size 1024]")
+        print("Usage:")
+        print("  python3 scripts/process_parallax_background.py <input_img> <output_png> [--near] [--landmark] [--width 3072] [--height 768] [--size 1024]")
+        print("  python3 scripts/process_parallax_background.py --dual <frame_a> <frame_b> <output_png> [--width 3072] [--height 768]")
         sys.exit(1)
 
-    in_p = sys.argv[1]
-    out_p = sys.argv[2]
-    is_near = '--near' in sys.argv
-    is_landmark = '--landmark' in sys.argv
     w = 3072
     h = 768
     size = 1024
@@ -185,7 +237,18 @@ if __name__ == '__main__':
     if '--size' in sys.argv:
         size = int(sys.argv[sys.argv.index('--size') + 1])
 
-    if is_landmark:
+    if '--dual' in sys.argv:
+        dual_idx = sys.argv.index('--dual')
+        frame_a = sys.argv[dual_idx + 1]
+        frame_b = sys.argv[dual_idx + 2]
+        out_p = sys.argv[dual_idx + 3]
+        compile_dual_angle_panorama(frame_a, frame_b, out_p, target_w=w, target_h=h)
+    elif '--landmark' in sys.argv:
+        in_p = sys.argv[1]
+        out_p = sys.argv[2]
         compile_landmark(in_p, out_p, target_size=size)
     else:
+        in_p = sys.argv[1]
+        out_p = sys.argv[2]
+        is_near = '--near' in sys.argv
         compile_ultra_wide_background(in_p, out_p, target_w=w, target_h=h, is_near_silhouette=is_near)

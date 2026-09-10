@@ -2239,6 +2239,22 @@ def generate_veo(asset_id: str, config: dict, project_id: str,
             f.write(base64.b64decode(video_b64))
         print(f"  ✓ Saved: {video_path} ({len(video_b64)} chars b64)")
 
+        # Write sidecar JSON for AI Ultra Credit Tracker
+        sidecar_path = CINEMATICS_DIR / f"{prefix}.json"
+        engine_type = "veo-quality-8s" if duration > 6 else "veo-fast"
+        credits_cost = 100 if duration > 6 else 10
+        sidecar_data = {
+            "media_type": "video",
+            "engine": engine_type,
+            "duration": float(duration),
+            "credits_spent": credits_cost,
+            "prompt": config.get("prompt", ""),
+            "generated_at": datetime.now(timezone.utc).isoformat()
+        }
+        with open(sidecar_path, "w") as sf:
+            json.dump(sidecar_data, sf, indent=2)
+        print(f"  ✓ Saved credit sidecar: {sidecar_path} ({credits_cost} credits)")
+
         # Extract assets (frames + audio) if requested
         if config.get("extract_frames"):
             extract_assets_from_video(video_path, prefix, config.get("fps", 8))
@@ -2327,6 +2343,22 @@ def main():
         "--delay", type=float, default=65.0,
         help="Seconds between Veo API calls (default: 65s, quota=1/min)"
     )
+    parser.add_argument(
+        "--prompt", default=None,
+        help="Custom prompt for ad-hoc video generation"
+    )
+    parser.add_argument(
+        "--name", default="custom_veo_asset",
+        help="Output prefix name for custom prompt asset"
+    )
+    parser.add_argument(
+        "--duration", type=int, default=4,
+        help="Duration in seconds (4, 6, 8)"
+    )
+    parser.add_argument(
+        "--fps", type=int, default=15,
+        help="Frames per second"
+    )
     args = parser.parse_args()
 
     # Verify auth
@@ -2369,7 +2401,18 @@ def main():
         return 1
 
     # Filter assets
-    if args.asset:
+    if args.prompt:
+        assets_to_gen = {
+            args.name: {
+                "category": "Custom Generation",
+                "prompt": args.prompt,
+                "duration_sec": args.duration,
+                "fps": args.fps,
+                "output_prefix": args.name,
+                "extract_frames": True,
+            }
+        }
+    elif args.asset:
         unknown = [a for a in args.asset if a not in VEO_ASSET_CATALOG]
         if unknown:
             print(f"Unknown asset(s): {', '.join(unknown)}")

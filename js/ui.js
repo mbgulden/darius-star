@@ -1214,19 +1214,43 @@ function drawMenuScreens() {
                 });
             }
 
-            // Title & Tier Tag
+            // Upgrade Node Tech Icon
+            const upSprite = (typeof uiSprites !== 'undefined' && uiSprites['icon_upgrade_' + label]);
+            const hasIcon = upSprite && upSprite.complete && upSprite.naturalWidth > 0;
+            const contentOffsetX = hasIcon ? 58 : 10;
+
+            if (hasIcon) {
+                const iconBoxX = cardX + 7;
+                const iconBoxY = cardY + 10;
+                const iconBoxSize = 48;
+                // Inset housing with tier glow
+                ctx.save();
+                ctx.fillStyle = 'rgba(4, 8, 16, 0.85)';
+                ctx.fillRect(iconBoxX, iconBoxY, iconBoxSize, iconBoxSize);
+                ctx.strokeStyle = isSelected ? tierInfo.accent : (tierInfo.color + '66');
+                ctx.lineWidth = 1;
+                ctx.strokeRect(iconBoxX, iconBoxY, iconBoxSize, iconBoxSize);
+                if (isSelected) {
+                    ctx.shadowColor = tierInfo.accent;
+                    ctx.shadowBlur = 8;
+                }
+                ctx.drawImage(upSprite, iconBoxX + 2, iconBoxY + 2, iconBoxSize - 4, iconBoxSize - 4);
+                ctx.restore();
+            }
+
+            // Title
             ctx.textAlign = 'left';
             ctx.fillStyle = isSelected ? '#ffffff' : '#d0e0f0';
-            ctx.font = 'bold 11px monospace';
-            ctx.fillText(upgradeNames[i], cardX + 10, cardY + 16);
+            ctx.font = 'bold 10.5px monospace';
+            ctx.fillText(upgradeNames[i], cardX + contentOffsetX, cardY + 16);
 
-            // Tier Badge Tag
+            // Tier Badge Tag (Cleanly positioned before the cost)
+            ctx.textAlign = 'right';
             ctx.fillStyle = tierInfo.color;
             ctx.font = 'bold 9px monospace';
-            ctx.fillText(`[T${tierInfo.tierRoman} ${tierInfo.tierName}]`, cardX + 180, cardY + 16);
+            ctx.fillText(`[T${tierInfo.tierRoman} ${tierInfo.tierName}]`, cardX + colW - 105, cardY + 16);
 
             // Cost / Status Badge
-            ctx.textAlign = 'right';
             if (isMaxed) {
                 ctx.fillStyle = '#d044ff';
                 ctx.font = 'bold 10px monospace';
@@ -1238,9 +1262,9 @@ function drawMenuScreens() {
             }
 
             // Segmented Rank Meter (Shows pips for current active tier)
-            const meterX = cardX + 10;
+            const meterX = cardX + contentOffsetX;
             const meterY = cardY + 23;
-            const meterW = colW - 145;
+            const meterW = colW - (hasIcon ? 190 : 145);
             if (typeof CockpitUI !== 'undefined') {
                 CockpitUI.drawSegmentedBar(ctx, meterX, meterY, meterW, 7, tierInfo.tierRank, tierInfo.tierMax, {
                     segments: tierInfo.tierMax,
@@ -1285,13 +1309,13 @@ function drawMenuScreens() {
 
             ctx.fillStyle = isSelected ? '#ffffff' : '#8899aa';
             ctx.font = '8.5px monospace';
-            ctx.fillText(statDelta, cardX + 10, cardY + 44);
+            ctx.fillText(statDelta, cardX + contentOffsetX, cardY + 44);
 
             // Dynamic Sub-Description
             ctx.fillStyle = isSelected ? '#00ff88' : '#5a6a7a';
             ctx.font = 'italic 8px monospace';
             const subDesc = isMaxed ? '★ Apex Singularity hardpoint efficiency achieved.' : (canAfford ? '▶ READY TO TRANSMUTE [ENTER / CLICK]' : '⚠️ INSUFFICIENT QUANTUM SCRAP SALVAGE');
-            ctx.fillText(subDesc, cardX + 10, cardY + 57);
+            ctx.fillText(subDesc, cardX + contentOffsetX, cardY + 57);
         }
 
         // 3. Navigation Action Bar (Bottom Buttons)
@@ -1445,13 +1469,25 @@ function drawMenuScreens() {
         if (anim > 1.2) {
             const stampScale = Math.max(1.0, 2.5 - (anim - 1.2) * 6);
             ctx.save();
-            ctx.translate(rightX + boxW / 2, topY + 75);
+            ctx.translate(rightX + boxW / 2, topY + 92);
             ctx.scale(stampScale, stampScale);
-            ctx.fillStyle = rankColor;
-            ctx.font = 'bold 36px monospace';
-            ctx.shadowColor = rankColor;
-            ctx.shadowBlur = 18;
-            ctx.fillText(`[ ${rank}-RANK ]`, 0, 10);
+            const rankSprite = (typeof uiSprites !== 'undefined' && uiSprites['rank_' + rank.toLowerCase()]);
+            if (rankSprite && rankSprite.complete && rankSprite.naturalWidth > 0) {
+                ctx.shadowColor = rankColor;
+                ctx.shadowBlur = 18;
+                const rkW = 68;
+                const rkH = 68;
+                ctx.drawImage(rankSprite, -rkW / 2, -rkH / 2 - 14, rkW, rkH);
+                ctx.fillStyle = rankColor;
+                ctx.font = 'bold 15px monospace';
+                ctx.fillText(`GRADE: ${rank}-RANK`, 0, 32);
+            } else {
+                ctx.fillStyle = rankColor;
+                ctx.font = 'bold 36px monospace';
+                ctx.shadowColor = rankColor;
+                ctx.shadowBlur = 18;
+                ctx.fillText(`[ ${rank}-RANK ]`, 0, 10);
+            }
             ctx.restore();
         }
 

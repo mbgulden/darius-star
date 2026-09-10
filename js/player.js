@@ -50,14 +50,108 @@ window.getDifficultyConfig = getDifficultyConfig;
 window.getCurrentDifficultyConfig = getCurrentDifficultyConfig;
 window.isInsaneDifficultyUnlocked = isInsaneDifficultyUnlocked;
 
+// --- Canonical Player Ship Class & Scaling Rules ---
+// Enforces minimum +20% scaling across all chassis and scales up progressively by tonnage/role
+const PLAYER_SHIP_CLASS_RULES = {
+    phantom: {
+        className: 'Tachyon Phase Hunter',
+        category: 'Scout / Interceptor',
+        width: 54,
+        height: 54,
+        renderSize: 58,
+        shieldRadius: 40,
+        scalePercent: '+22%'
+    },
+    scout: {
+        className: 'Tachyon Phase Hunter',
+        category: 'Scout / Interceptor',
+        width: 54,
+        height: 54,
+        renderSize: 58,
+        shieldRadius: 40,
+        scalePercent: '+22%'
+    },
+    specter: {
+        className: 'Quantum Infiltrator',
+        category: 'Recon / Sniper',
+        width: 55,
+        height: 55,
+        renderSize: 60,
+        shieldRadius: 41,
+        scalePercent: '+25%'
+    },
+    nyxa: {
+        className: 'Strike Fighter',
+        category: 'Flagship Medium',
+        width: 56,
+        height: 56,
+        renderSize: 62,
+        shieldRadius: 42,
+        scalePercent: '+27%'
+    },
+    interceptor: {
+        className: 'Strike Fighter',
+        category: 'Flagship Medium',
+        width: 56,
+        height: 56,
+        renderSize: 62,
+        shieldRadius: 42,
+        scalePercent: '+27%'
+    },
+    tempest: {
+        className: 'Rapid Interceptor',
+        category: 'Dogfighter Medium',
+        width: 56,
+        height: 56,
+        renderSize: 62,
+        shieldRadius: 42,
+        scalePercent: '+27%'
+    },
+    warden: {
+        className: 'Acoustic Frigate',
+        category: 'Support Frigate',
+        width: 60,
+        height: 60,
+        renderSize: 66,
+        shieldRadius: 45,
+        scalePercent: '+36%'
+    },
+    bastion: {
+        className: 'Heavy Gunship / Dread-Frigate',
+        category: 'Assault Dreadnought',
+        width: 64,
+        height: 64,
+        renderSize: 72,
+        shieldRadius: 48,
+        scalePercent: '+45%'
+    },
+    heavy: {
+        className: 'Heavy Gunship / Dread-Frigate',
+        category: 'Assault Dreadnought',
+        width: 64,
+        height: 64,
+        renderSize: 72,
+        shieldRadius: 48,
+        scalePercent: '+45%'
+    }
+};
+
+function getPlayerShipRules(shipType) {
+    const key = (shipType || 'nyxa').toLowerCase();
+    return PLAYER_SHIP_CLASS_RULES[key] || PLAYER_SHIP_CLASS_RULES.nyxa;
+}
+
+window.PLAYER_SHIP_CLASS_RULES = PLAYER_SHIP_CLASS_RULES;
+window.getPlayerShipRules = getPlayerShipRules;
+
 // --- Player Ship Class ---
 class Player {
     constructor(shipType = 'interceptor', playerId = 1) {
         this.x = 80;
-        this.y = canvas.height / 2;
+        this.y = (typeof canvas !== 'undefined' && canvas) ? canvas.height / 2 : 270;
         this.playerId = playerId;
         // Per-player input binding — each player uses their own keys (can be single string or array of strings)
-        this.inputKeys = {
+        this.inputKeys = { 
             1: { 
                 up: ['w', 'W'], 
                 down: ['s', 'S'], 
@@ -81,8 +175,14 @@ class Player {
             3: { up:'Gamepad1U', down:'Gamepad1D', left:'Gamepad1L', right:'Gamepad1R', fire:'Gamepad1A', special:'Gamepad1B', dodge:'Gamepad1X', boost:'Gamepad1LB' },
             4: { up:'Gamepad2U', down:'Gamepad2D', left:'Gamepad2L', right:'Gamepad2R', fire:'Gamepad2A', special:'Gamepad2B', dodge:'Gamepad2X', boost:'Gamepad2LB' },
         }[playerId || 1] || { up: ['w', 'W'], down: ['s', 'S'], left: ['a', 'A'], right: ['d', 'D'], fire: [' '], special: ['k', 'K'], dodge: ['e', 'E'], boost: ['Shift'] };
-        this.width = 40;
-        this.height = 20;
+        
+        // Scale player dimensions according to ship class
+        const shipRules = getPlayerShipRules(shipType);
+        this.shipRules = shipRules;
+        this.width = shipRules.width;
+        this.height = shipRules.height;
+        this.renderSize = shipRules.renderSize;
+        this.shieldRadius = shipRules.shieldRadius;
         this.shipType = shipType;
         
         // Set stats based on ship model type
@@ -133,6 +233,7 @@ class Player {
         } else {
             this.weaponLevel = 1;
         }
+        this.baseShieldMax = this.shieldMax;
         
         // Apply permanent upgrades from window.DS_UpgradeSystem
         const mods = window.DS_UpgradeSystem ? window.DS_UpgradeSystem.getGameplayModifiers() : null;
@@ -215,6 +316,10 @@ class Player {
         this.shootTimer = 0;
         this.invulnerable = 0;
         this.shieldHitFlash = 0;
+        this.shieldImpacts = [];
+        this.powerupAuraTimer = 0;
+        this.powerupAuraColor = '#00ffff';
+        this.powerupAuraKind = 'W';
 
         // Secondary weapon system (GRO-929)
         this.secondaryMeter = 0;
@@ -296,6 +401,20 @@ class Player {
         if (this.shieldHitFlash > 0) {
             this.shieldHitFlash -= dt;
         }
+        if (this.shieldImpacts && this.shieldImpacts.length > 0) {
+            for (let i = this.shieldImpacts.length - 1; i >= 0; i--) {
+                this.shieldImpacts[i].timer -= dt;
+                if (this.shieldImpacts[i].timer <= 0) {
+                    this.shieldImpacts.splice(i, 1);
+                }
+            }
+        }
+        if (this.powerupAuraTimer > 0) {
+            this.powerupAuraTimer -= dt;
+        }
+        if (this.muzzleFlashTimer > 0) {
+            this.muzzleFlashTimer = Math.max(0, this.muzzleFlashTimer - dt * 6.0);
+        }
 
         let dx = 0;
         let dy = 0;
@@ -315,7 +434,7 @@ class Player {
         const mods = window.DS_UpgradeSystem ? window.DS_UpgradeSystem.getGameplayModifiers() : null;
         if (mods) {
             // Recalculate shieldMax with permanent upgrade bonus
-            this.shieldMax = 100 + (mods.shieldMaxHPBonus || 0);
+            this.shieldMax = (this.baseShieldMax || 100) + (mods.shieldMaxHPBonus || 0);
 
             // Shield Passive Regeneration
             this.shield = Math.min(this.shieldMax, this.shield + (mods.shieldRegenRate || 0) * dt);
@@ -388,7 +507,7 @@ class Player {
                         trailColor = mods.cosmetics.thrusterTrail === 'default' ? '#00ffff' : getTrailColorValue(mods.cosmetics.thrusterTrail);
                     }
                     particles.push(new Particle(
-                        this.x, 
+                        this.x - 24, 
                         this.y + this.height/2 + (Math.random()-0.5)*10, 
                         trailColor
                     ));
@@ -417,7 +536,7 @@ class Player {
                     trailColor = mods.cosmetics.thrusterTrail === 'default' ? '#ff7700' : getTrailColorValue(mods.cosmetics.thrusterTrail);
                 }
                 particles.push(new Particle(
-                    this.x, 
+                    this.x - 6, 
                     this.y + this.height/2 + (Math.random()-0.5)*6, 
                     trailColor
                 ));
@@ -426,7 +545,7 @@ class Player {
             // Normal thruster trail fallback
             if (Math.random() < 0.15) {
                 particles.push(new Particle(
-                    this.x, 
+                    this.x - 6, 
                     this.y + this.height/2 + (Math.random()-0.5)*6, 
                     '#ff7700'
                 ));
@@ -565,66 +684,289 @@ class Player {
             }
         }
 
-        playSound('shoot', {weaponLevel: this.weaponLevel});
+        const ship = this.shipType || 'nyxa';
+        playSound('shoot', { weaponLevel: this.weaponLevel, shipType: ship });
+
         const mods = window.DS_UpgradeSystem ? window.DS_UpgradeSystem.getGameplayModifiers() : null;
         const speedMultiplier = mods ? mods.weaponProjSpeedMultiplier : 1.0;
+        const dmgMultiplier = mods ? mods.weaponDamageMultiplier : 1.0;
         
         const bulletSpeed = 550 * speedMultiplier;
-        const bulletSize = 4;
-
         const isSpecial = this.isSpecialActive;
-        const color = isSpecial ? '#ff00aa' : (this.weaponLevel === 1 ? '#00ffff' : (this.weaponLevel === 2 ? '#00ffaa' : (this.weaponLevel === 3 ? '#00ff88' : (this.weaponLevel === 4 ? '#ff00ff' : '#ffffff'))));
+        const wl = this.weaponLevel || 1;
 
-        if (isSpecial) {
-            // Supreme Purple waves
-            bullets.push(new Bullet(this.x + this.width, this.y + this.height/2, bulletSpeed + 50, 0, color, 14, true));
-            bullets.push(new Bullet(this.x + this.width, this.y + 2, bulletSpeed, -120, color, 8, true));
-            bullets.push(new Bullet(this.x + this.width, this.y + this.height - 2, bulletSpeed, 120, color, 8, true));
-        } else {
-            if (this.shipType === 'warden') {
-                const plasmaColor = '#ff6600';
-                if (this.weaponLevel === 1) {
-                    bullets.push(new Bullet(this.x + this.width, this.y + 4, bulletSpeed, 0, plasmaColor, bulletSize + 1));
-                    bullets.push(new Bullet(this.x + this.width, this.y + this.height - 4, bulletSpeed, 0, plasmaColor, bulletSize + 1));
-                } else if (this.weaponLevel === 2) {
-                    bullets.push(new Bullet(this.x + this.width, this.y + 4, bulletSpeed, 0, plasmaColor, bulletSize + 2));
-                    bullets.push(new Bullet(this.x + this.width, this.y + this.height - 4, bulletSpeed, 0, plasmaColor, bulletSize + 2));
-                } else if (this.weaponLevel === 3) {
-                    bullets.push(new Bullet(this.x + this.width, this.y + this.height/2, bulletSpeed + 30, 0, plasmaColor, bulletSize + 2));
-                    bullets.push(new Bullet(this.x + this.width, this.y + 2, bulletSpeed, -50, plasmaColor, bulletSize + 1));
-                    bullets.push(new Bullet(this.x + this.width, this.y + this.height - 2, bulletSpeed, 50, plasmaColor, bulletSize + 1));
-                } else if (this.weaponLevel === 4) {
-                    bullets.push(new Bullet(this.x + this.width, this.y + this.height/2, bulletSpeed + 50, 0, plasmaColor, 10, true));
-                    bullets.push(new Bullet(this.x + this.width, this.y + 4, bulletSpeed, -80, plasmaColor, bulletSize + 1));
-                    bullets.push(new Bullet(this.x + this.width, this.y + this.height - 4, bulletSpeed, 80, plasmaColor, bulletSize + 1));
-                } else {
-                    bullets.push(new Bullet(this.x + this.width, this.y + this.height/2, bulletSpeed + 80, 0, plasmaColor, 12, true));
-                    bullets.push(new Bullet(this.x + this.width, this.y + 2, bulletSpeed, -120, plasmaColor, bulletSize + 2));
-                    bullets.push(new Bullet(this.x + this.width, this.y + this.height - 2, bulletSpeed, 120, plasmaColor, bulletSize + 2));
-                    bullets.push(new Bullet(this.x + this.width, this.y + 4, bulletSpeed - 40, -200, '#ffcc00', bulletSize + 1));
-                    bullets.push(new Bullet(this.x + this.width, this.y + this.height - 4, bulletSpeed - 40, 200, '#ffcc00', bulletSize + 1));
-                }
+        // Visual Muzzle Flash
+        this.muzzleFlashTimer = 0.15;
+
+        // Ship-Specific Primary Munitions & Spread Trajectories
+        if (ship === 'bastion' || ship === 'heavy') {
+            // ==========================================
+            // BASTION: Heavy Kinetic Autocannon & Flak
+            // Color: Molten Amber (#ffaa00), heavy slugs
+            // ==========================================
+            this.muzzleFlashColor = '#ffaa00';
+            const bColor = '#ffaa00';
+            const bSpeed = 500 * speedMultiplier;
+
+            if (isSpecial) {
+                // Dreadnought Broadside Nova
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height / 2, bSpeed + 80, 0, '#ffee44', 10, false, 'bastion', 5 * dmgMultiplier));
+                bullets.push(new Bullet(this.x + this.width, this.y + 4, bSpeed, -70, bColor, 6, false, 'bastion', 2.5 * dmgMultiplier));
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height - 4, bSpeed, 70, bColor, 6, false, 'bastion', 2.5 * dmgMultiplier));
+                bullets.push(new Bullet(this.x + this.width, this.y + 2, bSpeed - 40, -150, '#ff6600', 5, false, 'bastion', 2 * dmgMultiplier));
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height - 2, bSpeed - 40, 150, '#ff6600', 5, false, 'bastion', 2 * dmgMultiplier));
+            } else if (wl === 1) {
+                bullets.push(new Bullet(this.x + this.width, this.y + 10, bSpeed, 0, bColor, 6, false, 'bastion', 2 * dmgMultiplier));
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height - 10, bSpeed, 0, bColor, 6, false, 'bastion', 2 * dmgMultiplier));
+            } else if (wl === 2) {
+                bullets.push(new Bullet(this.x + this.width, this.y + 8, bSpeed, 0, bColor, 6.5, false, 'bastion', 2 * dmgMultiplier));
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height - 8, bSpeed, 0, bColor, 6.5, false, 'bastion', 2 * dmgMultiplier));
+                bullets.push(new Bullet(this.x + this.width, this.y + 2, bSpeed - 30, -75, '#ff8800', 5, false, 'bastion', 1.5 * dmgMultiplier));
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height - 2, bSpeed - 30, 75, '#ff8800', 5, false, 'bastion', 1.5 * dmgMultiplier));
+            } else if (wl === 3) {
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height / 2, bSpeed + 40, 0, '#ffee66', 8, false, 'bastion', 3 * dmgMultiplier));
+                bullets.push(new Bullet(this.x + this.width, this.y + 6, bSpeed, -60, bColor, 6, false, 'bastion', 2 * dmgMultiplier));
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height - 6, bSpeed, 60, bColor, 6, false, 'bastion', 2 * dmgMultiplier));
+                bullets.push(new Bullet(this.x + this.width, this.y + 2, bSpeed - 50, -130, '#ff6600', 5, false, 'bastion', 1.5 * dmgMultiplier));
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height - 2, bSpeed - 50, 130, '#ff6600', 5, false, 'bastion', 1.5 * dmgMultiplier));
+            } else if (wl === 4) {
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height / 2, bSpeed + 60, 0, '#ffee66', 9, false, 'bastion', 4 * dmgMultiplier));
+                bullets.push(new Bullet(this.x + this.width, this.y + 8, bSpeed, -45, bColor, 6.5, false, 'bastion', 2.5 * dmgMultiplier));
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height - 8, bSpeed, 45, bColor, 6.5, false, 'bastion', 2.5 * dmgMultiplier));
+                bullets.push(new Bullet(this.x + this.width, this.y + 2, bSpeed - 40, -110, '#ff6600', 5.5, false, 'bastion', 2 * dmgMultiplier));
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height - 2, bSpeed - 40, 110, '#ff6600', 5.5, false, 'bastion', 2 * dmgMultiplier));
             } else {
-                if (this.weaponLevel === 1) {
-                    bullets.push(new Bullet(this.x + this.width, this.y + this.height/2, bulletSpeed, 0, color, bulletSize));
-                } else if (this.weaponLevel === 2) {
-                    bullets.push(new Bullet(this.x + this.width, this.y + 4, bulletSpeed, 0, color, bulletSize + 1));
-                    bullets.push(new Bullet(this.x + this.width, this.y + this.height - 4, bulletSpeed, 0, color, bulletSize + 1));
-                } else if (this.weaponLevel === 3) {
-                    bullets.push(new Bullet(this.x + this.width, this.y + this.height/2, bulletSpeed, 0, color, bulletSize + 1));
-                    bullets.push(new Bullet(this.x + this.width, this.y + 2, bulletSpeed, -100, color, bulletSize));
-                    bullets.push(new Bullet(this.x + this.width, this.y + this.height - 2, bulletSpeed, 100, color, bulletSize));
-                } else if (this.weaponLevel === 4) {
-                    bullets.push(new Bullet(this.x + this.width, this.y + this.height/2, bulletSpeed, 0, color, 12, true));
-                    bullets.push(new Bullet(this.x + this.width, this.y + 2, bulletSpeed - 50, -120, '#00ffff', bulletSize));
-                    bullets.push(new Bullet(this.x + this.width, this.y + this.height - 2, bulletSpeed - 50, 120, '#00ffff', bulletSize));
-                } else {
-                    bullets.push(new Bullet(this.x + this.width, this.y + this.height/2, bulletSpeed + 50, 0, color, 14, true));
-                    bullets.push(new Bullet(this.x + this.width, this.y + 2, bulletSpeed, -160, '#ff00aa', bulletSize + 2));
-                    bullets.push(new Bullet(this.x + this.width, this.y + this.height - 2, bulletSpeed, 160, '#ff00aa', bulletSize + 2));
-                    bullets.push(new Bullet(this.x + this.width, this.y + 4, bulletSpeed - 80, -300, '#ffff00', bulletSize + 1));
-                    bullets.push(new Bullet(this.x + this.width, this.y + this.height - 4, bulletSpeed - 80, 300, '#ffff00', bulletSize + 1));
+                // Supreme Bastion Vulcan
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height / 2, bSpeed + 80, 0, '#ffee22', 11, false, 'bastion', 5 * dmgMultiplier));
+                bullets.push(new Bullet(this.x + this.width, this.y + 6, bSpeed + 20, -35, bColor, 7, false, 'bastion', 3 * dmgMultiplier));
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height - 6, bSpeed + 20, 35, bColor, 7, false, 'bastion', 3 * dmgMultiplier));
+                bullets.push(new Bullet(this.x + this.width, this.y + 2, bSpeed - 30, -90, '#ff7700', 6, false, 'bastion', 2 * dmgMultiplier));
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height - 2, bSpeed - 30, 90, '#ff7700', 6, false, 'bastion', 2 * dmgMultiplier));
+                bullets.push(new Bullet(this.x + this.width, this.y + 4, bSpeed - 60, -170, '#ff4400', 5, false, 'bastion', 1.8 * dmgMultiplier));
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height - 4, bSpeed - 60, 170, '#ff4400', 5, false, 'bastion', 1.8 * dmgMultiplier));
+            }
+        } else if (ship === 'specter') {
+            // ==========================================
+            // SPECTER: Piercing Void Railgun Lance
+            // Color: Void Violet (#b026ff), hyper-velocity
+            // ==========================================
+            this.muzzleFlashColor = '#b026ff';
+            const sColor = '#b026ff';
+            const sSpeed = 750 * speedMultiplier;
+
+            if (isSpecial) {
+                // Singularity Railgun Beam
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height / 2, sSpeed + 150, 0, '#f0c0ff', 10, false, 'specter', 6 * dmgMultiplier, true));
+                bullets.push(new Bullet(this.x + this.width, this.y + 4, sSpeed + 50, -50, sColor, 5, false, 'specter', 3 * dmgMultiplier, true));
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height - 4, sSpeed + 50, 50, sColor, 5, false, 'specter', 3 * dmgMultiplier, true));
+            } else if (wl === 1) {
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height / 2, sSpeed, 0, sColor, 4.5, false, 'specter', 2 * dmgMultiplier, true));
+            } else if (wl === 2) {
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height / 2 - 6, sSpeed, 0, sColor, 5, false, 'specter', 2 * dmgMultiplier, true));
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height / 2 + 6, sSpeed, 0, sColor, 5, false, 'specter', 2 * dmgMultiplier, true));
+            } else if (wl === 3) {
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height / 2, sSpeed + 50, 0, '#e088ff', 6.5, false, 'specter', 3 * dmgMultiplier, true));
+                bullets.push(new Bullet(this.x + this.width, this.y + 4, sSpeed - 40, -45, sColor, 4, false, 'specter', 1.8 * dmgMultiplier, true));
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height - 4, sSpeed - 40, 45, sColor, 4, false, 'specter', 1.8 * dmgMultiplier, true));
+            } else if (wl === 4) {
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height / 2, sSpeed + 80, 0, '#f0c0ff', 8, false, 'specter', 4 * dmgMultiplier, true));
+                bullets.push(new Bullet(this.x + this.width, this.y + 6, sSpeed, -30, sColor, 5, false, 'specter', 2.2 * dmgMultiplier, true));
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height - 6, sSpeed, 30, sColor, 5, false, 'specter', 2.2 * dmgMultiplier, true));
+                bullets.push(new Bullet(this.x + this.width, this.y + 2, sSpeed - 50, -80, '#9900ee', 4, false, 'specter', 1.8 * dmgMultiplier, false));
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height - 2, sSpeed - 50, 80, '#9900ee', 4, false, 'specter', 1.8 * dmgMultiplier, false));
+            } else {
+                // Supreme Specter Singularity Railgun
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height / 2, sSpeed + 120, 0, '#ffffff', 9.5, false, 'specter', 5.5 * dmgMultiplier, true));
+                bullets.push(new Bullet(this.x + this.width, this.y + 4, sSpeed + 40, -25, sColor, 6, false, 'specter', 2.5 * dmgMultiplier, true));
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height - 4, sSpeed + 40, 25, sColor, 6, false, 'specter', 2.5 * dmgMultiplier, true));
+                bullets.push(new Bullet(this.x + this.width, this.y + 2, sSpeed - 20, -70, '#d966ff', 4.5, false, 'specter', 2 * dmgMultiplier, true));
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height - 2, sSpeed - 20, 70, '#d966ff', 4.5, false, 'specter', 2 * dmgMultiplier, true));
+            }
+        } else if (ship === 'tempest') {
+            // ==========================================
+            // TEMPEST: Rotary Cyclone Scatter Cannon
+            // Color: Plasma Crimson (#ff2244), wide fan spreads
+            // ==========================================
+            this.muzzleFlashColor = '#ff2244';
+            const tColor = '#ff2244';
+            const tSpeed = 560 * speedMultiplier;
+
+            if (isSpecial) {
+                // Cyclone Hellstorm
+                for (let a = -160; a <= 160; a += 45) {
+                    bullets.push(new Bullet(this.x + this.width, this.y + this.height / 2, tSpeed, a, tColor, 5.5, false, 'tempest', 2.2 * dmgMultiplier));
                 }
+            } else if (wl === 1) {
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height / 2, tSpeed, 0, tColor, 4, false, 'tempest', 1.2 * dmgMultiplier));
+                bullets.push(new Bullet(this.x + this.width, this.y + 4, tSpeed - 20, -75, tColor, 3.5, false, 'tempest', 1.0 * dmgMultiplier));
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height - 4, tSpeed - 20, 75, tColor, 3.5, false, 'tempest', 1.0 * dmgMultiplier));
+            } else if (wl === 2) {
+                bullets.push(new Bullet(this.x + this.width, this.y + 6, tSpeed, -35, tColor, 4, false, 'tempest', 1.2 * dmgMultiplier));
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height - 6, tSpeed, 35, tColor, 4, false, 'tempest', 1.2 * dmgMultiplier));
+                bullets.push(new Bullet(this.x + this.width, this.y + 2, tSpeed - 30, -100, tColor, 3.5, false, 'tempest', 1.0 * dmgMultiplier));
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height - 2, tSpeed - 30, 100, tColor, 3.5, false, 'tempest', 1.0 * dmgMultiplier));
+            } else if (wl === 3) {
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height / 2, tSpeed + 20, 0, '#ff6688', 5, false, 'tempest', 1.8 * dmgMultiplier));
+                bullets.push(new Bullet(this.x + this.width, this.y + 6, tSpeed, -55, tColor, 4, false, 'tempest', 1.3 * dmgMultiplier));
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height - 6, tSpeed, 55, tColor, 4, false, 'tempest', 1.3 * dmgMultiplier));
+                bullets.push(new Bullet(this.x + this.width, this.y + 2, tSpeed - 40, -130, tColor, 3.5, false, 'tempest', 1.1 * dmgMultiplier));
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height - 2, tSpeed - 40, 130, tColor, 3.5, false, 'tempest', 1.1 * dmgMultiplier));
+            } else if (wl === 4) {
+                bullets.push(new Bullet(this.x + this.width, this.y + 8, tSpeed + 10, -25, tColor, 4.5, false, 'tempest', 1.5 * dmgMultiplier));
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height - 8, tSpeed + 10, 25, tColor, 4.5, false, 'tempest', 1.5 * dmgMultiplier));
+                bullets.push(new Bullet(this.x + this.width, this.y + 4, tSpeed - 10, -80, tColor, 4, false, 'tempest', 1.3 * dmgMultiplier));
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height - 4, tSpeed - 10, 80, tColor, 4, false, 'tempest', 1.3 * dmgMultiplier));
+                bullets.push(new Bullet(this.x + this.width, this.y + 2, tSpeed - 50, -160, '#ff5577', 3.5, false, 'tempest', 1.1 * dmgMultiplier));
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height - 2, tSpeed - 50, 160, '#ff5577', 3.5, false, 'tempest', 1.1 * dmgMultiplier));
+            } else {
+                // Supreme Tempest Cyclone Barrage (7-way spread)
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height / 2, tSpeed + 40, 0, '#ffffff', 6, false, 'tempest', 2.5 * dmgMultiplier));
+                bullets.push(new Bullet(this.x + this.width, this.y + 8, tSpeed + 20, -45, tColor, 5, false, 'tempest', 1.6 * dmgMultiplier));
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height - 8, tSpeed + 20, 45, tColor, 5, false, 'tempest', 1.6 * dmgMultiplier));
+                bullets.push(new Bullet(this.x + this.width, this.y + 4, tSpeed - 10, -100, tColor, 4.5, false, 'tempest', 1.4 * dmgMultiplier));
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height - 4, tSpeed - 10, 100, tColor, 4.5, false, 'tempest', 1.4 * dmgMultiplier));
+                bullets.push(new Bullet(this.x + this.width, this.y + 2, tSpeed - 40, -170, '#ff6688', 4, false, 'tempest', 1.2 * dmgMultiplier));
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height - 2, tSpeed - 40, 170, '#ff6688', 4, false, 'tempest', 1.2 * dmgMultiplier));
+            }
+        } else if (ship === 'warden') {
+            // ==========================================
+            // WARDEN: Acoustic Ion Resonance Shockwaves
+            // Color: Acoustic Emerald (#00ff88), undulating waves
+            // ==========================================
+            this.muzzleFlashColor = '#00ff88';
+            const wColor = '#00ff88';
+            const wSpeed = 510 * speedMultiplier;
+
+            if (isSpecial) {
+                // Seismic Resonance Ring
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height / 2, wSpeed + 60, 0, '#aaffcc', 14, true, 'warden', 5 * dmgMultiplier, true));
+                bullets.push(new Bullet(this.x + this.width, this.y + 4, wSpeed, -60, wColor, 8, true, 'warden', 2.5 * dmgMultiplier));
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height - 4, wSpeed, 60, wColor, 8, true, 'warden', 2.5 * dmgMultiplier));
+            } else if (wl === 1) {
+                bullets.push(new Bullet(this.x + this.width, this.y + 4, wSpeed, 0, wColor, 5, true, 'warden', 1.5 * dmgMultiplier));
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height - 4, wSpeed, 0, wColor, 5, true, 'warden', 1.5 * dmgMultiplier));
+            } else if (wl === 2) {
+                bullets.push(new Bullet(this.x + this.width, this.y + 4, wSpeed, 0, wColor, 6, true, 'warden', 1.8 * dmgMultiplier));
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height - 4, wSpeed, 0, wColor, 6, true, 'warden', 1.8 * dmgMultiplier));
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height / 2, wSpeed + 30, 0, '#33ffaa', 6, false, 'warden', 2 * dmgMultiplier));
+            } else if (wl === 3) {
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height / 2, wSpeed + 40, 0, '#aaffcc', 7, true, 'warden', 2.5 * dmgMultiplier));
+                bullets.push(new Bullet(this.x + this.width, this.y + 2, wSpeed, -55, wColor, 5.5, true, 'warden', 1.8 * dmgMultiplier));
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height - 2, wSpeed, 55, wColor, 5.5, true, 'warden', 1.8 * dmgMultiplier));
+            } else if (wl === 4) {
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height / 2, wSpeed + 60, 0, '#ffffff', 9, true, 'warden', 3.5 * dmgMultiplier, true));
+                bullets.push(new Bullet(this.x + this.width, this.y + 6, wSpeed, -70, wColor, 6, true, 'warden', 2 * dmgMultiplier));
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height - 6, wSpeed, 70, wColor, 6, true, 'warden', 2 * dmgMultiplier));
+                bullets.push(new Bullet(this.x + this.width, this.y + 2, wSpeed - 40, -140, '#00cc66', 5, false, 'warden', 1.5 * dmgMultiplier));
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height - 2, wSpeed - 40, 140, '#00cc66', 5, false, 'warden', 1.5 * dmgMultiplier));
+            } else {
+                // Supreme Warden Resonance Harmonizer
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height / 2, wSpeed + 80, 0, '#ffffff', 11, true, 'warden', 4.5 * dmgMultiplier, true));
+                bullets.push(new Bullet(this.x + this.width, this.y + 4, wSpeed + 20, -50, wColor, 7, true, 'warden', 2.5 * dmgMultiplier));
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height - 4, wSpeed + 20, 50, wColor, 7, true, 'warden', 2.5 * dmgMultiplier));
+                bullets.push(new Bullet(this.x + this.width, this.y + 2, wSpeed - 20, -110, '#33ffaa', 6, true, 'warden', 2 * dmgMultiplier));
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height - 2, wSpeed - 20, 110, '#33ffaa', 6, true, 'warden', 2 * dmgMultiplier));
+            }
+        } else if (ship === 'phantom' || ship === 'scout') {
+            // ==========================================
+            // PHANTOM: Intertwining Tachyon Double Helix
+            // Color: Dual-Tone Magenta (#ff00aa) & Cyan (#00ffff)
+            // ==========================================
+            this.muzzleFlashColor = '#ff00aa';
+            const pSpeed = 620 * speedMultiplier;
+
+            if (isSpecial) {
+                // Tachyon Quantum Weave
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height / 2, pSpeed + 80, 0, '#ff00aa', 6, false, 'phantom', 3 * dmgMultiplier, false, 1, 0));
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height / 2, pSpeed + 80, 0, '#00ffff', 6, false, 'phantom', 3 * dmgMultiplier, false, -1, 0));
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height / 2, pSpeed + 80, 0, '#ffffff', 7, false, 'phantom', 3.5 * dmgMultiplier, false, 0));
+                bullets.push(new Bullet(this.x + this.width, this.y + 2, pSpeed, -100, '#ff00aa', 5, false, 'phantom', 2 * dmgMultiplier));
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height - 2, pSpeed, 100, '#00ffff', 5, false, 'phantom', 2 * dmgMultiplier));
+            } else if (wl === 1) {
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height / 2, pSpeed, 0, '#ff00aa', 4, false, 'phantom', 1.4 * dmgMultiplier, false, 1, 0));
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height / 2, pSpeed, 0, '#00ffff', 4, false, 'phantom', 1.4 * dmgMultiplier, false, -1, 0));
+            } else if (wl === 2) {
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height / 2, pSpeed, 0, '#ff00aa', 4.5, false, 'phantom', 1.5 * dmgMultiplier, false, 1, 0));
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height / 2, pSpeed, 0, '#00ffff', 4.5, false, 'phantom', 1.5 * dmgMultiplier, false, -1, 0));
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height / 2, pSpeed + 50, 0, '#ffffff', 4, false, 'phantom', 1.8 * dmgMultiplier));
+            } else if (wl === 3) {
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height / 2, pSpeed, 0, '#ff00aa', 5, false, 'phantom', 1.6 * dmgMultiplier, false, 1, 0));
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height / 2, pSpeed, 0, '#00ffff', 5, false, 'phantom', 1.6 * dmgMultiplier, false, -1, 0));
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height / 2, pSpeed, 0, '#ff66cc', 4.5, false, 'phantom', 1.5 * dmgMultiplier, false, 1, Math.PI));
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height / 2, pSpeed, 0, '#66ffff', 4.5, false, 'phantom', 1.5 * dmgMultiplier, false, -1, Math.PI));
+            } else if (wl === 4) {
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height / 2, pSpeed + 30, 0, '#ffffff', 6, false, 'phantom', 2.2 * dmgMultiplier));
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height / 2, pSpeed, 0, '#ff00aa', 5, false, 'phantom', 1.8 * dmgMultiplier, false, 1, 0));
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height / 2, pSpeed, 0, '#00ffff', 5, false, 'phantom', 1.8 * dmgMultiplier, false, -1, 0));
+                bullets.push(new Bullet(this.x + this.width, this.y + 4, pSpeed - 20, -75, '#ff00aa', 4, false, 'phantom', 1.4 * dmgMultiplier));
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height - 4, pSpeed - 20, 75, '#00ffff', 4, false, 'phantom', 1.4 * dmgMultiplier));
+            } else {
+                // Supreme Phantom Chrono Helix
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height / 2, pSpeed + 60, 0, '#ffffff', 7, false, 'phantom', 3 * dmgMultiplier));
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height / 2, pSpeed, 0, '#ff00aa', 5.5, false, 'phantom', 2.0 * dmgMultiplier, false, 1, 0));
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height / 2, pSpeed, 0, '#00ffff', 5.5, false, 'phantom', 2.0 * dmgMultiplier, false, -1, 0));
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height / 2, pSpeed, 0, '#ff66cc', 5, false, 'phantom', 1.8 * dmgMultiplier, false, 1.3, Math.PI));
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height / 2, pSpeed, 0, '#66ffff', 5, false, 'phantom', 1.8 * dmgMultiplier, false, -1.3, Math.PI));
+                bullets.push(new Bullet(this.x + this.width, this.y + 2, pSpeed - 10, -110, '#ff00aa', 4.5, false, 'phantom', 1.6 * dmgMultiplier));
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height - 2, pSpeed - 10, 110, '#00ffff', 4.5, false, 'phantom', 1.6 * dmgMultiplier));
+            }
+        } else {
+            // ==========================================
+            // NYXA (Default / Interceptor / Striker): Focused Cyan Pulse Laser
+            // Color: Electric Cyan (#00f0ff), precision streams
+            // ==========================================
+            this.muzzleFlashColor = '#00f0ff';
+            const nColor = '#00f0ff';
+            const nSpeed = bulletSpeed;
+
+            if (isSpecial) {
+                // Supreme Overcharged Coelacanth Deluge
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height / 2, nSpeed + 80, 0, '#ffffff', 10, false, 'nyxa', 4 * dmgMultiplier));
+                bullets.push(new Bullet(this.x + this.width, this.y + 4, nSpeed + 40, -40, nColor, 7, false, 'nyxa', 2.5 * dmgMultiplier));
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height - 4, nSpeed + 40, 40, nColor, 7, false, 'nyxa', 2.5 * dmgMultiplier));
+                bullets.push(new Bullet(this.x + this.width, this.y + 2, nSpeed, -90, '#00aaff', 5, false, 'nyxa', 2 * dmgMultiplier));
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height - 2, nSpeed, 90, '#00aaff', 5, false, 'nyxa', 2 * dmgMultiplier));
+            } else if (wl === 1) {
+                bullets.push(new Bullet(this.x + this.width, this.y + 6, nSpeed, 0, nColor, 4, false, 'nyxa', 1.2 * dmgMultiplier));
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height - 6, nSpeed, 0, nColor, 4, false, 'nyxa', 1.2 * dmgMultiplier));
+            } else if (wl === 2) {
+                bullets.push(new Bullet(this.x + this.width, this.y + 4, nSpeed, 0, nColor, 4.5, false, 'nyxa', 1.4 * dmgMultiplier));
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height - 4, nSpeed, 0, nColor, 4.5, false, 'nyxa', 1.4 * dmgMultiplier));
+                bullets.push(new Bullet(this.x + this.width, this.y + 12, nSpeed + 20, 0, '#ffffff', 4, false, 'nyxa', 1.4 * dmgMultiplier));
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height - 12, nSpeed + 20, 0, '#ffffff', 4, false, 'nyxa', 1.4 * dmgMultiplier));
+            } else if (wl === 3) {
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height / 2, nSpeed + 40, 0, '#ffffff', 6, false, 'nyxa', 2.2 * dmgMultiplier));
+                bullets.push(new Bullet(this.x + this.width, this.y + 4, nSpeed, 0, nColor, 4.5, false, 'nyxa', 1.5 * dmgMultiplier));
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height - 4, nSpeed, 0, nColor, 4.5, false, 'nyxa', 1.5 * dmgMultiplier));
+                bullets.push(new Bullet(this.x + this.width, this.y + 2, nSpeed - 30, -60, '#00ccff', 3.5, false, 'nyxa', 1.2 * dmgMultiplier));
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height - 2, nSpeed - 30, 60, '#00ccff', 3.5, false, 'nyxa', 1.2 * dmgMultiplier));
+            } else if (wl === 4) {
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height / 2, nSpeed + 60, 0, '#ffffff', 8, false, 'nyxa', 3.0 * dmgMultiplier));
+                bullets.push(new Bullet(this.x + this.width, this.y + 6, nSpeed + 20, -20, nColor, 5, false, 'nyxa', 1.8 * dmgMultiplier));
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height - 6, nSpeed + 20, 20, nColor, 5, false, 'nyxa', 1.8 * dmgMultiplier));
+                bullets.push(new Bullet(this.x + this.width, this.y + 2, nSpeed - 30, -90, '#0099ff', 4, false, 'nyxa', 1.3 * dmgMultiplier));
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height - 2, nSpeed - 30, 90, '#0099ff', 4, false, 'nyxa', 1.3 * dmgMultiplier));
+            } else {
+                // Supreme Nyxa Overcharged Nova
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height / 2, nSpeed + 90, 0, '#ffffff', 10, false, 'nyxa', 4.5 * dmgMultiplier));
+                bullets.push(new Bullet(this.x + this.width, this.y + 4, nSpeed + 40, -15, nColor, 6, false, 'nyxa', 2.2 * dmgMultiplier));
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height - 4, nSpeed + 40, 15, nColor, 6, false, 'nyxa', 2.2 * dmgMultiplier));
+                bullets.push(new Bullet(this.x + this.width, this.y + 2, nSpeed, -60, '#00ffff', 5, false, 'nyxa', 1.8 * dmgMultiplier));
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height - 2, nSpeed, 60, '#00ffff', 5, false, 'nyxa', 1.8 * dmgMultiplier));
+                bullets.push(new Bullet(this.x + this.width, this.y + 6, nSpeed - 40, -130, '#0088ff', 4, false, 'nyxa', 1.4 * dmgMultiplier));
+                bullets.push(new Bullet(this.x + this.width, this.y + this.height - 6, nSpeed - 40, 130, '#0088ff', 4, false, 'nyxa', 1.4 * dmgMultiplier));
+            }
+        }
+
+        // Firing muzzle sparks
+        if (typeof Particle !== 'undefined') {
+            for (let i = 0; i < 3; i++) {
+                const p = new Particle(this.x + this.width + 2, this.y + this.height / 2 + (Math.random() - 0.5) * 16, this.muzzleFlashColor || '#00f0ff');
+                p.vx = 70 + Math.random() * 50;
+                p.vy = (Math.random() - 0.5) * 30;
+                p.size = Math.random() * 2 + 1;
+                p.decay = 4.0;
+                particles.push(p);
             }
         }
     }
@@ -884,7 +1226,7 @@ class Player {
         playSound('powerup');
     }
 
-    takeDamage(amt) {
+    takeDamage(amt, hitX, hitY) {
         if (this.secondaryDecoys && this.secondaryDecoys.length > 0) {
             const decoy = this.secondaryDecoys.pop();
             createExplosion(decoy.x + this.width / 2, decoy.y + this.height / 2, '#b026ff', 14);
@@ -896,6 +1238,14 @@ class Player {
         
         const difficultyConfig = getCurrentDifficultyConfig();
         const finalDmg = amt * difficultyConfig.playerDamageMultiplier;
+
+        // Calculate directional impact angle (default 0 for oncoming attacks from right)
+        const centerX = this.x + this.width * 0.48;
+        const centerY = this.y + this.height * 0.5;
+        let hitAngle = 0;
+        if (hitX !== undefined && hitY !== undefined) {
+            hitAngle = Math.atan2(hitY - centerY, hitX - centerX);
+        }
         
         // Warden Guardian Protocol dome shield absorption
         if (this.shipType === 'warden' && this.isSpecialActive && this.wardenShieldDomeHP > 0) {
@@ -915,7 +1265,15 @@ class Player {
         const shieldBefore = this.shield;
         this.shield -= finalDmg;
         if (shieldBefore > 0) {
-            this.shieldHitFlash = 0.35;
+            this.shieldHitFlash = 0.38;
+            if (!this.shieldImpacts) this.shieldImpacts = [];
+            this.shieldImpacts.push({
+                angle: hitAngle,
+                timer: 0.38,
+                maxTimer: 0.38,
+                intensity: Math.min(1.5, finalDmg / 15 + 0.6)
+            });
+            if (this.shieldImpacts.length > 6) this.shieldImpacts.shift();
         }
 
         if (typeof AdaptiveDirector !== 'undefined') {
@@ -927,8 +1285,11 @@ class Player {
         
         playSound(shieldBefore > 0 ? 'shield_hit' : 'hit');
         if (shieldBefore > 0) {
-            // Shield hit: blue (#0088FF) spark burst
-            createExplosion(this.x + this.width/2, this.y + this.height/2, '#0088FF', 10, 'shield_hit');
+            // Directional shield hit spark at exact perimeter boundary
+            const hitR = 38;
+            const sparkX = centerX + Math.cos(hitAngle) * hitR;
+            const sparkY = centerY + Math.sin(hitAngle) * hitR;
+            createExplosion(sparkX, sparkY, '#00e5ff', 12, 'shield_hit');
         } else {
             createExplosion(this.x + this.width/2, this.y + this.height/2, '#ffaa00', 8);
         }
@@ -1006,12 +1367,13 @@ class Player {
             
             const isRepImg = sprite && sprite.tagName !== 'CANVAS' && sprite.complete && sprite.naturalWidth > 0;
             const isRepCvs = sprite && sprite.tagName === 'CANVAS' && sprite.width > 0;
+            const repSize = this.renderSize || 60;
             if (isRepImg || isRepCvs) {
-                drawSpriteFrame(ctx, sprite, 0, 0, SPRITE_FRAME, SPRITE_FRAME, 0, 0, 48, 48);
+                drawSpriteFrame(ctx, sprite, 0, 0, SPRITE_FRAME, SPRITE_FRAME, (this.width - repSize) / 2, (this.height - repSize) / 2, repSize, repSize);
             } else {
                 ctx.fillStyle = '#00aacc';
                 ctx.beginPath();
-                ctx.moveTo(40, 10); ctx.lineTo(0, 0); ctx.lineTo(0, 20); ctx.closePath();
+                ctx.moveTo(this.width * 0.85, this.height * 0.25); ctx.lineTo(0, 0); ctx.lineTo(0, this.height * 0.5); ctx.closePath();
                 ctx.fill();
             }
             
@@ -1021,7 +1383,7 @@ class Player {
             ctx.save();
             const totalRepTime = this.pullOutMaxTimer || 15;
             const repairPct = Math.max(0, Math.min(1.0, 1.0 - (this.pullOutTimer / totalRepTime)));
-            const barW = 74;
+            const barW = Math.max(74, Math.round(this.width * 1.3));
             const barH = 7;
             const barX = this.x + this.width / 2 - barW / 2;
             const barY = this.y + this.height + 6;
@@ -1073,9 +1435,10 @@ class Player {
             const isThrusterCanvas = thrusterSprite.tagName === 'CANVAS' && thrusterSprite.width > 0;
             if (isThrusterImage || isThrusterCanvas) {
                 ctx.save();
-                const flameWidth = this.isBoosting ? 72 : 48;
-                const flameHeight = 48;
-                ctx.drawImage(thrusterSprite, -flameWidth, 0, flameWidth, flameHeight);
+                const flameWidth = this.isBoosting ? Math.round(this.width * 1.45) : Math.round(this.width * 1.05);
+                const flameHeight = Math.round(this.height * 0.95);
+                const flameOffsetY = Math.round((this.height - flameHeight) / 2);
+                ctx.drawImage(thrusterSprite, -flameWidth - 2, flameOffsetY, flameWidth, flameHeight);
                 ctx.restore();
             }
         }
@@ -1110,10 +1473,13 @@ class Player {
         const isImage = sprite && sprite.tagName !== 'CANVAS' && sprite.complete && sprite.naturalWidth > 0;
         const isCanvas = sprite && sprite.tagName === 'CANVAS' && sprite.width > 0;
 
+        const spriteSize = this.renderSize || 62;
+        const drawOffsetX = Math.round((this.width - spriteSize) / 2);
+        const drawOffsetY = Math.round((this.height - spriteSize) / 2);
+
         if (isImage || isCanvas) {
-            // Render sprite scaled to 48x48 (ship area ~40x20, sprite is 1024x1024)
-            const spriteSize = 48;
-            drawSpriteFrame(ctx, sprite, 0, 0, SPRITE_FRAME, SPRITE_FRAME, 0, 0, spriteSize, spriteSize);
+            // Render sprite scaled according to ship class
+            drawSpriteFrame(ctx, sprite, 0, 0, SPRITE_FRAME, SPRITE_FRAME, drawOffsetX, drawOffsetY, spriteSize, spriteSize);
 
             // Tint plating with chosen cosmetic color
             if (cosmeticColor !== 'default') {
@@ -1126,7 +1492,7 @@ class Player {
                     case 'gold': ctx.fillStyle = 'rgba(255, 204, 0, 0.35)'; break;
                     case 'purple': ctx.fillStyle = 'rgba(176, 38, 255, 0.3)'; break;
                 }
-                ctx.fillRect(0, 0, spriteSize, spriteSize);
+                ctx.fillRect(drawOffsetX, drawOffsetY, spriteSize, spriteSize);
                 ctx.restore();
             }
         } else {
@@ -1143,35 +1509,37 @@ class Player {
                 ctx.fillStyle = this.color;
             }
             ctx.beginPath();
-            ctx.moveTo(0, 4);
-            ctx.lineTo(25, 4);
-            ctx.lineTo(40, this.height / 2);
-            ctx.lineTo(25, this.height - 4);
-            ctx.lineTo(0, this.height - 4);
+            ctx.moveTo(-2, 10);
+            ctx.lineTo(this.width * 0.55, 10);
+            ctx.lineTo(this.width - 4, this.height / 2);
+            ctx.lineTo(this.width * 0.55, this.height - 10);
+            ctx.lineTo(-2, this.height - 10);
             ctx.closePath();
             ctx.fill();
 
             ctx.fillStyle = '#ff7700';
             ctx.beginPath();
-            ctx.moveTo(0, 5);
-            ctx.lineTo(-8, this.height / 2);
-            ctx.lineTo(0, this.height - 5);
+            ctx.moveTo(-2, 12);
+            ctx.lineTo(-10, this.height / 2);
+            ctx.lineTo(-2, this.height - 12);
             ctx.closePath();
             ctx.fill();
         }
 
         // --- Draw Weapon Upgrade Attachments ---
+        const sx = this.width / 44;
+        const sy = this.height / 44;
         if (this.weaponLevel >= 2 && !this.isPulledOut) {
             ctx.save();
             ctx.fillStyle = '#445577';
             ctx.strokeStyle = '#223355';
             ctx.lineWidth = 1;
             // Top wing mount
-            ctx.fillRect(10, 8, 12, 4);
-            ctx.strokeRect(10, 8, 12, 4);
+            ctx.fillRect(10 * sx, 8 * sy, 12 * sx, 4 * sy);
+            ctx.strokeRect(10 * sx, 8 * sy, 12 * sx, 4 * sy);
             // Bottom wing mount
-            ctx.fillRect(10, 36, 12, 4);
-            ctx.strokeRect(10, 36, 12, 4);
+            ctx.fillRect(10 * sx, this.height - (12 * sy), 12 * sx, 4 * sy);
+            ctx.strokeRect(10 * sx, this.height - (12 * sy), 12 * sx, 4 * sy);
             
             const muzzlePulse = 0.5 + Math.sin(gameTime * 20) * 0.3;
             ctx.shadowBlur = 10 * muzzlePulse;
@@ -1179,11 +1547,11 @@ class Player {
             ctx.fillStyle = `rgba(0, 255, 255, ${0.6 + muzzlePulse * 0.4})`;
             // Top muzzle
             ctx.beginPath();
-            ctx.arc(22, 10, 3, 0, Math.PI * 2);
+            ctx.arc(22 * sx, 10 * sy, 3 * sy, 0, Math.PI * 2);
             ctx.fill();
             // Bottom muzzle
             ctx.beginPath();
-            ctx.arc(22, 38, 3, 0, Math.PI * 2);
+            ctx.arc(22 * sx, this.height - (10 * sy), 3 * sy, 0, Math.PI * 2);
             ctx.fill();
             ctx.restore();
         }
@@ -1191,17 +1559,17 @@ class Player {
         if (this.weaponLevel >= 3 && !this.isPulledOut) {
             ctx.save();
             ctx.fillStyle = '#223344';
-            ctx.fillRect(16, 6, 16, 3);
-            ctx.fillRect(16, 39, 16, 3);
+            ctx.fillRect(16 * sx, 6 * sy, 16 * sx, 3 * sy);
+            ctx.fillRect(16 * sx, this.height - (9 * sy), 16 * sx, 3 * sy);
             
-            const chargePos = 32;
+            const chargePos = 32 * sx;
             const sparkPulse = Math.sin(gameTime * 25) * 2;
             ctx.fillStyle = '#00ffaa';
             ctx.shadowBlur = 8;
             ctx.shadowColor = '#00ffaa';
             ctx.beginPath();
-            ctx.arc(chargePos, 7.5, 1.5 + Math.abs(sparkPulse)*0.5, 0, Math.PI * 2);
-            ctx.arc(chargePos, 40.5, 1.5 + Math.abs(sparkPulse)*0.5, 0, Math.PI * 2);
+            ctx.arc(chargePos, 7.5 * sy, (1.5 + Math.abs(sparkPulse)*0.5) * sy, 0, Math.PI * 2);
+            ctx.arc(chargePos, this.height - (7.5 * sy), (1.5 + Math.abs(sparkPulse)*0.5) * sy, 0, Math.PI * 2);
             ctx.fill();
             ctx.restore();
         }
@@ -1209,21 +1577,21 @@ class Player {
         if (this.weaponLevel >= 4 && !this.isPulledOut) {
             ctx.save();
             ctx.fillStyle = '#88aaee';
-            ctx.fillRect(36, 20, 8, 8);
+            ctx.fillRect(this.width - (8 * sx), this.height / 2 - (4 * sy), 8 * sx, 8 * sy);
             
             const arcPulse = Math.random();
             ctx.strokeStyle = `rgba(0, 255, 255, ${0.4 + arcPulse * 0.6})`;
             ctx.lineWidth = 1.5;
             ctx.beginPath();
-            ctx.moveTo(34, 16);
-            ctx.quadraticCurveTo(40 + arcPulse * 5, 24, 34, 32);
+            ctx.moveTo(this.width - (10 * sx), this.height / 2 - (8 * sy));
+            ctx.quadraticCurveTo(this.width - (4 * sx) + arcPulse * 5, this.height / 2, this.width - (10 * sx), this.height / 2 + (8 * sy));
             ctx.stroke();
             
             ctx.fillStyle = '#ffffff';
             ctx.shadowBlur = 15;
             ctx.shadowColor = '#00ffff';
             ctx.beginPath();
-            ctx.arc(42, 24, 4 + Math.sin(gameTime * 30) * 1.5, 0, Math.PI * 2);
+            ctx.arc(this.width - (2 * sx), this.height / 2, (4 + Math.sin(gameTime * 30) * 1.5) * sy, 0, Math.PI * 2);
             ctx.fill();
             ctx.restore();
         }
@@ -1235,42 +1603,221 @@ class Player {
             ctx.shadowColor = '#ff00ff';
             ctx.lineWidth = 2;
             
-            ctx.translate(24, 24);
+            ctx.translate(this.width / 2, this.height / 2);
             ctx.rotate(gameTime * 4);
             ctx.beginPath();
-            ctx.ellipse(0, 0, 26, 12, 0, 0, Math.PI * 2);
+            ctx.ellipse(0, 0, 26 * sx, 12 * sy, 0, 0, Math.PI * 2);
             ctx.stroke();
             
-            const coreGrad = ctx.createRadialGradient(0, 0, 1, 0, 0, 8);
+            const coreGrad = ctx.createRadialGradient(0, 0, 1, 0, 0, 8 * sx);
             coreGrad.addColorStop(0, '#ffffff');
             coreGrad.addColorStop(0.5, 'rgba(255, 0, 255, 0.8)');
             coreGrad.addColorStop(1, 'rgba(0, 255, 255, 0)');
             ctx.fillStyle = coreGrad;
             ctx.beginPath();
-            ctx.arc(0, 0, 8, 0, Math.PI * 2);
+            ctx.arc(0, 0, 8 * sx, 0, Math.PI * 2);
             ctx.fill();
             ctx.restore();
         }
 
-        // --- Draw Dynamic Shield Bubble ---
+        // Render Muzzle Flash burst on forward weapon hardpoints
+        if (this.muzzleFlashTimer > 0 && !this.isPulledOut) {
+            ctx.save();
+            ctx.globalAlpha = Math.min(1.0, this.muzzleFlashTimer * 6.0);
+            ctx.shadowColor = this.muzzleFlashColor || this.color || '#00ffff';
+            ctx.shadowBlur = 14;
+            ctx.fillStyle = '#ffffff';
+            ctx.beginPath();
+            ctx.arc(this.width + 2, this.height / 2, 4 + this.muzzleFlashTimer * 10, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = this.muzzleFlashColor || this.color || '#00ffff';
+            ctx.beginPath();
+            ctx.arc(this.width + 2, this.height / 2, 7 + this.muzzleFlashTimer * 14, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+        }
+
+        // --- Draw Dynamic Shield Bubble & Directional Shield Impact VFX ---
         if (this.shield > 0 && !this.isPulledOut) {
             ctx.save();
-            const pulse = 0.15 + Math.sin(gameTime * 4) * 0.05;
-            const flash = (this.shieldHitFlash || 0) * 2.0;
-            const totalAlpha = Math.min(1.0, pulse + flash);
+            const cx = this.width / 2;
+            const cy = this.height / 2;
+            const shieldR = this.shipRules ? this.shipRules.shieldRadius : Math.max(40, Math.round(this.width * 0.72));
+
+            // 1. Baseline Live Transparent Sheen (Subtle idle opacity so ship is clearly visible)
+            const livePhase = gameTime * 2.5;
+            const baseAlpha = 0.08 + Math.sin(livePhase) * 0.025;
             
-            ctx.strokeStyle = `rgba(0, 200, 255, ${totalAlpha})`;
-            ctx.shadowColor = '#00ffff';
-            ctx.shadowBlur = 10 + flash * 15;
-            ctx.lineWidth = 1.5 + flash * 2.5;
+            const sSprite = (typeof vfxSprites !== 'undefined') ? vfxSprites['shield'] : null;
+            if (sSprite) {
+                ctx.save();
+                ctx.globalAlpha = baseAlpha;
+                ctx.drawImage(sSprite, cx - shieldR, cy - shieldR, shieldR * 2, shieldR * 2);
+                ctx.restore();
+            }
+
+            // Outer deflection energy perimeter boundary (crisp circular halo)
+            ctx.save();
+            ctx.strokeStyle = `rgba(0, 229, 255, ${baseAlpha * 1.6})`;
+            ctx.lineWidth = 1.0;
             ctx.beginPath();
-            ctx.arc(20, this.height/2, 28, 0, Math.PI * 2);
+            ctx.arc(cx, cy, shieldR, 0, Math.PI * 2);
             ctx.stroke();
-            
-            ctx.fillStyle = `rgba(0, 200, 255, ${(pulse + flash) * 0.15})`;
+
+            // Animated live static sheen: revolving harmonic pulse along perimeter
+            ctx.setLineDash([6, 14, 4, 18]);
+            ctx.lineDashOffset = -gameTime * 35;
+            ctx.strokeStyle = 'rgba(120, 240, 255, 0.22)';
+            ctx.lineWidth = 1.5;
             ctx.beginPath();
-            ctx.arc(20, this.height/2, 28, 0, Math.PI * 2);
-            ctx.fill();
+            ctx.arc(cx, cy, shieldR, 0, Math.PI * 2);
+            ctx.stroke();
+
+            // Orbiting ambient micro-nodes confirming active live shield grid
+            for (let n = 0; n < 3; n++) {
+                const nodeAngle = gameTime * 1.6 + (n * Math.PI * 2 / 3);
+                const nx = cx + Math.cos(nodeAngle) * shieldR;
+                const ny = cy + Math.sin(nodeAngle) * shieldR;
+                ctx.fillStyle = 'rgba(0, 240, 255, 0.35)';
+                ctx.shadowColor = '#00ffff';
+                ctx.shadowBlur = 4;
+                ctx.beginPath();
+                ctx.arc(nx, ny, 1.8, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            ctx.restore();
+
+            // 2. Directional Shield Impact Ripples (Localized Hexagonal Flare & Static Arcs)
+            if (this.shieldImpacts && this.shieldImpacts.length > 0) {
+                const impactSprite = (typeof vfxSprites !== 'undefined') ? vfxSprites['shield_impact'] : null;
+                for (let k = 0; k < this.shieldImpacts.length; k++) {
+                    const impact = this.shieldImpacts[k];
+                    const p = Math.max(0, Math.min(1.0, 1.0 - (impact.timer / impact.maxTimer)));
+                    const alpha = (1.0 - p) * impact.intensity;
+                    const angle = impact.angle;
+                    
+                    // A. Sector-clipped hexagonal honeycomb ripple strictly on the impacted section
+                    if (sSprite) {
+                        ctx.save();
+                        ctx.beginPath();
+                        ctx.moveTo(cx, cy);
+                        ctx.arc(cx, cy, shieldR + 12, angle - 0.92, angle + 0.92);
+                        ctx.closePath();
+                        ctx.clip();
+                        
+                        ctx.globalAlpha = Math.min(0.95, alpha * 1.5);
+                        ctx.shadowColor = '#00ffff';
+                        ctx.shadowBlur = 18;
+                        ctx.drawImage(sSprite, cx - shieldR, cy - shieldR, shieldR * 2, shieldR * 2);
+                        ctx.restore();
+                    }
+                    
+                    // B. High-resolution directional impact sprite aligned at the impact angle
+                    if (impactSprite) {
+                        ctx.save();
+                        ctx.translate(cx, cy);
+                        // Rotating by angle + PI maps the sprite impact flash (-R, 0) directly to (cos(angle)*R, sin(angle)*R)
+                        ctx.rotate(angle + Math.PI);
+                        ctx.globalAlpha = Math.min(1.0, alpha * 1.6);
+                        ctx.shadowColor = '#00e5ff';
+                        ctx.shadowBlur = 22;
+                        const impSize = (shieldR * 2) * (0.85 + p * 0.35);
+                        
+                        // Support progressive multi-frame animation strips (frame width = sprite height)
+                        const totalFrames = Math.max(1, Math.floor(impactSprite.width / impactSprite.height));
+                        if (totalFrames > 1) {
+                            const frameW = impactSprite.height;
+                            const frameIdx = Math.min(totalFrames - 1, Math.floor(p * totalFrames));
+                            const sx = frameIdx * frameW;
+                            ctx.drawImage(impactSprite, sx, 0, frameW, frameW, -impSize / 2, -impSize / 2, impSize, impSize);
+                        } else {
+                            ctx.drawImage(impactSprite, -impSize / 2, -impSize / 2, impSize, impSize);
+                        }
+                        ctx.restore();
+                    }
+                    
+                    // C. Directional static charge ripple & electric arc along the shield perimeter
+                    ctx.save();
+                    const arcSpan = 0.5 + p * 0.65;
+                    ctx.beginPath();
+                    ctx.arc(cx, cy, shieldR, angle - arcSpan, angle + arcSpan);
+                    ctx.strokeStyle = `rgba(255, 255, 255, ${alpha * 0.95})`;
+                    ctx.lineWidth = Math.max(1, 3.5 * (1.0 - p * 0.6));
+                    ctx.shadowColor = '#00e5ff';
+                    ctx.shadowBlur = 16;
+                    ctx.stroke();
+                    
+                    // Secondary chromatic ripple boundary
+                    ctx.beginPath();
+                    ctx.arc(cx, cy, shieldR + p * 6, angle - arcSpan * 0.8, angle + arcSpan * 0.8);
+                    ctx.strokeStyle = `rgba(0, 240, 255, ${alpha * 0.7})`;
+                    ctx.lineWidth = 1.8;
+                    ctx.stroke();
+                    
+                    // D. Localized impact flash burst at the exact point of contact
+                    const ix = cx + Math.cos(angle) * shieldR;
+                    const iy = cy + Math.sin(angle) * shieldR;
+                    ctx.fillStyle = `rgba(255, 255, 255, ${alpha})`;
+                    ctx.shadowColor = '#ffffff';
+                    ctx.shadowBlur = 14;
+                    ctx.beginPath();
+                    ctx.arc(ix, iy, 4 + (1 - p) * 6, 0, Math.PI * 2);
+                    ctx.fill();
+                    
+                    ctx.fillStyle = `rgba(0, 229, 255, ${alpha * 0.75})`;
+                    ctx.shadowColor = '#00e5ff';
+                    ctx.shadowBlur = 20;
+                    ctx.beginPath();
+                    ctx.arc(ix, iy, 8 + (1 - p) * 10, 0, Math.PI * 2);
+                    ctx.fill();
+                    
+                    // Branching electric sparks
+                    for (let s = 0; s < 3; s++) {
+                        const sparkOffset = (s - 1) * 0.35 + Math.sin(p * 20 + s) * 0.15;
+                        const sAngle = angle + sparkOffset;
+                        const sx1 = cx + Math.cos(sAngle) * (shieldR - 2);
+                        const sy1 = cy + Math.sin(sAngle) * (shieldR - 2);
+                        const sx2 = cx + Math.cos(sAngle) * (shieldR + 8 + p * 8);
+                        const sy2 = cy + Math.sin(sAngle) * (shieldR + 8 + p * 8);
+                        ctx.strokeStyle = `rgba(180, 245, 255, ${alpha * 0.85})`;
+                        ctx.lineWidth = 1.5;
+                        ctx.beginPath();
+                        ctx.moveTo(sx1, sy1);
+                        ctx.lineTo((sx1 + sx2) / 2 + (Math.sin(s * 7) * 4), (sy1 + sy2) / 2 + (Math.cos(s * 7) * 4));
+                        ctx.lineTo(sx2, sy2);
+                        ctx.stroke();
+                    }
+                    ctx.restore();
+                }
+            }
+
+            ctx.restore();
+        }
+
+        // --- Draw Phased PowerUp Absorption Aura ---
+        if (this.powerupAuraTimer > 0) {
+            ctx.save();
+            const pPct = Math.max(0, Math.min(1.0, 1.0 - (this.powerupAuraTimer / 0.6)));
+            const auraColor = this.powerupAuraColor || '#00ffff';
+            
+            ctx.shadowColor = auraColor;
+            ctx.shadowBlur = 18;
+            ctx.globalAlpha = (1.0 - pPct) * 0.92;
+
+            // Outer phased shockwave
+            ctx.strokeStyle = auraColor;
+            ctx.lineWidth = 2.5 * (1.0 - pPct);
+            ctx.beginPath();
+            ctx.arc(20, this.height / 2, 22 + pPct * 42, 0, Math.PI * 2);
+            ctx.stroke();
+
+            // Inner harmonic ring
+            ctx.strokeStyle = '#ffffff';
+            ctx.lineWidth = 1.2 * (1.0 - pPct);
+            ctx.beginPath();
+            ctx.arc(20, this.height / 2, 14 + pPct * 26, 0, Math.PI * 2);
+            ctx.stroke();
+
             ctx.restore();
         }
 

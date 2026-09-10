@@ -326,49 +326,130 @@ function playSound(type, params) {
         // Standard Web Audio Synth for gameplay sounds and the 30 audio drama cues
         if (type === 'shoot') {
             const wl = p.weaponLevel || 1;
+            const ship = p.shipType || 'nyxa';
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
             osc.connect(gain);
             gain.connect(sfxDest);
             
-            // Base laser: sawtooth with descending pitch
-            osc.type = wl >= 4 ? 'square' : (wl >= 3 ? 'sawtooth' : 'sawtooth');
-            const baseFreq = 440 + (wl - 1) * 60; // 440 L1 → 680 L5
-            osc.frequency.setValueAtTime(baseFreq, audioCtx.currentTime);
-            osc.frequency.exponentialRampToValueAtTime(80, audioCtx.currentTime + 0.12);
-            gain.gain.setValueAtTime(0.06 * volMultiplier, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.12);
-            osc.start();
-            osc.stop(audioCtx.currentTime + 0.12);
-            
-            // Level 3+: sub-bass layer for weight
-            if (wl >= 3) {
-                const subOsc = audioCtx.createOscillator();
-                const subGain = audioCtx.createGain();
-                subOsc.type = 'sine';
-                subOsc.frequency.setValueAtTime(55, audioCtx.currentTime);
-                subOsc.frequency.exponentialRampToValueAtTime(30, audioCtx.currentTime + 0.15);
-                subGain.gain.setValueAtTime(0.05 * volMultiplier, audioCtx.currentTime);
-                subGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
-                subOsc.connect(subGain);
-                subGain.connect(sfxDest);
-                subOsc.start();
-                subOsc.stop(audioCtx.currentTime + 0.15);
-            }
-            
-            // Level 4+: harmonic overtone layer
-            if (wl >= 4) {
-                const harmOsc = audioCtx.createOscillator();
-                const harmGain = audioCtx.createGain();
-                harmOsc.type = 'sine';
-                harmOsc.frequency.setValueAtTime(baseFreq * 1.5, audioCtx.currentTime);
-                harmOsc.frequency.exponentialRampToValueAtTime(baseFreq * 0.5, audioCtx.currentTime + 0.08);
-                harmGain.gain.setValueAtTime(0.03 * volMultiplier, audioCtx.currentTime);
-                harmGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.08);
-                harmOsc.connect(harmGain);
-                harmGain.connect(sfxDest);
-                harmOsc.start();
-                harmOsc.stop(audioCtx.currentTime + 0.08);
+            if (ship === 'bastion') {
+                // Heavy kinetic autocannon punch: low square + heavy sub thud
+                osc.type = 'square';
+                osc.frequency.setValueAtTime(160 + (wl - 1) * 20, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(35, audioCtx.currentTime + 0.16);
+                gain.gain.setValueAtTime(0.09 * volMultiplier, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.16);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.16);
+
+                const sub = audioCtx.createOscillator();
+                const subG = audioCtx.createGain();
+                sub.type = 'sawtooth';
+                sub.frequency.setValueAtTime(65, audioCtx.currentTime);
+                sub.frequency.exponentialRampToValueAtTime(25, audioCtx.currentTime + 0.18);
+                subG.gain.setValueAtTime(0.08 * volMultiplier, audioCtx.currentTime);
+                subG.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.18);
+                sub.connect(subG);
+                subG.connect(sfxDest);
+                sub.start();
+                sub.stop(audioCtx.currentTime + 0.18);
+            } else if (ship === 'specter') {
+                // Piercing quantum railgun: high-velocity needle chirp
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(1350 + (wl - 1) * 120, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(320, audioCtx.currentTime + 0.10);
+                gain.gain.setValueAtTime(0.06 * volMultiplier, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.10);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.10);
+
+                const warp = audioCtx.createOscillator();
+                const warpG = audioCtx.createGain();
+                warp.type = 'sine';
+                warp.frequency.setValueAtTime(2200, audioCtx.currentTime);
+                warp.frequency.exponentialRampToValueAtTime(700, audioCtx.currentTime + 0.08);
+                warpG.gain.setValueAtTime(0.03 * volMultiplier, audioCtx.currentTime);
+                warpG.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.08);
+                warp.connect(warpG);
+                warpG.connect(sfxDest);
+                warp.start();
+                warp.stop(audioCtx.currentTime + 0.08);
+            } else if (ship === 'tempest') {
+                // Rapid scatter cannon: snappy crisp pulse
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(750 + (wl - 1) * 50, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(180, audioCtx.currentTime + 0.06);
+                gain.gain.setValueAtTime(0.05 * volMultiplier, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.06);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.06);
+            } else if (ship === 'warden') {
+                // Resonant acoustic shockwave: pure sine + harmonic bell
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(320 + (wl - 1) * 40, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(140, audioCtx.currentTime + 0.15);
+                gain.gain.setValueAtTime(0.08 * volMultiplier, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.15);
+
+                const bell = audioCtx.createOscillator();
+                const bellG = audioCtx.createGain();
+                bell.type = 'sine';
+                bell.frequency.setValueAtTime(640, audioCtx.currentTime);
+                bell.frequency.exponentialRampToValueAtTime(280, audioCtx.currentTime + 0.12);
+                bellG.gain.setValueAtTime(0.04 * volMultiplier, audioCtx.currentTime);
+                bellG.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.12);
+                bell.connect(bellG);
+                bellG.connect(sfxDest);
+                bell.start();
+                bell.stop(audioCtx.currentTime + 0.12);
+            } else if (ship === 'phantom') {
+                // Dual-tone phase modulated tachyon chirp
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(900 + (wl - 1) * 80, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(240, audioCtx.currentTime + 0.10);
+                gain.gain.setValueAtTime(0.05 * volMultiplier, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.10);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.10);
+
+                const phase = audioCtx.createOscillator();
+                const phaseG = audioCtx.createGain();
+                phase.type = 'sine';
+                phase.frequency.setValueAtTime(1100, audioCtx.currentTime);
+                phase.frequency.exponentialRampToValueAtTime(450, audioCtx.currentTime + 0.08);
+                phaseG.gain.setValueAtTime(0.04 * volMultiplier, audioCtx.currentTime);
+                phaseG.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.08);
+                phase.connect(phaseG);
+                phaseG.connect(sfxDest);
+                phase.start();
+                phase.stop(audioCtx.currentTime + 0.08);
+            } else {
+                // Default (Nyxa): crisp laser pulse
+                osc.type = wl >= 4 ? 'square' : 'sawtooth';
+                const baseFreq = 440 + (wl - 1) * 60; // 440 L1 → 680 L5
+                osc.frequency.setValueAtTime(baseFreq, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(80, audioCtx.currentTime + 0.12);
+                gain.gain.setValueAtTime(0.06 * volMultiplier, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.12);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.12);
+                
+                // Level 3+: sub-bass layer for weight
+                if (wl >= 3) {
+                    const subOsc = audioCtx.createOscillator();
+                    const subGain = audioCtx.createGain();
+                    subOsc.type = 'sine';
+                    subOsc.frequency.setValueAtTime(55, audioCtx.currentTime);
+                    subOsc.frequency.exponentialRampToValueAtTime(30, audioCtx.currentTime + 0.15);
+                    subGain.gain.setValueAtTime(0.05 * volMultiplier, audioCtx.currentTime);
+                    subGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
+                    subOsc.connect(subGain);
+                    subGain.connect(sfxDest);
+                    subOsc.start();
+                    subOsc.stop(audioCtx.currentTime + 0.15);
+                }
             }
             
             // Level 5: sparkle chirp
@@ -717,14 +798,78 @@ function playSound(type, params) {
             whineOsc.start(audioCtx.currentTime + 0.05);
             whineOsc.stop(audioCtx.currentTime + 0.6);
         } else if (type === 'enemy_shoot') {
-            // Distinct enemy weapon sounds per type
+            // Distinct enemy weapon sounds per bulletType & enemyType
             const enemyType = p.enemyType || 'scout';
+            const bulletType = p.bulletType || null;
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
             osc.connect(gain);
             gain.connect(sfxDest);
-            
-            if (enemyType === 'scout' || enemyType === 'interceptor') {
+
+            if (bulletType === 'cryo') {
+                // High-pitched crystal ping
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(1300, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(500, audioCtx.currentTime + 0.08);
+                gain.gain.setValueAtTime(0.06 * volMultiplier, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.08);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.08);
+            } else if (bulletType === 'magma') {
+                // Molten explosive thud
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(100, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(35, audioCtx.currentTime + 0.16);
+                gain.gain.setValueAtTime(0.08 * volMultiplier, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.16);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.16);
+            } else if (bulletType === 'lightning') {
+                // High-voltage electric snap
+                osc.type = 'square';
+                osc.frequency.setValueAtTime(1450, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(280, audioCtx.currentTime + 0.06);
+                gain.gain.setValueAtTime(0.06 * volMultiplier, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.06);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.06);
+            } else if (bulletType === 'acid') {
+                // Corrosive bio-squelch
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(380, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(130, audioCtx.currentTime + 0.10);
+                gain.gain.setValueAtTime(0.07 * volMultiplier, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.10);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.10);
+            } else if (bulletType === 'tachyon') {
+                // Quantum phase chirp
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(1200, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(350, audioCtx.currentTime + 0.07);
+                gain.gain.setValueAtTime(0.05 * volMultiplier, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.07);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.07);
+            } else if (bulletType === 'singularity') {
+                // Deep gravitational vacuum pull
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(80, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(20, audioCtx.currentTime + 0.22);
+                gain.gain.setValueAtTime(0.09 * volMultiplier, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.22);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.22);
+            } else if (bulletType === 'flak') {
+                // Snappy kinetic metal impact
+                osc.type = 'square';
+                osc.frequency.setValueAtTime(450, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(110, audioCtx.currentTime + 0.08);
+                gain.gain.setValueAtTime(0.07 * volMultiplier, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.08);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.08);
+            } else if (enemyType === 'scout' || enemyType === 'interceptor') {
                 // Light enemies: quick high pew
                 osc.type = 'square';
                 osc.frequency.setValueAtTime(800, audioCtx.currentTime);

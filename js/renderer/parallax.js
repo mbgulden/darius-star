@@ -285,6 +285,23 @@ class JourneyLandmark {
         // Base display size for >=1000px master assets
         this.baseSize = 340;
         this.currentScale = 1.0;
+
+        // Ground-rooted volcanic spires sit naturally in the lower seabed terrain
+        const isGroundRooted = (this.info && this.info.landmark === 'magma_chimney');
+        this.y = isGroundRooted
+            ? (typeof canvas !== 'undefined' ? canvas.height * 0.65 : 292)
+            : (typeof canvas !== 'undefined' ? canvas.height * 0.48 : 216);
+
+        // Levitation & Anti-Gravity Flotation System
+        this.levitateActive = true;
+        this.levitateY = 0;
+        this.levitateTilt = 0;
+        this.levitateBobAmp = 14;
+        this.levitateFreq = 0.85;
+        this.repulsorPulse = 1.0;
+
+        // Destructibility & Foreground Flag (Landmarks are strictly background and non-glowing unless destructible)
+        this.isDestructible = !!(this.info && this.info.isDestructible);
     }
 
     setProgress(p, isBoss = false) {
@@ -301,20 +318,132 @@ class JourneyLandmark {
         }
 
         this.x -= this.speed * dt;
-        this.time += dt * (this.isBossAlert ? 3.0 : 1.4);
+        this.time += dt * (this.isBossAlert ? 2.8 : 1.3);
 
-        // Dynamic undulating tilt based on environmental current and base perspective angle
-        this.currentAngle = this.baseAngle + Math.sin(this.time * 0.7) * 0.06 + (this.progress * 0.08);
+        const isGroundRooted = (this.info && this.info.landmark === 'magma_chimney');
+
+        // 1. Harmonic Multi-Frequency Levitation Bobbing (Physics-based weightless flotation)
+        if (this.levitateActive && !isGroundRooted) {
+            const primaryWave = Math.sin(this.time * this.levitateFreq);
+            const secondaryWave = Math.cos(this.time * 0.42);
+            this.levitateY = primaryWave * this.levitateBobAmp + secondaryWave * (this.levitateBobAmp * 0.45);
+            this.levitateTilt = Math.sin(this.time * 0.55) * 0.035 + Math.cos(this.time * 0.85) * 0.02;
+        } else if (isGroundRooted) {
+            // Subtle geothermal seismic tremor for volcanic spires rooted in the floor
+            this.levitateY = Math.sin(this.time * 1.8) * 2.2;
+            this.levitateTilt = Math.sin(this.time * 0.9) * 0.012;
+        } else {
+            this.levitateY = 0;
+            this.levitateTilt = 0;
+        }
+
+        // Dynamic undulating tilt based on environmental current, base perspective angle, and levitation roll
+        this.currentAngle = this.baseAngle + this.levitateTilt + Math.sin(this.time * 0.7) * 0.04 + (this.progress * 0.08);
 
         // Progressive scaling: looms larger into midground as waves clear (1.0x -> 1.35x)
         this.currentScale = 1.0 + (this.progress * 0.35);
+        this.repulsorPulse = 1.0 + Math.sin(this.time * 2.2) * (this.isBossAlert ? 0.25 : 0.12);
+
+        const currentDrawY = this.y + this.levitateY;
+
+        // Dynamic hydrothermal volcanic chimney smoke venting: plumes billow up from flue nozzle
+        if (this.info && this.info.landmark === 'magma_chimney' && typeof envParticles !== 'undefined') {
+            const screenW = typeof canvas !== 'undefined' ? canvas.width : 960;
+            if (this.x > -120 && this.x < screenW + 120) {
+                const flueX = this.x;
+                const flueY = currentDrawY - (this.baseSize * this.currentScale * 0.42);
+                const spawnChance = (this.isBossAlert ? 0.75 : 0.35);
+                if (Math.random() < spawnChance) {
+                    const p = new EnvironmentParticle('vent_smoke', flueX + (Math.random() - 0.5) * 16, flueY);
+                    p.isThermal = Math.random() < 0.5;
+                    p.color = p.isThermal ? '#ff7722' : '#2a2f38';
+                    p.speed = 48 + Math.random() * 42;
+                    envParticles.push(p);
+                }
+            }
+        }
+
+        // Ambient anti-gravity / buoyancy flotation motes for floating landmarks
+        if (!isGroundRooted && typeof envParticles !== 'undefined' && Math.random() < 0.10) {
+            const screenW = typeof canvas !== 'undefined' ? canvas.width : 960;
+            if (this.x > -100 && this.x < screenW + 100) {
+                const moteX = this.x + (Math.random() - 0.5) * (this.baseSize * this.currentScale * 0.4);
+                const moteY = currentDrawY + (this.baseSize * this.currentScale * 0.22) + Math.random() * 15;
+                const p = new EnvironmentParticle('mote', moteX, moteY);
+                p.color = this.info.accentColor || '#00ffff';
+                p.speed = 8 + Math.random() * 14;
+                p.alpha = 0.45;
+                envParticles.push(p);
+            }
+        }
 
         // Loop landmark around smoothly so the level feels continuously inhabited
         const wrapX = -550;
         if (this.x < wrapX) {
             this.x = (typeof canvas !== 'undefined' ? canvas.width : 800) + 280;
-            this.y = (canvas.height || 450) * (0.22 + (Math.sin(this.time * 0.5) * 0.5 + 0.5) * 0.56);
+            this.y = isGroundRooted
+                ? (canvas.height || 450) * 0.65
+                : (canvas.height || 450) * (0.28 + (Math.sin(this.time * 0.5) * 0.5 + 0.5) * 0.44);
         }
+    }
+
+    _drawLevitationField(c, drawW, drawH, accent, pulse) {
+        c.save();
+        
+        const baseAlpha = this.isBossAlert ? 0.35 : 0.22;
+        const auraY = drawH * 0.28; // Positioned beneath the core/keel
+        const radiusX = drawW * 0.44;
+        const radiusY = drawH * 0.16;
+
+        // 1. Soft Elliptical Repulsor Field Cushion
+        c.save();
+        c.translate(0, auraY);
+        c.scale(1.0, radiusY / radiusX);
+        const grad = c.createRadialGradient(0, 0, 2, 0, 0, radiusX);
+        grad.addColorStop(0.0, accent);
+        grad.addColorStop(0.4, accent);
+        grad.addColorStop(1.0, 'rgba(0, 0, 0, 0)');
+        
+        c.globalAlpha = baseAlpha * pulse;
+        c.fillStyle = grad;
+        c.beginPath();
+        c.arc(0, 0, radiusX, 0, Math.PI * 2);
+        c.fill();
+        c.restore();
+
+        // 2. Concentric Anti-Gravity Distortion Ripple Rings
+        const phase1 = (this.time * 0.75) % 1.0;
+        const phase2 = (this.time * 0.75 + 0.5) % 1.0;
+        
+        c.lineWidth = 1.8;
+        [phase1, phase2].forEach(phase => {
+            const rX = radiusX * (0.25 + phase * 0.75);
+            const rY = radiusY * (0.25 + phase * 0.75);
+            const ringAlpha = (1.0 - phase) * (this.isBossAlert ? 0.45 : 0.26);
+            
+            c.save();
+            c.translate(0, auraY + phase * 16);
+            c.scale(1.0, rY / rX);
+            c.strokeStyle = accent;
+            c.globalAlpha = ringAlpha * pulse;
+            c.beginPath();
+            c.arc(0, 0, rX, 0, Math.PI * 2);
+            c.stroke();
+            c.restore();
+        });
+
+        // 3. Central Core Ambient Levitation Radiance (soft backlight behind the mass)
+        const coreGrad = c.createRadialGradient(0, 0, 10, 0, 0, drawW * 0.38);
+        coreGrad.addColorStop(0.0, accent);
+        coreGrad.addColorStop(0.5, accent);
+        coreGrad.addColorStop(1.0, 'rgba(0, 0, 0, 0)');
+        c.globalAlpha = (this.isBossAlert ? 0.22 : 0.12) * pulse;
+        c.fillStyle = coreGrad;
+        c.beginPath();
+        c.arc(0, 0, drawW * 0.38, 0, Math.PI * 2);
+        c.fill();
+
+        c.restore();
     }
 
     draw(targetCtx) {
@@ -322,31 +451,42 @@ class JourneyLandmark {
         if (!c) return;
 
         c.save();
-        c.translate(this.x, this.y);
+        const renderY = this.y + this.levitateY;
+        c.translate(this.x, renderY);
         c.rotate(this.currentAngle);
 
         const type = this.info.landmark;
         const accent = this.isBossAlert ? '#ff3344' : (this.info.accentColor || '#00ffff');
-        const pulse = 1.0 + Math.sin(this.time) * (this.isBossAlert ? 0.20 : 0.10);
+        const pulse = this.repulsorPulse;
+        const isGroundRooted = (this.info && this.info.landmark === 'magma_chimney');
 
         const spriteKey = 'landmark_' + type;
         const spriteImg = (typeof landmarkSprites !== 'undefined' && landmarkSprites[spriteKey])
             ? landmarkSprites[spriteKey]
             : ((typeof window !== 'undefined' && window.landmarkSprites) ? window.landmarkSprites[spriteKey] : null);
 
+        const drawW = this.baseSize * this.currentScale * pulse;
+        const drawH = this.baseSize * this.currentScale * pulse;
+
+        // Landmarks are strictly background scenery structures with NO glowing
+        c.shadowColor = 'transparent';
+        c.shadowBlur = 0;
+        c.globalAlpha = 0.92; // Subtle atmospheric depth for midground scenery
+
         // Render >=1000px high-definition master asset when available
         if (spriteImg && spriteImg.complete && spriteImg.naturalWidth > 0) {
-            c.shadowColor = accent;
-            c.shadowBlur = (this.isBossAlert ? 28 : 18) * pulse;
-            const drawW = this.baseSize * this.currentScale * pulse;
-            const drawH = this.baseSize * this.currentScale * pulse;
             c.drawImage(spriteImg, -drawW / 2, -drawH / 2, drawW, drawH);
             c.restore();
             return;
         }
 
-        c.shadowColor = accent;
-        c.shadowBlur = this.isBossAlert ? 22 : 12;
+        if (!this.isDestructible) {
+            c.shadowColor = 'transparent';
+            c.shadowBlur = 0;
+        } else {
+            c.shadowColor = accent;
+            c.shadowBlur = this.isBossAlert ? 16 : 8;
+        }
 
         if (type === 'coral_spire') {
             // Bioluminescent branching coral pinnacle
@@ -412,8 +552,7 @@ class JourneyLandmark {
             c.fillStyle = '#ff3344';
             c.strokeRect(-50, 0, 30, 20);
             if (Math.sin(this.time * 4) > 0) {
-                c.shadowColor = '#ff2200';
-                c.shadowBlur = 16;
+                c.shadowBlur = this.isDestructible ? 8 : 0;
                 c.beginPath();
                 c.arc(120, 5, 4, 0, Math.PI * 2);
                 c.fill();
@@ -451,8 +590,8 @@ class JourneyLandmark {
             c.stroke();
             // Lava fissures
             c.fillStyle = '#ff8800';
-            c.shadowColor = '#ff5500';
-            c.shadowBlur = 18;
+            c.shadowColor = this.isDestructible ? '#ff5500' : 'transparent';
+            c.shadowBlur = this.isDestructible ? 10 : 0;
             c.fillRect(-6, -85, 12, 60);
         } else if (type === 'ice_berg') {
             // Translucent crystalline pykrete mountain
@@ -558,7 +697,13 @@ const JourneyBackgroundRenderer = {
     },
 
     draw(targetCtx) {
-        if (this.currentLandmark) {
+        if (this.currentLandmark && !this.currentLandmark.isDestructible) {
+            this.currentLandmark.draw(targetCtx || ctx);
+        }
+    },
+
+    drawForeground(targetCtx) {
+        if (this.currentLandmark && this.currentLandmark.isDestructible) {
             this.currentLandmark.draw(targetCtx || ctx);
         }
     }

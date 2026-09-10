@@ -58,6 +58,11 @@ global.LevelManager = {
 };
 
 // Load sprites and enemies modules
+global.bossSprites = {};
+for (const key of bossKeys) {
+    global.bossSprites[key] = new global.Image();
+}
+global.window.bossSprites = global.bossSprites;
 require('../js/sprites.js');
 require('../js/enemies.js');
 
@@ -72,7 +77,11 @@ const mockCtx = {
     rotate: () => {},
     scale: () => {},
     drawImage: (img, sx, sy, sw, sh, dx, dy, dw, dh) => {
-        drawnSlices.push({ sx, sy, sw, sh, dx, dy, dw, dh });
+        if (dh === undefined) {
+            drawnSlices.push({ sx: 0, sy: 0, sw: 0, sh: 0, dx: sx, dy: sy, dw: sw, dh: sh });
+        } else {
+            drawnSlices.push({ sx, sy, sw, sh, dx, dy, dw, dh });
+        }
     },
     beginPath: () => {},
     closePath: () => {},

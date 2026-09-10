@@ -206,6 +206,13 @@
             display: none;
             padding-top: 6px;
         }
+        .hud-glyph {
+            width: 14px;
+            height: 14px;
+            vertical-align: -2px;
+            margin-right: 5px;
+            image-rendering: pixelated;
+        }
         #controls-overlay.expanded #controls-details {
             display: block;
         }
@@ -603,13 +610,13 @@
             <div style="color: #ff0055; font-weight: bold; margin-bottom: 4px;">SYSTEM STATUS</div>
             <div>BIOME: <span id="ui-biome" style="color: #00ffff; font-weight: bold;">1: Abyssal Trench</span></div>
             <div>NAVIGATOR: <span id="ui-navigator" style="color: #00ff55; font-weight: bold;">LYRA (ONLINE)</span></div>
-            <div>SHIELD: <span id="ui-shield" style="color: #00ff00;">100%</span></div>
-            <div>WEAPON: <span id="ui-weapon" style="color: #ffff00;">LVL 1</span></div>
-            <div>SCORE: <span id="ui-score" style="color: #00ffff;">0</span></div>
-            <div>SCRAP: <span id="ui-scrap" style="color: #00ff55;">⚙️0</span></div>
-            <div>BOOST: <span id="ui-boost" style="color: #ffaa00;">READY</span></div>
-            <div>SECONDARY: <span id="ui-special" style="color: #b026ff;">METER 0%</span></div>
-            <div>DODGE: <span id="ui-dodge" style="color: #00ffff;">READY (E)</span></div>
+            <div><img src="assets/sprites/ui/hud_shield.png" class="hud-glyph" alt="Shield">SHIELD: <span id="ui-shield" style="color: #00ff00;">100%</span></div>
+            <div><img src="assets/sprites/ui/hud_weapon.png" class="hud-glyph" alt="Weapon">WEAPON: <span id="ui-weapon" style="color: #ffff00;">LVL 1</span></div>
+            <div><img src="assets/sprites/ui/hud_score.png" class="hud-glyph" alt="Score">SCORE: <span id="ui-score" style="color: #00ffff;">0</span></div>
+            <div><img src="assets/sprites/ui/hud_scrap.png" class="hud-glyph" alt="Scrap">SCRAP: <span id="ui-scrap" style="color: #00ff55;">0</span></div>
+            <div><img src="assets/sprites/ui/hud_boost.png" class="hud-glyph" alt="Boost">BOOST: <span id="ui-boost" style="color: #ffaa00;">READY</span></div>
+            <div><img src="assets/sprites/ui/hud_special.png" class="hud-glyph" alt="Secondary">SECONDARY: <span id="ui-special" style="color: #b026ff;">METER 0%</span></div>
+            <div><img src="assets/sprites/ui/hud_dodge.png" class="hud-glyph" alt="Dodge">DODGE: <span id="ui-dodge" style="color: #00ffff;">READY (E)</span></div>
             <div id="ui-banter" style="color: #ffffff; font-style: italic; margin-top: 4px; opacity: 0; transition: opacity 0.3s; max-width: 400px; font-size: 12px; line-height: 1.3;"></div>
             <div id="ui-streamer" style="color: #ff0055; font-weight: bold; margin-top: 6px; display: none; font-size: 11px; letter-spacing: 1px;">🔴 STREAMER MODE — Voice Muted</div>
             <div id="ui-subtitles" style="display: none; position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%); max-width: 700px; width: 90%; background: rgba(0,0,0,0.92); border: 2px solid #ffaa00; border-radius: 8px; padding: 16px 20px; color: #ffffff; font-size: 18px; font-weight: bold; text-align: center; line-height: 1.5; z-index: 100; text-shadow: 2px 2px 4px #000; box-shadow: 0 0 20px rgba(255,170,0,0.3);">

@@ -65,84 +65,95 @@ let playerSpritesLoaded = false;
             // 40 Stratum-Specific Enemy Archetypes across all 10 Biomes
             const allStratumEnemies = [
                 // Biome 1: Abyssal Trench
-                { key: 'angler_scout',        src: 'assets/sprites/enemy_angler_scout_0.png' },
-                { key: 'jelly_interceptor',   src: 'assets/sprites/enemy_jelly_interceptor_0.png' },
-                { key: 'vent_crab_heavy',     src: 'assets/sprites/enemy_vent_crab_heavy_0.png' },
-                { key: 'trench_eel',          src: 'assets/sprites/enemy_trench_eel_0.png' },
+                { key: 'angler_scout',        src: 'assets/sprites/enemy_angler_scout_sheet.png', fallback: 'assets/sprites/enemy_angler_scout_0.png' },
+                { key: 'jelly_interceptor',   src: 'assets/sprites/enemy_jelly_interceptor_sheet.png', fallback: 'assets/sprites/enemy_jelly_interceptor_0.png' },
+                { key: 'vent_crab_heavy',     src: 'assets/sprites/enemy_vent_crab_heavy_sheet.png', fallback: 'assets/sprites/enemy_vent_crab_heavy_0.png' },
+                { key: 'trench_eel',          src: 'assets/sprites/enemy_trench_eel_sheet.png', fallback: 'assets/sprites/enemy_trench_eel_0.png' },
                 
                 // Biome 2: Coral Graveyard
-                { key: 'rust_drone',          src: 'assets/sprites/enemy_rust_drone_0.png' },
-                { key: 'coral_wasp',          src: 'assets/sprites/enemy_coral_wasp_0.png' },
-                { key: 'armored_eel',         src: 'assets/sprites/enemy_armored_eel_0.png' },
-                { key: 'spine_urchin',        src: 'assets/sprites/enemy_spine_urchin_0.png' },
+                { key: 'rust_drone',          src: 'assets/sprites/enemy_rust_drone_sheet.png', fallback: 'assets/sprites/enemy_rust_drone_0.png' },
+                { key: 'coral_wasp',          src: 'assets/sprites/enemy_coral_wasp_sheet.png', fallback: 'assets/sprites/enemy_coral_wasp_0.png' },
+                { key: 'armored_eel',         src: 'assets/sprites/enemy_armored_eel_sheet.png', fallback: 'assets/sprites/enemy_armored_eel_0.png' },
+                { key: 'spine_urchin',        src: 'assets/sprites/enemy_spine_urchin_sheet.png', fallback: 'assets/sprites/enemy_spine_urchin_0.png' },
                 
                 // Biome 3: Europa Coelacanth Lair
-                { key: 'sparker',             src: 'assets/sprites/enemy_sparker_0.png' },
-                { key: 'sentinel',            src: 'assets/sprites/enemy_sentinel_0.png' },
-                { key: 'juggernaut',          src: 'assets/sprites/enemy_juggernaut_0.png' },
-                { key: 'boss_minion',         src: 'assets/sprites/enemy_boss_minion_0.png' },
+                { key: 'sparker',             src: 'assets/sprites/enemy_sparker_sheet.png', fallback: 'assets/sprites/enemy_sparker_0.png' },
+                { key: 'sentinel',            src: 'assets/sprites/enemy_sentinel_sheet.png', fallback: 'assets/sprites/enemy_sentinel_0.png' },
+                { key: 'juggernaut',          src: 'assets/sprites/enemy_juggernaut_sheet.png', fallback: 'assets/sprites/enemy_juggernaut_0.png' },
+                { key: 'boss_minion',         src: 'assets/sprites/enemy_boss_minion_sheet.png', fallback: 'assets/sprites/enemy_boss_minion_0.png' },
                 
                 // Biome 4: Nebula Drift
-                { key: 'plasma_wisp',         src: 'assets/sprites/enemy_plasma_wisp_0.png' },
-                { key: 'storm_sprite',        src: 'assets/sprites/enemy_storm_sprite_0.png' },
-                { key: 'gas_giant',           src: 'assets/sprites/enemy_gas_giant_0.png' },
-                { key: 'nebula_wraith',       src: 'assets/sprites/enemy_nebula_wraith_0.png' },
+                { key: 'plasma_wisp',         src: 'assets/sprites/enemy_plasma_wisp_sheet.png', fallback: 'assets/sprites/enemy_plasma_wisp_0.png' },
+                { key: 'storm_sprite',        src: 'assets/sprites/enemy_storm_sprite_sheet.png', fallback: 'assets/sprites/enemy_storm_sprite_0.png' },
+                { key: 'gas_giant',           src: 'assets/sprites/enemy_gas_giant_sheet.png', fallback: 'assets/sprites/enemy_gas_giant_0.png' },
+                { key: 'nebula_wraith',       src: 'assets/sprites/enemy_nebula_wraith_sheet.png', fallback: 'assets/sprites/enemy_nebula_wraith_0.png' },
                 
                 // Biome 5: Ice Ring / Iron Trench
-                { key: 'ice_shard',           src: 'assets/sprites/enemy_ice_shard_0.png' },
-                { key: 'frost_drone',         src: 'assets/sprites/enemy_frost_drone_0.png' },
-                { key: 'glacier',             src: 'assets/sprites/enemy_glacier_0.png' },
-                { key: 'ice_swarm',           src: 'assets/sprites/enemy_ice_swarm_0.png' },
+                { key: 'ice_shard',           src: 'assets/sprites/enemy_ice_shard_sheet.png', fallback: 'assets/sprites/enemy_ice_shard_0.png' },
+                { key: 'frost_drone',         src: 'assets/sprites/enemy_frost_drone_sheet.png', fallback: 'assets/sprites/enemy_frost_drone_0.png' },
+                { key: 'glacier',             src: 'assets/sprites/enemy_glacier_sheet.png', fallback: 'assets/sprites/enemy_glacier_0.png' },
+                { key: 'ice_swarm',           src: 'assets/sprites/enemy_ice_swarm_sheet.png', fallback: 'assets/sprites/enemy_ice_swarm_0.png' },
                 
                 // Biome 6: Fire Nebula / Corona
-                { key: 'ember_sprite',        src: 'assets/sprites/enemy_ember_sprite_0.png' },
-                { key: 'magma_wasp',          src: 'assets/sprites/enemy_magma_wasp_0.png' },
-                { key: 'lava_golem',          src: 'assets/sprites/enemy_lava_golem_0.png' },
-                { key: 'inferno_node',        src: 'assets/sprites/enemy_inferno_node_0.png' },
+                { key: 'ember_sprite',        src: 'assets/sprites/enemy_ember_sprite_sheet.png', fallback: 'assets/sprites/enemy_ember_sprite_0.png' },
+                { key: 'magma_wasp',          src: 'assets/sprites/enemy_magma_wasp_sheet.png', fallback: 'assets/sprites/enemy_magma_wasp_0.png' },
+                { key: 'lava_golem',          src: 'assets/sprites/enemy_lava_golem_sheet.png', fallback: 'assets/sprites/enemy_lava_golem_0.png' },
+                { key: 'inferno_node',        src: 'assets/sprites/enemy_inferno_node_sheet.png', fallback: 'assets/sprites/enemy_inferno_node_0.png' },
                 
                 // Biome 7: Storm Belt / Tempest
-                { key: 'static_spark',        src: 'assets/sprites/enemy_static_spark_0.png' },
-                { key: 'storm_hawk',          src: 'assets/sprites/enemy_storm_hawk_0.png' },
-                { key: 'thunderhead',         src: 'assets/sprites/enemy_thunderhead_0.png' },
-                { key: 'storm_sentinel',      src: 'assets/sprites/enemy_storm_sentinel_0.png' },
+                { key: 'static_spark',        src: 'assets/sprites/enemy_static_spark_sheet.png', fallback: 'assets/sprites/enemy_static_spark_0.png' },
+                { key: 'storm_hawk',          src: 'assets/sprites/enemy_storm_hawk_sheet.png', fallback: 'assets/sprites/enemy_storm_hawk_0.png' },
+                { key: 'thunderhead',         src: 'assets/sprites/enemy_thunderhead_sheet.png', fallback: 'assets/sprites/enemy_thunderhead_0.png' },
+                { key: 'storm_sentinel',      src: 'assets/sprites/enemy_storm_sentinel_sheet.png', fallback: 'assets/sprites/enemy_storm_sentinel_0.png' },
                 
                 // Biome 8: Derelict Fleet
-                { key: 'salvage_drone',       src: 'assets/sprites/enemy_salvage_drone_0.png' },
-                { key: 'ghost_fighter',       src: 'assets/sprites/enemy_ghost_fighter_0.png' },
-                { key: 'turret_battery',      src: 'assets/sprites/enemy_turret_battery_0.png' },
-                { key: 'fleet_turret',        src: 'assets/sprites/enemy_fleet_turret_0.png' },
+                { key: 'salvage_drone',       src: 'assets/sprites/enemy_salvage_drone_sheet.png', fallback: 'assets/sprites/enemy_salvage_drone_0.png' },
+                { key: 'ghost_fighter',       src: 'assets/sprites/enemy_ghost_fighter_sheet.png', fallback: 'assets/sprites/enemy_ghost_fighter_0.png' },
+                { key: 'turret_battery',      src: 'assets/sprites/enemy_turret_battery_sheet.png', fallback: 'assets/sprites/enemy_turret_battery_0.png' },
+                { key: 'fleet_turret',        src: 'assets/sprites/enemy_fleet_turret_sheet.png', fallback: 'assets/sprites/enemy_fleet_turret_0.png' },
                 
                 // Biome 9: Xenomorph Hive
-                { key: 'crawler',             src: 'assets/sprites/enemy_crawler_0.png' },
-                { key: 'spitter',             src: 'assets/sprites/enemy_spitter_0.png' },
-                { key: 'brute',               src: 'assets/sprites/enemy_brute_0.png' },
-                { key: 'hive_node',           src: 'assets/sprites/enemy_hive_node_0.png' },
+                { key: 'crawler',             src: 'assets/sprites/enemy_crawler_sheet.png', fallback: 'assets/sprites/enemy_crawler_0.png' },
+                { key: 'spitter',             src: 'assets/sprites/enemy_spitter_sheet.png', fallback: 'assets/sprites/enemy_spitter_0.png' },
+                { key: 'brute',               src: 'assets/sprites/enemy_brute_sheet.png', fallback: 'assets/sprites/enemy_brute_0.png' },
+                { key: 'hive_node',           src: 'assets/sprites/enemy_hive_node_sheet.png', fallback: 'assets/sprites/enemy_hive_node_0.png' },
                 
                 // Biome 10: Core Rift / Event Horizon
-                { key: 'glitch_fragment',     src: 'assets/sprites/enemy_glitch_fragment_0.png' },
-                { key: 'paradox_wisp',        src: 'assets/sprites/enemy_paradox_wisp_0.png' },
-                { key: 'null_entity',         src: 'assets/sprites/enemy_null_entity_0.png' },
-                { key: 'rift_aberration',     src: 'assets/sprites/enemy_rift_aberration_0.png' }
+                { key: 'glitch_fragment',     src: 'assets/sprites/enemy_glitch_fragment_sheet.png', fallback: 'assets/sprites/enemy_glitch_fragment_0.png' },
+                { key: 'paradox_wisp',        src: 'assets/sprites/enemy_paradox_wisp_sheet.png', fallback: 'assets/sprites/enemy_paradox_wisp_0.png' },
+                { key: 'null_entity',         src: 'assets/sprites/enemy_null_entity_sheet.png', fallback: 'assets/sprites/enemy_null_entity_0.png' },
+                { key: 'rift_aberration',     src: 'assets/sprites/enemy_rift_aberration_sheet.png', fallback: 'assets/sprites/enemy_rift_aberration_0.png' }
             ];
 
-            allStratumEnemies.forEach(({key, src}) => {
+            allStratumEnemies.forEach(({key, src, fallback}) => {
                 const img = new Image();
                 img.onload = function() { 
-                    const pre = preCompositeAdditive(img);
-                    enemySprites[key] = pre; 
-                    if (key === 'angler_scout') enemySprites['scout'] = pre;
-                    if (key === 'jelly_interceptor') enemySprites['interceptor'] = pre;
-                    if (key === 'vent_crab_heavy') enemySprites['heavy'] = pre;
-                    if (key === 'boss_minion') enemySprites['boss_minion'] = pre;
-                    console.log(`[SPRITE] Successfully loaded stratum enemy: ${key} (${src})`);
+                    img._isSingleFrame = img.src && img.src.includes('_0.png');
+                    enemySprites[key] = img; 
+                    enemySprites[key + '_sheet'] = img;
+                    enemySprites[key + '_0'] = img;
+                    enemySprites['enemy_' + key + '_0'] = img;
+                    if (key === 'angler_scout') enemySprites['scout'] = img;
+                    if (key === 'jelly_interceptor') enemySprites['interceptor'] = img;
+                    if (key === 'vent_crab_heavy') enemySprites['heavy'] = img;
+                    if (key === 'boss_minion') enemySprites['boss_minion'] = img;
+                    console.log(`[SPRITE] Successfully loaded stratum enemy: ${key} (${img.src})`);
                 };
                 img.onerror = function() { 
-                    enemySprites[key] = null; 
-                    console.error(`[SPRITE] [ERROR] Failed to load stratum enemy: ${key} (${src})`);
+                    if (fallback && img.src !== fallback && !img.src.endsWith(fallback)) {
+                        img._isSingleFrame = true;
+                        img.src = fallback;
+                    } else {
+                        enemySprites[key] = null; 
+                        console.error(`[SPRITE] [ERROR] Failed to load stratum enemy: ${key} (${src})`);
+                    }
                 };
                 img.src = src;
-                // Immediate fallback pointer before pre-composition finishes
+                // Immediate fallback pointer before image loads
                 enemySprites[key] = img;
+                enemySprites[key + '_sheet'] = img;
+                enemySprites[key + '_0'] = img;
+                enemySprites['enemy_' + key + '_0'] = img;
                 if (key === 'angler_scout') enemySprites['scout'] = img;
                 if (key === 'jelly_interceptor') enemySprites['interceptor'] = img;
                 if (key === 'vent_crab_heavy') enemySprites['heavy'] = img;
@@ -175,12 +186,34 @@ let playerSpritesLoaded = false;
             _loadVFX('laser', 'assets/sprites/player_bullet.png');
             _loadVFX('laser_enemy', 'assets/sprites/enemy_bullet.png');
             _loadVFX('laser_glow', 'assets/sprites/laser_0_glow.png');
+            
+            // Dedicated Player Projectile VFX
+            _loadVFX('player_bullet_nyxa', 'assets/sprites/player_bullet_nyxa.png');
+            _loadVFX('player_bullet_bastion', 'assets/sprites/player_bullet_bastion.png');
+            _loadVFX('player_bullet_specter', 'assets/sprites/player_bullet_specter.png');
+            _loadVFX('player_bullet_tempest', 'assets/sprites/player_bullet_tempest.png');
+            _loadVFX('player_bullet_warden', 'assets/sprites/player_bullet_warden.png');
+            _loadVFX('player_bullet_phantom', 'assets/sprites/player_bullet_phantom.png');
+
+            // Dedicated Stratum Enemy Munition VFX
+            _loadVFX('enemy_bullet_plasma', 'assets/sprites/enemy_bullet_plasma.png');
+            _loadVFX('enemy_bullet_cryo', 'assets/sprites/enemy_bullet_cryo.png');
+            _loadVFX('enemy_bullet_magma', 'assets/sprites/enemy_bullet_magma.png');
+            _loadVFX('enemy_bullet_lightning', 'assets/sprites/enemy_bullet_lightning.png');
+            _loadVFX('enemy_bullet_acid', 'assets/sprites/enemy_bullet_acid.png');
+            _loadVFX('enemy_bullet_tachyon', 'assets/sprites/enemy_bullet_tachyon.png');
+            _loadVFX('enemy_bullet_singularity', 'assets/sprites/enemy_bullet_singularity.png');
+            _loadVFX('enemy_bullet_flak', 'assets/sprites/enemy_bullet_flak.png');
             for (let f = 0; f < 4; f++) {
                 for (let n = 0; n < 4; n++) {
                     _loadVFX(`explosion_${f}_${n}`, `assets/sprites/vfx/explosion_${f}_${n}.png`);
                 }
             }
             _loadVFX('shield', 'assets/sprites/shield_0.png');
+            _loadVFX('shield_impact', 'assets/sprites/shield_impact.png');
+            _loadVFX('laser_wave', 'assets/sprites/laser_wave.png');
+            _loadVFX('missile_seeker', 'assets/sprites/missile_seeker.png');
+            _loadVFX('powerups_atlas', 'assets/sprites/powerups_atlas.png');
             _loadVFX('thruster_0', 'assets/sprites/thruster_0.png');
             _loadVFX('thruster_1', 'assets/sprites/thruster_1.png');
             _loadVFX('powerup_weapon', 'assets/sprites/powerup_weapon.png');
@@ -196,6 +229,7 @@ let playerSpritesLoaded = false;
             _loadVFX('scrap_essence', 'assets/sprites/scrap_essence.png');
             _loadVFX('scrap_fragment', 'assets/sprites/scrap_fragment.png');
             loadLandmarkSprites();
+            loadUISprites();
         }
 
         // --- Landmark Sprites Loading (100-Level Journey Landmarks) ---
@@ -223,9 +257,35 @@ let playerSpritesLoaded = false;
                 }
             });
         }
+
+        // --- Cockpit UI, Avionics & Upgrade Badge Sprite Preloading ---
+        const uiSprites = (typeof window !== 'undefined' && window.uiSprites) ? window.uiSprites : (typeof window !== 'undefined' ? (window.uiSprites = {}) : {});
+        let uiSpritesLoaded = false;
+
+        function loadUISprites() {
+            if (uiSpritesLoaded) return;
+            uiSpritesLoaded = true;
+            const hudKeys = ['hud_shield', 'hud_weapon', 'hud_scrap', 'hud_boost', 'hud_special', 'hud_dodge', 'hud_score', 'hud_boss_threat'];
+            const rankKeys = ['rank_s', 'rank_a', 'rank_b', 'rank_c', 'rank_d'];
+            const upgradeKeys = [
+                'icon_upgrade_weapons', 'icon_upgrade_shields', 'icon_upgrade_rockets', 'icon_upgrade_magnetism',
+                'icon_upgrade_engines', 'icon_upgrade_specials', 'icon_upgrade_addons', 'icon_upgrade_cosmetics'
+            ];
+            
+            [...hudKeys, ...rankKeys, ...upgradeKeys].forEach(key => {
+                if (!uiSprites[key]) {
+                    const img = new Image();
+                    img.src = `assets/sprites/ui/${key}.png`;
+                    uiSprites[key] = img;
+                }
+            });
+        }
+
         if (typeof window !== 'undefined') {
             window.landmarkSprites = landmarkSprites;
             window.loadLandmarkSprites = loadLandmarkSprites;
+            window.uiSprites = uiSprites;
+            window.loadUISprites = loadUISprites;
         }
 
         // --- GRO-1141: Pre-composite additive sprites ---
@@ -362,8 +422,44 @@ const _preCompositeCache = new Set();
             registerBossAnimation(`boss_b${b}_0`, (b === 1 || b === 2 || b === 4 || b === 5 || b === 6 || b === 8 || b === 10) ? 512 : 256);
         }
 
+        // Helper to register standard 4x4 16-frame stratum enemy spritesheets
+        function registerEnemyAnimation(spriteKey, frameSize = 256) {
+            const def = {
+                frameWidth: frameSize,
+                frameHeight: frameSize,
+                actions: {
+                    idle:   { row: 0, frames: 4, fps: 6, loop: true },
+                    shoot:  { row: 1, frames: 4, fps: 10, loop: false, muzzle: { x: -25, y: 0 } },
+                    hit:    { row: 2, frames: 4, fps: 8, loop: false },
+                    death:  { row: 3, frames: 4, fps: 10, loop: false }
+                }
+            };
+            SPRITE_ANIMATIONS[spriteKey] = def;
+            SPRITE_ANIMATIONS[`${spriteKey}_0`] = def;
+            SPRITE_ANIMATIONS[`enemy_${spriteKey}_0`] = def;
+            SPRITE_ANIMATIONS[`enemy_${spriteKey}_sheet`] = def;
+        }
+
+        // Register all 40 Stratum-Specific Enemies
+        [
+            'angler_scout', 'jelly_interceptor', 'vent_crab_heavy', 'trench_eel',
+            'rust_drone', 'coral_wasp', 'armored_eel', 'spine_urchin',
+            'sparker', 'sentinel', 'juggernaut', 'boss_minion',
+            'plasma_wisp', 'storm_sprite', 'gas_giant', 'nebula_wraith',
+            'ice_shard', 'frost_drone', 'glacier', 'ice_swarm',
+            'ember_sprite', 'magma_wasp', 'lava_golem', 'inferno_node',
+            'static_spark', 'storm_hawk', 'thunderhead', 'storm_sentinel',
+            'salvage_drone', 'ghost_fighter', 'turret_battery', 'fleet_turret',
+            'crawler', 'spitter', 'brute', 'hive_node',
+            'glitch_fragment', 'paradox_wisp', 'null_entity', 'rift_aberration'
+        ].forEach(key => registerEnemyAnimation(key, 256));
+
         function drawAnimatedSpriteSheet(ctx, spriteSheet, animDef, actionName, animTimer, dx, dy, dw, dh, customFrameIndex) {
             if (!animDef || !animDef.actions) {
+                ctx.drawImage(spriteSheet, dx, dy, dw, dh);
+                return;
+            }
+            if (spriteSheet && (spriteSheet._isSingleFrame || (spriteSheet.src && spriteSheet.src.includes('enemy_') && spriteSheet.src.includes('_0.png')))) {
                 ctx.drawImage(spriteSheet, dx, dy, dw, dh);
                 return;
             }
@@ -378,8 +474,10 @@ const _preCompositeCache = new Set();
                     : Math.min(totalFrames - 1, Math.floor(animTimer * (action.fps || 8)));
             }
             
-            const frameW = (spriteSheet && spriteSheet.naturalWidth) ? Math.floor(spriteSheet.naturalWidth / 4) : (animDef.frameWidth || 256);
-            const frameH = (spriteSheet && spriteSheet.naturalHeight) ? Math.floor(spriteSheet.naturalHeight / 4) : (animDef.frameHeight || 256);
+            const rawW = (spriteSheet && (spriteSheet.naturalWidth || spriteSheet.width)) || (animDef.frameWidth * 4);
+            const rawH = (spriteSheet && (spriteSheet.naturalHeight || spriteSheet.height)) || (animDef.frameHeight * 4);
+            const frameW = Math.floor(rawW / 4);
+            const frameH = Math.floor(rawH / 4);
             const sx = frameIndex * frameW;
             const sy = (action.row || 0) * frameH;
 

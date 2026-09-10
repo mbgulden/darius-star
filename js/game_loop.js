@@ -776,7 +776,7 @@ function update(dt) {
         if (checkCollision(ebBox, player)) {
             const style = eb.type === 'missile' ? 'missile' : 'red_projectile';
             createExplosion(eb.x, eb.y, eb.color, 10, style);
-            player.takeDamage(12);
+            player.takeDamage(12, eb.x, eb.y);
             enemyBullets.splice(i, 1);
             continue;
         }
@@ -784,7 +784,7 @@ function update(dt) {
         let ebHitRemote = false;
         for (const rp of remotePlayers) {
             if (checkCollision(ebBox, rp)) {
-                rp.takeDamage(12);
+                rp.takeDamage(12, eb.x, eb.y);
                 ebHitRemote = true;
                 break;
             }
@@ -804,8 +804,10 @@ function update(dt) {
         e.update(dt);
 
         if (checkCollision(e, player)) {
-            player.takeDamage(20);
-            createExplosion(e.x + e.width/2, e.y + e.height/2, e.color, 10);
+            const eCenterX = e.x + e.width/2;
+            const eCenterY = e.y + e.height/2;
+            player.takeDamage(20, eCenterX, eCenterY);
+            createExplosion(eCenterX, eCenterY, e.color, 10);
             enemies.splice(i, 1);
             continue;
         }
@@ -813,8 +815,10 @@ function update(dt) {
         let enemyHitRemote = false;
         for (const rp of remotePlayers) {
             if (checkCollision(e, rp)) {
-                rp.takeDamage(20);
-                createExplosion(e.x + e.width/2, e.y + e.height/2, e.color, 10);
+                const eCenterX = e.x + e.width/2;
+                const eCenterY = e.y + e.height/2;
+                rp.takeDamage(20, eCenterX, eCenterY);
+                createExplosion(eCenterX, eCenterY, e.color, 10);
                 enemyHitRemote = true;
                 break;
             }
@@ -826,6 +830,9 @@ function update(dt) {
 
         for (let j = bullets.length - 1; j >= 0; j--) {
             const b = bullets[j];
+            if (b.piercing && b.hitTargets && b.hitTargets.includes(e)) {
+                continue;
+            }
             const bBox = { x: b.x - b.size, y: b.y - 2, width: b.size*2, height: 4 };
             if (checkCollision(bBox, e)) {
                 const mods = window.DS_UpgradeSystem ? window.DS_UpgradeSystem.getGameplayModifiers() : null;
@@ -873,15 +880,31 @@ function update(dt) {
                 } else {
                     const wl = b.weaponLevel || player.weaponLevel;
                     if (isDirect) {
-                        if (wl === 1 || wl === 2) style = 'blue_laser';
-                        else if (wl === 3) style = 'green_laser';
-                        else if (wl === 4) style = 'purple_laser';
-                        else if (wl >= 5) style = 'white_laser';
+                        if (b.bulletStyle === 'bastion') style = 'missile';
+                        else if (b.bulletStyle === 'specter') style = 'purple_laser';
+                        else if (b.bulletStyle === 'tempest') style = 'red_projectile';
+                        else if (b.bulletStyle === 'warden') style = 'green_laser';
+                        else if (b.bulletStyle === 'phantom') style = Math.random() < 0.5 ? 'purple_laser' : 'blue_laser';
+                        else {
+                            if (wl === 1 || wl === 2) style = 'blue_laser';
+                            else if (wl === 3) style = 'green_laser';
+                            else if (wl === 4) style = 'purple_laser';
+                            else if (wl >= 5) style = 'white_laser';
+                        }
                     }
                     createExplosion(b.x, b.y, b.color, isDirect ? 8 : 4, style);
                 }
 
-                bullets.splice(j, 1);
+                if (b.piercing) {
+                    if (!b.hitTargets) b.hitTargets = [];
+                    b.hitTargets.push(e);
+                    b.pierceCount = (b.pierceCount || 0) + 1;
+                    if (b.pierceCount >= (b.maxPierce || 3)) {
+                        bullets.splice(j, 1);
+                    }
+                } else {
+                    bullets.splice(j, 1);
+                }
                 playSound('hit');
                 spawnHitFlash(e.x + e.width/2, e.y + e.height/2, e.enemyType);
 
@@ -934,6 +957,9 @@ function update(dt) {
     if (boss) {
         for (let j = bullets.length - 1; j >= 0; j--) {
             const b = bullets[j];
+            if (b.piercing && b.hitTargets && b.hitTargets.includes(boss)) {
+                continue;
+            }
             const bBox = { x: b.x - b.size, y: b.y - 2, width: b.size*2, height: 4 };
             if (checkCollision(bBox, boss)) {
                 const mods = window.DS_UpgradeSystem ? window.DS_UpgradeSystem.getGameplayModifiers() : null;
@@ -966,25 +992,41 @@ function update(dt) {
                 } else {
                     const wl = b.weaponLevel || player.weaponLevel;
                     if (isDirect) {
-                        if (wl === 1 || wl === 2) style = 'blue_laser';
-                        else if (wl === 3) style = 'green_laser';
-                        else if (wl === 4) style = 'purple_laser';
-                        else if (wl >= 5) style = 'white_laser';
+                        if (b.bulletStyle === 'bastion') style = 'missile';
+                        else if (b.bulletStyle === 'specter') style = 'purple_laser';
+                        else if (b.bulletStyle === 'tempest') style = 'red_projectile';
+                        else if (b.bulletStyle === 'warden') style = 'green_laser';
+                        else if (b.bulletStyle === 'phantom') style = Math.random() < 0.5 ? 'purple_laser' : 'blue_laser';
+                        else {
+                            if (wl === 1 || wl === 2) style = 'blue_laser';
+                            else if (wl === 3) style = 'green_laser';
+                            else if (wl === 4) style = 'purple_laser';
+                            else if (wl >= 5) style = 'white_laser';
+                        }
                     }
                     createExplosion(b.x, b.y, b.color, isDirect ? 8 : 4, style);
                 }
 
                 if (player.addSecondaryCharge) player.addSecondaryCharge(10);
-                bullets.splice(j, 1);
+                if (b.piercing) {
+                    if (!b.hitTargets) b.hitTargets = [];
+                    b.hitTargets.push(boss);
+                    b.pierceCount = (b.pierceCount || 0) + 1;
+                    if (b.pierceCount >= (b.maxPierce || 3)) {
+                        bullets.splice(j, 1);
+                    }
+                } else {
+                    bullets.splice(j, 1);
+                }
             }
         }
 
         if (checkCollision(player, boss)) {
-            player.takeDamage(35);
+            player.takeDamage(35, boss.x + boss.width/2, boss.y + boss.height/2);
         }
         for (const rp of remotePlayers) {
             if (checkCollision(rp, boss)) {
-                rp.takeDamage(35);
+                rp.takeDamage(35, boss.x + boss.width/2, boss.y + boss.height/2);
             }
         }
 
@@ -993,13 +1035,13 @@ function update(dt) {
             const laserHeight = 40;
             if (player.x + player.width > 0 && player.x < boss.x + 20) {
                 if (player.y + player.height > laserYStart && player.y < laserYStart + laserHeight) {
-                    player.takeDamage(3);
+                    player.takeDamage(3, boss.x, player.y + player.height/2);
                 }
             }
             for (const rp of remotePlayers) {
                 if (rp.x + rp.width > 0 && rp.x < boss.x + 20) {
                     if (rp.y + rp.height > laserYStart && rp.y < laserYStart + laserHeight) {
-                        rp.takeDamage(3);
+                        rp.takeDamage(3, boss.x, rp.y + rp.height/2);
                     }
                 }
             }
@@ -1052,7 +1094,10 @@ function update(dt) {
                 floatingTexts.push(new FloatingText(pu.x, pu.y, '+150 QUANTUM MATERIA', '#b026ff'));
             }
             if (collectingPlayer.addSecondaryCharge) collectingPlayer.addSecondaryCharge(20, 'METER');
-            createExplosion(pu.x, pu.y, '#ffffff', 8, 'blue_laser');
+            collectingPlayer.powerupAuraTimer = 0.6;
+            collectingPlayer.powerupAuraColor = pu.themeColor || '#00ffff';
+            collectingPlayer.powerupAuraKind = k;
+            createExplosion(pu.x, pu.y, pu.themeColor || '#ffffff', 8, k === 'SR' || k === 'S' ? 'shield_hit' : 'blue_laser');
             powerups.splice(i, 1);
             continue;
         }
@@ -1246,7 +1291,7 @@ function update(dt) {
     }
     uiWeapon.innerText = 'LVL ' + player.weaponLevel + (player.weaponLevel === 5 ? ' (MAX)' : '');
     uiScore.innerText = score;
-    if (uiScrap) uiScrap.innerText = '⚙️' + runScrap;
+    if (uiScrap) uiScrap.innerText = runScrap;
 
     // Streamer Mode HUD indicator (GRO-1042)
     if (uiStreamer) {
@@ -1371,9 +1416,10 @@ function draw() {
     ctx.fillStyle = '#010108';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // Render parallax layers back-to-front (image-based, drawn directly)
-    bgLayers.forEach(layer => layer.draw());
+    // Render parallax layers: Far background -> Landmarks -> Near midground parallax
+    if (bgLayers.length > 0) bgLayers[0].draw();
     if (typeof JourneyBackgroundRenderer !== 'undefined') JourneyBackgroundRenderer.draw(ctx);
+    for (let i = 1; i < bgLayers.length; i++) bgLayers[i].draw();
 
     // Blit offscreen buffers (lazy-rendered every 200-250ms)
     // First frame: force-build buffers if not yet rendered
@@ -1389,6 +1435,9 @@ function draw() {
     scrapDrops.forEach(sd => sd.draw());
     enemies.forEach(e => e.draw());
     if (boss) boss.draw();
+    if (typeof JourneyBackgroundRenderer !== 'undefined' && JourneyBackgroundRenderer.drawForeground) {
+        JourneyBackgroundRenderer.drawForeground(ctx);
+    }
     player.draw();
     for (const rp of remotePlayers) rp.draw();
     vfxExplosions.forEach(ex => ex.draw());
@@ -1429,7 +1478,18 @@ function draw() {
             ctx.shadowColor = hf.color;
             ctx.shadowBlur = size * 0.5;
             const hs = size * (1 - hf.frame / hf.maxFrames);
-            ctx.fillRect(hf.x - hs/2, hf.y - hs/2, hs, hs);
+            ctx.beginPath();
+            ctx.arc(hf.x, hf.y, hs * 0.45, 0, Math.PI * 2);
+            ctx.fill();
+            // High-energy cross flash
+            ctx.strokeStyle = '#ffffff';
+            ctx.lineWidth = Math.max(1, hs * 0.15);
+            ctx.beginPath();
+            ctx.moveTo(hf.x - hs * 0.7, hf.y);
+            ctx.lineTo(hf.x + hs * 0.7, hf.y);
+            ctx.moveTo(hf.x, hf.y - hs * 0.7);
+            ctx.lineTo(hf.x, hf.y + hs * 0.7);
+            ctx.stroke();
             ctx.restore();
         }
     }

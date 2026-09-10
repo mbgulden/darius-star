@@ -9,22 +9,34 @@ class EnemyBullet {
         this.y = y;
         this.vx = vx;
         this.vy = vy;
-        this.type = type; // 'bullet', 'missile', 'plasma', 'cryo', 'flak', 'acid', 'tachyon'
+        this.type = type; // 'bullet', 'missile', 'plasma', 'cryo', 'magma', 'lightning', 'acid', 'tachyon', 'singularity', 'flak'
         this.biome = biome;
-        this.size = (type === 'missile' || type === 'plasma') ? 7 : 5;
+        this.size = (type === 'missile' || type === 'singularity' || type === 'magma') ? 8 :
+                    (type === 'plasma' || type === 'flak') ? 7 :
+                    (type === 'cryo' || type === 'lightning' || type === 'tachyon') ? 6 : 5;
         this.age = 0;
 
-        // Thematic bullet colors per biome and type
+        // Thematic bullet colors per biome and projectile type
         const BIOME_BULLET_COLORS = {
             1: '#00ffff', 2: '#ff6b81', 3: '#74b9ff', 4: '#e056fd',
             5: '#00cec9', 6: '#f39c12', 7: '#fed330', 8: '#2ed573',
             9: '#00b894', 10: '#e84393'
         };
-        this.color = type === 'missile' ? '#FF8800' :
-                     type === 'plasma' ? '#a29bfe' :
-                     type === 'acid' ? '#00FF66' :
-                     type === 'tachyon' ? '#FF007F' :
-                     (BIOME_BULLET_COLORS[biome] || '#FF3333');
+
+        const TYPE_COLORS = {
+            'missile':     '#ff6600',
+            'plasma':      '#a29bfe',
+            'cryo':        '#00e5ff',
+            'magma':       '#ff4400',
+            'lightning':   '#fed330',
+            'acid':        '#00ff66',
+            'tachyon':     '#ff007f',
+            'singularity': '#b026ff',
+            'flak':        '#ffaa00',
+            'bullet':      BIOME_BULLET_COLORS[biome] || '#ff3333'
+        };
+
+        this.color = TYPE_COLORS[type] || TYPE_COLORS['bullet'];
     }
 
     update(dt) {
@@ -32,33 +44,93 @@ class EnemyBullet {
         this.x += this.vx * dt;
         this.y += this.vy * dt;
 
-        // Smoke / energy trail for missiles and special munitions
+        if (typeof Particle === 'undefined') return;
+
+        // Specialized smoke / energy trails per projectile type
         if (this.type === 'missile') {
-            if (Math.random() < 0.45 && typeof Particle !== 'undefined') {
+            if (Math.random() < 0.5) {
                 const angle = Math.atan2(this.vy, this.vx);
-                const rx = this.x - Math.cos(angle) * 8;
-                const ry = this.y - Math.sin(angle) * 8;
-                const p = new Particle(rx, ry, Math.random() < 0.25 ? '#FF8800' : '#777777');
-                p.vx = -this.vx * 0.15 + (Math.random() - 0.5) * 35;
-                p.vy = -this.vy * 0.15 + (Math.random() - 0.5) * 35;
+                const rx = this.x - Math.cos(angle) * 10;
+                const ry = this.y - Math.sin(angle) * 10;
+                const p = new Particle(rx, ry, Math.random() < 0.3 ? '#ff8800' : '#666666');
+                p.vx = -this.vx * 0.12 + (Math.random() - 0.5) * 30;
+                p.vy = -this.vy * 0.12 + (Math.random() - 0.5) * 30;
                 p.size = Math.random() * 4 + 2;
-                p.decay = Math.random() * 2.2 + 1.2;
+                p.decay = Math.random() * 2.5 + 1.5;
                 particles.push(p);
             }
-        } else if (this.type === 'plasma' && Math.random() < 0.35 && typeof Particle !== 'undefined') {
-            const p = new Particle(this.x, this.y, this.color);
-            p.vx = (Math.random() - 0.5) * 20;
-            p.vy = (Math.random() - 0.5) * 20;
-            p.size = Math.random() * 3 + 1;
-            p.decay = 2.5;
-            particles.push(p);
-        } else if (this.type === 'acid' && Math.random() < 0.30 && typeof Particle !== 'undefined') {
-            const p = new Particle(this.x, this.y, '#55ff00');
-            p.vx = -this.vx * 0.1;
-            p.vy = (Math.random() - 0.5) * 15;
-            p.size = 2;
-            p.decay = 3.0;
-            particles.push(p);
+        } else if (this.type === 'plasma') {
+            if (Math.random() < 0.4) {
+                const p = new Particle(this.x + (Math.random() - 0.5) * 6, this.y + (Math.random() - 0.5) * 6, Math.random() < 0.5 ? this.color : '#00ffff');
+                p.vx = (Math.random() - 0.5) * 24;
+                p.vy = (Math.random() - 0.5) * 24;
+                p.size = Math.random() * 3 + 1.5;
+                p.decay = 2.8;
+                particles.push(p);
+            }
+        } else if (this.type === 'cryo') {
+            if (Math.random() < 0.45) {
+                const p = new Particle(this.x, this.y, Math.random() < 0.4 ? '#ffffff' : '#00e5ff');
+                p.vx = -this.vx * 0.08 + (Math.random() - 0.5) * 20;
+                p.vy = (Math.random() - 0.5) * 20;
+                p.size = Math.random() * 2.5 + 1;
+                p.decay = 3.2;
+                particles.push(p);
+            }
+        } else if (this.type === 'magma') {
+            if (Math.random() < 0.45) {
+                const p = new Particle(this.x, this.y, Math.random() < 0.6 ? '#ff5500' : '#ffcc00');
+                p.vx = -this.vx * 0.08 + (Math.random() - 0.5) * 25;
+                p.vy = Math.random() * 30 - 10; // Drifts downward like dripping slag
+                p.size = Math.random() * 3.5 + 1.5;
+                p.decay = 2.4;
+                particles.push(p);
+            }
+        } else if (this.type === 'lightning') {
+            if (Math.random() < 0.5) {
+                const p = new Particle(this.x + (Math.random() - 0.5) * 8, this.y + (Math.random() - 0.5) * 8, Math.random() < 0.5 ? '#fed330' : '#ffffff');
+                p.vx = (Math.random() - 0.5) * 45;
+                p.vy = (Math.random() - 0.5) * 45;
+                p.size = Math.random() * 2 + 1;
+                p.decay = 4.0;
+                particles.push(p);
+            }
+        } else if (this.type === 'acid') {
+            if (Math.random() < 0.4) {
+                const p = new Particle(this.x, this.y, Math.random() < 0.7 ? '#55ff00' : '#aaff00');
+                p.vx = -this.vx * 0.06 + (Math.random() - 0.5) * 15;
+                p.vy = Math.random() * 25 - 5;
+                p.size = Math.random() * 2.5 + 1;
+                p.decay = 3.0;
+                particles.push(p);
+            }
+        } else if (this.type === 'tachyon') {
+            if (Math.random() < 0.45) {
+                const p = new Particle(this.x, this.y, Math.random() < 0.5 ? '#ff007f' : '#00ffff');
+                p.vx = -this.vx * 0.1 + (Math.random() - 0.5) * 35;
+                p.vy = (Math.random() - 0.5) * 20;
+                p.size = Math.random() * 2 + 1;
+                p.decay = 3.5;
+                particles.push(p);
+            }
+        } else if (this.type === 'singularity') {
+            if (Math.random() < 0.5) {
+                const p = new Particle(this.x + (Math.random() - 0.5) * 16, this.y + (Math.random() - 0.5) * 16, '#b026ff');
+                p.vx = (this.x - p.x) * 4; // Collapses inward toward singularity
+                p.vy = (this.y - p.y) * 4;
+                p.size = Math.random() * 2.5 + 1;
+                p.decay = 3.0;
+                particles.push(p);
+            }
+        } else if (this.type === 'flak') {
+            if (Math.random() < 0.35) {
+                const p = new Particle(this.x, this.y, '#ffaa00');
+                p.vx = -this.vx * 0.1 + (Math.random() - 0.5) * 30;
+                p.vy = (Math.random() - 0.5) * 30;
+                p.size = Math.random() * 2 + 1;
+                p.decay = 2.8;
+                particles.push(p);
+            }
         }
     }
 
@@ -66,25 +138,43 @@ class EnemyBullet {
         ctx.save();
         ctx.translate(this.x, this.y);
 
-        // Rotate: enemy bullets face direction of movement
+        // Rotate to face bullet velocity vector
         const angle = Math.atan2(this.vy, this.vx);
         ctx.rotate(angle);
 
+        // Check for dedicated preloaded VFX sprite
+        const vfx = (typeof window !== 'undefined' && window.vfxSprites) ? window.vfxSprites : (typeof vfxSprites !== 'undefined' ? vfxSprites : {});
+        const spriteKey = 'enemy_bullet_' + this.type;
+        const sprite = vfx[spriteKey] || (this.type === 'bullet' ? vfx['laser_enemy'] : (this.type === 'missile' ? vfx['missile_seeker'] : null));
+        const isImage = sprite && sprite.tagName !== 'CANVAS' && sprite.complete && sprite.naturalWidth > 0;
+        const isCanvas = sprite && sprite.tagName === 'CANVAS' && sprite.width > 0;
+
+        if (isImage || isCanvas) {
+            const w = this.size * 3.6;
+            const h = (this.type === 'plasma' || this.type === 'singularity' || this.type === 'magma') ? w : w * 0.55;
+            ctx.shadowColor = this.color;
+            ctx.shadowBlur = 10;
+            ctx.drawImage(sprite, -w / 2, -h / 2, w, h);
+            ctx.restore();
+            return;
+        }
+
+        // High-fidelity procedural rendering fallback per munition type
         if (this.type === 'missile') {
-            // Custom Boss / Heavy Missile: Orange body, white tip, red fins, flame exhaust
-            ctx.shadowColor = '#FF5500';
+            // Heavy Rocket: orange fuselage, flame plume, fins
+            ctx.shadowColor = '#ff5500';
             ctx.shadowBlur = 10;
 
-            // Flame flare at engine
-            ctx.fillStyle = '#FF3300';
+            // Exhaust plume
+            ctx.fillStyle = '#ff3300';
             ctx.beginPath();
             ctx.moveTo(-8, -1.5);
-            ctx.lineTo(-15 - Math.random() * 6, 0);
+            ctx.lineTo(-16 - Math.random() * 6, 0);
             ctx.lineTo(-8, 1.5);
             ctx.closePath();
             ctx.fill();
 
-            ctx.fillStyle = '#FFAA00';
+            ctx.fillStyle = '#ffaa00';
             ctx.beginPath();
             ctx.moveTo(-8, -1.0);
             ctx.lineTo(-12 - Math.random() * 4, 0);
@@ -92,8 +182,8 @@ class EnemyBullet {
             ctx.closePath();
             ctx.fill();
 
-            // Main body
-            ctx.fillStyle = '#FF8800';
+            // Fuselage (facing left direction along angle)
+            ctx.fillStyle = '#ff8800';
             ctx.beginPath();
             ctx.moveTo(10, 0);
             ctx.lineTo(-6, -4.5);
@@ -102,8 +192,8 @@ class EnemyBullet {
             ctx.closePath();
             ctx.fill();
 
-            // White nose tip
-            ctx.fillStyle = '#FFFFFF';
+            // White warhead tip
+            ctx.fillStyle = '#ffffff';
             ctx.beginPath();
             ctx.moveTo(10, 0);
             ctx.lineTo(3, -2.5);
@@ -111,8 +201,8 @@ class EnemyBullet {
             ctx.closePath();
             ctx.fill();
 
-            // Fins
-            ctx.fillStyle = '#FF3333';
+            // Stabilizer fins
+            ctx.fillStyle = '#ff3333';
             ctx.fillRect(-7, -3.5, 3.5, 7);
 
             ctx.restore();
@@ -120,10 +210,9 @@ class EnemyBullet {
         }
 
         if (this.type === 'plasma') {
-            // Pulsing Plasma Sphere
             const pulse = 1.0 + Math.sin(this.age * 12) * 0.25;
             ctx.shadowColor = this.color;
-            ctx.shadowBlur = 15;
+            ctx.shadowBlur = 16;
             ctx.fillStyle = this.color;
             ctx.beginPath();
             ctx.arc(0, 0, this.size * pulse, 0, Math.PI * 2);
@@ -133,6 +222,143 @@ class EnemyBullet {
             ctx.beginPath();
             ctx.arc(0, 0, (this.size * 0.5) * pulse, 0, Math.PI * 2);
             ctx.fill();
+            ctx.restore();
+            return;
+        }
+
+        if (this.type === 'cryo') {
+            // Faceted diamond ice lance
+            ctx.shadowColor = '#00e5ff';
+            ctx.shadowBlur = 12;
+            ctx.fillStyle = '#00e5ff';
+            ctx.beginPath();
+            ctx.moveTo(this.size * 2, 0);
+            ctx.lineTo(-this.size * 0.5, -this.size * 0.8);
+            ctx.lineTo(-this.size * 2, 0);
+            ctx.lineTo(-this.size * 0.5, this.size * 0.8);
+            ctx.closePath();
+            ctx.fill();
+
+            ctx.fillStyle = '#ffffff';
+            ctx.beginPath();
+            ctx.moveTo(this.size * 1.5, 0);
+            ctx.lineTo(0, -this.size * 0.3);
+            ctx.lineTo(-this.size * 1.5, 0);
+            ctx.lineTo(0, this.size * 0.3);
+            ctx.closePath();
+            ctx.fill();
+            ctx.restore();
+            return;
+        }
+
+        if (this.type === 'magma') {
+            // Molten volcanic basalt ball
+            const pulse = 1.0 + Math.sin(this.age * 10) * 0.15;
+            ctx.shadowColor = '#ff4400';
+            ctx.shadowBlur = 16;
+            ctx.fillStyle = '#ff5500';
+            ctx.beginPath();
+            ctx.arc(0, 0, this.size * pulse, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Molten core
+            ctx.fillStyle = '#ffee44';
+            ctx.beginPath();
+            ctx.arc(0, 0, this.size * 0.55 * pulse, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Obsidian crust flecks
+            ctx.fillStyle = '#331100';
+            ctx.beginPath();
+            ctx.arc(-this.size * 0.4, -this.size * 0.3, this.size * 0.3, 0, Math.PI * 2);
+            ctx.arc(this.size * 0.3, this.size * 0.3, this.size * 0.35, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+            return;
+        }
+
+        if (this.type === 'lightning') {
+            // High-voltage electric dart with jitter
+            ctx.shadowColor = '#fed330';
+            ctx.shadowBlur = 14;
+            ctx.strokeStyle = '#fed330';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            const jitterY = (Math.random() - 0.5) * 4;
+            ctx.moveTo(this.size * 2.2, 0);
+            ctx.lineTo(this.size * 0.6, -3 + jitterY);
+            ctx.lineTo(-this.size * 0.4, 3 - jitterY);
+            ctx.lineTo(-this.size * 2.2, 0);
+            ctx.stroke();
+
+            ctx.strokeStyle = '#ffffff';
+            ctx.lineWidth = 1.2;
+            ctx.stroke();
+            ctx.restore();
+            return;
+        }
+
+        if (this.type === 'acid') {
+            // Corrosive venom teardrop
+            ctx.shadowColor = '#00ff66';
+            ctx.shadowBlur = 12;
+            ctx.fillStyle = '#00ff66';
+            ctx.beginPath();
+            ctx.ellipse(0, 0, this.size * 1.8, this.size * 0.9, 0, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.fillStyle = '#ccff00';
+            ctx.beginPath();
+            ctx.ellipse(this.size * 0.4, 0, this.size * 0.9, this.size * 0.4, 0, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+            return;
+        }
+
+        if (this.type === 'tachyon') {
+            // Quantum rift chromatic dart
+            ctx.shadowColor = '#ff007f';
+            ctx.shadowBlur = 14;
+            ctx.fillStyle = 'rgba(0, 240, 255, 0.7)';
+            ctx.fillRect(-this.size * 2, -3, this.size * 4, 3);
+            ctx.fillStyle = '#ff007f';
+            ctx.fillRect(-this.size * 2, -1, this.size * 4, 3);
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(-this.size * 1.5, 0, this.size * 3, 1.5);
+            ctx.restore();
+            return;
+        }
+
+        if (this.type === 'singularity') {
+            // Gravitational dark vortex
+            const pulse = 1.0 + Math.sin(this.age * 14) * 0.2;
+            ctx.shadowColor = '#b026ff';
+            ctx.shadowBlur = 18;
+            ctx.strokeStyle = '#b026ff';
+            ctx.lineWidth = 2.5;
+            ctx.beginPath();
+            ctx.ellipse(0, 0, this.size * 1.6 * pulse, this.size * 1.1 * pulse, this.age * 8, 0, Math.PI * 2);
+            ctx.stroke();
+
+            // Dark event horizon center
+            ctx.fillStyle = '#080014';
+            ctx.beginPath();
+            ctx.arc(0, 0, this.size * 0.9 * pulse, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+            return;
+        }
+
+        if (this.type === 'flak') {
+            // Tungsten sabot shell
+            ctx.shadowColor = '#ffaa00';
+            ctx.shadowBlur = 8;
+            ctx.fillStyle = '#ccaa88';
+            ctx.fillRect(-this.size * 1.8, -this.size * 0.6, this.size * 3.6, this.size * 1.2);
+            ctx.fillStyle = '#ffaa00';
+            ctx.fillRect(-this.size * 0.5, -this.size * 0.7, this.size * 1.0, this.size * 1.4);
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(this.size * 0.8, -this.size * 0.3, this.size * 0.8, this.size * 0.6);
             ctx.restore();
             return;
         }
@@ -173,6 +399,113 @@ function mulberry32(a) {
     };
 }
 
+// Resolve exact biome level theme color for enemy glows and lighting accents
+function getBiomeLevelThemeColor(biome, level) {
+    const b = Math.max(1, Math.min(10, biome || 1));
+    const l = Math.max(1, Math.min(10, level || 1));
+    if (typeof BIOME_DATA !== 'undefined' && typeof BIOME_DATA.getLevelInfo === 'function') {
+        const info = BIOME_DATA.getLevelInfo(b, l);
+        if (info && info.accentColor) return info.accentColor;
+    }
+    const BIOME_GLOWS = {
+        1: '#00d2ff', 2: '#ff2a8d', 3: '#00ffcc', 4: '#b84dff',
+        5: '#66ccff', 6: '#ff7700', 7: '#ffe033', 8: '#00ff99',
+        9: '#39ff14', 10: '#ff007f'
+    };
+    return BIOME_GLOWS[b] || '#00d2ff';
+}
+window.getBiomeLevelThemeColor = getBiomeLevelThemeColor;
+
+// --- Canonical Enemy Ship Class & Scaling Rules ---
+// Enforces minimum +20% scaling across all chassis and scales up progressively by archetype/role
+const ENEMY_CLASS_RULES = {
+    boss_minion: {
+        className: 'Escort Drone',
+        width: 42,
+        height: 42,
+        renderSize: 42,
+        scalePercent: '+24%',
+        glowBlur: 3
+    },
+    scout: {
+        className: 'Light Scout',
+        width: 46,
+        height: 46,
+        renderSize: 46,
+        scalePercent: '+21%',
+        glowBlur: 4
+    },
+    interceptor: {
+        className: 'Tactical Interceptor',
+        width: 52,
+        height: 52,
+        renderSize: 52,
+        scalePercent: '+30%',
+        glowBlur: 4
+    },
+    hazard: {
+        className: 'Hazard / Area Denial',
+        width: 58,
+        height: 58,
+        renderSize: 58,
+        scalePercent: '+38%',
+        glowBlur: 4
+    },
+    hazard_large: {
+        className: 'Serpentine / Bunker Hazard',
+        width: 64,
+        height: 64,
+        renderSize: 64,
+        scalePercent: '+52%',
+        glowBlur: 5
+    },
+    heavy: {
+        className: 'Heavy Warship',
+        width: 76,
+        height: 76,
+        renderSize: 76,
+        scalePercent: '+46%',
+        glowBlur: 5
+    },
+    heavy_titanic: {
+        className: 'Behemoth Titan',
+        width: 82,
+        height: 82,
+        renderSize: 82,
+        scalePercent: '+58%',
+        glowBlur: 5
+    }
+};
+
+function getEnemyClassRules(type, behaviorPattern) {
+    const t = (type || '').toLowerCase();
+    const bp = (behaviorPattern || '').toLowerCase();
+
+    if (t === 'boss_minion' || bp === 'boss_minion') {
+        return ENEMY_CLASS_RULES.boss_minion;
+    }
+    if (t.includes('gas_giant') || t.includes('glacier') || t.includes('lava_golem') ||
+        t.includes('null_entity') || t.includes('thunderhead') || t.includes('juggernaut')) {
+        return ENEMY_CLASS_RULES.heavy_titanic;
+    }
+    if (bp === 'heavy' || t.includes('heavy') || t.includes('brute') || t.includes('crab') || t.includes('battery')) {
+        return ENEMY_CLASS_RULES.heavy;
+    }
+    if (t.includes('trench_eel') || t.includes('armored_eel') || t.includes('fleet_turret')) {
+        return ENEMY_CLASS_RULES.hazard_large;
+    }
+    if (bp === 'hazard' || t.includes('eel') || t.includes('urchin') || t.includes('swarm') || t.includes('node') || t.includes('wraith')) {
+        return ENEMY_CLASS_RULES.hazard;
+    }
+    if (bp === 'interceptor' || t.includes('interceptor') || t.includes('wasp') || t.includes('hawk') || t.includes('spitter') || t.includes('sentinel') || t.includes('fighter')) {
+        return ENEMY_CLASS_RULES.interceptor;
+    }
+    return ENEMY_CLASS_RULES.scout;
+}
+
+window.ENEMY_CLASS_RULES = ENEMY_CLASS_RULES;
+window.getEnemyClassRules = getEnemyClassRules;
+
 // --- Enemy Ship Class (Kinematics, Animated Blasters, Dynamic States) ---
 class Enemy {
     constructor(type) {
@@ -180,27 +513,20 @@ class Enemy {
         this.id = ++enemyIdCounter;  // Unique ID for Economy.shouldDrop()
         this.x = canvas.width + 50;
         this.y = 50 + Math.random() * (canvas.height - 100);
-        this.width = 38;
-        this.height = 38;
+        this.startY = this.y;
         this.age = 0;
         this.rotation = 0;
 
-        // Current stratum / biome detection
+        // Current stratum / biome & level detection
         this.biome = (typeof LevelManager !== 'undefined' && LevelManager.biome) ? LevelManager.biome : 1;
-
-        // Stratum glow colors
-        const BIOME_GLOWS = {
-            1: '#00ffff', 2: '#ff6b81', 3: '#74b9ff', 4: '#e056fd',
-            5: '#00cec9', 6: '#f39c12', 7: '#fed330', 8: '#2ed573',
-            9: '#00b894', 10: '#e84393'
-        };
-        this.biomeGlowColor = BIOME_GLOWS[this.biome] || '#00ffff';
+        this.level = (typeof LevelManager !== 'undefined' && LevelManager.level) ? LevelManager.level : 1;
+        this.biomeGlowColor = getBiomeLevelThemeColor(this.biome, this.level);
 
         // Kinematics & Archetype Classification
         const isScout = type === 'scout' || type.includes('crawler') || type.includes('drone') || type.includes('sprite') || type.includes('wisp') || type.includes('spark') || type.includes('fragment') || type.includes('angler');
         const isInterceptor = type === 'interceptor' || type.includes('interceptor') || type.includes('spitter') || type.includes('wraith') || type.includes('fighter') || type.includes('hawk') || type.includes('aberration') || type.includes('wasp') || type.includes('sentinel');
         const isHeavy = type === 'heavy' || type.includes('heavy') || type.includes('brute') || type.includes('turret') || type.includes('battery') || type.includes('golem') || type.includes('giant') || type.includes('node') || type.includes('glacier') || type.includes('thunderhead') || type.includes('juggernaut') || type.includes('null_entity') || type.includes('crab');
-        const isHazard = type.includes('eel') || type.includes('urchin') || type.includes('swarm') || type.includes('shard');
+        const isHazard = type.includes('hazard') || type.includes('eel') || type.includes('urchin') || type.includes('swarm') || type.includes('shard');
 
         // Creature movement archetype tag
         this.creatureArchetype = isHazard ? 'serpentine_or_hazard' :
@@ -213,9 +539,6 @@ class Enemy {
         this.muzzleFlashTimer = 0;
         this.muzzleRecoil = 0;
         this.barrelHeat = 0;
-        this.muzzleOffsets = isHeavy ? [ {x: -18, y: -8}, {x: -18, y: 8} ] :
-                             isInterceptor ? [ {x: -14, y: -6}, {x: -14, y: 6} ] :
-                             [ {x: -16, y: 0} ];
 
         if (isHazard) {
             this.behaviorPattern = 'hazard';
@@ -269,6 +592,9 @@ class Enemy {
             this.startY = this.y;
         }
 
+        // Apply calibrated ship class dimensions and muzzle hardpoints
+        this.applyClassRules();
+
         this.hpMax = this.hp;
 
         // NG+ Paradox roll: chance to upgrade spawned enemy
@@ -294,8 +620,29 @@ class Enemy {
         this._bulletAngleShift = (_varRng() - 0.5) * 0.10; // ±5% bullet angle shift
     }
 
+    applyClassRules() {
+        const rules = getEnemyClassRules(this.type, this.behaviorPattern);
+        this.classRules = rules;
+        this.width = rules.width;
+        this.height = rules.height;
+        this.renderSize = rules.renderSize;
+        
+        const isHeavy = this.behaviorPattern === 'heavy' || (this.classRules && this.classRules.className.includes('Heavy'));
+        const isInterceptor = this.behaviorPattern === 'interceptor';
+        this.muzzleOffsets = isHeavy ? [ {x: -Math.round(this.width * 0.35), y: -12}, {x: -Math.round(this.width * 0.35), y: 12} ] :
+                             isInterceptor ? [ {x: -Math.round(this.width * 0.32), y: -9}, {x: -Math.round(this.width * 0.32), y: 9} ] :
+                             [ {x: -Math.round(this.width * 0.35), y: 0} ];
+    }
+
     update(dt) {
         this.age += dt;
+
+        // Synchronize biome and level theme if sector advances
+        if (typeof LevelManager !== 'undefined' && LevelManager.level && LevelManager.level !== this.level) {
+            this.level = LevelManager.level;
+            this.biome = LevelManager.biome || this.biome;
+            this.biomeGlowColor = getBiomeLevelThemeColor(this.biome, this.level);
+        }
 
         // Blaster animation timers decay
         if (this.muzzleFlashTimer > 0) this.muzzleFlashTimer -= dt * 6.0;
@@ -303,18 +650,19 @@ class Enemy {
         if (this.barrelHeat > 0) this.barrelHeat = Math.max(0, this.barrelHeat - dt * 0.8);
 
         // Creature & Archetype Kinematics
+        const baseY = (this.startY !== undefined && !isNaN(this.startY)) ? this.startY : (this.startY = this.y);
         if (this.creatureArchetype === 'serpentine_or_hazard' || this.type.includes('eel')) {
             // Sinuous Multi-Segment Undulation
             this.x -= this.speed * dt;
             const undulateFreq = 4.2;
             const undulateAmp = 45;
-            this.y = this.startY + Math.sin(this.age * undulateFreq + this.x * 0.02) * undulateAmp;
+            this.y = baseY + Math.sin(this.age * undulateFreq + this.x * 0.02) * undulateAmp;
             this.rotation = Math.cos(this.age * undulateFreq + this.x * 0.02) * 0.25;
         } else if (this.creatureArchetype === 'arachnid') {
             // Arachnid Skittering: Micro-hops and pouncing stride
             this.x -= this.speed * dt;
             const skitterStep = Math.abs(Math.sin(this.age * 12.0)) * 12;
-            this.y = this.startY + Math.sin(this.age * 2.5) * 20 + skitterStep;
+            this.y = baseY + Math.sin(this.age * 2.5) * 20 + skitterStep;
             this.rotation = Math.sin(this.age * 12.0) * 0.08;
         } else if (this.behaviorPattern === 'scout') {
             this.x -= this.speed * dt;
@@ -388,9 +736,37 @@ class Enemy {
         this.muzzleRecoil = 1.0;
         this.barrelHeat = Math.min(1.0, this.barrelHeat + 0.4);
 
-        playSound('enemy_shoot', {enemyType: this.type});
+        let bulletType = 'bullet';
+        const b = this.biome || 1;
+        if (this.behaviorPattern === 'heavy') {
+            if (b === 1) bulletType = 'plasma';
+            else if (b === 2) bulletType = 'flak';
+            else if (b === 3) bulletType = 'missile';
+            else if (b === 4) bulletType = 'plasma';
+            else if (b === 5) bulletType = 'cryo';
+            else if (b === 6) bulletType = 'magma';
+            else if (b === 7) bulletType = 'lightning';
+            else if (b === 8) bulletType = 'missile';
+            else if (b === 9) bulletType = 'acid';
+            else if (b === 10) bulletType = 'singularity';
+            else bulletType = 'missile';
+        } else if (this.behaviorPattern === 'interceptor') {
+            if (b === 3 || b === 7) bulletType = 'lightning';
+            else if (b === 5) bulletType = 'cryo';
+            else if (b === 6) bulletType = 'magma';
+            else if (b === 9) bulletType = 'acid';
+            else if (b === 10) bulletType = 'tachyon';
+            else if (b === 4) bulletType = 'plasma';
+            else bulletType = 'bullet';
+        } else {
+            if (b === 9) bulletType = 'acid';
+            else if (b === 10) bulletType = 'tachyon';
+            else if (b === 5) bulletType = 'cryo';
+            else if (b === 6) bulletType = 'magma';
+            else bulletType = 'bullet';
+        }
 
-        const bulletType = this.behaviorPattern === 'heavy' ? 'missile' : 'bullet';
+        playSound('enemy_shoot', { enemyType: this.type, bulletType: bulletType, biome: this.biome });
         
         for (const m of this.muzzleOffsets) {
             enemyBullets.push(new EnemyBullet(this.x + m.x + this.width / 2, this.y + m.y + this.height / 2, bulletSpeed, _shiftedDy * 90, bulletType, this.biome));
@@ -462,14 +838,14 @@ class Enemy {
         const isCanvas = sprite && sprite.tagName === 'CANVAS' && sprite.width > 0;
         const hasSprite = isImage || isCanvas;
 
-        // Render dimensions based on unit class
-        const sizes = { scout: 38, interceptor: 40, heavy: 52, hazard: 42, boss_minion: 34 };
-        const renderSize = sizes[this.behaviorPattern] || 38;
+        // Render dimensions based on unit class rules
+        const rules = this.classRules || getEnemyClassRules(this.type, this.behaviorPattern);
+        const renderSize = this.renderSize || rules.renderSize;
 
         if (hasSprite) {
-            // Stratum glow aura
+            // Stratum glow aura — toned down to fit biome level theme
             ctx.shadowColor = this.isParadox ? this.paradoxColor : this.biomeGlowColor;
-            ctx.shadowBlur = this.isParadox ? 16 : 10;
+            ctx.shadowBlur = this.isParadox ? 7 : (rules.glowBlur || 4);
             
             const animDef = (typeof SPRITE_ANIMATIONS !== 'undefined' && window.SPRITE_ANIMATIONS) ? (window.SPRITE_ANIMATIONS[this.type] || window.SPRITE_ANIMATIONS[`enemy_${this.type}_0`]) : null;
             let actionName = 'idle';
@@ -502,7 +878,7 @@ class Enemy {
             // Fallback geometry
             ctx.fillStyle = this.isParadox ? this.paradoxColor : this.color;
             ctx.shadowColor = this.biomeGlowColor;
-            ctx.shadowBlur = 8;
+            ctx.shadowBlur = 3; // Toned down from 8
             ctx.beginPath();
             ctx.arc(0, 0, renderSize / 2.5, 0, Math.PI * 2);
             ctx.fill();
@@ -513,7 +889,7 @@ class Enemy {
             // Thermal Barrel Dissipation Glow
             ctx.save();
             ctx.shadowColor = '#ff5500';
-            ctx.shadowBlur = 10 * this.barrelHeat;
+            ctx.shadowBlur = 5 * this.barrelHeat; // Toned down from 10
             ctx.fillStyle = `rgba(255, 120, 0, ${this.barrelHeat * 0.75})`;
             for (const m of this.muzzleOffsets) {
                 ctx.beginPath();
@@ -527,7 +903,7 @@ class Enemy {
             // High-Intensity Muzzle Flash Star Flare
             ctx.save();
             ctx.shadowColor = this.biomeGlowColor;
-            ctx.shadowBlur = 18;
+            ctx.shadowBlur = 8; // Toned down from 18
             ctx.fillStyle = '#ffffff';
             const flashSize = 6 * this.muzzleFlashTimer;
             for (const m of this.muzzleOffsets) {
@@ -691,8 +1067,6 @@ class Boss {
         this.enemyType = 'boss';
         this.x = canvas.width + 100;
         this.y = canvas.height / 2 - 70;
-        this.width = 190;
-        this.height = 140;
         this.bobTimer = 0;
         this.chargeProgress = 0;
         this.altAttackToggle = false;
@@ -712,6 +1086,10 @@ class Boss {
         // Detect mid-boss (level 5) vs biome boss (level 10)
         this.isMidBoss = (typeof LevelManager !== 'undefined' && LevelManager.level === 5) || 
                          (typeof LevelManager !== 'undefined' && LevelManager.currentLevelConfig && LevelManager.currentLevelConfig.midBoss);
+
+        // Scaled Boss dimensions: Mid-Boss 188x188 (+25%), Biome Boss 240x170 (+26%)
+        this.width = this.isMidBoss ? 188 : 240;
+        this.height = this.isMidBoss ? 188 : 170;
 
         const currentBiome = (typeof LevelManager !== 'undefined' && LevelManager.biome) ? LevelManager.biome : (typeof biomeLevel !== 'undefined' ? biomeLevel : 1);
         this.biome = currentBiome;
@@ -755,16 +1133,21 @@ class Boss {
             { id: 'part2', name: 'Precursor Bio-Core', type: 'core', relX: 55, relY: 45, width: 70, height: 50, hpRatio: 0.50, disable: 'core' }
         ];
 
+        const origW = this.isMidBoss ? 150 : 190;
+        const origH = this.isMidBoss ? 150 : 135;
+        const scaleX = this.width / origW;
+        const scaleY = this.height / origH;
+
         this.targetPoints = hpDefList.map(hpDef => {
             const partHp = Math.max(1, Math.round(this.hpMax * hpDef.hpRatio));
             return {
                 id: hpDef.id,
                 name: hpDef.name,
                 type: hpDef.type,
-                relX: hpDef.relX,
-                relY: hpDef.relY,
-                width: hpDef.width,
-                height: hpDef.height,
+                relX: Math.round(hpDef.relX * scaleX),
+                relY: Math.round(hpDef.relY * scaleY),
+                width: Math.round(hpDef.width * scaleX),
+                height: Math.round(hpDef.height * scaleY),
                 maxHp: partHp,
                 hp: partHp,
                 destroyed: false,
@@ -774,22 +1157,24 @@ class Boss {
         });
         this.currentStage = 0;
 
-        // Colors & Themes
+        // Colors & Themes matched to Biome Level Theme
+        const bossLevel = this.isMidBoss ? 5 : 10;
+        const themeGlow = getBiomeLevelThemeColor(currentBiome, bossLevel);
         const bossThemes = {
-            1: { color: 'rgba(0, 255, 255, 0.25)', shadow: '#00ffff', pulse: '#00e5ff' },
-            2: { color: 'rgba(255, 107, 129, 0.25)', shadow: '#ff6b81', pulse: '#ff4757' },
-            3: { color: 'rgba(116, 185, 255, 0.25)', shadow: '#74b9ff', pulse: '#0984e3' },
-            4: { color: 'rgba(224, 86, 253, 0.25)', shadow: '#e056fd', pulse: '#be2edd' },
-            5: { color: 'rgba(0, 206, 201, 0.25)', shadow: '#00cec9', pulse: '#81ecec' },
-            6: { color: 'rgba(243, 156, 18, 0.25)', shadow: '#f39c12', pulse: '#e67e22' },
-            7: { color: 'rgba(254, 211, 48, 0.25)', shadow: '#fed330', pulse: '#fa8231' },
-            8: { color: 'rgba(46, 213, 115, 0.25)', shadow: '#2ed573', pulse: '#20bf6b' },
-            9: { color: 'rgba(0, 184, 148, 0.25)', shadow: '#00b894', pulse: '#6c5ce7' },
-            10: { color: 'rgba(232, 67, 147, 0.25)', shadow: '#e84393', pulse: '#f7b731' }
+            1: { color: 'rgba(0, 255, 255, 0.25)', shadow: themeGlow, pulse: '#00e5ff' },
+            2: { color: 'rgba(255, 107, 129, 0.25)', shadow: themeGlow, pulse: '#ff4757' },
+            3: { color: 'rgba(116, 185, 255, 0.25)', shadow: themeGlow, pulse: '#0984e3' },
+            4: { color: 'rgba(224, 86, 253, 0.25)', shadow: themeGlow, pulse: '#be2edd' },
+            5: { color: 'rgba(0, 206, 201, 0.25)', shadow: themeGlow, pulse: '#81ecec' },
+            6: { color: 'rgba(243, 156, 18, 0.25)', shadow: themeGlow, pulse: '#e67e22' },
+            7: { color: 'rgba(254, 211, 48, 0.25)', shadow: themeGlow, pulse: '#fa8231' },
+            8: { color: 'rgba(46, 213, 115, 0.25)', shadow: themeGlow, pulse: '#20bf6b' },
+            9: { color: 'rgba(0, 184, 148, 0.25)', shadow: themeGlow, pulse: '#6c5ce7' },
+            10: { color: 'rgba(232, 67, 147, 0.25)', shadow: themeGlow, pulse: '#f7b731' }
         };
-        const theme = bossThemes[currentBiome] || { color: 'rgba(0, 255, 255, 0.25)', shadow: '#00ffff', pulse: '#00e5ff' };
+        const theme = bossThemes[currentBiome] || { color: 'rgba(0, 255, 255, 0.25)', shadow: themeGlow, pulse: '#00e5ff' };
         this.themeColor = theme.color;
-        this.themeShadow = theme.shadow;
+        this.themeShadow = themeGlow;
         this.pulseColor = theme.pulse;
 
         this.state = 'intro';
@@ -1392,19 +1777,19 @@ class Boss {
         const hasSprite = isImage || isCanvas;
         const animDef = (typeof SPRITE_ANIMATIONS !== 'undefined' && window.SPRITE_ANIMATIONS) ? window.SPRITE_ANIMATIONS[this.spriteKey] : null;
 
-        const renderW = this.isMidBoss ? 150 : 190;
-        const renderH = this.isMidBoss ? 150 : 135;
+        const renderW = this.width;
+        const renderH = this.height;
 
-        // Ambient & rage lighting
+        // Ambient & rage lighting — toned down to fit biome theme
         if (this.state === 'charge_up') {
             ctx.shadowColor = '#ffffff';
-            ctx.shadowBlur = 30;
+            ctx.shadowBlur = 14; // Toned down from 30
         } else if (this.state === 'rage') {
             ctx.shadowColor = '#ff0055';
-            ctx.shadowBlur = 25;
+            ctx.shadowBlur = 12; // Toned down from 25
         } else {
             ctx.shadowColor = this.themeShadow;
-            ctx.shadowBlur = 12 + Math.sin(this.bobTimer * 3) * 5;
+            ctx.shadowBlur = 6;  // Toned down from 12 + Math.sin(this.bobTimer * 3) * 5
         }
 
         if (hasSprite) {
@@ -1487,7 +1872,7 @@ class Boss {
             ctx.strokeStyle = this.pulseColor;
             ctx.lineWidth = 3 + p * 4;
             ctx.shadowColor = this.pulseColor;
-            ctx.shadowBlur = 25;
+            ctx.shadowBlur = 12; // Toned down from 25
 
             ctx.beginPath();
             ctx.arc(0, 0, Math.max(10, ringRadius), 0, Math.PI * 2);
@@ -1508,7 +1893,7 @@ class Boss {
         if (this.state === 'charge_blast' && (this.biome === 1 || this.biome === 3 || this.biome === 5 || this.biome === 7 || this.biome === 8 || this.biome === 10)) {
             ctx.save();
             ctx.shadowColor = this.pulseColor;
-            ctx.shadowBlur = 30;
+            ctx.shadowBlur = 16; // Toned down from 30
 
             const bGrd = ctx.createLinearGradient(-renderW / 2, -35, -renderW / 2, 35);
             bGrd.addColorStop(0, 'rgba(255, 255, 255, 0.1)');
@@ -1532,7 +1917,7 @@ class Boss {
         if (this.muzzleFlashTimer > 0) {
             ctx.save();
             ctx.shadowColor = this.pulseColor;
-            ctx.shadowBlur = 25;
+            ctx.shadowBlur = 12; // Toned down from 25
             ctx.fillStyle = '#ffffff';
             const flashR = 12 * this.muzzleFlashTimer;
             ctx.beginPath();

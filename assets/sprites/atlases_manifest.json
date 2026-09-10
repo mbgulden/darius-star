@@ -1,0 +1,213 @@
+{
+  "version": "2.0.0",
+  "frame_size": 128,
+  "powerups": {
+    "file": "assets/sprites/powerups_atlas.png",
+    "frame_width": 128,
+    "frame_height": 128,
+    "frames_per_anim": 4,
+    "types": {
+      "powerup_weapon": {
+        "row": 0,
+        "color": [
+          255,
+          60,
+          60
+        ]
+      },
+      "powerup_shield": {
+        "row": 1,
+        "color": [
+          0,
+          240,
+          255
+        ]
+      },
+      "powerup_shield_regen": {
+        "row": 2,
+        "color": [
+          0,
+          255,
+          130
+        ]
+      },
+      "powerup_bomb": {
+        "row": 3,
+        "color": [
+          255,
+          140,
+          0
+        ]
+      },
+      "powerup_speed": {
+        "row": 4,
+        "color": [
+          80,
+          255,
+          200
+        ]
+      },
+      "powerup_materia": {
+        "row": 5,
+        "color": [
+          200,
+          50,
+          255
+        ]
+      }
+    }
+  },
+  "scrap": {
+    "file": "assets/sprites/scrap_atlas.png",
+    "frame_width": 128,
+    "frame_height": 128,
+    "frames_per_anim": 4,
+    "types": {
+      "scrap_metal": {
+        "row": 0,
+        "color": [
+          150,
+          170,
+          200
+        ]
+      },
+      "scrap_alloy": {
+        "row": 1,
+        "color": [
+          0,
+          220,
+          255
+        ]
+      },
+      "scrap_cell": {
+        "row": 2,
+        "color": [
+          60,
+          180,
+          255
+        ]
+      },
+      "scrap_core": {
+        "row": 3,
+        "color": [
+          255,
+          200,
+          40
+        ]
+      },
+      "scrap_essence": {
+        "row": 4,
+        "color": [
+          240,
+          40,
+          200
+        ]
+      },
+      "scrap_fragment": {
+        "row": 5,
+        "color": [
+          190,
+          100,
+          255
+        ]
+      }
+    },
+    "strip_file": "assets/sprites/scrap_icons.png",
+    "strip_icon_size": 64
+  },
+  "ui": {
+    "file": "assets/sprites/ui_atlas.png",
+    "frame_width": 128,
+    "frame_height": 128,
+    "ranks": {
+      "rank_s": {
+        "row": 0,
+        "col": 0
+      },
+      "rank_a": {
+        "row": 0,
+        "col": 1
+      },
+      "rank_b": {
+        "row": 0,
+        "col": 2
+      },
+      "rank_c": {
+        "row": 0,
+        "col": 3
+      },
+      "rank_d": {
+        "row": 0,
+        "col": 4
+      }
+    },
+    "upgrades": {
+      "icon_upgrade_weapons": {
+        "row": 1,
+        "col": 0
+      },
+      "icon_upgrade_shields": {
+        "row": 1,
+        "col": 1
+      },
+      "icon_upgrade_rockets": {
+        "row": 1,
+        "col": 2
+      },
+      "icon_upgrade_magnetism": {
+        "row": 1,
+        "col": 3
+      },
+      "icon_upgrade_engines": {
+        "row": 1,
+        "col": 4
+      },
+      "icon_upgrade_specials": {
+        "row": 1,
+        "col": 5
+      },
+      "icon_upgrade_addons": {
+        "row": 1,
+        "col": 6
+      },
+      "icon_upgrade_cosmetics": {
+        "row": 1,
+        "col": 7
+      }
+    },
+    "hud": {
+      "hud_shield": {
+        "row": 2,
+        "col": 0
+      },
+      "hud_weapon": {
+        "row": 2,
+        "col": 1
+      },
+      "hud_scrap": {
+        "row": 2,
+        "col": 2
+      },
+      "hud_boost": {
+        "row": 2,
+        "col": 3
+      },
+      "hud_special": {
+        "row": 2,
+        "col": 4
+      },
+      "hud_dodge": {
+        "row": 2,
+        "col": 5
+      },
+      "hud_score": {
+        "row": 2,
+        "col": 6
+      },
+      "hud_boss_threat": {
+        "row": 2,
+        "col": 7
+      }
+    }
+  }
+}
